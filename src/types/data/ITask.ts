@@ -3,8 +3,8 @@ import {
   IHintAlarmType,
   ILanguage,
   ITaskCheckType,
+  ITaskTestData,
   ITaskType,
-  ITest,
   IVerdict,
 } from './atomic';
 import { ITag } from './ITag';
@@ -18,7 +18,7 @@ export interface IHint {
   // "timestamp" -> timestamp when hint will appear
 }
 
-interface IChecker {
+export interface IChecker {
   sourceCode: string;
   language: string; // spec
 }
@@ -68,7 +68,7 @@ export interface ITask extends ITaskDisplay {
 }
 
 export interface ITaskEdit extends ITask {
-  tests: ITest[];
+  tests: ITaskTestData[];
   checker: IChecker | undefined;
   checkType: ITaskCheckType | undefined;
 }

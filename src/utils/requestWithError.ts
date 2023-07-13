@@ -5,7 +5,6 @@ import {
 
 import { availableMethods, sendRequest } from '@requests/request';
 import { IAvailableLang } from '@custom-types/ui/ILocale';
-import { setter } from '@custom-types/ui/atomic';
 
 const defaultAutoClose = 5000;
 
@@ -18,7 +17,7 @@ export const requestWithError = <T, V>(
   },
   lang: IAvailableLang,
   body?: T extends object ? T : object,
-  onSuccess?: setter<V>,
+  onSuccess?: (_: V) => void | Promise<void>,
   params?: any
 ) => {
   sendRequest<T, V>(endpoint, method, body).then((res) => {

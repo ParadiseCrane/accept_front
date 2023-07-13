@@ -1,7 +1,6 @@
 import { callback } from '@custom-types/ui/atomic';
 import { Trash } from 'tabler-icons-react';
-import { FC, memo } from 'react';
-import OpenTextInNewTab from '@ui/OpenTextInNewTab/OpenTextInNewTab';
+import { FC, ReactNode, memo } from 'react';
 import styles from './listItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';
 import { Icon, TextArea } from '@ui/basics';
@@ -13,6 +12,8 @@ const ListItem: FC<{
   form: any;
   index: number;
   field: string;
+  openInputNewTab: ReactNode;
+  openOutputNewTab: ReactNode;
   maxRows?: number;
   minRows?: number;
   hideInput?: boolean;
@@ -36,6 +37,8 @@ const ListItem: FC<{
   readonly,
   classNames,
   shrink,
+  openInputNewTab,
+  openOutputNewTab,
 }) => {
   return (
     <div
@@ -66,9 +69,7 @@ const ListItem: FC<{
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
               >
                 {inLabel}
-                <OpenTextInNewTab
-                  text={form.values[field][index]['inputData']}
-                />
+                {openInputNewTab}
               </div>
             }
             minRows={minRows || 2}
@@ -97,9 +98,7 @@ const ListItem: FC<{
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
               >
                 {outLabel}
-                <OpenTextInNewTab
-                  text={form.values[field][index]['outputData']}
-                />
+                {openOutputNewTab}
               </div>
             }
             minRows={minRows || 2}

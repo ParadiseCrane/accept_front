@@ -29,4 +29,8 @@ export const task = {
   validation: {
     error: 'Ошибка валидации',
   },
+  tests: {
+    error: 'Ошибка при получении тестов',
+    loading: 'Загрузка тестов',
+  },
 };

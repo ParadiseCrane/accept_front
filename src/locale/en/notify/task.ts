@@ -29,4 +29,8 @@ export const task = {
   validation: {
     error: 'Error on validation',
   },
+  tests: {
+    error: 'Error while getting tests',
+    loading: 'Loading tests',
+  },
 };

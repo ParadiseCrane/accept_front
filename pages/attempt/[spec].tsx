@@ -5,7 +5,6 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { Tabs } from '@ui/basics';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
 import Info from '@components/Attempt/Info/Info';
 import Code from '@components/Attempt/Code/Code';
 import Title from '@ui/Title/Title';
@@ -18,9 +17,7 @@ import { useRequest } from '@hooks/useRequest';
 
 function Attempt(props: { attempt: IAttempt; author: string }) {
   const attempt = props.attempt;
-  const author = props.author;
-  ``;
-  const { user, isTeacher } = useUser();
+
   const { locale } = useLocale();
 
   const { data, loading, error } = useRequest<{}, boolean>(

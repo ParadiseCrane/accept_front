@@ -64,7 +64,7 @@ const Checker: FC<{ form: any }> = ({ form }) => {
         />
       </div>
 
-      <Tests form={form} hideOutput />
+      <Tests />
     </div>
   );
 };

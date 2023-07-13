@@ -55,6 +55,7 @@ function EditTask(props: {
         label: tag.title,
       })),
 
+      tests: [],
       constraintsTime: task.constraints.time,
       constraintsMemory: task.constraints.memory,
       allowedLanguages: task.allowedLanguages.map((lang) => ({

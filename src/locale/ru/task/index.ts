@@ -2,6 +2,7 @@ import { modals } from './modals';
 import { description } from './description';
 import { list } from './list';
 import { form } from './form';
+import { tests } from './tests';
 
 export const task = {
   send: 'Отправка',
@@ -23,4 +24,5 @@ export const task = {
   modals,
   list,
   form,
+  tests,
 };

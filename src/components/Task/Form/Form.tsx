@@ -10,9 +10,9 @@ import Examples from '@components/Task/Form/Examples/Examples';
 import { callback } from '@custom-types/ui/atomic';
 import {
   IHintAlarmType,
+  ITaskTestData,
   ITaskCheckType,
   ITaskType,
-  ITest,
 } from '@custom-types/data/atomic';
 import Stepper from '@ui/Stepper/Stepper';
 import { UseFormReturnType, useForm } from '@mantine/form';
@@ -95,16 +95,16 @@ const Form: FC<{
         value.length < 1
           ? locale.task.form.validation.examples.number
           : value.filter(
-              (pair: ITest) =>
+              (pair: ITaskTestData) =>
                 pair.inputData.trim() || pair.outputData.trim()
             ).length != value.length
           ? locale.task.form.validation.examples.empty
           : null,
-      tests: (value: ITest[], values) =>
+      tests: (value: ITaskTestData[], values) =>
         value.length < 1
           ? locale.task.form.validation.tests.number
           : value.filter(
-              (pair: ITest) =>
+              (pair: ITaskTestData) =>
                 (pair.inputData.trim() || values.taskType != '0') &&
                 (pair.outputData.trim() || values.checkType != '0')
             ).length != value.length
@@ -169,7 +169,7 @@ const Form: FC<{
         <Examples key="3" form={form} />,
         <>
           {form.values.checkType === '0' ? (
-            <Tests key="4" form={form} />
+            <Tests key="4" />
           ) : (
             <Checker key="4" form={form} />
           )}
