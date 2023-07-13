@@ -11,31 +11,47 @@ import styles from './tests.module.css';
 import { Button, Dropzone, Helper, InputWrapper } from '@ui/basics';
 import { useForm } from '@mantine/form';
 import stepperStyles from '@styles/ui/stepper.module.css';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
+import {
+  ITaskTestPayload,
+  ITaskTestsPayload,
+  ITruncatedTaskTest,
+} from '@custom-types/data/ITaskTest';
 import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
+import { requestWithNotify } from '@utils/requestWithNotify';
 
 const Tests: FC<{
   tests: ITruncatedTaskTest[];
   taskType: ITaskType;
   checkType: ITaskCheckType;
+  requestPayload: ITaskTestsPayload;
   checker?: IChecker;
-}> = ({ tests, taskType, checkType, checker }) => {
-  const { locale } = useLocale();
+}> = ({ tests, taskType, checkType, requestPayload, checker }) => {
+  const { locale, lang } = useLocale();
   const form = useForm({
     initialValues: { tests, taskType, checkType },
   });
   const onDeleteTest = useCallback(
     (index: number) => {
-      form.setFieldValue(
-        'tests',
-        (() => {
-          form.values.tests.splice(index, 1);
-          return form.values.tests;
-        })()
+      const test = form.values.tests[index];
+      requestWithNotify<ITaskTestPayload, boolean>(
+        `task_test/delete/${test.origin}`,
+        'POST',
+        locale.notify.task_test.delete,
+        lang,
+        (_: boolean) => '',
+        { ...requestPayload, test_spec: test.spec },
+        () => {
+          form.setFieldValue(
+            'tests',
+            (() => {
+              form.values.tests.splice(index, 1);
+              return form.values.tests;
+            })()
+          );
+        }
       );
-      form.validateField('tests');
     },
-    [form]
+    [form, lang, locale, requestPayload]
   );
 
   const onDrop = useCallback(

@@ -10,8 +10,8 @@ import Examples from '@components/Task/Form/Examples/Examples';
 import { callback } from '@custom-types/ui/atomic';
 import {
   IHintAlarmType,
-  ITaskTestData,
   ITaskCheckType,
+  ITaskTestData,
   ITaskType,
 } from '@custom-types/data/atomic';
 import Stepper from '@ui/Stepper/Stepper';

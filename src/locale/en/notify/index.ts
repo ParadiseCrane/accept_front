@@ -12,6 +12,7 @@ import { students } from './students';
 import { user } from './user';
 import { feedback } from './feedback';
 import { executor } from './executor';
+import { task_test } from './task_test';
 
 export const notify = {
   errors: {
@@ -31,4 +32,5 @@ export const notify = {
   user,
   feedback,
   executor,
+  task_test,
 };

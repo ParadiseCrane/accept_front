@@ -17,8 +17,8 @@ import Title from '@ui/Title/Title';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Tests from '@components/Task/Tests/Tests';
 import {
+  ITaskTestsPayload,
   ITruncatedTaskTest,
-  TaskTestsPayload,
 } from '@custom-types/data/ITaskTest';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { requestWithError } from '@utils/requestWithError';
@@ -30,19 +30,19 @@ function TestsPage(props: {
   assignment: string;
 }) {
   const spec = props.spec;
-  const body = useMemo(
+  const body: ITaskTestsPayload = useMemo(
     () =>
       props.tournament != ''
         ? {
-            base_type: 'tournament',
-            base_spec: props.tournament,
+            task_base_type: 'tournament',
+            task_base_spec: props.tournament,
           }
         : props.assignment != ''
         ? {
-            base_type: 'assignment',
-            base_spec: props.assignment,
+            task_base_type: 'assignment',
+            task_base_spec: props.assignment,
           }
-        : { base_type: 'basic', base_spec: '' },
+        : { task_base_type: 'basic', task_base_spec: '' },
     [props.assignment, props.tournament]
   );
 
@@ -66,7 +66,10 @@ function TestsPage(props: {
         task_check_type: ITaskCheckType;
         checker?: IChecker;
       }
-    >(`task/tests/${spec}`, 'POST', body).then((res) => {
+    >(`task/tests/${spec}`, 'POST', {
+      base_type: body.task_base_type,
+      base_spec: body.task_base_spec,
+    }).then((res) => {
       if (!res.error) {
         setTests(res.response.tests);
         setTaskType(res.response.task_type);
@@ -80,17 +83,14 @@ function TestsPage(props: {
     setLoading(true);
     let tests: ITaskTestData[] = [];
     await requestWithError<
-      TaskTestsPayload,
+      ITaskTestsPayload,
       { tests_data: ITaskTestData[] }
     >(
       `task_test/full/${spec}`,
       'POST',
       locale.notify.task.tests,
       lang,
-      {
-        task_base_type: body.base_type,
-        task_base_spec: body.base_spec,
-      },
+      body,
       async (response) => {
         tests = response.tests_data;
         if (tests.length == 0) {
@@ -142,6 +142,7 @@ function TestsPage(props: {
           tests={tests}
           checkType={taskCheckType}
           taskType={taskType}
+          requestPayload={body}
           checker={checker}
         />
       )}

@@ -18,7 +18,7 @@ export const task = {
   },
   delete: {
     loading: 'Удаляем задачу',
-    success: 'Задача успешно удалён',
+    success: 'Задача успешно удалена',
     error: 'Ошибка при удалении задачи',
   },
   send: {

@@ -1,12 +1,12 @@
-export interface TaskTestPayload {
+export interface ITaskTestPayload {
   test_spec: string;
   task_base_type?: string;
   task_base_spec?: string;
 }
 
-export interface TaskTestsPayload {
-  task_base_type?: string;
-  task_base_spec?: string;
+export interface ITaskTestsPayload {
+  task_base_type: string;
+  task_base_spec: string;
 }
 
 export interface ITruncatedTaskTest {
