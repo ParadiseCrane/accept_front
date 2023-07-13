@@ -46,7 +46,7 @@ const Send: FC<{
     const body = {
       task: spec,
       language: Number(language),
-      programText: code.trim(),
+      programText: code,
       textAnswers: [],
     };
     requestWithNotify(

@@ -19,6 +19,7 @@ export interface IAttemptInfo {
   total: number;
   verdict_distribution: IBaseInfo[];
   language_distribution: IBaseInfo[];
+  language_solved_distribution: IBaseInfo[];
 }
 
 export interface ITaskInfo {

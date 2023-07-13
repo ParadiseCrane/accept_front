@@ -10,6 +10,7 @@ const Bar: FC<{
   length: number;
   padding: number;
   setTooltipLabel: (_: string | undefined) => void;
+  hideLabels?: boolean;
 }> = ({
   index,
   data,
@@ -18,6 +19,7 @@ const Bar: FC<{
   length,
   padding,
   setTooltipLabel,
+  hideLabels = false,
 }) => {
   const onEnter = useCallback(
     () => setTooltipLabel(data.amount.toString()),
@@ -50,14 +52,16 @@ const Bar: FC<{
           height={10}
           fill="white"
         />
-        <text
-          className={styles.labels}
-          x={20 + width * index + padding * (index + 1) + width / 2}
-          y={162}
-          textAnchor="middle"
-        >
-          {data.label}
-        </text>
+        {!hideLabels && (
+          <text
+            className={styles.labels}
+            x={20 + width * index + padding * (index + 1) + width / 2}
+            y={162}
+            textAnchor="middle"
+          >
+            {data.label}
+          </text>
+        )}
       </g>
     </>
   );

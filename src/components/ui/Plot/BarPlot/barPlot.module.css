@@ -4,7 +4,7 @@
 
 .wrapper svg {
   width: 100%;
-  aspect-ratio: 2/1;
+  aspect-ratio: 330/166;
 }
 
 .title {
@@ -16,4 +16,21 @@
 
 .labels {
   font-size: 6px;
+}
+
+.legendWrapper {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: var(--spacer-s);
+  column-gap: var(--spacer-l);
+}
+
+.legendItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
 }

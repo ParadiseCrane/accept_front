@@ -4,7 +4,8 @@ export const info = {
     verdicts: 'Verdicts tasks',
   },
   attempt: {
-    languages: 'Languages attempts',
+    languages: 'Attempts languages',
+    languages_solved: 'Successful attempts languages',
     verdicts: 'Verdicts attempts',
   },
   shortStatistics: {

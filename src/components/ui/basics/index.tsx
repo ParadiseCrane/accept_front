@@ -24,6 +24,7 @@ import DatePicker from './DatePicker/DatePicker';
 import Checkbox from './Checkbox/Checkbox';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
 import Timeline from './Timeline/Timeline';
+import ColorSwatch from './ColorSwatch/ColorSwatch';
 
 export {
   Button,
@@ -52,4 +53,5 @@ export {
   DatePicker,
   LoadingOverlay,
   Timeline,
+  ColorSwatch,
 };

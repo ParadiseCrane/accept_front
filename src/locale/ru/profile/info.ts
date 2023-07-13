@@ -5,6 +5,7 @@ export const info = {
   },
   attempt: {
     languages: 'Языки попыток',
+    languages_solved: 'Языки успешных попыток',
     verdicts: 'Вердикты попыток',
   },
   shortStatistics: {

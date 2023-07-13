@@ -1,4 +1,11 @@
-import { FC, ReactNode, memo, useCallback } from 'react';
+import {
+  FC,
+  ReactNode,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { useLocale } from '@hooks/useLocale';
 import styles from './codeArea.module.css';
 import { callback } from '@custom-types/ui/atomic';
@@ -36,6 +43,35 @@ const CodeArea: FC<{
   placeholder,
 }) => {
   const { locale } = useLocale();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (!textAreaRef.current) return;
+    let ref = textAreaRef.current;
+    const keydownCodeArea = (e: KeyboardEvent) => {
+      if (document.activeElement != ref) {
+        return;
+      }
+      if (e.key == 'Tab') {
+        e.preventDefault();
+        if (!ref) return;
+        let start = ref.selectionStart;
+        let end = ref.selectionEnd;
+
+        let value = ref.value;
+        ref.value = `${value.substring(0, start)}\t${value.substring(
+          end
+        )}`;
+        ref.selectionStart = start + 1;
+        ref.selectionEnd = start + 1;
+      }
+    };
+    ref.addEventListener('keydown', keydownCodeArea);
+
+    return () => {
+      ref.removeEventListener('keydown', keydownCodeArea);
+    };
+  }, [textAreaRef]);
 
   const onDrop = useCallback(
     (files: File[]) => {
@@ -91,6 +127,7 @@ const CodeArea: FC<{
         <div className={styles.inner}>
           <TextArea
             label={label}
+            inputRef={textAreaRef}
             helperContent={helperContent}
             classNames={classNames}
             placeholder={placeholder || locale.placeholders.code}

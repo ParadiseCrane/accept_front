@@ -11,6 +11,7 @@ const predefinedColors = [
   '#FF922B',
   '#FF6B6B',
   '#F06595',
+  '#43E67F',
 ];
 
 export const getColor = (idx: number, offset?: number) => {

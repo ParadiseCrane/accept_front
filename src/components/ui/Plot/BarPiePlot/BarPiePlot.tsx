@@ -9,7 +9,8 @@ const BarPiePlot: FC<{
   data: IPlotData[];
   centralLabel: FC<IPlotData>;
   defaultText: IPlotData;
-}> = ({ title, data, centralLabel, defaultText }) => {
+  hideLabels?: boolean;
+}> = ({ title, data, centralLabel, defaultText, hideLabels }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>{title}</div>
@@ -22,7 +23,7 @@ const BarPiePlot: FC<{
           />
         </div>
         <div className={styles.barWrapper}>
-          <BarPlot data={data} />
+          <BarPlot data={data} hideLabels={hideLabels} />
         </div>
       </div>
     </div>
