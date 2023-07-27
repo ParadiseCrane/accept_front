@@ -1,4 +1,8 @@
-import { checkAccess, checkPermission } from '@utils/checkAccess';
+import {
+  checkRead,
+  checkTestRights,
+  checkWrite,
+} from '@utils/checkAccess';
 
 export const accessLevels = {
   user: 1,
@@ -8,73 +12,78 @@ export const accessLevels = {
   developer: 100,
 };
 
-const TOURNAMENT_URL = 'api/tournament-has-rights';
-
 export const protectedRoutesInfo: {
   [key: string]: (
-    _: string,
-    __: { Cookie: string } | undefined,
-    ___?: URLSearchParams
+    _target: string,
+    _headers: { Cookie: string } | undefined,
+    _pathname: string,
+    _searchParams?: URLSearchParams
   ) => Promise<string | boolean>;
 } = {
-  '/dashboard/assignment': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/dashboard/tournament': (pathname, headers) =>
-    checkPermission(TOURNAMENT_URL, pathname, headers),
-  '/tournament': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.user),
-  '/tournament/add': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/tournament/edit': (pathname, headers) =>
-    checkPermission(TOURNAMENT_URL, pathname, headers),
-  '/edu/assignment_schema/add': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/edu/assignment_schema/edit': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/edu/assignment_schema/list': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/edu/assignment_schema': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/edu/assignment': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.user),
-  '/edu/assignment/add': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/edu/assignment/edit': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/group/add': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/group/edit': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/notification/add': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/task/add': (pathname, headers, searchParams) => {
-    const query = searchParams?.get('tournament');
-    if (!query)
-      return checkAccess(pathname, headers, accessLevels.teacher);
+  '/dashboard/assignment': checkWrite,
+  '/dashboard/tournament': checkWrite,
+  '/tournament': checkRead,
+  '/tournament/add': (_, headers, pathname, searchParams) =>
+    checkWrite('tournament_add', headers, pathname, searchParams),
+  '/tournament/edit': checkWrite,
+  '/edu/assignment_schema/add': (
+    _,
+    headers,
+    pathname,
+    searchParams
+  ) =>
+    checkWrite(
+      'assignment_schema_add',
+      headers,
+      pathname,
+      searchParams
+    ),
+  '/edu/assignment_schema/edit': checkWrite,
+  '/edu/assignment_schema/list': (
+    _,
+    headers,
+    pathname,
+    searchParams
+  ) =>
+    checkRead(
+      'assignment_schema_list',
+      headers,
+      pathname,
+      searchParams
+    ),
+  '/edu/assignment_schema': checkRead,
+  '/edu/assignment': checkRead,
+  '/edu/assignment/add': (_, headers, pathname, searchParams) =>
+    checkWrite('assignment_add', headers, pathname, searchParams),
+  '/edu/assignment/edit': checkWrite,
+  '/group/add': (_, headers, pathname, searchParams) =>
+    checkWrite('group_modification', headers, pathname, searchParams),
+  '/group/edit': (_, headers, pathname, searchParams) =>
+    checkWrite('group_modification', headers, pathname, searchParams),
+  '/notification/add': (_, headers, pathname, searchParams) =>
+    checkWrite('notification_add', headers, pathname, searchParams),
+  '/task/add': (_, headers, pathname, searchParams) => {
+    const tournament_spec = searchParams?.get('tournament');
+    if (!tournament_spec)
+      return checkWrite('task_add', headers, pathname, searchParams);
 
-    return checkPermission(TOURNAMENT_URL, pathname, headers, query);
+    return checkWrite(
+      tournament_spec,
+      headers,
+      pathname,
+      searchParams
+    );
   },
-  '/task/edit': (pathname, headers, searchParams) => {
-    const query = searchParams?.get('tournament');
-    if (!query)
-      return checkAccess(pathname, headers, accessLevels.teacher);
-
-    return checkPermission(TOURNAMENT_URL, pathname, headers, query);
-  },
-
-  '/task/tests': (pathname, headers, searchParams) => {
-    const query = searchParams?.get('tournament');
-    if (!query)
-      return checkAccess(pathname, headers, accessLevels.teacher);
-
-    return checkPermission(TOURNAMENT_URL, pathname, headers, query);
-  },
-  '/user/list': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/group/list': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.teacher),
-  '/dashboard/admin': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.admin),
-  '/dashboard/developer': (pathname, headers) =>
-    checkAccess(pathname, headers, accessLevels.developer),
+  '/task': checkRead,
+  '/task/edit': checkWrite,
+  '/task/tests': checkTestRights,
+  '/user/list': (_, headers, pathname, searchParams) =>
+    checkRead('user_list', headers, pathname, searchParams),
+  '/group/list': (_, headers, pathname, searchParams) =>
+    checkRead('group_list', headers, pathname, searchParams),
+  '/dashboard/admin': (_, headers, pathname, searchParams) =>
+    checkRead('admin_dashboard', headers, pathname, searchParams),
+  '/dashboard/developer': (_, headers, pathname, searchParams) =>
+    checkRead('developer_dashboard', headers, pathname, searchParams),
+  '/attempt': checkRead,
 };

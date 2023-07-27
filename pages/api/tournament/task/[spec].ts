@@ -1,14 +1,14 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function TournamentTasks(
+export default async function AddTournamentTask(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/tournament/tasks/${req.query.spec}`,
-    method: 'GET',
+    url: `api/tournament/task/${req.query.spec}`,
+    method: 'POST',
   });
 }

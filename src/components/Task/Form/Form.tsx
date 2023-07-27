@@ -37,7 +37,7 @@ const stepFields = [
     'hintContent',
   ],
   ['examples'],
-  ['checkerLang', 'checkerCode', 'tests'],
+  ['checkerLang', 'checkerCode'],
   [],
 ];
 
@@ -100,25 +100,25 @@ const Form: FC<{
             ).length != value.length
           ? locale.task.form.validation.examples.empty
           : null,
-      tests: (value: ITaskTestData[], values) =>
-        value.length < 1
-          ? locale.task.form.validation.tests.number
-          : value.filter(
-              (pair: ITaskTestData) =>
-                (pair.inputData.trim() || values.taskType != '0') &&
-                (pair.outputData.trim() || values.checkType != '0')
-            ).length != value.length
-          ? locale.task.form.validation.tests.empty
-          : value.reduce(
-              (acc, item) =>
-                acc +
-                item.inputData.trim().length +
-                item.outputData.trim().length,
-              0
-            ) >
-            2 * MbOfText
-          ? locale.task.form.validation.tests.tooLarge
-          : null,
+      // tests: (value: ITaskTestData[], values) =>
+      //   value.length < 1
+      //     ? locale.task.form.validation.tests.number
+      //     : value.filter(
+      //         (pair: ITaskTestData) =>
+      //           (pair.inputData.trim() || values.taskType != '0') &&
+      //           (pair.outputData.trim() || values.checkType != '0')
+      //       ).length != value.length
+      //     ? locale.task.form.validation.tests.empty
+      //     : value.reduce(
+      //         (acc, item) =>
+      //           acc +
+      //           item.inputData.trim().length +
+      //           item.outputData.trim().length,
+      //         0
+      //       ) >
+      //       2 * MbOfText
+      //     ? locale.task.form.validation.tests.tooLarge
+      //     : null,
       checkerCode: (value, values) =>
         values.checkType == '1' && value.length == 0
           ? locale.task.form.validation.checkerCode
