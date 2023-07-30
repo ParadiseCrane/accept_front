@@ -1,5 +1,5 @@
 export const openText = (text: string, not_blank?: boolean) => {
-  let tab = null;
+  let tab;
   if (not_blank) {
     tab = window.open('about:blank');
   } else {

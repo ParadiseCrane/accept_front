@@ -11,11 +11,7 @@ import styles from './tests.module.css';
 import { Button, Dropzone, Helper, InputWrapper } from '@ui/basics';
 import { useForm } from '@mantine/form';
 import stepperStyles from '@styles/ui/stepper.module.css';
-import {
-  ITaskTestPayload,
-  ITaskTestsPayload,
-  ITruncatedTaskTest,
-} from '@custom-types/data/ITaskTest';
+import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
@@ -23,9 +19,8 @@ const Tests: FC<{
   tests: ITruncatedTaskTest[];
   taskType: ITaskType;
   checkType: ITaskCheckType;
-  requestPayload: ITaskTestsPayload;
   checker?: IChecker;
-}> = ({ tests, taskType, checkType, requestPayload, checker }) => {
+}> = ({ tests, taskType, checkType, checker }) => {
   const { locale, lang } = useLocale();
   const form = useForm({
     initialValues: { tests, taskType, checkType },
@@ -33,13 +28,13 @@ const Tests: FC<{
   const onDeleteTest = useCallback(
     (index: number) => {
       const test = form.values.tests[index];
-      requestWithNotify<ITaskTestPayload, boolean>(
-        `task_test/delete/${test.origin}`,
+      requestWithNotify<undefined, boolean>(
+        `task_test/delete/${test.spec}`,
         'POST',
         locale.notify.task_test.delete,
         lang,
         (_: boolean) => '',
-        { ...requestPayload, test_spec: test.spec },
+        undefined,
         () => {
           form.setFieldValue(
             'tests',
@@ -51,7 +46,7 @@ const Tests: FC<{
         }
       );
     },
-    [form, lang, locale, requestPayload]
+    [form, lang, locale]
   );
 
   const onDrop = useCallback(

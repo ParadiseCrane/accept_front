@@ -1,13 +1,6 @@
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { IChecker } from '@custom-types/data/ITask';
 import { sendRequest } from '@requests/request';
@@ -24,27 +17,9 @@ import { ITaskTestData } from '@custom-types/data/atomic';
 import { requestWithError } from '@utils/requestWithError';
 import { Loader } from '@mantine/core';
 import { Download } from 'tabler-icons-react';
-function TestsPage(props: {
-  spec: string;
-  tournament: string;
-  assignment: string;
-}) {
+import { getApiUrl } from '@utils/getServerUrl';
+function TestsPage(props: { spec: string }) {
   const spec = props.spec;
-  const body: ITaskTestsPayload = useMemo(
-    () =>
-      props.tournament != ''
-        ? {
-            task_base_type: 'tournament',
-            task_base_spec: props.tournament,
-          }
-        : props.assignment != ''
-        ? {
-            task_base_type: 'assignment',
-            task_base_spec: props.assignment,
-          }
-        : { task_base_type: 'basic', task_base_spec: '' },
-    [props.assignment, props.tournament]
-  );
 
   const { locale, lang } = useLocale();
   const [tests, setTests] = useState<ITruncatedTaskTest[]>([]);
@@ -56,20 +31,14 @@ function TestsPage(props: {
 
   useEffect(() => {
     sendRequest<
-      {
-        base_type: string;
-        base_spec: string;
-      },
+      undefined,
       {
         tests: ITruncatedTaskTest[];
         task_type: ITaskType;
         task_check_type: ITaskCheckType;
         checker?: IChecker;
       }
-    >(`task/tests/${spec}`, 'POST', {
-      base_type: body.task_base_type,
-      base_spec: body.task_base_spec,
-    }).then((res) => {
+    >(`task/tests/${spec}`, 'GET').then((res) => {
       if (!res.error) {
         setTests(res.response.tests);
         setTaskType(res.response.task_type);
@@ -77,7 +46,7 @@ function TestsPage(props: {
         setChecker(res.response.checker);
       }
     });
-  }, [body, props.assignment, props.tournament, spec]);
+  }, [spec]);
 
   const downloadTests = useCallback(async () => {
     setLoading(true);
@@ -87,10 +56,10 @@ function TestsPage(props: {
       { tests_data: ITaskTestData[] }
     >(
       `task_test/full/${spec}`,
-      'POST',
+      'GET',
       locale.notify.task.tests,
       lang,
-      body,
+      undefined,
       async (response) => {
         tests = response.tests_data;
         if (tests.length == 0) {
@@ -120,7 +89,7 @@ function TestsPage(props: {
         URL.revokeObjectURL(href);
       }
     );
-  }, [spec, locale, lang, body]);
+  }, [spec, locale, lang]);
 
   return (
     <div className={stepperStyles.wrapper}>
@@ -142,7 +111,6 @@ function TestsPage(props: {
           tests={tests}
           checkType={taskCheckType}
           taskType={taskType}
-          requestPayload={body}
           checker={checker}
         />
       )}
@@ -171,8 +139,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const tournament = query.tournament;
-  const assignment = query.assignment;
 
   const response = await fetch(`${API_URL}/api/task/exists/${spec}`, {
     headers: {
@@ -183,8 +149,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         spec,
-        tournament: tournament || '',
-        assignment: assignment || '',
       },
     };
   }

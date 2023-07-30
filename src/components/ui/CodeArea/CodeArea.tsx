@@ -1,11 +1,4 @@
-import {
-  FC,
-  ReactNode,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { FC, ReactNode, memo, useCallback, useRef } from 'react';
 import { useLocale } from '@hooks/useLocale';
 import styles from './codeArea.module.css';
 import { callback } from '@custom-types/ui/atomic';
@@ -18,6 +11,7 @@ import { ILanguage } from '@custom-types/data/atomic';
 import { extensionValidator } from '@utils/extensionValidator';
 import { Dropzone, TextArea } from '@ui/basics';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
+import { getHotkeyHandler } from '@mantine/hooks';
 
 const CodeArea: FC<{
   label: string;
@@ -30,6 +24,7 @@ const CodeArea: FC<{
   buttonProps?: MyButtonProps;
   minRows?: number;
   placeholder?: string | ReactNode;
+  onSend?: () => void;
 }> = ({
   label,
   setLanguage,
@@ -41,37 +36,29 @@ const CodeArea: FC<{
   buttonProps,
   minRows,
   placeholder,
+  onSend,
 }) => {
   const { locale } = useLocale();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
+  const process_tab_keydown = useCallback(() => {
     if (!textAreaRef.current) return;
     let ref = textAreaRef.current;
-    const keydownCodeArea = (e: KeyboardEvent) => {
-      if (document.activeElement != ref) {
-        return;
-      }
-      if (e.key == 'Tab') {
-        e.preventDefault();
-        if (!ref) return;
-        let start = ref.selectionStart;
-        let end = ref.selectionEnd;
+    if (!ref) return;
+    let start = ref.selectionStart;
+    let end = ref.selectionEnd;
 
-        let value = ref.value;
-        ref.value = `${value.substring(0, start)}\t${value.substring(
-          end
-        )}`;
-        ref.selectionStart = start + 1;
-        ref.selectionEnd = start + 1;
-      }
-    };
-    ref.addEventListener('keydown', keydownCodeArea);
-
-    return () => {
-      ref.removeEventListener('keydown', keydownCodeArea);
-    };
+    let value = ref.value;
+    ref.value = `${value.substring(0, start)}\t${value.substring(
+      end
+    )}`;
+    ref.selectionStart = start + 1;
+    ref.selectionEnd = start + 1;
   }, [textAreaRef]);
+
+  const process_send_key_down = useCallback(() => {
+    if (onSend) onSend();
+  }, [onSend]);
 
   const onDrop = useCallback(
     (files: File[]) => {
@@ -133,6 +120,10 @@ const CodeArea: FC<{
             placeholder={placeholder || locale.placeholders.code}
             onChange={(e) => setCode(e.target.value)}
             minRows={minRows || 20}
+            onKeyDown={getHotkeyHandler([
+              ['Tab', process_tab_keydown],
+              ['mod+Enter', process_send_key_down],
+            ])}
             {...formProps}
           />
         </div>

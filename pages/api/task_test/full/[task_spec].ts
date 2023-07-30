@@ -9,6 +9,6 @@ export default async function TaskTestsFullData(
     req: req,
     res: res,
     url: `api/full_task_tests_data/${req.query.task_spec}`,
-    method: 'POST',
+    method: 'GET',
   });
 }

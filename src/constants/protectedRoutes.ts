@@ -1,8 +1,4 @@
-import {
-  checkRead,
-  checkTestRights,
-  checkWrite,
-} from '@utils/checkAccess';
+import { checkRead, checkWrite } from '@utils/checkAccess';
 
 export const accessLevels = {
   user: 1,
@@ -76,7 +72,7 @@ export const protectedRoutesInfo: {
   },
   '/task': checkRead,
   '/task/edit': checkWrite,
-  '/task/tests': checkTestRights,
+  '/task/tests': checkWrite,
   '/user/list': (_, headers, pathname, searchParams) =>
     checkRead('user_list', headers, pathname, searchParams),
   '/group/list': (_, headers, pathname, searchParams) =>
