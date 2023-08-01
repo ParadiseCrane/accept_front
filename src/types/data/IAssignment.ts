@@ -57,7 +57,6 @@ export interface IAssignmentDisplay {
   author: string;
   taskNumber: number;
   tags: ITag[];
-  defaultDuration: number;
   starter: string;
   origin: string;
   groups: IGroup[];

@@ -9,7 +9,7 @@ import Stepper from '@ui/Stepper/Stepper';
 import { UseFormReturnType, useForm } from '@mantine/form';
 
 const stepFields = [
-  ['title', 'description', 'tags', 'defaultDuration'],
+  ['title', 'description', 'tags'],
   ['tasks'],
   [],
   [],
@@ -43,10 +43,6 @@ const Form: FC<{
             ? locale.assignmentSchema.form.validation.tasks
             : null
           : locale.assignmentSchema.form.validation.tasks,
-      defaultDuration: (value) =>
-        value < 5
-          ? locale.assignmentSchema.form.validation.defaultDuration
-          : null,
     },
     validateInputOnBlur: true,
   });

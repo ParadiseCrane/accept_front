@@ -35,9 +35,6 @@ function EditAssignmentSchema({
         label: task?.title,
         value: task?.spec,
       })),
-      defaultDuration: Math.floor(
-        assignment_schema.defaultDuration / 60 / 1000
-      ),
     }),
     [assignment_schema]
   );
@@ -57,7 +54,6 @@ function EditAssignmentSchema({
         ...form.values,
         tasks: form.values['tasks'].map((task: Item) => task.value),
         tags: form.values['tags'].map((tag: Item) => tag.value),
-        defaultDuration: form.values.defaultDuration * 60 * 1000, // from minutes to milliseconds
       };
       requestWithNotify(
         `assignment_schema/edit`,

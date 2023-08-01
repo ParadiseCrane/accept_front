@@ -20,7 +20,6 @@ const initialValues = {
   description: '',
   author: '',
   tasks: [],
-  defaultDuration: 40, // minutes
   tags: [],
 };
 
@@ -43,7 +42,6 @@ function AddAssignmentSchema() {
         ...form.values,
         author: user?.login || '',
         tasks: form.values['tasks'].map((task: Item) => task.value),
-        defaultDuration: form.values.defaultDuration * 60 * 1000, // from minutes to milliseconds
         tags: form.values['tags'].map((tag: Item) => tag.value),
       };
       requestWithNotify(

@@ -5,7 +5,6 @@ export const form = {
   validation,
   title: 'Title',
   description: 'Description',
-  defaultDuration: 'Default duration (minutes)',
   taskOrdering: {
     title: 'Change the tasks order if necessary',
   },

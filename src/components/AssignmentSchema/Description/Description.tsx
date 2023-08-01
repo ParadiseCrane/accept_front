@@ -48,13 +48,6 @@ const Description: FC<{
           <div
             className={styles.author}
           >{`${locale.assignment.form.author}: ${assignment.author}`}</div>
-          <div className={styles.defaultDuration}>{`${
-            locale.assignmentSchema.defaultDuration
-          } ${
-            preview
-              ? assignment.defaultDuration
-              : Math.floor(assignment.defaultDuration / 1000 / 60)
-          }m`}</div>
         </div>
       </div>
       <div className={styles.tags}>
