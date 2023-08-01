@@ -8,6 +8,7 @@ import {
 } from 'react-beautiful-dnd';
 import { GridDots } from 'tabler-icons-react';
 import { callback } from '@custom-types/ui/atomic';
+import styles from './customDraggableList.module.css';
 
 export const CustomDraggableList: FC<{
   values: Item[];
@@ -46,11 +47,14 @@ export const CustomDraggableList: FC<{
                     {(provider, _) => (
                       <div
                         ref={provider.innerRef}
-                        className={classNames?.itemWrapper}
+                        className={`${styles.itemWrapper}`}
                         {...provider.draggableProps}
                         {...provider.dragHandleProps}
                       >
-                        <div className={classNames?.dragButton}>
+                        <div
+                          className={classNames?.dragButton}
+                          style={{ width: '20px', height: '20px' }}
+                        >
                           <GridDots width={20} height={20} />
                         </div>
                         <div className={classNames?.label}>
