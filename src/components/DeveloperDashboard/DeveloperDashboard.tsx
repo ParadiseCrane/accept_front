@@ -2,6 +2,7 @@ import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useMemo } from 'react';
 import {
   BellRinging,
+  DeviceAnalytics,
   Terminal,
   TestPipe,
   UserExclamation,
@@ -12,6 +13,7 @@ import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import NotificationList from './NotificationList/NotificationList';
 import Executor from './Executor/Executor';
 import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
+import Analytics from './Analytics/Analytics';
 // import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = ({}) => {
@@ -38,6 +40,11 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         page: <Executor />,
         icon: <Terminal color="var(--secondary)" />,
         title: locale.dashboard.developer.executor,
+      },
+      {
+        page: <Analytics />,
+        icon: <DeviceAnalytics color="var(--secondary)" />,
+        title: locale.dashboard.developer.analytics.title,
       },
     ],
     [locale]

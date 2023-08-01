@@ -84,3 +84,9 @@ export interface IPartialTestResult {
   test: number; // index
   verdict: IVerdict;
 }
+
+export interface IAnalyticsData {
+  path: string;
+  average: number;
+  count: number;
+}
