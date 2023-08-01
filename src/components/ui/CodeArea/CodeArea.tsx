@@ -1,11 +1,4 @@
-import {
-  FC,
-  ReactNode,
-  RefObject,
-  memo,
-  useCallback,
-  useRef,
-} from 'react';
+import { FC, ReactNode, memo, useCallback, useRef } from 'react';
 import { useLocale } from '@hooks/useLocale';
 import styles from './codeArea.module.css';
 import { callback } from '@custom-types/ui/atomic';
