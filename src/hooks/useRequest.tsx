@@ -30,7 +30,6 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
 
   const refetch = useCallback(
     (shouldSetLoading?: boolean) => {
-      let cleanUp = false;
       if (shouldSetLoading) setLoading(true);
       setError(false);
       setDetail('');
@@ -41,23 +40,18 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
         body,
         revalidate
       ).then((res) => {
-        if (!cleanUp) {
-          if (!res.error) {
-            setData(process(res.response));
-            if (onSuccess) onSuccess(res);
-          } else {
-            setError(true);
-            setDetail(res.detail);
-            if (onError) onError(res);
-          }
-          if (shouldSetLoading) setLoading(false);
+        if (!res.error) {
+          setData(process(res.response));
+          if (onSuccess) onSuccess(res);
+        } else {
+          setError(true);
+          setDetail(res.detail);
+          if (onError) onError(res);
         }
+        if (shouldSetLoading) setLoading(false);
+
         return res;
       });
-
-      return () => {
-        cleanUp = true;
-      };
     },
     [body, method, onError, onSuccess, process, revalidate, url]
   );

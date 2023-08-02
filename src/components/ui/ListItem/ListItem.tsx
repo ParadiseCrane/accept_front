@@ -1,9 +1,10 @@
 import { callback } from '@custom-types/ui/atomic';
 import { Trash } from 'tabler-icons-react';
-import { FC, ReactNode, memo } from 'react';
+import { ChangeEvent, FC, ReactNode, memo } from 'react';
 import styles from './listItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';
-import { Icon, TextArea } from '@ui/basics';
+import { Icon } from '@ui/basics';
+import TestArea from '@ui/TestArea/TestArea';
 
 const ListItem: FC<{
   label: string;
@@ -61,9 +62,8 @@ const ListItem: FC<{
       </div>
       <div className={styles.example}>
         {!hideInput && (
-          <TextArea
-            monospace
-            autosize
+          <TestArea
+            readonly={readonly}
             label={
               <div
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
@@ -75,24 +75,16 @@ const ListItem: FC<{
             minRows={minRows || 2}
             maxRows={maxRows}
             value={form.values[field][index]['inputData']}
-            onBlur={() =>
-              readonly ? undefined : form.validateField(field)
-            }
-            onChange={
-              readonly
-                ? undefined
-                : (e) => {
-                    form.values[field][index]['inputData'] =
-                      e.target.value;
-                    form.setFieldValue(field, form.values[field]);
-                  }
-            }
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              form.values[field][index]['inputData'] = e.target.value;
+              form.setFieldValue(field, form.values[field]);
+            }}
+            validateField={() => form.validateField(field)}
           />
         )}
         {!hideOutput && (
-          <TextArea
-            monospace
-            autosize
+          <TestArea
+            readonly={readonly}
             label={
               <div
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
@@ -104,18 +96,12 @@ const ListItem: FC<{
             minRows={minRows || 2}
             maxRows={maxRows}
             value={form.values[field][index]['outputData']}
-            onBlur={
-              readonly ? undefined : () => form.validateField(field)
-            }
-            onChange={
-              readonly
-                ? undefined
-                : (e) => {
-                    form.values[field][index]['outputData'] =
-                      e.target.value;
-                    form.setFieldValue(field, form.values[field]);
-                  }
-            }
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              form.values[field][index]['outputData'] =
+                e.target.value;
+              form.setFieldValue(field, form.values[field]);
+            }}
+            validateField={() => form.validateField(field)}
           />
         )}
       </div>

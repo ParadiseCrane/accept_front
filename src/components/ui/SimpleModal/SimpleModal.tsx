@@ -1,5 +1,5 @@
 import { pureCallback } from '@custom-types/ui/atomic';
-import { FC, ReactNode, memo } from 'react';
+import { FC, memo } from 'react';
 import modalStyles from '@styles/ui/modal.module.css';
 import { Helper } from '@ui/basics';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
@@ -10,24 +10,19 @@ const DynamicModal = dynamic<ModalProps>(() =>
   import('@mantine/core').then((res) => res.Modal)
 );
 
-const SimpleModal: FC<{
-  title?: ReactNode;
+interface SimpleModalProps extends Omit<ModalProps, 'onClose'> {
   helperContent?: IDropdownContent;
-  opened: boolean;
   close?: pureCallback<void>;
-  children: ReactNode;
-  centered?: boolean;
   hideCloseButton?: boolean;
-  size?: string | number;
-}> = ({
+}
+
+const SimpleModal: FC<SimpleModalProps> = ({
   title,
   helperContent,
-  opened,
   close = () => {},
   children,
-  centered,
-  size,
   hideCloseButton,
+  ...props
 }) => {
   return (
     <div>
@@ -35,10 +30,7 @@ const SimpleModal: FC<{
         transition="fade"
         transitionDuration={450}
         transitionTimingFunction="ease"
-        size={size}
-        centered={centered}
         withCloseButton={!!!hideCloseButton}
-        opened={opened}
         title={
           <div className={modalStyles.titleWrapper}>
             <div className={modalStyles.title}>{title}</div>
@@ -47,8 +39,9 @@ const SimpleModal: FC<{
             )}
           </div>
         }
-        onClose={close}
         zIndex={200}
+        onClose={close}
+        {...props}
       >
         <div>{children}</div>
       </DynamicModal>

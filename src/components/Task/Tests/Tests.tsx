@@ -8,23 +8,36 @@ import { IChecker } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
 import styles from './tests.module.css';
-import { Button, Dropzone, Helper, InputWrapper } from '@ui/basics';
+import { Dropzone, Helper, InputWrapper } from '@ui/basics';
 import { useForm } from '@mantine/form';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import AddModal from './AddModal/AddModal';
+import { setter } from '@custom-types/ui/atomic';
 
 const Tests: FC<{
+  task_spec: string;
+  refetch: setter<boolean>;
   tests: ITruncatedTaskTest[];
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
-}> = ({ tests, taskType, checkType, checker }) => {
+}> = ({
+  task_spec,
+  refetch,
+  tests,
+  taskType,
+  checkType,
+  checker,
+}) => {
   const { locale, lang } = useLocale();
+
   const form = useForm({
     initialValues: { tests, taskType, checkType },
   });
+
   const onDeleteTest = useCallback(
     (index: number) => {
       const test = form.values.tests[index];
@@ -128,8 +141,6 @@ const Tests: FC<{
           });
         }
       }
-
-      // if (tests.length !== 0) form.setFieldValue('tests', tests);
     },
     [form]
   );
@@ -159,7 +170,6 @@ const Tests: FC<{
           style: {
             width: '100%',
           },
-          // targetWrapperStyle: { margin: 'var(--spacer-s) 0' },
           dropdownContent: helperContent,
         }}
       >
@@ -209,25 +219,12 @@ const Tests: FC<{
               onChange={() => {}}
             />
           )}
-          <Button
-            className={stepperStyles.addButton}
-            variant="light"
-            onClick={() => {
-              // form.setFieldValue(
-              //   'tests',
-              //   (() => {
-              //     form.values.tests.push({
-              //       inputData: '',
-              //       outputData: '',
-              //     });
-              //     return form.values.tests;
-              //   })()
-              // );
-              // form.validateField('tests');
-            }}
-          >
-            +
-          </Button>
+          <AddModal
+            task_spec={task_spec}
+            refetch={refetch}
+            hideInput={form.values.taskType.spec == 1}
+            hideOutput={!!checker}
+          />
         </div>
       </Dropzone>
     </>

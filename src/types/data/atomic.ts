@@ -18,6 +18,11 @@ export interface ITaskTestData {
   outputData: string;
 }
 
+export interface ITaskTestData {
+  inputData: string;
+  outputData: string;
+}
+
 export interface ITestResult {
   test: string; //test spec
   verdict: IVerdict;
