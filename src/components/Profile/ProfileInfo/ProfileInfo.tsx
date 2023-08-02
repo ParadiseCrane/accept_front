@@ -21,7 +21,9 @@ const ProfileInfo: FC<IFullProfileBundle> = ({
         ratingInfo={rating_info}
         attemptInfo={attempt_info}
       />
-      {task_info.total > 0 && <TaskInfo {...task_info} />}
+      {(task_info.total_solved > 0 || task_info.total_tried > 0) && (
+        <TaskInfo {...task_info} />
+      )}
       {attempt_info.total > 0 && <AttemptInfo {...attempt_info} />}
     </div>
   );

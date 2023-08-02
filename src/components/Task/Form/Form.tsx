@@ -86,7 +86,7 @@ const Form: FC<{
           ? locale.task.form.validation.constraints.time
           : null,
       complexity: (value) =>
-        value < 0
+        value <= 0
           ? locale.task.form.validation.complexity.least
           : value > 100
           ? locale.task.form.validation.complexity.most
