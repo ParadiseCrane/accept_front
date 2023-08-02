@@ -1,0 +1,7 @@
+.itemWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-s);
+  align-items: center;
+  padding: var(--spacer-s);
+}

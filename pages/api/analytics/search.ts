@@ -1,14 +1,14 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function Tasks(
+export default async function AnalyticsSearch(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/tasks',
+    url: `api/analytics/search`,
     method: 'POST',
   });
 }

@@ -9,7 +9,7 @@ export const validation = {
     time: 'Time must be between 0 and 60 seconds',
   },
   complexity: {
-    least: 'Complexity must be at least 0%',
+    least: 'Complexity must be at least 1%',
     most: 'Complexity must be at most 100%',
   },
   examples: {

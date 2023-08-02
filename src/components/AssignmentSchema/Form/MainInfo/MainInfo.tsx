@@ -1,6 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useMemo } from 'react';
-import { CustomEditor, NumberInput, TextInput } from '@ui/basics';
+import { CustomEditor, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
 import { useCallback } from 'react';
 import { ITag } from '@custom-types/data/ITag';
@@ -41,11 +41,6 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
         deleteURL={'assignment_tag/delete'}
         form={form}
         field={'tags'}
-      />
-      <NumberInput
-        label={locale.assignmentSchema.form.defaultDuration}
-        min={0}
-        {...form.getInputProps('defaultDuration')}
       />
     </>
   );

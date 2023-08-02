@@ -1,6 +1,6 @@
 import { IUser } from './IUser';
 
-export interface IMinimalProfileBndle {
+export interface IMinimalProfileBundle {
   user: IUser;
 }
 
@@ -9,9 +9,13 @@ export interface IBaseInfo {
   amount: number;
 }
 
-export interface IComplexity {
+interface ITaskComplexity {
+  title: string;
   start: number;
   end: number;
+}
+
+export interface IComplexityInfo extends ITaskComplexity {
   amount: number;
 }
 
@@ -23,9 +27,10 @@ export interface IAttemptInfo {
 }
 
 export interface ITaskInfo {
-  total: number;
+  total_tried: number;
+  total_solved: number;
   verdict_distribution: IBaseInfo[];
-  complexity_distribution: IComplexity[];
+  complexity_distribution: IComplexityInfo[];
 }
 
 export interface IRatingInfo {
@@ -33,7 +38,7 @@ export interface IRatingInfo {
   score: number;
 }
 
-export interface IFullProfileBundle extends IMinimalProfileBndle {
+export interface IFullProfileBundle extends IMinimalProfileBundle {
   attempt_info: IAttemptInfo;
   task_info: ITaskInfo;
   rating_info: IRatingInfo;

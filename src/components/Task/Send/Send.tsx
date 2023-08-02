@@ -112,6 +112,7 @@ const Send: FC<{
           wrapper: styles.codeArea,
           input: styles.codeArea,
         }}
+        onSend={handleSubmit}
       />
     </div>
   );

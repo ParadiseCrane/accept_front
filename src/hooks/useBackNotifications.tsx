@@ -43,9 +43,11 @@ export const BackNotificationsProvider: FC<{
   const [unviewed, setUnviewed] = useState<number>(0);
   const { user } = useUser();
   const updateIntervalSeconds = getRandomIntInRange(11, 13);
+  const [loading, setLoading] = useState(false);
 
   const fetchNotifications = useCallback(() => {
-    if (!!!user) return new Promise(() => {});
+    if (!!!user || loading) return new Promise(() => {});
+    setLoading(true);
     return sendRequest<
       undefined,
       { unviewed: number; hasNew: boolean }
@@ -70,6 +72,7 @@ export const BackNotificationsProvider: FC<{
           });
         }
       }
+      setLoading(false);
     });
   }, [user]);
 
@@ -78,7 +81,7 @@ export const BackNotificationsProvider: FC<{
     fetchNotifications();
   }, [user]); //eslint-disable-line
 
-  const { loading } = useRefetch(
+  const { loading: fetching } = useRefetch(
     fetchNotifications,
     updateIntervalSeconds
   );
@@ -110,10 +113,10 @@ export const BackNotificationsProvider: FC<{
     () => ({
       unviewed,
       sendViewed,
-      loading,
+      loading: fetching,
       refetchNewNotifications: fetchNotifications,
     }),
-    [unviewed, sendViewed, loading, fetchNotifications]
+    [unviewed, sendViewed, fetching, fetchNotifications]
   );
 
   return (

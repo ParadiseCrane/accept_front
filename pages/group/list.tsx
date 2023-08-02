@@ -102,7 +102,7 @@ const refactorGroup = (group: IGroupDisplay): any => ({
   },
 });
 
-function TaskListPage() {
+function GroupListPage() {
   const { isTeacher } = useUser();
   const { locale } = useLocale();
   return (
@@ -125,8 +125,8 @@ function TaskListPage() {
   );
 }
 
-TaskListPage.getLayout = (page: ReactNode) => {
+GroupListPage.getLayout = (page: ReactNode) => {
   return <DefaultLayout>{page}</DefaultLayout>;
 };
 
-export default TaskListPage;
+export default GroupListPage;

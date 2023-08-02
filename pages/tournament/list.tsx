@@ -27,6 +27,7 @@ import { customTableSort } from '@utils/customTableSort';
 import Title from '@ui/Title/Title';
 import { getLocalDate } from '@utils/datetime';
 import { Tip } from '@ui/basics';
+import { useUser } from '@hooks/useUser';
 
 interface Item {
   value: any;
@@ -237,6 +238,7 @@ const defaultOnPage = 10;
 
 function TournamentList() {
   const { locale } = useLocale();
+  const { isTeacher } = useUser();
 
   const [list, setList] = useState<ITournamentDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
@@ -387,11 +389,14 @@ function TournamentList() {
           </div>
         }
       />
-      <SingularSticky
-        href={`/tournament/add`}
-        icon={<Plus height={25} width={25} />}
-        description={locale.tip.sticky.tournament.add}
-      />
+      \
+      {isTeacher && (
+        <SingularSticky
+          href={`/tournament/add`}
+          icon={<Plus height={25} width={25} />}
+          description={locale.tip.sticky.tournament.add}
+        />
+      )}
     </div>
   );
 }

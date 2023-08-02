@@ -32,7 +32,6 @@ const TaskOrdering: FC<{ form: any }> = ({ form }) => {
             }
             classNames={{
               wrapper: styles.wrapperList,
-              itemWrapper: styles.itemWrapper,
               dragButton: styles.dragButton,
             }}
           />

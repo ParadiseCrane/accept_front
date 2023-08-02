@@ -136,16 +136,17 @@ const Description: FC<{
       )}
 
       <div className={styles.tasksWrapper}>
-        {!(registered || tournament.status.spec == 2) && <Overlay />}
+        {((!registered && tournament.status.spec != 2) ||
+          (!special && tournament.status.spec == 0)) && <Overlay />}
         <PrimitiveTaskTable
           tasks={tasks}
           linkQuery={`tournament=${tournament.spec}`}
           empty={
-            !special || isPreview
-              ? registered
-                ? locale.tournament.emptyTasks
-                : locale.tournament.needRegistration
-              : locale.tournament.addTasks
+            special && !isPreview
+              ? locale.tournament.addTasks
+              : registered || tournament.status.spec == 2
+              ? locale.tournament.emptyTasks
+              : locale.tournament.needRegistration
           }
         />
       </div>

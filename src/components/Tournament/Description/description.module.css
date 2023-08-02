@@ -36,6 +36,7 @@
 
 .tasksWrapper {
   margin: var(--spacer-l) auto;
+  padding-bottom: var(--spacer-s);
   position: relative;
 }
 

@@ -6,5 +6,4 @@ export const assignmentSchema = {
   modals,
   form,
   list,
-  defaultDuration: 'Длительность',
 };
