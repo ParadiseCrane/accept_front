@@ -9,4 +9,9 @@ export const task_test = {
     success: 'Tests were added successfully',
     error: 'Error when adding tests',
   },
+  put: {
+    loading: 'Updating test',
+    success: 'Test was updated successfully',
+    error: 'Error when updating test',
+  },
 };

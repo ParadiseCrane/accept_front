@@ -20,6 +20,7 @@ const ListItem: FC<{
   hideInput?: boolean;
   hideOutput?: boolean;
   onDelete?: callback<number, void>;
+  additionalActions?: ReactNode[];
   readonly?: boolean;
   classNames?: any;
   shrink?: boolean;
@@ -36,6 +37,7 @@ const ListItem: FC<{
   form,
   field,
   readonly,
+  additionalActions,
   classNames,
   shrink,
   openInputNewTab,
@@ -49,16 +51,20 @@ const ListItem: FC<{
     >
       <div className={`${styles.label} ${inputStyles.label}`}>
         {label}
-        {onDelete && (
-          <Icon
-            onClick={() => onDelete(index)}
-            color="red"
-            variant="transparent"
-            size="xs"
-          >
-            <Trash />
-          </Icon>
-        )}
+        <div className={styles.actions}>
+          {!!onDelete && (
+            <Icon
+              onClick={() => onDelete(index)}
+              color="red"
+              variant="transparent"
+              size="xs"
+            >
+              <Trash />
+            </Icon>
+          )}
+          {!!additionalActions &&
+            additionalActions.map((actionNode) => actionNode)}
+        </div>
       </div>
       <div className={styles.example}>
         {!hideInput && (

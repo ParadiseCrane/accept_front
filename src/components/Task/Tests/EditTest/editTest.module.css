@@ -1,0 +1,13 @@
+.testFields {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--spacer-l);
+  width: 100%;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
+}

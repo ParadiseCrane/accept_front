@@ -13,9 +13,10 @@ import { useForm } from '@mantine/form';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import AddModal from './AddModal/AddModal';
 import { setter } from '@custom-types/ui/atomic';
+import EditTest from './EditTest/EditTest';
+import DeleteTest from './DeleteTest/DeleteTest';
 
 const Tests: FC<{
   task_spec: string;
@@ -38,29 +39,29 @@ const Tests: FC<{
     initialValues: { tests, taskType, checkType },
   });
 
-  const onDeleteTest = useCallback(
-    (index: number) => {
-      const test = form.values.tests[index];
-      requestWithNotify<undefined, boolean>(
-        `task_test/delete/${test.spec}`,
-        'POST',
-        locale.notify.task_test.delete,
-        lang,
-        (_: boolean) => '',
-        undefined,
-        () => {
-          form.setFieldValue(
-            'tests',
-            (() => {
-              form.values.tests.splice(index, 1);
-              return form.values.tests;
-            })()
-          );
-        }
-      );
-    },
-    [form, lang, locale]
-  );
+  // const onDeleteTest = useCallback(
+  //   (index: number) => {
+  //     const test = form.values.tests[index];
+  //     requestWithNotify<undefined, boolean>(
+  //       `task_test/delete/${test.spec}`,
+  //       'POST',
+  //       locale.notify.task_test.delete,
+  //       lang,
+  //       (_: boolean) => '',
+  //       undefined,
+  //       () => {
+  //         form.setFieldValue(
+  //           'tests',
+  //           (() => {
+  //             form.values.tests.splice(index, 1);
+  //             return form.values.tests;
+  //           })()
+  //         );
+  //       }
+  //     );
+  //   },
+  //   [form, lang, locale]
+  // );
 
   const onDrop = useCallback(
     async (files: File[]) => {
@@ -156,6 +157,12 @@ const Tests: FC<{
     [locale]
   );
 
+  const hideInput = useMemo(
+    () => taskType.spec == 1,
+    [taskType.spec]
+  );
+  const hideOutput = useMemo(() => !!checker, [checker]);
+
   return (
     <>
       <Dropzone
@@ -193,7 +200,6 @@ const Tests: FC<{
                     hideInput={form.values.taskType.spec == 1}
                     hideOutput={!!checker}
                     index={index}
-                    onDelete={onDeleteTest}
                     maxRows={7}
                     minRows={7}
                     readonly
@@ -209,6 +215,27 @@ const Tests: FC<{
                         field={'output'}
                       />
                     }
+                    additionalActions={[
+                      <DeleteTest
+                        key={index}
+                        index={index * 2}
+                        test={test}
+                        refetch={() => refetch(false)}
+                      />,
+                    ].concat(
+                      !test.isInputTruncated &&
+                        !test.isOutputTruncated
+                        ? [
+                            <EditTest
+                              key={index * 2 + 1}
+                              refetch={refetch}
+                              test={test}
+                              hideInput={hideInput}
+                              hideOutput={hideOutput}
+                            />,
+                          ]
+                        : []
+                    )}
                   />
                 </div>
               )
@@ -219,11 +246,12 @@ const Tests: FC<{
               onChange={() => {}}
             />
           )}
+
           <AddModal
             task_spec={task_spec}
             refetch={refetch}
-            hideInput={form.values.taskType.spec == 1}
-            hideOutput={!!checker}
+            hideInput={hideInput}
+            hideOutput={hideOutput}
           />
         </div>
       </Dropzone>

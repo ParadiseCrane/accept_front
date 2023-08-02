@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
@@ -19,7 +19,7 @@ import { Download } from 'tabler-icons-react';
 import { getApiUrl } from '@utils/getServerUrl';
 import { useRequest } from '@hooks/useRequest';
 function TestsPage(props: { spec: string }) {
-  const spec = props.spec;
+  const task_spec = props.spec;
 
   const { locale, lang } = useLocale();
   const [loading, setLoading] = useState(false);
@@ -36,12 +36,11 @@ function TestsPage(props: { spec: string }) {
       task_check_type: ITaskCheckType;
       checker?: IChecker;
     }
-  >(`task/tests/${spec}`, 'GET');
+  >(`task/tests/${task_spec}`, 'GET');
 
   const refetchTests = useCallback(
-    (_: boolean) => {
-      console.log('refetch');
-      refetch(_);
+    (setLoading: boolean) => {
+      refetch(setLoading);
     },
     [refetch]
   );
@@ -53,7 +52,7 @@ function TestsPage(props: { spec: string }) {
       ITaskTestsPayload,
       { tests_data: ITaskTestData[] }
     >(
-      `task_test/full/${spec}`,
+      `task_test/full/${task_spec}`,
       'GET',
       locale.notify.task.tests,
       lang,
@@ -80,14 +79,19 @@ function TestsPage(props: { spec: string }) {
         const link = document.createElement('a');
         const href = URL.createObjectURL(blob);
         link.href = href;
-        link.download = `${spec}_tests.zip`;
+        link.download = `${task_spec}_tests.zip`;
         link.click();
         link.remove();
         setLoading(false);
         URL.revokeObjectURL(href);
       }
     );
-  }, [spec, locale, lang]);
+  }, [task_spec, locale, lang]);
+
+  const testsKey = useMemo(
+    () => data?.tests.map((test) => test.spec[0]).join() || '',
+    [data?.tests]
+  );
 
   return (
     <div className={stepperStyles.wrapper}>
@@ -106,7 +110,8 @@ function TestsPage(props: { spec: string }) {
       />
       {!loadingTests && data && (
         <Tests
-          task_spec={spec}
+          key={testsKey}
+          task_spec={task_spec}
           refetch={refetchTests}
           tests={data.tests}
           checkType={data.task_check_type}
