@@ -25,6 +25,7 @@ import Checkbox from './Checkbox/Checkbox';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
 import Timeline from './Timeline/Timeline';
 import ColorSwatch from './ColorSwatch/ColorSwatch';
+import HelperTip from './HelperTip/HelperTip';
 
 export {
   Button,
@@ -54,4 +55,5 @@ export {
   LoadingOverlay,
   Timeline,
   ColorSwatch,
+  HelperTip,
 };

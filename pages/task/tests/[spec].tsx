@@ -3,7 +3,6 @@ import { GetServerSideProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { IChecker } from '@custom-types/data/ITask';
-import stepperStyles from '@styles/ui/stepper.module.css';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import SingularSticky from '@ui/Sticky/SingularSticky';
@@ -32,6 +31,7 @@ function TestsPage(props: { spec: string }) {
     undefined,
     {
       tests: ITruncatedTaskTest[];
+      truncate_limit: number;
       task_type: ITaskType;
       task_check_type: ITaskCheckType;
       checker?: IChecker;
@@ -82,12 +82,12 @@ function TestsPage(props: { spec: string }) {
   }, [task_spec, locale, lang]);
 
   const testsKey = useMemo(
-    () => data?.tests.map((test) => test.spec[0]).join() || '',
+    () => data?.tests.map((test) => test.spec.slice(3)).join() || '',
     [data?.tests]
   );
 
   return (
-    <div className={stepperStyles.wrapper}>
+    <>
       <Title title={locale.titles.task.tests} />
       <SingularSticky
         onClick={downloadTests}
@@ -107,12 +107,13 @@ function TestsPage(props: { spec: string }) {
           task_spec={task_spec}
           refetch={refetch}
           tests={data.tests}
+          truncate_limit={data.truncate_limit}
           checkType={data.task_check_type}
           taskType={data.task_type}
           checker={data.checker}
         />
       )}
-    </div>
+    </>
   );
 }
 

@@ -5,14 +5,16 @@ import styles from './listItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';
 import { Icon } from '@ui/basics';
 import TestArea from '@ui/TestArea/TestArea';
+import { ITaskTestData } from '@custom-types/data/atomic';
 
 const ListItem: FC<{
   label: string;
   inLabel: string;
   outLabel: string;
-  form: any;
+  form?: any;
+  field?: string;
+  values?: ITaskTestData[];
   index: number;
-  field: string;
   openInputNewTab: ReactNode;
   openOutputNewTab: ReactNode;
   maxRows?: number;
@@ -35,13 +37,14 @@ const ListItem: FC<{
   index,
   onDelete,
   form,
-  field,
+  field = '',
   readonly,
   additionalActions,
   classNames,
   shrink,
   openInputNewTab,
   openOutputNewTab,
+  values,
 }) => {
   return (
     <div
@@ -80,12 +83,21 @@ const ListItem: FC<{
             }
             minRows={minRows || 2}
             maxRows={maxRows}
-            value={form.values[field][index]['inputData']}
+            value={
+              readonly && values
+                ? values[index].inputData
+                : form.values[field][index]['inputData']
+            }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-              form.values[field][index]['inputData'] = e.target.value;
-              form.setFieldValue(field, form.values[field]);
+              if (!readonly) {
+                form.values[field][index]['inputData'] =
+                  e.target.value;
+                form.setFieldValue(field, form.values[field]);
+              }
             }}
-            validateField={() => form.validateField(field)}
+            validateField={() =>
+              readonly ? undefined : form.validateField(field)
+            }
           />
         )}
         {!hideOutput && (
@@ -101,13 +113,21 @@ const ListItem: FC<{
             }
             minRows={minRows || 2}
             maxRows={maxRows}
-            value={form.values[field][index]['outputData']}
+            value={
+              readonly && values
+                ? values[index].outputData
+                : form.values[field][index]['outputData']
+            }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-              form.values[field][index]['outputData'] =
-                e.target.value;
-              form.setFieldValue(field, form.values[field]);
+              if (!readonly) {
+                form.values[field][index]['outputData'] =
+                  e.target.value;
+                form.setFieldValue(field, form.values[field]);
+              }
             }}
-            validateField={() => form.validateField(field)}
+            validateField={() =>
+              readonly ? undefined : form.validateField(field)
+            }
           />
         )}
       </div>

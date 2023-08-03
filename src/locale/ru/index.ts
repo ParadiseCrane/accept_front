@@ -63,6 +63,7 @@ const ru = {
   email: 'Почта',
   total: 'Всего',
   send: 'Отправить',
+  reset: 'Сбросить',
   assignmentSchema,
   assignment,
   user,

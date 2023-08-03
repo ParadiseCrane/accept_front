@@ -6,15 +6,15 @@ import {
   useMemo,
   useState,
 } from 'react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { Button } from '@ui/basics';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
 import { Item } from '@ui/CustomTransferList/CustomTransferList';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { Button } from '@ui/basics';
+import stepperStyles from '@styles/ui/stepper.module.css';
+import styles from './orderTests.module.css';
 
 const OrderTests: FC<{
   task_spec: string;
@@ -25,15 +25,14 @@ const OrderTests: FC<{
   const [localTests, setLocalTests] = useState<ITruncatedTaskTest[]>(
     []
   );
-  const [opened, setOpened] = useState(false);
 
   const mappedTests = useMemo(
     () =>
-      localTests.map((item, index) => ({
+      localTests.map((item) => ({
         label: `${locale.task.form.test} #${tests.indexOf(item) + 1}`,
         value: tests.indexOf(item),
       })),
-    [localTests, tests]
+    [localTests, tests, locale]
   );
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const OrderTests: FC<{
 
   const onSubmit = useCallback(() => {
     requestWithNotify<string[], boolean>(
-      `task/test-reorder`,
+      `task/tests-reorder/${task_spec}`,
       'POST',
       locale.notify.task_test.reorder,
       lang,
@@ -61,49 +60,49 @@ const OrderTests: FC<{
       localTests.map((item) => item.spec),
       () => {
         refetch(false);
-        setOpened(false);
       }
     );
-  }, [localTests]);
+  }, [localTests, locale, lang, refetch, task_spec]);
 
-  const onClose = useCallback(() => {
-    setOpened(false);
-  }, []);
+  const onReset = useCallback(() => {
+    setLocalTests(tests);
+  }, [tests]);
+
+  const testsHash = useMemo(
+    () => tests.map((test) => test.spec.slice(3)).join(),
+    [tests]
+  );
+
+  const localTestsHash = useMemo(
+    () => localTests.map((test) => test.spec.slice(3)).join(),
+    [localTests]
+  );
 
   return (
-    <div>
-      <Button // maybe move to sticky
-        variant="outline"
-        onClick={() => {
-          setOpened(true);
+    <div className={`${stepperStyles.wrapper} ${styles.wrapper}`}>
+      <CustomDraggableList
+        values={mappedTests}
+        setValues={onTestChange}
+        classNames={{
+          label: styles.dragLabel,
         }}
-      >
-        Перемешать(???) тесты
-      </Button>
-      <SimpleModal
-        opened={opened}
-        title={locale.task.tests.addTest}
-        close={onClose}
-        hideCloseButton
-      >
-        <div>
-          <CustomDraggableList
-            values={mappedTests}
-            setValues={onTestChange}
-          />
-          <SimpleButtonGroup
-            actionButton={{
-              label: locale.send,
-              onClick: onSubmit,
-              props: { disabled: tests == localTests },
-            }}
-            cancelButton={{
-              label: locale.cancel,
-              onClick: onClose,
-            }}
-          />
-        </div>
-      </SimpleModal>
+      />
+      <div className={styles.buttonsWrapper}>
+        <Button
+          kind="negative"
+          variant="outline"
+          onClick={onReset}
+          disabled={testsHash == localTestsHash}
+        >
+          {locale.reset}
+        </Button>
+        <Button
+          onClick={onSubmit}
+          disabled={testsHash == localTestsHash}
+        >
+          {locale.save}
+        </Button>
+      </div>
     </div>
   );
 };
