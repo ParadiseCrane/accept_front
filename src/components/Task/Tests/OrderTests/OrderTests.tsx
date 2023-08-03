@@ -10,12 +10,10 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Button } from '@ui/basics';
 import { setter } from '@custom-types/ui/atomic';
-import stepperStyles from '@styles/ui/stepper.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
 import { Item } from '@ui/CustomTransferList/CustomTransferList';
-import { sendRequest } from '@requests/request';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
 const OrderTests: FC<{
