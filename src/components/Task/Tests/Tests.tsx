@@ -17,6 +17,7 @@ import AddModal from './AddModal/AddModal';
 import { setter } from '@custom-types/ui/atomic';
 import EditTest from './EditTest/EditTest';
 import DeleteTest from './DeleteTest/DeleteTest';
+import OrderTests from './OrderTests/OrderTests';
 
 const Tests: FC<{
   task_spec: string;
@@ -165,6 +166,11 @@ const Tests: FC<{
 
   return (
     <>
+      <OrderTests
+        task_spec={task_spec}
+        refetch={refetch}
+        tests={tests}
+      />
       <Dropzone
         onDrop={onDrop}
         title={locale.ui.codeArea.dragFiles}

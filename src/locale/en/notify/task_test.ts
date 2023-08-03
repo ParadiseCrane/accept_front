@@ -14,4 +14,9 @@ export const task_test = {
     success: 'Test was updated successfully',
     error: 'Error when updating test',
   },
+  reorder: {
+    loading: 'Reordering tests',
+    success: 'Tests successfully reordered',
+    error: 'Error while reordering tests',
+  },
 };
