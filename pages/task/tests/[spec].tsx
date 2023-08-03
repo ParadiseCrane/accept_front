@@ -38,13 +38,6 @@ function TestsPage(props: { spec: string }) {
     }
   >(`task/tests/${task_spec}`, 'GET');
 
-  const refetchTests = useCallback(
-    (setLoading: boolean) => {
-      refetch(setLoading);
-    },
-    [refetch]
-  );
-
   const downloadTests = useCallback(async () => {
     setLoading(true);
     let tests: ITaskTestData[] = [];
@@ -112,7 +105,7 @@ function TestsPage(props: { spec: string }) {
         <Tests
           key={testsKey}
           task_spec={task_spec}
-          refetch={refetchTests}
+          refetch={refetch}
           tests={data.tests}
           checkType={data.task_check_type}
           taskType={data.task_type}
