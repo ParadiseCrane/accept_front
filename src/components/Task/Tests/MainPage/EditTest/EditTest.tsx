@@ -11,8 +11,10 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { Icon } from '@ui/basics';
 import { Pencil } from 'tabler-icons-react';
-
-const MAX_TEXT_LENGTH = 100_000;
+import {
+  MAX_ANSWER_LENGTH,
+  MAX_TEST_LENGTH,
+} from '@constants/Limits';
 
 const EditTest: FC<{
   test: ITruncatedTaskTest;
@@ -34,7 +36,7 @@ const EditTest: FC<{
           ? null
           : value.length == 0
           ? locale.task.form.validation.testField.empty
-          : value.length > MAX_TEXT_LENGTH
+          : value.length > MAX_TEST_LENGTH
           ? locale.task.form.validation.testField.tooLong
           : null,
       outputData: (value) =>
@@ -42,7 +44,9 @@ const EditTest: FC<{
           ? null
           : value.length == 0
           ? locale.task.form.validation.testField.empty
-          : value.length > MAX_TEXT_LENGTH
+          : value.length > MAX_TEST_LENGTH
+          ? locale.task.form.validation.testField.tooLong
+          : hideInput && value.length > MAX_ANSWER_LENGTH // Text task
           ? locale.task.form.validation.testField.tooLong
           : null,
     },

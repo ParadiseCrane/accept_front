@@ -1,11 +1,12 @@
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
-import { Button, TextArea } from '@ui/basics';
+import { Button, InputWrapper, TextArea } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback } from 'react';
 import { Send as SendPlane } from 'tabler-icons-react';
 import styles from './sendText.module.css';
+import { MAX_ANSWER_LENGTH } from '@constants/Limits';
 
 const SendText: FC<{
   spec: string;
@@ -17,11 +18,15 @@ const SendText: FC<{
   const form = useForm({
     initialValues: {
       answers: Array(testsNumber).fill(''),
+      nonEmpty: true,
+      maxLength: true,
     },
     validate: {
       answers: (value) =>
-        !value.find((item) => item.trim().length > 0),
+        !value.find((item) => item.trim().length > 0) ||
+        value.find((item) => item.length > MAX_ANSWER_LENGTH),
     },
+    validateInputOnBlur: true,
   });
 
   const resetAnswers = useCallback(() => {
@@ -69,13 +74,13 @@ const SendText: FC<{
           dropdownContent={
             !form.isValid() ? (
               <div>
-                {locale.helpers.task.emptyTextAnswer.map((p, idx) => (
-                  <p key={idx}>{p}</p>
-                ))}
+                {locale.helpers.task.send
+                  .invalidTextAnswer(MAX_ANSWER_LENGTH)
+                  .map((p, idx) => (
+                    <p key={idx}>{p}</p>
+                  ))}
               </div>
-            ) : (
-              <></>
-            )
+            ) : undefined
           }
           leftIcon={
             <SendPlane
@@ -86,24 +91,26 @@ const SendText: FC<{
           {locale.task.submit}
         </Button>
       </div>
-      <div className={styles.itemsWrapper}>
-        {Array(testsNumber)
-          .fill('')
-          .map((_, index) => (
-            <div className={styles.itemWrapper} key={index}>
-              <div className={styles.itemTitle}>
-                {' '}
-                {`${locale.task.answer} #${index + 1}`}
+      <InputWrapper {...form.getInputProps(`nonEmpty`)}>
+        <div className={styles.itemsWrapper}>
+          {Array(testsNumber)
+            .fill('')
+            .map((_, index) => (
+              <div className={styles.itemWrapper} key={index}>
+                <div className={styles.itemTitle}>
+                  {' '}
+                  {`${locale.task.answer} #${index + 1}`}
+                </div>
+                <TextArea
+                  autosize
+                  maxRows={10}
+                  minRows={3}
+                  {...form.getInputProps(`answers.${index}`)}
+                />
               </div>
-              <TextArea
-                autosize
-                maxRows={10}
-                minRows={3}
-                {...form.getInputProps(`answers.${index}`)}
-              />
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      </InputWrapper>
     </div>
   );
 };
