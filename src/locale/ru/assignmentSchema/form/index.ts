@@ -6,7 +6,6 @@ export const form = {
   validation,
   title: 'Название',
   description: 'Описание',
-  defaultDuration: 'Длительность по умолчанию (мин.)',
   taskOrdering: {
     title: 'Выберите порядок задач',
   },

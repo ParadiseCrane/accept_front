@@ -63,6 +63,7 @@ const en = {
   email: 'Email',
   total: 'Total',
   send: 'Send',
+  reset: 'Reset',
   assignmentSchema,
   assignment,
   user,

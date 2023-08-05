@@ -5,7 +5,7 @@ import { useLocale } from '@hooks/useLocale';
 import styles from './checker.module.css';
 import { ILanguage } from '@custom-types/data/atomic';
 import { sendRequest } from '@requests/request';
-import Tests from '@components/Task/Form/Tests/Tests';
+import Tests from '../Tests/Tests';
 
 const defaultLangSpec = '0';
 
@@ -63,8 +63,7 @@ const Checker: FC<{ form: any }> = ({ form }) => {
           placeholder={locale.helpers.task.checkerPlaceholder}
         />
       </div>
-
-      <Tests form={form} hideOutput />
+      <Tests />
     </div>
   );
 };

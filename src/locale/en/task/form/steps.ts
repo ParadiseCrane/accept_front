@@ -12,7 +12,7 @@ export const steps = {
     'Main task info',
     'Description',
     'Examples',
-    'Tests or checker',
+    'Checker',
     'Preview',
   ],
   emptyStep:

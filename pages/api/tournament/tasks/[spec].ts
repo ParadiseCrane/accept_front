@@ -9,6 +9,6 @@ export default async function TournamentTasks(
     req: req,
     res: res,
     url: `api/tournament/tasks/${req.query.spec}`,
-    method: req.method as 'GET' | 'POST' | 'PUT' | 'DELETE',
+    method: 'GET',
   });
 }

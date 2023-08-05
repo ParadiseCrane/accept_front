@@ -4,7 +4,11 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 
-import { availableMethods, sendRequest } from '@requests/request';
+import {
+  IResponse,
+  availableMethods,
+  sendRequest,
+} from '@requests/request';
 import { IAvailableLang } from '@custom-types/ui/ILocale';
 import { callback, setter } from '@custom-types/ui/atomic';
 
@@ -23,13 +27,13 @@ export const requestWithNotify = <T, V>(
   body?: T extends object ? T : object,
   onSuccess?: setter<V>,
   params?: any
-) => {
+): Promise<IResponse<V>> => {
   const id = newNotification({
     title: locale.loading,
     message: locale.loading + '...',
     ...params,
   });
-  sendRequest<T, V>(endpoint, method, body).then((res) => {
+  return sendRequest<T, V>(endpoint, method, body).then((res) => {
     if (!res.error) {
       successNotification({
         id,
@@ -45,10 +49,11 @@ export const requestWithNotify = <T, V>(
         title: locale.error,
         message:
           (res.detail.description && res.detail.description[lang]) ||
-          '',
+          res.detail,
         autoClose: defaultAutoClose,
         ...params,
       });
     }
+    return res;
   });
 };

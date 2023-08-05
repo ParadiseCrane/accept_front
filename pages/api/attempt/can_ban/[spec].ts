@@ -8,6 +8,6 @@ export default async function AttemptCanBan(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/attempt/can-ban/${req.query.spec}`,
+    url: `api/rights/write/${req.query.spec}`,
   });
 }

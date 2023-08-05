@@ -1,10 +1,11 @@
 import { FC, memo, useEffect, useState } from 'react';
 import styles from './icon.module.css';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import { useWidth } from '@hooks/useWidth';
 import { IWidth } from '@custom-types/ui/atomic';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
 import { ICON_SIZES } from '@constants/Sizes';
+import Tip from '../Tip/Tip';
 
 const Icon: FC<MyIconProps> = ({
   children,
@@ -23,10 +24,8 @@ const Icon: FC<MyIconProps> = ({
   return (
     <div className={`${styles.wrapper} ${wrapperClassName || ''}`}>
       {mounted && (
-        <Tooltip
+        <Tip
           label={tooltipLabel}
-          openDelay={500}
-          withArrow
           disabled={!!!tooltipLabel}
           {...tooltipProps}
         >
@@ -41,7 +40,7 @@ const Icon: FC<MyIconProps> = ({
           >
             {children}
           </ActionIcon>
-        </Tooltip>
+        </Tip>
       )}
     </div>
   );

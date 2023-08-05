@@ -70,7 +70,7 @@ const Results: FC<{
             ? cell.attempts.reverse().map((attempt, index) => (
                 <Link
                   key={index}
-                  href={`/attempt/${attempt.attempt}?${type}=${spec}`}
+                  href={`/attempt/${attempt.attempt}`}
                   style={{
                     textDecoration: 'none',
                     color: getScoreColor(attempt.score),

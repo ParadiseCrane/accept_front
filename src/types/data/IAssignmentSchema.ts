@@ -8,7 +8,6 @@ export interface IAssignmentSchema {
   description: string;
   tasks: ITaskDisplay[];
   tags: ITag[];
-  defaultDuration: number;
 }
 
 export interface IAssignmentSchemaDisplay {
@@ -17,7 +16,6 @@ export interface IAssignmentSchemaDisplay {
   author: string;
   taskNumber: number;
   tags: ITag[];
-  defaultDuration: number;
 }
 
 export interface IAssignmentSchemaListBundle {

@@ -1,117 +1,119 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
-import {
-  ITaskCheckType,
-  ITaskType,
-  ITest,
-} from '@custom-types/data/atomic';
-import { useForm } from '@mantine/form';
-import { sendRequest } from '@requests/request';
-import stepperStyles from '@styles/ui/stepper.module.css';
+import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
+import { IChecker } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';
-import ListItem from '@ui/ListItem/ListItem';
 import Title from '@ui/Title/Title';
 import SingularSticky from '@ui/Sticky/SingularSticky';
+import Tests from '@components/Task/Tests/Tests';
+import {
+  ITaskTestsPayload,
+  ITruncatedTaskTest,
+} from '@custom-types/data/ITaskTest';
+import { ITaskTestData } from '@custom-types/data/atomic';
+import { requestWithError } from '@utils/requestWithError';
+import { Loader } from '@mantine/core';
 import { Download } from 'tabler-icons-react';
+import { getApiUrl } from '@utils/getServerUrl';
+import { useRequest } from '@hooks/useRequest';
+function TestsPage(props: { spec: string }) {
+  const task_spec = props.spec;
 
-function TestsPage(props: {
-  spec: string;
-  tournament: string;
-  assignment: string;
-}) {
-  const spec = props.spec;
-  const [tests, setTests] = useState<ITest[]>([]);
-  const [taskType, setTaskType] = useState<ITaskType>();
-  const [taskCheckType, setTaskCheckType] =
-    useState<ITaskCheckType>();
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const body =
-      props.tournament != ''
-        ? { base_type: 'tournament', base_spec: props.tournament }
-        : props.assignment != ''
-        ? { base_type: 'assignment', base_spec: props.assignment }
-        : { base_type: 'basic', base_spec: '' };
-    sendRequest<
-      {
-        base_type: string;
-        base_spec: string;
-      },
-      {
-        tests: ITest[];
-        task_type: ITaskType;
-        task_check_type: ITaskCheckType;
-      }
-    >(`task/tests/${spec}`, 'POST', body).then((res) => {
-      if (!res.error) {
-        setTests(res.response.tests);
-        setTaskType(res.response.task_type);
-        setTaskCheckType(res.response.task_check_type);
-      }
-    });
-  }, [props.assignment, props.tournament, spec]);
-
-  const form = useForm({
-    initialValues: { tests },
-  });
+  const {
+    data,
+    loading: loadingTests,
+    refetch,
+  } = useRequest<
+    undefined,
+    {
+      tests: ITruncatedTaskTest[];
+      truncate_limit: number;
+      task_type: ITaskType;
+      task_check_type: ITaskCheckType;
+      checker?: IChecker;
+    }
+  >(`task/tests/${task_spec}`, 'GET');
 
   const downloadTests = useCallback(async () => {
-    const { downloadZip } = await import('client-zip');
-    const files: { name: string; input: string }[] = [];
-    tests.forEach((test, index) => {
-      files.push({
-        name: `input${index}.txt`,
-        input: test.inputData,
-      });
-      files.push({
-        name: `output${index}.txt`,
-        input: test.outputData,
-      });
-    });
-    const blob = await downloadZip(files).blob();
-    const link = document.createElement('a');
-    const href = URL.createObjectURL(blob);
-    link.href = href;
-    link.download = `${spec}_tests.zip`;
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(href);
-  }, [tests, spec]);
+    setLoading(true);
+    let tests: ITaskTestData[] = [];
+    await requestWithError<
+      ITaskTestsPayload,
+      { tests_data: ITaskTestData[] }
+    >(
+      `task_test/full/${task_spec}`,
+      'GET',
+      locale.notify.task.tests,
+      lang,
+      undefined,
+      async (response) => {
+        tests = response.tests_data;
+        if (tests.length == 0) {
+          setLoading(false);
+          return;
+        }
+        const { downloadZip } = await import('client-zip');
+        const files: { name: string; input: string }[] = [];
+        tests.forEach((test, index) => {
+          files.push({
+            name: `input${index}.txt`,
+            input: test.inputData,
+          });
+          files.push({
+            name: `output${index}.txt`,
+            input: test.outputData,
+          });
+        });
+        const blob = await downloadZip(files).blob();
+        const link = document.createElement('a');
+        const href = URL.createObjectURL(blob);
+        link.href = href;
+        link.download = `${task_spec}_tests.zip`;
+        link.click();
+        link.remove();
+        setLoading(false);
+        URL.revokeObjectURL(href);
+      }
+    ).then(() => setLoading(false));
+  }, [task_spec, locale, lang]);
 
-  useEffect(() => {
-    form.setFieldValue('tests', tests);
-  }, [tests]); // eslint-disable-line
+  const testsKey = useMemo(
+    () => data?.tests.map((test) => test.spec.slice(3)).join() || '',
+    [data?.tests]
+  );
 
   return (
-    <div className={stepperStyles.wrapper}>
+    <>
       <Title title={locale.titles.task.tests} />
       <SingularSticky
         onClick={downloadTests}
         color="var(--primary)"
-        icon={<Download />}
+        icon={
+          loading ? (
+            <Loader color="white.0" variant="dots" size="md" />
+          ) : (
+            <Download />
+          )
+        }
         description={locale.tip.sticky.tests.download}
       />
-      {form.values.tests.map((test, index) => (
-        <div key={index} className={stepperStyles.example}>
-          <ListItem
-            field="tests"
-            label={locale.task.form.test + ' #' + (index + 1)}
-            inLabel={locale.task.form.inputTest}
-            outLabel={locale.task.form.outputTest}
-            form={form}
-            hideInput={taskType && taskType.spec == 1}
-            hideOutput={taskCheckType && taskCheckType.spec == 1}
-            index={index}
-            maxRows={7}
-            minRows={3}
-            readonly
-          />
-        </div>
-      ))}
-    </div>
+      {!loadingTests && data && (
+        <Tests
+          key={testsKey}
+          task_spec={task_spec}
+          refetch={refetch}
+          tests={data.tests}
+          truncate_limit={data.truncate_limit}
+          checkType={data.task_check_type}
+          taskType={data.task_type}
+          checker={data.checker}
+        />
+      )}
+    </>
   );
 }
 
@@ -136,8 +138,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const tournament = query.tournament;
-  const assignment = query.assignment;
 
   const response = await fetch(`${API_URL}/api/task/exists/${spec}`, {
     headers: {
@@ -148,8 +148,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         spec,
-        tournament: tournament || '',
-        assignment: assignment || '',
       },
     };
   }

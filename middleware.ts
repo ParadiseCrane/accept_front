@@ -22,11 +22,14 @@ const isProtected = (route: string): boolean => {
 const PUBLIC_FILE = /\.(.*)$/;
 const SPEC = /\/[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/;
 
-const removeSpec = (pathname: string): string => {
+const removeSpec = (pathname: string): [string, string] => {
+  let spec = '';
+  let path = pathname;
   if (SPEC.test(pathname.toLowerCase())) {
-    return pathname.slice(0, pathname.lastIndexOf('/'));
+    path = pathname.slice(0, pathname.lastIndexOf('/'));
+    spec = pathname.slice(pathname.lastIndexOf('/') + 1);
   }
-  return pathname;
+  return [path, spec];
 };
 
 export async function middleware(request: NextRequest) {
@@ -39,7 +42,7 @@ export async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  const route = removeSpec(pathname);
+  const [route, spec] = removeSpec(pathname);
 
   if (isProtected(route)) {
     const access = protectedRoutesInfo[route];
@@ -54,8 +57,9 @@ export async function middleware(request: NextRequest) {
       : undefined;
 
     const accepted = await access(
-      pathname,
+      spec,
       headers,
+      pathname,
       request.nextUrl.searchParams
     );
     if (typeof accepted != 'boolean') {

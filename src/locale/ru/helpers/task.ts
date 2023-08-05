@@ -15,7 +15,16 @@ export const task = {
   ],
   checkerPlaceholder:
     'Пример чекера для задачи "Увеличить число на 1" на языке Python:\n\ntest_input=int(input())\nuser_output=int(input())\nprint(1 if user_output - test_input == 1 else 0)',
-  emptyTextAnswer: [
-    'Необходимо заполнить хотя бы одно текстовое поле',
-  ],
+  send: {
+    invalidTextAnswer: (limit: number) => [
+      'Некорректный ввод:',
+      'Необходимо заполнить хотя бы одно текстовое поле',
+      `Длина каждого ответа не должна превышать ${limit} символов`,
+    ],
+    invalidCodeAnswer: (limit: number) => [
+      'Некорректный ввод:',
+      'Поле кода не может быть пустым',
+      `Длинна кода не должна превышать ${limit} символов`,
+    ],
+  },
 };

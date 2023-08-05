@@ -16,6 +16,7 @@ import styles from './send.module.css';
 import { Send as SendPlane } from 'tabler-icons-react';
 import { ILanguage } from '@custom-types/data/atomic';
 import { useLocalStorage } from '@mantine/hooks';
+import { MAX_CODE_LENGTH } from '@constants/Limits';
 
 const Send: FC<{
   spec: string;
@@ -70,7 +71,10 @@ const Send: FC<{
     [setLanguage]
   );
 
-  const isValid = useMemo(() => code.trim().length > 0, [code]);
+  const isValid = useMemo(
+    () => code.trim().length > 0 && code.length < MAX_CODE_LENGTH,
+    [code]
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -92,6 +96,17 @@ const Send: FC<{
           variant="outline"
           onClick={handleSubmit}
           disabled={!isValid}
+          dropdownContent={
+            !isValid ? (
+              <div>
+                {locale.helpers.task.send
+                  .invalidCodeAnswer(MAX_CODE_LENGTH)
+                  .map((p, idx) => (
+                    <p key={idx}>{p}</p>
+                  ))}
+              </div>
+            ) : undefined
+          }
           leftIcon={
             <SendPlane
               color={!isValid ? 'black' : 'var(--primary)'}
@@ -112,6 +127,7 @@ const Send: FC<{
           wrapper: styles.codeArea,
           input: styles.codeArea,
         }}
+        onSend={handleSubmit}
       />
     </div>
   );

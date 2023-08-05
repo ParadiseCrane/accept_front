@@ -1,7 +1,7 @@
 import Form from '@components/Task/Form/Form';
 import { useLocale } from '@hooks/useLocale';
 import { ReactNode, useCallback, useMemo } from 'react';
-import { ITaskDisplay, ITaskEdit } from '@custom-types/data/ITask';
+import { ITaskEdit } from '@custom-types/data/ITask';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 
 import { getApiUrl } from '@utils/getServerUrl';
@@ -25,8 +25,6 @@ function EditTask(props: {
   taskTypes: ITaskType[];
   taskCheckTypes: ITaskCheckType[];
   hintAlarmTypes: IHintAlarmType[];
-  tournament: string | null;
-  assignment: string | null;
 }) {
   const { locale, lang } = useLocale();
   const { task, taskTypes, taskCheckTypes, hintAlarmTypes } = props;
@@ -131,37 +129,16 @@ function EditTask(props: {
           alarm: hintAlarm,
         };
       }
-      const body = {
-        task,
-        base_type:
-          props.tournament != ''
-            ? 'tournament'
-            : props.assignment != ''
-            ? 'assignment'
-            : 'basic',
-        base_spec:
-          props.tournament != ''
-            ? props.tournament
-            : props.assignment != ''
-            ? props.assignment
-            : '',
-      };
       requestWithNotify(
         `task/edit`,
         'POST',
         locale.notify.task.edit,
         lang,
-        (response: ITaskDisplay) => response.spec,
-        body
+        (_response: boolean) => '',
+        task
       );
     },
-    [
-      props.tournament,
-      props.assignment,
-      locale.notify.task.edit,
-      locale.validationError,
-      lang,
-    ]
+    [locale.notify.task.edit, locale.validationError, lang]
   );
   return (
     <>
@@ -199,20 +176,10 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const tournament = query.tournament;
-  const assignment = query.assignment;
-
-  const body = tournament
-    ? { base_type: 'tournament', base_spec: tournament }
-    : assignment
-    ? { base_type: 'assignment', base_spec: assignment }
-    : { base_type: 'basic', base_spec: '' };
-
   const response = await fetch(
     `${API_URL}/api/bundle/task-edit/${spec}`,
     {
-      method: 'POST',
-      body: JSON.stringify(body),
+      method: 'GET',
       headers: {
         cookie: req.headers.cookie,
         'content-type': 'application/json',
@@ -228,8 +195,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         taskCheckTypes: taskBundle.task_check_types,
         taskTypes: taskBundle.task_types,
         hintAlarmTypes: taskBundle.hint_alarm_types,
-        tournament: tournament || '',
-        assignment: tournament || '',
       },
     };
   }
