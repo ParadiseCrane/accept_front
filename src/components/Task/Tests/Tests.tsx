@@ -56,7 +56,16 @@ const Tests: FC<{
         ),
       },
     ],
-    [checkType, checker, locale, refetch, taskType, task_spec, tests]
+    [
+      checkType,
+      checker,
+      locale,
+      refetch,
+      taskType,
+      task_spec,
+      tests,
+      truncate_limit,
+    ]
   );
 
   return <Tabs pages={pages} defaultPage={'main'} />;

@@ -3,7 +3,11 @@ import {
   newNotification,
 } from '@utils/notificationFunctions';
 
-import { availableMethods, sendRequest } from '@requests/request';
+import {
+  IResponse,
+  availableMethods,
+  sendRequest,
+} from '@requests/request';
 import { IAvailableLang } from '@custom-types/ui/ILocale';
 
 const defaultAutoClose = 5000;
@@ -19,7 +23,7 @@ export const requestWithError = <T, V>(
   body?: T extends object ? T : object,
   onSuccess?: (_: V) => void | Promise<void>,
   params?: any
-) => {
+): Promise<IResponse<V>> =>
   sendRequest<T, V>(endpoint, method, body).then((res) => {
     if (!res.error) {
       if (onSuccess) onSuccess(res.response);
@@ -33,10 +37,12 @@ export const requestWithError = <T, V>(
       errorNotification({
         id,
         title: locale.error,
-        message: res.detail.description[lang],
+        message: res.detail.description
+          ? res.detail.description[lang]
+          : res.detail,
         autoClose: defaultAutoClose,
         ...params,
       });
     }
+    return res;
   });
-};

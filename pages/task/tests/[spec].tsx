@@ -78,7 +78,7 @@ function TestsPage(props: { spec: string }) {
         setLoading(false);
         URL.revokeObjectURL(href);
       }
-    );
+    ).then(() => setLoading(false));
   }, [task_spec, locale, lang]);
 
   const testsKey = useMemo(

@@ -18,7 +18,7 @@ export const attempt = {
   statuses: ['Pending', 'Testing', 'Finished', 'Banned'],
   pages: {
     info: 'Information',
-    code: 'Attempt code',
+    code: 'Payload',
   },
   ban: {
     title: 'Ban attempt',

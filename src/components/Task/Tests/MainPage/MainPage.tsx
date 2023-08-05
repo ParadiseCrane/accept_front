@@ -10,12 +10,17 @@ import { Dropzone, Helper, HelperTip } from '@ui/basics';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
-import AddModal from '../AddModal/AddModal';
-import EditTest from '../EditTest/EditTest';
-import DeleteTest from '../DeleteTest/DeleteTest';
+import AddModal from './AddModal/AddModal';
+import EditTest from './EditTest/EditTest';
+import DeleteTest from './DeleteTest/DeleteTest';
 import { IChecker } from '@custom-types/data/ITask';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import {
+  errorNotification,
+  newNotification,
+} from '@utils/notificationFunctions';
+import { requestWithNotify } from '@utils/requestWithNotify';
 
 const MainPage: FC<{
   task_spec: string;
@@ -34,7 +39,26 @@ const MainPage: FC<{
   checkType,
   checker,
 }) => {
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
+
+  const addTests = useCallback(
+    async (tests: ITaskTestData[]) => {
+      requestWithNotify<ITaskTestData[], boolean>(
+        `task_test/post/${task_spec}`,
+        'POST',
+        locale.notify.task_test.post,
+        lang,
+        () => '',
+        tests,
+        (response) => {
+          if (response) {
+            refetch(false);
+          }
+        }
+      );
+    },
+    [lang, locale, task_spec, refetch]
+  );
 
   const onDrop = useCallback(
     async (files: File[]) => {
@@ -112,8 +136,20 @@ const MainPage: FC<{
           });
         }
       }
+      if (tests.length == 0) {
+        const id = newNotification({});
+        errorNotification({
+          id,
+          title: locale.notify.task_test.dropValidation.empty.title,
+          message:
+            locale.notify.task_test.dropValidation.empty.message,
+          autoClose: 5000,
+        });
+        return;
+      }
+      await addTests(tests);
     },
-    [checkType.spec, taskType.spec]
+    [checkType, taskType, addTests, locale]
   );
 
   const helperContent = useMemo(
@@ -219,8 +255,8 @@ const MainPage: FC<{
                   }
                   additionalActions={[
                     <DeleteTest
-                      key={index}
-                      index={index * 2}
+                      key={index * 2}
+                      index={index}
                       test={test}
                       refetch={() => refetch(false)}
                     />,
@@ -236,8 +272,7 @@ const MainPage: FC<{
               </div>
             ))}
           <AddModal
-            task_spec={task_spec}
-            refetch={refetch}
+            addTests={addTests}
             hideInput={hideInput}
             hideOutput={hideOutput}
           />

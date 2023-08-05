@@ -9,7 +9,6 @@ import {
   useState,
 } from 'react';
 import { useUser } from '@hooks/useUser';
-import { ITaskDisplay } from '@custom-types/data/ITask';
 import Form from '@components/Task/Form/Form';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRequest } from '@hooks/useRequest';
@@ -49,8 +48,6 @@ const initialValues = {
 
   allowedLanguages: [],
   forbiddenLanguages: [],
-
-  tests: [],
 
   checkerLang: '0',
   checkerCode: '',
@@ -158,7 +155,7 @@ function AddTask() {
         'POST',
         locale.notify.task.create,
         lang,
-        (response: ITaskDisplay) => response.spec,
+        (spec: string) => spec,
         body
       );
     },

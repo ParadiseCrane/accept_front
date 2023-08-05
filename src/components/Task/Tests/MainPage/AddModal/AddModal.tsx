@@ -9,17 +9,15 @@ import styles from './addModal.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
 import { ITaskTestData } from '@custom-types/data/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
 
 const MAX_TEXT_LENGTH = 100_000;
 
 const AddModal: FC<{
-  task_spec: string;
-  refetch: setter<boolean>;
+  addTests: setter<ITaskTestData[]>;
   hideInput: boolean;
   hideOutput: boolean;
-}> = ({ task_spec, refetch, hideInput, hideOutput }) => {
-  const { locale, lang } = useLocale();
+}> = ({ addTests, hideInput, hideOutput }) => {
+  const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
 
   const form = useForm({
@@ -59,21 +57,9 @@ const AddModal: FC<{
       },
     ];
 
-    requestWithNotify<ITaskTestData[], boolean>(
-      `task_test/post/${task_spec}`,
-      'POST',
-      locale.notify.task_test.post,
-      lang,
-      () => '',
-      body,
-      (response) => {
-        if (response) {
-          setOpened(false);
-          refetch(false);
-        }
-      }
-    );
-  }, [form, refetch, task_spec, lang, locale]);
+    addTests(body);
+    setOpened(false);
+  }, [form, addTests]);
 
   const onClose = useCallback(() => {
     setOpened(false);

@@ -17,8 +17,6 @@ import {
 import Stepper from '@ui/Stepper/Stepper';
 import { UseFormReturnType, useForm } from '@mantine/form';
 
-export const MbOfText = 2 * 1024 ** 2; // 2 is average utf-8 character size, 1024 ** 2 is 1Mb
-
 const stepFields = [
   ['title', 'tags', 'complexity', 'taskType', 'checkType', 'hasHint'],
   [
@@ -100,25 +98,6 @@ const Form: FC<{
             ).length != value.length
           ? locale.task.form.validation.examples.empty
           : null,
-      // tests: (value: ITaskTestData[], values) =>
-      //   value.length < 1
-      //     ? locale.task.form.validation.tests.number
-      //     : value.filter(
-      //         (pair: ITaskTestData) =>
-      //           (pair.inputData.trim() || values.taskType != '0') &&
-      //           (pair.outputData.trim() || values.checkType != '0')
-      //       ).length != value.length
-      //     ? locale.task.form.validation.tests.empty
-      //     : value.reduce(
-      //         (acc, item) =>
-      //           acc +
-      //           item.inputData.trim().length +
-      //           item.outputData.trim().length,
-      //         0
-      //       ) >
-      //       2 * MbOfText
-      //     ? locale.task.form.validation.tests.tooLarge
-      //     : null,
       checkerCode: (value, values) =>
         values.checkType == '1' && value.length == 0
           ? locale.task.form.validation.checkerCode

@@ -45,10 +45,10 @@ const DeleteTest: FC<{
       <SimpleModal
         opened={opened}
         close={() => setOpened(false)}
-        title={`${locale.ui.taskTest.delete} #${index}`}
+        title={`${locale.ui.taskTest.delete} #${index + 1}`}
       >
         <div className={modalStyles.verticalContent}>
-          <div>{locale.ui.taskTest.deleteConfidence(index)}</div>
+          <div>{locale.ui.taskTest.deleteConfidence(index + 1)}</div>
           <SimpleButtonGroup
             reversePositive
             actionButton={{

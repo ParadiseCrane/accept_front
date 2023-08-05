@@ -1,7 +1,7 @@
 import Form from '@components/Task/Form/Form';
 import { useLocale } from '@hooks/useLocale';
 import { ReactNode, useCallback, useMemo } from 'react';
-import { ITaskDisplay, ITaskEdit } from '@custom-types/data/ITask';
+import { ITaskEdit } from '@custom-types/data/ITask';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 
 import { getApiUrl } from '@utils/getServerUrl';
@@ -53,7 +53,6 @@ function EditTask(props: {
         label: tag.title,
       })),
 
-      tests: [],
       constraintsTime: task.constraints.time,
       constraintsMemory: task.constraints.memory,
       allowedLanguages: task.allowedLanguages.map((lang) => ({
@@ -135,7 +134,7 @@ function EditTask(props: {
         'POST',
         locale.notify.task.edit,
         lang,
-        (response: ITaskDisplay) => response.spec,
+        (_response: boolean) => '',
         task
       );
     },

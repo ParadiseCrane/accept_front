@@ -19,4 +19,11 @@ export const task_test = {
     success: 'Tests successfully reordered',
     error: 'Error while reordering tests',
   },
+  dropValidation: {
+    empty: {
+      title: 'Format error',
+      message:
+        'Test list is empty. Possibly, there is an error in format',
+    },
+  },
 };
