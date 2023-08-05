@@ -62,7 +62,7 @@ const Button: FC<MyButtonProps> = ({
           </div>
         </HoverCard.Target>
       </div>
-      {!!dropdownContent && (
+      {!!dropdownContent && button.current && (
         <HoverCard.Dropdown {...hoverCardDropdownProps}>
           <div className={styles.dropdownContentWrapper}>
             {dropdownContent}
