@@ -19,8 +19,9 @@ import styles from './orderTests.module.css';
 const OrderTests: FC<{
   task_spec: string;
   refetch: setter<boolean>;
-  tests: ITruncatedTaskTest[];
-}> = ({ task_spec, refetch, tests }) => {
+  grouped_tests: ITruncatedTaskTest[][];
+}> = ({ task_spec, refetch, grouped_tests }) => {
+  const tests = grouped_tests[0];
   const { locale, lang } = useLocale();
   const [localTests, setLocalTests] = useState<ITruncatedTaskTest[]>(
     []

@@ -28,6 +28,11 @@
       "@styles/*": ["styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/task_test/post/[task_spec]"
+  ],
   "exclude": ["node_modules"]
 }

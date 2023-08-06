@@ -1,0 +1,21 @@
+.empty {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xxs);
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacer-huge) var(--spacer-huge);
+  border: 1px dashed var(--primary);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-m);
+}
+
+.truncationNote {
+  font-size: var(--spacer-sm);
+  color: var(--accent);
+}

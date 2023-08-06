@@ -8,7 +8,7 @@ export default async function PostTaskTest(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/task_tests/${req.query.task_spec}`,
+    url: `api/task_tests/${req.query.task_spec}/${req.query.insert_index}`,
     method: 'POST',
   });
 }

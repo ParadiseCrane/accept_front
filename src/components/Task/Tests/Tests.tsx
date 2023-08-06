@@ -11,7 +11,7 @@ import { Tabs } from '@ui/basics';
 const Tests: FC<{
   task_spec: string;
   refetch: setter<boolean>;
-  tests: ITruncatedTaskTest[];
+  grouped_tests: ITruncatedTaskTest[][];
   truncate_limit: number;
   taskType: ITaskType;
   checkType: ITaskCheckType;
@@ -19,7 +19,7 @@ const Tests: FC<{
 }> = ({
   task_spec,
   refetch,
-  tests,
+  grouped_tests,
   truncate_limit,
   taskType,
   checkType,
@@ -36,7 +36,7 @@ const Tests: FC<{
           <MainPage
             task_spec={task_spec}
             refetch={refetch}
-            tests={tests}
+            grouped_tests={grouped_tests}
             truncate_limit={truncate_limit}
             checkType={checkType}
             taskType={taskType}
@@ -51,7 +51,7 @@ const Tests: FC<{
           <OrderTests
             task_spec={task_spec}
             refetch={refetch}
-            tests={tests}
+            grouped_tests={grouped_tests}
           />
         ),
       },
@@ -63,7 +63,7 @@ const Tests: FC<{
       refetch,
       taskType,
       task_spec,
-      tests,
+      grouped_tests,
       truncate_limit,
     ]
   );
