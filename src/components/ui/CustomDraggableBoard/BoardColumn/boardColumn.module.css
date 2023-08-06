@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.draggingWrapper {
+}
+
+.draggingLabel {
+  color: var(--primary);
+}
+
+.labelWrapper {
+  color: var(--secondary);
+  transition: color ease 0.2s;
+  margin-bottom: var(--spacer-m);
+  text-align: center;
+  font-size: var(--font-size-l);
+}

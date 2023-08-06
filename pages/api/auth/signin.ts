@@ -37,7 +37,7 @@ export default async function signIn(
     }
     return res.status(401).send('error');
   } catch (e) {
-    console.log(e);
+    console.error(e);
 
     if (e instanceof TypeError) return res.status(400).send('Error');
     res.status(400).send('Error');

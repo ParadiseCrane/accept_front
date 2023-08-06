@@ -1,6 +1,6 @@
 const { API_ENDPOINT, WEBSOCKET_API } = process.env;
 
-console.log('Config', { API_ENDPOINT, WEBSOCKET_API });
+console.info('Config', { API_ENDPOINT, WEBSOCKET_API });
 
 /** @type {import('next').NextConfig} */
 module.exports = {

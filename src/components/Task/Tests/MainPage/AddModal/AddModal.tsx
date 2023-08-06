@@ -104,7 +104,6 @@ const AddModal: FC<{
                 minRows={7}
                 maxRows={7}
                 validateField={() => {
-                  console.log('validate!');
                   form.validateField('outputData');
                 }}
                 {...form.getInputProps('outputData')}
