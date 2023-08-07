@@ -3,13 +3,12 @@ import { ReactNode } from 'react';
 export interface IDraggableBoardItem {
   id: string;
   label: ReactNode;
-  [key: string]: any;
 }
 
 export interface IDraggableBoardColumn {
+  id: string;
   columnLabel: ReactNode;
   values: IDraggableBoardItem[];
-  [key: string]: any;
 }
 
 export interface CustomDraggableBoardClassNames {
