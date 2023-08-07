@@ -75,7 +75,6 @@ const Analytics: FC<{}> = ({}) => {
       searchParams
     ).then((res) => {
       if (!res.error) {
-        console.log(res.response);
         setData(res.response);
       }
       setLoading(false);

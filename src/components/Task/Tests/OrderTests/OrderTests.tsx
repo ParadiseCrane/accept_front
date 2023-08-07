@@ -9,96 +9,137 @@ import {
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { Button } from '@ui/basics';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import styles from './orderTests.module.css';
+import CustomDraggableBoard from '@ui/CustomDraggableBoard/CustomDraggableBoard';
+import {
+  IDraggableBoardColumn,
+  IDraggableBoardItem,
+} from '@custom-types/ui/IDraggableBoard';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { useWidth } from '@hooks/useWidth';
+import { HORIZONTAL_TESTS_DRAG_LIMIT } from '@constants/Limits';
+
+const intoColumns = (
+  grouped_tests: ITruncatedTaskTest[][],
+  locale: ILocale
+): IDraggableBoardColumn[] => {
+  let flatten = grouped_tests.flat();
+  let specIndexMap: { [key: string]: any } = {};
+  for (let i = 0; i < flatten.length; i++) {
+    specIndexMap[flatten[i].spec] = i;
+  }
+  return grouped_tests.map(
+    (values, index) =>
+      ({
+        id: index.toString(),
+        columnLabel: `${locale.task.tests.group.label} #${index + 1}`,
+        values: values.map(
+          (item) =>
+            ({
+              id: item.spec,
+              label: `${locale.task.tests.test} #${
+                specIndexMap[item.spec] + 1
+              }`,
+            } as IDraggableBoardItem)
+        ),
+      } as IDraggableBoardColumn)
+  );
+};
+const fromColumns = (
+  columns: IDraggableBoardColumn[]
+): string[][] => {
+  return columns.map((column) =>
+    column.values.map((item) => item.id)
+  );
+};
 
 const OrderTests: FC<{
   task_spec: string;
   refetch: setter<boolean>;
-  tests: ITruncatedTaskTest[];
-}> = ({ task_spec, refetch, tests }) => {
+  grouped_tests: ITruncatedTaskTest[][];
+}> = ({ task_spec, refetch, grouped_tests }) => {
   const { locale, lang } = useLocale();
-  const [localTests, setLocalTests] = useState<ITruncatedTaskTest[]>(
-    []
-  );
+  const { is768 } = useWidth();
 
-  const mappedTests = useMemo(
-    () =>
-      localTests.map((item) => ({
-        label: `${locale.task.form.test} #${tests.indexOf(item) + 1}`,
-        value: tests.indexOf(item),
-      })),
-    [localTests, tests, locale]
-  );
+  const [localColumns, setLocalColumns] = useState<
+    IDraggableBoardColumn[]
+  >([]);
+
+  const onReset = useCallback(() => {
+    setLocalColumns(intoColumns(grouped_tests, locale));
+  }, [grouped_tests, locale]);
 
   useEffect(() => {
-    setLocalTests(tests);
-  }, [tests]);
-
-  const onTestChange = useCallback(
-    (data: Item[]) => {
-      let new_tests: ITruncatedTaskTest[] = new Array(tests.length);
-      for (let i = 0; i < data.length; i++) {
-        new_tests[i] = tests[data[i].value];
-      }
-      setLocalTests(new_tests);
-    },
-    [tests]
-  );
+    onReset();
+  }, [onReset]);
 
   const onSubmit = useCallback(() => {
-    requestWithNotify<string[], boolean>(
+    requestWithNotify<string[][], boolean>(
       `task/tests-reorder/${task_spec}`,
       'POST',
       locale.notify.task_test.reorder,
       lang,
       () => '',
-      localTests.map((item) => item.spec),
+      fromColumns(localColumns),
       () => {
         refetch(false);
       }
     );
-  }, [localTests, locale, lang, refetch, task_spec]);
-
-  const onReset = useCallback(() => {
-    setLocalTests(tests);
-  }, [tests]);
+  }, [localColumns, locale, lang, refetch, task_spec]);
 
   const testsHash = useMemo(
-    () => tests.map((test) => test.spec.slice(3)).join(),
-    [tests]
+    () =>
+      grouped_tests
+        .map(
+          (group) =>
+            group.length.toString() +
+            group.map((item) => item.spec.slice(3))
+        )
+        .join() + grouped_tests.length.toString(),
+    [grouped_tests]
   );
 
-  const localTestsHash = useMemo(
-    () => localTests.map((test) => test.spec.slice(3)).join(),
-    [localTests]
+  const columnsHash = useMemo(
+    () =>
+      localColumns
+        .map(
+          (column) =>
+            column.values.length.toString() +
+            column.values.map((item) => item.id.slice(3))
+        )
+        .join() + localColumns.length.toString(),
+    [localColumns]
+  );
+
+  const boardDirection = useMemo(
+    () =>
+      !is768 || localColumns.length > HORIZONTAL_TESTS_DRAG_LIMIT
+        ? 'vertical'
+        : 'horizontal',
+    [is768, localColumns]
   );
 
   return (
     <div className={`${stepperStyles.wrapper} ${styles.wrapper}`}>
-      <CustomDraggableList
-        values={mappedTests}
-        setValues={onTestChange}
-        classNames={{
-          label: styles.dragLabel,
-        }}
+      <CustomDraggableBoard
+        columns={localColumns}
+        setColumns={setLocalColumns}
+        horizontal={boardDirection == 'horizontal'}
       />
       <div className={styles.buttonsWrapper}>
         <Button
-          kind="negative"
           variant="outline"
           onClick={onReset}
-          disabled={testsHash == localTestsHash}
+          disabled={testsHash == columnsHash}
         >
           {locale.reset}
         </Button>
         <Button
           onClick={onSubmit}
-          disabled={testsHash == localTestsHash}
+          disabled={testsHash == columnsHash}
         >
           {locale.save}
         </Button>

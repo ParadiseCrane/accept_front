@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await res.revalidate(`/task/${spec}`);
       revalidate = true;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
   res.json({

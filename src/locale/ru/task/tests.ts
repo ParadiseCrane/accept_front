@@ -1,4 +1,9 @@
 export const tests = {
+  test: 'Тест',
+  group: {
+    label: 'Группа',
+    add: 'Добавить группу тестов',
+  },
   separate_page: [
     'Внимание! Добавление и редактирование тестов производится на отдельной странице',
   ],
@@ -8,6 +13,7 @@ export const tests = {
     main: 'Главная страница',
     order: 'Порядок тестов',
   },
+
   truncated: (truncate_limit: number) =>
     `Тест слишком велик: показаны первые ${truncate_limit} символов каждого поля`,
   prohibitEdit: (truncate_limit: number) =>

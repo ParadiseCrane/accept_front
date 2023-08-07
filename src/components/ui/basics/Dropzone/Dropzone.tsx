@@ -114,7 +114,7 @@ const Dropzone: FC<{
               autoClose: 5000,
             });
           });
-          console.log(e);
+          console.error(e);
         }}
       >
         <Group

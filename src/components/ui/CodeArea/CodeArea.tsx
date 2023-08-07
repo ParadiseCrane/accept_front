@@ -37,7 +37,7 @@ const find_selected_lines = (
     if (row_start <= start && start < row_end) {
       prev_index = index - 1;
       if (start === end) {
-        // special case when cursor placed in begining of line
+        // special case when cursor placed in beginning of line
         end = row_end;
       }
       start = row_start;
@@ -57,13 +57,13 @@ const find_selected_lines = (
   if (next_index < row_bounds.length)
     next_row = row_bounds[next_index];
 
-  let begining = value.substring(0, prev_row[0]);
+  let beginning = value.substring(0, prev_row[0]);
   let prev = value.substring(prev_row[0], prev_row[1]);
   let selected = value.substring(start, end);
   let next = value.substring(next_row[0], next_row[1]);
   let ending = value.substring(next_row[1]);
 
-  return [begining, prev, selected, next, ending];
+  return [beginning, prev, selected, next, ending];
 };
 
 const CodeArea: FC<{
@@ -94,6 +94,10 @@ const CodeArea: FC<{
   const { locale } = useLocale();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  const send_keyboard = useCallback(() => {
+    if (onSend) onSend();
+  }, [onSend]);
+
   const tab = useCallback(() => {
     let ref = textAreaRef.current;
     if (!ref) return;
@@ -103,13 +107,11 @@ const CodeArea: FC<{
     ref.value = `${value.substring(0, start)}\t${value.substring(
       end
     )}`;
+    setCode(ref.value);
+
     ref.selectionStart = start + 1;
     ref.selectionEnd = start + 1;
-  }, [textAreaRef]);
-
-  const send_keyboard = useCallback(() => {
-    if (onSend) onSend();
-  }, [onSend]);
+  }, [setCode]);
 
   const brackets = useCallback(
     (open_bracket: string, close_bracket: string) => {
@@ -128,9 +130,10 @@ const CodeArea: FC<{
         )}${close_bracket}${value.substring(end)}`;
         ref.selectionStart = start + 1;
         ref.selectionEnd = end + 1;
+        setCode(ref.value);
       };
     },
-    [textAreaRef]
+    [setCode]
   );
 
   const row_swap_up = useCallback(() => {
@@ -141,13 +144,14 @@ const CodeArea: FC<{
     let result = find_selected_lines(ref.value, start, end);
     if (!result) return;
 
-    let [begining, prev, selected, next, ending] = result;
+    let [beginning, prev, selected, next, ending] = result;
 
-    ref.value = `${begining}${selected}${prev}${next}${ending}`;
+    ref.value = `${beginning}${selected}${prev}${next}${ending}`;
+    setCode(ref.value);
 
     ref.selectionStart = start - prev.length;
     ref.selectionEnd = end - prev.length;
-  }, [textAreaRef]);
+  }, [setCode]);
 
   const row_swap_down = useCallback(() => {
     let ref = textAreaRef.current;
@@ -157,13 +161,14 @@ const CodeArea: FC<{
     let result = find_selected_lines(ref.value, start, end);
     if (!result) return;
 
-    let [begining, prev, selected, next, ending] = result;
+    let [beginning, prev, selected, next, ending] = result;
 
-    ref.value = `${begining}${prev}${next}${selected}${ending}`;
+    ref.value = `${beginning}${prev}${next}${selected}${ending}`;
+    setCode(ref.value);
 
     ref.selectionStart = start + next.length;
     ref.selectionEnd = end + next.length;
-  }, [textAreaRef]);
+  }, [setCode]);
 
   const onDrop = useCallback(
     (files: File[]) => {

@@ -30,7 +30,7 @@ function TestsPage(props: { spec: string }) {
   } = useRequest<
     undefined,
     {
-      tests: ITruncatedTaskTest[];
+      grouped_tests: ITruncatedTaskTest[][];
       truncate_limit: number;
       task_type: ITaskType;
       task_check_type: ITaskCheckType;
@@ -82,8 +82,11 @@ function TestsPage(props: { spec: string }) {
   }, [task_spec, locale, lang]);
 
   const testsKey = useMemo(
-    () => data?.tests.map((test) => test.spec.slice(3)).join() || '',
-    [data?.tests]
+    () =>
+      data?.grouped_tests
+        .map((tests) => tests.map((item) => item.spec.slice(3)))
+        .join() || '',
+    [data?.grouped_tests]
   );
 
   return (
@@ -106,7 +109,7 @@ function TestsPage(props: { spec: string }) {
           key={testsKey}
           task_spec={task_spec}
           refetch={refetch}
-          tests={data.tests}
+          grouped_tests={data.grouped_tests}
           truncate_limit={data.truncate_limit}
           checkType={data.task_check_type}
           taskType={data.task_type}

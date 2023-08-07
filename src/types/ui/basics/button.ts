@@ -12,7 +12,7 @@ export type MyButtonProps = ButtonProps &
     hoverCardProps?: HoverCardProps;
     hoverCardDropdownProps?: Omit<HoverCardDropdownProps, 'children'>;
     hoverCardTargetProps?: HoverCardTargetProps;
-    dropdownContent?: string | ReactNode;
+    dropdownContent?: string | ReactNode | string[];
     targetWrapperStyle?: CSSProperties;
     targetWrapperClassName?: string;
     buttonWrapperStyle?: CSSProperties;

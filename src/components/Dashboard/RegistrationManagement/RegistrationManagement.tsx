@@ -22,7 +22,6 @@ const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
     'GET',
     undefined,
     (data) => {
-      console.log(data.participants);
       setParticipants(data.participants);
       return data;
     }

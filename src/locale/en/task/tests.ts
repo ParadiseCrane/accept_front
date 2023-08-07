@@ -1,4 +1,9 @@
 export const tests = {
+  test: 'Test',
+  group: {
+    label: 'Group',
+    add: 'Add tests group',
+  },
   separate_page: [
     'Attention! You can add and edit tests on separate page',
   ],
