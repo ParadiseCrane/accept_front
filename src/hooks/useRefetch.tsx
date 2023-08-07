@@ -21,18 +21,15 @@ export function useRefetch(
         setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
-  }, [func]);
+      .catch(() => setLoading(false))
+      .then(() => {
+        setTimeout(funcWrapper, updateIntervalSeconds);
+      });
+  }, [func, updateIntervalSeconds]);
 
   useEffect(() => {
     funcWrapper();
   }, []); // eslint-disable-line
-
-  useEffect(() => {
-    const id = setInterval(funcWrapper, updateIntervalSeconds * 1000);
-
-    return () => clearInterval(id);
-  }, [updateIntervalSeconds, funcWrapper]);
 
   return { updatesCounter, loading };
 }
