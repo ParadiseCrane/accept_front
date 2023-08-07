@@ -2,6 +2,7 @@ import { FC, memo, useEffect, useRef } from 'react';
 import { HoverCard, Button as MantineButton } from '@mantine/core';
 import styles from './button.module.css';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
+import { concatClassNames } from '@utils/concatClassNames';
 
 const Button: FC<MyButtonProps> = ({
   hoverCardProps,
@@ -52,12 +53,19 @@ const Button: FC<MyButtonProps> = ({
             }
           >
             <MantineButton
-              classNames={{
-                label: styles.label,
-                root: styles.root,
-              }}
               component={props.href ? 'a' : 'button'}
               {...props}
+              classNames={{
+                ...props.classNames,
+                label: concatClassNames(
+                  styles.label,
+                  props.classNames?.label
+                ),
+                root: concatClassNames(
+                  styles.root,
+                  props.classNames?.root
+                ),
+              }}
             />
           </div>
         </HoverCard.Target>
@@ -65,7 +73,17 @@ const Button: FC<MyButtonProps> = ({
       {!!dropdownContent && button.current && (
         <HoverCard.Dropdown {...hoverCardDropdownProps}>
           <div className={styles.dropdownContentWrapper}>
-            {dropdownContent}
+            {typeof dropdownContent == 'string' ? (
+              dropdownContent
+            ) : dropdownContent instanceof Array ? (
+              <div>
+                {dropdownContent.map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
+              </div>
+            ) : (
+              dropdownContent || ''
+            )}
           </div>
         </HoverCard.Dropdown>
       )}

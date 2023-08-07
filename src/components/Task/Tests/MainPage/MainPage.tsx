@@ -56,37 +56,43 @@ const MainPage: FC<{
 
   return (
     <div className={stepperStyles.wrapper}>
-      {grouped_tests.map((tests, index) => (
-        <div key={index} className={styles.groupWrapper}>
-          <div className={styles.groupLabelWrapper}>
-            {`${locale.task.tests.group} #${index + 1}`}{' '}
-            <DeleteGroup
+      <div className={styles.groupsWrapper}>
+        {grouped_tests.map((tests, index) => (
+          <div key={index} className={styles.groupWrapper}>
+            <div className={styles.groupLabelWrapper}>
+              {`${locale.task.tests.group.label} #${index + 1}`}{' '}
+              <DeleteGroup
+                task_spec={task_spec}
+                index={index}
+                refetch={refetch}
+              />
+            </div>
+            <GroupContent
+              group_index={index}
+              test_offset={group_last_elements[index]}
               task_spec={task_spec}
-              index={index}
               refetch={refetch}
+              tests={tests}
+              truncate_limit={truncate_limit}
+              taskType={taskType}
+              checkType={checkType}
+              checker={checker}
             />
           </div>
-          <GroupContent
-            group_index={index}
-            test_offset={group_last_elements[index]}
-            task_spec={task_spec}
-            refetch={refetch}
-            tests={tests}
-            truncate_limit={truncate_limit}
-            taskType={taskType}
-            checkType={checkType}
-            checker={checker}
-          />
-        </div>
-      ))}
+        ))}
+      </div>
       <Button
+        variant="outline"
+        kind="positive"
         onClick={addGroup}
+        fullWidth
         disabled={
           grouped_tests.length == 0 ||
           grouped_tests.at(-1)?.length == 0
         }
+        dropdownContent={locale.helpers.taskTest.group.add}
       >
-        Добавить группу
+        {locale.task.tests.group.add}
       </Button>
     </div>
   );

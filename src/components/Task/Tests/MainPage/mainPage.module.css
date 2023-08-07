@@ -1,5 +1,8 @@
-.groupWrapper {
-  margin-bottom: var(--spacer-xl);
+.groupsWrapper {
+  gap: var(--spacer-xl);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacer-m);
 }
 
 .groupLabelWrapper {

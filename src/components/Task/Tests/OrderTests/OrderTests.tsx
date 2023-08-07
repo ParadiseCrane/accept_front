@@ -36,7 +36,7 @@ const intoColumns = (
     (values, index) =>
       ({
         id: index.toString(),
-        columnLabel: `${locale.task.tests.group} #${index + 1}`,
+        columnLabel: `${locale.task.tests.group.label} #${index + 1}`,
         values: values.map(
           (item) =>
             ({

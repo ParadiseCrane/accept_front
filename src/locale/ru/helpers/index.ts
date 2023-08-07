@@ -7,6 +7,7 @@ import { grade } from './grade';
 import { group } from './group';
 import { tournament } from './tournament';
 import { attempt } from './attempt';
+import { taskTest } from './taskTest';
 
 export const helpers = {
   task,
@@ -18,4 +19,5 @@ export const helpers = {
   tournament,
   group,
   attempt,
+  taskTest,
 };

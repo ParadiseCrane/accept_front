@@ -21,6 +21,7 @@ import {
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { setter } from '@custom-types/ui/atomic';
 import styles from './groupContent.module.css';
+import { MAX_TEST_LENGTH } from '@constants/Limits';
 
 const GroupContent: FC<{
   group_index: number;
@@ -203,11 +204,10 @@ const GroupContent: FC<{
     <Dropzone
       onDrop={onDrop}
       title={locale.ui.codeArea.dragFiles}
-      helperContent={locale.ui.codeArea.filesRestrictions}
       description={''}
       showButton
       plural
-      maxSize={100000 * 2} // amount of symbols * average utf-8 symbol size
+      maxSize={MAX_TEST_LENGTH * 2} // amount of symbols * average utf-8 symbol size
       buttonProps={{
         style: {
           width: '100%',
