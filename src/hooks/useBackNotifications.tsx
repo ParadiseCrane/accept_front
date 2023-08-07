@@ -17,7 +17,6 @@ import {
   useState,
 } from 'react';
 import { useLocale } from './useLocale';
-import { getRandomIntInRange } from '@utils/random';
 import { useUser } from './useUser';
 import { useRefetch } from './useRefetch';
 
