@@ -16,9 +16,10 @@ import {
 
 const AddModal: FC<{
   addTests: setter<ITaskTestData[]>;
+  label?: string;
   hideInput: boolean;
   hideOutput: boolean;
-}> = ({ addTests, hideInput, hideOutput }) => {
+}> = ({ addTests, label = '+', hideInput, hideOutput }) => {
   const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
 
@@ -78,7 +79,7 @@ const AddModal: FC<{
           setOpened(true);
         }}
       >
-        +
+        {label}
       </Button>
       <SimpleModal
         opened={opened}

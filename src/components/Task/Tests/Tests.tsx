@@ -68,7 +68,19 @@ const Tests: FC<{
     ]
   );
 
-  return <Tabs pages={pages} defaultPage={'main'} />;
+  const testsHash = useMemo(
+    () =>
+      grouped_tests
+        .map(
+          (group) =>
+            group.length.toString() +
+            group.map((item) => item.spec.slice(3))
+        )
+        .join(),
+    [grouped_tests]
+  );
+
+  return <Tabs key={testsHash} pages={pages} defaultPage={'main'} />;
 };
 
 export default memo(Tests);

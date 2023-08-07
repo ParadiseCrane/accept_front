@@ -12,6 +12,7 @@ import {
 export interface IWidthContext {
   numberWidth: number;
   width: IWidth;
+  is768: boolean;
 }
 
 const WidthContext = createContext<IWidthContext>(null!);
@@ -55,7 +56,7 @@ export const WidthProvider: FC<{ children: ReactNode }> = ({
   }, [is1024, is1280, is1920, is480, is768, is1440]);
 
   return (
-    <WidthContext.Provider value={{ numberWidth, width }}>
+    <WidthContext.Provider value={{ numberWidth, width, is768 }}>
       {children}
     </WidthContext.Provider>
   );

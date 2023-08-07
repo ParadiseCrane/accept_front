@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  padding-bottom: var(--spacer-l);
 }
 
 .draggingWrapper {

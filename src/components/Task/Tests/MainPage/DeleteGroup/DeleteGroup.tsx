@@ -1,36 +1,35 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { Trash } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
-import { pureCallback } from '@custom-types/ui/atomic';
+import { setter } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import modalStyles from '@styles/ui/modal.module.css';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Icon } from '@ui/basics';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 
-const DeleteTest: FC<{
+const DeleteGroup: FC<{
+  task_spec: string;
   index: number;
-  test: ITruncatedTaskTest;
-  refetch: pureCallback<void>;
-}> = ({ index, test, refetch }) => {
+  refetch: setter<boolean>;
+}> = ({ index, task_spec, refetch }) => {
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
 
   const handleSubmit = useCallback(() => {
     requestWithNotify<undefined, boolean>(
-      `task_test/delete/${test.spec}`,
+      `test_group/${task_spec}/${index}`,
       'DELETE',
-      locale.notify.task_test.delete,
+      locale.notify.test_group.delete,
       lang,
       (_: boolean) => '',
       undefined,
       () => {
-        refetch();
+        refetch(false);
         setOpened(false);
       }
     );
-  }, [test.spec, locale, lang, refetch]);
+  }, [index, task_spec, locale, lang, refetch]);
 
   return (
     <>
@@ -38,18 +37,18 @@ const DeleteTest: FC<{
         onClick={() => setOpened(true)}
         color="red"
         size="xs"
-        tooltipLabel={locale.ui.taskTest.delete.test}
+        tooltipLabel={locale.ui.taskTest.delete.group}
       >
         <Trash />
       </Icon>
       <SimpleModal
         opened={opened}
         close={() => setOpened(false)}
-        title={`${locale.ui.taskTest.delete.test} #${index + 1}`}
+        title={`${locale.ui.taskTest.delete.group} #${index + 1}`}
       >
         <div className={modalStyles.verticalContent}>
           <div>
-            {locale.ui.taskTest.deleteConfidence.test(index + 1)}
+            {locale.ui.taskTest.deleteConfidence.group(index + 1)}
           </div>
           <SimpleButtonGroup
             reversePositive
@@ -68,4 +67,4 @@ const DeleteTest: FC<{
   );
 };
 
-export default memo(DeleteTest);
+export default memo(DeleteGroup);

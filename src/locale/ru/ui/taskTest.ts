@@ -1,7 +1,11 @@
 export const taskTest = {
   edit: 'Редактировать тест',
   add: 'Добавить тест',
-  delete: 'Удалить тест',
-  deleteConfidence: (index: number) =>
-    `Вы уверены, что хотите удалить Тест #${index}?`,
+  delete: { test: 'Удалить тест', group: 'Удалить группу тестов' },
+  deleteConfidence: {
+    test: (index: number) =>
+      `Вы уверены, что хотите удалить тест #${index}?`,
+    group: (index: number) =>
+      `Вы уверены, что хотите удалить группу тестов #${index}?`,
+  },
 };

@@ -18,25 +18,32 @@ import {
   IDraggableBoardColumn,
   IDraggableBoardItem,
 } from '@custom-types/ui/IDraggableBoard';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { useWidth } from '@hooks/useWidth';
+
+const HORIZONTAL_LIMIT = 7;
 
 const intoColumns = (
-  grouped_tests: ITruncatedTaskTest[][]
+  grouped_tests: ITruncatedTaskTest[][],
+  locale: ILocale
 ): IDraggableBoardColumn[] => {
-  let flattern = grouped_tests.flat();
+  let flatten = grouped_tests.flat();
   let specIndexMap: { [key: string]: any } = {};
-  for (let i = 0; i < flattern.length; i++) {
-    specIndexMap[flattern[i].spec] = i;
+  for (let i = 0; i < flatten.length; i++) {
+    specIndexMap[flatten[i].spec] = i;
   }
   return grouped_tests.map(
     (values, index) =>
       ({
         id: index.toString(),
-        columnLabel: `Group #${index + 1}`,
+        columnLabel: `${locale.task.tests.group} #${index + 1}`,
         values: values.map(
           (item) =>
             ({
               id: item.spec,
-              label: `Test #${specIndexMap[item.spec] + 1}`,
+              label: `${locale.task.tests.test} #${
+                specIndexMap[item.spec] + 1
+              }`,
             } as IDraggableBoardItem)
         ),
       } as IDraggableBoardColumn)
@@ -55,19 +62,20 @@ const OrderTests: FC<{
   refetch: setter<boolean>;
   grouped_tests: ITruncatedTaskTest[][];
 }> = ({ task_spec, refetch, grouped_tests }) => {
-  // const tests = grouped_tests[0];
   const { locale, lang } = useLocale();
+  const { is768 } = useWidth();
+
   const [localColumns, setLocalColumns] = useState<
     IDraggableBoardColumn[]
   >([]);
 
   const onReset = useCallback(() => {
-    setLocalColumns(intoColumns(grouped_tests));
-  }, [grouped_tests]);
+    setLocalColumns(intoColumns(grouped_tests, locale));
+  }, [grouped_tests, locale]);
 
   useEffect(() => {
     onReset();
-  }, [grouped_tests]);
+  }, [onReset]);
 
   const onSubmit = useCallback(() => {
     requestWithNotify<string[][], boolean>(
@@ -86,7 +94,11 @@ const OrderTests: FC<{
   const testsHash = useMemo(
     () =>
       grouped_tests
-        .map((test) => test.map((item) => item.spec.slice(3)))
+        .map(
+          (group) =>
+            group.length.toString() +
+            group.map((item) => item.spec.slice(3))
+        )
         .join(),
     [grouped_tests]
   );
@@ -94,11 +106,21 @@ const OrderTests: FC<{
   const columnsHash = useMemo(
     () =>
       localColumns
-        .map((columns) =>
-          columns.values.map((item) => item.id.slice(3))
+        .map(
+          (column) =>
+            column.values.length.toString() +
+            column.values.map((item) => item.id.slice(3))
         )
-        .join(),
+        .join() + localColumns.length.toString(),
     [localColumns]
+  );
+
+  const boardDirection = useMemo(
+    () =>
+      !is768 || localColumns.length > HORIZONTAL_LIMIT
+        ? 'vertical'
+        : 'horizontal',
+    [is768, localColumns]
   );
 
   return (
@@ -106,11 +128,10 @@ const OrderTests: FC<{
       <CustomDraggableBoard
         columns={localColumns}
         setColumns={setLocalColumns}
-        horizontal
+        horizontal={boardDirection == 'horizontal'}
       />
       <div className={styles.buttonsWrapper}>
         <Button
-          kind="negative"
           variant="outline"
           onClick={onReset}
           disabled={testsHash == columnsHash}

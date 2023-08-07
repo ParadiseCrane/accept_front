@@ -1,0 +1,12 @@
+.groupWrapper {
+  margin-bottom: var(--spacer-xl);
+}
+
+.groupLabelWrapper {
+  font-size: var(--font-size-l);
+  margin-bottom: var(--spacer-l);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-s);
+  align-items: center;
+}

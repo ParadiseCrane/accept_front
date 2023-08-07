@@ -23,6 +23,7 @@ import { setter } from '@custom-types/ui/atomic';
 import styles from './groupContent.module.css';
 
 const GroupContent: FC<{
+  group_index: number;
   test_offset: number;
   task_spec: string;
   refetch: setter<boolean>;
@@ -32,6 +33,7 @@ const GroupContent: FC<{
   checkType: ITaskCheckType;
   checker?: IChecker;
 }> = ({
+  group_index,
   test_offset,
   task_spec,
   refetch,
@@ -45,9 +47,7 @@ const GroupContent: FC<{
   const addTests = useCallback(
     async (tests_to_add: ITaskTestData[]) => {
       requestWithNotify<ITaskTestData[], boolean>(
-        `task_test/post/${task_spec}/${
-          test_offset + tests.length - 1
-        }`,
+        `task_test/post/${task_spec}/${group_index}`,
         'POST',
         locale.notify.task_test.post,
         lang,
@@ -60,7 +60,7 @@ const GroupContent: FC<{
         }
       );
     },
-    [lang, locale, task_spec, test_offset, refetch, tests.length]
+    [task_spec, group_index, lang, locale, refetch]
   );
 
   const onDrop = useCallback(
@@ -236,7 +236,7 @@ const GroupContent: FC<{
                     : item.outputData,
                 }))}
                 label={
-                  locale.task.form.test +
+                  locale.task.tests.test +
                   ' #' +
                   (test_offset + index + 1)
                 }
