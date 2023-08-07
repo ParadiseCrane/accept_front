@@ -1,8 +1,8 @@
 export const taskTest = {
   group: {
     add: [
-      'During testing, checker sequentially runs test groups ine by one',
-      'If it turns out that answers for one group are not all correct, checker stops testing process',
+      'Checker sequentially runs test groups one by one',
+      'The groups after the one with the first incorrectly solved test are not checked',
     ],
   },
 };

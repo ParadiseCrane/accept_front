@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef } from 'react';
+import { FC, memo, useEffect, useRef, useState } from 'react';
 import { HoverCard, Button as MantineButton } from '@mantine/core';
 import styles from './button.module.css';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
@@ -19,75 +19,82 @@ const Button: FC<MyButtonProps> = ({
 }) => {
   const button = useRef<HTMLDivElement>(null);
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    if (button.current) button.current.style.visibility = 'visible';
+    setMounted(true);
   }, []);
 
   return (
-    <HoverCard
-      withArrow
-      position="bottom"
-      arrowSize={5}
-      transition={'scale'}
-      transitionDuration={300}
-      {...hoverCardProps}
-    >
-      <div
-        className={targetWrapperClassName}
-        style={targetWrapperStyle}
-      >
-        <HoverCard.Target {...hoverCardTargetProps}>
+    <>
+      {mounted && (
+        <HoverCard
+          withArrow
+          position="bottom"
+          arrowSize={5}
+          transition={'scale'}
+          transitionDuration={300}
+          {...hoverCardProps}
+        >
           <div
-            ref={button}
-            style={{ ...buttonWrapperStyle, visibility: 'hidden' }}
-            className={
-              `${styles.buttonWrapper} ${
-                shrink ? styles.shrink : ''
-              }` +
-              ' ' +
-              (props.disabled
-                ? styles.disabled
-                : `${kind && styles[kind]} ${
-                    variant && styles[variant]
-                  }`)
-            }
+            className={targetWrapperClassName}
+            style={targetWrapperStyle}
           >
-            <MantineButton
-              component={props.href ? 'a' : 'button'}
-              {...props}
-              classNames={{
-                ...props.classNames,
-                label: concatClassNames(
-                  styles.label,
-                  props.classNames?.label
-                ),
-                root: concatClassNames(
-                  styles.root,
-                  props.classNames?.root
-                ),
-              }}
-            />
-          </div>
-        </HoverCard.Target>
-      </div>
-      {!!dropdownContent && button.current && (
-        <HoverCard.Dropdown {...hoverCardDropdownProps}>
-          <div className={styles.dropdownContentWrapper}>
-            {typeof dropdownContent == 'string' ? (
-              dropdownContent
-            ) : dropdownContent instanceof Array ? (
-              <div>
-                {dropdownContent.map((p, idx) => (
-                  <p key={idx}>{p}</p>
-                ))}
+            <HoverCard.Target {...hoverCardTargetProps}>
+              <div
+                ref={button}
+                style={{ ...buttonWrapperStyle }}
+                className={
+                  `${styles.buttonWrapper} ${
+                    shrink ? styles.shrink : ''
+                  }` +
+                  ' ' +
+                  (props.disabled
+                    ? styles.disabled
+                    : `${kind && styles[kind]} ${
+                        variant && styles[variant]
+                      }`)
+                }
+              >
+                <MantineButton
+                  component={props.href ? 'a' : 'button'}
+                  {...props}
+                  classNames={{
+                    ...props.classNames,
+                    label: concatClassNames(
+                      styles.label,
+                      props.classNames?.label
+                    ),
+                    root: concatClassNames(
+                      styles.root,
+                      props.classNames?.root
+                    ),
+                  }}
+                />
               </div>
-            ) : (
-              dropdownContent || ''
-            )}
+            </HoverCard.Target>
           </div>
-        </HoverCard.Dropdown>
+
+          {!!dropdownContent && (
+            <HoverCard.Dropdown {...hoverCardDropdownProps}>
+              <div className={styles.dropdownContentWrapper}>
+                {typeof dropdownContent == 'string' ? (
+                  dropdownContent
+                ) : dropdownContent instanceof Array ? (
+                  <div>
+                    {dropdownContent.map((p, idx) => (
+                      <p key={idx}>{p}</p>
+                    ))}
+                  </div>
+                ) : (
+                  dropdownContent || ''
+                )}
+              </div>
+            </HoverCard.Dropdown>
+          )}
+        </HoverCard>
       )}
-    </HoverCard>
+    </>
   );
 };
 

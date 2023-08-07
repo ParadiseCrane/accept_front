@@ -92,7 +92,7 @@ const CustomDraggableBoard: FC<{
     () =>
       columns
         .map((column) => column.values.map((item) => item.id).join())
-        .join(),
+        .join('|'),
     [columns]
   );
 

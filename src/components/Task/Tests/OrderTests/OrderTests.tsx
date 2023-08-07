@@ -20,8 +20,7 @@ import {
 } from '@custom-types/ui/IDraggableBoard';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { useWidth } from '@hooks/useWidth';
-
-const HORIZONTAL_LIMIT = 7;
+import { HORIZONTAL_TESTS_DRAG_LIMIT } from '@constants/Limits';
 
 const intoColumns = (
   grouped_tests: ITruncatedTaskTest[][],
@@ -99,7 +98,7 @@ const OrderTests: FC<{
             group.length.toString() +
             group.map((item) => item.spec.slice(3))
         )
-        .join(),
+        .join() + grouped_tests.length.toString(),
     [grouped_tests]
   );
 
@@ -117,7 +116,7 @@ const OrderTests: FC<{
 
   const boardDirection = useMemo(
     () =>
-      !is768 || localColumns.length > HORIZONTAL_LIMIT
+      !is768 || localColumns.length > HORIZONTAL_TESTS_DRAG_LIMIT
         ? 'vertical'
         : 'horizontal',
     [is768, localColumns]

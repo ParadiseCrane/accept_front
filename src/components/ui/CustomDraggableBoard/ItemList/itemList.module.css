@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacer-s);
+  padding-bottom: var(--spacer-l);
 }
 
 .itemWrapper {
