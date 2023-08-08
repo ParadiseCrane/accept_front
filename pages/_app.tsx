@@ -2,7 +2,7 @@ import { BackNotificationsProvider } from '@hooks/useBackNotifications';
 import { LocaleProvider } from '@hooks/useLocale';
 import { UserProvider } from '@hooks/useUser';
 import { WidthProvider } from '@hooks/useWidth';
-import { NotificationsProvider } from '@mantine/notifications';
+import { Notifications } from '@mantine/notifications';
 import '@styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
@@ -34,16 +34,15 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
       <WidthProvider>
         <LocaleProvider>
           <UserProvider>
-            <NotificationsProvider
+            <Notifications
               position="bottom-left"
               zIndex={9999}
               limit={5}
               autoClose={40000}
-            >
-              <BackNotificationsProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </BackNotificationsProvider>
-            </NotificationsProvider>
+            />
+            <BackNotificationsProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </BackNotificationsProvider>
           </UserProvider>
         </LocaleProvider>
       </WidthProvider>

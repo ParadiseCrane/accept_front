@@ -32,8 +32,7 @@ const Button: FC<MyButtonProps> = ({
           withArrow
           position="bottom"
           arrowSize={5}
-          transition={'scale'}
-          transitionDuration={300}
+          transitionProps={{ transition: 'scale', duration: 300 }}
           {...hoverCardProps}
         >
           <div

@@ -13,9 +13,8 @@ const SegmentedControl: FC<Props> = (props) => {
       classNames={{
         root: styles.root,
         label: styles.label,
-        active: styles.active,
-        labelActive: styles.labelActive,
       }}
+      color="primary"
       {...props}
     />
   );

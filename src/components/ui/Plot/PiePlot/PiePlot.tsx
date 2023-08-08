@@ -1,5 +1,5 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo, useMemo, useState } from 'react';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import Arc from './Arc/Arc';
 import styles from './piePlot.module.css';
 
@@ -42,6 +42,14 @@ const PiePlot: FC<{
     [accumulated]
   );
 
+  const sinQuarterPi = +Math.sin(Math.PI / 4).toFixed(5);
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className={styles.wrapper}>
       {title && <div className={styles.title}>{title}</div>}
@@ -69,16 +77,18 @@ const PiePlot: FC<{
               increase_ratio={INCREASE_RATIO}
             />
           ))}
-          <foreignObject
-            x={-INNER_RADIUS * Math.sin(Math.PI / 4)}
-            y={-INNER_RADIUS * Math.sin(Math.PI / 4)}
-            width={2 * INNER_RADIUS * Math.sin(Math.PI / 4)}
-            height={2 * INNER_RADIUS * Math.sin(Math.PI / 4)}
-          >
-            {centerText
-              ? centralLabel(centerText)
-              : centralLabel(defaultText)}
-          </foreignObject>
+          {mounted && (
+            <foreignObject
+              x={-INNER_RADIUS * sinQuarterPi}
+              y={-INNER_RADIUS * sinQuarterPi}
+              width={2 * INNER_RADIUS * sinQuarterPi}
+              height={2 * INNER_RADIUS * sinQuarterPi}
+            >
+              {centerText
+                ? centralLabel(centerText)
+                : centralLabel(defaultText)}
+            </foreignObject>
+          )}
         </g>
       </svg>
     </div>

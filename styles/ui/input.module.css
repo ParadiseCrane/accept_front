@@ -1,3 +1,7 @@
+.root input::-webkit-search-cancel-button {
+  display: none;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;

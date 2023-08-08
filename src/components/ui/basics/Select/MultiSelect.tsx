@@ -4,6 +4,7 @@ import { Helper } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import dynamic from 'next/dynamic';
+import { concatClassNames } from '@utils/concatClassNames';
 
 const DynamicMultiSelect = dynamic<MultiSelectProps>(() =>
   import('@mantine/core').then((res) => res.MultiSelect)
@@ -39,10 +40,14 @@ const MultiSelect: FC<Props> = ({
         clearable={false}
         {...props}
         classNames={{
+          ...props.classNames,
           error: props.classNames?.error || inputStyles.error,
           value: props.classNames?.value || inputStyles.selectValue,
           input: props.classNames?.input || inputStyles.selectInput,
-          ...props.classNames,
+          root: concatClassNames(
+            props.classNames?.root,
+            inputStyles.root
+          ),
         }}
         label={undefined}
       />

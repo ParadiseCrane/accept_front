@@ -216,7 +216,7 @@ const MessageList: FC<{
             <Pagination
               total={totalPages}
               position="center"
-              page={activePage}
+              value={activePage}
               onChange={setPage}
             />
           )}

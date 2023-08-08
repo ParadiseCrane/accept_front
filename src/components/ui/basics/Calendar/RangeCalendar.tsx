@@ -1,8 +1,8 @@
 import 'dayjs/locale/ru';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import {
-  RangeCalendar as MantineRangeCalendar,
-  RangeCalendarProps,
+  DatePickerProps,
+  DatePicker as MantineRangeCalendar,
 } from '@mantine/dates';
 import { setter } from '@custom-types/ui/atomic';
 import { InputWrapper } from '@ui/basics';
@@ -10,12 +10,17 @@ import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
 import { useLocale } from '@hooks/useLocale';
 
 interface Props
-  extends Omit<RangeCalendarProps, 'value' | 'onChange'> {
+  extends Omit<
+    DatePickerProps,
+    'value' | 'onChange' | 'allowSingleDateInRange'
+  > {
   start: Date | null;
   end: Date | null;
   setStart: setter<Date | null>;
   setEnd: setter<Date | null>;
   inputWrapperProps: MyInputWrapperProps;
+  // TODO: stubs
+  allowSingleDateInRange?: boolean;
 }
 
 const RangeCalendar: FC<Props> = ({
@@ -51,6 +56,7 @@ const RangeCalendar: FC<Props> = ({
   return (
     <InputWrapper {...inputWrapperProps}>
       <MantineRangeCalendar
+        type="range"
         locale={lang}
         {...props}
         value={value}

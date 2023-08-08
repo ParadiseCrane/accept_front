@@ -27,9 +27,11 @@ const SimpleModal: FC<SimpleModalProps> = ({
   return (
     <div>
       <DynamicModal
-        transition="fade"
-        transitionDuration={450}
-        transitionTimingFunction="ease"
+        transitionProps={{
+          transition: 'fade',
+          duration: 450,
+          timingFunction: 'ease',
+        }}
         withCloseButton={!!!hideCloseButton}
         title={
           <div className={modalStyles.titleWrapper}>

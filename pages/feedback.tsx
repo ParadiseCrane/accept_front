@@ -98,7 +98,8 @@ export function Feedback() {
             />
             <TextInput
               label={locale.feedback.form.title}
-              form={form}
+              // TODO
+              // form={form}
               name={'title'}
               {...form.getInputProps('title')}
             />

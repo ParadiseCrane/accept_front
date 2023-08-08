@@ -31,7 +31,8 @@ const Dates: FC<{ form: UseFormReturnType<any> }> = ({ form }) => {
           {form.values.infinite && <Overlay />}
           <RangeCalendar
             start={form.values.startDate}
-            initialMonth={form.values.startDate}
+            // TODO
+            // initialMonth={form.values.startDate}
             setStart={setStart}
             end={form.values.endDate}
             setEnd={setEnd}

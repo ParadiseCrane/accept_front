@@ -1,7 +1,11 @@
 import { InputWrapperProps } from '@mantine/core';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
+import { ReactNode } from 'react';
 
-export interface MyInputWrapperProps extends InputWrapperProps {
+// TODO: check Omit
+export interface MyInputWrapperProps
+  extends Omit<InputWrapperProps, 'children'> {
   helperContent?: IDropdownContent;
   shrink?: boolean;
+  children?: ReactNode;
 }

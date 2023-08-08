@@ -40,7 +40,7 @@ const CustomTimeModal: FC<{ handleTime: (_: number) => void }> = ({
         title={locale.dashboard.assignment.timeInfo.addTimeToEnd}
         opened={opened}
         close={() => setOpened(false)}
-        size="xs"
+        size="sm"
         hideCloseButton
         centered
       >
