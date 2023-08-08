@@ -63,7 +63,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
       allowRegistrationAfterStart: false,
       banned: [],
     }),
-    [user?.shortName]
+    [user?.login]
   );
 
   const handleSubmit = useCallback(
