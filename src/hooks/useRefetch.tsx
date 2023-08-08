@@ -25,13 +25,12 @@ export function useRefetch(
       .then(() => {
         setTimeout(() => setLoading(false), updateIntervalSeconds);
       });
-  }, [func, updateIntervalSeconds, loading]);
+  }, [func, updateIntervalSeconds]);
 
   useEffect(() => {
     if (loading) return;
-
     funcWrapper();
-  }, [funcWrapper, loading]); // eslint-disable-line
+  }, [funcWrapper]); // eslint-disable-line
 
   return { updatesCounter, loading };
 }

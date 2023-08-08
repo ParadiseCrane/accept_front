@@ -23,6 +23,8 @@ import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
+import { sendRequest } from '@requests/request';
+import { useRefetch } from '@hooks/useRefetch';
 
 const DEFAULT_ON_PAGE = 10;
 
@@ -76,6 +78,7 @@ const AttemptList: FC<{
     [locale, initialColumns]
   );
 
+  const [loading, setLoading] = useState(true);
   const [needRefetch, setNeedRefetch] = useState(true);
   const [tableData, setTableData] = useState<TableData>({
     data: [],
@@ -116,43 +119,34 @@ const AttemptList: FC<{
       } else {
         setNeedRefetch(true);
       }
+      setLoading(false);
     },
     [locale.notify.errors.unauthorized, refreshAccess]
   );
+  const fetch_data = useCallback(() => {
+    return sendRequest<UserTaskSearch, PagerResponse>(url, 'POST', {
+      ...searchParams,
+      toDate,
+      users: userSearch,
+      tasks: taskSearch,
+    })
+      .then((res) => {
+        if (!res.error) {
+          setTableData(processData(res.response));
+        }
+        setLoading(false);
+      })
+      .catch(onError);
+  }, []);
 
-  const { data, loading, refetch } = useRequest<
-    UserTaskSearch,
-    PagerResponse,
-    TableData
-  >(
-    url,
-    'POST',
-    { ...searchParams, toDate, users: userSearch, tasks: taskSearch },
-    processData,
-    undefined,
-    onError
-  );
+  const refetch = useCallback(() => {
+    if (needRefetch) return fetch_data();
+    return new Promise<void>((res) => {
+      res();
+    });
+  }, [fetch_data]);
 
-  useEffect(() => {
-    if (data) {
-      setTableData(data);
-    }
-  }, [data]);
-
-  useEffect(
-    () => {
-      refetch();
-      if (activeTab && !shouldNotRefetch) {
-        const id = setInterval(() => {
-          if (needRefetch) refetch(false);
-        }, 2000);
-        return () => {
-          clearInterval(id);
-        };
-      }
-    },
-    [needRefetch, toDate, activeTab, shouldNotRefetch, searchParams] // eslint-disable-line
-  );
+  const {} = useRefetch(refetch, 5);
 
   return (
     <div>

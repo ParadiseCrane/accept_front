@@ -64,16 +64,10 @@ export const ChatHostsProvider: FC<{
     });
   }, []);
 
-  useEffect(() => {
-    fetchInitialHosts();
-  }, [fetchInitialHosts]);
-
   const { updatesCounter, loading } = useRefetch(
     fetchInitialHosts,
     updateIntervalSeconds
   );
-
-  const refetch = useCallback(fetchInitialHosts, [fetchInitialHosts]);
 
   const value = useMemo<IChatHostsContext>(
     () => ({
@@ -81,17 +75,10 @@ export const ChatHostsProvider: FC<{
       loading,
       updatesCounter,
       hasNewMessages,
-      refetch,
+      refetch: fetchInitialHosts,
       selectHost,
     }),
-    [
-      hasNewMessages,
-      hosts,
-      loading,
-      refetch,
-      updatesCounter,
-      selectHost,
-    ]
+    [hasNewMessages, hosts, loading, updatesCounter, selectHost]
   );
 
   return (

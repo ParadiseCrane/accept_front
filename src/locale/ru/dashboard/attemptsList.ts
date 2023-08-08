@@ -9,4 +9,5 @@ export const attemptsList = {
     placeholder: 'Выберите участников',
     nothingFound: 'Список участников пуст',
   },
+  empty: 'Ни одной попытки не найдено',
 };

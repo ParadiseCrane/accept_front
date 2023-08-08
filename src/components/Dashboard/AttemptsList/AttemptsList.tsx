@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import styles from './attemptsList.module.css';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
@@ -235,7 +235,7 @@ const AttemptList: FC<{
         initialColumns={initialColumns}
         refactorAttempt={refactor}
         toDate={fetchDate == 'end' ? endDate : undefined}
-        empty={<>{locale.profile.empty.attempts}</>}
+        empty={<>{locale.dashboard.attemptsList.empty}</>}
         noDefault
         shouldNotRefetch={shouldNotRefetch}
         classNames={{

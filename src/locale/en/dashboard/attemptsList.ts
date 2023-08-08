@@ -9,4 +9,6 @@ export const attemptsList = {
     placeholder: 'Select users',
     nothingFound: 'User list is empty',
   },
+
+  empty: 'Attempts were not found',
 };
