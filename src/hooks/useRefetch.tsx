@@ -1,3 +1,4 @@
+import { getRandomInRange } from '@utils/random';
 import { useCallback, useEffect, useState } from 'react';
 
 interface IRequestData {
@@ -12,24 +13,26 @@ export function useRefetch(
   updateIntervalSeconds: number
 ): IRequestData {
   const [updatesCounter, setUpdatesCounter] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const funcWrapper = useCallback(() => {
+    if (loading) return;
     setLoading(true);
     func()
       .then(() => {
         setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
-        setLoading(false);
       })
-      .catch(() => setLoading(false))
+      .catch(() => {})
       .then(() => {
-        setTimeout(funcWrapper, updateIntervalSeconds);
+        setTimeout(() => setLoading(false), updateIntervalSeconds);
       });
-  }, [func, updateIntervalSeconds]);
+  }, [func, updateIntervalSeconds, loading]);
 
   useEffect(() => {
+    if (loading) return;
+
     funcWrapper();
-  }, []); // eslint-disable-line
+  }, [funcWrapper, loading]); // eslint-disable-line
 
   return { updatesCounter, loading };
 }

@@ -41,51 +41,48 @@ export const BackNotificationsProvider: FC<{
   const { lang } = useLocale();
   const [unviewed, setUnviewed] = useState<number>(0);
   const { user } = useUser();
-  const [loading, setLoading] = useState(false);
 
   const fetchNotifications = useCallback(
-    (use_long_pooling: boolean) => {
-      if (!!!user || loading) return new Promise(() => {});
-      setLoading(true);
+    (skip: boolean) => {
+      if (!!!user)
+        return new Promise((res, rej) => {
+          res(true);
+        });
       return sendRequest<
         undefined,
         { unviewed: number; hasNew: boolean }
-      >(`notification/new-info/${!use_long_pooling}`, 'GET').then(
-        (res) => {
-          if (!res.error) {
-            setUnviewed(res.response.unviewed);
-            if (res.response.hasNew) {
-              sendRequest<undefined, INotification[]>(
-                'notification/new',
-                'GET'
-              ).then((res) => {
-                if (!res.error) {
-                  res.response.map((notification) => {
-                    const id = newNotification({});
-                    infoNotification({
-                      id,
-                      title: notification.title,
-                      message: notification.shortDescription,
-                    });
+      >(`notification/new-info/${skip}`, 'GET').then((res) => {
+        if (!res.error) {
+          setUnviewed(res.response.unviewed);
+          if (res.response.hasNew) {
+            sendRequest<undefined, INotification[]>(
+              'notification/new',
+              'GET'
+            ).then((res) => {
+              if (!res.error) {
+                res.response.map((notification) => {
+                  const id = newNotification({});
+                  infoNotification({
+                    id,
+                    title: notification.title,
+                    message: notification.shortDescription,
                   });
-                }
-              });
-            }
+                });
+              }
+            });
           }
-          setLoading(false);
         }
-      );
+      });
     },
     [user]
   );
 
   useEffect(() => {
-    if (!!!user) return;
-    fetchNotifications(false);
-  }, [user]); //eslint-disable-line
+    fetchNotifications(true);
+  }, [fetchNotifications]);
 
   const { loading: fetching } = useRefetch(
-    () => fetchNotifications(true),
+    () => fetchNotifications(false),
     2
   );
 
