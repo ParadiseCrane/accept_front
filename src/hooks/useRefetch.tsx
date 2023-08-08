@@ -1,4 +1,3 @@
-import { getRandomInRange } from '@utils/random';
 import { useCallback, useEffect, useState } from 'react';
 
 interface IRequestData {
