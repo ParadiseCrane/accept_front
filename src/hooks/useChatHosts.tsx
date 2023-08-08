@@ -6,6 +6,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -63,15 +64,16 @@ export const ChatHostsProvider: FC<{
     });
   }, []);
 
+  useEffect(() => {
+    fetchInitialHosts();
+  }, [fetchInitialHosts]);
+
   const { updatesCounter, loading } = useRefetch(
     fetchInitialHosts,
     updateIntervalSeconds
   );
 
-  const refetch = useCallback(
-    () => fetchInitialHosts(),
-    [fetchInitialHosts]
-  );
+  const refetch = useCallback(fetchInitialHosts, [fetchInitialHosts]);
 
   const value = useMemo<IChatHostsContext>(
     () => ({

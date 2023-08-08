@@ -8,7 +8,7 @@ export default async function NewChatMessages(
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/chat/new',
+    url: `api/chat/new/${req.query.skip}`,
     method: 'POST',
   });
 }
