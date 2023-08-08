@@ -3,7 +3,6 @@ import {
   ReactNode,
   memo,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -14,7 +13,6 @@ import { useLocale } from '@hooks/useLocale';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { useUser } from '@hooks/useUser';
-import { useRequest } from '@hooks/useRequest';
 import {
   BaseSearch,
   UserTaskSearch,
