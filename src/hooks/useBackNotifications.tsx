@@ -45,7 +45,7 @@ export const BackNotificationsProvider: FC<{
   const fetchNotifications = useCallback(
     (skip: boolean) => {
       if (!!!user)
-        return new Promise((res, rej) => {
+        return new Promise((res, _rej) => {
           res(true);
         });
       return sendRequest<
@@ -55,7 +55,7 @@ export const BackNotificationsProvider: FC<{
         if (!res.error) {
           setUnviewed(res.response.unviewed);
           if (res.response.hasNew) {
-            sendRequest<undefined, INotification[]>(
+            return sendRequest<undefined, INotification[]>(
               'notification/new',
               'GET'
             ).then((res) => {
@@ -71,20 +71,25 @@ export const BackNotificationsProvider: FC<{
               }
             });
           }
+          return new Promise((res, _rej) => {
+            res(true);
+          });
         }
       });
     },
     [user]
   );
 
+  const fetchNotificationsLong = useCallback(
+    () => fetchNotifications(false),
+    [fetchNotifications]
+  );
+
   useEffect(() => {
     fetchNotifications(true);
   }, [fetchNotifications]);
 
-  const { loading: fetching } = useRefetch(
-    () => fetchNotifications(false),
-    2
-  );
+  const { loading: fetching } = useRefetch(fetchNotificationsLong, 2);
 
   const sendViewed = useCallback(
     (
