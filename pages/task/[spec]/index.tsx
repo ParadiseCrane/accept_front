@@ -28,6 +28,7 @@ import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import dynamic from 'next/dynamic';
 import Description from '@components/Task/Description/Description';
 import Head from 'next/head';
+import { Kbd } from '@ui/basics';
 
 const DynamicSend = dynamic(
   () => import('@components/Task/Send/Send'),
@@ -240,6 +241,11 @@ function Task(props: {
               spec={task.spec}
               setActiveTab={set}
               languages={languages}
+              kbdHelperContent={
+                <>
+                  <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
+                </>
+              }
             />
           ) : (
             <DynamicSendText

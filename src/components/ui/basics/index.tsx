@@ -26,6 +26,7 @@ import Timeline from './Timeline/Timeline';
 import ColorSwatch from './ColorSwatch/ColorSwatch';
 import HelperTip from './HelperTip/HelperTip';
 import DateTimePicker from './DateTimePicker/DateTimePicker';
+import Kbd from './Kbd/Kbd';
 
 export {
   Button,
@@ -56,4 +57,5 @@ export {
   ColorSwatch,
   HelperTip,
   DateTimePicker,
+  Kbd,
 };

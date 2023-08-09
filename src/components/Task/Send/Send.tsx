@@ -1,6 +1,7 @@
 import { Button, Select } from '@ui/basics';
 import {
   FC,
+  ReactNode,
   memo,
   useCallback,
   useEffect,
@@ -17,12 +18,21 @@ import { Send as SendPlane } from 'tabler-icons-react';
 import { ILanguage } from '@custom-types/data/atomic';
 import { useLocalStorage } from '@mantine/hooks';
 import { MAX_CODE_LENGTH } from '@constants/Limits';
+import { MyHoverCardDropdownProps } from '@custom-types/ui/basics/button';
 
 const Send: FC<{
   spec: string;
   setActiveTab: setter<string | undefined>;
   languages: ILanguage[];
-}> = ({ spec, setActiveTab, languages }) => {
+  kbdHelperContent?: ReactNode;
+  buttonDropdownProps?: MyHoverCardDropdownProps;
+}> = ({
+  spec,
+  setActiveTab,
+  languages,
+  kbdHelperContent,
+  buttonDropdownProps,
+}) => {
   const { locale, lang } = useLocale();
 
   const [language, setLanguage] = useLocalStorage<string>({
@@ -105,8 +115,11 @@ const Send: FC<{
                     <p key={idx}>{p}</p>
                   ))}
               </div>
-            ) : undefined
+            ) : (
+              kbdHelperContent
+            )
           }
+          hoverCardDropdownProps={buttonDropdownProps}
           leftIcon={
             <SendPlane
               color={!isValid ? 'black' : 'var(--primary)'}
