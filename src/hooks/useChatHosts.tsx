@@ -6,6 +6,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -35,8 +36,10 @@ export const ChatHostsProvider: FC<{
 }> = ({ children, entity, updateIntervalSeconds }) => {
   const [hosts, setHosts] = useState<IHostData[]>([]);
   const [hasNewMessages, setHasNewMessages] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchInitialHosts = useCallback(() => {
+    setLoading(true);
     return sendRequest<undefined, IHostData[]>(
       `hosts/all/${entity}`,
       'GET'
@@ -47,6 +50,7 @@ export const ChatHostsProvider: FC<{
           sorted.length > 0 ? sorted[0].amount > 0 : false
         );
         setHosts(sorted);
+        setLoading(false);
       }
     });
   }, [entity]);
@@ -63,7 +67,11 @@ export const ChatHostsProvider: FC<{
     });
   }, []);
 
-  const { updatesCounter, loading } = useRefetch(
+  useEffect(() => {
+    fetchInitialHosts();
+  }, [fetchInitialHosts]);
+
+  const { updatesCounter } = useRefetch(
     fetchInitialHosts,
     updateIntervalSeconds
   );
@@ -77,7 +85,14 @@ export const ChatHostsProvider: FC<{
       refetch: fetchInitialHosts,
       selectHost,
     }),
-    [hasNewMessages, hosts, loading, updatesCounter, selectHost]
+    [
+      hasNewMessages,
+      hosts,
+      loading,
+      updatesCounter,
+      selectHost,
+      fetchInitialHosts,
+    ]
   );
 
   return (

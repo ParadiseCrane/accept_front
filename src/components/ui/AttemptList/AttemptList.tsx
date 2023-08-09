@@ -3,6 +3,7 @@ import {
   ReactNode,
   memo,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -135,16 +136,29 @@ const AttemptList: FC<{
         setLoading(false);
       })
       .catch(onError);
-  }, []);
+  }, [
+    onError,
+    processData,
+    searchParams,
+    taskSearch,
+    toDate,
+    url,
+    userSearch,
+  ]);
 
   const refetch = useCallback(() => {
-    if (needRefetch) return fetch_data();
+    if (activeTab && !shouldNotRefetch && needRefetch)
+      return fetch_data();
     return new Promise<void>((res) => {
       res();
     });
+  }, [activeTab, fetch_data, needRefetch, shouldNotRefetch]);
+
+  useEffect(() => {
+    fetch_data();
   }, [fetch_data]);
 
-  const {} = useRefetch(refetch, 5);
+  const {} = useRefetch(refetch, 2);
 
   return (
     <div>

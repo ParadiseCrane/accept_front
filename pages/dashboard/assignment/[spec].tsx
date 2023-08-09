@@ -7,11 +7,10 @@ import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
-import { getRandomIntInRange } from '@utils/random';
 
 function AssignmentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();
-  const refetchIntervalSeconds = getRandomIntInRange(15, 20);
+  const refetchIntervalSeconds = 8;
 
   return (
     <>

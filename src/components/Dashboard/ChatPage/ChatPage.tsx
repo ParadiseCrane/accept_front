@@ -32,11 +32,13 @@ const ChatPage: FC<{
     undefined
   );
 
+  const [initialLoad, setInitialLoad] = useState(true);
+
   const {
     hosts,
-    updatesCounter,
     refetch: fetchInitialHosts,
     selectHost,
+    loading,
   } = useChatHosts();
 
   const [searchedHosts, setSearchedHosts] =
@@ -79,7 +81,11 @@ const ChatPage: FC<{
     };
   }, [handleSearch]);
 
-  const initialLoad = updatesCounter == 0;
+  // const initialLoad = updatesCounter == 0;
+
+  useEffect(() => {
+    if (!loading) setInitialLoad(false);
+  }, [loading]);
 
   return (
     <div className={styles.wrapper}>
