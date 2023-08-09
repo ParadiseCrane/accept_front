@@ -20,11 +20,9 @@ export function useRefetch(
     func()
       .then(() => {
         setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
-      })
-      .catch(() => {})
-      .then(() => {
         setTimeout(() => setLoading(false), updateIntervalSeconds);
-      });
+      })
+      .catch(() => {});
   }, [func, updateIntervalSeconds]);
 
   useEffect(() => {
