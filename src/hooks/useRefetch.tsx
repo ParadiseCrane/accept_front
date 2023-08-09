@@ -14,20 +14,27 @@ export function useRefetch(
   const [updatesCounter, setUpdatesCounter] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const funcWrapper = useCallback(() => {
-    if (loading) return;
-    setLoading(true);
-    func()
-      .then(() => {
-        setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
-        setLoading(false);
-      })
-      .catch(() => {});
-  }, [func, loading]);
+  const funcWrapper = useCallback(
+    (loading: boolean) => {
+      if (loading) return;
+      setLoading(true);
+      func()
+        .then(() => {
+          setUpdatesCounter(
+            (counter) => (counter % COUNTER_LIMIT) + 1
+          );
+          setLoading(false);
+        })
+        .catch(() => {});
+    },
+    [func]
+  );
 
   useEffect(() => {
     if (loading) return;
-    const timeout = setTimeout(funcWrapper, updateIntervalSeconds);
+    const timeout = setTimeout(() => {
+      funcWrapper(false);
+    }, updateIntervalSeconds * 1000);
     return () => {
       clearTimeout(timeout);
     };

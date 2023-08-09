@@ -52,7 +52,7 @@ const ChatSticky: FC<{ spec: string; host: string }> = ({
             inline
             disabled={!hasNew}
             size={10}
-            offset={-1}
+            offset={0}
             zIndex={100}
             blink
           >
