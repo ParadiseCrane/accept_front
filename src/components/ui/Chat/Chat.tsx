@@ -138,7 +138,11 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone]);
 
-  useRefetch(() => fetchMessages(false), refetchIntervalSeconds);
+  const fetchMessagesLong = useCallback(
+    () => fetchMessages(false),
+    [fetchMessages]
+  );
+  useRefetch(fetchMessagesLong, refetchIntervalSeconds);
 
   useEffect(() => {
     const handleClick = (event: KeyboardEvent) => {
