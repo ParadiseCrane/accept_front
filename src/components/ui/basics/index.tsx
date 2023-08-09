@@ -15,7 +15,6 @@ import Select from './Select/Select';
 import Switch from './Switch/Switch';
 import TextArea from './TextArea/TextArea';
 import TextInput from './TextInput/TextInput';
-import TimeInput from './TimeInput/TimeInput';
 import Indicator from './Indicator/Indicator';
 import Tabs from './Tabs/Tabs';
 import Tip from './Tip/Tip';
@@ -47,7 +46,6 @@ export {
   Switch,
   TextArea,
   TextInput,
-  TimeInput,
   Indicator,
   Tabs,
   Tip,
