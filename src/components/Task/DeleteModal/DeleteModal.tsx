@@ -3,7 +3,14 @@ import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import Link from 'next/link';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import {
+  FC,
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { callback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
@@ -81,7 +88,7 @@ const DeleteModal: FC<{
               <div className={deleteModalStyles.list}>
                 {assignment_schemas.map(
                   (assignment_schema, index) => (
-                    <div key={index}>
+                    <Fragment key={index}>
                       <Link
                         href={`/edu/assignment_schema/${assignment_schema.spec}`}
                         className={deleteModalStyles.link}
@@ -89,7 +96,7 @@ const DeleteModal: FC<{
                       >
                         {assignment_schema.title}
                       </Link>
-                    </div>
+                    </Fragment>
                   )
                 )}
               </div>

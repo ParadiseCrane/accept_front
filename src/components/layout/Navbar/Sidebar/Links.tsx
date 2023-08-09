@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { HeaderLink } from '../Header/Links/HeaderLink';
 import { useLocale } from '@hooks/useLocale';
@@ -27,7 +27,7 @@ export const Links: FC<{
       <Stack align="flex-start" className={styles.linkWrapper}>
         <SignIn />
         {links.map((link, index) => (
-          <div key={index}>
+          <Fragment key={index}>
             {link.text(locale) == 'dropdown' ? (
               <>
                 <div
@@ -42,7 +42,7 @@ export const Links: FC<{
                 >
                   {dropdownLinks &&
                     dropdownLinks.map((link, index) => (
-                      <div key={index}>
+                      <Fragment key={index}>
                         <div
                           style={{ margin: 'var(--spacer-l) 10%' }}
                         >
@@ -51,7 +51,7 @@ export const Links: FC<{
                             additionalClass={styles.noHoverLink}
                           />
                         </div>
-                      </div>
+                      </Fragment>
                     ))}
                 </div>
               </>
@@ -61,7 +61,7 @@ export const Links: FC<{
                 additionalClass={styles.noHoverLink}
               />
             )}
-          </div>
+          </Fragment>
         ))}
       </Stack>
     </>

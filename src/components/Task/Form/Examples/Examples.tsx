@@ -3,7 +3,7 @@ import { ITaskTestData } from '@custom-types/data/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Button, InputWrapper } from '@ui/basics';
 
-import { FC, memo, useCallback } from 'react';
+import { FC, Fragment, memo, useCallback } from 'react';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import OpenTextInNewTab from '@ui/OpenTextInNewTab/OpenTextInNewTab';
 
@@ -32,7 +32,7 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({
       {form.values.examples &&
         form.values.examples.map(
           (item: ITaskTestData, index: number) => (
-            <div key={index}>
+            <Fragment key={index}>
               <ListItem
                 field="examples"
                 label={locale.task.form.example + ' #' + (index + 1)}
@@ -49,7 +49,7 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({
                   <OpenTextInNewTab text={item.outputData} />
                 }
               />
-            </div>
+            </Fragment>
           )
         )}
       {form.errors.examples && (
