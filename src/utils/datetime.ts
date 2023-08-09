@@ -9,14 +9,14 @@ export const concatDateTime = (date: Date, time: Date) => {
   return date;
 };
 
-export const timezoneDate = (date: Date) => {
+export const timezoneDate = (date: Date): Date => {
   return new Date(
     new Date(date).getTime() -
       new Date().getTimezoneOffset() * 60 * 1000
   );
 };
 
-export const UTCDate = (date: Date) => {
+export const UTCDate = (date: Date): Date => {
   return new Date(
     date.getTime() - new Date().getTimezoneOffset() * 60 * 1000
   );

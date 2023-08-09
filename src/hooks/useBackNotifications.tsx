@@ -76,8 +76,6 @@ export const BackNotificationsProvider: FC<{
         }
       );
     },
-    // TODO
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user]
   );
 
