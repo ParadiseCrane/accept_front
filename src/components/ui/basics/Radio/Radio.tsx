@@ -54,6 +54,7 @@ const Radio: FC<{
 
       <MantineRadio.Group
         size={shrink ? 'sm' : 'md'}
+        className={styles.groupWrapper}
         {...groupProps}
         {...form.getInputProps(field)}
         onChange={onChange}

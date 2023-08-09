@@ -93,8 +93,8 @@ export default Rating;
 const API_URL = getApiUrl();
 
 export const getServerSideProps: GetServerSideProps = async ({
-  req,
   res,
+  ..._
 }) => {
   const response = await fetch(`${API_URL}/api/rating/${LIMIT}`);
   if (response.status === 200) {

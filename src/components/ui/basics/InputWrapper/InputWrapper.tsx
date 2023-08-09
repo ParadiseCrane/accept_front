@@ -8,6 +8,7 @@ import { Helper } from '@ui/basics';
 const InputWrapper: FC<MyInputWrapperProps> = ({
   helperContent,
   shrink,
+  children,
   ...props
 }) => {
   return (
@@ -34,7 +35,7 @@ const InputWrapper: FC<MyInputWrapperProps> = ({
         {...props}
         label={undefined}
       >
-        {props.children}
+        {children}
       </MantineInput.Wrapper>
     </div>
   );

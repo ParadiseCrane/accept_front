@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { GetStaticProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -14,52 +14,30 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useUser } from '@hooks/useUser';
-import { UTCDate, concatDateTime } from '@utils/datetime';
 import { UseFormReturnType } from '@mantine/form/lib/types';
-import { useRouter } from 'next/router';
 import { INewNotification } from '@custom-types/data/notification';
 import { sendRequest } from '@requests/request';
 import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
+const initialValues = {
+  origin: '',
+  starter: '',
+  startDate: new Date(),
+  endDate: new Date(),
+  groups: [],
+  infinite: false,
+  status: 0,
+  dates: 0,
+  notificationTitle: 'Вам задан новый урок',
+  notificationDescription: '',
+  notificationShortDescription:
+    'Проверьте вкладку "Мои уроки" в профиле',
+};
+
 function AssignmentAdd(props: IAssignmentAddBundle) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
-  const router = useRouter();
-
-  const [initialValues, setInitialValues] = useState({
-    origin: '',
-    starter: '',
-    startDate: new Date(),
-    startTime: new Date(),
-    endDate: new Date(),
-    endTime: new Date(),
-    groups: [],
-    infinite: false,
-    status: 0,
-    dates: 0,
-    notificationTitle: 'Вам задан новый урок',
-    notificationDescription: '',
-    notificationShortDescription:
-      'Проверьте вкладку "Мои уроки" в профиле',
-  });
-
-  useEffect(() => {
-    const origin = (router.query.origin as string) || '';
-    const duration = +(router.query.duration || 0);
-    if (origin || duration) {
-      let endDate = new Date();
-      let endTime = new Date(endDate);
-      endDate.setMinutes(endDate.getMinutes() + duration);
-      endTime.setMinutes(endTime.getMinutes() + duration);
-      setInitialValues((initialValues) => ({
-        ...initialValues,
-        origin,
-        endDate,
-        endTime,
-      }));
-    }
-  }, [router.query.duration, router.query.origin]);
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -68,7 +46,7 @@ function AssignmentAdd(props: IAssignmentAddBundle) {
         errorNotification({
           id,
           title: locale.notify.group.validation.error,
-          autoClose: 5000,
+          autoClose: 500,
         });
         return;
       }
@@ -79,12 +57,8 @@ function AssignmentAdd(props: IAssignmentAddBundle) {
         starter: user?.login || '',
         status: form.values.status,
         infinite: form.values.infinite,
-        start: UTCDate(
-          concatDateTime(form.values.startDate, form.values.startTime)
-        ),
-        end: UTCDate(
-          concatDateTime(form.values.endDate, form.values.endTime)
-        ),
+        start: form.values.startDate,
+        end: form.values.endDate,
         groups: form.values.groups,
       };
 

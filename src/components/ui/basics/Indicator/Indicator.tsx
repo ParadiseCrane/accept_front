@@ -1,9 +1,11 @@
-import { FC, memo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import {
   IndicatorProps,
   Indicator as MantineIndicator,
 } from '@mantine/core';
 import styles from './indicator.module.css';
+
+const OVERFLOW_COUNT = 99;
 
 const SIZES: {
   [key: string]: { size_px: number; font_size: number };
@@ -12,9 +14,10 @@ const SIZES: {
   md: { size_px: 28, font_size: 14 },
 };
 
-interface CustomIndicatorProps extends IndicatorProps {
+interface CustomIndicatorProps extends Omit<IndicatorProps, 'label'> {
   scale?: keyof typeof SIZES;
   blink?: boolean;
+  label?: number;
 }
 
 const Indicator: FC<CustomIndicatorProps> = ({
@@ -25,6 +28,17 @@ const Indicator: FC<CustomIndicatorProps> = ({
   ...props
 }) => {
   const { size_px, font_size } = SIZES[scale];
+
+  const displayLabel = useMemo(
+    () =>
+      label
+        ? label > OVERFLOW_COUNT
+          ? `${OVERFLOW_COUNT}+`
+          : label.toString()
+        : undefined,
+    [label]
+  );
+
   return (
     <MantineIndicator
       size={size_px}
@@ -35,9 +49,8 @@ const Indicator: FC<CustomIndicatorProps> = ({
         },
       }}
       classNames={{ indicator: blink ? styles.blink : '' }}
-      overflowCount={99}
       {...props}
-      label={label && label.toString()}
+      label={displayLabel}
     >
       {children}
     </MantineIndicator>

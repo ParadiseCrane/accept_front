@@ -10,8 +10,6 @@ import Dates from './Dates/Dates';
 import TaskOrdering from './TaskOrdering/TaskOrdering';
 import Moderators from './Moderators/Moderators';
 import Preview from './Preview/Preview';
-import { concatDateTime } from '@utils/datetime';
-import { dateTimeCmp } from '@utils/dateTimeCmp';
 
 const stepFields: string[][] = [
   [
@@ -22,16 +20,7 @@ const stepFields: string[][] = [
     'allowRegistrationAfterStart',
     'shouldPenalizeAttempt',
   ],
-  [
-    'startDate',
-    'startTime',
-    'endDate',
-    'endTime',
-    'dates',
-    'frozeResultsDate',
-    'frozeResultsTime',
-    'frozeDate',
-  ],
+  ['startDate', 'endDate', 'frozeResults'],
   [], // task ordering
   ['moderators'],
   [], // preview
@@ -67,39 +56,18 @@ const Form: FC<{
         value.length < 20
           ? locale.tournament.form.validation.description
           : null,
-      startDate: (value, values) =>
-        !values.startDate
-          ? locale.tournament.form.validation.startDate
-          : !values.endDate
+      startDate: (value) =>
+        !value ? locale.tournament.form.validation.startDate : null,
+      endDate: (value, values) =>
+        !value
           ? locale.tournament.form.validation.endDate
-          : null,
-      dates: (value, values) =>
-        !!values.startDate &&
-        !!values.endDate &&
-        dateTimeCmp(
-          values.startDate,
-          values.startTime,
-          values.endDate,
-          values.endTime
-        ) >= 0
+          : !!values.startDate && values.startDate >= value
           ? locale.tournament.form.validation.date
           : null,
-      frozeDate: (value, values) =>
-        !!values.startDate &&
-        !!values.endDate &&
-        dateTimeCmp(
-          values.frozeResultsDate,
-          values.frozeResultsTime,
-          values.startDate,
-          values.startTime
-        ) == -1
+      frozeResults: (value, values) =>
+        !!values.startDate && value < values.startDate
           ? locale.tournament.form.validation.frozeDateStart
-          : dateTimeCmp(
-              values.frozeResultsDate,
-              values.frozeResultsTime,
-              values.endDate,
-              values.endTime
-            ) == 1
+          : !!values.endDate && value > values.endDate
           ? locale.tournament.form.validation.frozeDateEnd
           : null,
     },
@@ -126,14 +94,8 @@ const Form: FC<{
             key={'4'}
             tournament={{
               ...form.values,
-              start: concatDateTime(
-                form.values.startDate,
-                form.values.startTime
-              ),
-              end: concatDateTime(
-                form.values.endDate,
-                form.values.endTime
-              ),
+              start: form.values.startDate,
+              end: form.values.endDate,
             }}
           />,
         ]}

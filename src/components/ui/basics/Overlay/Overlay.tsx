@@ -5,7 +5,14 @@ import {
 } from '@mantine/core';
 
 const Overlay: FC<OverlayProps> = (props) => {
-  return <MantineOverlay {...props} opacity={0.6} blur={1.5} />;
+  return (
+    <MantineOverlay
+      {...props}
+      opacity={0.6}
+      blur={1.5}
+      color="#fff"
+    />
+  );
 };
 
 export default memo(Overlay);

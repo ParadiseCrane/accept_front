@@ -14,7 +14,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     label: locale.dashboard.developer.analytics.table.path,
     key: 'path',
     sortable: false,
-    sortFunction: (a: any, b: any) => 0,
+    sortFunction: () => 0,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -25,7 +25,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     label: locale.dashboard.developer.analytics.table.average,
     key: 'average_time',
     sortable: true,
-    sortFunction: (a: any, b: any) => 0,
+    sortFunction: () => 0,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -36,7 +36,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     label: locale.dashboard.developer.analytics.table.count,
     key: 'count',
     sortable: true,
-    sortFunction: (a: any, b: any) => 0,
+    sortFunction: () => 0,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -49,7 +49,7 @@ const Analytics: FC<{}> = ({}) => {
   const { locale } = useLocale();
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [locale]
   );
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({

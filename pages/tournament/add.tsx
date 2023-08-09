@@ -15,7 +15,6 @@ import {
   ITournamentAdd,
   ITournamentAddBundle,
 } from '@custom-types/data/ITournament';
-import { UTCDate, concatDateTime } from '@utils/datetime';
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -48,11 +47,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
       status: 0,
 
       startDate: new Date(),
-      startTime: new Date(),
       endDate: new Date(),
-      endTime: new Date(),
-      frozeResultsDate: new Date(),
-      frozeResultsTime: new Date(),
+      frozeResults: new Date(),
 
       participants: [],
 
@@ -63,7 +59,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
       allowRegistrationAfterStart: false,
       banned: [],
     }),
-    [user?.shortName]
+    [user?.login]
   );
 
   const handleSubmit = useCallback(
@@ -92,18 +88,9 @@ function TournamentAdd(props: ITournamentAddBundle) {
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: UTCDate(
-          concatDateTime(form.values.startDate, form.values.startTime)
-        ),
-        end: UTCDate(
-          concatDateTime(form.values.endDate, form.values.endTime)
-        ),
-        frozeResults: UTCDate(
-          concatDateTime(
-            form.values.frozeResultsDate,
-            form.values.frozeResultsTime
-          )
-        ),
+        start: form.values.startDate,
+        end: form.values.endDate,
+        frozeResults: form.values.frozeResults,
         banned: form.values.banned,
       };
 

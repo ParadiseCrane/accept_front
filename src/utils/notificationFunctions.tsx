@@ -19,7 +19,7 @@ export const newNotification = (params: any): string => {
     id,
     loading: true,
     classNames: defaultClassNames,
-    disallowClose: true,
+    withCloseButton: false,
     radius,
     ...params,
   });
@@ -31,7 +31,7 @@ export const successNotification = (params: any): void => {
     icon: <Check width={24} height={24} />,
     classNames: defaultClassNames,
     loading: false,
-    disallowClose: false,
+    withCloseButton: true,
     radius,
     ...params,
   });
@@ -42,7 +42,7 @@ export const errorNotification = (params: any): void => {
     icon: <X width={24} height={24} />,
     classNames: defaultClassNames,
     loading: false,
-    disallowClose: false,
+    withCloseButton: true,
     radius,
     ...params,
   });
@@ -53,7 +53,7 @@ export const infoNotification = (params: any): void => {
     icon: <InfoCircle width={24} height={24} />,
     classNames: defaultClassNames,
     loading: false,
-    disallowClose: false,
+    withCloseButton: true,
     radius,
     ...params,
   });
@@ -71,7 +71,7 @@ export const warningNotification = (params: any): void => {
     ),
     classNames: defaultClassNames,
     loading: false,
-    disallowClose: false,
+    withCloseButton: true,
     radius,
     ...params,
   });
