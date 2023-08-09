@@ -10,7 +10,6 @@ import NumberInput from './NumberInput/NumberInput';
 import Overlay from './Overlay/Overlay';
 import PasswordInput from './PasswordInput/PasswordInput';
 import Radio from './Radio/Radio';
-import RangeCalendar from './Calendar/RangeCalendar';
 import SegmentedControl from './SegmentedControl/SegmentedControl';
 import Select from './Select/Select';
 import Switch from './Switch/Switch';
@@ -42,7 +41,6 @@ export {
   Overlay,
   PasswordInput,
   Radio,
-  RangeCalendar,
   SegmentedControl,
   Select,
   Switch,

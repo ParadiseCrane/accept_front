@@ -14,11 +14,7 @@ import {
   ITournamentAdd,
   ITournamentEditBundle,
 } from '@custom-types/data/ITournament';
-import {
-  UTCDate,
-  concatDateTime,
-  timezoneDate,
-} from '@utils/datetime';
+import { timezoneDate } from '@utils/datetime';
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -46,11 +42,8 @@ function TournamentEdit(props: ITournamentEditBundle) {
       })),
       assessmentType: props.tournament.assessmentType.spec.toString(),
       startDate: timezoneDate(props.tournament.start),
-      startTime: timezoneDate(props.tournament.start),
       endDate: timezoneDate(props.tournament.end),
-      endTime: timezoneDate(props.tournament.end),
-      frozeResultsDate: timezoneDate(props.tournament.frozeResults),
-      frozeResultsTime: timezoneDate(props.tournament.frozeResults),
+      frozeResults: timezoneDate(props.tournament.frozeResults),
     }),
     [props.tournament]
   );
@@ -82,18 +75,9 @@ function TournamentEdit(props: ITournamentEditBundle) {
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: UTCDate(
-          concatDateTime(form.values.startDate, form.values.startTime)
-        ),
-        end: UTCDate(
-          concatDateTime(form.values.endDate, form.values.endTime)
-        ),
-        frozeResults: UTCDate(
-          concatDateTime(
-            form.values.frozeResultsDate,
-            form.values.frozeResultsTime
-          )
-        ),
+        start: form.values.startDate,
+        end: form.values.endDate,
+        frozeResults: form.values.frozeResults,
       };
 
       requestWithNotify<ITournamentAdd, string>(
