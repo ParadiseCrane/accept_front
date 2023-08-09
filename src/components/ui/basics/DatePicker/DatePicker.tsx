@@ -11,6 +11,9 @@ import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
 interface Props extends DatePickerProps {
   helperContent?: IDropdownContent;
+  // TODO: stubs
+  label?: any;
+  required?: boolean;
 }
 
 const DatePicker: FC<Props> = ({ helperContent, ...props }) => {
@@ -27,12 +30,7 @@ const DatePicker: FC<Props> = ({ helperContent, ...props }) => {
         </div>
         {helperContent && <Helper dropdownContent={helperContent} />}
       </div>
-      <MantineDatePicker
-        size="lg"
-        {...props}
-        label={undefined}
-        locale={lang}
-      />
+      <MantineDatePicker size="lg" {...props} locale={lang} />
     </div>
   );
 };

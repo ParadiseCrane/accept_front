@@ -22,6 +22,7 @@ import { useLocale } from '@hooks/useLocale';
 import Fuse from 'fuse.js';
 import { IHostData, useChatHosts } from '@hooks/useChatHosts';
 import { Eye, Search } from 'tabler-icons-react';
+
 const ChatPage: FC<{
   entity: string;
   type: 'tournament' | 'assignment';

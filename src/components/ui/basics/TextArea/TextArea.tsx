@@ -1,23 +1,15 @@
 import { FC, memo } from 'react';
 import inputStyles from '@styles/ui/input.module.css';
-import {
-  Textarea as MantineTextarea,
-  TextareaProps,
-} from '@mantine/core';
+import { Textarea as MantineTextarea } from '@mantine/core';
 import { Helper } from '@ui/basics';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import styles from './textArea.module.css';
+import { TextAreaProps } from '@custom-types/ui/basics/textArea';
 
-interface Props extends TextareaProps {
-  helperContent?: IDropdownContent;
-  shrink?: boolean;
-  monospace?: boolean;
-}
-
-const TextArea: FC<Props> = ({
+const TextArea: FC<TextAreaProps> = ({
   helperContent,
   shrink,
   monospace,
+  inputRef,
   ...props
 }) => {
   return (
@@ -37,6 +29,7 @@ const TextArea: FC<Props> = ({
       </div>
       <MantineTextarea
         size={shrink ? 'md' : 'lg'}
+        ref={inputRef}
         {...props}
         classNames={{
           ...props.classNames,

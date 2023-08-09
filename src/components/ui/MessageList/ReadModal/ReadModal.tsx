@@ -73,20 +73,21 @@ const ReadModal: FC<{
   return (
     <div>
       <Modal
-        overflow="inside"
         opened={opened}
         onClose={handleClose}
         size="80%"
-        overlayBlur={3}
+        overlayProps={{
+          blur: 3,
+        }}
         classNames={{
-          root: styles.wrapper,
+          root: styles.root,
           body: styles.body,
           title: styles.titleWrapper,
         }}
         title={
           <>
             {message ? (
-              <div>
+              <div className={styles.wrapper}>
                 <div className={styles.title}>
                   {message.title}
                   <span className={styles.paging}>

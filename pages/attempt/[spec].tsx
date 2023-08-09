@@ -5,7 +5,6 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { Tabs } from '@ui/basics';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
 import Info from '@components/Attempt/Info/Info';
 import Code from '@components/Attempt/Code/Code';
 import Title from '@ui/Title/Title';
@@ -18,9 +17,7 @@ import { useRequest } from '@hooks/useRequest';
 
 function Attempt(props: { attempt: IAttempt; author: string }) {
   const attempt = props.attempt;
-  const author = props.author;
-  ``;
-  const { user, isTeacher } = useUser();
+
   const { locale } = useLocale();
 
   const { data, loading, error } = useRequest<{}, boolean>(
@@ -96,20 +93,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const tournament = query.tournament;
-  const assignment = query.assignment;
-
-  const body = tournament
-    ? { base_type: 'tournament', base_spec: tournament }
-    : assignment
-    ? { base_type: 'assignment', base_spec: assignment }
-    : { base_type: 'basic', base_spec: '' };
 
   const response = await fetch(
     `${API_URL}/api/bundle/attempt/${spec}`,
     {
-      method: 'POST',
-      body: JSON.stringify(body),
+      method: 'GET',
       headers: {
         cookie: req.headers.cookie,
         'content-type': 'application/json',

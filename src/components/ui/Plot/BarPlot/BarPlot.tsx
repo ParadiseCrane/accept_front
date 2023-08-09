@@ -3,6 +3,7 @@ import { FC, memo, useMemo, useState } from 'react';
 import PlotTooltip from '../PlotTooltip/PlotTooltip';
 import Bar from './Bar/Bar';
 import styles from './barPlot.module.css';
+import { ColorSwatch } from '@ui/basics';
 
 const PADDING = 0.1; // percent
 const ROW_LINES = 10;
@@ -10,7 +11,8 @@ const ROW_LINES = 10;
 const BarPlot: FC<{
   title?: string;
   data: IPlotData[];
-}> = ({ title, data }) => {
+  hideLabels?: boolean;
+}> = ({ title, data, hideLabels }) => {
   const [toolTipLabel, setToolTipLabel] = useState<
     string | undefined
   >(undefined);
@@ -31,7 +33,11 @@ const BarPlot: FC<{
     <div className={styles.wrapper}>
       {title && <div className={styles.title}>{title}</div>}
       <PlotTooltip label={toolTipLabel} />
-      <svg viewBox="0 0 330 166">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 330 166" //0 0 330 166
+      >
         <g>
           {new Array(ROW_LINES).fill(0).map((_, index) => (
             <line
@@ -88,9 +94,20 @@ const BarPlot: FC<{
             length={data.length}
             padding={padding}
             setTooltipLabel={setToolTipLabel}
+            hideLabels={hideLabels}
           />
         ))}
       </svg>
+      {hideLabels && (
+        <div className={styles.legendWrapper}>
+          {data.map((item, index) => (
+            <div key={index} className={styles.legendItem}>
+              <ColorSwatch color={item.color} />
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

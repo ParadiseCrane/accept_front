@@ -8,7 +8,6 @@ import Groups from './Groups/Groups';
 import Origin from './Origin/Origin';
 import Stepper from '@ui/Stepper/Stepper';
 import { UseFormReturnType, useForm } from '@mantine/form';
-import { dateTimeCmp } from '@utils/dateTimeCmp';
 
 const stepFields = [
   ['startDate', 'startTime', 'endDate', 'endTime', 'dates'],
@@ -49,25 +48,14 @@ const Form: FC<{
         value.length == 0
           ? locale.assignment.form.validation.origin
           : null,
-      startDate: (value, values) =>
-        !values.startDate
-          ? locale.assignment.form.validation.startDate
-          : values.infinite
-          ? null
-          : !values.endDate
-          ? locale.assignment.form.validation.endDate
-          : null,
-      dates: (value, values) =>
+      startDate: (value) =>
+        !value ? locale.assignment.form.validation.startDate : null,
+      endDate: (value, values) =>
         values.infinite
           ? null
-          : !!values.startDate &&
-            !!values.endDate &&
-            dateTimeCmp(
-              values.startDate,
-              values.startTime,
-              values.endDate,
-              values.endTime
-            ) >= 0
+          : !value
+          ? locale.assignment.form.validation.endDate
+          : !!values.startDate && values.startDate >= value
           ? locale.assignment.form.validation.date
           : null,
       groups: (value) =>

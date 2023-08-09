@@ -4,6 +4,4 @@ export const validation = {
     'Assignment`s description can`t be shorter than 20 characters',
   tasks: 'Assignment must have tasks',
   tags: 'Assignment must have at least one tag',
-  defaultDuration:
-    'Assignment`s duration can`t be less then five minutes',
 };

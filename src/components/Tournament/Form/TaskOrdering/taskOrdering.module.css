@@ -3,14 +3,6 @@
   justify-content: center;
 }
 
-.itemWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacer-xxs);
-  padding: var(--spacer-m);
-}
-
 .dragButton {
   width: var(--spacer-s);
   height: var(--spacer-s);

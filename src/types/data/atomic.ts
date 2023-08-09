@@ -13,10 +13,16 @@ export interface IVerdict {
   fullText: string;
   shortText: string;
 }
-export interface ITest {
+export interface ITaskTestData {
   inputData: string;
   outputData: string;
 }
+
+export interface ITaskTestData {
+  inputData: string;
+  outputData: string;
+}
+
 export interface ITestResult {
   test: string; //test spec
   verdict: IVerdict;
@@ -75,11 +81,17 @@ export interface IConstraints {
 }
 
 export interface IFullTestResult {
-  test: ITest;
+  test: ITaskTestData;
   verdict: IVerdict;
 }
 
 export interface IPartialTestResult {
   test: number; // index
   verdict: IVerdict;
+}
+
+export interface IAnalyticsData {
+  path: string;
+  average: number;
+  count: number;
 }

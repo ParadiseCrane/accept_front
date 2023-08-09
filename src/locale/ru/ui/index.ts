@@ -7,6 +7,7 @@ import { groupSelector } from './groupSelector';
 import { roleSelector } from './roleSelector';
 import { schemasSelector } from './schemasSelector';
 import { dropzone } from './dropzone';
+import { taskTest } from './taskTest';
 
 export const ui = {
   codeArea,
@@ -18,4 +19,5 @@ export const ui = {
   roleSelector,
   schemasSelector,
   dropzone,
+  taskTest,
 };

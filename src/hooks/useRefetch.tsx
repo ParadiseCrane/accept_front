@@ -12,27 +12,26 @@ export function useRefetch(
   updateIntervalSeconds: number
 ): IRequestData {
   const [updatesCounter, setUpdatesCounter] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const funcWrapper = useCallback(() => {
+    if (loading) return;
     setLoading(true);
     func()
       .then(() => {
         setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
-  }, [func]);
+      .catch(() => {});
+  }, [func, loading]);
 
   useEffect(() => {
-    funcWrapper();
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    const id = setInterval(funcWrapper, updateIntervalSeconds * 1000);
-
-    return () => clearInterval(id);
-  }, [updateIntervalSeconds, funcWrapper]);
+    if (loading) return;
+    const timeout = setTimeout(funcWrapper, updateIntervalSeconds);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [funcWrapper, updateIntervalSeconds, loading]);
 
   return { updatesCounter, loading };
 }

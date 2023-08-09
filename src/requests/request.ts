@@ -13,13 +13,13 @@ export interface IPureResponse {
 }
 
 const processServerError = (e: any) => {
-  console.log(e);
+  console.error(e);
   return {
     error: true,
     detail: {
       description: {
-        ru: 'Ошибка на стороне сервера',
-        en: 'Server side error',
+        ru: 'Ошибка сети',
+        en: 'Network error',
       },
     },
   };
@@ -68,7 +68,6 @@ export const sendRequest = <ISend, IReceive>(
       return res as unknown as IResponse<IReceive>;
     })
     .catch((e) => {
-      console.log(e);
       return {
         response: {},
         ...processServerError(e),

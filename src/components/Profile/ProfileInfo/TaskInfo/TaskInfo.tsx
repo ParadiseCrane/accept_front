@@ -8,7 +8,8 @@ import DefaultCentralText from '@ui/Plot/PiePlot/DefaultCentralText/DefaultCentr
 import styles from './taskInfo.module.css';
 
 const TaskInfo: FC<ITaskInfo> = ({
-  total,
+  total_tried,
+  total_solved,
   verdict_distribution,
   complexity_distribution,
 }) => {
@@ -42,26 +43,30 @@ const TaskInfo: FC<ITaskInfo> = ({
 
   return (
     <div className={styles.wrapper}>
-      <BarPiePlot
-        title={locale.profile.info.task.complexity}
-        data={complexity_data}
-        centralLabel={(props) => <DefaultCentralText {...props} />}
-        defaultText={{
-          color: '',
-          label: locale.total,
-          amount: total,
-        }}
-      />
-      <BarPiePlot
-        title={locale.profile.info.task.verdicts}
-        data={verdict_data}
-        centralLabel={(props) => <DefaultCentralText {...props} />}
-        defaultText={{
-          label: locale.total,
-          amount: total,
-          color: '',
-        }}
-      />
+      {total_solved && (
+        <BarPiePlot
+          title={locale.profile.info.task.complexity}
+          data={complexity_data}
+          centralLabel={(props) => <DefaultCentralText {...props} />}
+          defaultText={{
+            color: '',
+            label: locale.total,
+            amount: total_solved,
+          }}
+        />
+      )}
+      {total_tried && (
+        <BarPiePlot
+          title={locale.profile.info.task.verdicts}
+          data={verdict_data}
+          centralLabel={(props) => <DefaultCentralText {...props} />}
+          defaultText={{
+            label: locale.total,
+            amount: total_tried,
+            color: '',
+          }}
+        />
+      )}
     </div>
   );
 };

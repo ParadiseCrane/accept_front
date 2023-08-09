@@ -17,7 +17,6 @@ import {
   useState,
 } from 'react';
 import { useLocale } from './useLocale';
-import { getRandomIntInRange } from '@utils/random';
 import { useUser } from './useUser';
 import { useRefetch } from './useRefetch';
 
@@ -42,46 +41,55 @@ export const BackNotificationsProvider: FC<{
   const { lang } = useLocale();
   const [unviewed, setUnviewed] = useState<number>(0);
   const { user } = useUser();
-  const updateIntervalSeconds = getRandomIntInRange(11, 13);
 
-  const fetchNotifications = useCallback(() => {
-    if (!!!user) return new Promise(() => {});
-    return sendRequest<
-      undefined,
-      { unviewed: number; hasNew: boolean }
-    >('notification/new-info', 'GET').then((res) => {
-      if (!res.error) {
-        setUnviewed(res.response.unviewed);
-        if (res.response.hasNew) {
-          sendRequest<undefined, INotification[]>(
-            'notification/new',
-            'GET'
-          ).then((res) => {
-            if (!res.error) {
-              res.response.map((notification) => {
-                const id = newNotification({});
-                infoNotification({
-                  id,
-                  title: notification.title,
-                  message: notification.shortDescription,
+  const fetchNotifications = useCallback(
+    (skip: boolean) => {
+      if (!!!user)
+        return new Promise((res, _rej) => {
+          res(true);
+        });
+      return sendRequest<
+        undefined,
+        { unviewed: number; hasNew: boolean }
+      >(`notification/new-info/${skip}`, 'GET').then((res) => {
+        if (!res.error) {
+          setUnviewed(res.response.unviewed);
+          if (res.response.hasNew) {
+            return sendRequest<undefined, INotification[]>(
+              'notification/new',
+              'GET'
+            ).then((res) => {
+              if (!res.error) {
+                res.response.map((notification) => {
+                  const id = newNotification({});
+                  infoNotification({
+                    id,
+                    title: notification.title,
+                    message: notification.shortDescription,
+                  });
                 });
-              });
-            }
+              }
+            });
+          }
+          return new Promise((res, _rej) => {
+            res(true);
           });
         }
-      }
-    });
-  }, [user]);
+      });
+    },
+    [user]
+  );
+
+  const fetchNotificationsLong = useCallback(
+    () => fetchNotifications(false),
+    [fetchNotifications]
+  );
 
   useEffect(() => {
-    if (!!!user) return;
-    fetchNotifications();
-  }, [user]); //eslint-disable-line
+    fetchNotifications(true);
+  }, [fetchNotifications]);
 
-  const { loading } = useRefetch(
-    fetchNotifications,
-    updateIntervalSeconds
-  );
+  const { loading: fetching } = useRefetch(fetchNotificationsLong, 2);
 
   const sendViewed = useCallback(
     (
@@ -110,10 +118,10 @@ export const BackNotificationsProvider: FC<{
     () => ({
       unviewed,
       sendViewed,
-      loading,
-      refetchNewNotifications: fetchNotifications,
+      loading: fetching,
+      refetchNewNotifications: () => fetchNotifications(true),
     }),
-    [unviewed, sendViewed, loading, fetchNotifications]
+    [unviewed, sendViewed, fetching, fetchNotifications]
   );
 
   return (

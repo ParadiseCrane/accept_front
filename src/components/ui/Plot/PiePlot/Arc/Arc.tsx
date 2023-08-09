@@ -1,5 +1,5 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 import styles from './arc.module.css';
 
 const Arc: FC<{
@@ -25,21 +25,33 @@ const Arc: FC<{
 }) => {
   const [outerRadius, setOuterRadius] = useState(outer_radius);
 
-  const offset = (2 * Math.PI * prev) / total;
-  const angle = (2 * Math.PI * amount) / total - 0.01;
-  const largeAngleFlag = angle >= Math.PI ? 1 : 0;
-  const sn = Math.sin(angle);
-  const cs = Math.cos(angle);
-  const coords = [
-    `M 0 ${-outerRadius}`, // MoveTo
-    `A ${outerRadius} ${outerRadius} 0 ${largeAngleFlag} 1 ${
-      outerRadius * sn
-    } ${-outerRadius * cs}`, // Arc
-    `L ${inner_radius * sn} ${-inner_radius * cs}`, // LineTo
-    `A ${inner_radius} ${inner_radius} 0 ${largeAngleFlag} 0 0 ${-inner_radius}`, // Arc
-    'Z', // Close Path
-  ];
-  const path = coords.join(' ');
+  const offset = useMemo(
+    () => (2 * Math.PI * prev) / total,
+    [prev, total]
+  );
+  const angle = useMemo(
+    () => (2 * Math.PI * amount) / total - 0.01,
+    [amount, total]
+  );
+  const largeAngleFlag = useMemo(
+    () => (angle >= Math.PI ? 1 : 0),
+    [angle]
+  );
+  const sn = useMemo(() => +Math.sin(angle).toFixed(5), [angle]);
+  const cs = useMemo(() => +Math.cos(angle).toFixed(5), [angle]);
+  const coords = useMemo(
+    () => [
+      `M 0 ${-outerRadius}`, // MoveTo
+      `A ${outerRadius} ${outerRadius} 0 ${largeAngleFlag} 1 ${
+        outerRadius * sn
+      } ${-outerRadius * cs}`, // Arc
+      `L ${inner_radius * sn} ${-inner_radius * cs}`, // LineTo
+      `A ${inner_radius} ${inner_radius} 0 ${largeAngleFlag} 0 0 ${-inner_radius}`, // Arc
+      'Z', // Close Path
+    ],
+    [cs, inner_radius, largeAngleFlag, outerRadius, sn]
+  );
+  const path = useMemo(() => coords.join(' '), [coords]);
 
   const onEnter = useCallback(() => {
     setCenterText({ label, amount, color });

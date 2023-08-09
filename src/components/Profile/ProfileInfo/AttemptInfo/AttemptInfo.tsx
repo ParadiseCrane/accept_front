@@ -10,6 +10,7 @@ import DefaultCentralText from '@ui/Plot/PiePlot/DefaultCentralText/DefaultCentr
 const AttemptInfo: FC<IAttemptInfo> = ({
   total,
   language_distribution,
+  language_solved_distribution,
   verdict_distribution,
 }) => {
   const { locale } = useLocale();
@@ -25,6 +26,19 @@ const AttemptInfo: FC<IAttemptInfo> = ({
           } as IPlotData)
       ),
     [language_distribution]
+  );
+
+  const language_solved_data = useMemo(
+    () =>
+      language_solved_distribution.map(
+        (item, index) =>
+          ({
+            label: item.name,
+            amount: item.amount,
+            color: getColor(index, 4),
+          } as IPlotData)
+      ),
+    [language_solved_distribution]
   );
 
   const verdict_data = useMemo(
@@ -63,7 +77,32 @@ const AttemptInfo: FC<IAttemptInfo> = ({
           label: locale.total,
           amount: total,
         }}
+        hideLabels
       />
+      <BarPiePlot
+        title={locale.profile.info.attempt.languages_solved}
+        data={language_solved_data}
+        centralLabel={(centerText: IPlotData) => (
+          <div className={styles.langWrapper}>
+            <div
+              className={styles.langName}
+              style={{ color: centerText.color }}
+            >
+              {centerText.label}
+            </div>
+            <div className={styles.langAmount}>
+              {centerText.amount}
+            </div>
+          </div>
+        )}
+        defaultText={{
+          color: '',
+          label: locale.total,
+          amount: total,
+        }}
+        hideLabels
+      />
+
       <BarPiePlot
         title={locale.profile.info.attempt.verdicts}
         data={verdict_data}

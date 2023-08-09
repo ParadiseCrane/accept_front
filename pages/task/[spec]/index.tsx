@@ -28,6 +28,7 @@ import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import dynamic from 'next/dynamic';
 import Description from '@components/Task/Description/Description';
 import Head from 'next/head';
+import { Kbd } from '@ui/basics';
 
 const DynamicSend = dynamic(
   () => import('@components/Task/Send/Send'),
@@ -131,9 +132,7 @@ function Task(props: {
   ).concat([
     {
       color: 'blue',
-      href: `/task/tests/${task.spec}${
-        type ? `?${type}=${querySpec}` : ''
-      }`,
+      href: `/task/tests/${task.spec}`,
       icon: (
         <Notes
           width={STICKY_SIZES[width] / 3}
@@ -144,9 +143,7 @@ function Task(props: {
     },
     {
       color: 'green',
-      href: `/task/edit/${task.spec}${
-        type ? `?${type}=${querySpec}` : ''
-      }`,
+      href: `/task/edit/${task.spec}`,
       icon: (
         <Pencil
           width={STICKY_SIZES[width] / 3}
@@ -244,6 +241,11 @@ function Task(props: {
               spec={task.spec}
               setActiveTab={set}
               languages={languages}
+              kbdHelperContent={
+                <>
+                  <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
+                </>
+              }
             />
           ) : (
             <DynamicSendText
@@ -284,20 +286,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const tournament = query.tournament;
-  const assignment = query.assignment;
-
-  const body = tournament
-    ? { base_type: 'tournament', base_spec: tournament }
-    : assignment
-    ? { base_type: 'assignment', base_spec: assignment }
-    : { base_type: 'basic', base_spec: '' };
 
   const response = await fetch(
     `${API_URL}/api/bundle/task-page/${spec}`,
     {
-      method: 'POST',
-      body: JSON.stringify(body),
+      method: 'GET',
       headers: {
         cookie: req.headers.cookie,
         'content-type': 'application/json',

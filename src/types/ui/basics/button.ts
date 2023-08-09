@@ -6,13 +6,18 @@ import {
   HoverCardTargetProps,
 } from '@mantine/core';
 
+export type MyHoverCardDropdownProps = Omit<
+  HoverCardDropdownProps,
+  'children'
+>;
+
 export type MyButtonProps = ButtonProps &
   React.ComponentPropsWithoutRef<'button'> &
   React.ComponentPropsWithoutRef<'a'> & {
     hoverCardProps?: HoverCardProps;
-    hoverCardDropdownProps?: Omit<HoverCardDropdownProps, 'children'>;
+    hoverCardDropdownProps?: MyHoverCardDropdownProps;
     hoverCardTargetProps?: HoverCardTargetProps;
-    dropdownContent?: string | ReactNode;
+    dropdownContent?: string | ReactNode | string[];
     targetWrapperStyle?: CSSProperties;
     targetWrapperClassName?: string;
     buttonWrapperStyle?: CSSProperties;

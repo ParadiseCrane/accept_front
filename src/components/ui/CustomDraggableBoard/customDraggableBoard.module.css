@@ -1,0 +1,9 @@
+.wrapper {
+  user-select: none;
+  font-size: var(--font-size-m);
+}
+
+.columnsWrapper {
+  display: flex;
+  gap: var(--spacer-l);
+}

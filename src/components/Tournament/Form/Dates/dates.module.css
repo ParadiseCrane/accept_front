@@ -1,24 +1,5 @@
-.dateTimeInput {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacer-xl);
-  justify-content: space-around;
-}
-
-.timeInputs {
+.wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  max-width: 300px;
-}
-
-.freezeTable {
-  margin-top: var(--spacer-xl);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacer-m);
+  gap: var(--spacer-xl);
 }

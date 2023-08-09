@@ -22,3 +22,10 @@
 .radio:checked {
   background-color: var(--primary);
 }
+
+.groupWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-m);
+  flex-wrap: wrap;
+}

@@ -23,7 +23,7 @@ export const attempt = {
   ],
   pages: {
     info: 'Информация',
-    code: 'Код посылки',
+    code: 'Посылка',
   },
   ban: {
     title: 'Забанить попытку',

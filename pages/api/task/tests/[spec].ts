@@ -9,6 +9,6 @@ export default async function TaskTests(
     req: req,
     res: res,
     url: `api/bundle/task-tests/${req.query.spec}`,
-    method: 'POST',
+    method: 'GET',
   });
 }

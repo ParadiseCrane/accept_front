@@ -2,12 +2,7 @@
   background-color: #ffffff;
   width: fit-content;
 }
+
 .label {
   font-size: var(--font-size-s);
-}
-.active {
-  background-color: var(--primary);
-}
-.labelActive {
-  color: #ffffff !important;
 }

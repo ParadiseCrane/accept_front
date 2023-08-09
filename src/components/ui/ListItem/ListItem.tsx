@@ -1,23 +1,28 @@
 import { callback } from '@custom-types/ui/atomic';
 import { Trash } from 'tabler-icons-react';
-import { FC, memo } from 'react';
-import OpenTextInNewTab from '@ui/OpenTextInNewTab/OpenTextInNewTab';
+import { ChangeEvent, FC, ReactNode, memo } from 'react';
 import styles from './listItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';
-import { Icon, TextArea } from '@ui/basics';
+import { Icon } from '@ui/basics';
+import TestArea from '@ui/TestArea/TestArea';
+import { ITaskTestData } from '@custom-types/data/atomic';
 
 const ListItem: FC<{
   label: string;
   inLabel: string;
   outLabel: string;
-  form: any;
+  form?: any;
+  field?: string;
+  values?: ITaskTestData[];
   index: number;
-  field: string;
+  openInputNewTab: ReactNode;
+  openOutputNewTab: ReactNode;
   maxRows?: number;
   minRows?: number;
   hideInput?: boolean;
   hideOutput?: boolean;
   onDelete?: callback<number, void>;
+  additionalActions?: ReactNode[];
   readonly?: boolean;
   classNames?: any;
   shrink?: boolean;
@@ -32,10 +37,14 @@ const ListItem: FC<{
   index,
   onDelete,
   form,
-  field,
+  field = '',
   readonly,
+  additionalActions,
   classNames,
   shrink,
+  openInputNewTab,
+  openOutputNewTab,
+  values,
 }) => {
   return (
     <div
@@ -45,77 +54,79 @@ const ListItem: FC<{
     >
       <div className={`${styles.label} ${inputStyles.label}`}>
         {label}
-        {onDelete && (
-          <Icon
-            onClick={() => onDelete(index)}
-            color="red"
-            variant="transparent"
-            size="xs"
-          >
-            <Trash />
-          </Icon>
-        )}
+        <div className={styles.actions}>
+          {!!onDelete && (
+            <Icon
+              onClick={() => onDelete(index)}
+              color="red"
+              variant="transparent"
+              size="xs"
+            >
+              <Trash />
+            </Icon>
+          )}
+          {!!additionalActions &&
+            additionalActions.map((actionNode) => actionNode)}
+        </div>
       </div>
       <div className={styles.example}>
         {!hideInput && (
-          <TextArea
-            monospace
-            autosize
+          <TestArea
+            readonly={readonly}
             label={
               <div
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
               >
                 {inLabel}
-                <OpenTextInNewTab
-                  text={form.values[field][index]['inputData']}
-                />
+                {openInputNewTab}
               </div>
             }
             minRows={minRows || 2}
             maxRows={maxRows}
-            value={form.values[field][index]['inputData']}
-            onBlur={() =>
-              readonly ? undefined : form.validateField(field)
+            value={
+              readonly && values
+                ? values[index].inputData
+                : form.values[field][index]['inputData']
             }
-            onChange={
-              readonly
-                ? undefined
-                : (e) => {
-                    form.values[field][index]['inputData'] =
-                      e.target.value;
-                    form.setFieldValue(field, form.values[field]);
-                  }
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              if (!readonly) {
+                form.values[field][index]['inputData'] =
+                  e.target.value;
+                form.setFieldValue(field, form.values[field]);
+              }
+            }}
+            validateField={() =>
+              readonly ? undefined : form.validateField(field)
             }
           />
         )}
         {!hideOutput && (
-          <TextArea
-            monospace
-            autosize
+          <TestArea
+            readonly={readonly}
             label={
               <div
                 className={`${styles.label} ${inputStyles.subLabel} ${classNames?.label}`}
               >
                 {outLabel}
-                <OpenTextInNewTab
-                  text={form.values[field][index]['outputData']}
-                />
+                {openOutputNewTab}
               </div>
             }
             minRows={minRows || 2}
             maxRows={maxRows}
-            value={form.values[field][index]['outputData']}
-            onBlur={
-              readonly ? undefined : () => form.validateField(field)
+            value={
+              readonly && values
+                ? values[index].outputData
+                : form.values[field][index]['outputData']
             }
-            onChange={
-              readonly
-                ? undefined
-                : (e) => {
-                    form.values[field][index]['outputData'] =
-                      e.target.value;
-                    form.setFieldValue(field, form.values[field]);
-                  }
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              if (!readonly) {
+                form.values[field][index]['outputData'] =
+                  e.target.value;
+                form.setFieldValue(field, form.values[field]);
+              }
+            }}
+            validateField={() =>
+              readonly ? undefined : form.validateField(field)
             }
           />
         )}

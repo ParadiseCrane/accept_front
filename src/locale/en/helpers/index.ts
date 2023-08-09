@@ -7,15 +7,17 @@ import { grade } from './grade';
 import { group } from './group';
 import { tournament } from './tournament';
 import { attempt } from './attempt';
+import { taskTest } from './taskTest';
 
 export const helpers = {
   task,
   dropzone,
   auth,
   notification,
-  tournament,
   student,
   grade,
+  tournament,
   group,
   attempt,
+  taskTest,
 };

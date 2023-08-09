@@ -1,6 +1,7 @@
 import { Button, Select } from '@ui/basics';
 import {
   FC,
+  ReactNode,
   memo,
   useCallback,
   useEffect,
@@ -16,12 +17,22 @@ import styles from './send.module.css';
 import { Send as SendPlane } from 'tabler-icons-react';
 import { ILanguage } from '@custom-types/data/atomic';
 import { useLocalStorage } from '@mantine/hooks';
+import { MAX_CODE_LENGTH } from '@constants/Limits';
+import { MyHoverCardDropdownProps } from '@custom-types/ui/basics/button';
 
 const Send: FC<{
   spec: string;
   setActiveTab: setter<string | undefined>;
   languages: ILanguage[];
-}> = ({ spec, setActiveTab, languages }) => {
+  kbdHelperContent?: ReactNode;
+  buttonDropdownProps?: MyHoverCardDropdownProps;
+}> = ({
+  spec,
+  setActiveTab,
+  languages,
+  kbdHelperContent,
+  buttonDropdownProps,
+}) => {
   const { locale, lang } = useLocale();
 
   const [language, setLanguage] = useLocalStorage<string>({
@@ -46,7 +57,7 @@ const Send: FC<{
     const body = {
       task: spec,
       language: Number(language),
-      programText: code.trim(),
+      programText: code,
       textAnswers: [],
     };
     requestWithNotify(
@@ -70,7 +81,10 @@ const Send: FC<{
     [setLanguage]
   );
 
-  const isValid = useMemo(() => code.trim().length > 0, [code]);
+  const isValid = useMemo(
+    () => code.trim().length > 0 && code.length < MAX_CODE_LENGTH,
+    [code]
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -92,6 +106,20 @@ const Send: FC<{
           variant="outline"
           onClick={handleSubmit}
           disabled={!isValid}
+          dropdownContent={
+            !isValid ? (
+              <div>
+                {locale.helpers.task.send
+                  .invalidCodeAnswer(MAX_CODE_LENGTH)
+                  .map((p, idx) => (
+                    <p key={idx}>{p}</p>
+                  ))}
+              </div>
+            ) : (
+              kbdHelperContent
+            )
+          }
+          hoverCardDropdownProps={buttonDropdownProps}
           leftIcon={
             <SendPlane
               color={!isValid ? 'black' : 'var(--primary)'}
@@ -112,6 +140,7 @@ const Send: FC<{
           wrapper: styles.codeArea,
           input: styles.codeArea,
         }}
+        onSend={handleSubmit}
       />
     </div>
   );

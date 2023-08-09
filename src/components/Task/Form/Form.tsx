@@ -11,13 +11,11 @@ import { callback } from '@custom-types/ui/atomic';
 import {
   IHintAlarmType,
   ITaskCheckType,
+  ITaskTestData,
   ITaskType,
-  ITest,
 } from '@custom-types/data/atomic';
 import Stepper from '@ui/Stepper/Stepper';
 import { UseFormReturnType, useForm } from '@mantine/form';
-
-export const MbOfText = 2 * 1024 ** 2; // 2 is average utf-8 character size, 1024 ** 2 is 1Mb
 
 const stepFields = [
   ['title', 'tags', 'complexity', 'taskType', 'checkType', 'hasHint'],
@@ -37,7 +35,7 @@ const stepFields = [
     'hintContent',
   ],
   ['examples'],
-  ['checkerLang', 'checkerCode', 'tests'],
+  ['checkerLang', 'checkerCode'],
   [],
 ];
 
@@ -86,7 +84,7 @@ const Form: FC<{
           ? locale.task.form.validation.constraints.time
           : null,
       complexity: (value) =>
-        value < 0
+        value <= 0
           ? locale.task.form.validation.complexity.least
           : value > 100
           ? locale.task.form.validation.complexity.most
@@ -95,29 +93,10 @@ const Form: FC<{
         value.length < 1
           ? locale.task.form.validation.examples.number
           : value.filter(
-              (pair: ITest) =>
+              (pair: ITaskTestData) =>
                 pair.inputData.trim() || pair.outputData.trim()
             ).length != value.length
           ? locale.task.form.validation.examples.empty
-          : null,
-      tests: (value: ITest[], values) =>
-        value.length < 1
-          ? locale.task.form.validation.tests.number
-          : value.filter(
-              (pair: ITest) =>
-                (pair.inputData.trim() || values.taskType != '0') &&
-                (pair.outputData.trim() || values.checkType != '0')
-            ).length != value.length
-          ? locale.task.form.validation.tests.empty
-          : value.reduce(
-              (acc, item) =>
-                acc +
-                item.inputData.trim().length +
-                item.outputData.trim().length,
-              0
-            ) >
-            2 * MbOfText
-          ? locale.task.form.validation.tests.tooLarge
           : null,
       checkerCode: (value, values) =>
         values.checkType == '1' && value.length == 0
@@ -169,7 +148,7 @@ const Form: FC<{
         <Examples key="3" form={form} />,
         <>
           {form.values.checkType === '0' ? (
-            <Tests key="4" form={form} />
+            <Tests key="4" />
           ) : (
             <Checker key="4" form={form} />
           )}

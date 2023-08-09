@@ -15,6 +15,16 @@ export const task = {
   ],
   checkerPlaceholder:
     'Example of a checker for the task "Increase the number by 1" in Python:\n\ntest_input=int(input())\nuser_output=int(input())\nprint(1 if user_output - test_input == 1 else 0)',
-
-  emptyTextAnswer: ['Ypu must fill at least one answer field'],
+  send: {
+    invalidTextAnswer: (limit: number) => [
+      'Incorrect input:',
+      'At least one input field must be filled',
+      `Input field length cannon exceed maximum of ${limit} symbols`,
+    ],
+    invalidCodeAnswer: (limit: number) => [
+      'Incorrect input:',
+      'Code field cannot be empty',
+      `Code length cannon exceed maximum of ${limit} symbols`,
+    ],
+  },
 };

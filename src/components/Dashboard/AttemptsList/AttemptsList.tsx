@@ -41,7 +41,7 @@ const refactorAttempt = (
     display: (
       <a
         className={tableStyles.link}
-        href={`/attempt/${attempt.spec}?${type}=${spec}`}
+        href={`/attempt/${attempt.spec}`}
       >
         {getLocalDate(attempt.date)}
       </a>
@@ -235,7 +235,7 @@ const AttemptList: FC<{
         initialColumns={initialColumns}
         refactorAttempt={refactor}
         toDate={fetchDate == 'end' ? endDate : undefined}
-        empty={<>{locale.profile.empty.attempts}</>}
+        empty={<>{locale.dashboard.attemptsList.empty}</>}
         noDefault
         shouldNotRefetch={shouldNotRefetch}
         classNames={{

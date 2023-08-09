@@ -4,7 +4,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -15,9 +14,7 @@ import { Textarea } from '@mantine/core';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import { sendRequest } from '@requests/request';
-
 import { useRefetch } from '@hooks/useRefetch';
-import { getRandomIntInRange } from '@utils/random';
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -45,21 +42,16 @@ const Chat: FC<{
   const [firstFetchDone, setFirstFetchDone] = useState(false);
   const [newMessages, setNewMessages] = useState<string[]>([]);
 
-  const refetchIntervalSeconds = useMemo(
-    () =>
-      opened
-        ? getRandomIntInRange(5, 8)
-        : getRandomIntInRange(12, 17),
-    [opened]
-  );
+  const refetchIntervalSeconds = 2;
 
   const appendMessages = useCallback((messages: IChatMessage[]) => {
     setMessages((oldMessages) => {
+      console.log(oldMessages);
+      console.log(messages);
       if (oldMessages.length == 0) return messages;
       if (messages.length == 0) return oldMessages;
       if (
-        oldMessages[oldMessages.length - 1].spec ==
-        messages[messages.length - 1].spec
+        oldMessages[oldMessages.length - 1].spec == messages[0].spec
       )
         return oldMessages;
       return [...oldMessages, ...messages];
@@ -76,18 +68,29 @@ const Chat: FC<{
       }, 100);
   }, []);
 
-  const fetchMessages = useCallback(() => {
-    return sendRequest<{}, IChatMessage[]>('chat/new', 'POST', {
-      entity,
-      host,
-      moderator: !!moderator,
-    }).then((res) => {
-      if (!res.error) {
-        appendMessages(res.response);
-        if (indicateNew && res.response.length > 0) indicateNew();
-      }
-    });
-  }, [entity, host, moderator, appendMessages, indicateNew]);
+  const fetchMessages = useCallback(
+    (skip: boolean) => {
+      return sendRequest<{}, IChatMessage[]>(
+        `chat/new/${skip}`,
+        'POST',
+        {
+          entity,
+          host,
+          moderator: !!moderator,
+        }
+      ).then((res) => {
+        if (!res.error) {
+          appendMessages(res.response);
+          if (indicateNew && res.response.length > 0) indicateNew();
+        }
+      });
+    },
+    [entity, host, moderator, appendMessages, indicateNew]
+  );
+
+  useEffect(() => {
+    fetchMessages(true);
+  }, [fetchMessages]);
 
   const handleSend = useCallback(() => {
     if (message.trim() === '') return;
@@ -105,7 +108,7 @@ const Chat: FC<{
   }, [entity, host, moderator, message, appendMessages]);
 
   useEffect(() => {
-    if (opened && newMessages.length > 0)
+    if (newMessages.length > 0)
       sendRequest<{}, boolean>('/chat/viewed', 'POST', {
         specs: newMessages,
         entity,
@@ -135,7 +138,11 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone]);
 
-  useRefetch(fetchMessages, refetchIntervalSeconds);
+  const fetchMessagesLong = useCallback(
+    () => fetchMessages(false),
+    [fetchMessages]
+  );
+  useRefetch(fetchMessagesLong, refetchIntervalSeconds);
 
   useEffect(() => {
     const handleClick = (event: KeyboardEvent) => {

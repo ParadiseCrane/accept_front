@@ -1,8 +1,8 @@
-export const reorderList = (
-  list: any[],
+export const reorderList = <T = any>(
+  list: T[],
   from: number,
   to: number
-): any[] => {
+): T[] => {
   let new_list;
   if (from < to) {
     new_list = list.slice(0, from);

@@ -19,8 +19,7 @@ const Helper: FC<MyHelperProps> = ({
       withArrow
       position="bottom"
       arrowSize={5}
-      transition={'scale'}
-      transitionDuration={300}
+      transitionProps={{ transition: 'scale', duration: 300 }}
       withinPortal
       {...hoverCardProps}
     >

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -14,27 +14,24 @@ import {
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import {
-  UTCDate,
-  concatDateTime,
-  timezoneDate,
-} from '@utils/datetime';
+import { timezoneDate } from '@utils/datetime';
 import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function AssignmentEdit(props: IAssignmentEditBundle) {
   const { locale, lang } = useLocale();
 
-  const initialValues = {
-    ...props.assignment,
-    startDate: timezoneDate(props.assignment.start),
-    startTime: timezoneDate(props.assignment.start),
-    endDate: timezoneDate(props.assignment.end),
-    endTime: timezoneDate(props.assignment.end),
-    notificationTitle: '',
-    notificationDescription: '',
-    notificationShortDescription: '',
-  };
+  const initialValues = useMemo(
+    () => ({
+      ...props.assignment,
+      startDate: timezoneDate(props.assignment.start),
+      endDate: timezoneDate(props.assignment.end),
+      notificationTitle: '',
+      notificationDescription: '',
+      notificationShortDescription: '',
+    }),
+    [props]
+  );
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -54,12 +51,8 @@ function AssignmentEdit(props: IAssignmentEditBundle) {
         starter: form.values.starter,
         status: form.values.status,
         infinite: form.values.infinite,
-        start: UTCDate(
-          concatDateTime(form.values.startDate, form.values.startTime)
-        ),
-        end: UTCDate(
-          concatDateTime(form.values.endDate, form.values.endTime)
-        ),
+        start: form.values.startDate,
+        end: form.values.endDate,
         groups: form.values.groups,
       };
 

@@ -11,6 +11,13 @@ import { useLocale } from '@hooks/useLocale';
 
 require('prismjs/components/prism-java');
 require('prismjs/components/prism-pascal');
+require('prismjs/components/prism-csharp');
+require('prismjs/components/prism-cobol');
+require('prismjs/components/prism-fortran');
+require('prismjs/components/prism-haskell');
+require('prismjs/components/prism-javascript');
+require('prismjs/components/prism-lua');
+require('prismjs/components/prism-rust');
 
 const getLang = (language: ILanguage): any => {
   switch (language.shortName) {
@@ -24,6 +31,22 @@ const getLang = (language: ILanguage): any => {
       return 'java';
     case 'pascal':
       return 'pascal';
+    case 'rust':
+      return 'rust';
+    case 'go':
+      return 'go';
+    case 'nodejs':
+      return 'javascript';
+    case 'cobol':
+      return 'cobol';
+    case 'fortran':
+      return 'fortran';
+    case 'csharp':
+      return 'csharp';
+    case 'haskell':
+      return 'haskell';
+    case 'lua':
+      return 'lua';
     default:
       return '';
   }
@@ -38,6 +61,7 @@ const Code: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         language={getLang(attempt.language)}
         copyLabel={locale.copy.label}
         copiedLabel={locale.copy.done}
+        trim={false}
         withLineNumbers
       >
         {attempt.programText}

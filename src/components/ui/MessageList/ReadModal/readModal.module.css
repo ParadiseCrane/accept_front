@@ -1,3 +1,9 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xs);
+}
+
 .body {
   position: relative;
   display: flex;
