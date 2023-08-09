@@ -46,11 +46,12 @@ const Chat: FC<{
 
   const appendMessages = useCallback((messages: IChatMessage[]) => {
     setMessages((oldMessages) => {
+      console.log(oldMessages);
+      console.log(messages);
       if (oldMessages.length == 0) return messages;
       if (messages.length == 0) return oldMessages;
       if (
-        oldMessages[oldMessages.length - 1].spec ==
-        messages[messages.length - 1].spec
+        oldMessages[oldMessages.length - 1].spec == messages[0].spec
       )
         return oldMessages;
       return [...oldMessages, ...messages];
@@ -107,7 +108,7 @@ const Chat: FC<{
   }, [entity, host, moderator, message, appendMessages]);
 
   useEffect(() => {
-    if (opened && newMessages.length > 0)
+    if (newMessages.length > 0)
       sendRequest<{}, boolean>('/chat/viewed', 'POST', {
         specs: newMessages,
         entity,
