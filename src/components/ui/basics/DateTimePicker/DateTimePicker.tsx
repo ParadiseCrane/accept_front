@@ -1,4 +1,4 @@
-import { FC, Suspense, memo } from 'react';
+import { FC, memo } from 'react';
 import { DateTimePickerProps as MantineDateTimePickerProps } from '@mantine/dates';
 import dynamic from 'next/dynamic';
 import { useLocale } from '@hooks/useLocale';
@@ -42,15 +42,13 @@ const DateTimePicker: FC<CustomDateTimePickerProps> = ({
             <Helper dropdownContent={helperContent} />
           )}
         </div>
-        <Suspense>
-          <DynamicMantineDateTimePicker
-            withSeconds={!withoutSeconds}
-            locale={lang}
-            size="lg"
-            {...props}
-            label={undefined}
-          />
-        </Suspense>
+        <DynamicMantineDateTimePicker
+          withSeconds={!withoutSeconds}
+          locale={lang}
+          size="lg"
+          {...props}
+          label={undefined}
+        />
       </div>
     </>
   );

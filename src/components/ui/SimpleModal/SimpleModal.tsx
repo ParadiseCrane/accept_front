@@ -1,5 +1,5 @@
 import { pureCallback } from '@custom-types/ui/atomic';
-import { FC, Suspense, memo } from 'react';
+import { FC, memo } from 'react';
 import modalStyles from '@styles/ui/modal.module.css';
 import { Helper } from '@ui/basics';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
@@ -26,29 +26,27 @@ const SimpleModal: FC<SimpleModalProps> = ({
 }) => {
   return (
     <div>
-      <Suspense>
-        <DynamicModal
-          transitionProps={{
-            transition: 'fade',
-            duration: 450,
-            timingFunction: 'ease',
-          }}
-          withCloseButton={!!!hideCloseButton}
-          title={
-            <div className={modalStyles.titleWrapper}>
-              <div className={modalStyles.title}>{title}</div>
-              {helperContent && (
-                <Helper dropdownContent={helperContent} />
-              )}
-            </div>
-          }
-          zIndex={200}
-          onClose={close}
-          {...props}
-        >
-          <div>{children}</div>
-        </DynamicModal>
-      </Suspense>
+      <DynamicModal
+        transitionProps={{
+          transition: 'fade',
+          duration: 450,
+          timingFunction: 'ease',
+        }}
+        withCloseButton={!!!hideCloseButton}
+        title={
+          <div className={modalStyles.titleWrapper}>
+            <div className={modalStyles.title}>{title}</div>
+            {helperContent && (
+              <Helper dropdownContent={helperContent} />
+            )}
+          </div>
+        }
+        zIndex={200}
+        onClose={close}
+        {...props}
+      >
+        <div>{children}</div>
+      </DynamicModal>
     </div>
   );
 };
