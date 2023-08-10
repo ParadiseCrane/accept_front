@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { Item } from '@ui/CustomTransferList/CustomTransferList';
 import { setter } from '@custom-types/ui/atomic';
-import { Helper, InputLabel } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 

@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { Select as MantineSelect, SelectProps } from '@mantine/core';
-import { Helper, InputLabel } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 

@@ -3,7 +3,7 @@ import { Input as MantineInput } from '@mantine/core';
 
 import inputStyles from '@styles/ui/input.module.css';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
-import { Helper, InputLabel } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 
 const InputWrapper: FC<MyInputWrapperProps> = ({
   helperContent,

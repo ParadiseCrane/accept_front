@@ -2,7 +2,6 @@ import { FC, memo } from 'react';
 import { DateTimePickerProps as MantineDateTimePickerProps } from '@mantine/dates';
 import dynamic from 'next/dynamic';
 import { useLocale } from '@hooks/useLocale';
-import Helper from '../Helper/Helper';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import inputStyles from '@styles/ui/input.module.css';
 import InputLabel from '../InputLabel/InputLabel';

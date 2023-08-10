@@ -4,7 +4,7 @@ import {
   PasswordInput as MantinePasswordInput,
   PasswordInputProps,
 } from '@mantine/core';
-import { Helper, InputLabel } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
 interface Props extends PasswordInputProps {

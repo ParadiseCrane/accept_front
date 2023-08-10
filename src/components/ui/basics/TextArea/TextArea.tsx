@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import inputStyles from '@styles/ui/input.module.css';
 import { Textarea as MantineTextarea } from '@mantine/core';
-import { Helper, InputLabel } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import styles from './textArea.module.css';
 import { TextAreaProps } from '@custom-types/ui/basics/textArea';
 
