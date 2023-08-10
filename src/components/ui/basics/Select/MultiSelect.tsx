@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, Suspense, memo } from 'react';
 import { MultiSelectProps } from '@mantine/core';
 import { Helper } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
@@ -35,22 +35,24 @@ const MultiSelect: FC<Props> = ({
         </div>
         {helperContent && <Helper dropdownContent={helperContent} />}
       </div>
-      <DynamicMultiSelect
-        size={shrink ? 'sm' : 'md'}
-        clearable={false}
-        {...props}
-        classNames={{
-          ...props.classNames,
-          error: props.classNames?.error || inputStyles.error,
-          value: props.classNames?.value || inputStyles.selectValue,
-          input: props.classNames?.input || inputStyles.selectInput,
-          root: concatClassNames(
-            props.classNames?.root,
-            inputStyles.root
-          ),
-        }}
-        label={undefined}
-      />
+      <Suspense>
+        <DynamicMultiSelect
+          size={shrink ? 'sm' : 'md'}
+          clearable={false}
+          {...props}
+          classNames={{
+            ...props.classNames,
+            error: props.classNames?.error || inputStyles.error,
+            value: props.classNames?.value || inputStyles.selectValue,
+            input: props.classNames?.input || inputStyles.selectInput,
+            root: concatClassNames(
+              props.classNames?.root,
+              inputStyles.root
+            ),
+          }}
+          label={undefined}
+        />
+      </Suspense>
     </div>
   );
 };

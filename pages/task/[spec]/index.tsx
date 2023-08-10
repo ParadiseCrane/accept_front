@@ -2,6 +2,7 @@ import { DefaultLayout } from '@layouts/DefaultLayout';
 import TaskLayout from '@layouts/TaskLayout';
 import {
   ReactNode,
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -237,27 +238,36 @@ function Task(props: {
         send={(set) =>
           isUser &&
           (task.taskType.spec == 0 ? (
-            <DynamicSend
-              spec={task.spec}
-              setActiveTab={set}
-              languages={languages}
-              kbdHelperContent={
-                <>
-                  <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
-                </>
-              }
-            />
+            <Suspense>
+              <DynamicSend
+                spec={task.spec}
+                setActiveTab={set}
+                languages={languages}
+                kbdHelperContent={
+                  <>
+                    <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
+                  </>
+                }
+              />
+            </Suspense>
           ) : (
-            <DynamicSendText
-              spec={task.spec}
-              testsNumber={task.testsNumber}
-              setActiveTab={set}
-            />
+            <Suspense>
+              <DynamicSendText
+                spec={task.spec}
+                testsNumber={task.testsNumber}
+                setActiveTab={set}
+              />
+            </Suspense>
           ))
         }
         results={(currentTab) =>
           isUser && (
-            <DynamicResults activeTab={currentTab} spec={task.spec} />
+            <Suspense>
+              <DynamicResults
+                activeTab={currentTab}
+                spec={task.spec}
+              />
+            </Suspense>
           )
         }
       />
