@@ -12,13 +12,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
 import { useLocale } from './useLocale';
 import { useUser } from './useUser';
-import { useRefetch } from './useRefetch';
 import { useLongPooling } from './useLongPooling';
 
 interface INotificationContext {
