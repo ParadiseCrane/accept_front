@@ -3,7 +3,7 @@ import {
   TextInput as MantineInput,
   TextInputProps,
 } from '@mantine/core';
-import { Helper } from '@ui/basics';
+import { Helper, InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
@@ -13,6 +13,8 @@ interface Props extends TextInputProps {
 }
 
 const TextInput: FC<Props> = ({
+  label,
+  required,
   helperContent,
   shrink,
   ...props
@@ -23,19 +25,11 @@ const TextInput: FC<Props> = ({
         shrink ? inputStyles.shrink : ''
       }`}
     >
-      {props.label && (
-        <div className={inputStyles.labelWrapper}>
-          <div className={inputStyles.label}>
-            {props.label}
-            {props.required && (
-              <div className={inputStyles.labelRequired}>*</div>
-            )}
-          </div>
-          {helperContent && (
-            <Helper dropdownContent={helperContent} />
-          )}
-        </div>
-      )}
+      <InputLabel
+        label={label}
+        helperContent={helperContent}
+        required={required}
+      />
       <MantineInput
         size={shrink ? 'sm' : 'md'}
         {...props}

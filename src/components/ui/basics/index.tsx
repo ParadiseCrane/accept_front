@@ -18,7 +18,6 @@ import TextInput from './TextInput/TextInput';
 import Indicator from './Indicator/Indicator';
 import Tabs from './Tabs/Tabs';
 import Tip from './Tip/Tip';
-import DatePicker from './DatePicker/DatePicker';
 import Checkbox from './Checkbox/Checkbox';
 import LoadingOverlay from './LoadingOverlay/LoadingOverlay';
 import Timeline from './Timeline/Timeline';
@@ -26,6 +25,7 @@ import ColorSwatch from './ColorSwatch/ColorSwatch';
 import HelperTip from './HelperTip/HelperTip';
 import DateTimePicker from './DateTimePicker/DateTimePicker';
 import Kbd from './Kbd/Kbd';
+import InputLabel from './InputLabel/InputLabel';
 
 export {
   Button,
@@ -49,11 +49,11 @@ export {
   Indicator,
   Tabs,
   Tip,
-  DatePicker,
   LoadingOverlay,
   Timeline,
   ColorSwatch,
   HelperTip,
   DateTimePicker,
   Kbd,
+  InputLabel,
 };

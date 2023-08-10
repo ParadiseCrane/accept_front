@@ -4,25 +4,26 @@ import {
   PasswordInput as MantinePasswordInput,
   PasswordInputProps,
 } from '@mantine/core';
-import { Helper } from '@ui/basics';
+import { Helper, InputLabel } from '@ui/basics';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
 interface Props extends PasswordInputProps {
   helperContent?: IDropdownContent;
 }
 
-const PasswordInput: FC<Props> = ({ helperContent, ...props }) => {
+const PasswordInput: FC<Props> = ({
+  helperContent,
+  label,
+  required,
+  ...props
+}) => {
   return (
     <div className={inputStyles.wrapper}>
-      <div className={inputStyles.labelWrapper}>
-        <div className={inputStyles.label}>
-          {props.label}
-          {props.required && (
-            <div className={inputStyles.labelRequired}>*</div>
-          )}
-        </div>
-        {helperContent && <Helper dropdownContent={helperContent} />}
-      </div>
+      <InputLabel
+        label={label}
+        helperContent={helperContent}
+        required={required}
+      />
       <MantinePasswordInput size="lg" {...props} label={undefined} />
     </div>
   );

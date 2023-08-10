@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { Item } from '@ui/CustomTransferList/CustomTransferList';
 import { setter } from '@custom-types/ui/atomic';
-import { Helper } from '@ui/basics';
+import { Helper, InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
@@ -42,16 +42,11 @@ const Radio: FC<{
         shrink ? inputStyles.shrink : ''
       }`}
     >
-      <div className={inputStyles.labelWrapper}>
-        <div className={inputStyles.label}>
-          {label}
-          {required && (
-            <div className={inputStyles.labelRequired}>*</div>
-          )}
-        </div>
-        {helperContent && <Helper dropdownContent={helperContent} />}
-      </div>
-
+      <InputLabel
+        label={label}
+        helperContent={helperContent}
+        required={required}
+      />
       <MantineRadio.Group
         size={shrink ? 'sm' : 'md'}
         className={styles.groupWrapper}
