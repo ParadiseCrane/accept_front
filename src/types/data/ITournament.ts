@@ -26,6 +26,7 @@ export interface ITournament
   allowRegistrationAfterStart: boolean;
   frozeResults: Date;
   banned: string[];
+  pin: boolean;
 }
 
 export interface ITournamentListBundle {

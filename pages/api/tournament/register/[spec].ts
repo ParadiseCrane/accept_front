@@ -9,6 +9,6 @@ export default async function RegisterForTournament(
     req: req,
     res: res,
     url: `api/tournament-register/${req.query.spec}`,
-    method: 'GET',
+    method: 'POST',
   });
 }

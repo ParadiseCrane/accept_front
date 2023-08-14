@@ -45,7 +45,7 @@ const SimpleModal: FC<SimpleModalProps> = ({
         onClose={close}
         {...props}
       >
-        <div>{children}</div>
+        {children}
       </DynamicModal>
     </div>
   );

@@ -78,6 +78,7 @@ function TournamentEdit(props: ITournamentEditBundle) {
         start: form.values.startDate,
         end: form.values.endDate,
         frozeResults: form.values.frozeResults,
+        pin: form.values.pin,
       };
 
       requestWithNotify<ITournamentAdd, string>(

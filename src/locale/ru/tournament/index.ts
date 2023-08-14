@@ -9,6 +9,7 @@ export const tournament = {
   register: 'Зарегистрироваться',
   refuse: 'Отменить регистрацию',
   banned: 'Вы забанены',
+  enterPin: 'Введите пароль',
   form,
   list,
   modals,

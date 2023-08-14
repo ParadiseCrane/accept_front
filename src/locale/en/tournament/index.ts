@@ -8,8 +8,8 @@ export const tournament = {
   needRegistration: 'You need to be registered',
   register: 'Register',
   refuse: 'Refuse',
-
   banned: 'You were banned',
+  enterPin: 'Enter password',
   form,
   list,
   modals,

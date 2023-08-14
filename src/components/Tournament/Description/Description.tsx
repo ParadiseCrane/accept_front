@@ -124,6 +124,7 @@ const Description: FC<{
         !(tournament.status.spec === 2 || isPreview || special) && (
           <RegistrationButton
             spec={tournament.spec}
+            withPin={tournament.pin}
             status={tournament.status.spec}
             allowRegistrationAfterStart={
               tournament.allowRegistrationAfterStart

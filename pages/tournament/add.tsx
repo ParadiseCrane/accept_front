@@ -58,6 +58,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
       shouldPenalizeAttempt: true,
       allowRegistrationAfterStart: false,
       banned: [],
+      pin: false,
     }),
     [user?.login]
   );
@@ -74,7 +75,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         return;
       }
 
-      const tournament = {
+      const tournament: ITournamentAdd = {
         spec: '',
         author: user?.login || '',
         title: form.values.title,
@@ -91,7 +92,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         start: form.values.startDate,
         end: form.values.endDate,
         frozeResults: form.values.frozeResults,
-        banned: form.values.banned,
+        pin: form.values.pin,
       };
 
       requestWithNotify<ITournamentAdd, string>(
