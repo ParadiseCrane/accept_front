@@ -22,6 +22,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacer-l);
-  margin-top: var(--spacer-l);
+  gap: var(--spacer-xl);
+  margin-top: var(--spacer-xl);
 }

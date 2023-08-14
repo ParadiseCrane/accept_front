@@ -6,9 +6,11 @@ import { DefaultLayout } from '@layouts/DefaultLayout';
 import { getApiUrl } from '@utils/getServerUrl';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
+import PinModal from '@components/Tournament/PinModal/PinModal';
 import Description from '@components/Tournament/Description/Description';
 import {
   Dashboard,
+  Key,
   Pencil,
   PlaylistAdd,
   ReportAnalytics,
@@ -24,7 +26,8 @@ import SingularSticky from '@ui/Sticky/SingularSticky';
 
 function Tournament(props: { tournament: ITournament }) {
   const tournament = props.tournament;
-  const [activeModal, setActiveModal] = useState(false);
+  const [activeDeleteModal, setActiveDeleteModal] = useState(false);
+  const [activePinModal, setActivePinModal] = useState(false);
   const { locale } = useLocale();
 
   const { isAdmin, user } = useUser();
@@ -51,6 +54,17 @@ function Tournament(props: { tournament: ITournament }) {
       description: locale.tip.sticky.tournament.dashboard,
     },
     {
+      color: 'blue',
+      icon: (
+        <Key
+          width={STICKY_SIZES[width] / 3}
+          height={STICKY_SIZES[width] / 3}
+        />
+      ),
+      onClick: () => setActivePinModal(true),
+      description: locale.tip.sticky.tournament.pin,
+    },
+    {
       color: 'green',
       icon: (
         <PlaylistAdd
@@ -61,6 +75,7 @@ function Tournament(props: { tournament: ITournament }) {
       href: `/task/add?tournament=${tournament.spec}`,
       description: locale.tip.sticky.task.add,
     },
+
     {
       color: 'green',
       icon: (
@@ -81,7 +96,7 @@ function Tournament(props: { tournament: ITournament }) {
           height={STICKY_SIZES[width] / 3}
         />
       ),
-      onClick: () => setActiveModal(true),
+      onClick: () => setActiveDeleteModal(true),
       description: locale.tip.sticky.tournament.delete,
     },
   ];
@@ -91,15 +106,20 @@ function Tournament(props: { tournament: ITournament }) {
       <Title
         title={`${locale.titles.tournament.spec} ${tournament.title}`}
       />
-      <DeleteModal
-        active={activeModal}
-        setActive={setActiveModal}
-        tournament={{
-          ...tournament,
-        }}
-      />
       {special ? (
-        <Sticky actions={actions} />
+        <>
+          <DeleteModal
+            active={activeDeleteModal}
+            setActive={setActiveDeleteModal}
+            tournament={tournament}
+          />
+          <PinModal
+            active={activePinModal}
+            setActive={setActivePinModal}
+            spec={tournament.spec}
+          />
+          <Sticky actions={actions} />
+        </>
       ) : (
         tournament.participants.includes(user?.login || '') &&
         tournament.status.spec != 0 && (

@@ -26,4 +26,8 @@ export const form = {
   selectedModerators: 'Selected moderators',
   taskOrdering: 'Task order',
   zeroTask: 'Tasks were not added yet',
+  security: {
+    title: 'Access type',
+    variants: ['Open registration', 'Pin code registration'],
+  },
 };

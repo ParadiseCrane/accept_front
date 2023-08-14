@@ -2,6 +2,11 @@ import { IAssessmentType, ITournamentStatus } from './atomic';
 import { ITag } from './ITag';
 import { ITaskDisplay } from './ITask';
 
+export interface ISecurity {
+  spec: number;
+  name: 'tournament' | 'basic';
+}
+
 export interface ITournamentDisplay {
   spec: string;
   author: string;
@@ -26,7 +31,8 @@ export interface ITournament
   allowRegistrationAfterStart: boolean;
   frozeResults: Date;
   banned: string[];
-  pin: boolean;
+  security: number;
+  kind: number;
 }
 
 export interface ITournamentListBundle {
@@ -38,12 +44,14 @@ export interface ITournamentListBundle {
 export interface ITournamentAddBundle {
   assessmentTypes: IAssessmentType[];
   tags: ITag[];
+  securities: ISecurity[];
 }
 
 export interface ITournamentEditBundle {
   tournament: ITournamentEdit;
   assessmentTypes: IAssessmentType[];
   tags: ITag[];
+  securities: ISecurity[];
 }
 
 export interface ITournamentAdd

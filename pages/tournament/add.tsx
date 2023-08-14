@@ -46,8 +46,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
       tags: [] as Item[],
       status: 0,
 
-      startDate: new Date(),
-      endDate: new Date(),
+      start: new Date(),
+      end: new Date(),
       frozeResults: new Date(),
 
       participants: [],
@@ -58,7 +58,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
       shouldPenalizeAttempt: true,
       allowRegistrationAfterStart: false,
       banned: [],
-      pin: false,
+      security: '0',
+      kind: '0',
     }),
     [user?.login]
   );
@@ -89,10 +90,11 @@ function TournamentAdd(props: ITournamentAddBundle) {
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: form.values.startDate,
-        end: form.values.endDate,
+        start: form.values.start,
+        end: form.values.end,
         frozeResults: form.values.frozeResults,
-        pin: form.values.pin,
+        security: +form.values.security,
+        kind: +form.values.kind,
       };
 
       requestWithNotify<ITournamentAdd, string>(
@@ -139,7 +141,8 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         assessmentTypes: response_json.assessment_types,
         tags: response_json.tags,
-      },
+        securities: response_json.securities,
+      } as ITournamentAddBundle,
       revalidate: REVALIDATION_TIME.tournament.add,
     };
   }

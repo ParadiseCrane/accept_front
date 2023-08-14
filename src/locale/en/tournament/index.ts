@@ -9,7 +9,7 @@ export const tournament = {
   register: 'Register',
   refuse: 'Refuse',
   banned: 'You were banned',
-  enterPin: 'Enter password',
+  enterPin: 'Enter pin-code',
   form,
   list,
   modals,

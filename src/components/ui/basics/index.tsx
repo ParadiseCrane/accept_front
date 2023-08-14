@@ -26,6 +26,8 @@ import HelperTip from './HelperTip/HelperTip';
 import DateTimePicker from './DateTimePicker/DateTimePicker';
 import Kbd from './Kbd/Kbd';
 import InputLabel from './InputLabel/InputLabel';
+import Pin from './Pin/Pin';
+import CopyButton from './CopyButton/CopyButton';
 
 export {
   Button,
@@ -56,4 +58,6 @@ export {
   DateTimePicker,
   Kbd,
   InputLabel,
+  Pin,
+  CopyButton,
 };

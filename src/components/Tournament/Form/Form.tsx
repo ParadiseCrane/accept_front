@@ -10,17 +10,19 @@ import Dates from './Dates/Dates';
 import TaskOrdering from './TaskOrdering/TaskOrdering';
 import Moderators from './Moderators/Moderators';
 import Preview from './Preview/Preview';
+import { ISecurity } from '@custom-types/data/ITournament';
+import AdditionalInfo from './AdditionalInfo/AdditionalInfo';
+import { UTCDate } from '@utils/datetime';
 
 const stepFields: string[][] = [
+  ['title', 'description', 'tags'],
   [
-    'title',
-    'description',
-    'tags',
     'assessmentType',
+    'security',
     'allowRegistrationAfterStart',
     'shouldPenalizeAttempt',
   ],
-  ['startDate', 'endDate', 'frozeResults'],
+  ['start', 'end', 'frozeResults'],
   [], // task ordering
   ['moderators'],
   [], // preview
@@ -31,12 +33,14 @@ const Form: FC<{
   initialValues: any;
   buttonLabel: string;
   assessmentTypes: IAssessmentType[];
+  securities: ISecurity[];
   users: IUserDisplay[];
 }> = ({
   handleSubmit,
   initialValues,
   buttonLabel,
   assessmentTypes,
+  securities,
   users,
 }) => {
   const { locale } = useLocale();
@@ -56,18 +60,18 @@ const Form: FC<{
         value.length < 20
           ? locale.tournament.form.validation.description
           : null,
-      startDate: (value) =>
+      start: (value) =>
         !value ? locale.tournament.form.validation.startDate : null,
-      endDate: (value, values) =>
+      end: (value, values) =>
         !value
           ? locale.tournament.form.validation.endDate
-          : !!values.startDate && values.startDate >= value
+          : !!values.start && values.start >= value
           ? locale.tournament.form.validation.date
           : null,
       frozeResults: (value, values) =>
-        !!values.startDate && value < values.startDate
+        !!values.start && value < values.start
           ? locale.tournament.form.validation.frozeDateStart
-          : !!values.endDate && value > values.endDate
+          : !!values.end && value > values.end
           ? locale.tournament.form.validation.frozeDateEnd
           : null,
     },
@@ -82,20 +86,22 @@ const Form: FC<{
         handleSubmit={() => handleSubmit(form)}
         stepFields={stepFields}
         pages={[
-          <MainInfo
-            key={'0'}
+          <MainInfo key={'0'} form={form} />,
+          <AdditionalInfo
+            key={'1'}
             form={form}
             assessmentTypes={assessmentTypes}
+            securities={securities}
           />,
-          <Dates key={'1'} form={form} />,
-          <TaskOrdering key={'2'} form={form} />,
-          <Moderators key={'3'} form={form} users={users} />,
+          <Dates key={'2'} form={form} />,
+          <TaskOrdering key={'3'} form={form} />,
+          <Moderators key={'4'} form={form} users={users} />,
           <Preview
-            key={'4'}
+            key={'5'}
             tournament={{
               ...form.values,
-              start: form.values.startDate,
-              end: form.values.endDate,
+              start: UTCDate(form.values.start),
+              end: UTCDate(form.values.end),
             }}
           />,
         ]}

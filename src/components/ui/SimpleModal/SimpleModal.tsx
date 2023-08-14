@@ -41,7 +41,7 @@ const SimpleModal: FC<SimpleModalProps> = ({
             )}
           </div>
         }
-        zIndex={200}
+        zIndex={9900}
         onClose={close}
         {...props}
       >

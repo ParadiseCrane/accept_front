@@ -7,7 +7,8 @@ import { pureCallback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { PinInput } from '@mantine/core';
+import { Pin } from '@ui/basics';
+import { PIN_LENGTH } from '@constants/TournamentSecurity';
 
 const Register: FC<{
   spec: string;
@@ -19,9 +20,13 @@ const Register: FC<{
   const [openedModal, setOpenedModal] = useState(false);
   const [pinCode, setPinCode] = useState('');
 
+  const kind = useMemo(() => {
+    return withPin ? 'close' : 'open';
+  }, [withPin]);
+
   const handleRegistration = useCallback(() => {
     requestWithNotify<{ pin: string }, boolean>(
-      `tournament/register/${spec}`,
+      `tournament/register/${kind}/${spec}`,
       'POST',
       locale.notify.tournament.registration,
       lang,
@@ -32,14 +37,14 @@ const Register: FC<{
         onRegister();
       }
     );
-  }, [spec, locale.notify.tournament.registration, lang, onRegister]);
+  }, [spec, kind, pinCode, onRegister, locale, lang]);
 
   const openModal = useCallback(() => setOpenedModal(true), []);
   const closeModal = useCallback(() => setOpenedModal(false), []);
 
   const onClick = useMemo(() => {
     return withPin ? openModal : handleRegistration;
-  }, [withPin]);
+  }, [withPin, openModal, handleRegistration]);
 
   const onInput = useCallback((e: string) => setPinCode(e), []);
 
@@ -52,12 +57,19 @@ const Register: FC<{
           title={locale.tournament.enterPin}
           classNames={{ body: styles.modalWrapper }}
           centered
+          size="xl"
         >
-          <PinInput value={pinCode} onChange={onInput} />
+          <Pin
+            value={pinCode}
+            onChange={onInput}
+            length={PIN_LENGTH}
+            size={'xl'}
+          />
           <SimpleButtonGroup
             actionButton={{
               label: locale.tournament.register,
               onClick: handleRegistration,
+              props: { disabled: pinCode.length != PIN_LENGTH },
             }}
             cancelButton={{
               label: locale.cancel,
