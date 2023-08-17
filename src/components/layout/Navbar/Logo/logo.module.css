@@ -7,7 +7,30 @@
   align-items: center;
   font-weight: 400;
 }
+
 .name {
   font-size: var(--font-size-xxl);
   line-height: var(--spacer-s);
+}
+
+.name span {
+  position: relative;
+}
+
+.jump {
+  animation: 0.3s jump linear;
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0;
+  }
+
+  50% {
+    bottom: 5px;
+  }
+
+  100% {
+    bottom: 0;
+  }
 }
