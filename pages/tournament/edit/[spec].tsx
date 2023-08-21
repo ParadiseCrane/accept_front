@@ -41,8 +41,10 @@ function TournamentEdit(props: ITournamentEditBundle) {
         label: tag.title,
       })),
       assessmentType: props.tournament.assessmentType.spec.toString(),
-      startDate: timezoneDate(props.tournament.start),
-      endDate: timezoneDate(props.tournament.end),
+      security: props.tournament.security.toString(),
+      kind: props.tournament.kind.toString(),
+      start: timezoneDate(props.tournament.start),
+      end: timezoneDate(props.tournament.end),
       frozeResults: timezoneDate(props.tournament.frozeResults),
     }),
     [props.tournament]
@@ -75,10 +77,12 @@ function TournamentEdit(props: ITournamentEditBundle) {
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: form.values.startDate,
-        end: form.values.endDate,
+        start: form.values.start,
+        end: form.values.end,
         frozeResults: form.values.frozeResults,
-      };
+        kind: +form.values.kind,
+        security: +form.values.security,
+      } as ITournamentAdd;
 
       requestWithNotify<ITournamentAdd, string>(
         'tournament/edit',
@@ -144,7 +148,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         tournament: response_json.tournament,
         assessmentTypes: response_json.assessment_types,
         tags: response_json.tags,
-      },
+        securities: response_json.securities,
+      } as ITournamentEditBundle,
     };
   }
   return {

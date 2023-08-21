@@ -41,11 +41,11 @@ const SimpleModal: FC<SimpleModalProps> = ({
             )}
           </div>
         }
-        zIndex={200}
+        zIndex={9900}
         onClose={close}
         {...props}
       >
-        <div>{children}</div>
+        {children}
       </DynamicModal>
     </div>
   );

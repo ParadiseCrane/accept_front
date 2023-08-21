@@ -47,8 +47,6 @@ const Chat: FC<{
 
   const appendMessages = useCallback((messages: IChatMessage[]) => {
     setMessages((oldMessages) => {
-      console.log(oldMessages);
-      console.log(messages);
       if (oldMessages.length == 0) return messages;
       if (messages.length == 0) return oldMessages;
       if (

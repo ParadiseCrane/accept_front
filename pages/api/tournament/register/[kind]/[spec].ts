@@ -8,7 +8,7 @@ export default async function RegisterForTournament(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/tournament-register/${req.query.spec}`,
-    method: 'GET',
+    url: `api/tournament-register/${req.query.kind}/${req.query.spec}`,
+    method: 'POST',
   });
 }

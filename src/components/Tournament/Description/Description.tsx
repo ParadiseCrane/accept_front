@@ -17,8 +17,8 @@ const Description: FC<{
   isPreview?: boolean;
 }> = ({ tournament, isPreview }) => {
   const { locale } = useLocale();
-  const [startDate, setStartDate] = useState('-');
-  const [endDate, setEndDate] = useState('-');
+  const [start, setStart] = useState('-');
+  const [end, setEnd] = useState('-');
   const [tasks, setTasks] = useState(tournament.tasks);
   const { user, isAdmin } = useUser();
 
@@ -71,8 +71,8 @@ const Description: FC<{
   }, [tournament.spec, tournament.tasks, isPreview]);
 
   useEffect(() => {
-    setStartDate(getLocalDate(tournament.start));
-    setEndDate(getLocalDate(tournament.end));
+    setStart(getLocalDate(tournament.start));
+    setEnd(getLocalDate(tournament.end));
   }, [tournament.end, tournament.start]);
 
   return (
@@ -104,10 +104,10 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startTime}: {startDate}
+              {locale.tournament.form.startTime}: {start}
             </div>
             <div className={styles.duration}>
-              {locale.tournament.form.endTime}: {endDate}
+              {locale.tournament.form.endTime}: {end}
             </div>
           </div>
         </div>
@@ -124,6 +124,7 @@ const Description: FC<{
         !(tournament.status.spec === 2 || isPreview || special) && (
           <RegistrationButton
             spec={tournament.spec}
+            withPin={tournament.security == 1}
             status={tournament.status.spec}
             allowRegistrationAfterStart={
               tournament.allowRegistrationAfterStart

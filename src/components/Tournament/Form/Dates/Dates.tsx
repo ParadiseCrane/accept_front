@@ -11,17 +11,17 @@ const Dates: FC<{ form: UseFormReturnType<any> }> = ({ form }) => {
     <div className={styles.wrapper}>
       <DateTimePicker
         label={locale.tournament.form.startDate}
-        {...form.getInputProps('startDate')}
+        {...form.getInputProps('start')}
       />
       <DateTimePicker
         label={locale.tournament.form.endDate}
-        {...form.getInputProps('endDate')}
+        {...form.getInputProps('end')}
       />
 
       <DateTimePicker
         label={locale.tournament.form.freezeTableDate}
-        minDate={form.values.startDate}
-        maxDate={form.values.endDate}
+        minDate={form.values.start}
+        maxDate={form.values.end}
         {...form.getInputProps('frozeResults')}
       />
     </div>
