@@ -53,7 +53,7 @@ export interface IUserDisplay {
   shortName: string;
 }
 
-export interface IParticipant extends IUser {
+export interface IParticipant extends IUserDisplay {
   banned?: boolean;
   banReason?: string;
 }

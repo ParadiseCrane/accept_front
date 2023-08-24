@@ -1,0 +1,50 @@
+.wrapper {
+  margin: var(--spacer-s) var(--spacer-m) var(--spacer-m)
+    var(--spacer-huge);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacer-m);
+}
+
+.main {
+}
+
+.teamName {
+  font-size: var(--font-size-xl);
+}
+
+.date {
+}
+
+.capitan {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--font-size-m);
+  gap: var(--spacer-m);
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-s);
+}
+
+.link:hover {
+  color: var(--primary);
+}
+
+.participants {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacer-m);
+}
+
+.participantsH {
+  font-size: var(--font-size-xl);
+}

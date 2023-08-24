@@ -34,4 +34,7 @@ export const REVALIDATION_TIME = {
   rating: {
     page: 10,
   },
+  team: {
+    page: 10,
+  },
 }; // in seconds
