@@ -7,6 +7,11 @@ module.exports = {
   env: {
     WEBSOCKET_API,
   },
+  modularizeImports: {
+    '@tabler/icons': {
+      transform: '@tabler/icons/{{member}}',
+    },
+  },
   async rewrites() {
     return [
       {
