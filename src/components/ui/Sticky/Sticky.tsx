@@ -14,6 +14,7 @@ export interface IStickyAction {
   onClick?: setter<any>;
   href?: string;
   description: string;
+  hide?: boolean;
 }
 
 const Sticky: FC<{
@@ -33,9 +34,11 @@ const Sticky: FC<{
       <Transition transition="slide-up" mounted={visible}>
         {(transitionStyles) => (
           <div className={styles.wrapper} style={transitionStyles}>
-            {actions.map((action, index) => (
-              <ActionButton key={index} action={action} />
-            ))}
+            {actions
+              .filter((item) => !item.hide)
+              .map((action, index) => (
+                <ActionButton key={index} action={action} />
+              ))}
           </div>
         )}
       </Transition>

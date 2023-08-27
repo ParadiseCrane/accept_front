@@ -202,8 +202,8 @@ const processData = (
         display: <div>{getLocalDate(tournament.end)}</div>,
       },
       participantsNumber: {
-        value: tournament.participantsNumber,
-        display: <div>{tournament.participantsNumber}</div>,
+        value: tournament.teamsNumber,
+        display: <div>{tournament.teamsNumber}</div>,
       },
       title: {
         value: tournament.title,

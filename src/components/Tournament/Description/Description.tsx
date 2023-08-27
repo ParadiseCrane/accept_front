@@ -15,7 +15,8 @@ import RegistrationButton from './RegistrationButton/RegistrationButton';
 const Description: FC<{
   tournament: ITournament;
   isPreview?: boolean;
-}> = ({ tournament, isPreview }) => {
+  is_participant?: boolean;
+}> = ({ tournament, isPreview, is_participant }) => {
   const { locale } = useLocale();
   const [start, setStart] = useState('-');
   const [end, setEnd] = useState('-');
@@ -34,11 +35,8 @@ const Description: FC<{
   );
 
   const registered = useMemo(
-    () =>
-      special ||
-      successfullyRegistered ||
-      tournament.participants.includes(user?.login || ''),
-    [user?.login, special, tournament, successfullyRegistered]
+    () => special || successfullyRegistered || !!is_participant,
+    [special, is_participant, successfullyRegistered]
   );
 
   const banned = useMemo(

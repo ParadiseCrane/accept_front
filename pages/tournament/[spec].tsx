@@ -24,8 +24,12 @@ import Timer from '@ui/Timer/Timer';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 
-function Tournament(props: { tournament: ITournament }) {
+function Tournament(props: {
+  tournament: ITournament;
+  is_participant: boolean;
+}) {
   const tournament = props.tournament;
+  const is_participant = props.is_participant;
   const [activeDeleteModal, setActiveDeleteModal] = useState(false);
   const [activePinModal, setActivePinModal] = useState(false);
   const { locale } = useLocale();
@@ -41,65 +45,69 @@ function Tournament(props: { tournament: ITournament }) {
     [isAdmin, tournament.author, tournament.moderators, user?.login]
   );
 
-  const actions: IStickyAction[] = [
-    {
-      color: 'grape',
-      icon: (
-        <Dashboard
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      href: `/dashboard/tournament/${tournament.spec}`,
-      description: locale.tip.sticky.tournament.dashboard,
-    },
-    {
-      color: 'blue',
-      icon: (
-        <Key
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      onClick: () => setActivePinModal(true),
-      description: locale.tip.sticky.tournament.pin,
-    },
-    {
-      color: 'green',
-      icon: (
-        <PlaylistAdd
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      href: `/task/add?tournament=${tournament.spec}`,
-      description: locale.tip.sticky.task.add,
-    },
+  const actions: IStickyAction[] = useMemo(
+    () => [
+      {
+        color: 'grape',
+        icon: (
+          <Dashboard
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        href: `/dashboard/tournament/${tournament.spec}`,
+        description: locale.tip.sticky.tournament.dashboard,
+      },
+      {
+        color: 'blue',
+        icon: (
+          <Key
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        onClick: () => setActivePinModal(true),
+        description: locale.tip.sticky.tournament.pin,
+        hide: tournament.security != 1,
+      },
+      {
+        color: 'green',
+        icon: (
+          <PlaylistAdd
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        href: `/task/add?tournament=${tournament.spec}`,
+        description: locale.tip.sticky.task.add,
+      },
 
-    {
-      color: 'green',
-      icon: (
-        <Pencil
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      href: `/tournament/edit/${tournament.spec}`,
-      description: locale.tip.sticky.tournament.edit,
-    },
+      {
+        color: 'green',
+        icon: (
+          <Pencil
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        href: `/tournament/edit/${tournament.spec}`,
+        description: locale.tip.sticky.tournament.edit,
+      },
 
-    {
-      color: 'red',
-      icon: (
-        <Trash
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      onClick: () => setActiveDeleteModal(true),
-      description: locale.tip.sticky.tournament.delete,
-    },
-  ];
+      {
+        color: 'red',
+        icon: (
+          <Trash
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        onClick: () => setActiveDeleteModal(true),
+        description: locale.tip.sticky.tournament.delete,
+      },
+    ],
+    [locale, tournament.spec, width, tournament.security]
+  );
 
   return (
     <>
@@ -113,15 +121,17 @@ function Tournament(props: { tournament: ITournament }) {
             setActive={setActiveDeleteModal}
             tournament={tournament}
           />
-          <PinModal
-            active={activePinModal}
-            setActive={setActivePinModal}
-            spec={tournament.spec}
-          />
+          {tournament.security == 1 && (
+            <PinModal
+              active={activePinModal}
+              setActive={setActivePinModal}
+              spec={tournament.spec}
+            />
+          )}
           <Sticky actions={actions} />
         </>
       ) : (
-        tournament.participants.includes(user?.login || '') &&
+        is_participant &&
         tournament.status.spec != 0 && (
           <SingularSticky
             icon={
@@ -135,12 +145,14 @@ function Tournament(props: { tournament: ITournament }) {
           />
         )
       )}
-      {user &&
-        (special || tournament.participants.includes(user.login)) && (
-          <ChatSticky spec={tournament.spec} host={user.login} />
-        )}
+      {user && (special || is_participant) && (
+        <ChatSticky spec={tournament.spec} host={user.login} />
+      )}
       <Timer url={`tournament/info/${tournament.spec}`} />
-      <Description tournament={tournament} />
+      <Description
+        tournament={tournament}
+        is_participant={is_participant}
+      />
     </>
   );
 }
@@ -174,11 +186,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   if (response.status === 200) {
-    const tournament = await response.json();
+    const resp = await response.json();
 
     return {
       props: {
-        tournament,
+        tournament: resp.tournament,
+        is_participant: resp.is_participant,
       },
     };
   }

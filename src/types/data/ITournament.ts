@@ -16,7 +16,8 @@ export interface ITournamentDisplay {
 
   status: ITournamentStatus;
 
-  participantsNumber: number;
+  teamsNumber: number;
+  maxTeamSize: number;
   start: Date;
   end: Date;
 }
@@ -28,12 +29,11 @@ export interface ITournamentBaseInfo {
 }
 
 export interface ITournament
-  extends Omit<ITournamentDisplay, 'participantsNumber'> {
+  extends Omit<ITournamentDisplay, 'teamsNumber'> {
   description: string;
   tasks: ITaskDisplay[];
 
   moderators: string[];
-  participants: string[];
   allowRegistrationAfterStart: boolean;
   frozeResults: Date;
   banned: string[];
@@ -63,13 +63,11 @@ export interface ITournamentEditBundle {
 export interface ITournamentAdd
   extends Omit<
     ITournament,
-    'tasks' | 'status' | 'tags' | 'participantsNumber' | 'banned'
+    'tasks' | 'status' | 'tags' | 'teamsNumber' | 'banned'
   > {
   tasks: string[];
   tags: string[];
   status: number;
-
-  participants: string[];
 
   moderators: string[];
   assessmentType: number;
