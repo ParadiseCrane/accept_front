@@ -21,6 +21,12 @@ export interface ITournamentDisplay {
   end: Date;
 }
 
+export interface ITournamentBaseInfo {
+  spec: string;
+  title: string;
+  status: ITournamentStatus;
+}
+
 export interface ITournament
   extends Omit<ITournamentDisplay, 'participantsNumber'> {
   description: string;

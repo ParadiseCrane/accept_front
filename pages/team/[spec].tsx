@@ -10,25 +10,48 @@ import { UTCDate } from '@utils/datetime';
 import { Avatar } from '@mantine/core';
 import { link } from '@constants/Avatar';
 import Link from 'next/link';
+import { useLocale } from '@hooks/useLocale';
 
 function TeamProfile(props: { team: ITeam }) {
-  let team = props.team;
+  const team = props.team;
+  const { locale } = useLocale();
+
   return (
     <div className={styles.wrapper}>
-      <Title title={`Команда ${team.name}`} />
+      <Title title={`${locale.team.self} ${team.name}`} />
       {/* TODO: add locale */}
       <div className={styles.main}>
-        <div className={styles.teamName}>Команда {team.name}</div>
-        <div className={styles.date}>
-          Создана {UTCDate(new Date(team.date)).toLocaleString()}
+        <div className={styles.teamName}>
+          {locale.team.self} {team.name}
+        </div>
+        <div className={styles.info}>
+          <div className={styles.date}>
+            {locale.team.page.registrationDate}{' '}
+            {UTCDate(new Date(team.date)).toLocaleString()}
+          </div>
+
+          <div className={styles.origin}>
+            <div>{locale.team.page.participateIn}</div>
+            <Link
+              href={`/tournament/${team.origin.spec}`}
+              legacyBehavior
+              passHref
+            >
+              <a className={styles.link}>{team.origin.title}</a>
+            </Link>
+          </div>
         </div>
       </div>
-      <div className={styles.capitan}>
-        <span>Капитан</span>
+      <div className={styles.capitanWrapper}>
+        <div className={styles.capitanLabel}>
+          {locale.team.page.capitan}
+        </div>
+
         <Link
           href={`/profile/${team.capitan.login}`}
           legacyBehavior
           passHref
+          className={styles.capitan}
         >
           <a className={styles.link}>
             <Avatar
@@ -36,34 +59,34 @@ function TeamProfile(props: { team: ITeam }) {
               size="lg"
               radius="lg"
             />
-            <span>{team.capitan.shortName}</span>
+            <div>{team.capitan.shortName}</div>
           </a>
         </Link>
       </div>
-      {team.participants.length != 1 && (
-        <div className={styles.participants}>
-          <span className={styles.participantsH}>{'Участники:'}</span>
-          {team.participants
-            .filter((item) => item.login != team.capitan.login)
-            .map((participant, index) => (
-              <Link
-                key={index}
-                href={`/profile/${participant.login}`}
-                legacyBehavior
-                passHref
-              >
-                <a className={styles.link}>
-                  <Avatar
-                    src={link(participant.login)}
-                    size="lg"
-                    radius="lg"
-                  />
-                  <span>{participant.shortName}</span>
-                </a>
-              </Link>
-            ))}
+      <div className={styles.participantsWrapper}>
+        <div className={styles.participantsLabel}>
+          {locale.team.page.participants}
         </div>
-      )}
+        <div className={styles.participantsList}>
+          {team.participants.map((participant, index) => (
+            <Link
+              key={index}
+              href={`/profile/${participant.login}`}
+              legacyBehavior
+              passHref
+            >
+              <a className={styles.link}>
+                <Avatar
+                  src={link(participant.login)}
+                  size="lg"
+                  radius="lg"
+                />
+                <div>{participant.shortName}</div>
+              </a>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -86,8 +109,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
   const response = await fetch(`${API_URL}/api/team/${params.spec}`);
+  if (response.status === 307) {
+    let data = await response.json();
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/profile/${data.detail.capitan}`,
+      },
+    };
+  }
   if (response.status === 200) {
     const team = await response.json();
+
+    if (team.size == 1) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/profile/${team.capitan}`,
+        },
+      };
+    }
     return {
       props: {
         team,
