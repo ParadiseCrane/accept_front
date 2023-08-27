@@ -1,4 +1,4 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
+import { IBarTask } from '@custom-types/data/ITask';
 import { ActionIcon } from '@mantine/core';
 import Link from 'next/link';
 import { FC, memo } from 'react';
@@ -7,7 +7,7 @@ import styles from './tasksBar.module.css';
 import { letterFromIndex } from '@utils/letterFromIndex';
 
 const TasksBar: FC<{
-  tasks: ITaskDisplay[];
+  tasks: IBarTask[];
   homeHref: string;
   taskQuery: string;
   currentTask: string;

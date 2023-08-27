@@ -38,6 +38,12 @@ export interface ITaskBaseInfo {
   title: string;
 }
 
+export interface IBarTask {
+  spec: string;
+  status?: IAttemptStatus;
+  verdict?: IVerdict;
+}
+
 export interface ITaskDisplay {
   spec: string;
   title: string;

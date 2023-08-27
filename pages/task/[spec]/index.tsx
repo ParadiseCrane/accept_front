@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { ITask, ITaskDisplay } from '@custom-types/data/ITask';
+import { IBarTask, ITask } from '@custom-types/data/ITask';
 import { GetServerSideProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
@@ -54,7 +54,7 @@ function Task(props: {
   const [activeModal, setActiveModal] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [openedHint, setOpenedHint] = useState(false);
-  const [tasks, setTasks] = useState<ITaskDisplay[]>([]);
+  const [tasks, setTasks] = useState<IBarTask[]>([]);
 
   const { locale } = useLocale();
   const { isTeacher, isUser, user } = useUser();
@@ -81,7 +81,7 @@ function Task(props: {
   const fetch_tasks = useCallback(
     (spec: string) => {
       return () =>
-        sendRequest<undefined, ITaskDisplay[]>(
+        sendRequest<undefined, IBarTask[]>(
           `${type}/tasks_status/${spec}`,
           'GET',
           undefined,
