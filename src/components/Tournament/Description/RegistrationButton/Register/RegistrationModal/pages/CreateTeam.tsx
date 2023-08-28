@@ -5,8 +5,14 @@ import { Button, Pin, TextInput } from '@ui/basics';
 const CreateTeam: FC<{ form: any }> = ({ form }) => {
   return (
     <>
-      <Pin {...form.getInputProps('pinCode')} />
-      <TextInput {...form.getInputProps('teamName')} />
+      <Pin
+        label={'Пинкод турнира'}
+        {...form.getInputProps('pinCode')}
+      />
+      <TextInput
+        label={'Название команды'}
+        {...form.getInputProps('teamName')}
+      />
       <Button>Создать команду</Button>
     </>
   );

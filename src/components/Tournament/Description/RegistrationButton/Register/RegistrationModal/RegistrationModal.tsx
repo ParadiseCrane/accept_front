@@ -66,7 +66,11 @@ const RegistrationModal: FC<{
       size="xl"
     >
       {maxTeamSize != 1 ? (
-        <Stepper active={activePage} onStepClick={setActivePage}>
+        <Stepper
+          active={activePage}
+          onStepClick={setActivePage}
+          classNames={{ content: styles.stepperContent }}
+        >
           <Stepper.Step
             label="First step"
             description="Select is create"

@@ -8,8 +8,10 @@ const EnterPinCode: FC<{ form: any; isTeam: boolean }> = ({
 }) => {
   return (
     <>
-      {`Введите пин код ${isTeam ? 'команды' : 'турнира'}`}
-      <Pin {...form.getInputProps('pinCode')} />
+      <Pin
+        label={`Введите пин код ${isTeam ? 'команды' : 'турнира'}`}
+        {...form.getInputProps('pinCode')}
+      />
       <Button>Зарегистрироваться</Button>
     </>
   );
