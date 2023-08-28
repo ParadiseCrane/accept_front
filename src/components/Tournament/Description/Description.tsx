@@ -102,10 +102,10 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startTime}: {start}
+              {locale.tournament.form.startDate}: {start}
             </div>
             <div className={styles.duration}>
-              {locale.tournament.form.endTime}: {end}
+              {locale.tournament.form.endDate}: {end}
             </div>
           </div>
         </div>
