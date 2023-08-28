@@ -1,10 +1,9 @@
 import { FC, memo, useCallback, useMemo } from 'react';
 import { Radio, Switch } from '@ui/basics';
-
-import styles from './additionalInfo.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { ISecurity } from '@custom-types/data/ITournament';
+import styles from './additionalInfo.module.css';
 
 const AdditionalInfo: FC<{
   form: any;

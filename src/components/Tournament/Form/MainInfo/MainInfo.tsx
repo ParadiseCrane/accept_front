@@ -1,6 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
-import { CustomEditor, TextInput } from '@ui/basics';
+import { CustomEditor, NumberInput, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
 import { Item } from '@ui/CustomTransferList/CustomTransferList';
 
@@ -33,6 +33,10 @@ const MainInfo: FC<{
         label={locale.tournament.form.description}
         form={form}
         name={'description'}
+      />
+      <NumberInput
+        label={locale.tournament.form.maxTeamSize}
+        {...form.getInputProps('maxTeamSize')}
       />
       <TagSelector
         initialTags={initialTags}

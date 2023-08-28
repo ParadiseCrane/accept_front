@@ -38,7 +38,6 @@ export interface ITournament
   frozeResults: Date;
   banned: string[];
   security: number;
-  kind: number;
 }
 
 export interface ITournamentListBundle {
