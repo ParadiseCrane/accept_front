@@ -13,7 +13,10 @@ import {
   Vocabulary,
 } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
-import { ITournament } from '@custom-types/data/ITournament';
+import {
+  ITournament,
+  TournamentResponse,
+} from '@custom-types/data/ITournament';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { useUser } from '@hooks/useUser';
@@ -41,7 +44,7 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data, refetch } = useRequest<undefined, ITournament>(
+  const { data, refetch } = useRequest<undefined, TournamentResponse>(
     `tournament/${spec}`,
     'GET'
   );
@@ -57,7 +60,7 @@ const TournamentDashboard: FC<{
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if (data) setTournament(data);
+    if (data) setTournament(data.tournament);
   }, [data]);
 
   const { hasNewMessages } = useChatHosts();
@@ -141,11 +144,8 @@ const TournamentDashboard: FC<{
       {
         page: tournament && (
           <CreateNotification
-            logins={[
-              ...tournament.participants,
-              ...tournament.moderators,
-              tournament.author,
-            ]}
+            spec={tournament.spec}
+            type="tournament"
           />
         ),
         icon: <BellPlus color="var(--secondary)" />,

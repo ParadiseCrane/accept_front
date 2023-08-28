@@ -86,10 +86,7 @@ export interface ITournamentEdit
   status: ITournamentStatus;
 }
 
-export interface IAssignmentTimeInfo {
-  status: number;
-  infinite: boolean;
-
-  start: Date;
-  end: Date;
+export interface TournamentResponse {
+  tournament: ITournament;
+  is_participant: boolean;
 }
