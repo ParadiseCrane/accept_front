@@ -1,85 +1,70 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import styles from '../registrationButton.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { Helper } from '@ui/basics';
 import { AlertCircle } from 'tabler-icons-react';
 import { pureCallback } from '@custom-types/ui/atomic';
+import RegistrationModal from './RegistrationModal/RegistrationModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { Pin } from '@ui/basics';
-import { PIN_LENGTH } from '@constants/TournamentSecurity';
 
 const Register: FC<{
   spec: string;
   allowRegistrationAfterStart: boolean;
-  onRegister: pureCallback;
-  withPin?: boolean;
-}> = ({ spec, allowRegistrationAfterStart, onRegister, withPin }) => {
+  onRegistration: pureCallback;
+  withPin: boolean;
+  maxTeamSize: number;
+}> = ({
+  spec,
+  allowRegistrationAfterStart,
+  onRegistration,
+  withPin,
+  maxTeamSize,
+}) => {
   const { locale, lang } = useLocale();
-  const [openedModal, setOpenedModal] = useState(false);
-  const [pinCode, setPinCode] = useState('');
-
-  const kind = useMemo(() => {
-    return withPin ? 'close' : 'open';
-  }, [withPin]);
-
-  const handleRegistration = useCallback(() => {
-    requestWithNotify<{ pin: string }, boolean>(
-      `tournament/register/${kind}/${spec}`,
-      'POST',
-      locale.notify.tournament.registration,
-      lang,
-      () => '',
-      { pin: pinCode },
-      () => {
-        location.reload();
-        onRegister();
-      }
-    );
-  }, [spec, kind, pinCode, onRegister, locale, lang]);
+  const [openedModal, setOpenedModal] = useState(true);
 
   const openModal = useCallback(() => setOpenedModal(true), []);
   const closeModal = useCallback(() => setOpenedModal(false), []);
 
-  const onClick = useMemo(() => {
-    return withPin ? openModal : handleRegistration;
-  }, [withPin, openModal, handleRegistration]);
-
-  const onInput = useCallback((e: string) => setPinCode(e), []);
+  const handleClick = useCallback(() => {
+    if (maxTeamSize == 1 && !withPin) {
+      requestWithNotify<undefined, boolean>(
+        `tournament/register/open/${spec}`,
+        'GET',
+        locale.notify.tournament.registration,
+        lang,
+        () => '',
+        undefined,
+        () => {
+          location.reload();
+          onRegistration();
+        }
+      );
+      return;
+    }
+    openModal();
+  }, [
+    lang,
+    locale,
+    maxTeamSize,
+    onRegistration,
+    openModal,
+    spec,
+    withPin,
+  ]);
 
   return (
     <>
-      {withPin && (
-        <SimpleModal
-          opened={openedModal}
-          close={closeModal}
-          title={locale.tournament.enterPin}
-          classNames={{ body: styles.modalWrapper }}
-          centered
-          size="xl"
-        >
-          <Pin
-            value={pinCode}
-            onChange={onInput}
-            length={PIN_LENGTH}
-            size={'xl'}
-          />
-          <SimpleButtonGroup
-            actionButton={{
-              label: locale.tournament.register,
-              onClick: handleRegistration,
-              props: { disabled: pinCode.length != PIN_LENGTH },
-            }}
-            cancelButton={{
-              label: locale.cancel,
-              onClick: closeModal,
-            }}
-          />
-        </SimpleModal>
-      )}
+      <RegistrationModal
+        spec={spec}
+        opened={openedModal}
+        close={closeModal}
+        onRegistration={onRegistration}
+        withPin={withPin}
+        maxTeamSize={maxTeamSize}
+      />
       <div className={styles.registrationWrapper}>
-        <div onClick={onClick} className={styles.register}>
+        <div onClick={handleClick} className={styles.register}>
           {locale.tournament.register}
         </div>
         <Helper

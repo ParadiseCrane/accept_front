@@ -86,7 +86,11 @@ const Form: FC<{
         handleSubmit={() => handleSubmit(form)}
         stepFields={stepFields}
         pages={[
-          <MainInfo key={'0'} form={form} />,
+          <MainInfo
+            key={'0'}
+            form={form}
+            initialMaxTeamSize={initialValues.maxTeamSize}
+          />,
           <AdditionalInfo
             key={'1'}
             form={form}

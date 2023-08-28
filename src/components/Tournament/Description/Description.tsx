@@ -123,12 +123,13 @@ const Description: FC<{
           <RegistrationButton
             spec={tournament.spec}
             withPin={tournament.security == 1}
+            maxTeamSize={tournament.maxTeamSize}
             status={tournament.status.spec}
             allowRegistrationAfterStart={
               tournament.allowRegistrationAfterStart
             }
             registered={registered}
-            onRegister={() => setSuccessfullyRegistered(true)}
+            onRegistration={() => setSuccessfullyRegistered(true)}
             onRefusal={() => setSuccessfullyRegistered(false)}
           />
         )

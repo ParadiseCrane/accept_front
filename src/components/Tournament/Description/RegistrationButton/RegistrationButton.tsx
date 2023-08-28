@@ -9,17 +9,19 @@ const RegistrationButton: FC<{
   status: number;
   allowRegistrationAfterStart: boolean;
   registered: boolean;
-  onRegister: pureCallback;
+  onRegistration: pureCallback;
   onRefusal: pureCallback;
-  withPin?: boolean;
+  withPin: boolean;
+  maxTeamSize: number;
 }> = ({
   spec,
   status,
   allowRegistrationAfterStart,
   registered,
-  onRegister,
+  onRegistration,
   onRefusal,
   withPin,
+  maxTeamSize,
 }) => {
   return (
     <>
@@ -38,8 +40,9 @@ const RegistrationButton: FC<{
               allowRegistrationAfterStart={
                 allowRegistrationAfterStart
               }
-              onRegister={onRegister}
+              onRegistration={onRegistration}
               withPin={withPin}
+              maxTeamSize={maxTeamSize}
             />
           )
         )}

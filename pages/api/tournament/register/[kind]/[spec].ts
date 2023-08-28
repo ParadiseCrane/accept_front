@@ -9,6 +9,6 @@ export default async function RegisterForTournament(
     req: req,
     res: res,
     url: `api/tournament-register/${req.query.kind}/${req.query.spec}`,
-    method: 'POST',
+    method: req.query.kind == 'open' ? 'GET' : 'POST',
   });
 }

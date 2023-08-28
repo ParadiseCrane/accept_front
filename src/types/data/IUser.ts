@@ -56,6 +56,7 @@ export interface IUserDisplay {
 export interface IParticipant extends IUserDisplay {
   banned?: boolean;
   banReason?: string;
+  groups: IGroup[];
 }
 
 export interface IParticipantListBundle {

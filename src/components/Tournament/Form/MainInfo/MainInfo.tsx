@@ -6,7 +6,8 @@ import { Item } from '@ui/CustomTransferList/CustomTransferList';
 
 const MainInfo: FC<{
   form: any;
-}> = ({ form }) => {
+  initialMaxTeamSize: number;
+}> = ({ form, initialMaxTeamSize }) => {
   const { locale } = useLocale();
 
   const initialTags = useMemo(
@@ -35,7 +36,9 @@ const MainInfo: FC<{
         name={'description'}
       />
       <NumberInput
+        helperContent={locale.helpers.tournament.maxTeamSize}
         label={locale.tournament.form.maxTeamSize}
+        min={initialMaxTeamSize}
         {...form.getInputProps('maxTeamSize')}
       />
       <TagSelector
