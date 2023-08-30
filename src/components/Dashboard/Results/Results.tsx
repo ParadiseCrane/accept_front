@@ -28,7 +28,8 @@ const Results: FC<{
   endDate: Date;
   type: string;
   full: boolean;
-}> = ({ spec, isFinished, endDate, type, full }) => {
+  is_team: boolean;
+}> = ({ spec, isFinished, endDate, type, full, is_team }) => {
   const { locale } = useLocale();
 
   const [fetchDate, setFetchDate] = useState<'actual' | 'end'>(
@@ -190,19 +191,36 @@ const Results: FC<{
             <>{locale.assignment.score}</>,
             <>{locale.assignment.place}</>,
           ]}
-          rows={data.user_results.map((user_result, index) => (
-            <Tip label={user_result.user.login} key={index}>
-              <Link
-                href={`/profile/${user_result.user.login}`}
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                }}
+          rows={data.user_results.map((user_result, index) =>
+            is_team ? (
+              <Tip
+                label={user_result.team.capitan.shortName}
+                key={index}
               >
-                {user_result.user.shortName}
-              </Link>
-            </Tip>
-          ))}
+                <Link
+                  href={`/team/${user_result.team.spec}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  {user_result.team.name}
+                </Link>
+              </Tip>
+            ) : (
+              <Tip label={user_result.team.capitan.login} key={index}>
+                <Link
+                  href={`/profile/${user_result.team.capitan.login}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  {user_result.team.capitan.shortName}
+                </Link>
+              </Tip>
+            )
+          )}
           data={table_data}
         />
       ) : (

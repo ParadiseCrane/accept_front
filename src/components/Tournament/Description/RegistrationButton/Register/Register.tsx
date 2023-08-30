@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 import styles from '../registrationButton.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { Helper } from '@ui/basics';
@@ -6,6 +6,7 @@ import { AlertCircle } from 'tabler-icons-react';
 import { pureCallback } from '@custom-types/ui/atomic';
 import RegistrationModal from './RegistrationModal/RegistrationModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
 
 const Register: FC<{
   spec: string;
@@ -21,47 +22,47 @@ const Register: FC<{
   maxTeamSize,
 }) => {
   const { locale, lang } = useLocale();
-  const [openedModal, setOpenedModal] = useState(true);
+  const [openedModal, setOpenedModal] = useState(false);
 
   const openModal = useCallback(() => setOpenedModal(true), []);
   const closeModal = useCallback(() => setOpenedModal(false), []);
 
-  const handleClick = useCallback(() => {
-    if (maxTeamSize == 1 && !withPin) {
-      requestWithNotify<undefined, boolean>(
-        `tournament/register/open/${spec}`,
-        'GET',
+  const handleRegistration = useCallback(
+    (payload: ITournamentRegisterPayload) => {
+      requestWithNotify<ITournamentRegisterPayload, boolean>(
+        `tournament/register/${spec}`,
+        'POST',
         locale.notify.tournament.registration,
         lang,
         () => '',
-        undefined,
+        payload,
         () => {
           location.reload();
           onRegistration();
         }
       );
+    },
+    [lang, locale, onRegistration, spec]
+  );
+
+  const isTeam = useMemo(() => maxTeamSize != 1, [maxTeamSize]);
+
+  const handleClick = useCallback(() => {
+    if (!isTeam && !withPin) {
+      handleRegistration({ pin: undefined, team_name: undefined });
       return;
     }
     openModal();
-  }, [
-    lang,
-    locale,
-    maxTeamSize,
-    onRegistration,
-    openModal,
-    spec,
-    withPin,
-  ]);
+  }, [handleRegistration, isTeam, openModal, withPin]);
 
   return (
     <>
       <RegistrationModal
-        spec={spec}
         opened={openedModal}
         close={closeModal}
-        onRegistration={onRegistration}
         withPin={withPin}
-        maxTeamSize={maxTeamSize}
+        isTeam={isTeam}
+        handleRegistration={handleRegistration}
       />
       <div className={styles.registrationWrapper}>
         <div onClick={handleClick} className={styles.register}>

@@ -34,7 +34,7 @@ const TextInput: FC<Props> = ({
         size={shrink ? 'sm' : 'md'}
         {...props}
         classNames={{
-          error: props.classNames?.error || inputStyles.error,
+          error: inputStyles.error,
           ...props.classNames,
         }}
         label={undefined}

@@ -86,7 +86,12 @@ export interface ITournamentEdit
   status: ITournamentStatus;
 }
 
-export interface TournamentResponse {
+export interface ITournamentResponse {
   tournament: ITournament;
   is_participant: boolean;
+}
+
+export interface ITournamentRegisterPayload {
+  pin: string | undefined;
+  team_name: string | undefined;
 }

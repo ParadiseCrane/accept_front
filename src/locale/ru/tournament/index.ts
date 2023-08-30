@@ -1,6 +1,7 @@
 import { form } from './form';
 import { list } from './list';
 import { modals } from './modals';
+import { registration } from './registration';
 
 export const tournament = {
   emptyTasks: 'Задач пока нет',
@@ -13,4 +14,5 @@ export const tournament = {
   form,
   list,
   modals,
+  registration,
 };

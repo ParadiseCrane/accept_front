@@ -101,6 +101,7 @@ const AssignmentDashboard: FC<{
             endDate={assignment.end}
             type={'assignment'}
             full
+            is_team={false}
           />
         ),
         icon: <Table color="var(--secondary)" />,

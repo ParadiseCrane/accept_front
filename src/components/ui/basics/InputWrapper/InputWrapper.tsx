@@ -27,7 +27,7 @@ const InputWrapper: FC<MyInputWrapperProps> = ({
       <MantineInput.Wrapper
         size={shrink ? 'sm' : 'md'}
         classNames={{
-          error: props.classNames?.error || inputStyles.error,
+          error: inputStyles.error,
           ...props.classNames,
         }}
         {...props}

@@ -15,7 +15,7 @@ import {
 import { useLocale } from '@hooks/useLocale';
 import {
   ITournament,
-  TournamentResponse,
+  ITournamentResponse,
 } from '@custom-types/data/ITournament';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
@@ -44,10 +44,10 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data, refetch } = useRequest<undefined, TournamentResponse>(
-    `tournament/${spec}`,
-    'GET'
-  );
+  const { data, refetch } = useRequest<
+    undefined,
+    ITournamentResponse
+  >(`tournament/${spec}`, 'GET');
 
   const refetchTournament = useInterval(
     () => refetch(false),
@@ -105,6 +105,7 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
             type={'tournament'}
             full
+            is_team={tournament.maxTeamSize == 1}
           />
         ),
         icon: <Table color="var(--secondary)" />,

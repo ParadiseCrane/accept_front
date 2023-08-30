@@ -8,7 +8,7 @@ import InputWrapper from '../InputWrapper/InputWrapper';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
 
 interface Props extends MantinePinProps {
-  label: ReactNode;
+  label?: ReactNode;
   helperContent?: IDropdownContent;
   shrink?: boolean;
 }
@@ -16,6 +16,7 @@ interface Props extends MantinePinProps {
 const Pin: FC<Props> = ({ ...props }) => {
   // TODO: check type
   return (
+    // @ts-expect-error
     <InputWrapper {...props}>
       <MantinePin length={PIN_LENGTH} size={'xl'} {...props} />
     </InputWrapper>
