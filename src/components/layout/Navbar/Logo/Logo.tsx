@@ -31,7 +31,7 @@ const Logo: FC = () => {
   );
 
   return (
-    <Link href="/" passHref className={styles.logoWrapper}>
+    <Link href="/" className={styles.logoWrapper}>
       <Image src={logo} width={64} height={64} alt="Accept" />
       <div className={styles.name}>
         {letters.map((item, index) => (

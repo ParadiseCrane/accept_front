@@ -16,8 +16,8 @@ const ContactCard: FC<{ card: IContactCard }> = ({ card }) => {
             <div className={styles.valueWrapper} key={index}>
               {contact.icon}
               {contact.href ? (
-                <Link href={contact.href} passHref legacyBehavior>
-                  <a className={styles.link}>{contact.text}</a>
+                <Link href={contact.href} className={styles.link}>
+                  {contact.text}
                 </Link>
               ) : (
                 <div className={styles.link}>{contact.text}</div>

@@ -25,6 +25,7 @@ import { hasSubarray } from '@utils/hasSubarray';
 import { MultiSelect } from '@ui/basics';
 import { customTableSort } from '@utils/customTableSort';
 import Title from '@ui/Title/Title';
+import Link from 'next/link';
 
 interface Item {
   value: any;
@@ -110,12 +111,12 @@ const processData = (
         value: assignment_schema.title,
         display: (
           <div className={tableStyles.titleWrapper}>
-            <a
+            <Link
               className={tableStyles.title}
               href={`/edu/assignment_schema/${assignment_schema.spec}`}
             >
               {assignment_schema.title}
-            </a>
+            </Link>
             {assignment_schema.tags.length > 0 && (
               <span className={tableStyles.tags}>
                 {assignment_schema.tags.map((tag, idx) => (

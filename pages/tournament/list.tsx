@@ -28,6 +28,7 @@ import Title from '@ui/Title/Title';
 import { getLocalDate } from '@utils/datetime';
 import { Tip } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
+import Link from 'next/link';
 
 interface Item {
   value: any;
@@ -209,12 +210,12 @@ const processData = (
         value: tournament.title,
         display: (
           <div className={tableStyles.titleWrapper}>
-            <a
+            <Link
               className={tableStyles.title}
               href={`/tournament/${tournament.spec}`}
             >
               {tournament.title}
-            </a>
+            </Link>
             {tournament.tags.length > 0 && (
               <span className={tableStyles.tags}>
                 {tournament.tags.map((tag, idx) => (

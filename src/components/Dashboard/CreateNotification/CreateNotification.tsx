@@ -55,7 +55,7 @@ const CreateNotification: FC<{
       (_: string) => '',
       notification
     );
-  }, [form.values, user?.login, locale, lang]);
+  }, [type, spec, form.values, user?.login, locale, lang]);
 
   return (
     <>

@@ -19,11 +19,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
         {label}
       </div>
       <div className={styles.itemIcon}>
-        <Link
-          passHref
-          href={`/edu/assignment_schema/${value}`}
-          legacyBehavior
-        >
+        <Link href={`/edu/assignment_schema/${value}`}>
           <ActionIcon size="md" component="a">
             <Eye color={'var(--primary)'} />
           </ActionIcon>

@@ -19,7 +19,6 @@ function TeamProfile(props: { team: ITeam }) {
   return (
     <div className={styles.wrapper}>
       <Title title={`${locale.team.self} ${team.name}`} />
-      {/* TODO: add locale */}
       <div className={styles.main}>
         <div className={styles.teamName}>
           {locale.team.self} {team.name}
@@ -34,10 +33,9 @@ function TeamProfile(props: { team: ITeam }) {
             <div>{locale.team.page.participateIn}</div>
             <Link
               href={`/tournament/${team.origin.spec}`}
-              legacyBehavior
-              passHref
+              className={styles.link}
             >
-              <a className={styles.link}>{team.origin.title}</a>
+              {team.origin.title}
             </Link>
           </div>
         </div>
@@ -49,18 +47,14 @@ function TeamProfile(props: { team: ITeam }) {
 
         <Link
           href={`/profile/${team.capitan.login}`}
-          legacyBehavior
-          passHref
-          className={styles.capitan}
+          className={`${styles.capitan} ${styles.link}`}
         >
-          <a className={styles.link}>
-            <Avatar
-              src={link(team.capitan.login)}
-              size="lg"
-              radius="lg"
-            />
-            <div>{team.capitan.shortName}</div>
-          </a>
+          <Avatar
+            src={link(team.capitan.login)}
+            size="lg"
+            radius="lg"
+          />
+          <div>{team.capitan.shortName}</div>
         </Link>
       </div>
       <div className={styles.participantsWrapper}>
@@ -72,17 +66,14 @@ function TeamProfile(props: { team: ITeam }) {
             <Link
               key={index}
               href={`/profile/${participant.login}`}
-              legacyBehavior
-              passHref
+              className={styles.link}
             >
-              <a className={styles.link}>
-                <Avatar
-                  src={link(participant.login)}
-                  size="lg"
-                  radius="lg"
-                />
-                <div>{participant.shortName}</div>
-              </a>
+              <Avatar
+                src={link(participant.login)}
+                size="lg"
+                radius="lg"
+              />
+              <div>{participant.shortName}</div>
             </Link>
           ))}
         </div>

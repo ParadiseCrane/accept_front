@@ -30,7 +30,6 @@ const TasksBar: FC<{
             <Link
               href={`/task/${task.spec}?${taskQuery}`}
               key={index}
-              passHref
               className={`${styles.taskStatus} ${
                 task.status && task.status.spec < 2
                   ? styles.testing

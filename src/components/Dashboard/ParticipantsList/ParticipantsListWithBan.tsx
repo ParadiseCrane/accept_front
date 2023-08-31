@@ -101,7 +101,6 @@ const refactorUser = (
       <div className={tableStyles.titleWrapper}>
         <Link
           href={`/profile/${user.login}`}
-          passHref
           className={tableStyles.title}
         >
           {user.login}

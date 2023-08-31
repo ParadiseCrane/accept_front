@@ -45,7 +45,11 @@ const ProfileMenu: FC<{}> = ({}) => {
 
   return (
     <>
-      <Menu trigger="hover" zIndex={1000}>
+      <Menu
+        trigger="hover"
+        zIndex={1000}
+        transitionProps={{ transition: 'scale-y', duration: 150 }}
+      >
         <Menu.Target>
           <div>
             <Indicator label={unviewed} disabled={unviewed <= 0}>

@@ -1,0 +1,17 @@
+.link,
+.headerLink {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-s);
+}
+
+.headerLink {
+  padding: var(--spacer-xs) var(--spacer-s);
+}
+
+.headerLink:hover {
+  background-color: #9dd5ff42;
+}
