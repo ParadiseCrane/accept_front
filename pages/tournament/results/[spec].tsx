@@ -33,6 +33,7 @@ function Tournament({ tournament }: { tournament: ITournament }) {
               isTeacher ||
               (!!user && user?.login in tournament.moderators)
             }
+            is_team={tournament.maxTeamSize == 1}
           />
         </div>
       </div>
