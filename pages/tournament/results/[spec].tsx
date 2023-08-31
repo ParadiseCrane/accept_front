@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Results from '@components/Dashboard/Results/Results';
 import { ITournament } from '@custom-types/data/ITournament';
@@ -33,7 +33,7 @@ function Tournament({ tournament }: { tournament: ITournament }) {
               isTeacher ||
               (!!user && user?.login in tournament.moderators)
             }
-            is_team={tournament.maxTeamSize == 1}
+            is_team={tournament.maxTeamSize != 1}
           />
         </div>
       </div>
@@ -69,10 +69,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   if (response.status === 200) {
-    const tournament = await response.json();
+    const payload = await response.json();
     return {
       props: {
-        tournament,
+        tournament: payload.tournament,
       },
     };
   }

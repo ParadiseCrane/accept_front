@@ -73,6 +73,8 @@ const RegistrationModal: FC<{
   }, [withPin]);
 
   useEffect(() => {
+    form.setFieldValue('pin', '');
+    form.setFieldValue('team_name', '');
     form.setFieldValue('isCreate', isCreate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCreate]);
@@ -169,11 +171,13 @@ const RegistrationModal: FC<{
           )}
         </Stepper>
       ) : (
-        <EnterPinCode
-          form={form}
-          isTeam={isTeam}
-          handleRegistration={handleRegistrationValidationWrapper}
-        />
+        <div className={styles.stepperContent}>
+          <EnterPinCode
+            form={form}
+            isTeam={isTeam}
+            handleRegistration={handleRegistrationValidationWrapper}
+          />
+        </div>
       )}
     </SimpleModal>
   );
