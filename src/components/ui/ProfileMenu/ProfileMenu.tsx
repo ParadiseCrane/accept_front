@@ -14,6 +14,7 @@ import styles from './profileMenu.module.css';
 import { Logout } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
+import Link from 'next/link';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -73,7 +74,11 @@ const ProfileMenu: FC<{}> = ({}) => {
                 accessLevel >= accessLevels[item.permission]
             )
             .map((item, index) => (
-              <Menu.Item component="a" href={item.href} key={index}>
+              <Menu.Item
+                component={Link}
+                href={item.href}
+                key={index}
+              >
                 <Group spacing="xs" className={styles.wrapper}>
                   {item.icon}
                   <div>{item.text(locale)}</div>

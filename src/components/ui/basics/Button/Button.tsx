@@ -3,6 +3,7 @@ import { HoverCard, Button as MantineButton } from '@mantine/core';
 import styles from './button.module.css';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
 import { concatClassNames } from '@utils/concatClassNames';
+import Link from 'next/link';
 
 const Button: FC<MyButtonProps> = ({
   hoverCardProps,
@@ -56,7 +57,8 @@ const Button: FC<MyButtonProps> = ({
                 }
               >
                 <MantineButton
-                  component={props.href ? 'a' : 'button'}
+                  // @ts-expect-error
+                  component={props.href ? Link : 'button'}
                   {...props}
                   classNames={{
                     ...props.classNames,

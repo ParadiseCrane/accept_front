@@ -21,7 +21,7 @@ const TasksBar: FC<{
             style={{
               backgroundColor: 'var(--primary)',
             }}
-            component="a"
+            component={Link}
             href={homeHref}
           >
             <Home color="white" />

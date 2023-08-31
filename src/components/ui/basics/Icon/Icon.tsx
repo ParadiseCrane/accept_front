@@ -6,6 +6,7 @@ import { IWidth } from '@custom-types/ui/atomic';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
 import { ICON_SIZES } from '@constants/Sizes';
 import Tip from '../Tip/Tip';
+import Link from 'next/link';
 
 const Icon: FC<MyIconProps> = ({
   children,
@@ -30,7 +31,8 @@ const Icon: FC<MyIconProps> = ({
           {...tooltipProps}
         >
           <ActionIcon
-            component={props.onClick ? 'button' : 'a'}
+            // @ts-expect-error
+            component={props.onClick ? 'button' : Link}
             {...props}
             size={
               size

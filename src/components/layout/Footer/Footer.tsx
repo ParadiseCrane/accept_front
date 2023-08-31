@@ -4,6 +4,7 @@ import { useLocale } from '@hooks/useLocale';
 import LocaleSelector from '@ui/LocaleSelector/LocaleSelector';
 import { BrandGithub } from 'tabler-icons-react';
 import { ActionIcon } from '@mantine/core';
+import Link from 'next/link';
 
 const Footer: FC = () => {
   const { locale } = useLocale();
@@ -16,7 +17,7 @@ const Footer: FC = () => {
       <div className={styles.githubs}>
         <div className={styles.github}>
           <ActionIcon
-            component={'a'}
+            component={Link}
             href={'https://github.com/dsomni'}
           >
             <BrandGithub size={24} color={'white'} />
@@ -24,7 +25,7 @@ const Footer: FC = () => {
         </div>
         <div className={styles.github}>
           <ActionIcon
-            component={'a'}
+            component={Link}
             href={'https://github.com/RetroMeras'}
           >
             <BrandGithub size={24} color={'white'} />
