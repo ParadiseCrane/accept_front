@@ -94,3 +94,21 @@
   --main-color: var(--dark2);
   --border-color: var(--dark2);
 }
+
+.header .root {
+  --underline-color: var(--primary);
+  padding: var(--spacer-xs) var(--spacer-s);
+  background: unset;
+  background: no-repeat 0 100%;
+  background-image: linear-gradient(
+    var(--underline-color),
+    var(--underline-color)
+  );
+  background-size: 0% 2px;
+  transition: background-size 0.3s ease;
+  transition-delay: 0.2s;
+}
+
+.header .root:hover {
+  background-size: 100% 2px;
+}
