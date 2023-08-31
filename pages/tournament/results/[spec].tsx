@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Results from '@components/Dashboard/Results/Results';
 import { ITournament } from '@custom-types/data/ITournament';

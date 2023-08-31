@@ -54,8 +54,8 @@ const Results: FC<{
   }, [fetchDate]); // eslint-disable-line
 
   const table_data = useMemo(() => {
-    if (!data || data.user_results.length == 0) return [];
-    let rows = data.user_results.map((user_result) =>
+    if (!data || data.team_results.length == 0) return [];
+    let rows = data.team_results.map((user_result) =>
       user_result.results
         .map((cell) => ({
           best: (
@@ -106,9 +106,9 @@ const Results: FC<{
       best: <>{current.toString()}</>,
       rest: [],
     });
-    last_score = data.user_results[0].score;
+    last_score = data.team_results[0].score;
     for (let i = 1; i < rows.length; i++) {
-      const current_score = data.user_results[i].score;
+      const current_score = data.team_results[i].score;
       if (current_score == last_score) {
         streak += 1;
         rows[i] = rows[i].concat({
@@ -169,7 +169,7 @@ const Results: FC<{
 
       <LoadingOverlay visible={loading} />
       {data &&
-      data.user_results.length > 0 &&
+      data.team_results.length > 0 &&
       data.tasks.length > 0 ? (
         <ResultsTable
           refetch={refetch}
@@ -191,32 +191,32 @@ const Results: FC<{
             <>{locale.assignment.score}</>,
             <>{locale.assignment.place}</>,
           ]}
-          rows={data.user_results.map((user_result, index) =>
+          rows={data.team_results.map((team_result, index) =>
             is_team ? (
               <Tip
-                label={user_result.team.capitan.shortName}
+                label={team_result.team.capitan.shortName}
                 key={index}
               >
                 <Link
-                  href={`/team/${user_result.team.spec}`}
+                  href={`/team/${team_result.team.spec}`}
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
                   }}
                 >
-                  {user_result.team.name}
+                  {team_result.team.name}
                 </Link>
               </Tip>
             ) : (
-              <Tip label={user_result.team.capitan.login} key={index}>
+              <Tip label={team_result.team.capitan.login} key={index}>
                 <Link
-                  href={`/profile/${user_result.team.capitan.login}`}
+                  href={`/profile/${team_result.team.capitan.login}`}
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
                   }}
                 >
-                  {user_result.team.capitan.shortName}
+                  {team_result.team.capitan.shortName}
                 </Link>
               </Tip>
             )

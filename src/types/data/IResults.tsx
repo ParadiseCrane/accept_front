@@ -25,5 +25,5 @@ export interface ITeamResult {
 
 export interface IFullResults {
   tasks: ITaskBaseInfo[];
-  user_results: ITeamResult[];
+  team_results: ITeamResult[];
 }

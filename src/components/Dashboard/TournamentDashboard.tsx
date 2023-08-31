@@ -105,7 +105,7 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
             type={'tournament'}
             full
-            is_team={tournament.maxTeamSize == 1}
+            is_team={tournament.maxTeamSize != 1}
           />
         ),
         icon: <Table color="var(--secondary)" />,
