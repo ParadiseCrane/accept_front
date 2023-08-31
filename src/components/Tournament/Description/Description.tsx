@@ -18,11 +18,18 @@ const Description: FC<{
   is_participant?: boolean;
 }> = ({ tournament, isPreview, is_participant }) => {
   const { locale } = useLocale();
-  const [start, setStart] = useState('-');
-  const [end, setEnd] = useState('-');
-  const [tasks, setTasks] = useState(tournament.tasks);
   const { user, isAdmin } = useUser();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
+  const [tasks, setTasks] = useState(
+    tournament.tasks.map((task, index) => ({
+      ...task,
+      title: `${letterFromIndex(index)}. ${task.title}`,
+    }))
+  );
   const [successfullyRegistered, setSuccessfullyRegistered] =
     useState(false);
 
@@ -68,11 +75,6 @@ const Description: FC<{
     };
   }, [tournament.spec, tournament.tasks, isPreview]);
 
-  useEffect(() => {
-    setStart(getLocalDate(tournament.start));
-    setEnd(getLocalDate(tournament.end));
-  }, [tournament.end, tournament.start]);
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
@@ -102,10 +104,12 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startDate}: {start}
+              {locale.tournament.form.startDate}:{' '}
+              {getLocalDate(tournament.start)}
             </div>
             <div className={styles.duration}>
-              {locale.tournament.form.endDate}: {end}
+              {locale.tournament.form.endDate}:{' '}
+              {getLocalDate(tournament.end)}
             </div>
           </div>
         </div>
@@ -114,42 +118,52 @@ const Description: FC<{
         className={styles.description}
         dangerouslySetInnerHTML={{ __html: tournament.description }}
       />
-      {banned ? (
-        <div className={styles.bannedWrapper}>
-          {locale.tournament.banned}!
-        </div>
-      ) : (
-        !(tournament.status.spec === 2 || isPreview || special) && (
-          <RegistrationButton
-            spec={tournament.spec}
-            withPin={tournament.security == 1}
-            maxTeamSize={tournament.maxTeamSize}
-            status={tournament.status.spec}
-            allowRegistrationAfterStart={
-              tournament.allowRegistrationAfterStart
-            }
-            registered={registered}
-            onRegistration={() => setSuccessfullyRegistered(true)}
-            onRefusal={() => setSuccessfullyRegistered(false)}
-          />
-        )
-      )}
+      {!loading && (
+        <>
+          {banned ? (
+            <div className={styles.bannedWrapper}>
+              {locale.tournament.banned}!
+            </div>
+          ) : (
+            !(
+              tournament.status.spec === 2 ||
+              isPreview ||
+              special
+            ) && (
+              <RegistrationButton
+                spec={tournament.spec}
+                withPin={tournament.security == 1}
+                maxTeamSize={tournament.maxTeamSize}
+                status={tournament.status.spec}
+                allowRegistrationAfterStart={
+                  tournament.allowRegistrationAfterStart
+                }
+                registered={registered}
+                onRegistration={() => setSuccessfullyRegistered(true)}
+                onRefusal={() => setSuccessfullyRegistered(false)}
+              />
+            )
+          )}
 
-      <div className={styles.tasksWrapper}>
-        {((!registered && tournament.status.spec != 2) ||
-          (!special && tournament.status.spec == 0)) && <Overlay />}
-        <PrimitiveTaskTable
-          tasks={tasks}
-          linkQuery={`tournament=${tournament.spec}`}
-          empty={
-            special && !isPreview
-              ? locale.tournament.addTasks
-              : registered || tournament.status.spec == 2
-              ? locale.tournament.emptyTasks
-              : locale.tournament.needRegistration
-          }
-        />
-      </div>
+          <div className={styles.tasksWrapper}>
+            {((!registered && tournament.status.spec != 2) ||
+              (!special && tournament.status.spec == 0)) && (
+              <Overlay />
+            )}
+            <PrimitiveTaskTable
+              tasks={tasks}
+              linkQuery={`tournament=${tournament.spec}`}
+              empty={
+                special && !isPreview
+                  ? locale.tournament.addTasks
+                  : registered || tournament.status.spec == 2
+                  ? locale.tournament.emptyTasks
+                  : locale.tournament.needRegistration
+              }
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
