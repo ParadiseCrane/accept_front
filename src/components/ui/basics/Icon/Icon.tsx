@@ -31,8 +31,7 @@ const Icon: FC<MyIconProps> = ({
           {...tooltipProps}
         >
           <ActionIcon
-            // @ts-expect-error
-            component={props.onClick ? 'button' : Link}
+            component={props.onClick ? 'button' : 'a'}
             {...props}
             size={
               size
