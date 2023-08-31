@@ -5,6 +5,7 @@ import { useWidth } from '@hooks/useWidth';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { Tip } from '@ui/basics';
 import styles from './sticky.module.css';
+import Link from 'next/link';
 
 type positions = {
   bottom: number;
@@ -45,7 +46,8 @@ const SingularSticky: FC<{
           openDelay={500}
         >
           <ActionIcon
-            component={props.onClick ? 'button' : 'a'}
+            // @ts-expect-error
+            component={props.onClick ? 'button' : Link}
             variant="filled"
             radius={60}
             size={STICKY_SIZES[width]}
