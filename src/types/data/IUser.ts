@@ -20,6 +20,7 @@ export interface IUser {
 }
 
 export interface IUserContext {
+  authorized: boolean;
   user: IUser | undefined | null;
   accessLevel: number;
   isUser: boolean;

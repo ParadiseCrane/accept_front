@@ -1,6 +1,5 @@
 import { pureCallback } from '@custom-types/ui/atomic';
 import { FC, memo } from 'react';
-
 import CancelRegistration from './CancelRegistration/CancelRegistration';
 import Register from './Register/Register';
 

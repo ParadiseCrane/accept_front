@@ -6,6 +6,7 @@ import {
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import InputWrapper from '../InputWrapper/InputWrapper';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
+import styles from './pin.module.css';
 
 interface Props extends MantinePinProps {
   label?: ReactNode;
@@ -13,12 +14,15 @@ interface Props extends MantinePinProps {
   shrink?: boolean;
 }
 
-const Pin: FC<Props> = ({ ...props }) => {
+const Pin: FC<Props> = ({ rightSection, ...props }) => {
   // TODO: check type
   return (
     // @ts-expect-error
     <InputWrapper {...props}>
-      <MantinePin length={PIN_LENGTH} size={'xl'} {...props} />
+      <div className={styles.inputWrapper}>
+        <MantinePin length={PIN_LENGTH} size={'xl'} {...props} />
+        {rightSection}
+      </div>
     </InputWrapper>
   );
 };

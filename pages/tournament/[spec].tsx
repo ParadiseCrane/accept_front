@@ -125,7 +125,7 @@ function Tournament(props: {
             <PinModal
               active={activePinModal}
               setActive={setActivePinModal}
-              spec={tournament.spec}
+              origin={tournament.spec}
             />
           )}
           <Sticky actions={actions} />

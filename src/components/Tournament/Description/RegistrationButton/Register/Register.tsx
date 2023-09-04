@@ -7,6 +7,9 @@ import { pureCallback } from '@custom-types/ui/atomic';
 import RegistrationModal from './RegistrationModal/RegistrationModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useUser } from '@hooks/useUser';
 
 const Register: FC<{
   spec: string;
@@ -22,6 +25,8 @@ const Register: FC<{
   maxTeamSize,
 }) => {
   const { locale, lang } = useLocale();
+  const { authorized } = useUser();
+  const router = useRouter();
   const [openedModal, setOpenedModal] = useState(false);
 
   const openModal = useCallback(() => setOpenedModal(true), []);
@@ -65,9 +70,20 @@ const Register: FC<{
         handleRegistration={handleRegistration}
       />
       <div className={styles.registrationWrapper}>
-        <div onClick={handleClick} className={styles.register}>
-          {locale.tournament.register}
-        </div>
+        {authorized ? (
+          <div onClick={handleClick} className={styles.register}>
+            {locale.tournament.register}
+          </div>
+        ) : (
+          <Link
+            className={styles.register}
+            href={`/signin?referrer=${encodeURIComponent(
+              router.asPath
+            )}`}
+          >
+            {locale.tournament.register}
+          </Link>
+        )}
         <Helper
           dropdownContent={locale.helpers.tournament.registration}
         />

@@ -8,6 +8,7 @@ import { group } from './group';
 import { tournament } from './tournament';
 import { attempt } from './attempt';
 import { taskTest } from './taskTest';
+import { pin } from './pin';
 
 export const helpers = {
   task,
@@ -20,4 +21,5 @@ export const helpers = {
   group,
   attempt,
   taskTest,
+  pin,
 };

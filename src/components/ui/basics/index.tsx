@@ -28,6 +28,7 @@ import Kbd from './Kbd/Kbd';
 import InputLabel from './InputLabel/InputLabel';
 import Pin from './Pin/Pin';
 import CopyButton from './CopyButton/CopyButton';
+import CopyIcon from './CopyIcon/CopyIcon';
 
 export {
   Button,
@@ -60,4 +61,5 @@ export {
   InputLabel,
   Pin,
   CopyButton,
+  CopyIcon,
 };

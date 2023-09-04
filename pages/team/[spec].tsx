@@ -1,23 +1,59 @@
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
+import { ReactNode, useMemo, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { ReactNode } from 'react';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import Link from 'next/link';
+import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ITeam } from '@custom-types/data/ITeam';
-import styles from '@styles/team.module.css';
-import Title from '@ui/Title/Title';
 import { UTCDate } from '@utils/datetime';
 import { Avatar } from '@mantine/core';
 import { link } from '@constants/Avatar';
-import Link from 'next/link';
-import { useLocale } from '@hooks/useLocale';
+import Title from '@ui/Title/Title';
+import PinModal from '@components/Tournament/PinModal/PinModal';
+import { getApiUrl } from '@utils/getServerUrl';
+import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import styles from '@styles/team.module.css';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import { Key } from 'tabler-icons-react';
+import { STICKY_SIZES } from '@constants/Sizes';
+import { useWidth } from '@hooks/useWidth';
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
   const { locale } = useLocale();
+  const { width } = useWidth();
+
+  const [openedModal, setOpenedModal] = useState(false);
+
+  const { user, isAdmin } = useUser();
+
+  const special = useMemo(
+    () => isAdmin || (user && user.login == team.capitan.login),
+    [isAdmin, user, team]
+  );
 
   return (
     <div className={styles.wrapper}>
+      {special && (
+        <>
+          <SingularSticky
+            onClick={() => setOpenedModal(true)}
+            color="var(--secondary)"
+            icon={
+              <Key
+                width={STICKY_SIZES[width] / 3}
+                height={STICKY_SIZES[width] / 3}
+              />
+            }
+            description={locale.tip.sticky.tournament.pin}
+          />
+          <PinModal
+            origin={team.spec}
+            active={openedModal}
+            setActive={setOpenedModal}
+          />
+        </>
+      )}
       <Title title={`${locale.team.self} ${team.name}`} />
       <div className={styles.main}>
         <div className={styles.teamName}>
@@ -112,14 +148,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (response.status === 200) {
     const team = await response.json();
 
-    if (team.size == 1) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: `/profile/${team.capitan}`,
-        },
-      };
-    }
     return {
       props: {
         team,

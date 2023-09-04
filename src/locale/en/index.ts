@@ -37,6 +37,7 @@ const en = {
   name: 'Title',
   save: 'Save',
   delete: 'Delete',
+  close: 'Close',
   cancel: 'Cancel',
   download: 'Download',
   yes: 'Yes',

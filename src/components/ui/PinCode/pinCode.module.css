@@ -1,0 +1,5 @@
+.rightSectionWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xs);
+}

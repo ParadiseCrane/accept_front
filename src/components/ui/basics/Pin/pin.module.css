@@ -1,0 +1,7 @@
+.inputWrapper {
+  display: flex;
+  flex: row;
+  gap: var(--spacer-s);
+  align-items: center;
+  justify-content: center;
+}
