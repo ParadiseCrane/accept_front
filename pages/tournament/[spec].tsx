@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { useUser } from '@hooks/useUser';
 import { useWidth } from '@hooks/useWidth';
@@ -14,6 +14,7 @@ import {
   Pencil,
   PlaylistAdd,
   ReportAnalytics,
+  ShirtSport,
   Trash,
 } from 'tabler-icons-react';
 import { STICKY_SIZES } from '@constants/Sizes';
@@ -27,9 +28,11 @@ import SingularSticky from '@ui/Sticky/SingularSticky';
 function Tournament(props: {
   tournament: ITournament;
   is_participant: boolean;
+  team_spec?: string;
 }) {
   const tournament = props.tournament;
   const is_participant = props.is_participant;
+  const team_spec = props.team_spec;
   const [activeDeleteModal, setActiveDeleteModal] = useState(false);
   const [activePinModal, setActivePinModal] = useState(false);
   const { locale } = useLocale();
@@ -109,12 +112,9 @@ function Tournament(props: {
     [locale, tournament.spec, width, tournament.security]
   );
 
-  return (
-    <>
-      <Title
-        title={`${locale.titles.tournament.spec} ${tournament.title}`}
-      />
-      {special ? (
+  const getSticky = useCallback(() => {
+    if (special)
+      return (
         <>
           <DeleteModal
             active={activeDeleteModal}
@@ -130,21 +130,70 @@ function Tournament(props: {
           )}
           <Sticky actions={actions} />
         </>
-      ) : (
-        is_participant &&
-        tournament.status.spec != 0 && (
-          <SingularSticky
-            icon={
-              <ReportAnalytics
-                width={STICKY_SIZES[width] / 2}
-                height={STICKY_SIZES[width] / 2}
-              />
-            }
-            href={`/tournament/results/${tournament.spec}`}
-            description={locale.tip.sticky.tournament.results}
-          />
-        )
-      )}
+      );
+
+    if (is_participant && tournament.maxTeamSize > 1)
+      return (
+        <Sticky
+          actions={[
+            {
+              color: 'green',
+              icon: (
+                <ReportAnalytics
+                  width={STICKY_SIZES[width] / 3}
+                  height={STICKY_SIZES[width] / 3}
+                />
+              ),
+              href: `/tournament/results/${tournament.spec}`,
+              description: locale.tip.sticky.tournament.results,
+            },
+            {
+              color: 'blue',
+              icon: (
+                <ShirtSport
+                  width={STICKY_SIZES[width] / 3}
+                  height={STICKY_SIZES[width] / 3}
+                />
+              ),
+              href: `/team/${team_spec}`,
+              description: locale.tip.sticky.tournament.myTeam,
+            },
+          ]}
+        />
+      );
+    if (is_participant && tournament.status.spec != 0)
+      return (
+        <SingularSticky
+          icon={
+            <ReportAnalytics
+              width={STICKY_SIZES[width] / 2}
+              height={STICKY_SIZES[width] / 2}
+            />
+          }
+          href={`/tournament/results/${tournament.spec}`}
+          description={locale.tip.sticky.tournament.results}
+        />
+      );
+
+    return <></>;
+  }, [
+    actions,
+    activeDeleteModal,
+    activePinModal,
+    is_participant,
+    locale,
+    special,
+    tournament,
+    width,
+    team_spec,
+  ]);
+
+  return (
+    <>
+      <Title
+        title={`${locale.titles.tournament.spec} ${tournament.title}`}
+      />
+      {getSticky()}
       {user && (special || is_participant) && (
         <ChatSticky spec={tournament.spec} host={user.login} />
       )}
@@ -192,6 +241,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         tournament: resp.tournament,
         is_participant: resp.is_participant,
+        team_spec: resp.team_spec,
       },
     };
   }
