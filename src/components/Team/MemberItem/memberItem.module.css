@@ -1,0 +1,12 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-s);
+}
+
+.link:hover {
+  color: var(--primary);
+}

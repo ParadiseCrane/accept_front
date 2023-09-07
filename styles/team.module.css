@@ -7,6 +7,19 @@
   gap: var(--spacer-m);
 }
 
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-s);
+}
+
+.link:hover {
+  color: var(--primary);
+}
+
 .main {
 }
 
@@ -30,19 +43,6 @@
 
 .capitanLabel {
   font-size: var(--font-size-m);
-  color: var(--primary);
-}
-
-.link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacer-s);
-}
-
-.link:hover {
   color: var(--primary);
 }
 

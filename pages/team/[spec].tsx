@@ -6,8 +6,6 @@ import Link from 'next/link';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ITeam } from '@custom-types/data/ITeam';
 import { UTCDate } from '@utils/datetime';
-import { Avatar } from '@mantine/core';
-import { link } from '@constants/Avatar';
 import Title from '@ui/Title/Title';
 import PinModal from '@components/Tournament/PinModal/PinModal';
 import { getApiUrl } from '@utils/getServerUrl';
@@ -19,6 +17,7 @@ import { useWidth } from '@hooks/useWidth';
 import TitleInput from '@components/Team/TitleInput/TitleInput';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
+import MemberItem from '@components/Team/MemberItem/MemberItem';
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -108,18 +107,7 @@ function TeamProfile(props: { team: ITeam }) {
         <div className={styles.capitanLabel}>
           {locale.team.page.capitan}
         </div>
-
-        <Link
-          href={`/profile/${team.capitan.login}`}
-          className={`${styles.capitan} ${styles.link}`}
-        >
-          <Avatar
-            src={link(team.capitan.login)}
-            size="lg"
-            radius="lg"
-          />
-          <div>{team.capitan.shortName}</div>
-        </Link>
+        <MemberItem team={team} participant={team.capitan} />
       </div>
       <div className={styles.participantsWrapper}>
         <div className={styles.participantsLabel}>
@@ -127,18 +115,11 @@ function TeamProfile(props: { team: ITeam }) {
         </div>
         <div className={styles.participantsList}>
           {team.participants.map((participant, index) => (
-            <Link
+            <MemberItem
               key={index}
-              href={`/profile/${participant.login}`}
-              className={styles.link}
-            >
-              <Avatar
-                src={link(participant.login)}
-                size="lg"
-                radius="lg"
-              />
-              <div>{participant.shortName}</div>
-            </Link>
+              team={team}
+              participant={participant}
+            />
           ))}
         </div>
       </div>
