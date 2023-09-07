@@ -42,4 +42,7 @@ export const sticky = {
     edit: 'Edit the user',
     delete: 'Delete the user',
   },
+  team: {
+    delete: 'Delete the team',
+  },
 };

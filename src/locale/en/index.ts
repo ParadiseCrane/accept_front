@@ -53,6 +53,7 @@ const en = {
   ban: 'Ban',
   unban: 'Unban',
   toList: 'To list',
+  toTournaments: 'To tournaments',
   validationError: 'Validation error',
   jsonValidationError: 'Invalid JSON',
   yourProfile: 'Your Profile',

@@ -14,6 +14,7 @@ import { feedback } from './feedback';
 import { executor } from './executor';
 import { task_test } from './task_test';
 import { test_group } from './test_group';
+import { team } from './team';
 
 export const notify = {
   errors: {
@@ -35,4 +36,5 @@ export const notify = {
   executor,
   task_test,
   test_group,
+  team,
 };

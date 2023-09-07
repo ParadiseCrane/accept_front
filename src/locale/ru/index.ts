@@ -53,6 +53,7 @@ const ru = {
   ban: 'Забанить',
   unban: 'Разбанить',
   toList: 'К списку',
+  toTournaments: 'К турнирам',
   validationError: 'Ошибка валидации',
   jsonValidationError: 'Некорректный JSON',
   yourProfile: 'Ваш профиль',

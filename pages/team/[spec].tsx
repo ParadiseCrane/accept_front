@@ -13,10 +13,12 @@ import PinModal from '@components/Tournament/PinModal/PinModal';
 import { getApiUrl } from '@utils/getServerUrl';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import styles from '@styles/team.module.css';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { Key } from 'tabler-icons-react';
+import { Key, Trash } from 'tabler-icons-react';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { useWidth } from '@hooks/useWidth';
+import TitleInput from '@components/Team/TitleInput/TitleInput';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
+import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -24,41 +26,67 @@ function TeamProfile(props: { team: ITeam }) {
   const { width } = useWidth();
 
   const [openedModal, setOpenedModal] = useState(false);
+  const [openedDeleteModal, setOpenedDeleteModal] = useState(false);
 
   const { user, isAdmin } = useUser();
 
   const special = useMemo(
-    () => isAdmin || (user && user.login == team.capitan.login),
+    () => !!(isAdmin || (user && user.login == team.capitan.login)),
     [isAdmin, user, team]
+  );
+
+  const actions: IStickyAction[] = useMemo(
+    () => [
+      {
+        onClick: () => setOpenedDeleteModal(true),
+        color: 'red',
+        icon: (
+          <Trash
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        description: locale.tip.sticky.team.delete,
+      },
+      {
+        onClick: () => setOpenedModal(true),
+        color: 'var(--secondary)',
+        icon: (
+          <Key
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        description: locale.tip.sticky.tournament.pin,
+      },
+    ],
+    [locale, setOpenedDeleteModal, width]
   );
 
   return (
     <div className={styles.wrapper}>
       {special && (
         <>
-          <SingularSticky
-            onClick={() => setOpenedModal(true)}
-            color="var(--secondary)"
-            icon={
-              <Key
-                width={STICKY_SIZES[width] / 3}
-                height={STICKY_SIZES[width] / 3}
-              />
-            }
-            description={locale.tip.sticky.tournament.pin}
-          />
+          <Sticky actions={actions} />
           <PinModal
             origin={team.spec}
             active={openedModal}
             setActive={setOpenedModal}
           />
+          <DeleteModal
+            active={openedDeleteModal}
+            setActive={setOpenedDeleteModal}
+            team={team}
+          />
         </>
       )}
       <Title title={`${locale.team.self} ${team.name}`} />
       <div className={styles.main}>
-        <div className={styles.teamName}>
-          {locale.team.self} {team.name}
-        </div>
+        <TitleInput
+          special={special}
+          spec={team.spec}
+          title={team.name}
+        />
         <div className={styles.info}>
           <div className={styles.date}>
             {locale.team.page.registrationDate}{' '}

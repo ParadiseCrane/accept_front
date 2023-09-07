@@ -25,29 +25,27 @@ const SimpleModal: FC<SimpleModalProps> = ({
   ...props
 }) => {
   return (
-    <div>
-      <DynamicModal
-        transitionProps={{
-          transition: 'fade',
-          duration: 450,
-          timingFunction: 'ease',
-        }}
-        withCloseButton={!!!hideCloseButton}
-        title={
-          <div className={modalStyles.titleWrapper}>
-            <div className={modalStyles.title}>{title}</div>
-            {helperContent && (
-              <Helper dropdownContent={helperContent} />
-            )}
-          </div>
-        }
-        zIndex={9900}
-        onClose={close}
-        {...props}
-      >
-        {children}
-      </DynamicModal>
-    </div>
+    <DynamicModal
+      transitionProps={{
+        transition: 'fade',
+        duration: 450,
+        timingFunction: 'ease',
+      }}
+      withCloseButton={!!!hideCloseButton}
+      title={
+        <div className={modalStyles.titleWrapper}>
+          <div className={modalStyles.title}>{title}</div>
+          {helperContent && (
+            <Helper dropdownContent={helperContent} />
+          )}
+        </div>
+      }
+      zIndex={9900}
+      onClose={close}
+      {...props}
+    >
+      {children}
+    </DynamicModal>
   );
 };
 
