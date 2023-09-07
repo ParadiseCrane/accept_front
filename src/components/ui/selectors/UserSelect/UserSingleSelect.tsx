@@ -5,9 +5,8 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { Avatar, Text } from '@mantine/core';
-import { link } from '@constants/Avatar';
-import { Select } from '@ui/basics';
+import { Text } from '@mantine/core';
+import { Select, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
 import Link from 'next/link';
@@ -23,17 +22,17 @@ const UserSingleSelect: FC<UserSelectProps> = ({
   additionalProps,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
-    ({ image, label, value, ...others }: UserItemProps, ref) => (
+    ({ login, label, value, ...others }: UserItemProps, ref) => (
       <div className={styles.item} ref={ref}>
         <div
           onMouseDown={others.onMouseDown}
           onMouseEnter={others.onMouseEnter}
           className={styles.left}
         >
-          <Avatar
+          <UserAvatar
             radius="md"
             size="md"
-            src={image}
+            login={login}
             alt={'User`s avatar'}
           />
           <div>
@@ -58,7 +57,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
       users.map(
         (item) =>
           ({
-            image: link(item.login),
+            login: item.login,
             label: item.shortName,
             value: item.login,
             role: item.role.name,

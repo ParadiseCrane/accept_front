@@ -1,5 +1,5 @@
 import { FC, memo, useCallback } from 'react';
-import { Avatar, Group, Menu } from '@mantine/core';
+import { Group, Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
 import {
@@ -8,8 +8,7 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 import { useBackNotifications } from '@hooks/useBackNotifications';
-import { link } from '@constants/Avatar';
-import { Indicator } from '@ui/basics';
+import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
 import { Logout } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
@@ -54,12 +53,7 @@ const ProfileMenu: FC<{}> = ({}) => {
         <Menu.Target>
           <div>
             <Indicator label={unviewed} disabled={unviewed <= 0}>
-              <Avatar
-                radius="lg"
-                size="lg"
-                src={user ? link(user.login) : undefined}
-                alt={'Users avatar'}
-              />
+              <UserAvatar login={user?.login} alt={'Users avatar'} />
             </Indicator>
           </div>
         </Menu.Target>

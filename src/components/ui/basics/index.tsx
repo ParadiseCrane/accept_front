@@ -29,6 +29,7 @@ import InputLabel from './InputLabel/InputLabel';
 import Pin from './Pin/Pin';
 import CopyButton from './CopyButton/CopyButton';
 import CopyIcon from './CopyIcon/CopyIcon';
+import UserAvatar from './UserAvatar/UserAvatar';
 
 export {
   Button,
@@ -62,4 +63,5 @@ export {
   Pin,
   CopyButton,
   CopyIcon,
+  UserAvatar,
 };

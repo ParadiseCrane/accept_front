@@ -119,6 +119,9 @@ function TeamProfile(props: { team: ITeam }) {
               key={index}
               team={team}
               participant={participant}
+              special={
+                special && participant.login != team.capitan.login
+              }
             />
           ))}
         </div>

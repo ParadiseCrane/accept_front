@@ -9,4 +9,9 @@ export const team = {
     success: 'Team was successfully deleted',
     error: 'Error when deleting the team',
   },
+  kickParticipant: {
+    loading: 'Kicking the participant',
+    success: 'Participant was successfully kicked',
+    error: 'Error when kicking the participant',
+  },
 };
