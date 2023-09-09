@@ -55,6 +55,10 @@ export interface ITaskDisplay {
   status?: IAttemptStatus;
 }
 
+export interface ITaskDisplayWithPublic extends ITaskDisplay {
+  public: boolean;
+}
+
 export interface ITask extends ITaskDisplay {
   description: string;
   constraints: IConstraints;

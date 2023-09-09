@@ -7,6 +7,7 @@ import {
   Messages,
   Pencil,
   Puzzle,
+  Settings as SettingsIcon,
   Table,
   Trash,
   Users,
@@ -35,6 +36,7 @@ import Results from './Results/Results';
 import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
 import ChatPage from './ChatPage/ChatPage';
 import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
+import Settings from './Settings/Settings';
 import { useChatHosts } from '@hooks/useChatHosts';
 
 const TournamentDashboard: FC<{
@@ -167,6 +169,11 @@ const TournamentDashboard: FC<{
         icon: <Ban color="var(--secondary)" />,
         title: locale.dashboard.tournament.bannedAttempts,
       },
+      {
+        page: tournament && <Settings tournament={tournament} />,
+        icon: <SettingsIcon color="var(--secondary)" />,
+        title: locale.dashboard.tournament.bannedAttempts,
+      },
     ],
     [tournament, hasNewMessages, locale, refetch, spec]
   );
@@ -215,7 +222,7 @@ const TournamentDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} />
+      <LeftMenu links={links} initialStep={9} />
     </>
   );
 };

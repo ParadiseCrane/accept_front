@@ -1,6 +1,6 @@
 import { IAssessmentType, ITournamentStatus } from './atomic';
 import { ITag } from './ITag';
-import { ITaskDisplay } from './ITask';
+import { ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
 
 export interface ISecurity {
   spec: number;
@@ -94,4 +94,9 @@ export interface ITournamentResponse {
 export interface ITournamentRegisterPayload {
   pin: string | undefined;
   team_name: string | undefined;
+}
+
+export interface ITournamentSettingsBundle {
+  tasks: ITaskDisplayWithPublic[];
+  allowRegistrationAfterStart: boolean;
 }
