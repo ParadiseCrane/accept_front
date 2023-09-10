@@ -9,7 +9,8 @@ const EnterPinCode: FC<{
   form: any;
   isTeam: boolean;
   handleRegistration: setter<ITournamentRegisterPayload>;
-}> = ({ form, isTeam, handleRegistration }) => {
+  buttonText: string;
+}> = ({ form, isTeam, handleRegistration, buttonText }) => {
   const { locale } = useLocale();
 
   return (
@@ -36,7 +37,7 @@ const EnterPinCode: FC<{
           })
         }
       >
-        {locale.tournament.register}
+        {buttonText}
       </Button>
     </>
   );

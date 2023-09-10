@@ -11,6 +11,7 @@ export const tournament = {
   refuse: 'Refuse',
   banned: 'You were banned',
   enterPin: 'Enter pin-code',
+  join: 'Join',
   form,
   list,
   modals,

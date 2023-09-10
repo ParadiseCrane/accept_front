@@ -166,6 +166,7 @@ const RegistrationModal: FC<{
                 handleRegistration={
                   handleRegistrationValidationWrapper
                 }
+                buttonText={locale.tournament.join}
               />
             </Stepper.Step>
           )}
@@ -176,6 +177,7 @@ const RegistrationModal: FC<{
             form={form}
             isTeam={isTeam}
             handleRegistration={handleRegistrationValidationWrapper}
+            buttonText={locale.tournament.register}
           />
         </div>
       )}
