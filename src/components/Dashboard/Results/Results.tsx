@@ -55,8 +55,8 @@ const Results: FC<{
 
   const table_data = useMemo(() => {
     if (!data || data.team_results.length == 0) return [];
-    let rows = data.team_results.map((user_result) =>
-      user_result.results
+    let rows = data.team_results.map((team_result) =>
+      team_result.results
         .map((cell) => ({
           best: (
             <div style={{ color: getScoreColor(cell.best?.score) }}>
@@ -90,10 +90,10 @@ const Results: FC<{
           best: (
             <div
               style={{
-                color: getTotalScoreColor(user_result.score),
+                color: getTotalScoreColor(team_result.score),
               }}
             >
-              {user_result.score.toString()}
+              {team_result.score.toString()}
             </div>
           ),
           rest: [],

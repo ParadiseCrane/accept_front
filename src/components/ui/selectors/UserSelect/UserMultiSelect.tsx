@@ -33,7 +33,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
           <UserAvatar
             radius="md"
             size="md"
-            src={login}
+            login={login}
             alt={'User`s avatar'}
           />
           <div>
