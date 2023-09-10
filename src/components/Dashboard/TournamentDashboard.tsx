@@ -172,7 +172,7 @@ const TournamentDashboard: FC<{
       {
         page: tournament && <Settings tournament={tournament} />,
         icon: <SettingsIcon color="var(--secondary)" />,
-        title: locale.dashboard.tournament.bannedAttempts,
+        title: locale.dashboard.tournament.settings.self,
       },
     ],
     [tournament, hasNewMessages, locale, refetch, spec]
@@ -222,7 +222,7 @@ const TournamentDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} initialStep={9} />
+      <LeftMenu links={links} initialStep={0} />
     </>
   );
 };

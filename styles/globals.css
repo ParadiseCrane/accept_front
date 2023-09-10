@@ -56,9 +56,9 @@ body {
 }
 
 :root {
-  --font-size-label-l: 1.4rem;
-  --font-size-label-m: 1.2rem;
-  --font-size-label-s: 1rem;
+  --font-size-label-l: 1.3rem;
+  --font-size-label-m: 1.1rem;
+  --font-size-label-s: 0.9rem;
   --font-size-label-xs: 0.8rem;
 }
 
@@ -117,28 +117,28 @@ body {
 @media only screen and (min-width: 1280px) {
   html,
   body {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
 @media only screen and (min-width: 1440px) {
   html,
   body {
-    font-size: 17px;
+    font-size: 15px;
   }
 }
 
 @media only screen and (min-width: 1920px) {
   html,
   body {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 
 @media print {
   html,
   body {
-    font-size: 22px;
+    font-size: 20px;
   }
 }
 

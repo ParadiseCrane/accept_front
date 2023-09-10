@@ -1,4 +1,4 @@
 export const taskSelector = {
-  unselected: 'Приватные задачи',
+  unselected: 'Скрытые задачи',
   selected: 'Публичные задачи',
 };

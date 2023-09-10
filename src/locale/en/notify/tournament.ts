@@ -38,4 +38,16 @@ export const tournament = {
     started: 'Tournament just started!',
     finished: 'Tournament just finished!',
   },
+  settings: {
+    changePublic: {
+      loading: 'Changing tasks publicity',
+      success: 'Tasks publicity changed successfully',
+      error: 'Error while changing tasks publicity',
+    },
+    allowRegistrationAfterStart: {
+      loading: 'Changing ability to register after start',
+      success: 'Ability to register after start successfully changed',
+      error: 'Error while changing ability to register after start',
+    },
+  },
 };

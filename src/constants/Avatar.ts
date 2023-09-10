@@ -1,3 +1,5 @@
+import { PREDEFINED_COLORS } from './Colors';
+
 const AVATAR_VARIANT = 'bottts-neutral';
 const PARAMS: { [key: string]: string[] } = {
   eyes: [
@@ -13,6 +15,9 @@ const PARAMS: { [key: string]: string[] } = {
     'shade01',
   ],
   backgroundType: ['gradientLinear', 'solid'],
+  backgroundColor: PREDEFINED_COLORS.map((item) =>
+    item.slice(1).toLowerCase()
+  ),
 };
 
 const VARIABLE_PARAMS: {

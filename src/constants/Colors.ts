@@ -1,4 +1,4 @@
-const predefinedColors = [
+export const PREDEFINED_COLORS = [
   '#CC5DE8',
   '#845EF7',
   '#5C7CFA',
@@ -15,7 +15,7 @@ const predefinedColors = [
 ];
 
 export const getColor = (idx: number, offset?: number) => {
-  return predefinedColors[
-    (idx + (offset || 0)) % predefinedColors.length
+  return PREDEFINED_COLORS[
+    (idx + (offset || 0)) % PREDEFINED_COLORS.length
   ];
 };

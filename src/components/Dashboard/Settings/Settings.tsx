@@ -13,12 +13,15 @@ import {
 } from '@custom-types/data/ITournament';
 import PinCode from '@ui/PinCode/PinCode';
 import { sendRequest } from '@requests/request';
-import { Button, Switch } from '@ui/basics';
-import { CustomTransferList } from '@ui/CustomTransferList/CustomTransferList';
+import { Button, Helper, InputWrapper, Switch } from '@ui/basics';
+import {
+  CustomTransferList,
+  Item,
+} from '@ui/CustomTransferList/CustomTransferList';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useLocale } from '@hooks/useLocale';
-import { ITaskDisplayWithPublic } from '@custom-types/data/ITask';
 import styles from './settings.module.css';
+import { TaskItem } from '@ui/selectors/TaskSelector/TaskItem/TaskItem';
 
 const Settings: FC<{ tournament: ITournament }> = ({
   tournament,
@@ -57,17 +60,12 @@ const Settings: FC<{ tournament: ITournament }> = ({
     requestWithNotify<string[], boolean>(
       `tournament/settings/changePublic/${tournament.spec}`,
       'POST',
-      locale.notify.notification.create, // TODO
+      locale.notify.tournament.settings.changePublic,
       lang,
       (_: boolean) => '',
       selectedSpecs
     );
-  }, [
-    lang,
-    locale.notify.notification.create,
-    selectedSpecs,
-    tournament.spec,
-  ]);
+  }, [lang, locale, selectedSpecs, tournament.spec]);
 
   const updateRegistration = useCallback(
     (newValue: boolean) => {
@@ -77,13 +75,13 @@ const Settings: FC<{ tournament: ITournament }> = ({
       >(
         `tournament/settings/allowRegistrationAfterStart/${tournament.spec}`,
         'POST',
-        locale.notify.task.create, // TODO
+        locale.notify.tournament.settings.allowRegistrationAfterStart,
         lang,
         (_: boolean) => '',
         { allowRegistrationAfterStart: newValue }
       );
     },
-    [lang, locale.notify.task.create, tournament.spec]
+    [lang, locale, tournament.spec]
   );
 
   const [availableTasks, selectedTasks] = useMemo(() => {
@@ -96,6 +94,7 @@ const Settings: FC<{ tournament: ITournament }> = ({
       const task = {
         ...settings.tasks[i],
         label: settings.tasks[i].title,
+        value: settings.tasks[i].spec,
       };
       if (task.public) {
         newSelectedTasks.push(task);
@@ -112,15 +111,16 @@ const Settings: FC<{ tournament: ITournament }> = ({
       setSelectedSpecs(selectedTasks.map((item) => item.spec));
   }, [selectedTasks]);
 
+  const setUsed = useCallback(
+    (items: Item[]) =>
+      setSelectedSpecs(items.map((item) => item.spec)),
+    []
+  );
+
   const itemComponent = useCallback(
-    (task: ITaskDisplayWithPublic, handleSelect: any) => {
+    (item: any, handleSelect: any) => {
       return (
-        <div
-          onClick={() => handleSelect(task)}
-          style={{ cursor: 'pointer' }}
-        >
-          {task.title}
-        </div>
+        <TaskItem item={item} onSelect={() => handleSelect(item)} />
       );
     },
     []
@@ -139,32 +139,53 @@ const Settings: FC<{ tournament: ITournament }> = ({
 
   return (
     <div className={styles.wrapper}>
-      {tournament.security == 1 && (
-        <PinCode origin={tournament.spec} />
-      )}
-      <Switch
-        label="allowRegistrationAfterStart"
-        checked={allowRegistrationAfterStart}
-        onChange={changeRegistration}
-      />
-      {!!availableTasks && !!selectedTasks && (
-        <>
-          <CustomTransferList
-            titles={[
-              locale.ui.taskSelector.unselected,
-              locale.ui.taskSelector.selected,
-            ]}
-            itemComponent={itemComponent}
-            defaultOptions={availableTasks}
-            defaultChosen={selectedTasks}
-            setUsed={(items) =>
-              setSelectedSpecs(items.map((item) => item.spec))
-            }
-            classNames={{}}
+      <div className={styles.section}>
+        <div className={styles.sectionTitle}>
+          {locale.dashboard.tournament.settings.sections.pin}
+        </div>
+        {tournament.security == 1 && (
+          <PinCode
+            origin={tournament.spec}
+            classNames={{ wrapper: styles.pinCodeWrapper }}
           />
-          <Button onClick={updateTasksPublic}>JOPA</Button>
-        </>
+        )}
+      </div>
+      {!!availableTasks && !!selectedTasks && (
+        <div className={styles.section}>
+          <div className={styles.sectionTitle}>
+            {locale.dashboard.tournament.settings.sections.tasks}
+            <Helper
+              dropdownContent={
+                locale.helpers.tournament.settings.tasks
+              }
+            />
+          </div>
+          <InputWrapper style={{ width: '80%' }}>
+            <CustomTransferList
+              titles={[
+                locale.ui.taskSelector.unselected,
+                locale.ui.taskSelector.selected,
+              ]}
+              itemComponent={itemComponent}
+              defaultOptions={availableTasks}
+              defaultChosen={selectedTasks}
+              setUsed={setUsed}
+              classNames={{}}
+            />
+          </InputWrapper>
+          <Button onClick={updateTasksPublic}>{locale.save}</Button>
+        </div>
       )}
+      <div className={styles.section}>
+        <div className={styles.sectionTitle}>
+          {locale.dashboard.tournament.settings.sections.others}
+        </div>
+        <Switch
+          label={locale.tournament.form.allowRegistrationAfterStart}
+          checked={allowRegistrationAfterStart}
+          onChange={changeRegistration}
+        />
+      </div>
     </div>
   );
 };

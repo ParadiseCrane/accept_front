@@ -6,7 +6,10 @@ import { CopyIcon, Icon, Pin } from '@ui/basics';
 import { Refresh } from 'tabler-icons-react';
 import styles from './pinCode.module.css';
 
-const PinCode: FC<{ origin: string }> = ({ origin }) => {
+const PinCode: FC<{ origin: string; classNames?: object }> = ({
+  origin,
+  classNames,
+}) => {
   const [pin, setPin] = useState('');
   const { locale } = useLocale();
 
@@ -40,6 +43,7 @@ const PinCode: FC<{ origin: string }> = ({ origin }) => {
       readOnly
       value={pin}
       size="lg"
+      classNames={classNames}
       rightSection={
         <div className={styles.rightSectionWrapper}>
           <CopyIcon

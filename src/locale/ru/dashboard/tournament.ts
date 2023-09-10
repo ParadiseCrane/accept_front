@@ -3,6 +3,14 @@ export const tournament = {
   results: 'Таблица результатов',
   attempts: 'Попытки',
   bannedAttempts: 'Забаненные попытки',
+  settings: {
+    self: 'Настройки',
+    sections: {
+      pin: 'Пин-код',
+      tasks: 'Настройки задач',
+      others: 'Другие настройки',
+    },
+  },
   participants: 'Участники',
   tasks: 'Задачи',
   registrationManagement: 'Управление регистрацией',

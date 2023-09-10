@@ -1,4 +1,4 @@
 export const taskSelector = {
-  selected: 'Private tasks',
-  unselected: 'Public tasks',
+  selected: 'Public tasks',
+  unselected: 'Private tasks',
 };

@@ -1,11 +1,12 @@
 .itemWrapper {
   width: 100%;
   display: flex;
-  padding: var(--spacer-xs);
+  padding: var(--spacer-xxs) var(--spacer-xs) var(--spacer-xxs) 0;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
+
 .item,
 .actions {
   display: flex;
@@ -14,15 +15,17 @@
   gap: var(--spacer-xxs);
   user-select: none;
 }
+
 .item {
   cursor: pointer;
   font-size: var(--font-size-s);
   width: 90%;
 }
+
 .actions {
   width: fit-content;
 }
 
 .label {
-  font-size: var(--font-size-m);
+  font-size: var(--font-size-label-m);
 }
