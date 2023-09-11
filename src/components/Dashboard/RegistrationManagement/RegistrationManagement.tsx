@@ -11,9 +11,11 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 
 const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
   const { locale, lang } = useLocale();
+
   const [participants, setParticipants] = useState<
     string[] | undefined
   >(undefined);
+
   const { data, refetch, loading } = useRequest<
     {},
     { users: IUserDisplay[]; participants: string[] }
@@ -26,6 +28,10 @@ const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
       return data;
     }
   );
+
+  // useEffect(() => {
+  //   console.log(participants);
+  // }, [participants]);
 
   const handleRegister = useCallback(
     (logins: string[]) => {

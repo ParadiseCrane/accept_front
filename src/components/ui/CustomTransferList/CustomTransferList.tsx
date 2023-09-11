@@ -1,5 +1,11 @@
 import { removeOneElement } from '@utils/removeOneElement';
-import { FC, ReactNode, useCallback, useEffect } from 'react';
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { SelectField } from './SelectField/SelectField';
 import styles from './customTransferList.module.css';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
@@ -53,12 +59,17 @@ const InnerTransferList: FC<InnerTransferListProps> = ({
   searchKeys,
   shrink,
 }) => {
+  const [initialLoad, setInitialLoad] = useState(true);
   const [chosen, set] = useStore((store) => store['chosen']);
   const [options] = useStore((store) => store['options']);
 
   useEffect(() => {
+    if (initialLoad) {
+      setInitialLoad(false);
+      return;
+    }
     setUsed(chosen);
-  }, [chosen, setUsed]);
+  }, [chosen, setUsed]); // eslint-disable-line
 
   useEffect(() => {
     set({ options: defaultOptions.sort(cmpItem) });
