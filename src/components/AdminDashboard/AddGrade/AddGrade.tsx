@@ -1,5 +1,4 @@
 import { FC, memo, useCallback, useEffect, useMemo } from 'react';
-import stepperStyles from '@styles/ui/stepper.module.css';
 import { IGroup } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import { Button } from '@mantine/core';

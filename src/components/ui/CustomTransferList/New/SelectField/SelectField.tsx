@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   FC,
+  memo,
   useCallback,
   useMemo,
   useState,
@@ -14,13 +15,44 @@ import {
 import { callback, pureCallback } from '@custom-types/ui/atomic';
 import Fuse from 'fuse.js';
 import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
+import {
+  CSSObject,
+  ClassNames,
+  TextInputStylesNames,
+} from '@mantine/core';
 
-export const SelectField: FC<{
+export interface SelectFieldClassNames
+  extends ClassNames<
+    | 'fieldWrapper'
+    | 'fieldTitle'
+    | 'itemsWrapper'
+    | 'inputDescription'
+    | 'inputError'
+    | 'inputIcon'
+    | 'inputInput'
+    | 'inputLabel'
+    | 'inputRequired'
+    | 'inputRightSection'
+    | 'inputRoot'
+    | 'inputWrapper'
+  > {}
+
+const defaultClassNames: SelectFieldClassNames = {
+  fieldWrapper: styles.wrapper,
+  fieldTitle: styles.title,
+  itemsWrapper: styles.items,
+};
+
+const inputStyles: Partial<Record<TextInputStylesNames, CSSObject>> =
+  { icon: { pointerEvents: 'unset' } };
+
+const SelectFieldComponent: FC<{
   title: string;
   value: ICustomTransferListItem[];
   selectItems: callback<string[], pureCallback<void>>;
   itemComponent: ICustomTransferListItemComponent;
   searchKeys: string[];
+  classNames?: SelectFieldClassNames;
   leftSection?: boolean;
   rightSection?: boolean;
 }> = ({
@@ -29,10 +61,55 @@ export const SelectField: FC<{
   selectItems,
   itemComponent,
   searchKeys,
-  leftSection,
-  rightSection,
+  leftSection: withLeftSection,
+  rightSection: withRightSection,
+  classNames: classNamesProp,
 }) => {
   const [search, setSearch] = useState('');
+
+  const classNames: SelectFieldClassNames = useMemo(
+    () => ({ ...defaultClassNames, ...classNamesProp }),
+    [classNamesProp]
+  );
+
+  const inputClassNames = useMemo(
+    () => ({
+      description: classNames.inputDescription,
+      error: classNames.inputError,
+      icon: classNames.inputIcon,
+      input: classNames.inputInput,
+      label: classNames.inputLabel,
+      required: classNames.inputRequired,
+      rightSection: classNames.inputRightSection,
+      root: classNames.inputRoot,
+      wrapper: classNames.inputWrapper,
+    }),
+    [classNames]
+  );
+
+  const selectEverything = useCallback(() => {
+    selectItems(value.map((item) => item.label))();
+  }, []);
+
+  const leftSection = useMemo(
+    () =>
+      withLeftSection && (
+        <Icon size={'sm'} onClick={selectEverything}>
+          <ChevronsLeft />
+        </Icon>
+      ),
+    [withLeftSection]
+  );
+
+  const rightSection = useMemo(
+    () =>
+      withRightSection && (
+        <Icon size={'sm'} onClick={selectEverything}>
+          <ChevronsRight />
+        </Icon>
+      ),
+    []
+  );
 
   const fuse = useMemo(
     () =>
@@ -49,38 +126,24 @@ export const SelectField: FC<{
     return fuse.search(search).map((result) => result.item);
   }, [fuse, search, value]);
 
-  const selectEverything = useCallback(() => {
-    selectItems(value.map((item) => item.label))();
-  }, [selectItems, value]);
-
   const onSearch = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
     []
   );
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.title}>{title}</div>
+    <div className={classNames.fieldWrapper}>
+      <div className={classNames.fieldTitle}>{title}</div>
       <TextInput
         value={search}
         onChange={onSearch}
-        styles={{ icon: { pointerEvents: 'unset' } }}
-        icon={
-          leftSection && (
-            <Icon size={'sm'} onClick={selectEverything}>
-              <ChevronsLeft />
-            </Icon>
-          )
-        }
-        rightSection={
-          rightSection && (
-            <Icon size={'sm'} onClick={selectEverything}>
-              <ChevronsRight />
-            </Icon>
-          )
-        }
+        styles={inputStyles}
+        classNames={inputClassNames}
+        icon={leftSection}
+        rightSection={rightSection}
+        placeholder="Поиск"
       />
-      <div className={styles.items}>
+      <div className={classNames.itemsWrapper}>
         {filteredItems.map((item, index) =>
           itemComponent({
             item,
@@ -92,3 +155,5 @@ export const SelectField: FC<{
     </div>
   );
 };
+
+export const SelectField = memo(SelectFieldComponent);

@@ -1,17 +1,9 @@
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import {
-  ReactElement,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Title from '@ui/Title/Title';
 import CustomTransferList from '@ui/CustomTransferList/New/CustomTransferList';
-import {
-  ICustomTransferListData,
-  ICustomTransferListItemComponentProps,
-} from '@custom-types/ui/basics/customTransferList';
+import { ICustomTransferListData } from '@custom-types/ui/basics/customTransferList';
+import { TextInput } from '@ui/basics';
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -44,42 +36,26 @@ function IndexPage() {
     });
   }, []);
 
-  const itemComponent = useCallback(
-    ({
-      item,
-      onClick,
-      index,
-    }: ICustomTransferListItemComponentProps): ReactNode => (
-      <div key={index} onClick={onClick}>
-        {item.label}
-      </div>
-    ),
-    []
-  );
-
-  // const [counter, setCounter] = useState(0);
-
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
-
   return (
     <>
       <Title title={'Тестовая страница'} />
-      <CustomTransferList
-        key={
-          data
-            ? data[0].map((item) => item.label).join() +
-              data[1].map((item) => item.label).join()
-            : ''
-        }
-        value={data}
-        loading={loading}
-        itemComponent={itemComponent}
-        sortOrder={-1}
-        onChange={setData}
-        searchKeys={['label']}
-      />
+      <div
+        style={{
+          width: '60%',
+          marginLeft: 'var(--spacer-l)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--spacer-m)',
+        }}
+      >
+        <TextInput label={'Jopa'} />
+        <CustomTransferList
+          titles={['First', 'Second']}
+          value={data}
+          loading={loading}
+          onChange={setData}
+        />
+      </div>
     </>
   );
 }

@@ -4,3 +4,8 @@
   flex-direction: row;
   gap: var(--spacer-m);
 }
+
+.defaultItemWrapper {
+  padding: var(--spacer-xxs) 0;
+  font-size: var(--font-size-s);
+}
