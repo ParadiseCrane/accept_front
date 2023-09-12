@@ -84,7 +84,7 @@ const AddGrade: FC<{}> = ({}) => {
   }, [initialValues]); //eslint-disable-line
 
   return (
-    <div className={stepperStyles.wrapper}>
+    <div className={styles.wrapper}>
       <TextInput
         label={locale.group.name}
         required
