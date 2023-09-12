@@ -87,14 +87,10 @@ const SelectFieldComponent: FC<{
     [classNames]
   );
 
-  const selectEverything = useCallback(() => {
-    selectItems(value.map((item) => item.label))();
-  }, []);
-
   const leftSection = useMemo(
     () =>
       withLeftSection && (
-        <Icon size={'sm'} onClick={selectEverything}>
+        <Icon size={'sm'} onClick={selectItems([])}>
           <ChevronsLeft />
         </Icon>
       ),
@@ -104,7 +100,7 @@ const SelectFieldComponent: FC<{
   const rightSection = useMemo(
     () =>
       withRightSection && (
-        <Icon size={'sm'} onClick={selectEverything}>
+        <Icon size={'sm'} onClick={selectItems([])}>
           <ChevronsRight />
         </Icon>
       ),

@@ -1,4 +1,11 @@
-import { FC, ReactNode, memo, useCallback, useMemo } from 'react';
+import {
+  FC,
+  ReactNode,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import {
   ICustomTransferListData,
   ICustomTransferListItem,
@@ -87,16 +94,26 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
 
   const moveFromTo = useCallback(
     (labels: string[], from: 0 | 1, to: 0 | 1) => {
+      console.log(labels);
+      console.log(innerValue);
       let data: ICustomTransferListData = [...innerValue];
-      for (let i = 0; i < labels.length; i++) {
-        const index = data[from].findIndex(
-          (item) => item.label == labels[i]
-        );
-        const [item] = data[from].splice(index, 1);
-
-        data[to].push(item);
+      if (labels.length == 0) {
+        data[to].push(...data[from]);
+        data[from] = [];
+        onChange(data);
+        return;
       }
+      let newFrom = [];
 
+      for (let index = 0; index < data[from].length; index++) {
+        const item = data[from][index];
+        if (labels.includes(item.label)) {
+          data[to].push(item);
+          continue;
+        }
+        newFrom.push(item);
+      }
+      data[from] = newFrom;
       data[to].sort((a, b) => compareItems(a, b) * sortOrder);
 
       onChange(data);
@@ -105,15 +122,15 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
   );
 
   const selectItems = useCallback(
-    (label: string[]) => {
-      return () => moveFromTo(label, 0, 1);
+    (labels: string[]) => {
+      return () => moveFromTo(labels, 0, 1);
     },
     [moveFromTo]
   );
 
   const unselectItems = useCallback(
-    (label: string[]) => {
-      return () => moveFromTo(label, 1, 0);
+    (labels: string[]) => {
+      return () => moveFromTo(labels, 1, 0);
     },
     [moveFromTo]
   );

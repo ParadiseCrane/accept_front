@@ -36,6 +36,10 @@ function IndexPage() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
       <Title title={'Тестовая страница'} />
