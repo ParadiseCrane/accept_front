@@ -9,20 +9,29 @@ import InputWrapper from '@ui/basics/InputWrapper/InputWrapper';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
 import { LoadingOverlay } from '@ui/basics';
 import {
+  DefaultSelectFieldProps,
   SelectField,
-  SelectFieldClassNames,
 } from './SelectField/SelectField';
-import { ClassNames } from '@mantine/core';
+import { DefaultProps } from '@mantine/core';
 
 import styles from './customTransferList.module.css';
 
-interface TransferListClassNames extends ClassNames<'wrapper'> {
-  selectFieldClassNames?: SelectFieldClassNames;
+interface Props
+  extends DefaultProps<'wrapper'>,
+    Omit<
+      MyInputWrapperProps,
+      'children' | 'onChange' | 'classNames' | 'styles'
+    > {
+  value: ICustomTransferListData;
+  onChange: (_: ICustomTransferListData) => void;
+  titles?: [string, string];
+  loading?: boolean;
+  itemComponent?: ICustomTransferListItemComponent;
+  sortOrder?: 1 | -1;
+  searchKeys?: string[];
+  selectFieldProps?: DefaultSelectFieldProps;
+  maxHeight?: string;
 }
-
-const defaultClassNames: TransferListClassNames = {
-  wrapper: styles.wrapper,
-};
 
 const defaultItemComponent = ({
   item,
@@ -42,7 +51,7 @@ const compareItems = (
   a: ICustomTransferListItem,
   b: ICustomTransferListItem
 ): 1 | 0 | -1 => {
-  if ((a.sortValue = b.sortValue)) {
+  if (a.sortValue == b.sortValue) {
     return 0;
   }
   if (a.sortValue > b.sortValue) {
@@ -51,25 +60,7 @@ const compareItems = (
   return -1;
 };
 
-const hashItems = (items: ICustomTransferListItem[]) =>
-  items.map((item) => item.label).join();
-
-interface CustomTransferListProps
-  extends Omit<
-    MyInputWrapperProps,
-    'children' | 'onChange' | 'classNames'
-  > {
-  value: ICustomTransferListData;
-  onChange: (_: ICustomTransferListData) => void;
-  titles?: [string, string];
-  loading?: boolean;
-  itemComponent?: ICustomTransferListItemComponent;
-  sortOrder?: 1 | -1;
-  searchKeys?: string[];
-  classNames?: TransferListClassNames;
-}
-
-const CustomTransferList: FC<CustomTransferListProps> = ({
+const CustomTransferList: FC<Props> = ({
   value,
   onChange,
   loading,
@@ -77,7 +68,10 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
   itemComponent = defaultItemComponent,
   sortOrder = 1,
   searchKeys = ['label'],
-  classNames = defaultClassNames,
+  classNames,
+  selectFieldProps: selectFieldClassNames,
+  styles: _innerStyles,
+  maxHeight = '300px',
   ...props
 }) => {
   const innerValue: ICustomTransferListData = useMemo(
@@ -87,8 +81,6 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
 
   const moveFromTo = useCallback(
     (labels: string[], from: 0 | 1, to: 0 | 1) => {
-      console.log(labels);
-      console.log(innerValue);
       let data: ICustomTransferListData = [...innerValue];
       if (labels.length == 0) {
         data[to].push(...data[from]);
@@ -130,7 +122,12 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
 
   return (
     <InputWrapper
-      classNames={{ root: classNames.wrapper }}
+      classNames={
+        classNames
+          ? { root: classNames.wrapper }
+          : { root: styles.wrapper }
+      }
+      styles={maxHeight ? { root: { maxHeight } } : {}}
       {...props}
     >
       <LoadingOverlay visible={!!loading} />
@@ -141,7 +138,7 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
         itemComponent={itemComponent}
         searchKeys={searchKeys}
         rightSection
-        classNames={classNames.selectFieldClassNames}
+        {...selectFieldClassNames}
       />
       <SelectField
         title={titles[1]}
@@ -150,7 +147,7 @@ const CustomTransferList: FC<CustomTransferListProps> = ({
         itemComponent={itemComponent}
         searchKeys={searchKeys}
         leftSection
-        classNames={classNames.selectFieldClassNames}
+        {...selectFieldClassNames}
       />
     </InputWrapper>
   );

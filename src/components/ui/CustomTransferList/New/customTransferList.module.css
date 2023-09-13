@@ -7,5 +7,7 @@
 
 .defaultItemWrapper {
   padding: var(--spacer-xxs) 0;
-  font-size: var(--font-size-s);
+  font-size: var(--font-size-m);
+  cursor: pointer;
+  user-select: none;
 }

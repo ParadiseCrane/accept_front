@@ -17,12 +17,14 @@ import Fuse from 'fuse.js';
 import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
 import {
   CSSObject,
-  ClassNames,
+  DefaultProps,
   TextInputStylesNames,
 } from '@mantine/core';
+import useVirtual from 'react-cool-virtual';
+import { MyIconProps } from '@custom-types/ui/basics/icon';
 
-export interface SelectFieldClassNames
-  extends ClassNames<
+export interface DefaultSelectFieldProps
+  extends DefaultProps<
     | 'fieldWrapper'
     | 'fieldTitle'
     | 'itemsWrapper'
@@ -36,26 +38,27 @@ export interface SelectFieldClassNames
     | 'inputRoot'
     | 'inputWrapper'
   > {}
-
-const defaultClassNames: SelectFieldClassNames = {
-  fieldWrapper: styles.wrapper,
-  fieldTitle: styles.title,
-  itemsWrapper: styles.items,
-};
-
-const inputStyles: Partial<Record<TextInputStylesNames, CSSObject>> =
-  { icon: { pointerEvents: 'unset' } };
-
-const SelectFieldComponent: FC<{
+export interface Props extends DefaultSelectFieldProps {
   title: string;
   value: ICustomTransferListItem[];
   selectItems: callback<string[], pureCallback<void>>;
   itemComponent: ICustomTransferListItemComponent;
   searchKeys: string[];
-  classNames?: SelectFieldClassNames;
   leftSection?: boolean;
   rightSection?: boolean;
-}> = ({
+}
+
+const defaultClassNames = {
+  fieldWrapper: styles.wrapper,
+  fieldTitle: styles.title,
+  itemsWrapper: styles.items,
+  titleSearchWrapper: styles.titleSearchWrapper,
+};
+
+const inputStyles: Partial<Record<TextInputStylesNames, CSSObject>> =
+  { icon: { pointerEvents: 'unset' } };
+
+const SelectFieldComponent: FC<Props> = ({
   title,
   value,
   selectItems,
@@ -67,7 +70,7 @@ const SelectFieldComponent: FC<{
 }) => {
   const [search, setSearch] = useState('');
 
-  const classNames: SelectFieldClassNames = useMemo(
+  const classNames = useMemo(
     () => ({ ...defaultClassNames, ...classNamesProp }),
     [classNamesProp]
   );
@@ -87,24 +90,33 @@ const SelectFieldComponent: FC<{
     [classNames]
   );
 
+  const iconProps: MyIconProps = useMemo(
+    () => ({
+      size: 'sm',
+      color: 'var(--primary)',
+      onClick: selectItems([]),
+    }),
+    [selectItems]
+  );
+
   const leftSection = useMemo(
     () =>
       withLeftSection && (
-        <Icon size={'sm'} onClick={selectItems([])}>
+        <Icon {...iconProps}>
           <ChevronsLeft />
         </Icon>
       ),
-    [withLeftSection]
+    [iconProps, withLeftSection]
   );
 
   const rightSection = useMemo(
     () =>
       withRightSection && (
-        <Icon size={'sm'} onClick={selectItems([])}>
+        <Icon {...iconProps}>
           <ChevronsRight />
         </Icon>
       ),
-    []
+    [iconProps, withRightSection]
   );
 
   const fuse = useMemo(
@@ -127,26 +139,41 @@ const SelectFieldComponent: FC<{
     []
   );
 
+  const { outerRef, innerRef, items } = useVirtual<
+    HTMLDivElement,
+    HTMLDivElement
+  >({
+    itemCount: filteredItems.length,
+    overscanCount: 10,
+  });
+
   return (
     <div className={classNames.fieldWrapper}>
-      <div className={classNames.fieldTitle}>{title}</div>
-      <TextInput
-        value={search}
-        onChange={onSearch}
-        styles={inputStyles}
-        classNames={inputClassNames}
-        icon={leftSection}
-        rightSection={rightSection}
-        placeholder="Поиск"
-      />
-      <div className={classNames.itemsWrapper}>
-        {filteredItems.map((item, index) =>
-          itemComponent({
-            item,
-            onClick: selectItems([item.label]),
-            index,
-          })
-        )}
+      <div className={classNames.titleSearchWrapper}>
+        <div className={classNames.fieldTitle}>{title}</div>
+        <TextInput
+          value={search}
+          onChange={onSearch}
+          styles={inputStyles}
+          classNames={inputClassNames}
+          icon={leftSection}
+          rightSection={rightSection}
+          placeholder="Поиск"
+        />
+      </div>
+      <div className={classNames.itemsWrapper} ref={outerRef}>
+        <div ref={innerRef}>
+          {items.map(({ index, measureRef }) => (
+            <div key={index} ref={measureRef}>
+              {index < filteredItems.length &&
+                itemComponent({
+                  item: filteredItems[index],
+                  onClick: selectItems([filteredItems[index].label]),
+                  index,
+                })}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

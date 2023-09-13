@@ -11,15 +11,21 @@ function sleep(ms: number) {
 
 const getData = async (): Promise<ICustomTransferListData> => {
   await sleep(1000);
-  return [
-    [
-      { value: '1', label: 'test one', sortValue: '' },
-      { value: '2', label: 'test two', sortValue: '' },
-      { value: '3', label: 'test three', sortValue: '' },
-      { value: '4', label: 'test four', sortValue: '' },
-    ],
-    [{ value: '5', label: 'test five', sortValue: '' }],
-  ];
+  let data: ICustomTransferListData = [[], []];
+  const MAX = 1000;
+  for (let index = 0; index < MAX; index++) {
+    data[0].push({
+      value: (2 * index).toString(),
+      label: `test ${2 * index}`,
+      sortValue: 2 * index,
+    });
+    data[1].push({
+      value: (2 * index + 1).toString(),
+      label: `test ${2 * index + 1}`,
+      sortValue: 2 * index + 1,
+    });
+  }
+  return data;
 };
 
 function IndexPage() {
@@ -35,10 +41,6 @@ function IndexPage() {
       setLoading(false);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>
