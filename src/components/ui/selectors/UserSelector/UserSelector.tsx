@@ -1,84 +1,103 @@
 import { useLocale } from '@hooks/useLocale';
 import { ILocale } from '@custom-types/ui/ILocale';
-import { FC, memo, useCallback, useMemo, useState } from 'react';
 import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './userSelector.module.css';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { Icon, InputWrapper, SegmentedControl } from '@ui/basics';
+import { Icon, SegmentedControl } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import inputStyles from '@styles/ui/input.module.css';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const UserSelector: FC<{
   setFieldValue: (_: string[]) => void;
   inputProps?: any;
   users: IUserDisplay[];
   initialUsers?: string[];
-  classNames?: object;
   shrink?: boolean;
   titles?: (_: ILocale) => [string, string];
+  maxWidth?: string;
 }> = ({
   setFieldValue,
   inputProps = {},
-  users,
+  users: allUsers,
   initialUsers,
-  classNames,
   shrink,
   titles = (locale: ILocale) => [
     locale.ui.userSelector.unselected,
     locale.ui.userSelector.selected,
   ],
+  maxWidth,
 }) => {
   const { locale } = useLocale();
 
   const initialUsersInner = useMemo(() => initialUsers, []); //eslint-disable-line
 
-  const [availableUsers, selectedUsers] = useMemo(() => {
-    let newAvailableUsers = [];
-    let newSelectedUsers = [];
+  const [users, setUsers] =
+    useState<ICustomTransferListData>(undefined);
 
-    for (let i = 0; i < users.length; i++) {
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
+      setFieldValue(data[1].map((item) => item.login));
+      setUsers(data);
+    },
+    [setFieldValue]
+  );
+
+  useEffect(() => {
+    let data: ICustomTransferListData = [[], []];
+
+    for (let i = 0; i < allUsers.length; i++) {
       if (
         initialUsersInner &&
-        initialUsersInner.find((login) => login === users[i].login)
+        initialUsersInner.find((login) => login === allUsers[i].login)
       ) {
-        newSelectedUsers.push({
-          ...users[i],
-          label: users[i].shortName,
+        data[1].push({
+          ...allUsers[i],
+          label: allUsers[i].shortName,
+          sortValue: allUsers[i].login,
         });
       } else {
-        newAvailableUsers.push({
-          ...users[i],
-          label: users[i].shortName,
+        data[0].push({
+          ...allUsers[i],
+          label: allUsers[i].shortName,
+          sortValue: allUsers[i].login,
         });
       }
     }
-    return [newAvailableUsers, newSelectedUsers];
-  }, [initialUsersInner, users]);
+    setUsers(data);
+  }, [allUsers, initialUsersInner]);
 
   const [displayedField, setDisplayedField] = useState<
     'shortName' | 'login'
   >('shortName');
 
-  const itemComponent = useCallback(
-    (user: IUserDisplay, handleSelect: any) => {
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
       return (
         <div
+          key={index}
           className={`${styles.itemWrapper} ${
             shrink ? inputStyles.shrink : ''
           }`}
         >
-          <div
-            className={styles.item}
-            onClick={() => handleSelect(user)}
-          >
-            {user[displayedField]}
+          <div className={styles.item} onClick={onClick}>
+            {item[displayedField]}
           </div>
           <div className={styles.actions}>
             <Icon
-              href={`/profile/${user.login}`}
+              href={`/profile/${item.login}`}
               target="_blank"
               tabIndex={5}
               color="var(--primary)"
@@ -92,11 +111,6 @@ const UserSelector: FC<{
       );
     },
     [displayedField, shrink]
-  );
-
-  const setUsed = useCallback(
-    (users: Item[]) => setFieldValue(users.map((user) => user.login)),
-    [setFieldValue]
   );
 
   return (
@@ -117,17 +131,15 @@ const UserSelector: FC<{
           setDisplayedField(value as 'login' | 'shortName')
         }
       />
-      <InputWrapper shrink={shrink} {...inputProps}>
-        <CustomTransferList
-          defaultOptions={availableUsers}
-          defaultChosen={selectedUsers}
-          setUsed={setUsed}
-          classNames={classNames ? classNames : {}}
-          titles={titles(locale)}
-          itemComponent={itemComponent}
-          searchKeys={['login', 'name', 'shortName']}
-        />
-      </InputWrapper>
+      <CustomTransferList
+        titles={titles(locale)}
+        itemComponent={itemComponent}
+        searchKeys={['login', 'name', 'shortName']}
+        value={users}
+        onChange={onChange}
+        width={maxWidth}
+        {...inputProps}
+      />
     </div>
   );
 };

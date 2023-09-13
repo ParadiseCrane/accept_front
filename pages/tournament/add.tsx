@@ -18,7 +18,8 @@ import {
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function TournamentAdd(props: ITournamentAddBundle) {

@@ -1,10 +1,5 @@
 import { ReactNode } from 'react';
-import { callback, pureCallback } from '../atomic';
-
-export interface Item {
-  label: string;
-  [key: string]: any;
-}
+import { Item, callback, pureCallback } from '../atomic';
 
 export interface ICustomTransferListItem extends Item {
   sortValue: any;

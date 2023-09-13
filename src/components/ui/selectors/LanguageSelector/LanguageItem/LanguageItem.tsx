@@ -1,5 +1,6 @@
 import { pureCallback } from '@custom-types/ui/atomic';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { FC } from 'react';
 import styles from './languageItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';

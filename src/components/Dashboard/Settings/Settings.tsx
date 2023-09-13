@@ -4,7 +4,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import {
@@ -13,26 +12,27 @@ import {
 } from '@custom-types/data/ITournament';
 import PinCode from '@ui/PinCode/PinCode';
 import { sendRequest } from '@requests/request';
-import { Button, Helper, InputWrapper, Switch } from '@ui/basics';
-import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+import { Button, Helper, Switch } from '@ui/basics';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useLocale } from '@hooks/useLocale';
 import styles from './settings.module.css';
 import { TaskItem } from '@ui/selectors/TaskSelector/TaskItem/TaskItem';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const Settings: FC<{ tournament: ITournament }> = ({
   tournament,
 }) => {
   const { locale, lang } = useLocale();
 
+  const [tasks, setTasks] =
+    useState<ICustomTransferListData>(undefined);
   const [settings, setSettings] = useState<ITournamentSettingsBundle>(
     null!
   );
-
-  const [selectedSpecs, setSelectedSpecs] = useState<string[]>([]);
 
   const [
     allowRegistrationAfterStart,
@@ -48,6 +48,22 @@ const Settings: FC<{ tournament: ITournament }> = ({
       ).then((res) => {
         if (!cleanUp && !res.error) {
           setSettings(res.response);
+          setTasks([
+            res.response.tasks
+              .filter((item) => !item.public)
+              .map((item) => ({
+                ...item,
+                label: item.title,
+                sortValue: item.title,
+              })),
+            res.response.tasks
+              .filter((item) => item.public)
+              .map((item) => ({
+                ...item,
+                label: item.title,
+                sortValue: item.title,
+              })),
+          ] as ICustomTransferListData);
         }
       });
     }
@@ -57,15 +73,16 @@ const Settings: FC<{ tournament: ITournament }> = ({
   }, [tournament.spec]);
 
   const updateTasksPublic = useCallback(() => {
+    if (!!!tasks) return;
     requestWithNotify<string[], boolean>(
       `tournament/settings/changePublic/${tournament.spec}`,
       'POST',
       locale.notify.tournament.settings.changePublic,
       lang,
       (_: boolean) => '',
-      selectedSpecs
+      tasks[1].map((item) => item.spec)
     );
-  }, [lang, locale, selectedSpecs, tournament.spec]);
+  }, [lang, locale, tasks, tournament.spec]);
 
   const updateRegistration = useCallback(
     (newValue: boolean) => {
@@ -84,44 +101,9 @@ const Settings: FC<{ tournament: ITournament }> = ({
     [lang, locale, tournament.spec]
   );
 
-  const [availableTasks, selectedTasks] = useMemo(() => {
-    let newAvailableTasks = [];
-    let newSelectedTasks = [];
-
-    if (!!!settings) return [undefined, undefined];
-
-    for (let i = 0; i < settings.tasks.length; i++) {
-      const task = {
-        ...settings.tasks[i],
-        label: settings.tasks[i].title,
-        value: settings.tasks[i].spec,
-      };
-      if (task.public) {
-        newSelectedTasks.push(task);
-      } else {
-        newAvailableTasks.push(task);
-      }
-    }
-
-    return [newAvailableTasks, newSelectedTasks];
-  }, [settings]);
-
-  useEffect(() => {
-    if (!!selectedTasks)
-      setSelectedSpecs(selectedTasks.map((item) => item.spec));
-  }, [selectedTasks]);
-
-  const setUsed = useCallback(
-    (items: Item[]) =>
-      setSelectedSpecs(items.map((item) => item.spec)),
-    []
-  );
-
-  const itemComponent = useCallback(
-    (item: any, handleSelect: any) => {
-      return (
-        <TaskItem item={item} onSelect={() => handleSelect(item)} />
-      );
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
+      return <TaskItem key={index} item={item} onSelect={onClick} />;
     },
     []
   );
@@ -150,32 +132,28 @@ const Settings: FC<{ tournament: ITournament }> = ({
           />
         )}
       </div>
-      {!!availableTasks && !!selectedTasks && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>
-            {locale.dashboard.tournament.settings.sections.tasks}
-            <Helper
-              dropdownContent={
-                locale.helpers.tournament.settings.tasks
-              }
-            />
-          </div>
-          <InputWrapper style={{ width: '80%' }}>
-            <CustomTransferList
-              titles={[
-                locale.ui.taskSelector.unselected,
-                locale.ui.taskSelector.selected,
-              ]}
-              itemComponent={itemComponent}
-              defaultOptions={availableTasks}
-              defaultChosen={selectedTasks}
-              setUsed={setUsed}
-              classNames={{}}
-            />
-          </InputWrapper>
-          <Button onClick={updateTasksPublic}>{locale.save}</Button>
+
+      <div className={styles.section}>
+        <div className={styles.sectionTitle}>
+          {locale.dashboard.tournament.settings.sections.tasks}
+          <Helper
+            dropdownContent={locale.helpers.tournament.settings.tasks}
+          />
         </div>
-      )}
+        <CustomTransferList
+          titles={[
+            locale.ui.taskSelector.unselected,
+            locale.ui.taskSelector.selected,
+          ]}
+          itemComponent={itemComponent}
+          value={tasks}
+          onChange={setTasks}
+          searchKeys={['title']}
+          height="400px"
+          width="70%"
+        />
+        <Button onClick={updateTasksPublic}>{locale.save}</Button>
+      </div>
       <div className={styles.section}>
         <div className={styles.sectionTitle}>
           {locale.dashboard.tournament.settings.sections.others}

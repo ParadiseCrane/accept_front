@@ -22,6 +22,7 @@ import {
 } from '@mantine/core';
 import useVirtual from 'react-cool-virtual';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
+import { useLocale } from '@hooks/useLocale';
 
 export interface DefaultSelectFieldProps
   extends DefaultProps<
@@ -68,6 +69,8 @@ const SelectFieldComponent: FC<Props> = ({
   rightSection: withRightSection,
   classNames: classNamesProp,
 }) => {
+  const { locale } = useLocale();
+
   const [search, setSearch] = useState('');
 
   const classNames = useMemo(
@@ -158,7 +161,7 @@ const SelectFieldComponent: FC<Props> = ({
           classNames={inputClassNames}
           icon={leftSection}
           rightSection={rightSection}
-          placeholder="Поиск"
+          placeholder={locale.form.search}
         />
       </div>
       <div className={classNames.itemsWrapper} ref={outerRef}>

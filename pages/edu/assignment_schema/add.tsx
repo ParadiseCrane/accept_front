@@ -6,13 +6,13 @@ import { useUser } from '@hooks/useUser';
 import Form from '@components/AssignmentSchema/Form/Form';
 
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import Title from '@ui/Title/Title';
+import { Item } from '@custom-types/ui/atomic';
 
 const initialValues = {
   spec: '',

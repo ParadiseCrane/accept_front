@@ -1,4 +1,5 @@
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { FC, memo, useCallback } from 'react';
 import { TaskSelector } from '@ui/selectors';
 import { InputWrapper } from '@ui/basics';

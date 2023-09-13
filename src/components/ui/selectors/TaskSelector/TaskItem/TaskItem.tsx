@@ -1,4 +1,5 @@
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { FC } from 'react';
 import OpenTask from './OpenTask/OpenTask';
 import styles from './taskItem.module.css';
@@ -14,7 +15,7 @@ export const TaskItem: FC<{
         <div className={styles.label}>{item.label}</div>
       </div>
       <div className={styles.actions}>
-        <OpenTask spec={item.value} />
+        <OpenTask spec={item.spec} />
       </div>
     </div>
   );

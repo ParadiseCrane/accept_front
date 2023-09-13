@@ -30,7 +30,8 @@ interface Props
   sortOrder?: 1 | -1;
   searchKeys?: string[];
   selectFieldProps?: DefaultSelectFieldProps;
-  maxHeight?: string;
+  height?: string;
+  width?: string;
 }
 
 const defaultItemComponent = ({
@@ -71,13 +72,19 @@ const CustomTransferList: FC<Props> = ({
   classNames,
   selectFieldProps: selectFieldClassNames,
   styles: _innerStyles,
-  maxHeight = '300px',
+  height = '350px',
+  width = '100%',
   ...props
 }) => {
-  const innerValue: ICustomTransferListData = useMemo(
-    () => value || [[], []],
-    [value]
-  );
+  const innerValue: ICustomTransferListData = useMemo(() => {
+    let data: ICustomTransferListData = [[], []];
+    if (value) {
+      value[0].sort((a, b) => compareItems(a, b) * sortOrder);
+      value[1].sort((a, b) => compareItems(a, b) * sortOrder);
+      data = value;
+    }
+    return data;
+  }, [sortOrder, value]);
 
   const moveFromTo = useCallback(
     (labels: string[], from: 0 | 1, to: 0 | 1) => {
@@ -120,6 +127,24 @@ const CustomTransferList: FC<Props> = ({
     [moveFromTo]
   );
 
+  const inputStyles = useMemo(() => {
+    let rootStyles = { root: {} };
+    if (!!height) {
+      rootStyles.root = {
+        maxHeight: height,
+        height,
+      };
+    }
+    if (!!width) {
+      rootStyles.root = {
+        ...rootStyles.root,
+        maxWidth: width,
+        width,
+      };
+    }
+    return rootStyles;
+  }, [height, width]);
+
   return (
     <InputWrapper
       classNames={
@@ -127,7 +152,7 @@ const CustomTransferList: FC<Props> = ({
           ? { root: classNames.wrapper }
           : { root: styles.wrapper }
       }
-      styles={maxHeight ? { root: { maxHeight } } : {}}
+      styles={inputStyles}
       {...props}
     >
       <LoadingOverlay visible={!!loading} />

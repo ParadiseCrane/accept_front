@@ -11,12 +11,13 @@ import {
 import styles from './languageSelector.module.css';
 import { sendRequest } from '@requests/request';
 import { ILanguage } from '@custom-types/data/atomic';
-import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { LanguageItem } from './LanguageItem/LanguageItem';
-import { setter } from '@custom-types/ui/atomic';
+import { Item, setter } from '@custom-types/ui/atomic';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const LanguageSelector: FC<{
   initialLangs: Item[];
@@ -26,26 +27,39 @@ const LanguageSelector: FC<{
   fetchURL: string;
 }> = ({ setUsed, classNames, shrink, initialLangs, fetchURL }) => {
   const { locale } = useLocale();
-  const [langs, setLangs] = useState<ILanguage[]>([]);
+  const [allLangs, setAllLangs] = useState<ILanguage[]>([]);
+  const [langs, setLangs] =
+    useState<ICustomTransferListData>(undefined);
+  const initialLangsInner = useMemo(() => initialLangs, []); //eslint-disable-line
 
-  const [availableLangs, selectedLangs] = useMemo(() => {
-    let newAvailableLangs: Item[] = [];
-    let newSelectedLangs: Item[] = [];
-    let lang;
-    let selectedSpecs = initialLangs.map((item) => item.value);
-    for (let i = 0; i < langs.length; i++) {
-      lang = {
-        value: langs[i].spec.toString(),
-        label: langs[i].name,
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
+      setUsed(data[1].map((item) => item.login));
+      setLangs(data);
+    },
+    [setUsed]
+  );
+
+  useEffect(() => {
+    let data: ICustomTransferListData = [[], []];
+    const selectedSpecs = initialLangsInner.map((item) => item.value);
+
+    for (let i = 0; i < allLangs.length; i++) {
+      const lang = {
+        ...allLangs[i],
+        value: allLangs[i].spec.toString(),
+        label: allLangs[i].name,
+        sortValue: allLangs[i].name,
       };
       if (selectedSpecs.includes(lang.value)) {
-        newSelectedLangs.push(lang);
+        data[1].push(lang);
       } else {
-        newAvailableLangs.push(lang);
+        data[0].push(lang);
       }
     }
-    return [newAvailableLangs, newSelectedLangs];
-  }, [initialLangs, langs]);
+    setLangs(data);
+  }, [initialLangsInner, allLangs]);
 
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +72,7 @@ const LanguageSelector: FC<{
       600000
     ).then((res) => {
       if (res.error) return;
-      setLangs(res.response);
+      setAllLangs(res.response);
       setLoading(false);
     });
   }, [fetchURL]);
@@ -67,13 +81,14 @@ const LanguageSelector: FC<{
     refetch();
   }, []); // eslint-disable-line
 
-  const itemComponent = useCallback(
-    (item: Item, handleSelect: any) => {
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
       return (
         <LanguageItem
+          key={index}
           shrink={shrink}
           item={item}
-          onSelect={() => handleSelect(item)}
+          onSelect={onClick}
         />
       );
     },
@@ -84,17 +99,15 @@ const LanguageSelector: FC<{
     <div className={styles.wrapper}>
       {!loading && (
         <CustomTransferList
-          defaultOptions={availableLangs}
-          defaultChosen={selectedLangs}
-          setUsed={setUsed}
-          classNames={classNames ? classNames : {}}
+          value={langs}
           titles={[
             locale.ui.langSelector.available,
             locale.ui.langSelector.used,
           ]}
           itemComponent={itemComponent}
-          shouldSortChosen={true}
           shrink={shrink}
+          onChange={onChange}
+          searchKeys={['name']}
         />
       )}
     </div>

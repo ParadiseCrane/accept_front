@@ -1,7 +1,8 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { Trash } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { pureCallback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';

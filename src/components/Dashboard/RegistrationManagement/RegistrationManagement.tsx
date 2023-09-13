@@ -6,7 +6,6 @@ import { UserSelector } from '@ui/selectors';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { Button, LoadingOverlay } from '@ui/basics';
-import { Center } from '@mantine/core';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
 const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
@@ -29,10 +28,6 @@ const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
     }
   );
 
-  // useEffect(() => {
-  //   console.log(participants);
-  // }, [participants]);
-
   const handleRegister = useCallback(
     (logins: string[]) => {
       requestWithNotify<string[], {}>(
@@ -54,7 +49,6 @@ const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
       {data && participants && (
         <>
           <UserSelector
-            key={participants.toString()}
             users={data.users}
             initialUsers={participants}
             setFieldValue={setParticipants}
@@ -64,12 +58,12 @@ const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
               locale.dashboard.tournament
                 .registrationManagementSelector.participants,
             ]}
+            maxWidth="60%"
           />
-          <Center style={{ margin: 'var(--spacer-xl) 0 0 0' }}>
-            <Button onClick={() => handleRegister(participants)}>
-              {locale.edit}
-            </Button>
-          </Center>
+
+          <Button onClick={() => handleRegister(participants)}>
+            {locale.edit}
+          </Button>
         </>
       )}
     </div>

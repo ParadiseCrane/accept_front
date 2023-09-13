@@ -2,7 +2,7 @@ import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
 import { CustomEditor, NumberInput, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
 
 const MainInfo: FC<{
   form: any;

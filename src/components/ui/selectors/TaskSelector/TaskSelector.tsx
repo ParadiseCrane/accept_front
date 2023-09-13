@@ -12,13 +12,13 @@ import {
 import styles from './taskSelector.module.css';
 import { sendRequest } from '@requests/request';
 import { ITaskDisplay } from '@custom-types/data/ITask';
-import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { TaskItem } from './TaskItem/TaskItem';
-import { setter } from '@custom-types/ui/atomic';
-import { LoadingOverlay } from '@ui/basics';
+import { Item, setter } from '@custom-types/ui/atomic';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const TaskSelector: FC<{
   initialTasks: Item[];
@@ -26,28 +26,41 @@ const TaskSelector: FC<{
   classNames?: object;
 }> = ({ setUsed, classNames, initialTasks }) => {
   const { locale } = useLocale();
+  const initialTasksInner = useMemo(() => initialTasks, []); //eslint-disable-line
 
-  const [tasks, setTasks] = useState<ITaskDisplay[]>([]);
+  const [tasks, setTasks] =
+    useState<ICustomTransferListData>(undefined);
+  const [allTasks, setAllTasks] = useState<ITaskDisplay[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedTasks, availableTasks] = useMemo(() => {
-    const selected = initialTasks.map((task) => task.value);
-    let newAvailableTasks: Item[] = [];
-    let newSelectedTasks: Item[] = [];
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
+      setUsed(data[1].map((item) => item.login));
+      setTasks(data);
+    },
+    [setUsed]
+  );
 
-    for (let i = 0; i < tasks.length; i++) {
+  useEffect(() => {
+    const selected = initialTasks.map((task) => task.value);
+    let data: ICustomTransferListData = [[], []];
+
+    for (let i = 0; i < allTasks.length; i++) {
       const task = {
-        value: tasks[i].spec,
-        label: tasks[i].title,
+        ...allTasks[i],
+        value: allTasks[i].spec,
+        label: allTasks[i].title,
+        sortValue: allTasks[i].title,
       };
       if (!selected.includes(task.value)) {
-        newAvailableTasks.push(task);
+        data[0].push(task);
       } else {
-        newSelectedTasks.push(task);
+        data[1].push(task);
       }
     }
-    return [newSelectedTasks, newAvailableTasks];
-  }, [initialTasks, tasks]);
+    setTasks(data);
+  }, [initialTasks, allTasks]);
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -58,7 +71,7 @@ const TaskSelector: FC<{
       3000
     ).then((res) => {
       if (res.error) return;
-      setTasks(res.response);
+      setAllTasks(res.response);
       setLoading(false);
     });
   }, []);
@@ -67,31 +80,27 @@ const TaskSelector: FC<{
     refetch();
   }, []); // eslint-disable-line
 
-  const itemComponent = useCallback(
-    (item: any, handleSelect: any) => {
-      return (
-        <TaskItem item={item} onSelect={() => handleSelect(item)} />
-      );
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
+      return <TaskItem key={index} item={item} onSelect={onClick} />;
     },
     []
   );
 
   return (
     <div className={styles.wrapper}>
-      <LoadingOverlay visible={loading} />
-      {!loading && (
-        <CustomTransferList
-          defaultOptions={availableTasks}
-          defaultChosen={selectedTasks}
-          setUsed={setUsed}
-          classNames={classNames ? classNames : {}}
-          titles={[
-            locale.assignmentSchema.form.taskSelector.available,
-            locale.assignmentSchema.form.taskSelector.used,
-          ]}
-          itemComponent={itemComponent}
-        />
-      )}
+      <CustomTransferList
+        loading={loading}
+        value={tasks}
+        onChange={onChange}
+        // classNames={classNames ? classNames : {}}
+        searchKeys={['title']}
+        titles={[
+          locale.assignmentSchema.form.taskSelector.available,
+          locale.assignmentSchema.form.taskSelector.used,
+        ]}
+        itemComponent={itemComponent}
+      />
     </div>
   );
 };

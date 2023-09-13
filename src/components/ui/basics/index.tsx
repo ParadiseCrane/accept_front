@@ -30,6 +30,7 @@ import Pin from './Pin/Pin';
 import CopyButton from './CopyButton/CopyButton';
 import CopyIcon from './CopyIcon/CopyIcon';
 import UserAvatar from './UserAvatar/UserAvatar';
+import CustomTransferList from './CustomTransferList/CustomTransferList';
 
 export {
   Button,
@@ -64,4 +65,5 @@ export {
   CopyButton,
   CopyIcon,
   UserAvatar,
+  CustomTransferList,
 };
