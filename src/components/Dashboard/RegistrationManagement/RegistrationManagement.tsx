@@ -1,70 +1,36 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useLocale } from '@hooks/useLocale';
+import { FC, memo } from 'react';
 import styles from './registrationManagement.module.css';
-import { UserSelector } from '@ui/selectors';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { Button, LoadingOverlay } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
+import Solo from './Solo/Solo';
+import Team from './Team/Team';
 
-const RegistrationManagement: FC<{ spec: string }> = ({ spec }) => {
-  const { locale, lang } = useLocale();
-
-  const [participants, setParticipants] = useState<
-    string[] | undefined
-  >(undefined);
-
+const RegistrationManagement: FC<{
+  spec: string;
+  maxTeamSize: number;
+}> = ({ spec, maxTeamSize }) => {
   const { data, refetch, loading } = useRequest<
     {},
     { users: IUserDisplay[]; participants: string[] }
-  >(
-    `tournament/registration-management/${spec}`,
-    'GET',
-    undefined,
-    (data) => {
-      setParticipants(data.participants);
-      return data;
-    }
-  );
-
-  const handleRegister = useCallback(
-    (logins: string[]) => {
-      requestWithNotify<string[], {}>(
-        `tournament/register-users/${spec}`,
-        'POST',
-        locale.notify.tournament.edit,
-        lang,
-        () => '',
-        logins,
-        () => refetch(false)
-      );
-    },
-    [refetch, spec, locale, lang]
-  );
+  >(`tournament/registration-management/${spec}`, 'GET');
 
   return (
     <div className={styles.wrapper}>
-      {<LoadingOverlay visible={loading} />}
-      {data && participants && (
-        <>
-          <UserSelector
-            users={data.users}
-            initialUsers={participants}
-            setFieldValue={setParticipants}
-            titles={(locale: ILocale) => [
-              locale.dashboard.tournament
-                .registrationManagementSelector.users,
-              locale.dashboard.tournament
-                .registrationManagementSelector.participants,
-            ]}
-            maxWidth="60%"
-          />
-
-          <Button onClick={() => handleRegister(participants)}>
-            {locale.edit}
-          </Button>
-        </>
+      {maxTeamSize == 1 ? (
+        <Solo
+          spec={spec}
+          refetch={refetch}
+          initialParticipants={data?.participants || []}
+          users={data?.users || []}
+          loading={loading}
+        />
+      ) : (
+        <Team
+          spec={spec}
+          refetch={refetch}
+          users={data?.users || []}
+          loading={loading}
+        />
       )}
     </div>
   );

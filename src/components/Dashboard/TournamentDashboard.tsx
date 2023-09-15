@@ -140,7 +140,12 @@ const TournamentDashboard: FC<{
         title: locale.dashboard.tournament.tasks,
       },
       {
-        page: <RegistrationManagement spec={spec} />,
+        page: (
+          <RegistrationManagement
+            spec={spec}
+            maxTeamSize={tournament?.maxTeamSize || 1}
+          />
+        ),
         icon: <AddressBook color="var(--secondary)" />,
         title: locale.dashboard.tournament.registrationManagement,
       },
