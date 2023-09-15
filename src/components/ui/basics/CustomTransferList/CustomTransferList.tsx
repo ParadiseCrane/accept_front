@@ -78,7 +78,7 @@ const CustomTransferList: FC<Props> = ({
 }) => {
   const innerValue: ICustomTransferListData = useMemo(() => {
     let data: ICustomTransferListData = [[], []];
-    if (value) {
+    if (value && value.length == 2) {
       value[0].sort((a, b) => compareItems(a, b) * sortOrder);
       value[1].sort((a, b) => compareItems(a, b) * sortOrder);
       data = value;
