@@ -10,6 +10,12 @@ export interface ITeam {
   date: Date;
 }
 
+export interface ITeamAdd {
+  name: string;
+  capitan: string;
+  participants: string[];
+}
+
 export interface ITeamDisplay {
   spec: string;
   name: string;

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import styles from './registrationManagement.module.css';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -14,21 +14,28 @@ const RegistrationManagement: FC<{
     { users: IUserDisplay[]; participants: string[] }
   >(`tournament/registration-management/${spec}`, 'GET');
 
+  const users = useMemo(() => (data ? [...data?.users] : []), [data]);
+  const participants = useMemo(
+    () => (data ? [...data?.participants] : []),
+    [data]
+  );
+
   return (
     <div className={styles.wrapper}>
       {maxTeamSize == 1 ? (
         <Solo
           spec={spec}
           refetch={refetch}
-          initialParticipants={data?.participants || []}
-          users={data?.users || []}
+          initialParticipants={participants}
+          users={users}
           loading={loading}
         />
       ) : (
         <Team
           spec={spec}
           refetch={refetch}
-          users={data?.users || []}
+          users={users}
+          participants={participants}
           loading={loading}
         />
       )}

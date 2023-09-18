@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { Button, LoadingOverlay } from '@ui/basics';
 import { UserSelector } from '@ui/selectors';
@@ -17,16 +17,18 @@ const Solo: FC<{
 }> = ({ spec, refetch, users, loading, initialParticipants }) => {
   const { locale, lang } = useLocale();
 
-  const [participants, setParticipants] = useState(
-    initialParticipants
-  );
+  const [participants, setParticipants] = useState<string[]>([]);
+
+  useEffect(() => {
+    setParticipants(initialParticipants);
+  }, [initialParticipants]);
 
   const handleRegister = useCallback(
     (logins: string[]) => {
       requestWithNotify<string[], {}>(
         `tournament/register-users/${spec}`,
         'POST',
-        locale.notify.tournament.edit,
+        locale.notify.tournament.registration,
         lang,
         () => '',
         logins,
@@ -39,26 +41,32 @@ const Solo: FC<{
   return (
     <div className={styles.wrapper}>
       {<LoadingOverlay visible={loading} />}
-      {users && participants && (
-        <>
-          <UserSelector
-            users={users}
-            initialUsers={participants}
-            setFieldValue={setParticipants}
-            titles={(locale: ILocale) => [
-              locale.dashboard.tournament
-                .registrationManagementSelector.users,
-              locale.dashboard.tournament
-                .registrationManagementSelector.participants,
-            ]}
-            width="60%"
-          />
-
+      <div
+        style={{
+          width: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--spacer-m)',
+        }}
+      >
+        <UserSelector
+          users={users}
+          initialUsers={participants}
+          setFieldValue={setParticipants}
+          titles={(locale: ILocale) => [
+            locale.dashboard.tournament.registrationManagementSelector
+              .users,
+            locale.dashboard.tournament.registrationManagementSelector
+              .participants,
+          ]}
+          height="400px"
+        />
+        <div style={{ margin: '0 auto' }}>
           <Button onClick={() => handleRegister(participants)}>
             {locale.edit}
           </Button>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 };

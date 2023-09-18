@@ -27,6 +27,7 @@ const UserSelector: FC<{
   shrink?: boolean;
   titles?: (_: ILocale) => [string, string];
   width?: string;
+  height?: string;
 }> = ({
   setFieldValue,
   inputProps = {},
@@ -38,10 +39,14 @@ const UserSelector: FC<{
     locale.ui.userSelector.selected,
   ],
   width,
+  height,
 }) => {
   const { locale } = useLocale();
 
-  const initialUsersInner = useMemo(() => initialUsers, []); //eslint-disable-line
+  const initialUsersInner = useMemo(
+    () => (initialUsers ? [...initialUsers] : []),
+    [initialUsers]
+  );
 
   const [users, setUsers] =
     useState<ICustomTransferListData>(undefined);
@@ -60,7 +65,6 @@ const UserSelector: FC<{
 
     for (let i = 0; i < allUsers.length; i++) {
       if (
-        initialUsersInner &&
         initialUsersInner.find((login) => login === allUsers[i].login)
       ) {
         data[1].push({
@@ -139,6 +143,7 @@ const UserSelector: FC<{
         value={users}
         onChange={onChange}
         width={width}
+        height={height}
       />
     </div>
   );

@@ -12,5 +12,7 @@ export const form = {
       minLength: (limit: number) =>
         `Minimum team name length - ${limit}`,
     },
+    participants: 'Team must have at least one member',
+    capitan: 'Capitan must be among members',
   },
 };

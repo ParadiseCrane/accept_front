@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { Button, LoadingOverlay, TextInput } from '@ui/basics';
 import { UserSelect, UserSelector } from '@ui/selectors';
@@ -7,14 +7,17 @@ import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
 import { setter } from '@custom-types/ui/atomic';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { ITeamAdd } from '@custom-types/data/ITeam';
 
 const Team: FC<{
   spec: string;
   refetch: setter<boolean>;
   users: IUserDisplay[];
+  participants: string[];
   loading: boolean;
-}> = ({ spec: _spec, refetch: _refetch, users, loading }) => {
-  const { locale } = useLocale();
+}> = ({ spec, refetch, users, loading }) => {
+  const { locale, lang } = useLocale();
 
   const form = useForm({
     initialValues: {
@@ -23,21 +26,61 @@ const Team: FC<{
       capitan: '',
     },
     validate: {
-      teamName: (value) => null,
-      participants: (value) => (value.length == 0 ? 'Ошибка' : null),
+      teamName: (value) => {
+        value = value.trim().replace(/\s+/, ' ');
+        return value.length == 0
+          ? locale.tournament.registration.form.validation.teamName
+              .empty
+          : value.length < 4
+          ? locale.tournament.registration.form.validation.teamName.minLength(
+              4
+            )
+          : value.length > 20
+          ? locale.tournament.registration.form.validation.teamName.maxLength(
+              20
+            )
+          : !value.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
+          ? locale.tournament.registration.form.validation.teamName
+              .invalid
+          : null;
+      },
+      participants: (value) =>
+        value.length == 0
+          ? locale.tournament.registration.form.validation
+              .participants
+          : null,
       capitan: (value, values) =>
-        values.participants.includes(value)
-          ? 'Капинат должен быть участником команды'
+        !values.participants.includes(value)
+          ? locale.tournament.registration.form.validation.capitan
           : null,
     },
+    validateInputOnBlur: true,
+    validateInputOnChange: true,
   });
+
+  const handleRegister = useCallback(() => {
+    if (!form.isValid()) return;
+    requestWithNotify<ITeamAdd, {}>(
+      `team/${spec}`,
+      'POST',
+      locale.notify.tournament.registration,
+      lang,
+      () => '',
+      {
+        name: form.values.teamName,
+        capitan: form.values.capitan,
+        participants: form.values.participants,
+      },
+      () => refetch
+    );
+  }, [spec, refetch, locale, lang, form]);
 
   return (
     <div className={styles.wrapper}>
       {<LoadingOverlay visible={loading} />}
       {users && (
         <>
-          <TextInput />
+          <TextInput {...form.getInputProps('teamName')} />
           <UserSelector
             users={users}
             initialUsers={form.values.participants}
@@ -51,20 +94,26 @@ const Team: FC<{
                 .registrationManagementSelector.participants,
             ]}
             width="60%"
+            inputProps={form.getInputProps('participants')}
           />
           <UserSelect
-            label="Капитан"
-            nothingFound="Ничего не найдено"
-            placeholder="Найти"
+            label={locale.team.page.capitan}
+            placeholder={
+              locale.dashboard.attemptsList.user.placeholder
+            }
+            nothingFound={
+              locale.dashboard.attemptsList.user.nothingFound
+            }
             users={users.filter((item) =>
               form.values.participants.includes(item.login)
             )}
             select={(item) =>
               item && form.setFieldValue('capitan', item[0].login)
             }
+            {...form.getInputProps('capitan')}
           />
 
-          <Button onClick={() => {}}>
+          <Button onClick={handleRegister} disabled={!form.isValid()}>
             {locale.tournament.register}
           </Button>
         </>

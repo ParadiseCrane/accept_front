@@ -76,8 +76,6 @@ const TagSelector: FC<{
     setTags(data);
   }, [allTags, initialTagsInner]);
 
-  // useEffect(() => console.log('tags', tags), [tags]);
-
   const refetch = useCallback(async () => {
     setLoading(true);
     sendRequest<{}, ITag[]>(fetchURL, 'GET').then((res) => {

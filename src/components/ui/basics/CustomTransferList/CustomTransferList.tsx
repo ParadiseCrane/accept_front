@@ -137,20 +137,13 @@ const CustomTransferList: FC<Props> = ({
         height,
       };
     }
-    if (!!width) {
-      rootStyles.root = {
-        ...rootStyles.root,
-        maxWidth: width,
-        width,
-      };
-    }
     return rootStyles;
-  }, [height, width]);
+  }, [height]);
 
   return (
     <InputWrapper styles={inputStyles} {...props}>
       <div
-        style={inputStyles.root}
+        style={{ ...inputStyles.root, maxWidth: width, width }}
         className={classNames ? classNames.wrapper : styles.wrapper}
       >
         <LoadingOverlay visible={!!loading} />
