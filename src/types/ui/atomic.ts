@@ -4,7 +4,7 @@ export type pureCallback<T = any> = () => T;
 export type setter<T = callback> = (_: T) => void;
 
 export interface Item {
-  label: string;
+  value: string;
   [key: string]: any;
 }
 

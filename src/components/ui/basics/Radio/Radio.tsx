@@ -64,7 +64,7 @@ const Radio: FC<{
             }}
             {...radioProps}
             value={item.value}
-            label={item.label}
+            label={item.value}
           />
         ))}
       </MantineRadio.Group>

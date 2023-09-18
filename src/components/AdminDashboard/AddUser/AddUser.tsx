@@ -141,12 +141,9 @@ const AddUser: FC<{}> = ({}) => {
             <div className={styles.groupWrapper}>
               <GroupSelector
                 form={form}
-                classNames={{
-                  customTransferListWrapper:
-                    styles.customTransferListWrapper,
-                }}
                 groups={groups}
                 initialGroups={initialGroups}
+                width={'80%'}
                 field="groups"
               />
             </div>

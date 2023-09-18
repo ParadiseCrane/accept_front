@@ -19,7 +19,7 @@ const EditTag: FC<{
 }> = ({ item, refetch, updateURL }) => {
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
-  const [title, setTitle] = useState(item.label);
+  const [title, setTitle] = useState(item.title);
   const [error, setError] = useState('');
 
   const validate = useCallback((title: string) => {
@@ -51,7 +51,7 @@ const EditTag: FC<{
           lang,
           (_: boolean) => '',
           {
-            spec: item.value,
+            spec: item.spec,
             title: title,
           },
           () => {
@@ -62,7 +62,7 @@ const EditTag: FC<{
         );
       }
     },
-    [validate, updateURL, locale.tag.edit, lang, item.value, refetch]
+    [validate, updateURL, locale.tag.edit, lang, item.spec, refetch]
   );
 
   return (
@@ -88,7 +88,7 @@ const EditTag: FC<{
             onChange={(e: any) => setTitle(e.target.value)}
             onBlur={() => onBlur(title)}
             error={error}
-            defaultValue={item.label}
+            defaultValue={item.title}
           />
           <SimpleButtonGroup
             actionButton={{

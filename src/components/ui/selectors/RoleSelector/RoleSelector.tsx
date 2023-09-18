@@ -9,7 +9,6 @@ import {
 } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './roleSelector.module.css';
-import { InputWrapper } from '@ui/basics';
 import { IRole } from '@custom-types/data/atomic';
 import { capitalize } from '@utils/capitalize';
 import inputStyles from '@styles/ui/input.module.css';
@@ -22,16 +21,16 @@ const RoleSelector: FC<{
   form: any;
   roles: IRole[];
   initialRoles: number[];
-  classNames?: any;
   field: string;
   shrink?: boolean;
+  width?: string;
 }> = ({
   form,
   roles: allRoles,
   initialRoles,
-  classNames,
   field,
   shrink,
+  width,
 }) => {
   const { locale } = useLocale();
 
@@ -58,7 +57,6 @@ const RoleSelector: FC<{
       const role = {
         ...allRoles[i],
         value: allRoles[i].spec.toString(),
-        label: allRoles[i].name,
         sortValue: allRoles[i].name,
       };
       if (initialRolesInner.includes(role.spec)) {
@@ -79,7 +77,6 @@ const RoleSelector: FC<{
             shrink ? inputStyles.shrink : ''
           }`}
           onClick={onClick}
-          style={{ cursor: 'pointer' }}
         >
           {capitalize(item.name)}
         </div>
@@ -90,20 +87,19 @@ const RoleSelector: FC<{
 
   return (
     <div>
-      <InputWrapper shrink={shrink} {...form.getInputProps(field)}>
-        <CustomTransferList
-          value={roles}
-          onChange={onChange}
-          // classNames={classNames || {}}
-          shrink={shrink}
-          titles={[
-            locale.ui.roleSelector.unselected,
-            locale.ui.roleSelector.selected,
-          ]}
-          itemComponent={itemComponent}
-          searchKeys={['name']}
-        />
-      </InputWrapper>
+      <CustomTransferList
+        {...form.getInputProps(field)}
+        value={roles}
+        onChange={onChange}
+        shrink={shrink}
+        titles={[
+          locale.ui.roleSelector.unselected,
+          locale.ui.roleSelector.selected,
+        ]}
+        itemComponent={itemComponent}
+        searchKeys={['name']}
+        width={width}
+      />
     </div>
   );
 };

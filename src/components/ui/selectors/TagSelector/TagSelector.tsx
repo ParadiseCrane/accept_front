@@ -16,11 +16,11 @@ import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import AddTag from './AddTag/AddTag';
 
 const TagSelector: FC<{
   initialTags: Item[];
   setUsed: setter<any>;
-  classNames?: object;
   shrink?: boolean;
   fetchURL: string;
   addURL: string;
@@ -28,9 +28,9 @@ const TagSelector: FC<{
   deleteURL: string;
   form: any;
   field: string;
+  width?: string;
 }> = ({
   setUsed,
-  classNames,
   shrink,
   initialTags,
   fetchURL,
@@ -39,6 +39,7 @@ const TagSelector: FC<{
   deleteURL,
   form,
   field,
+  width,
 }) => {
   const { locale } = useLocale();
   const initialTagsInner = useMemo(() => initialTags, []); //eslint-disable-line
@@ -50,7 +51,7 @@ const TagSelector: FC<{
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
       if (!!!data) return;
-      setUsed(data[1].map((item) => item.login));
+      setUsed(data[1].map((item) => item.spec));
       setTags(data);
     },
     [setUsed]
@@ -58,30 +59,30 @@ const TagSelector: FC<{
 
   useEffect(() => {
     let data: ICustomTransferListData = [[], []];
-    const selectedSpecs = initialTags.map((item) => item.value);
+    const selectedSpecs = initialTagsInner.map((item) => item.spec);
 
     for (let i = 0; i < allTags.length; i++) {
       const tag = {
         ...allTags[i],
         value: allTags[i].spec,
-        label: allTags[i].title,
         sortValue: allTags[i].title,
       };
-      if (selectedSpecs.includes(tag.value)) {
+      if (selectedSpecs.includes(tag.spec)) {
         data[1].push(tag);
       } else {
         data[0].push(tag);
       }
     }
     setTags(data);
-  }, [allTags, initialTags]);
+  }, [allTags, initialTagsInner]);
+
+  // useEffect(() => console.log('tags', tags), [tags]);
 
   const refetch = useCallback(async () => {
     setLoading(true);
     sendRequest<{}, ITag[]>(fetchURL, 'GET').then((res) => {
       if (res.error) return;
       setAllTags(res.response);
-
       setLoading(false);
     });
   }, [setAllTags, fetchURL]);
@@ -109,22 +110,22 @@ const TagSelector: FC<{
 
   return (
     <CustomTransferList
-      value={tags}
       loading={loading}
-      onChange={onChange}
-      // classNames={classNames ? classNames : {}}
       titles={[
         locale.ui.tagSelector.available,
         locale.ui.tagSelector.used,
       ]}
       itemComponent={itemComponent}
-      // TODO
-      // rightComponent={() => (
-      //   <AddTag addURL={addURL} refetch={refetch} />
-      // )}
+      extraActions={[
+        [<AddTag key={1} addURL={addURL} refetch={refetch} />],
+        [],
+      ]}
       shrink={shrink}
       searchKeys={['title']}
       {...form.getInputProps(field)}
+      value={tags}
+      onChange={onChange}
+      width={width}
     />
   );
 };

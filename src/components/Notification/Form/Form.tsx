@@ -8,7 +8,7 @@ import MainInfo from './MainInfo';
 import DescriptionInfo from './DescriptionInfo';
 import Users from './Users';
 import GroupsRoles from './GroupsRoles';
-import { IUser } from '@custom-types/data/IUser';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import {
   errorNotification,
   newNotification,
@@ -24,7 +24,7 @@ const stepFields = [
 ];
 
 const Form: FC<{
-  users: IUser[];
+  users: IUserDisplay[];
   groups: IGroup[];
   roles: IRole[];
   noDefault?: boolean;

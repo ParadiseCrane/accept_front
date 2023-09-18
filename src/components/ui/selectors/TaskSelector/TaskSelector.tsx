@@ -24,7 +24,9 @@ const TaskSelector: FC<{
   initialTasks: Item[];
   setUsed: setter<any>;
   classNames?: object;
-}> = ({ setUsed, classNames, initialTasks }) => {
+  width?: string;
+  height?: string;
+}> = ({ setUsed, initialTasks, width, height }) => {
   const { locale } = useLocale();
   const initialTasksInner = useMemo(() => initialTasks, []); //eslint-disable-line
 
@@ -43,7 +45,7 @@ const TaskSelector: FC<{
   );
 
   useEffect(() => {
-    const selected = initialTasks.map((task) => task.value);
+    const selected = initialTasksInner.map((task) => task.value);
     let data: ICustomTransferListData = [[], []];
 
     for (let i = 0; i < allTasks.length; i++) {
@@ -60,7 +62,7 @@ const TaskSelector: FC<{
       }
     }
     setTasks(data);
-  }, [initialTasks, allTasks]);
+  }, [initialTasksInner, allTasks]);
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -93,13 +95,14 @@ const TaskSelector: FC<{
         loading={loading}
         value={tasks}
         onChange={onChange}
-        // classNames={classNames ? classNames : {}}
         searchKeys={['title']}
         titles={[
           locale.assignmentSchema.form.taskSelector.available,
           locale.assignmentSchema.form.taskSelector.used,
         ]}
         itemComponent={itemComponent}
+        width={width}
+        height={height}
       />
     </div>
   );

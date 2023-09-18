@@ -59,7 +59,7 @@ export const CustomDraggableList: FC<{
                           <GridDots width={20} height={20} />
                         </div>
                         <div className={classNames?.label}>
-                          {task.label}
+                          {task.value}
                         </div>
                       </div>
                     )}

@@ -4,13 +4,7 @@ import { FC, useCallback, useEffect, useMemo } from 'react';
 import styles from './form.module.css';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import {
-  Button,
-  Helper,
-  InputWrapper,
-  Switch,
-  TextInput,
-} from '@ui/basics';
+import { Button, Helper, Switch, TextInput } from '@ui/basics';
 
 import { UserSelector } from '@ui/selectors';
 import { useUser } from '@hooks/useUser';
@@ -20,8 +14,15 @@ const Form: FC<{
   buttonText: string;
   users: IUserDisplay[];
   handleSubmit: callback<UseFormReturnType<any>>;
+  hideReadonly?: boolean;
   initialValues: any;
-}> = ({ initialValues, handleSubmit, buttonText, users }) => {
+}> = ({
+  initialValues,
+  handleSubmit,
+  buttonText,
+  users,
+  hideReadonly,
+}) => {
   const { locale } = useLocale();
   const { isAdmin } = useUser();
 
@@ -31,7 +32,7 @@ const Form: FC<{
       name: (value) =>
         value.length < 3 ? locale.group.form.validation.name : null,
       members: (value) => {
-        value.length < 1
+        value.length < 2
           ? locale.group.form.validation.members
           : null;
       },
@@ -57,11 +58,11 @@ const Form: FC<{
       <TextInput
         label={locale.group.name}
         required
-        disabled={form.values.readonly}
+        disabled={!hideReadonly && form.values.readonly}
         {...form.getInputProps('name')}
       />
 
-      {isAdmin && (
+      {!hideReadonly && isAdmin && (
         <div className={styles.readOnlySwitch}>
           <Switch
             label={locale.group.readonly}
@@ -70,14 +71,12 @@ const Form: FC<{
           <Helper dropdownContent={locale.helpers.group.readOnly} />
         </div>
       )}
-      <InputWrapper {...form.getInputProps('members')}>
-        <UserSelector
-          setFieldValue={setFieldValue}
-          inputProps={initialProps}
-          users={users}
-          initialUsers={form.values.members}
-        />
-      </InputWrapper>
+      <UserSelector
+        setFieldValue={setFieldValue}
+        inputProps={initialProps}
+        users={users}
+        initialUsers={form.values.members}
+      />
       <div className={styles.buttonWrapper}>
         <Button
           color="var(--primary)"

@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   FC,
+  ReactNode,
   memo,
   useCallback,
   useMemo,
@@ -47,6 +48,7 @@ export interface Props extends DefaultSelectFieldProps {
   searchKeys: string[];
   leftSection?: boolean;
   rightSection?: boolean;
+  extraActions?: ReactNode[];
 }
 
 const defaultClassNames = {
@@ -67,6 +69,7 @@ const SelectFieldComponent: FC<Props> = ({
   searchKeys,
   leftSection: withLeftSection,
   rightSection: withRightSection,
+  extraActions,
   classNames: classNamesProp,
 }) => {
   const { locale } = useLocale();
@@ -154,15 +157,23 @@ const SelectFieldComponent: FC<Props> = ({
     <div className={classNames.fieldWrapper}>
       <div className={classNames.titleSearchWrapper}>
         <div className={classNames.fieldTitle}>{title}</div>
-        <TextInput
-          value={search}
-          onChange={onSearch}
-          styles={inputStyles}
-          classNames={inputClassNames}
-          icon={leftSection}
-          rightSection={rightSection}
-          placeholder={locale.form.search}
-        />
+        <div className={styles.searchWrapper}>
+          {withLeftSection && (
+            <>{extraActions?.map((item) => item)}</>
+          )}
+          <TextInput
+            value={search}
+            onChange={onSearch}
+            styles={inputStyles}
+            classNames={inputClassNames}
+            icon={leftSection}
+            rightSection={rightSection}
+            placeholder={locale.form.search}
+          />
+          {withRightSection && (
+            <>{extraActions?.map((item) => item)}</>
+          )}
+        </div>
       </div>
       <div className={classNames.itemsWrapper} ref={outerRef}>
         <div ref={innerRef}>
@@ -171,7 +182,7 @@ const SelectFieldComponent: FC<Props> = ({
               {index < filteredItems.length &&
                 itemComponent({
                   item: filteredItems[index],
-                  onClick: selectItems([filteredItems[index].label]),
+                  onClick: selectItems([filteredItems[index].value]),
                   index,
                 })}
             </div>

@@ -1,31 +1,26 @@
 .itemWrapper {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  column-gap: var(--spacer-xs);
   padding: var(--spacer-xxs) var(--spacer-xs) var(--spacer-xxs) 0;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
 
-.item,
 .actions {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--spacer-xxs);
-  user-select: none;
+  width: fit-content;
 }
 
 .item {
   cursor: pointer;
   font-size: var(--font-size-s);
-  width: 90%;
-}
-
-.actions {
-  width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .label {
-  font-size: var(--font-size-label-m);
+  font-size: var(--font-size-label-s);
 }

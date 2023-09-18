@@ -50,6 +50,7 @@ const MainInfo: FC<{
         deleteURL={'tournament_tag/delete'}
         form={form}
         field={'tags'}
+        width="80%"
       />
     </>
   );

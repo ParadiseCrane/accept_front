@@ -53,14 +53,14 @@ const Settings: FC<{ tournament: ITournament }> = ({
               .filter((item) => !item.public)
               .map((item) => ({
                 ...item,
-                label: item.title,
+                value: item.spec,
                 sortValue: item.title,
               })),
             res.response.tasks
               .filter((item) => item.public)
               .map((item) => ({
                 ...item,
-                label: item.title,
+                value: item.spec,
                 sortValue: item.title,
               })),
           ] as ICustomTransferListData);

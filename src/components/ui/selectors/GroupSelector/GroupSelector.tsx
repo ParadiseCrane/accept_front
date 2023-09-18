@@ -3,7 +3,6 @@ import { FC, memo, useCallback, useEffect, useState } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './groupSelector.module.css';
 import { IGroup } from '@custom-types/data/IGroup';
-import { InputWrapper } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
@@ -14,16 +13,16 @@ const GroupSelector: FC<{
   form: any;
   groups: IGroup[];
   initialGroups: string[];
-  classNames?: any;
   field: string;
   shrink?: boolean;
+  width?: string;
 }> = ({
   form,
   groups: allGroups,
   initialGroups,
   field,
   shrink,
-  ...props
+  width,
 }) => {
   const { locale } = useLocale();
   const [groups, setGroups] =
@@ -35,7 +34,7 @@ const GroupSelector: FC<{
     for (let i = 0; i < allGroups.length; i++) {
       const group = {
         ...allGroups[i],
-        label: allGroups[i].name,
+        value: allGroups[i].spec,
         sortValue: allGroups[i].name,
       };
       if (initialGroups.includes(group.spec)) {
@@ -57,7 +56,6 @@ const GroupSelector: FC<{
             shrink ? inputStyles.shrink : ''
           }`}
           onClick={onClick}
-          style={{ cursor: 'pointer' }}
         >
           {item.name}
         </div>
@@ -80,18 +78,19 @@ const GroupSelector: FC<{
 
   return (
     <div>
-      <InputWrapper shrink={shrink} {...form.getInputProps(field)}>
-        <CustomTransferList
-          value={groups}
-          onChange={onChange}
-          titles={[
-            locale.ui.groupSelector.unselected,
-            locale.ui.groupSelector.selected,
-          ]}
-          itemComponent={itemComponent}
-          searchKeys={['name']}
-        />
-      </InputWrapper>
+      <CustomTransferList
+        {...form.getInputProps(field)}
+        width={width}
+        value={groups}
+        onChange={onChange}
+        titles={[
+          locale.ui.groupSelector.unselected,
+          locale.ui.groupSelector.selected,
+        ]}
+        itemComponent={itemComponent}
+        searchKeys={['name']}
+        shrink={shrink}
+      />
     </div>
   );
 };

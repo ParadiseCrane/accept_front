@@ -26,7 +26,7 @@ const UserSelector: FC<{
   initialUsers?: string[];
   shrink?: boolean;
   titles?: (_: ILocale) => [string, string];
-  maxWidth?: string;
+  width?: string;
 }> = ({
   setFieldValue,
   inputProps = {},
@@ -37,7 +37,7 @@ const UserSelector: FC<{
     locale.ui.userSelector.unselected,
     locale.ui.userSelector.selected,
   ],
-  maxWidth,
+  width,
 }) => {
   const { locale } = useLocale();
 
@@ -65,13 +65,13 @@ const UserSelector: FC<{
       ) {
         data[1].push({
           ...allUsers[i],
-          label: allUsers[i].shortName,
+          value: allUsers[i].login,
           sortValue: allUsers[i].login,
         });
       } else {
         data[0].push({
           ...allUsers[i],
-          label: allUsers[i].shortName,
+          value: allUsers[i].login,
           sortValue: allUsers[i].login,
         });
       }
@@ -135,10 +135,10 @@ const UserSelector: FC<{
         titles={titles(locale)}
         itemComponent={itemComponent}
         searchKeys={['login', 'name', 'shortName']}
+        {...inputProps}
         value={users}
         onChange={onChange}
-        width={maxWidth}
-        {...inputProps}
+        width={width}
       />
     </div>
   );

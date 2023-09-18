@@ -26,7 +26,7 @@ const DeleteTag: FC<{
       lang,
       (_: any) => '',
       {
-        spec: item.value,
+        spec: item.spec,
       },
       () => {
         refetch();
@@ -34,7 +34,7 @@ const DeleteTag: FC<{
       },
       { autoClose: 5000 }
     );
-  }, [deleteURL, locale.tag.delete, lang, item.value, refetch]);
+  }, [deleteURL, locale.tag.delete, lang, item.spec, refetch]);
 
   return (
     <>
@@ -44,7 +44,7 @@ const DeleteTag: FC<{
       <SimpleModal
         opened={opened}
         close={() => setOpened(false)}
-        title={locale.ui.tagSelector.delete + ` '${item.label}'`}
+        title={locale.ui.tagSelector.delete + ` '${item.title}'`}
       >
         <div className={modalStyles.verticalContent}>
           <div>{locale.ui.tagSelector.deleteConfidence}</div>

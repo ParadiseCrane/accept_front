@@ -1,8 +1,8 @@
 .wrapper {
   position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacer-m);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--spacer-m);
 }
 
 .defaultItemWrapper {
@@ -10,4 +10,6 @@
   font-size: var(--font-size-m);
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
 }

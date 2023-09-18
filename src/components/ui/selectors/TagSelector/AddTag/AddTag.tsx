@@ -78,7 +78,7 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
           />
           <SimpleButtonGroup
             actionButton={{
-              label: locale.save,
+              label: locale.create,
               onClick: () => handleSubmit(title),
               props: {
                 disabled: !!error,

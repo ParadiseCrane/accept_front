@@ -50,7 +50,7 @@ const Team: FC<{
               locale.dashboard.tournament
                 .registrationManagementSelector.participants,
             ]}
-            maxWidth="60%"
+            width="60%"
           />
           <UserSelect
             label="Капитан"

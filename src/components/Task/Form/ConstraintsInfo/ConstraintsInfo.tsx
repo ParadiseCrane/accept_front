@@ -100,6 +100,7 @@ const ConstraintsInfo: FC<{ form: any }> = ({ form }) => {
             initialLangs={initialLanguage}
             setUsed={setLanguages}
             fetchURL={'language'}
+            width={'80%'}
           />
         </div>
       </Box>

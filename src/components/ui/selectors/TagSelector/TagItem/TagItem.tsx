@@ -22,7 +22,7 @@ export const TagItem: FC<{
       }`}
     >
       <div className={styles.item} onClick={() => onSelect()}>
-        <div className={inputStyles.label}>{item.label}</div>
+        <div className={inputStyles.label}>{item.title}</div>
       </div>
       <div className={styles.actions}>
         <EditTag

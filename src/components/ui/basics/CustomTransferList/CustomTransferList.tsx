@@ -32,6 +32,7 @@ interface Props
   selectFieldProps?: DefaultSelectFieldProps;
   height?: string;
   width?: string;
+  extraActions?: [ReactNode[], ReactNode[]];
 }
 
 const defaultItemComponent = ({
@@ -44,7 +45,7 @@ const defaultItemComponent = ({
     onClick={onClick}
     className={styles.defaultItemWrapper}
   >
-    {item.label}
+    {item.value}
   </div>
 );
 
@@ -74,6 +75,7 @@ const CustomTransferList: FC<Props> = ({
   styles: _innerStyles,
   height = '350px',
   width = '100%',
+  extraActions = [[], []],
   ...props
 }) => {
   const innerValue: ICustomTransferListData = useMemo(() => {
@@ -99,7 +101,7 @@ const CustomTransferList: FC<Props> = ({
 
       for (let index = 0; index < data[from].length; index++) {
         const item = data[from][index];
-        if (labels.includes(item.label)) {
+        if (labels.includes(item.value)) {
           data[to].push(item);
           continue;
         }
@@ -146,34 +148,33 @@ const CustomTransferList: FC<Props> = ({
   }, [height, width]);
 
   return (
-    <InputWrapper
-      classNames={
-        classNames
-          ? { root: classNames.wrapper }
-          : { root: styles.wrapper }
-      }
-      styles={inputStyles}
-      {...props}
-    >
-      <LoadingOverlay visible={!!loading} />
-      <SelectField
-        title={titles[0]}
-        value={innerValue[0]}
-        selectItems={selectItems}
-        itemComponent={itemComponent}
-        searchKeys={searchKeys}
-        rightSection
-        {...selectFieldClassNames}
-      />
-      <SelectField
-        title={titles[1]}
-        value={innerValue[1]}
-        selectItems={unselectItems}
-        itemComponent={itemComponent}
-        searchKeys={searchKeys}
-        leftSection
-        {...selectFieldClassNames}
-      />
+    <InputWrapper styles={inputStyles} {...props}>
+      <div
+        style={inputStyles.root}
+        className={classNames ? classNames.wrapper : styles.wrapper}
+      >
+        <LoadingOverlay visible={!!loading} />
+        <SelectField
+          title={titles[0]}
+          value={innerValue[0]}
+          selectItems={selectItems}
+          itemComponent={itemComponent}
+          searchKeys={searchKeys}
+          rightSection
+          extraActions={extraActions[0]}
+          {...selectFieldClassNames}
+        />
+        <SelectField
+          title={titles[1]}
+          value={innerValue[1]}
+          selectItems={unselectItems}
+          itemComponent={itemComponent}
+          searchKeys={searchKeys}
+          leftSection
+          extraActions={extraActions[1]}
+          {...selectFieldClassNames}
+        />
+      </div>
     </InputWrapper>
   );
 };

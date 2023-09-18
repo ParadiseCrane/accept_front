@@ -3,7 +3,7 @@ import { FC, memo, useMemo } from 'react';
 import { useRequest } from '@hooks/useRequest';
 import { IRole } from '@custom-types/data/atomic';
 import { IGroup } from '@custom-types/data/IGroup';
-import { IUser } from '@custom-types/data/IUser';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { LoadingOverlay } from '@ui/basics';
 
 const CrateNotification: FC<{}> = ({}) => {
@@ -11,7 +11,7 @@ const CrateNotification: FC<{}> = ({}) => {
     {},
     any,
     {
-      users: IUser[];
+      users: IUserDisplay[];
       groups: IGroup[];
       roles: IRole[];
     }
