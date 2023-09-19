@@ -20,7 +20,7 @@ import AddTag from './AddTag/AddTag';
 
 const TagSelector: FC<{
   initialTags: Item[];
-  setUsed: setter<any>;
+  setUsed: setter<Item[]>;
   shrink?: boolean;
   fetchURL: string;
   addURL: string;
@@ -51,7 +51,7 @@ const TagSelector: FC<{
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
       if (!!!data) return;
-      setUsed(data[1].map((item) => item.spec));
+      setUsed(data[1]);
       setTags(data);
     },
     [setUsed]

@@ -3,7 +3,7 @@ import { FC, memo, useMemo } from 'react';
 import { CustomEditor, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
 import { useCallback } from 'react';
-import { ITag } from '@custom-types/data/ITag';
+import { Item } from '@custom-types/ui/atomic';
 
 const MainInfo: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -16,7 +16,7 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
   );
 
   const setUsed = useCallback(
-    (value: ITag[]) => form.setFieldValue('tags', value),
+    (value: Item[]) => form.setFieldValue('tags', value),
     [form.setFieldValue] // eslint-disable-line
   );
 
