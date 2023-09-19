@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react';
+import { FC, memo, useCallback, useEffect } from 'react';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { Button, LoadingOverlay, TextInput } from '@ui/basics';
 import { UserSelect, UserSelector } from '@ui/selectors';
@@ -12,11 +12,12 @@ import { ITeamAdd } from '@custom-types/data/ITeam';
 
 const Team: FC<{
   spec: string;
+  maxTeamSize: number;
   refetch: setter<boolean>;
   users: IUserDisplay[];
   participants: string[];
   loading: boolean;
-}> = ({ spec, refetch, users, loading }) => {
+}> = ({ spec, refetch, users, loading, maxTeamSize }) => {
   const { locale, lang } = useLocale();
 
   const form = useForm({
@@ -47,7 +48,11 @@ const Team: FC<{
       participants: (value) =>
         value.length == 0
           ? locale.tournament.registration.form.validation
-              .participants
+              .participants.empty
+          : value.length > maxTeamSize
+          ? locale.tournament.registration.form.validation.participants.max(
+              maxTeamSize
+            )
           : null,
       capitan: (value, values) =>
         !values.participants.includes(value)
@@ -75,49 +80,51 @@ const Team: FC<{
     );
   }, [spec, refetch, locale, lang, form]);
 
+  useEffect(() => {
+    if (form.values.participants.length !== 0)
+      form.validateField('capitan');
+  }, [form.values.participants]);
+
   return (
     <div className={styles.wrapper}>
-      {<LoadingOverlay visible={loading} />}
-      {users && (
-        <>
-          <TextInput {...form.getInputProps('teamName')} />
-          <UserSelector
-            users={users}
-            initialUsers={form.values.participants}
-            setFieldValue={(participants) =>
-              form.setFieldValue('participants', participants)
-            }
-            titles={(locale: ILocale) => [
-              locale.dashboard.tournament
-                .registrationManagementSelector.users,
-              locale.dashboard.tournament
-                .registrationManagementSelector.participants,
-            ]}
-            width="60%"
-            inputProps={form.getInputProps('participants')}
-          />
-          <UserSelect
-            label={locale.team.page.capitan}
-            placeholder={
-              locale.dashboard.attemptsList.user.placeholder
-            }
-            nothingFound={
-              locale.dashboard.attemptsList.user.nothingFound
-            }
-            users={users.filter((item) =>
-              form.values.participants.includes(item.login)
-            )}
-            select={(item) =>
-              item && form.setFieldValue('capitan', item[0].login)
-            }
-            {...form.getInputProps('capitan')}
-          />
+      <LoadingOverlay visible={loading} />
+      <TextInput
+        label={
+          locale.tournament.registration.createTeam.teamNameLabel
+        }
+        {...form.getInputProps('teamName')}
+      />
+      <UserSelector
+        users={users}
+        initialUsers={form.values.participants}
+        setFieldValue={(participants) =>
+          form.setFieldValue('participants', participants)
+        }
+        titles={(locale: ILocale) => [
+          locale.dashboard.tournament.registrationManagementSelector
+            .users,
+          locale.dashboard.tournament.registrationManagementSelector
+            .participants,
+        ]}
+        width="80%"
+        inputProps={form.getInputProps('participants')}
+      />
+      <UserSelect
+        label={locale.team.page.capitan}
+        placeholder={locale.dashboard.attemptsList.user.placeholder}
+        nothingFound={locale.dashboard.attemptsList.user.nothingFound}
+        users={users.filter((item) =>
+          form.values.participants.includes(item.login)
+        )}
+        select={(item) =>
+          item && form.setFieldValue('capitan', item[0].login)
+        }
+        additionalProps={form.getInputProps('capitan')}
+      />
 
-          <Button onClick={handleRegister} disabled={!form.isValid()}>
-            {locale.tournament.register}
-          </Button>
-        </>
-      )}
+      <Button onClick={handleRegister} disabled={!form.isValid()}>
+        {locale.tournament.register}
+      </Button>
     </div>
   );
 };

@@ -37,6 +37,7 @@ const RegistrationManagement: FC<{
           users={users}
           participants={participants}
           loading={loading}
+          maxTeamSize={maxTeamSize}
         />
       )}
     </div>

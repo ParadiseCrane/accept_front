@@ -2,5 +2,5 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-m);
+  gap: var(--spacer-l);
 }

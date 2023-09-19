@@ -12,7 +12,11 @@ export const form = {
       minLength: (limit: number) =>
         `Минимальная длина названия команды - ${limit}`,
     },
-    participants: 'В команде должен быть хотя бы 1 участник',
+    participants: {
+      empty: 'В команде должен быть хотя бы 1 участник',
+      max: (maxTeamSize: number) =>
+        `Превышен максимальный размер команды ${maxTeamSize}`,
+    },
     capitan: 'Капитан должен быть среди участников',
   },
 };
