@@ -59,7 +59,7 @@ const TagSelector: FC<{
 
   useEffect(() => {
     let data: ICustomTransferListData = [[], []];
-    const selectedSpecs = initialTagsInner.map((item) => item.spec);
+    const selectedSpecs = initialTagsInner.map((item) => item.value);
 
     for (let i = 0; i < allTags.length; i++) {
       const tag = {
