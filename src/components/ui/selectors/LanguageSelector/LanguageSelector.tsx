@@ -13,11 +13,14 @@ import { sendRequest } from '@requests/request';
 import { ILanguage } from '@custom-types/data/atomic';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { Item, setter } from '@custom-types/ui/atomic';
-import { ICustomTransferListData } from '@custom-types/ui/basics/customTransferList';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const LanguageSelector: FC<{
   initialLangs: Item[];
-  setUsed: setter<any>;
+  setUsed: setter<Item[]>;
   shrink?: boolean;
   fetchURL: string;
   width: string;
@@ -31,7 +34,7 @@ const LanguageSelector: FC<{
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
       if (!!!data) return;
-      setUsed(data[1].map((item) => item.login));
+      setUsed(data[1]);
       setLangs(data);
     },
     [setUsed]
@@ -77,6 +80,20 @@ const LanguageSelector: FC<{
     refetch();
   }, []); // eslint-disable-line
 
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
+      return (
+        <div
+          key={index}
+          className={`${styles.itemWrapper}`}
+          onClick={onClick}
+        >
+          {item.label}
+        </div>
+      );
+    },
+    [shrink]
+  );
   return (
     <div className={styles.wrapper}>
       {!loading && (
@@ -86,6 +103,7 @@ const LanguageSelector: FC<{
             locale.ui.langSelector.available,
             locale.ui.langSelector.used,
           ]}
+          itemComponent={itemComponent}
           shrink={shrink}
           onChange={onChange}
           searchKeys={['name']}

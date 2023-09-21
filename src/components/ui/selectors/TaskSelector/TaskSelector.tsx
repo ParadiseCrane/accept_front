@@ -22,7 +22,7 @@ import {
 
 const TaskSelector: FC<{
   initialTasks: Item[];
-  setUsed: setter<any>;
+  setUsed: setter<Item[]>;
   classNames?: object;
   width?: string;
   height?: string;
@@ -38,7 +38,7 @@ const TaskSelector: FC<{
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
       if (!!!data) return;
-      setUsed(data[1].map((item) => item.login));
+      setUsed(data[1]);
       setTasks(data);
     },
     [setUsed]
