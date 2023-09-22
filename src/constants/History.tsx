@@ -232,8 +232,8 @@ const newHistory: HistoryItem[] = [
   {
     title: 'Новые виды турниров',
     content: 'Командные и закрытые турниры',
-    date: '--',
-    type: 'soon',
+    date: '22.09.2023',
+    type: 'new',
     version: 2,
   },
   {
