@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect } from 'react';
+import { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { Button, LoadingOverlay, TextInput } from '@ui/basics';
 import { UserSelect, UserSelector } from '@ui/selectors';
@@ -17,8 +17,20 @@ const Team: FC<{
   users: IUserDisplay[];
   participants: string[];
   loading: boolean;
-}> = ({ spec, refetch, users, loading, maxTeamSize }) => {
+}> = ({
+  spec,
+  refetch,
+  users,
+  participants,
+  loading,
+  maxTeamSize,
+}) => {
   const { locale, lang } = useLocale();
+
+  const localUsers = useMemo(
+    () => users.filter((user) => !participants.includes(user.login)),
+    [participants, users]
+  );
 
   const form = useForm({
     initialValues: {
@@ -76,7 +88,7 @@ const Team: FC<{
         capitan: form.values.capitan,
         participants: form.values.participants,
       },
-      () => refetch
+      () => refetch(true)
     );
   }, [spec, refetch, locale, lang, form]);
 
@@ -95,7 +107,7 @@ const Team: FC<{
         {...form.getInputProps('teamName')}
       />
       <UserSelector
-        users={users}
+        users={localUsers}
         initialUsers={form.values.participants}
         setFieldValue={(participants) =>
           form.setFieldValue('participants', participants)
@@ -113,7 +125,7 @@ const Team: FC<{
         label={locale.team.page.capitan}
         placeholder={locale.dashboard.attemptsList.user.placeholder}
         nothingFound={locale.dashboard.attemptsList.user.nothingFound}
-        users={users.filter((item) =>
+        users={localUsers.filter((item) =>
           form.values.participants.includes(item.login)
         )}
         select={(item) =>
