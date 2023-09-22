@@ -1,5 +1,4 @@
 import { FC, memo, useMemo } from 'react';
-import { Avatar } from '@mantine/core';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
 import {
@@ -12,9 +11,8 @@ import {
 } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
 import NotificationList from '@components/Notification/List/NotificationList';
-import { link } from '@constants/Avatar';
 import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator } from '@ui/basics';
+import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profile.module.css';
 import Settings from '@components/Profile/Settings/Settings';
 import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
@@ -112,7 +110,7 @@ const Profile: FC<IFullProfileBundle> = ({
       initialStep={initialStep}
       topContent={
         <div className={styles.header}>
-          <Avatar src={link(user.login)} size="lg" radius="lg" />
+          <UserAvatar login={user.login} />
           <div className={styles.shortInfo}>
             <div className={styles.shortName}>{user.shortName}</div>
             <div className={styles.login}>{user.login}</div>

@@ -9,6 +9,7 @@ import tableStyles from '@styles/ui/customTable.module.css';
 
 import AttemptList from '@ui/AttemptList/AttemptList';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import Link from 'next/link';
 
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
@@ -30,12 +31,12 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   date: {
     display: (
-      <a
+      <Link
         className={tableStyles.link}
         href={`/attempt/${attempt.spec}`}
       >
         {getLocalDate(attempt.date)}
-      </a>
+      </Link>
     ),
     value: new Date(attempt.date).getTime(),
   },

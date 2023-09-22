@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-m);
+}
+
+.sectionTitle {
+  color: var(--secondary);
+  font-size: var(--font-size-l);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xxs);
+  align-items: flex-end;
+}
+
+.pinCodeWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-s);
+  justify-content: flex-start;
+}

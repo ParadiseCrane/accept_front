@@ -3,7 +3,7 @@ import { ReactNode, useCallback, useMemo } from 'react';
 import { UseFormReturnType } from '@mantine/form';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import Form from '@components/AssignmentSchema/Form/Form';
 import { requestWithNotify } from '@utils/requestWithNotify';

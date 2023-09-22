@@ -1,10 +1,7 @@
-import { FC, memo, useCallback, useEffect, useMemo } from 'react';
-import stepperStyles from '@styles/ui/stepper.module.css';
+import { FC, memo, useCallback, useMemo } from 'react';
 import { IGroup } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
-import { Button } from '@mantine/core';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import { UserSelector } from '@ui/selectors';
+import { UseFormReturnType } from '@mantine/form';
 import {
   errorNotification,
   newNotification,
@@ -12,8 +9,8 @@ import {
 import { requestWithNotify } from '@utils/requestWithNotify';
 import styles from './addGrade.module.css';
 import { useRequest } from '@hooks/useRequest';
-import { IUser } from '@custom-types/data/IUser';
-import { LoadingOverlay, TextInput } from '@ui/basics';
+import { IUserDisplay } from '@custom-types/data/IUser';
+import Form from '@components/Group/Form/Form';
 
 const initialValues = {
   spec: '',
@@ -25,8 +22,8 @@ const initialValues = {
 const AddGrade: FC<{}> = ({}) => {
   const { locale, lang } = useLocale();
 
-  const { data, loading } = useRequest<{}, IUser[]>(
-    'user/list',
+  const { data } = useRequest<{}, IUserDisplay[]>(
+    'user/list-display',
     'GET'
   );
   const users = useMemo(
@@ -56,9 +53,9 @@ const AddGrade: FC<{}> = ({}) => {
         (_: boolean) => '',
         {
           group: {
-            spec: form.values.spec,
+            spec: '',
             name: form.values.name,
-            readonly: form.values.readonly,
+            readonly: true,
           },
           members: form.values.members,
         }
@@ -67,48 +64,15 @@ const AddGrade: FC<{}> = ({}) => {
     [locale, lang]
   );
 
-  const form = useForm({
-    initialValues,
-  });
-
-  const setFieldValue = useCallback(
-    (users: string[]) => form.setFieldValue('members', users),
-    [] // eslint-disable-line
-  );
-  const initialProps = useMemo(() => {
-    form.getInputProps('members');
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    form.setValues(initialValues);
-  }, [initialValues]); //eslint-disable-line
-
   return (
-    <div className={stepperStyles.wrapper}>
-      <TextInput
-        label={locale.group.name}
-        required
-        {...form.getInputProps('name')}
+    <div className={styles.wrapper}>
+      <Form
+        handleSubmit={handleSubmit}
+        initialValues={initialValues}
+        buttonText={locale.create}
+        users={users || []}
+        hideReadonly
       />
-
-      <div style={{ position: 'relative' }}>
-        <LoadingOverlay visible={loading} />
-        <UserSelector
-          key={users.length}
-          setFieldValue={setFieldValue}
-          inputProps={initialProps}
-          users={users}
-          initialUsers={[]}
-        />
-      </div>
-      <div className={styles.buttonWrapper}>
-        <Button
-          onClick={() => handleSubmit(form)}
-          disabled={Object.keys(form.errors).length > 0}
-        >
-          {locale.create}
-        </Button>
-      </div>
     </div>
   );
 };

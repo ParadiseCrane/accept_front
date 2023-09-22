@@ -1,6 +1,6 @@
 import { IVerdict } from './atomic';
 import { ITaskBaseInfo } from './ITask';
-import { IUserDisplay } from './IUser';
+import { ITeamDisplay } from './ITeam';
 
 export interface IResult {
   attempt: string;
@@ -17,13 +17,13 @@ export interface ITableResults {
   best?: IResult;
 }
 
-export interface IUserResult {
-  user: IUserDisplay;
+export interface ITeamResult {
+  team: ITeamDisplay;
   results: ITableResults[];
   score: number;
 }
 
 export interface IFullResults {
   tasks: ITaskBaseInfo[];
-  user_results: IUserResult[];
+  team_results: ITeamResult[];
 }

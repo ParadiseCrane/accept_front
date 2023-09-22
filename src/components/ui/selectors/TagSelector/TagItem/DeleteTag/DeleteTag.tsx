@@ -1,7 +1,8 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { Trash } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { pureCallback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
@@ -25,7 +26,7 @@ const DeleteTag: FC<{
       lang,
       (_: any) => '',
       {
-        spec: item.value,
+        spec: item.spec,
       },
       () => {
         refetch();
@@ -33,7 +34,7 @@ const DeleteTag: FC<{
       },
       { autoClose: 5000 }
     );
-  }, [deleteURL, locale.tag.delete, lang, item.value, refetch]);
+  }, [deleteURL, locale.tag.delete, lang, item.spec, refetch]);
 
   return (
     <>
@@ -43,7 +44,7 @@ const DeleteTag: FC<{
       <SimpleModal
         opened={opened}
         close={() => setOpened(false)}
-        title={locale.ui.tagSelector.delete + ` '${item.label}'`}
+        title={locale.ui.tagSelector.delete + ` '${item.title}'`}
       >
         <div className={modalStyles.verticalContent}>
           <div>{locale.ui.tagSelector.deleteConfidence}</div>

@@ -1,0 +1,17 @@
+.teamName {
+  font-size: var(--font-size-huge);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--spacer-xs);
+  color: var(--primary);
+}
+
+.teamName .titleInput {
+  font-size: var(--font-size-huge);
+  color: var(--primary);
+}
+
+.icons {
+  padding: 0 0 var(--spacer-s) 0;
+}

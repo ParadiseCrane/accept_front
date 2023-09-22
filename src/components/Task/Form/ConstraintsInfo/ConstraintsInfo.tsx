@@ -1,6 +1,7 @@
 import LanguageSelector from '@ui/selectors/LanguageSelector/LanguageSelector';
 import { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import styles from './constraintsInfo.module.css';
 import { Box } from '@mantine/core';
 import {
@@ -99,6 +100,7 @@ const ConstraintsInfo: FC<{ form: any }> = ({ form }) => {
             initialLangs={initialLanguage}
             setUsed={setLanguages}
             fetchURL={'language'}
+            width={'80%'}
           />
         </div>
       </Box>

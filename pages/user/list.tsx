@@ -9,6 +9,7 @@ import UserList from '@ui/UserList/UserList';
 import { accessLevels } from '@constants/protectedRoutes';
 import Title from '@ui/Title/Title';
 import { useLocale } from '@hooks/useLocale';
+import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -68,12 +69,12 @@ const refactorUser = (user: IUser): any => ({
     value: user.login,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <a
+        <Link
           className={tableStyles.title}
           href={`/profile/${user.login}`}
         >
           {user.login}
-        </a>
+        </Link>
         {user.groups.length > 0 && (
           <span className={tableStyles.tags}>
             {user.groups.map((group, idx) => (

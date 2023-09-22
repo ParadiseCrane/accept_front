@@ -18,4 +18,11 @@ export const tournament = {
     'Pin code registration requires from user entering pin-code',
     'Pin code is available for moderators and can be found on tournament page (next to delete and edit buttons)',
   ],
+  maxTeamSize: "Set value '1' if the tournament is personal",
+  settings: {
+    tasks: [
+      'Private tasks are available only on tournament page, not in the common list',
+      'Public tasks are available in the common list, they can be used in assignment schemas',
+    ],
+  },
 };

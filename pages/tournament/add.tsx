@@ -18,7 +18,8 @@ import {
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function TournamentAdd(props: ITournamentAddBundle) {
@@ -50,8 +51,6 @@ function TournamentAdd(props: ITournamentAddBundle) {
       end: new Date(),
       frozeResults: new Date(),
 
-      participants: [],
-
       moderators: [],
       assessmentType: '0',
 
@@ -59,7 +58,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
       allowRegistrationAfterStart: false,
       banned: [],
       security: '0',
-      kind: '0',
+      maxTeamSize: 1,
     }),
     [user?.login]
   );
@@ -84,7 +83,6 @@ function TournamentAdd(props: ITournamentAddBundle) {
         tasks: form.values.tasks,
         tags: form.values.tags.map((item) => item.value),
         status: 0,
-        participants: form.values.participants,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
@@ -94,7 +92,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         end: form.values.end,
         frozeResults: form.values.frozeResults,
         security: +form.values.security,
-        kind: +form.values.kind,
+        maxTeamSize: +form.values.maxTeamSize,
       };
 
       requestWithNotify<ITournamentAdd, string>(

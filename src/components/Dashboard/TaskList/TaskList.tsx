@@ -7,6 +7,7 @@ import styles from './taskList.module.css';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -115,12 +116,12 @@ const TaskList: FC<{
         value: task.title,
         display: (
           <div className={tableStyles.titleWrapper}>
-            <a
+            <Link
               className={tableStyles.title}
               href={`/task/${task.spec}?${type}=${spec}`}
             >
               {task.title}
-            </a>
+            </Link>
             {task.tags.length > 0 && (
               <span className={tableStyles.tags}>
                 {task.tags.map((tag, idx) => (

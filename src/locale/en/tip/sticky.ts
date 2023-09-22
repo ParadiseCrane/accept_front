@@ -26,6 +26,7 @@ export const sticky = {
     add: 'Create new tournament',
     edit: 'Edit the tournament',
     delete: 'Delete the tournament',
+    myTeam: 'My team',
     pin: 'Pin code',
     dashboard: 'Tournament dashboard',
     results: 'Results table',
@@ -40,5 +41,8 @@ export const sticky = {
   user: {
     edit: 'Edit the user',
     delete: 'Delete the user',
+  },
+  team: {
+    delete: 'Delete the team',
   },
 };

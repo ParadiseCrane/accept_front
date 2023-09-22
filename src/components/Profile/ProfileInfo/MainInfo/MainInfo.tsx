@@ -1,9 +1,9 @@
 import { IUser } from '@custom-types/data/IUser';
-import { Avatar, Badge } from '@mantine/core';
-import { link } from '@constants/Avatar';
+import { Badge } from '@mantine/core';
 import { FC, memo } from 'react';
 import styles from './mainInfo.module.css';
 import { Medal2 } from 'tabler-icons-react';
+import { UserAvatar } from '@ui/basics';
 
 const getRoleColor = (accessLevel: number) => {
   switch (accessLevel) {
@@ -38,7 +38,7 @@ const MainInfo: FC<{ user: IUser; place?: number }> = ({
   return (
     <div className={styles.main}>
       <div className={styles.avatarWrapper}>
-        <Avatar src={link(user.login)} size="xl" radius="lg" />
+        <UserAvatar login={user.login} size="xl" />
         {place && place < 4 && (
           <Medal2
             strokeWidth={0.8}

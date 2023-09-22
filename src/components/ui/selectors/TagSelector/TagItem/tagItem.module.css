@@ -1,24 +1,24 @@
 .itemWrapper {
-  width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  column-gap: var(--spacer-s);
   padding: var(--spacer-xs);
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
-.item,
+
+.item {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  font-size: var(--font-size-m);
+}
+
 .actions {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--spacer-xxs);
   user-select: none;
-}
-.item {
-  cursor: pointer;
-  font-size: var(--font-size-m);
-  width: 90%;
-}
-.actions {
   width: fit-content;
 }

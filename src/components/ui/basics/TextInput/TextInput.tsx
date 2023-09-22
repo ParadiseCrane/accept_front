@@ -9,6 +9,7 @@ import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
 interface Props extends TextInputProps {
   helperContent?: IDropdownContent;
+  inputWrapperProps?: object;
   shrink?: boolean;
 }
 
@@ -17,6 +18,7 @@ const TextInput: FC<Props> = ({
   required,
   helperContent,
   shrink,
+  inputWrapperProps,
   ...props
 }) => {
   return (
@@ -24,6 +26,7 @@ const TextInput: FC<Props> = ({
       className={`${inputStyles.wrapper} ${
         shrink ? inputStyles.shrink : ''
       }`}
+      {...inputWrapperProps}
     >
       <InputLabel
         label={label}
@@ -34,7 +37,7 @@ const TextInput: FC<Props> = ({
         size={shrink ? 'sm' : 'md'}
         {...props}
         classNames={{
-          error: props.classNames?.error || inputStyles.error,
+          error: inputStyles.error,
           ...props.classNames,
         }}
         label={undefined}

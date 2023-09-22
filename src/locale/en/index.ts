@@ -29,6 +29,7 @@ import { feedback } from './feedback';
 import { contacts } from './contacts';
 import { executor } from './executor';
 import { tip } from './tip';
+import { team } from './team';
 
 const en = {
   accept: 'Accept',
@@ -36,6 +37,7 @@ const en = {
   name: 'Title',
   save: 'Save',
   delete: 'Delete',
+  close: 'Close',
   cancel: 'Cancel',
   download: 'Download',
   yes: 'Yes',
@@ -51,6 +53,7 @@ const en = {
   ban: 'Ban',
   unban: 'Unban',
   toList: 'To list',
+  toTournaments: 'To tournaments',
   validationError: 'Validation error',
   jsonValidationError: 'Invalid JSON',
   yourProfile: 'Your Profile',
@@ -98,6 +101,7 @@ const en = {
   contacts,
   executor,
   tip,
+  team,
 };
 
 export default en;

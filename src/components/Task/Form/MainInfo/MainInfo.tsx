@@ -4,7 +4,7 @@ import { TagSelector } from '@ui/selectors';
 import styles from './mainInfo.module.css';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { NumberInput, Radio, Switch, TextInput } from '@ui/basics';
-import { ITag } from '@custom-types/data/ITag';
+import { Item } from '@custom-types/ui/atomic';
 
 const MainInfo: FC<{
   form: any;
@@ -47,7 +47,7 @@ const MainInfo: FC<{
   );
 
   const setUsed = useCallback(
-    (value: ITag[]) => form.setFieldValue('tags', value),
+    (value: Item[]) => form.setFieldValue('tags', value),
     [form.setFieldValue] // eslint-disable-line
   );
 

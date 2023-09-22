@@ -19,7 +19,7 @@ import {
   ITaskCheckType,
   ITaskType,
 } from '@custom-types/data/atomic';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
 import {
   errorNotification,
   newNotification,

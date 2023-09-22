@@ -58,7 +58,6 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
           {locale.attempt.task}{' '}
           <Link
             href={`/task/${attempt.task.spec}`}
-            passHref
             className={styles.link}
           >
             {attempt.task.title}
@@ -68,7 +67,6 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
           {locale.attempt.author}{' '}
           <Link
             href={`/profile/${attempt.author.login}`}
-            passHref
             className={styles.link}
           >
             {attempt.author.shortName}

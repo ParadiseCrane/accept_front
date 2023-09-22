@@ -28,6 +28,9 @@ import Kbd from './Kbd/Kbd';
 import InputLabel from './InputLabel/InputLabel';
 import Pin from './Pin/Pin';
 import CopyButton from './CopyButton/CopyButton';
+import CopyIcon from './CopyIcon/CopyIcon';
+import UserAvatar from './UserAvatar/UserAvatar';
+import CustomTransferList from './CustomTransferList/CustomTransferList';
 
 export {
   Button,
@@ -60,4 +63,7 @@ export {
   InputLabel,
   Pin,
   CopyButton,
+  CopyIcon,
+  UserAvatar,
+  CustomTransferList,
 };

@@ -5,7 +5,8 @@ import {
   RadioGroupProps,
   RadioProps,
 } from '@mantine/core';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { setter } from '@custom-types/ui/atomic';
 import { InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';

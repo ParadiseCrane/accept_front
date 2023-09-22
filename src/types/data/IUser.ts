@@ -20,6 +20,7 @@ export interface IUser {
 }
 
 export interface IUserContext {
+  authorized: boolean;
   user: IUser | undefined | null;
   accessLevel: number;
   isUser: boolean;
@@ -56,6 +57,7 @@ export interface IUserDisplay {
 export interface IParticipant extends IUserDisplay {
   banned?: boolean;
   banReason?: string;
+  groups: IGroup[];
 }
 
 export interface IParticipantListBundle {

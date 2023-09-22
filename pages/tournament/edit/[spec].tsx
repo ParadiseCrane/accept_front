@@ -42,7 +42,6 @@ function TournamentEdit(props: ITournamentEditBundle) {
       })),
       assessmentType: props.tournament.assessmentType.spec.toString(),
       security: props.tournament.security.toString(),
-      kind: props.tournament.kind.toString(),
       start: timezoneDate(props.tournament.start),
       end: timezoneDate(props.tournament.end),
       frozeResults: timezoneDate(props.tournament.frozeResults),
@@ -71,7 +70,6 @@ function TournamentEdit(props: ITournamentEditBundle) {
         // @ts-ignore-line
         tags: form.values.tags.map((tag) => tag.value),
         status: form.values.status.spec,
-        participants: form.values.participants,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
@@ -80,8 +78,8 @@ function TournamentEdit(props: ITournamentEditBundle) {
         start: form.values.start,
         end: form.values.end,
         frozeResults: form.values.frozeResults,
-        kind: +form.values.kind,
         security: +form.values.security,
+        maxTeamSize: +form.values.maxTeamSize,
       } as ITournamentAdd;
 
       requestWithNotify<ITournamentAdd, string>(

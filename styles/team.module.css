@@ -7,24 +7,6 @@
   gap: var(--spacer-m);
 }
 
-.main {
-}
-
-.teamName {
-  font-size: var(--font-size-xl);
-}
-
-.date {
-}
-
-.capitan {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: var(--font-size-m);
-  gap: var(--spacer-m);
-}
-
 .link {
   text-decoration: none;
   color: inherit;
@@ -38,13 +20,50 @@
   color: var(--primary);
 }
 
-.participants {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacer-m);
+.main {
 }
 
-.participantsH {
-  font-size: var(--font-size-xl);
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xs);
+}
+
+.origin {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xxs);
+}
+
+.capitanWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-s);
+}
+
+.capitanLabel {
+  font-size: var(--font-size-m);
+  color: var(--primary);
+}
+
+.participantsWrapper {
+}
+
+.participantsList {
+  margin-top: var(--spacer-s);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: var(--spacer-s);
+  row-gap: var(--spacer-m);
+  /* display: flex;
+  flex-direction: row;
+  column-gap: var(--spacer-l);
+  row-gap: var(--spacer-l);
+  align-items: flex-start;
+  flex-wrap: wrap; */
+}
+
+.participantsLabel {
+  font-size: var(--font-size-m);
+  color: var(--primary);
 }

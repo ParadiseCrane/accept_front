@@ -30,6 +30,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
 
         setValue((prev) => ({
           ...prev,
+          authorized: true,
           user: res.response,
           accessLevel,
           isUser: user.role.accessLevel >= accessLevels.user,
@@ -41,6 +42,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
       } else {
         setValue((prev) => ({
           ...prev,
+          authorized: false,
           user: undefined,
           accessLevel: 0,
           isUser: false,
@@ -56,6 +58,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
 
         setValue((prev) => ({
           ...prev,
+          authorized: true,
+
           user: user,
           accessLevel: user.role.accessLevel,
           isUser: user.role.accessLevel >= accessLevels.user,
@@ -102,6 +106,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
       clearCookie('user');
       setValue((prev) => ({
         ...prev,
+        authorized: false,
+
         user: undefined,
         accessLevel: 0,
         isUser: false,
@@ -126,6 +132,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     }
     setValue((prev) => ({
       ...prev,
+      authorized: false,
+
       user: undefined,
       accessLevel: 0,
       isUser: false,
@@ -156,6 +164,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [checkTokensExpiration]);
 
   const [value, setValue] = useState<IUserContext>(() => ({
+    authorized: false,
     user: undefined,
     accessLevel: 0,
     isUser: false,

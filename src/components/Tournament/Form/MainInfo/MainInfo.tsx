@@ -1,12 +1,13 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
-import { CustomEditor, TextInput } from '@ui/basics';
+import { CustomEditor, NumberInput, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
 
 const MainInfo: FC<{
   form: any;
-}> = ({ form }) => {
+  initialMaxTeamSize: number;
+}> = ({ form, initialMaxTeamSize }) => {
   const { locale } = useLocale();
 
   const initialTags = useMemo(
@@ -34,6 +35,12 @@ const MainInfo: FC<{
         form={form}
         name={'description'}
       />
+      <NumberInput
+        helperContent={locale.helpers.tournament.maxTeamSize}
+        label={locale.tournament.form.maxTeamSize}
+        min={initialMaxTeamSize}
+        {...form.getInputProps('maxTeamSize')}
+      />
       <TagSelector
         initialTags={initialTags}
         setUsed={setUsed}
@@ -43,6 +50,7 @@ const MainInfo: FC<{
         deleteURL={'tournament_tag/delete'}
         form={form}
         field={'tags'}
+        width="80%"
       />
     </>
   );

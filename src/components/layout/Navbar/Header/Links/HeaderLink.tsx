@@ -3,8 +3,10 @@ import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { useLocale } from '@hooks/useLocale';
 import Dropdown from './Dropdown';
 import { accessLevels } from '@constants/protectedRoutes';
-import { Button } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
+import Link from 'next/link';
+import { Button } from '@ui/basics';
+import linkStyles from '@styles/ui/link.module.css';
 
 export const HeaderLink: FC<{
   link: IHeaderLink;
@@ -27,15 +29,17 @@ export const HeaderLink: FC<{
               href: dropdownLink.href,
               label: dropdownLink.text(locale),
             }))}
+          transition={'scale-y'}
+          transitionDuration={link.links.length * 50}
         >
           <Button kind="header">{link.text(locale)}</Button>
         </Dropdown>
       ) : (
         (!link.permission ||
           accessLevel >= accessLevels[link.permission]) && (
-          <Button kind="header" href={link.href}>
+          <Link href={link.href} className={linkStyles.headerLink}>
             {link.text(locale)}
-          </Button>
+          </Link>
         )
       )}
     </div>

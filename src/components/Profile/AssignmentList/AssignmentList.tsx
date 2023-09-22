@@ -37,6 +37,7 @@ import { colorGenerator } from '@utils/consistentColorGenerator';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import { useUser } from '@hooks/useUser';
 import { Tip } from '@ui/basics';
+import Link from 'next/link';
 
 interface Item {
   value: any;
@@ -225,12 +226,12 @@ const processData = (
         value: assignment.title,
         display: (
           <div className={tableStyles.titleWrapper}>
-            <a
+            <Link
               className={tableStyles.title}
               href={`/edu/assignment/${assignment.spec}`}
             >
               {assignment.title}
-            </a>
+            </Link>
             {assignment.tags.length > 0 && (
               <span className={tableStyles.tags}>
                 {assignment.tags.map((tag, idx) => (

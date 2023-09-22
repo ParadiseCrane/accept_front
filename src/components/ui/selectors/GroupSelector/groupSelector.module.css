@@ -1,4 +1,7 @@
 .itemWrapper {
   font-size: var(--font-size-m);
   user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
 }

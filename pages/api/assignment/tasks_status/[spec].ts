@@ -8,6 +8,6 @@ export default async function TaskWithStatusToDisplay(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/assignment-tasks-with-status/${req.query.spec}`,
+    url: `api/assignment/tasks-with-status/${req.query.spec}`,
   });
 }

@@ -1,7 +1,7 @@
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { FC, memo, useCallback } from 'react';
 import { TaskSelector } from '@ui/selectors';
-import { InputWrapper } from '@ui/basics';
 
 const TaskAdding: FC<{ form: any; initialTasks: Item[] }> = ({
   form,
@@ -13,9 +13,11 @@ const TaskAdding: FC<{ form: any; initialTasks: Item[] }> = ({
   );
   return (
     <>
-      <InputWrapper {...form.getInputProps('tasks')}>
-        <TaskSelector initialTasks={initialTasks} setUsed={setUsed} />
-      </InputWrapper>
+      <TaskSelector
+        initialTasks={initialTasks}
+        setUsed={setUsed}
+        {...form.getInputProps('tasks')}
+      />
     </>
   );
 };

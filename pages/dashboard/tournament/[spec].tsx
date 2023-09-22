@@ -7,6 +7,7 @@ import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
+import { ITournamentResponse } from '@custom-types/data/ITournament';
 
 function TournamentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();
@@ -46,9 +47,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     `${API_URL}/api/tournament/${params.spec}`
   );
   if (response.status === 200) {
-    const tournament = await response.json();
+    const resp: ITournamentResponse = await response.json();
     return {
-      props: { spec: tournament.spec },
+      props: { spec: resp.tournament.spec },
       revalidate: REVALIDATION_TIME.dashboard.tournament,
     };
   }

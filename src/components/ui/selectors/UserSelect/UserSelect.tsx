@@ -5,7 +5,7 @@ import UserSingleSelect from './UserSingleSelect';
 
 export interface UserItemProps
   extends React.ComponentPropsWithoutRef<'div'> {
-  image: string;
+  login: string;
   label: string;
   role: string;
   value: string;

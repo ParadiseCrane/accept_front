@@ -31,12 +31,12 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   date: {
     display: (
-      <a
+      <Link
         className={tableStyles.link}
         href={`/attempt/${attempt.spec}`}
       >
         {getLocalDate(attempt.date)}
-      </a>
+      </Link>
     ),
     value: new Date(attempt.date).getTime(),
   },
@@ -48,7 +48,6 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
     display: (
       <Link
         href={`/task/${attempt.task.spec}`}
-        passHref
         className={styles.taskLink}
       >
         {attempt.task.title}

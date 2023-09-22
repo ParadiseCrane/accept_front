@@ -71,7 +71,6 @@ const refactorUser = (user: IParticipant): any => ({
       <div className={tableStyles.titleWrapper}>
         <Link
           href={`/profile/${user.login}`}
-          passHref
           className={tableStyles.title}
         >
           {user.login}
