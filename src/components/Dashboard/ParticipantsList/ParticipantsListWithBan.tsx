@@ -149,17 +149,55 @@ const refactorUser = (
       </div>
     ),
   },
+  team: {
+    value: user.team?.name,
+    display: (
+      <>
+        {user.team ? (
+          <Link
+            className={tableStyles.title}
+            href={`/team/${user.team?.spec}`}
+          >
+            {user.team?.name}
+          </Link>
+        ) : (
+          '-'
+        )}
+      </>
+    ),
+  },
 });
 
 const ParticipantsListWithBan: FC<{
   type: 'assignment' | 'tournament';
+  team?: boolean;
   spec: string;
-}> = ({ type, spec }) => {
+}> = ({ type, team, spec }) => {
   const { locale } = useLocale();
   const [refetch, setRefetch] = useState(false);
 
   const handleBan = useCallback(() => {
     setRefetch((val) => !val);
+  }, []);
+
+  const columns = useCallback((locale: ILocale) => {
+    let columns = initialColumns(locale);
+    return [
+      ...columns.slice(0, 2),
+      {
+        label: locale.team.self,
+        key: 'team',
+        sortable: true,
+        sortFunction: (a: any, b: any): -1 | 0 | 1 =>
+          a.value !== b.value ? 0 : a.value ? 1 : -1,
+        sorted: 0,
+        allowMiddleState: true,
+        hidable: true,
+        hidden: false,
+        size: 4,
+      },
+      ...columns.slice(2),
+    ] as ITableColumn[];
   }, []);
 
   return (
@@ -170,7 +208,7 @@ const ParticipantsListWithBan: FC<{
         refactorUser={(user) =>
           refactorUser(locale, type, user, spec, handleBan)
         }
-        initialColumns={initialColumns}
+        initialColumns={!!team ? columns : initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}
         classNames={{

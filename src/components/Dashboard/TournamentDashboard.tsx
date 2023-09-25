@@ -129,7 +129,11 @@ const TournamentDashboard: FC<{
       },
       {
         page: (
-          <ParticipantsListWithBan type={'tournament'} spec={spec} />
+          <ParticipantsListWithBan
+            type={'tournament'}
+            team={tournament?.maxTeamSize != 1}
+            spec={spec}
+          />
         ),
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.tournament.participants,

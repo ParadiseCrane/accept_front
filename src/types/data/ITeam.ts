@@ -1,6 +1,11 @@
 import { IUserDisplay } from './IUser';
 import { ITournamentBaseInfo } from './ITournament';
 
+export interface ITeamBaseInfo {
+  spec: string;
+  name: string;
+}
+
 export interface ITeam {
   spec: string;
   name: string;

@@ -1,6 +1,7 @@
 import { pureCallback } from '../ui/atomic';
 import { IRole } from './atomic';
 import { IGroup } from './IGroup';
+import { ITeamBaseInfo } from './ITeam';
 
 export interface Role {
   spec: number;
@@ -58,6 +59,7 @@ export interface IParticipant extends IUserDisplay {
   banned?: boolean;
   banReason?: string;
   groups: IGroup[];
+  team?: ITeamBaseInfo;
 }
 
 export interface IParticipantListBundle {
