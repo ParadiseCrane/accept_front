@@ -5,9 +5,11 @@ export const steps = {
     'Third step',
     'Fourth step',
     'Fifth step',
+    'Sixth step',
   ],
   descriptions: [
     'Main info',
+    'Additional info',
     'Time',
     'Task order',
     'Moderators',

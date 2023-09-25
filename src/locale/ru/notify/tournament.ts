@@ -16,7 +16,7 @@ export const tournament = {
   },
   registration: {
     loading: 'Регистрируем',
-    success: 'Вы успешно зарегистрированы',
+    success: 'Регистрация успешна',
     error: 'Ошибка при регистрации',
   },
   refusal: {
@@ -37,5 +37,18 @@ export const tournament = {
   timer: {
     started: 'Турнир начался!',
     finished: 'Турнир закончился!',
+  },
+  settings: {
+    changePublic: {
+      loading: 'Изменяем публичность задач',
+      success: 'Публичность задач успешно изменена',
+      error: 'Ошибка при изменении публичности задач',
+    },
+    allowRegistrationAfterStart: {
+      loading: 'Изменяем возможность регистрации после начала',
+      success:
+        'Возможность регистрации после начала успешно изменена',
+      error: 'Ошибка при изменении возможности регистрации',
+    },
   },
 };

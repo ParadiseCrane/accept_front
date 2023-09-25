@@ -1,0 +1,42 @@
+.wrapper {
+  overflow: hidden;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xs);
+}
+
+.titleSearchWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xxxs);
+}
+
+.title {
+  font-size: var(--font-size-label-m);
+}
+
+.searchWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xxs);
+  width: 100%;
+  align-items: center;
+}
+
+.items {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.items::-webkit-scrollbar {
+  width: 3px;
+}
+
+.items::-webkit-scrollbar-track {
+  background-color: #eeeeee;
+}
+
+.items::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa;
+}

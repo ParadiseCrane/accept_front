@@ -11,7 +11,7 @@ export const timezoneDate = (date: Date): Date => {
 
 export const UTCDate = (date: Date): Date => {
   return new Date(
-    date.getTime() - new Date().getTimezoneOffset() * 60 * 1000
+    date.getTime() + new Date().getTimezoneOffset() * 60 * 1000
   );
 };
 

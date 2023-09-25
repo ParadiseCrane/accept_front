@@ -3,4 +3,5 @@
 
 npx pretty-quick --staged
 yarn lint --fix
+git add .
 yarn tsc

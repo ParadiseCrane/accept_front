@@ -38,6 +38,12 @@ export interface ITaskBaseInfo {
   title: string;
 }
 
+export interface IBarTask {
+  spec: string;
+  status?: IAttemptStatus;
+  verdict?: IVerdict;
+}
+
 export interface ITaskDisplay {
   spec: string;
   title: string;
@@ -47,6 +53,10 @@ export interface ITaskDisplay {
   insertedDate: Date;
   complexity: number;
   status?: IAttemptStatus;
+}
+
+export interface ITaskDisplayWithPublic extends ITaskDisplay {
+  public: boolean;
 }
 
 export interface ITask extends ITaskDisplay {

@@ -1,9 +1,9 @@
-import { IUser } from '@custom-types/data/IUser';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { Overlay } from '@ui/basics';
 import { UserSelector } from '@ui/selectors';
 import { FC, memo, useCallback, useMemo } from 'react';
 
-const Users: FC<{ form: any; users: IUser[] }> = ({
+const Users: FC<{ form: any; users: IUserDisplay[] }> = ({
   form,
   users,
 }) => {

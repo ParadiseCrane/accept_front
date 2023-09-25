@@ -10,9 +10,9 @@ import { Group } from '@mantine/core';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
 const CreateNotification: FC<{
-  groups?: string[];
-  logins?: string[];
-}> = ({ groups = [], logins = [] }) => {
+  spec: string;
+  type: string;
+}> = ({ spec, type }) => {
   const { locale, lang } = useLocale();
   const { user } = useUser();
 
@@ -40,22 +40,22 @@ const CreateNotification: FC<{
       title: form.values.notificationTitle,
       shortDescription: form.values.notificationShortDescription,
       description: form.values.notificationDescription,
-      logins: logins || [],
-      groups: groups || [],
+      logins: [],
+      groups: [],
       roles: [],
       author: user?.login || '',
       broadcast: false,
     };
 
     requestWithNotify<INewNotification, string>(
-      'notification/add',
+      `${type}/add-notification/${spec}`,
       'POST',
       locale.notify.notification.create,
       lang,
       (_: string) => '',
       notification
     );
-  }, [form.values, groups, logins, user?.login, locale, lang]);
+  }, [type, spec, form.values, user?.login, locale, lang]);
 
   return (
     <>

@@ -1,13 +1,15 @@
 import { FC, memo } from 'react';
 import inputStyles from '@styles/ui/input.module.css';
 import { Textarea as MantineTextarea } from '@mantine/core';
-import { Helper } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import styles from './textArea.module.css';
 import { TextAreaProps } from '@custom-types/ui/basics/textArea';
 
 const TextArea: FC<TextAreaProps> = ({
   helperContent,
   shrink,
+  label,
+  required,
   monospace,
   inputRef,
   ...props
@@ -18,15 +20,11 @@ const TextArea: FC<TextAreaProps> = ({
         shrink ? inputStyles.shrink : ''
       }`}
     >
-      <div className={inputStyles.labelWrapper}>
-        <div className={inputStyles.label}>
-          {props.label}
-          {props.required && (
-            <div className={inputStyles.labelRequired}>*</div>
-          )}
-        </div>
-        {helperContent && <Helper dropdownContent={helperContent} />}
-      </div>
+      <InputLabel
+        label={label}
+        helperContent={helperContent}
+        required={required}
+      />
       <MantineTextarea
         size={shrink ? 'md' : 'lg'}
         ref={inputRef}

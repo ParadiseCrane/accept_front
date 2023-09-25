@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { Select as MantineSelect, SelectProps } from '@mantine/core';
-import { Helper } from '@ui/basics';
+import { InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 
@@ -9,22 +9,24 @@ interface Props extends SelectProps {
   shrink?: boolean;
 }
 
-const Select: FC<Props> = ({ helperContent, shrink, ...props }) => {
+const Select: FC<Props> = ({
+  helperContent,
+  shrink,
+  label,
+  required,
+  ...props
+}) => {
   return (
     <div
       className={`${inputStyles.wrapper} ${
         shrink ? inputStyles.shrink : ''
       }`}
     >
-      <div className={inputStyles.labelWrapper}>
-        <div className={inputStyles.label}>
-          {props.label}
-          {props.required && (
-            <div className={inputStyles.labelRequired}>*</div>
-          )}
-        </div>
-        {helperContent && <Helper dropdownContent={helperContent} />}
-      </div>
+      <InputLabel
+        label={label}
+        helperContent={helperContent}
+        required={required}
+      />
       <MantineSelect
         size={shrink ? 'sm' : 'md'}
         {...props}

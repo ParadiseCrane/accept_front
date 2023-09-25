@@ -1,7 +1,6 @@
 import { FC, memo, useCallback, useMemo } from 'react';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { UserSelector } from '@ui/selectors';
-import { InputWrapper } from '@ui/basics';
 // import styles from './moderators.module.css'
 
 const Moderators: FC<{ form: any; users: IUserDisplay[] }> = ({
@@ -17,14 +16,12 @@ const Moderators: FC<{ form: any; users: IUserDisplay[] }> = ({
   }, []); // eslint-disable-line
   return (
     <>
-      <InputWrapper {...form.getInputProps('moderators')}>
-        <UserSelector
-          setFieldValue={setFieldValue}
-          inputProps={initialProps}
-          users={users}
-          initialUsers={form.values.moderators}
-        />
-      </InputWrapper>
+      <UserSelector
+        setFieldValue={setFieldValue}
+        inputProps={initialProps}
+        users={users}
+        initialUsers={form.values.moderators}
+      />
     </>
   );
 };

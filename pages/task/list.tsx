@@ -11,6 +11,7 @@ import { useUser } from '@hooks/useUser';
 import Title from '@ui/Title/Title';
 import { useLocale } from '@hooks/useLocale';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -111,9 +112,12 @@ const refactorTask = (task: ITaskDisplay): any => ({
     value: task.title,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <a className={tableStyles.title} href={`/task/${task.spec}`}>
+        <Link
+          className={tableStyles.title}
+          href={`/task/${task.spec}`}
+        >
           {task.title}
-        </a>
+        </Link>
         {task.tags.length > 0 && (
           <span className={tableStyles.tags}>
             {task.tags.map((tag, idx) => (

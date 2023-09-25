@@ -1,36 +1,8 @@
 .itemWrapper {
   padding: var(--spacer-xs) 0;
   justify-content: space-between;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  user-select: none;
-}
-
-.nameWrapper {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.name {
-  font-size: var(--font-size-m);
-}
-
-.groups {
-  margin-right: var(--spacer-xs);
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  font-size: var(--font-size-xs);
-  color: var(--dark3);
-  max-width: 60%;
-  gap: var(--spacer-xxs);
-}
-
-.group {
-  white-space: nowrap;
+  display: grid;
+  grid-template-columns: 10fr 1fr;
 }
 
 .actions {
@@ -42,5 +14,7 @@
 
 .item {
   cursor: pointer;
-  width: 90%;
+  user-select: none;
+  overflow: hidden;
+  white-space: nowrap;
 }

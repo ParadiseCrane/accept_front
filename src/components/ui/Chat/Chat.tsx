@@ -14,7 +14,8 @@ import { Textarea } from '@mantine/core';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import { sendRequest } from '@requests/request';
-import { useRefetch } from '@hooks/useRefetch';
+import { useLongPooling } from '@hooks/useLongPooling';
+import { getHotkeyHandler } from '@mantine/hooks';
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -46,8 +47,6 @@ const Chat: FC<{
 
   const appendMessages = useCallback((messages: IChatMessage[]) => {
     setMessages((oldMessages) => {
-      console.log(oldMessages);
-      console.log(messages);
       if (oldMessages.length == 0) return messages;
       if (messages.length == 0) return oldMessages;
       if (
@@ -88,21 +87,18 @@ const Chat: FC<{
     [entity, host, moderator, appendMessages, indicateNew]
   );
 
-  useEffect(() => {
-    fetchMessages(true);
-  }, [fetchMessages]);
-
   const handleSend = useCallback(() => {
     if (message.trim() === '') return;
+    let localMessage = message;
+    setMessage('');
     sendRequest<{}, IChatMessage>('chat', 'POST', {
       entity,
       host,
       moderator: !!moderator,
-      content: message,
+      content: localMessage,
     }).then((res) => {
       if (!res.error) {
         appendMessages([res.response]);
-        setMessage('');
       }
     });
   }, [entity, host, moderator, message, appendMessages]);
@@ -138,27 +134,7 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone]);
 
-  const fetchMessagesLong = useCallback(
-    () => fetchMessages(false),
-    [fetchMessages]
-  );
-  useRefetch(fetchMessagesLong, refetchIntervalSeconds);
-
-  useEffect(() => {
-    const handleClick = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        handleSend();
-      }
-    };
-    const ref = textArea.current;
-    if (ref) {
-      ref.addEventListener('keydown', handleClick);
-    }
-    return () => {
-      if (ref) ref.removeEventListener('keydown', handleClick);
-    };
-  }, [textArea, handleSend]);
+  useLongPooling(fetchMessages, refetchIntervalSeconds);
 
   return (
     <div className={wrapperStyles}>
@@ -204,6 +180,15 @@ const Chat: FC<{
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
           placeholder={locale.placeholders.chat}
+          onKeyDown={getHotkeyHandler([
+            [
+              'Shift+Enter',
+              () => {
+                setMessage((message) => message + '\n');
+              },
+            ],
+            ['Enter', handleSend],
+          ])}
           minRows={1}
           maxRows={3}
           autosize

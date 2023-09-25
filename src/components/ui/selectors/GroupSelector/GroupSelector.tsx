@@ -1,81 +1,96 @@
 import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useMemo } from 'react';
-import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './groupSelector.module.css';
 import { IGroup } from '@custom-types/data/IGroup';
-import { InputWrapper } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 
 const GroupSelector: FC<{
   form: any;
   groups: IGroup[];
   initialGroups: string[];
-  classNames?: any;
   field: string;
   shrink?: boolean;
-}> = ({ form, groups, initialGroups, field, classNames, shrink }) => {
+  width?: string;
+}> = ({
+  form,
+  groups: allGroups,
+  initialGroups,
+  field,
+  shrink,
+  width,
+}) => {
   const { locale } = useLocale();
+  const [groups, setGroups] =
+    useState<ICustomTransferListData>(undefined);
 
-  const [availableGroups, selectedGroups] = useMemo(() => {
-    let newAvailableGroups = [];
-    let newSelectedGroups = [];
+  useEffect(() => {
+    let data: ICustomTransferListData = [[], []];
 
-    for (let i = 0; i < groups.length; i++) {
-      const group = { ...groups[i], label: groups[i].name };
+    for (let i = 0; i < allGroups.length; i++) {
+      const group = {
+        ...allGroups[i],
+        value: allGroups[i].spec,
+        sortValue: allGroups[i].name,
+      };
       if (initialGroups.includes(group.spec)) {
-        newSelectedGroups.push(group);
+        data[1].push(group);
       } else {
-        newAvailableGroups.push(group);
+        data[0].push(group);
       }
     }
 
-    return [newAvailableGroups, newSelectedGroups];
-  }, [groups, initialGroups]);
+    setGroups(data);
+  }, [allGroups, initialGroups]);
 
-  const itemComponent = useCallback(
-    (group: IGroup, handleSelect: any) => {
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
       return (
         <div
+          key={index}
           className={`${styles.itemWrapper} ${
             shrink ? inputStyles.shrink : ''
           }`}
-          onClick={() => handleSelect(group)}
-          style={{ cursor: 'pointer' }}
+          onClick={onClick}
         >
-          {group.name}
+          {item.name}
         </div>
       );
     },
     [shrink]
   );
 
-  const setUsed = useCallback(
-    (groups: Item[]) =>
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
       form.setFieldValue(
         field,
-        groups.map((group) => group.spec)
-      ),
+        data[1].map((item) => item.spec)
+      );
+      setGroups(data);
+    },
     [form.setFieldValue] // eslint-disable-line
   );
 
   return (
     <div>
-      <InputWrapper shrink={shrink} {...form.getInputProps(field)}>
-        <CustomTransferList
-          defaultOptions={availableGroups}
-          defaultChosen={selectedGroups}
-          setUsed={setUsed}
-          classNames={{ ...classNames }}
-          titles={[
-            locale.ui.groupSelector.unselected,
-            locale.ui.groupSelector.selected,
-          ]}
-          itemComponent={itemComponent}
-        />
-      </InputWrapper>
+      <CustomTransferList
+        {...form.getInputProps(field)}
+        width={width}
+        value={groups}
+        onChange={onChange}
+        titles={[
+          locale.ui.groupSelector.unselected,
+          locale.ui.groupSelector.selected,
+        ]}
+        itemComponent={itemComponent}
+        searchKeys={['name']}
+        shrink={shrink}
+      />
     </div>
   );
 };

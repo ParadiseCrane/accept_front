@@ -1,5 +1,5 @@
 import { FC, memo, useCallback } from 'react';
-import { Avatar, Group, Menu } from '@mantine/core';
+import { Group, Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
 import {
@@ -8,12 +8,12 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 import { useBackNotifications } from '@hooks/useBackNotifications';
-import { link } from '@constants/Avatar';
-import { Indicator } from '@ui/basics';
+import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
 import { Logout } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
+import Link from 'next/link';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -45,16 +45,15 @@ const ProfileMenu: FC<{}> = ({}) => {
 
   return (
     <>
-      <Menu trigger="hover" zIndex={1000}>
+      <Menu
+        trigger="hover"
+        zIndex={1000}
+        transitionProps={{ transition: 'scale-y', duration: 150 }}
+      >
         <Menu.Target>
           <div>
             <Indicator label={unviewed} disabled={unviewed <= 0}>
-              <Avatar
-                radius="lg"
-                size="lg"
-                src={user ? link(user.login) : undefined}
-                alt={'Users avatar'}
-              />
+              <UserAvatar login={user?.login} alt={'Users avatar'} />
             </Indicator>
           </div>
         </Menu.Target>
@@ -69,7 +68,11 @@ const ProfileMenu: FC<{}> = ({}) => {
                 accessLevel >= accessLevels[item.permission]
             )
             .map((item, index) => (
-              <Menu.Item component="a" href={item.href} key={index}>
+              <Menu.Item
+                component={Link}
+                href={item.href}
+                key={index}
+              >
                 <Group spacing="xs" className={styles.wrapper}>
                   {item.icon}
                   <div>{item.text(locale)}</div>

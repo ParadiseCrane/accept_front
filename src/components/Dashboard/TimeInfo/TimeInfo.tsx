@@ -143,7 +143,7 @@ const TimeInfo: FC<{
       <div className={styles.infoWrapper}>
         <div className={styles.main}>
           <div className={styles.title}>
-            <Link href={`/${type}/${entity.spec}`} passHref>
+            <Link href={`/${type}/${entity.spec}`}>
               {entity.title}
             </Link>
             <div className={styles.status}>

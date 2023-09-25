@@ -16,3 +16,12 @@
 .undoWarning {
   color: var(--negative);
 }
+
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacer-xl);
+  margin-top: var(--spacer-xl);
+}

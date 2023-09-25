@@ -18,7 +18,8 @@ import {
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function TournamentAdd(props: ITournamentAddBundle) {
@@ -46,11 +47,9 @@ function TournamentAdd(props: ITournamentAddBundle) {
       tags: [] as Item[],
       status: 0,
 
-      startDate: new Date(),
-      endDate: new Date(),
+      start: new Date(),
+      end: new Date(),
       frozeResults: new Date(),
-
-      participants: [],
 
       moderators: [],
       assessmentType: '0',
@@ -58,6 +57,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
       shouldPenalizeAttempt: true,
       allowRegistrationAfterStart: false,
       banned: [],
+      security: '0',
+      maxTeamSize: 1,
     }),
     [user?.login]
   );
@@ -74,7 +75,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         return;
       }
 
-      const tournament = {
+      const tournament: ITournamentAdd = {
         spec: '',
         author: user?.login || '',
         title: form.values.title,
@@ -82,16 +83,16 @@ function TournamentAdd(props: ITournamentAddBundle) {
         tasks: form.values.tasks,
         tags: form.values.tags.map((item) => item.value),
         status: 0,
-        participants: form.values.participants,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: form.values.startDate,
-        end: form.values.endDate,
+        start: form.values.start,
+        end: form.values.end,
         frozeResults: form.values.frozeResults,
-        banned: form.values.banned,
+        security: +form.values.security,
+        maxTeamSize: +form.values.maxTeamSize,
       };
 
       requestWithNotify<ITournamentAdd, string>(
@@ -138,7 +139,8 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         assessmentTypes: response_json.assessment_types,
         tags: response_json.tags,
-      },
+        securities: response_json.securities,
+      } as ITournamentAddBundle,
       revalidate: REVALIDATION_TIME.tournament.add,
     };
   }

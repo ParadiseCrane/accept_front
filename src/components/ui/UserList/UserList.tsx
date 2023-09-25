@@ -18,7 +18,6 @@ import Fuse from 'fuse.js';
 import { hasSubarray } from '@utils/hasSubarray';
 import { customTableSort } from '@utils/customTableSort';
 import {
-  IParticipant,
   IParticipantListBundle,
   IUser,
 } from '@custom-types/data/IUser';
@@ -47,7 +46,7 @@ const UsersList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorUser: (_: IParticipant) => IUserDisplayList;
+  refactorUser: (_: any) => IUserDisplayList;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;

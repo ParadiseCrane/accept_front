@@ -1,8 +1,0 @@
-.radioGroups {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  row-gap: var(--spacer-m);
-  column-gap: var(--spacer-huge);
-  align-items: center;
-}

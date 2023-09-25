@@ -12,13 +12,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
 import { useLocale } from './useLocale';
 import { useUser } from './useUser';
-import { useRefetch } from './useRefetch';
+import { useLongPooling } from './useLongPooling';
 
 interface INotificationContext {
   unviewed: number;
@@ -80,16 +79,7 @@ export const BackNotificationsProvider: FC<{
     [user]
   );
 
-  const fetchNotificationsLong = useCallback(
-    () => fetchNotifications(false),
-    [fetchNotifications]
-  );
-
-  useEffect(() => {
-    fetchNotifications(true);
-  }, [fetchNotifications]);
-
-  const { loading: fetching } = useRefetch(fetchNotificationsLong, 2);
+  const { loading: fetching } = useLongPooling(fetchNotifications, 2);
 
   const sendViewed = useCallback(
     (

@@ -48,8 +48,10 @@ export const requestWithNotify = <T, V>(
         id,
         title: locale.error,
         message:
-          (res.detail.description && res.detail.description[lang]) ||
-          res.detail,
+          res.detail.description &&
+          res.detail.description[lang] != undefined
+            ? res.detail.description[lang]
+            : res.detail,
         autoClose: defaultAutoClose,
         ...params,
       });

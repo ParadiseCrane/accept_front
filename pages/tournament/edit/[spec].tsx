@@ -41,8 +41,9 @@ function TournamentEdit(props: ITournamentEditBundle) {
         label: tag.title,
       })),
       assessmentType: props.tournament.assessmentType.spec.toString(),
-      startDate: timezoneDate(props.tournament.start),
-      endDate: timezoneDate(props.tournament.end),
+      security: props.tournament.security.toString(),
+      start: timezoneDate(props.tournament.start),
+      end: timezoneDate(props.tournament.end),
       frozeResults: timezoneDate(props.tournament.frozeResults),
     }),
     [props.tournament]
@@ -69,16 +70,17 @@ function TournamentEdit(props: ITournamentEditBundle) {
         // @ts-ignore-line
         tags: form.values.tags.map((tag) => tag.value),
         status: form.values.status.spec,
-        participants: form.values.participants,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
         allowRegistrationAfterStart:
           form.values.allowRegistrationAfterStart,
-        start: form.values.startDate,
-        end: form.values.endDate,
+        start: form.values.start,
+        end: form.values.end,
         frozeResults: form.values.frozeResults,
-      };
+        security: +form.values.security,
+        maxTeamSize: +form.values.maxTeamSize,
+      } as ITournamentAdd;
 
       requestWithNotify<ITournamentAdd, string>(
         'tournament/edit',
@@ -144,7 +146,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         tournament: response_json.tournament,
         assessmentTypes: response_json.assessment_types,
         tags: response_json.tags,
-      },
+        securities: response_json.securities,
+      } as ITournamentEditBundle,
     };
   }
   return {

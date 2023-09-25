@@ -1,4 +1,5 @@
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { reorderList } from '@utils/reorderList';
 import { FC, useEffect, useState } from 'react';
 import {

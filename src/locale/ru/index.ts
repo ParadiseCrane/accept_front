@@ -29,6 +29,7 @@ import { feedback } from './feedback';
 import { contacts } from './contacts';
 import { executor } from './executor';
 import { tip } from './tip';
+import { team } from './team';
 
 const ru = {
   accept: 'Accept',
@@ -37,6 +38,7 @@ const ru = {
   name: 'Название',
   save: 'Сохранить',
   delete: 'Удалить',
+  close: 'Закрыть',
   cancel: 'Отмена',
   yes: 'Да',
   no: 'Нет',
@@ -51,6 +53,7 @@ const ru = {
   ban: 'Забанить',
   unban: 'Разбанить',
   toList: 'К списку',
+  toTournaments: 'К турнирам',
   validationError: 'Ошибка валидации',
   jsonValidationError: 'Некорректный JSON',
   yourProfile: 'Ваш профиль',
@@ -98,6 +101,7 @@ const ru = {
   contacts,
   executor,
   tip,
+  team,
 };
 
 export default ru;

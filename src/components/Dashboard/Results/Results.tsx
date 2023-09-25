@@ -28,7 +28,8 @@ const Results: FC<{
   endDate: Date;
   type: string;
   full: boolean;
-}> = ({ spec, isFinished, endDate, type, full }) => {
+  is_team: boolean;
+}> = ({ spec, isFinished, endDate, type, full, is_team }) => {
   const { locale } = useLocale();
 
   const [fetchDate, setFetchDate] = useState<'actual' | 'end'>(
@@ -53,9 +54,9 @@ const Results: FC<{
   }, [fetchDate]); // eslint-disable-line
 
   const table_data = useMemo(() => {
-    if (!data || data.user_results.length == 0) return [];
-    let rows = data.user_results.map((user_result) =>
-      user_result.results
+    if (!data || data.team_results.length == 0) return [];
+    let rows = data.team_results.map((team_result) =>
+      team_result.results
         .map((cell) => ({
           best: (
             <div style={{ color: getScoreColor(cell.best?.score) }}>
@@ -89,10 +90,10 @@ const Results: FC<{
           best: (
             <div
               style={{
-                color: getTotalScoreColor(user_result.score),
+                color: getTotalScoreColor(team_result.score),
               }}
             >
-              {user_result.score.toString()}
+              {team_result.score.toString()}
             </div>
           ),
           rest: [],
@@ -105,9 +106,9 @@ const Results: FC<{
       best: <>{current.toString()}</>,
       rest: [],
     });
-    last_score = data.user_results[0].score;
+    last_score = data.team_results[0].score;
     for (let i = 1; i < rows.length; i++) {
-      const current_score = data.user_results[i].score;
+      const current_score = data.team_results[i].score;
       if (current_score == last_score) {
         streak += 1;
         rows[i] = rows[i].concat({
@@ -168,7 +169,7 @@ const Results: FC<{
 
       <LoadingOverlay visible={loading} />
       {data &&
-      data.user_results.length > 0 &&
+      data.team_results.length > 0 &&
       data.tasks.length > 0 ? (
         <ResultsTable
           refetch={refetch}
@@ -190,19 +191,36 @@ const Results: FC<{
             <>{locale.assignment.score}</>,
             <>{locale.assignment.place}</>,
           ]}
-          rows={data.user_results.map((user_result, index) => (
-            <Tip label={user_result.user.login} key={index}>
-              <Link
-                href={`/profile/${user_result.user.login}`}
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                }}
+          rows={data.team_results.map((team_result, index) =>
+            is_team ? (
+              <Tip
+                label={team_result.team.capitan.shortName}
+                key={index}
               >
-                {user_result.user.shortName}
-              </Link>
-            </Tip>
-          ))}
+                <Link
+                  href={`/team/${team_result.team.spec}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  {team_result.team.name}
+                </Link>
+              </Tip>
+            ) : (
+              <Tip label={team_result.team.capitan.login} key={index}>
+                <Link
+                  href={`/profile/${team_result.team.capitan.login}`}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  {team_result.team.capitan.shortName}
+                </Link>
+              </Tip>
+            )
+          )}
           data={table_data}
         />
       ) : (

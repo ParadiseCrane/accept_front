@@ -16,13 +16,16 @@ export const form = {
     ],
   },
 
+  security: {
+    title: 'Тип доступа',
+    variants: ['Открытая регистрация', 'Регистрация по пин-коду'],
+  },
+  maxTeamSize: 'Максимальное количество участников в команде',
+
   calendar: 'Выберите дату начала и окончания',
   startDate: 'Дата начала',
-  startTime: 'Время начала',
   endDate: 'Дата завершения',
-  endTime: 'Время завершения',
   freezeTableDate: 'Дата заморозки таблицы',
-  freezeTableTime: 'Время заморозки таблицы',
 
   moderators: 'Модераторы',
   selectedModerators: 'Выбранные модераторы',

@@ -5,6 +5,7 @@ import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
 import { ITag } from '@custom-types/data/ITag';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import Link from 'next/link';
 
 const PrimitiveTaskTable: FC<{
   tasks: ITaskDisplay[];
@@ -27,14 +28,14 @@ const PrimitiveTaskTable: FC<{
         return (
           <>
             <td className={tableStyles.titleWrapper}>
-              <a
+              <Link
                 href={`/task/${row.spec}${
                   linkQuery ? '?' + linkQuery : ''
                 }`}
                 className={tableStyles.title}
               >
                 {row.title}
-              </a>
+              </Link>
               {row.tags.length > 0 && (
                 <span className={tableStyles.tags}>
                   {row.tags.map((tag: ITag, idx: number) => (

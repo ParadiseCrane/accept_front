@@ -1,5 +1,6 @@
 import { pureCallback } from '@custom-types/ui/atomic';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import { FC } from 'react';
 import DeleteTag from './DeleteTag/DeleteTag';
 import EditTag from './EditTag/EditTag';
@@ -21,7 +22,7 @@ export const TagItem: FC<{
       }`}
     >
       <div className={styles.item} onClick={() => onSelect()}>
-        <div className={inputStyles.label}>{item.label}</div>
+        <div className={inputStyles.label}>{item.title}</div>
       </div>
       <div className={styles.actions}>
         <EditTag

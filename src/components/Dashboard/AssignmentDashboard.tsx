@@ -101,6 +101,7 @@ const AssignmentDashboard: FC<{
             endDate={assignment.end}
             type={'assignment'}
             full
+            is_team={false}
           />
         ),
         icon: <Table color="var(--secondary)" />,
@@ -133,7 +134,8 @@ const AssignmentDashboard: FC<{
       {
         page: assignment && (
           <CreateNotification
-            groups={assignment.groups.map((group) => group.spec)}
+            spec={assignment.spec}
+            type={'assignment'}
           />
         ),
         icon: <BellPlus color="var(--secondary)" />,

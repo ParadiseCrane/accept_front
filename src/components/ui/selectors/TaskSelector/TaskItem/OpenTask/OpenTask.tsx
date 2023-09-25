@@ -1,11 +1,12 @@
 import { ActionIcon } from '@mantine/core';
 import { Eye } from 'tabler-icons-react';
 import { FC, memo } from 'react';
+import Link from 'next/link';
 
 const OpenTask: FC<{ spec: string }> = ({ spec }) => {
   return (
-    <ActionIcon<'a'>
-      component="a"
+    <ActionIcon
+      component={Link}
       href={`/task/${spec}`}
       target="_blank"
       tabIndex={5}

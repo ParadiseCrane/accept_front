@@ -17,7 +17,8 @@ import {
   newNotification,
 } from '@utils/notificationFunctions';
 import { UseFormReturnType } from '@mantine/form';
-import { Item } from '@ui/CustomTransferList/CustomTransferList';
+import { Item } from '@custom-types/ui/atomic';
+
 import Title from '@ui/Title/Title';
 
 function EditTask(props: {

@@ -1,17 +1,20 @@
-import { Menu } from '@mantine/core';
+import { MantineTransition, Menu } from '@mantine/core';
 
 import { FC, ReactNode, memo } from 'react';
 import styles from './dropdown.module.css';
+import Link from 'next/link';
 
 interface Item {
   label: string;
   href: string;
 }
 
-const Dropdown: FC<{ items: Item[]; children: ReactNode }> = ({
-  items,
-  children,
-}) => {
+const Dropdown: FC<{
+  items: Item[];
+  children: ReactNode;
+  transition?: MantineTransition;
+  transitionDuration?: number;
+}> = ({ items, children, transition, transitionDuration }) => {
   return (
     <Menu
       position="bottom-start"
@@ -20,6 +23,14 @@ const Dropdown: FC<{ items: Item[]; children: ReactNode }> = ({
       zIndex={1000}
       openDelay={200}
       closeDelay={200}
+      transitionProps={
+        transition
+          ? {
+              transition: transition,
+              duration: transitionDuration || 150,
+            }
+          : undefined
+      }
     >
       <Menu.Target>
         <div>{children}</div>
@@ -29,7 +40,7 @@ const Dropdown: FC<{ items: Item[]; children: ReactNode }> = ({
           <Menu.Item
             className={styles.item}
             key={index}
-            component="a"
+            component={Link}
             href={item.href}
           >
             {item.label}

@@ -10,6 +10,7 @@ const Groups: FC<{ form: any; groups: IGroup[] }> = ({
   return (
     <>
       <GroupSelector
+        width="80%"
         form={form}
         groups={groups}
         initialGroups={initialGroups}

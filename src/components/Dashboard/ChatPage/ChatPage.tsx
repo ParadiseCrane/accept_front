@@ -7,8 +7,6 @@ import {
   useState,
 } from 'react';
 import styles from './chatPage.module.css';
-import { link } from '@constants/Avatar';
-import { Avatar } from '@mantine/core';
 import Chat from '@ui/Chat/Chat';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import {
@@ -16,6 +14,7 @@ import {
   Indicator,
   LoadingOverlay,
   TextInput,
+  UserAvatar,
 } from '@ui/basics';
 import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
 import { useLocale } from '@hooks/useLocale';
@@ -138,10 +137,10 @@ const ChatPage: FC<{
                             disabled={host.amount == 0}
                             scale="sm"
                           >
-                            <Avatar
+                            <UserAvatar
                               radius="md"
                               size="md"
-                              src={link(host.user.login)}
+                              login={host.user.login}
                               alt={'Users avatar'}
                             />
                           </Indicator>

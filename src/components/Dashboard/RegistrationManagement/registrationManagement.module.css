@@ -1,4 +1,6 @@
 .wrapper {
   position: relative;
-  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
 }

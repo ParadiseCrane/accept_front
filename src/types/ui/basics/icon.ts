@@ -8,6 +8,6 @@ export type MyIconProps = Omit<ActionIconProps, 'size'> &
   React.ComponentPropsWithoutRef<'a'> & {
     size?: IconSizes;
     tooltipLabel?: string;
-    tooltipProps?: TooltipProps;
+    tooltipProps?: Omit<TooltipProps, 'label' | 'children'>;
     wrapperClassName?: string;
   };

@@ -1,4 +1,4 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
+import { IBarTask } from '@custom-types/data/ITask';
 import { ActionIcon } from '@mantine/core';
 import Link from 'next/link';
 import { FC, memo } from 'react';
@@ -7,7 +7,7 @@ import styles from './tasksBar.module.css';
 import { letterFromIndex } from '@utils/letterFromIndex';
 
 const TasksBar: FC<{
-  tasks: ITaskDisplay[];
+  tasks: IBarTask[];
   homeHref: string;
   taskQuery: string;
   currentTask: string;
@@ -21,7 +21,7 @@ const TasksBar: FC<{
             style={{
               backgroundColor: 'var(--primary)',
             }}
-            component="a"
+            component={Link}
             href={homeHref}
           >
             <Home color="white" />
@@ -30,7 +30,6 @@ const TasksBar: FC<{
             <Link
               href={`/task/${task.spec}?${taskQuery}`}
               key={index}
-              passHref
               className={`${styles.taskStatus} ${
                 task.status && task.status.spec < 2
                   ? styles.testing

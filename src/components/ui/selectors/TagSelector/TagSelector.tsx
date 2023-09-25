@@ -9,19 +9,18 @@ import {
 } from 'react';
 import { sendRequest } from '@requests/request';
 import { ITag } from '@custom-types/data/ITag';
-import {
-  CustomTransferList,
-  Item,
-} from '@ui/CustomTransferList/CustomTransferList';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { TagItem } from './TagItem/TagItem';
+import { Item, setter } from '@custom-types/ui/atomic';
+import {
+  ICustomTransferListData,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
 import AddTag from './AddTag/AddTag';
-import { setter } from '@custom-types/ui/atomic';
-import { InputWrapper } from '@ui/basics';
 
 const TagSelector: FC<{
   initialTags: Item[];
-  setUsed: setter<any>;
-  classNames?: object;
+  setUsed: setter<Item[]>;
   shrink?: boolean;
   fetchURL: string;
   addURL: string;
@@ -29,9 +28,9 @@ const TagSelector: FC<{
   deleteURL: string;
   form: any;
   field: string;
+  width?: string;
 }> = ({
   setUsed,
-  classNames,
   shrink,
   initialTags,
   fetchURL,
@@ -40,50 +39,63 @@ const TagSelector: FC<{
   deleteURL,
   form,
   field,
+  width,
 }) => {
   const { locale } = useLocale();
-  const [tags, setTags] = useState<ITag[]>([]);
+  const initialTagsInner = useMemo(() => initialTags, []); //eslint-disable-line
+  const [tags, setTags] =
+    useState<ICustomTransferListData>(undefined);
+  const [allTags, setAllTags] = useState<ITag[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedTags, availableTags] = useMemo(() => {
-    let newAvailableTags: Item[] = [];
-    let newSelectedTags: Item[] = [];
-    let tag;
-    let selectedSpecs = initialTags.map((item) => item.value);
-    for (let i = 0; i < tags.length; i++) {
-      tag = {
-        value: tags[i].spec,
-        label: tags[i].title,
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
+      setUsed(data[1]);
+      setTags(data);
+    },
+    [setUsed]
+  );
+
+  useEffect(() => {
+    let data: ICustomTransferListData = [[], []];
+    const selectedSpecs = initialTagsInner.map((item) => item.value);
+
+    for (let i = 0; i < allTags.length; i++) {
+      const tag = {
+        ...allTags[i],
+        value: allTags[i].spec,
+        sortValue: allTags[i].title,
       };
-      if (selectedSpecs.includes(tag.value)) {
-        newSelectedTags.push(tag);
+      if (selectedSpecs.includes(tag.spec)) {
+        data[1].push(tag);
       } else {
-        newAvailableTags.push(tag);
+        data[0].push(tag);
       }
     }
-    return [newSelectedTags, newAvailableTags];
-  }, [initialTags, tags]);
+    setTags(data);
+  }, [allTags, initialTagsInner]);
 
   const refetch = useCallback(async () => {
     setLoading(true);
     sendRequest<{}, ITag[]>(fetchURL, 'GET').then((res) => {
       if (res.error) return;
-      setTags(res.response);
-
+      setAllTags(res.response);
       setLoading(false);
     });
-  }, [setTags, fetchURL]);
+  }, [setAllTags, fetchURL]);
 
   useEffect(() => {
     refetch();
   }, []); // eslint-disable-line
 
-  const itemComponent = useCallback(
-    (item: any, handleSelect: any) => {
+  const itemComponent: ICustomTransferListItemComponent = useCallback(
+    ({ item, onClick, index }) => {
       return (
         <TagItem
+          key={index}
           item={item}
-          onSelect={() => handleSelect(item)}
+          onSelect={onClick}
           refetch={refetch}
           updateURL={updateURL}
           deleteURL={deleteURL}
@@ -95,26 +107,24 @@ const TagSelector: FC<{
   );
 
   return (
-    <InputWrapper shrink={shrink} {...form.getInputProps(field)}>
-      {!loading && (
-        <CustomTransferList
-          defaultOptions={availableTags}
-          defaultChosen={selectedTags}
-          setUsed={setUsed}
-          classNames={classNames ? classNames : {}}
-          titles={[
-            locale.ui.tagSelector.available,
-            locale.ui.tagSelector.used,
-          ]}
-          itemComponent={itemComponent}
-          rightComponent={() => (
-            <AddTag addURL={addURL} refetch={refetch} />
-          )}
-          shouldSortChosen={true}
-          shrink={shrink}
-        />
-      )}
-    </InputWrapper>
+    <CustomTransferList
+      loading={loading}
+      titles={[
+        locale.ui.tagSelector.available,
+        locale.ui.tagSelector.used,
+      ]}
+      itemComponent={itemComponent}
+      extraActions={[
+        [<AddTag key={1} addURL={addURL} refetch={refetch} />],
+        [],
+      ]}
+      shrink={shrink}
+      searchKeys={['title']}
+      {...form.getInputProps(field)}
+      value={tags}
+      onChange={onChange}
+      width={width}
+    />
   );
 };
 

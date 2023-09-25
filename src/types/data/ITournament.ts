@@ -1,6 +1,11 @@
 import { IAssessmentType, ITournamentStatus } from './atomic';
 import { ITag } from './ITag';
-import { ITaskDisplay } from './ITask';
+import { ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
+
+export interface ISecurity {
+  spec: number;
+  name: 'tournament' | 'basic';
+}
 
 export interface ITournamentDisplay {
   spec: string;
@@ -11,21 +16,28 @@ export interface ITournamentDisplay {
 
   status: ITournamentStatus;
 
-  participantsNumber: number;
+  teamsNumber: number;
+  maxTeamSize: number;
   start: Date;
   end: Date;
 }
 
+export interface ITournamentBaseInfo {
+  spec: string;
+  title: string;
+  status: ITournamentStatus;
+}
+
 export interface ITournament
-  extends Omit<ITournamentDisplay, 'participantsNumber'> {
+  extends Omit<ITournamentDisplay, 'teamsNumber'> {
   description: string;
   tasks: ITaskDisplay[];
 
   moderators: string[];
-  participants: string[];
   allowRegistrationAfterStart: boolean;
   frozeResults: Date;
   banned: string[];
+  security: number;
 }
 
 export interface ITournamentListBundle {
@@ -37,24 +49,24 @@ export interface ITournamentListBundle {
 export interface ITournamentAddBundle {
   assessmentTypes: IAssessmentType[];
   tags: ITag[];
+  securities: ISecurity[];
 }
 
 export interface ITournamentEditBundle {
   tournament: ITournamentEdit;
   assessmentTypes: IAssessmentType[];
   tags: ITag[];
+  securities: ISecurity[];
 }
 
 export interface ITournamentAdd
   extends Omit<
     ITournament,
-    'tasks' | 'status' | 'tags' | 'participantsNumber' | 'banned'
+    'tasks' | 'status' | 'tags' | 'teamsNumber' | 'banned'
   > {
   tasks: string[];
   tags: string[];
   status: number;
-
-  participants: string[];
 
   moderators: string[];
   assessmentType: number;
@@ -74,10 +86,17 @@ export interface ITournamentEdit
   status: ITournamentStatus;
 }
 
-export interface IAssignmentTimeInfo {
-  status: number;
-  infinite: boolean;
+export interface ITournamentResponse {
+  tournament: ITournament;
+  is_participant: boolean;
+}
 
-  start: Date;
-  end: Date;
+export interface ITournamentRegisterPayload {
+  pin: string | undefined;
+  team_name: string | undefined;
+}
+
+export interface ITournamentSettingsBundle {
+  tasks: ITaskDisplayWithPublic[];
+  allowRegistrationAfterStart: boolean;
 }

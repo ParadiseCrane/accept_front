@@ -14,9 +14,10 @@ import {
   newNotification,
 } from '@utils/notificationFunctions';
 import { useUser } from '@hooks/useUser';
-import { UTCDate } from '@utils/datetime';
+import { timezoneDate } from '@utils/datetime';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import Contacts from '@ui/Contacts/Contacts';
+
 export function Feedback() {
   const { locale, lang } = useLocale();
 
@@ -64,7 +65,7 @@ export function Feedback() {
       ...form.values,
       spec: '',
       author: user?.login || 'anonymous',
-      date: UTCDate(new Date()),
+      date: timezoneDate(new Date()),
     };
     requestWithNotify<IFeedbackMessage, boolean>(
       'feedback/add',

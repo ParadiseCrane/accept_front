@@ -1,0 +1,14 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-s);
+  justify-content: center;
+}
+
+.buttonLabel {
+  font-size: var(--font-size-btn-m);
+}
+
+.buttonRoot {
+  padding: var(--spacer-xs) var(--spacer-s);
+}

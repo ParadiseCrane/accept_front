@@ -5,6 +5,7 @@ import { FC, memo } from 'react';
 import { IStickyAction } from '../Sticky';
 import { Tip } from '@ui/basics';
 import stickyStyles from '../sticky.module.css';
+import Link from 'next/link';
 
 const ActionButton: FC<{
   action: IStickyAction;
@@ -21,7 +22,8 @@ const ActionButton: FC<{
       openDelay={500}
     >
       <ActionIcon
-        component={action.onClick ? 'button' : 'a'}
+        // @ts-expect-error
+        component={action.onClick ? 'button' : Link}
         radius={40}
         size={(STICKY_SIZES[width] * 2) / 3}
         variant="filled"

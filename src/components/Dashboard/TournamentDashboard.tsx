@@ -7,13 +7,17 @@ import {
   Messages,
   Pencil,
   Puzzle,
+  Settings as SettingsIcon,
   Table,
   Trash,
   Users,
   Vocabulary,
 } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
-import { ITournament } from '@custom-types/data/ITournament';
+import {
+  ITournament,
+  ITournamentResponse,
+} from '@custom-types/data/ITournament';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { useUser } from '@hooks/useUser';
@@ -32,6 +36,7 @@ import Results from './Results/Results';
 import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
 import ChatPage from './ChatPage/ChatPage';
 import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
+import Settings from './Settings/Settings';
 import { useChatHosts } from '@hooks/useChatHosts';
 
 const TournamentDashboard: FC<{
@@ -41,10 +46,10 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data, refetch } = useRequest<undefined, ITournament>(
-    `tournament/${spec}`,
-    'GET'
-  );
+  const { data, refetch } = useRequest<
+    undefined,
+    ITournamentResponse
+  >(`tournament/${spec}`, 'GET');
 
   const refetchTournament = useInterval(
     () => refetch(false),
@@ -57,7 +62,7 @@ const TournamentDashboard: FC<{
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if (data) setTournament(data);
+    if (data) setTournament(data.tournament);
   }, [data]);
 
   const { hasNewMessages } = useChatHosts();
@@ -102,6 +107,7 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
             type={'tournament'}
             full
+            is_team={tournament.maxTeamSize != 1}
           />
         ),
         icon: <Table color="var(--secondary)" />,
@@ -123,7 +129,11 @@ const TournamentDashboard: FC<{
       },
       {
         page: (
-          <ParticipantsListWithBan type={'tournament'} spec={spec} />
+          <ParticipantsListWithBan
+            type={'tournament'}
+            team={tournament?.maxTeamSize != 1}
+            spec={spec}
+          />
         ),
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.tournament.participants,
@@ -134,18 +144,20 @@ const TournamentDashboard: FC<{
         title: locale.dashboard.tournament.tasks,
       },
       {
-        page: <RegistrationManagement spec={spec} />,
+        page: (
+          <RegistrationManagement
+            spec={spec}
+            maxTeamSize={tournament?.maxTeamSize || 1}
+          />
+        ),
         icon: <AddressBook color="var(--secondary)" />,
         title: locale.dashboard.tournament.registrationManagement,
       },
       {
         page: tournament && (
           <CreateNotification
-            logins={[
-              ...tournament.participants,
-              ...tournament.moderators,
-              tournament.author,
-            ]}
+            spec={tournament.spec}
+            type="tournament"
           />
         ),
         icon: <BellPlus color="var(--secondary)" />,
@@ -165,6 +177,11 @@ const TournamentDashboard: FC<{
         ),
         icon: <Ban color="var(--secondary)" />,
         title: locale.dashboard.tournament.bannedAttempts,
+      },
+      {
+        page: tournament && <Settings tournament={tournament} />,
+        icon: <SettingsIcon color="var(--secondary)" />,
+        title: locale.dashboard.tournament.settings.self,
       },
     ],
     [tournament, hasNewMessages, locale, refetch, spec]
