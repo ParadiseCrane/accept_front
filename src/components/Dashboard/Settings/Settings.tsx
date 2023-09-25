@@ -122,14 +122,16 @@ const Settings: FC<{ tournament: ITournament }> = ({
   return (
     <div className={styles.wrapper}>
       <div className={styles.section}>
-        <div className={styles.sectionTitle}>
-          {locale.dashboard.tournament.settings.sections.pin}
-        </div>
         {tournament.security == 1 && (
-          <PinCode
-            origin={tournament.spec}
-            classNames={{ wrapper: styles.pinCodeWrapper }}
-          />
+          <>
+            <div className={styles.sectionTitle}>
+              {locale.dashboard.tournament.settings.sections.pin}
+            </div>
+            <PinCode
+              origin={tournament.spec}
+              classNames={{ wrapper: styles.pinCodeWrapper }}
+            />
+          </>
         )}
       </div>
 

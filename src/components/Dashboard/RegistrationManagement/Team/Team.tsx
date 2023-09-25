@@ -88,14 +88,16 @@ const Team: FC<{
         capitan: form.values.capitan,
         participants: form.values.participants,
       },
-      () => refetch(true)
+      () => {
+        form.reset();
+        refetch(true);
+      }
     );
   }, [spec, refetch, locale, lang, form]);
 
   useEffect(() => {
-    if (form.values.participants.length !== 0)
-      form.validateField('capitan');
-  }, [form.values.participants]);
+    form.validateField('capitan');
+  }, [form]);
 
   return (
     <div className={styles.wrapper}>
@@ -135,7 +137,7 @@ const Team: FC<{
       />
 
       <Button onClick={handleRegister} disabled={!form.isValid()}>
-        {locale.tournament.register}
+        {locale.send}
       </Button>
     </div>
   );

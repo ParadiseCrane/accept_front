@@ -9,7 +9,6 @@ import { UTCDate } from '@utils/datetime';
 import Title from '@ui/Title/Title';
 import PinModal from '@components/Tournament/PinModal/PinModal';
 import { getApiUrl } from '@utils/getServerUrl';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import styles from '@styles/team.module.css';
 import { Key, Trash } from 'tabler-icons-react';
 import { STICKY_SIZES } from '@constants/Sizes';
@@ -164,7 +163,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
         team,
       },
-      revalidate: REVALIDATION_TIME.team.page,
     };
   }
   return {

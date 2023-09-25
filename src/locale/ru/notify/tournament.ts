@@ -16,7 +16,7 @@ export const tournament = {
   },
   registration: {
     loading: 'Регистрируем',
-    success: 'Вы успешно зарегистрированы',
+    success: 'Регистрация успешна',
     error: 'Ошибка при регистрации',
   },
   refusal: {
