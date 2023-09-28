@@ -1,0 +1,21 @@
+.spinner {
+  position: fixed;
+  top: 0;
+  background-color: var(--primary);
+  width: 0px;
+}
+
+.active {
+  height: 2px;
+  animation: loading 5s linear;
+}
+
+@keyframes loading {
+  0% {
+    width: 10%;
+  }
+
+  100% {
+    width: 90%;
+  }
+}
