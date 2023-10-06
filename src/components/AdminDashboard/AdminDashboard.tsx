@@ -5,6 +5,7 @@ import { FC, memo, useMemo } from 'react';
 import {
   AB2,
   AlphabetCyrillic,
+  Chalkboard,
   PlaylistAdd,
   UserPlus,
   Users,
@@ -14,12 +15,18 @@ import AddUser from './AddUser/AddUser';
 import AddGrade from './AddGrade/AddGrade';
 import ChangeGrades from './ChangeGrades/ChangeGrades';
 import AddGrades from './AddGrades/AddGrades';
+import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 
 const AdminDashboard: FC<{}> = ({}) => {
   const { locale } = useLocale();
 
   const links: IMenuLink[] = useMemo(
     () => [
+      {
+        page: <AssignmentList url="assignment/list" />,
+        icon: <Chalkboard color="var(--secondary)" />,
+        title: locale.dashboard.admin.assignmentList,
+      },
       {
         page: <AddUsers />,
         icon: <Users color="var(--secondary)" />,

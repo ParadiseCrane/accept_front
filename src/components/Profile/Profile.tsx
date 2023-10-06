@@ -2,10 +2,10 @@ import { FC, memo, useMemo } from 'react';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
 import {
-  Alarm,
   AlignRight,
   BellPlus,
   BellRinging,
+  Chalkboard,
   Robot,
   Settings as SettingsIcon,
 } from 'tabler-icons-react';
@@ -62,7 +62,7 @@ const Profile: FC<IFullProfileBundle> = ({
       },
       {
         page: <AssignmentList />,
-        icon: <Alarm color="var(--secondary)" />,
+        icon: <Chalkboard color="var(--secondary)" />,
         title: locale.profile.assignments,
         section: 'assignments',
       },

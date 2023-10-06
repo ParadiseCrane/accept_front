@@ -4,4 +4,5 @@ export const admin = {
   addGrade: 'Добавить класс',
   addGrades: 'Добавить классы',
   changeGrades: 'Изменить классы',
+  assignmentList: 'Список уроков',
 };
