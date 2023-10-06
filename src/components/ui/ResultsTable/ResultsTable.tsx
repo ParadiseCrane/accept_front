@@ -9,7 +9,7 @@ export type ILabel = ReactNode;
 
 export interface IData {
   best: ILabel;
-  rest: ILabel[];
+  rest?: () => Promise<ILabel[]>;
 }
 
 const ResultsTable: FC<{

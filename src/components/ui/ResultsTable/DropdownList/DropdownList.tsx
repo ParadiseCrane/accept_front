@@ -1,28 +1,40 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import styles from './dropdownList.module.css';
-import { IData } from '../ResultsTable';
+import { IData, ILabel } from '../ResultsTable';
 import { Menu } from '@mantine/core';
+import { LoadingOverlay } from '@ui/basics';
 
 const DropdownList: FC<{ cell: IData }> = ({ cell }) => {
+  const [rest, setRest] = useState<ILabel[] | undefined>();
+
+  const fetchRest = useCallback(() => {
+    cell.rest ? cell.rest().then((res) => setRest(res)) : setRest([]);
+  }, [cell]);
+
   return (
     <>
-      {cell.rest.length <= 0 ? (
+      {!!rest && rest.length == 0 ? (
         <div>{cell.best}</div>
       ) : (
         <Menu
           shadow="md"
-          openDelay={400}
-          trigger="hover"
           position="bottom-start"
+          onOpen={fetchRest}
+          zIndex={10}
         >
           <Menu.Target>
-            <div>{cell.best}</div>
+            <div className={styles.targetCell}>{cell.best}</div>
           </Menu.Target>
           <Menu.Dropdown>
             <div className={styles.restWrapper}>
-              {cell.rest.map((item, index) => (
-                <Menu.Item key={index}>{item}</Menu.Item>
-              ))}
+              <LoadingOverlay
+                visible={!!!rest}
+                loaderProps={{ size: 'sm' }}
+              />
+              {rest !== undefined &&
+                rest.map((item, index) => (
+                  <Menu.Item key={index}>{item}</Menu.Item>
+                ))}
             </div>
           </Menu.Dropdown>
         </Menu>
