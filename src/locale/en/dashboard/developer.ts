@@ -5,6 +5,7 @@ export const developer = {
   analytics: {
     title: 'Analytics',
     table: {
+      method: 'Method',
       path: 'Path',
       average: 'Average time',
       count: 'Count',
