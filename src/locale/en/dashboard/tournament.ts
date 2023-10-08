@@ -6,10 +6,12 @@ export const tournament = {
   teams: 'Teams',
   settings: {
     self: 'Settings',
+    createAssignmentButton: 'Create assignment schema',
     sections: {
       pin: 'Pin code',
       tasks: 'Tasks settings',
       others: 'Others',
+      createAssignmentSchema: 'Create assignment schema',
     },
   },
   participants: 'Participants',

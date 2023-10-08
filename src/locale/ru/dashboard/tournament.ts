@@ -6,10 +6,12 @@ export const tournament = {
   teams: 'Команды',
   settings: {
     self: 'Настройки',
+    createAssignmentButton: 'Создать схему урока',
     sections: {
       pin: 'Пин-код',
       tasks: 'Настройки задач',
       others: 'Другие настройки',
+      createAssignmentSchema: 'Создать схему урока',
     },
   },
   participants: 'Участники',

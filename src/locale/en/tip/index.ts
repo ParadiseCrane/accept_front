@@ -7,4 +7,8 @@ export const tip = {
   team: {
     kickParticipant: 'Kick',
   },
+  tournament: {
+    createAssignmentSchema:
+      'Create assignment schema based of this tournament',
+  },
 };

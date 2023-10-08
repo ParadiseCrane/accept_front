@@ -22,6 +22,7 @@ import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import CreateAssignment from './CreateAssignment/CreateAssignment';
 
 const Settings: FC<{ tournament: ITournament }> = ({
   tournament,
@@ -165,6 +166,15 @@ const Settings: FC<{ tournament: ITournament }> = ({
           checked={allowRegistrationAfterStart}
           onChange={changeRegistration}
         />
+      </div>
+      <div className={styles.section}>
+        <div className={styles.sectionTitle}>
+          {
+            locale.dashboard.tournament.settings.sections
+              .createAssignmentSchema
+          }
+        </div>
+        <CreateAssignment tournament={tournament} />
       </div>
     </div>
   );
