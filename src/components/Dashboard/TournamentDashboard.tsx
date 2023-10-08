@@ -38,6 +38,7 @@ import ChatPage from './ChatPage/ChatPage';
 import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
 import Settings from './Settings/Settings';
 import { useChatHosts } from '@hooks/useChatHosts';
+import TeamList from './TeamList/TeamList';
 
 const TournamentDashboard: FC<{
   spec: string;
@@ -67,8 +68,8 @@ const TournamentDashboard: FC<{
 
   const { hasNewMessages } = useChatHosts();
 
-  const links: IMenuLink[] = useMemo(
-    () => [
+  const links: IMenuLink[] = useMemo(() => {
+    let links = [
       {
         page: tournament && (
           <TimeInfo
@@ -183,9 +184,18 @@ const TournamentDashboard: FC<{
         icon: <SettingsIcon color="var(--secondary)" />,
         title: locale.dashboard.tournament.settings.self,
       },
-    ],
-    [tournament, hasNewMessages, locale, refetch, spec]
-  );
+    ];
+
+    if (tournament?.maxTeamSize != 1) {
+      links.splice(4, 0, {
+        page: <TeamList spec={spec} />,
+        icon: <Users color="var(--secondary)" />,
+        title: locale.dashboard.tournament.teams,
+      });
+    }
+
+    return links;
+  }, [tournament, hasNewMessages, locale, refetch, spec]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -231,7 +241,7 @@ const TournamentDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} />
+      <LeftMenu links={links} initialStep={4} />
     </>
   );
 };

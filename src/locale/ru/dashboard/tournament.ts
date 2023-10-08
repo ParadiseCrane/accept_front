@@ -3,6 +3,7 @@ export const tournament = {
   results: 'Таблица результатов',
   attempts: 'Попытки',
   bannedAttempts: 'Забаненные попытки',
+  teams: 'Команды',
   settings: {
     self: 'Настройки',
     sections: {

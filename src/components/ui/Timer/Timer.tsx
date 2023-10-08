@@ -74,7 +74,7 @@ const Timer: FC<{ url: string }> = ({ url }: { url: string }) => {
       }
 
       if (data.status != 2 && date <= 0) {
-        refetch(false).then((res: IResponse<TimeInfo>) => {
+        refetch(false).then((res: IResponse<BaseTimeInfo>) => {
           if (!res.error) {
             if (res.response.status == 2) {
               const id = newNotification({});
