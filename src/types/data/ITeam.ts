@@ -25,4 +25,9 @@ export interface ITeamDisplay {
   spec: string;
   name: string;
   capitan: IUserDisplay;
+  size: number;
+}
+
+export interface ITeamDisplayWithBanned extends ITeamDisplay {
+  banned: boolean;
 }

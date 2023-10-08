@@ -1,7 +1,7 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function Attempt(
+export default async function MyAssignments(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

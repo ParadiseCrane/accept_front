@@ -1,12 +1,27 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import ResultsTable from '@ui/ResultsTable/ResultsTable';
+import {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import ResultsTable, {
+  IData,
+  ILabel,
+} from '@ui/ResultsTable/ResultsTable';
 import styles from './results.module.css';
 import { useRequest } from '@hooks/useRequest';
 import { LoadingOverlay, SegmentedControl, Tip } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
-import { IFullResults } from '@custom-types/data/IResults';
 import { letterFromIndex } from '@utils/letterFromIndex';
 import Link from 'next/link';
+import {
+  IActivityResults,
+  IResult,
+  IResultPayload,
+} from '@custom-types/data/IResults';
+import { sendRequest } from '@requests/request';
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined
@@ -26,9 +41,9 @@ const Results: FC<{
   spec: string;
   isFinished: boolean;
   endDate: Date;
-  type: string;
-  full: boolean;
-  is_team: boolean;
+  full?: boolean;
+  is_team?: boolean;
+  type: 'assignment' | 'tournament';
 }> = ({ spec, isFinished, endDate, type, full, is_team }) => {
   const { locale } = useLocale();
 
@@ -40,80 +55,116 @@ const Results: FC<{
     'score'
   );
 
+  const url = useMemo(() => `${type}/results/${spec}`, [spec, type]);
+  const innerToDate = useMemo(
+    () => (fetchDate == 'end' ? endDate : undefined),
+    [fetchDate, endDate]
+  );
+
   const { data, loading, refetch } = useRequest<
-    {
-      toDate: Date | undefined;
-    },
-    IFullResults
-  >(`${type}/results/${spec}`, 'POST', {
-    toDate: fetchDate == 'end' ? endDate : undefined,
+    { toDate?: Date },
+    IActivityResults
+  >(url, 'POST', {
+    toDate: innerToDate,
   });
 
   useEffect(() => {
     if (!loading) refetch(true);
   }, [fetchDate]); // eslint-disable-line
 
-  const table_data = useMemo(() => {
-    if (!data || data.team_results.length == 0) return [];
-    let rows = data.team_results.map((team_result) =>
-      team_result.results
-        .map((cell) => ({
+  const resultComponent = useCallback(
+    (item: IResult, index: number) => (
+      <Link
+        key={index}
+        href={`/attempt/${item.attempt}`}
+        style={{
+          textDecoration: 'none',
+          color: getScoreColor(item.score),
+        }}
+      >
+        {item.verdict
+          ? displayMode == 'score'
+            ? item.score.toString()
+            : `${item.verdict.shortText} #${item.verdictTest}`
+          : '?'}
+      </Link>
+    ),
+    [displayMode]
+  );
+
+  const fetchRestResults = useCallback(
+    (target: string, task_index: number) => {
+      if (!data || !full) return async () => [] as ILabel[];
+      const task = data?.tasks[task_index];
+      return async () =>
+        await sendRequest<IResultPayload, IResult[]>(
+          `results/${type}`,
+          'POST',
+          {
+            spec,
+            target,
+            task: task.spec,
+            toDate: innerToDate,
+          },
+          60 * 1000
+        ).then((res) => {
+          const result = res.error
+            ? ([] as ILabel[])
+            : res.response.map(resultComponent);
+          return result;
+        });
+    },
+    [data, full, type, spec, innerToDate, resultComponent]
+  );
+
+  const table_data: IData[][] = useMemo(() => {
+    if (!data || data.results.length == 0) return [];
+    let rows: IData[][] = data.results.map((participant_result) =>
+      participant_result.best
+        .map((task_result, index) => ({
           best: (
-            <div style={{ color: getScoreColor(cell.best?.score) }}>
-              {cell.best
+            <div style={{ color: getScoreColor(task_result?.score) }}>
+              {task_result
                 ? displayMode == 'score'
-                  ? cell.best.score.toString()
-                  : `${cell.best.verdict.shortText} #${cell.best.verdictTest}`
+                  ? task_result.score.toString()
+                  : `${task_result.verdict.shortText} #${task_result.verdictTest}`
                 : '-'}
             </div>
           ),
           rest: full
-            ? cell.attempts.reverse().map((attempt, index) => (
-                <Link
-                  key={index}
-                  href={`/attempt/${attempt.attempt}`}
-                  style={{
-                    textDecoration: 'none',
-                    color: getScoreColor(attempt.score),
-                  }}
-                >
-                  {attempt.verdict
-                    ? displayMode == 'score'
-                      ? attempt.score.toString()
-                      : `${attempt.verdict.shortText} #${attempt.verdictTest}`
-                    : '?'}
-                </Link>
-              ))
-            : [],
+            ? fetchRestResults(
+                participant_result.participant.identifier,
+                index
+              )
+            : undefined,
         }))
         .concat({
           best: (
             <div
               style={{
-                color: getTotalScoreColor(team_result.score),
+                color: getTotalScoreColor(participant_result.score),
               }}
             >
-              {team_result.score.toString()}
+              {participant_result.score.toString()}
             </div>
           ),
-          rest: [],
+          rest: undefined,
         })
     );
+
     let current = 1;
     let streak = 1;
     let last_score = -1;
     rows[0] = rows[0].concat({
       best: <>{current.toString()}</>,
-      rest: [],
     });
-    last_score = data.team_results[0].score;
+    last_score = data.results[0].score;
     for (let i = 1; i < rows.length; i++) {
-      const current_score = data.team_results[i].score;
+      const current_score = data.results[i].score;
       if (current_score == last_score) {
         streak += 1;
         rows[i] = rows[i].concat({
           best: <>{current.toString()}</>,
-          rest: [],
         });
         continue;
       }
@@ -122,11 +173,10 @@ const Results: FC<{
       last_score = current_score;
       rows[i] = rows[i].concat({
         best: <>{current.toString()}</>,
-        rest: [],
       });
     }
     return rows;
-  }, [data, displayMode, full]);
+  }, [data, fetchRestResults, displayMode, full]);
 
   return (
     <div className={styles.wrapper}>
@@ -168,9 +218,7 @@ const Results: FC<{
       </div>
 
       <LoadingOverlay visible={loading} />
-      {data &&
-      data.team_results.length > 0 &&
-      data.tasks.length > 0 ? (
+      {data && data.results.length > 0 && data.tasks.length > 0 ? (
         <ResultsTable
           refetch={refetch}
           columns={[
@@ -191,32 +239,28 @@ const Results: FC<{
             <>{locale.assignment.score}</>,
             <>{locale.assignment.place}</>,
           ]}
-          rows={data.team_results.map((team_result, index) =>
+          rows={data.results.map((result, index) =>
             is_team ? (
-              <Tip
-                label={team_result.team.capitan.shortName}
+              <Link
                 key={index}
+                href={`/team/${result.participant.identifier}`}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}
               >
-                <Link
-                  href={`/team/${team_result.team.spec}`}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                  }}
-                >
-                  {team_result.team.name}
-                </Link>
-              </Tip>
+                {result.participant.label}
+              </Link>
             ) : (
-              <Tip label={team_result.team.capitan.login} key={index}>
+              <Tip label={result.participant.identifier} key={index}>
                 <Link
-                  href={`/profile/${team_result.team.capitan.login}`}
+                  href={`/profile/${result.participant.identifier}`}
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
                   }}
                 >
-                  {team_result.team.capitan.shortName}
+                  {result.participant.label}
                 </Link>
               </Tip>
             )

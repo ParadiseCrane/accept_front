@@ -1,7 +1,9 @@
 .restWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   max-height: 100px;
+  min-height: var(--spacer-l);
   width: var(--spacer-huge);
   overflow-y: scroll;
   cursor: pointer;
@@ -17,4 +19,8 @@
 
 .restWrapper > button {
   padding: 0;
+}
+
+.targetCell:hover {
+  scale: 1.03;
 }

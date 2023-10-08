@@ -15,6 +15,7 @@ import { executor } from './executor';
 import { task_test } from './task_test';
 import { test_group } from './test_group';
 import { team } from './team';
+import { analytics } from './analytics';
 
 export const notify = {
   errors: {
@@ -37,4 +38,5 @@ export const notify = {
   task_test,
   test_group,
   team,
+  analytics,
 };

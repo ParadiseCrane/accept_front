@@ -42,7 +42,7 @@ const ru = {
   cancel: 'Отмена',
   yes: 'Да',
   no: 'Нет',
-  sure: 'Я уверен(а)',
+  sure: 'Вы уверены?',
   error: 'Ошибка',
   success: 'Успешно',
   language: 'Язык',

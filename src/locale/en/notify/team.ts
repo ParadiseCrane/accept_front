@@ -14,4 +14,14 @@ export const team = {
     success: 'Participant was successfully kicked',
     error: 'Error when kicking the participant',
   },
+  ban: {
+    loading: 'Banning team',
+    success: 'Team was successfully banned',
+    error: 'Error while banning team',
+  },
+  unban: {
+    loading: 'Unbanning team',
+    success: 'Team was successfully unbanned',
+    error: 'Error while unbanning team',
+  },
 };

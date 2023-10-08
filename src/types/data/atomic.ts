@@ -94,4 +94,10 @@ export interface IAnalyticsData {
   path: string;
   average: number;
   count: number;
+  method: string;
+}
+
+export interface IAnalyticsResponse {
+  documents: IAnalyticsData[];
+  total: number;
 }

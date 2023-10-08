@@ -5,11 +5,13 @@ export const developer = {
   analytics: {
     title: 'Аналитика',
     table: {
+      method: 'Метод',
       path: 'Путь',
       average: 'Среднее время',
       count: 'Вызовы',
     },
   },
+  allAttempts: 'Все попытки',
   currentAttempts: {
     title: 'Текущие попытки',
     shouldRefetch: 'Обновлять информацию',

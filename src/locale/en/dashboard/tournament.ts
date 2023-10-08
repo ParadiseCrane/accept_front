@@ -3,12 +3,15 @@ export const tournament = {
   results: 'Results Table',
   attempts: 'Attempts',
   bannedAttempts: 'Banned attempts',
+  teams: 'Teams',
   settings: {
     self: 'Settings',
+    createAssignmentButton: 'Create assignment schema',
     sections: {
       pin: 'Pin code',
       tasks: 'Tasks settings',
       others: 'Others',
+      createAssignmentSchema: 'Create assignment schema',
     },
   },
   participants: 'Participants',

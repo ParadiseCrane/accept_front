@@ -5,6 +5,7 @@ import {
   DeviceAnalytics,
   Terminal,
   TestPipe,
+  TestPipe2,
   UserExclamation,
 } from 'tabler-icons-react';
 import FeedbackList from './FeedbackList/FeedbackList';
@@ -14,6 +15,7 @@ import NotificationList from './NotificationList/NotificationList';
 import Executor from './Executor/Executor';
 import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
 import Analytics from './Analytics/Analytics';
+import AllAttempts from './AllAttempts/AllAttempts';
 // import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = ({}) => {
@@ -30,6 +32,11 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         page: <CurrentAttempts />,
         icon: <TestPipe color="var(--secondary)" />,
         title: locale.dashboard.developer.currentAttempts.title,
+      },
+      {
+        page: <AllAttempts />,
+        icon: <TestPipe2 color="var(--secondary)" />,
+        title: locale.dashboard.developer.allAttempts,
       },
       {
         page: <NotificationList />,

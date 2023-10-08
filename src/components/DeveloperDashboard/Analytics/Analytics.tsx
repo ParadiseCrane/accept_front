@@ -1,15 +1,39 @@
+import { useRouter } from 'next/router';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import Table from '@ui/Table/Table';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+import {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { sendRequest } from '@requests/request';
-import { IAnalyticsData } from '@custom-types/data/atomic';
+import {
+  IAnalyticsData,
+  IAnalyticsResponse,
+} from '@custom-types/data/atomic';
+import { requestWithError } from '@utils/requestWithError';
+import { ConfirmModal } from '@ui/modals';
 import tableStyles from '@styles/ui/customTable.module.css';
 import styles from './analytics.module.css';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
+  {
+    label: locale.dashboard.developer.analytics.table.method,
+    key: 'method',
+    sortable: true,
+    sortFunction: () => 0,
+    sorted: 0,
+    allowMiddleState: true,
+    hidable: false,
+    hidden: false,
+    size: 1,
+  },
   {
     label: locale.dashboard.developer.analytics.table.path,
     key: 'path',
@@ -46,7 +70,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
 ];
 
 const Analytics: FC<{}> = ({}) => {
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
+  const router = useRouter();
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
     [locale]
@@ -55,7 +80,7 @@ const Analytics: FC<{}> = ({}) => {
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
       skip: 0,
-      limit: 20,
+      limit: 10,
     },
     sort_by: [],
     search_params: {
@@ -65,42 +90,66 @@ const Analytics: FC<{}> = ({}) => {
   });
 
   const [data, setData] = useState<IAnalyticsData[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    sendRequest<BaseSearch, IAnalyticsData[]>(
+    sendRequest<BaseSearch, IAnalyticsResponse>(
       'analytics/search',
       'POST',
       searchParams
     ).then((res) => {
       if (!res.error) {
-        setData(res.response);
+        setData(res.response.documents);
+        setTotal(res.response.total);
       }
       setLoading(false);
     });
   }, [searchParams]);
 
+  const clearAnalytics = useCallback(() => {
+    requestWithError<undefined, boolean>(
+      'analytics/delete',
+      'GET',
+      locale.notify.analytics.delete,
+      lang
+    ).then((res) => {
+      if (!res.error) {
+        router.reload();
+      }
+    });
+  }, [lang, locale, router]);
+
   return (
-    <Table
-      columns={columns}
-      rows={data}
-      loading={loading}
-      defaultOnPage={20}
-      onPage={[10, 20, 40]}
-      total={data.length}
-      searchParams={searchParams}
-      setSearchParams={setSearchParams}
-      noDefault
-      classNames={{
-        wrapper: styles.wrapper,
-        table: tableStyles.table,
-        headerCell: tableStyles.headerCell,
-        cell: tableStyles.cell,
-        even: tableStyles.even,
-        odd: tableStyles.odd,
-      }}
-    />
+    <div>
+      {!loading && (
+        <ConfirmModal
+          confirm={clearAnalytics}
+          buttonText={locale.delete}
+          kind={'negative'}
+        />
+      )}
+      <Table
+        columns={columns}
+        rows={data}
+        loading={loading}
+        defaultOnPage={10}
+        onPage={[10, 20, 40]}
+        total={total}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        noDefault
+        classNames={{
+          wrapper: styles.wrapper,
+          table: tableStyles.table,
+          headerCell: tableStyles.headerCell,
+          cell: tableStyles.cell,
+          even: tableStyles.even,
+          odd: tableStyles.odd,
+        }}
+      />
+    </div>
   );
 };
 

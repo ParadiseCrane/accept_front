@@ -1,13 +1,17 @@
-import { callback } from '@custom-types/ui/atomic';
-import { availableMethods, sendRequest } from '@requests/request';
+import { callback, optionalCallback } from '@custom-types/ui/atomic';
+import {
+  IResponse,
+  availableMethods,
+  sendRequest,
+} from '@requests/request';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-interface IRequestData<Answer> {
+interface IRequestData<Answer, ReqAnswer = Answer> {
   data: Answer | undefined;
   loading: boolean;
   error: boolean;
   detail: object;
-  refetch: (_shouldSetLoading?: boolean) => any;
+  refetch: optionalCallback<boolean, Promise<IResponse<ReqAnswer>>>;
 }
 
 export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
@@ -18,7 +22,7 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
   onSuccess?: callback<any>,
   onError?: callback<any>,
   revalidate?: number
-): IRequestData<Answer> {
+): IRequestData<Answer, ReqAnswer> {
   const process = useMemo(
     () => (processData ? processData : (a: any) => a),
     [processData]

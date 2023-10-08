@@ -1,6 +1,7 @@
 import Table from '@ui/Table/Table';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import {
+  FC,
   ReactNode,
   memo,
   useCallback,
@@ -292,7 +293,9 @@ const processData = (
 
 const defaultOnPage = 10;
 
-function AssignmentList() {
+const AssignmentList: FC<{ url?: string }> = ({
+  url = 'assignment/my',
+}) => {
   const { locale } = useLocale();
   const [list, setList] = useState<IAssignmentDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
@@ -347,9 +350,7 @@ function AssignmentList() {
       tags: ITag[];
       groups: IGroup[];
     }
-  >('assignment/my', 'GET', undefined, (data) =>
-    processData(data, locale)
-  );
+  >(url, 'GET', undefined, (data) => processData(data, locale));
 
   const applyFilters = useCallback(
     (data: IAssignmentDisplayList[]) => {
@@ -469,6 +470,6 @@ function AssignmentList() {
       )}
     </>
   );
-}
+};
 
 export default memo(AssignmentList);

@@ -26,7 +26,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 16,
+    size: 8,
   },
   {
     label: locale.users.list.shortName,
@@ -43,7 +43,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: true,
     hidden: false,
-    size: 4,
+    size: 6,
   },
   {
     label: locale.users.list.role,
@@ -194,7 +194,7 @@ const ParticipantsListWithBan: FC<{
         allowMiddleState: true,
         hidable: true,
         hidden: false,
-        size: 4,
+        size: 8,
       },
       ...columns.slice(2),
     ] as ITableColumn[];
