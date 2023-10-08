@@ -11,6 +11,7 @@ export const developer = {
       count: 'Count',
     },
   },
+  allAttempts: 'All attempts',
   currentAttempts: {
     title: 'Current attempts',
     shouldRefetch: 'Should refetch',

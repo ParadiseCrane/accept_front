@@ -11,6 +11,7 @@ export const developer = {
       count: 'Вызовы',
     },
   },
+  allAttempts: 'Все попытки',
   currentAttempts: {
     title: 'Текущие попытки',
     shouldRefetch: 'Обновлять информацию',

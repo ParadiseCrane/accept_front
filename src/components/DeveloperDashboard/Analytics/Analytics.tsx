@@ -17,12 +17,10 @@ import {
   IAnalyticsData,
   IAnalyticsResponse,
 } from '@custom-types/data/atomic';
+import { requestWithError } from '@utils/requestWithError';
+import { ConfirmModal } from '@ui/modals';
 import tableStyles from '@styles/ui/customTable.module.css';
 import styles from './analytics.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import { requestWithError } from '@utils/requestWithError';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -110,11 +108,6 @@ const Analytics: FC<{}> = ({}) => {
     });
   }, [searchParams]);
 
-  const [openedModal, setOpenedModal] = useState(false);
-
-  const openModal = useCallback(() => setOpenedModal(true), []);
-  const closeModal = useCallback(() => setOpenedModal(false), []);
-
   const clearAnalytics = useCallback(() => {
     requestWithError<undefined, boolean>(
       'analytics/delete',
@@ -122,36 +115,20 @@ const Analytics: FC<{}> = ({}) => {
       locale.notify.analytics.delete,
       lang
     ).then((res) => {
-      closeModal();
       if (!res.error) {
         router.reload();
       }
     });
-  }, [closeModal, lang, locale, router]);
+  }, [lang, locale, router]);
 
   return (
     <div>
       {!loading && (
-        <>
-          <Button
-            variant="outline"
-            kind="negative"
-            onClick={openModal}
-          >
-            {locale.delete}
-          </Button>
-          <SimpleModal
-            title={locale.sure}
-            opened={openedModal}
-            close={closeModal}
-          >
-            <SimpleButtonGroup
-              reversePositive
-              actionButton={{ onClick: clearAnalytics }}
-              cancelButton={{ onClick: closeModal }}
-            />
-          </SimpleModal>
-        </>
+        <ConfirmModal
+          confirm={clearAnalytics}
+          buttonText={locale.delete}
+          kind={'negative'}
+        />
       )}
       <Table
         columns={columns}

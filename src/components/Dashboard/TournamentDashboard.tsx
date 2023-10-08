@@ -241,7 +241,7 @@ const TournamentDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} initialStep={4} />
+      <LeftMenu links={links} />
     </>
   );
 };

@@ -42,7 +42,7 @@ const en = {
   download: 'Download',
   yes: 'Yes',
   no: 'No',
-  sure: "I'm sure",
+  sure: 'Are you sure?',
   error: 'Error',
   success: 'Successes',
   language: 'Language',

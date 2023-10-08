@@ -146,7 +146,7 @@ const AttemptList: FC<{
   shouldNotRefetch: boolean;
   isFinished: boolean;
   endDate: Date;
-  type: 'assignment' | 'tournament' | 'current';
+  type: 'assignment' | 'tournament' | 'current' | 'all';
   banned?: boolean;
 }> = ({
   spec,
@@ -228,6 +228,8 @@ const AttemptList: FC<{
         url={
           type == 'current'
             ? 'attempt/current-list'
+            : type == 'all'
+            ? 'attempt/all'
             : `${type}/attempts${banned ? '-banned' : ''}/${spec}`
         }
         activeTab
