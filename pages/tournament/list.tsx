@@ -86,11 +86,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'author',
     sortable: true,
     sortFunction: (a: any, b: any) => {
-      return a.author.value > b.author.value
-        ? 1
-        : a.author.value == b.author.value
-        ? 0
-        : -1;
+      return a.author > b.author ? 1 : a.author == b.author ? 0 : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -133,20 +129,20 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     size: 3,
   },
   {
-    label: locale.tournament.list.participantsNumber,
-    key: 'participantsNumber',
+    label: locale.tournament.list.maxTeamSize,
+    key: 'maxTeamSize',
     sortable: true,
     sortFunction: (a: any, b: any) => {
-      return a.participantsNumber.value > b.participantsNumber.value
+      return a.maxTeamSize > b.maxTeamSize
         ? 1
-        : a.participantsNumber.value == b.participantsNumber.value
+        : a.maxTeamSize == b.maxTeamSize
         ? 0
         : -1;
     },
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
-    hidden: true,
+    hidden: false,
     size: 3,
   },
 ];
@@ -155,25 +151,28 @@ const getTournamentIcon = (
   tournament: ITournamentDisplay,
   locale: ILocale
 ): ReactNode => {
-  if (tournament.status.spec === 0) {
-    return (
-      <Tip position="bottom" label={locale.tip.status.pending}>
-        <Clock color="orange" />
-      </Tip>
-    );
+  switch (tournament.status.spec) {
+    case 0:
+      return (
+        <Tip position="bottom" label={locale.tip.status.pending}>
+          <Clock color="orange" />
+        </Tip>
+      );
+    case 1:
+      return (
+        <Tip position="bottom" label={locale.tip.status.running}>
+          <Run color="var(--positive)" />
+        </Tip>
+      );
+    case 2:
+      return (
+        <Tip position="bottom" label={locale.tip.status.finished}>
+          <Confetti color="black" />
+        </Tip>
+      );
+    default:
+      return <></>;
   }
-  if (tournament.status.spec === 1) {
-    return (
-      <Tip position="bottom" label={locale.tip.status.running}>
-        <Run color="var(--positive)" />
-      </Tip>
-    );
-  }
-  return (
-    <Tip position="bottom" label={locale.tip.status.finished}>
-      <Confetti color="black" />
-    </Tip>
-  );
 };
 
 const processData = (
@@ -186,10 +185,6 @@ const processData = (
   const tournaments = data.tournaments.map(
     (tournament: ITournamentDisplay): any => ({
       ...tournament,
-      author: {
-        value: tournament.author,
-        display: tournament.author,
-      },
       status: {
         value: tournament.status.spec,
         display: <>{getTournamentIcon(tournament, locale)}</>,
@@ -201,10 +196,6 @@ const processData = (
       end: {
         value: tournament.end,
         display: <div>{getLocalDate(tournament.end)}</div>,
-      },
-      participantsNumber: {
-        value: tournament.teamsNumber,
-        display: <div>{tournament.teamsNumber}</div>,
       },
       title: {
         value: tournament.title,

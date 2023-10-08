@@ -5,4 +5,5 @@ export const list = {
   end: 'End',
   status: 'Status',
   participantsNumber: 'Participants',
+  maxTeamSize: 'Team size',
 };
