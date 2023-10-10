@@ -101,3 +101,8 @@ export interface IAnalyticsResponse {
   documents: IAnalyticsData[];
   total: number;
 }
+
+export interface IActivityData {
+  count: number;
+  date: Date;
+}
