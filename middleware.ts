@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { protectedRoutesInfo } from './src/constants/protectedRoutes';
+import { getApiUrl } from '@utils/getServerUrl';
 
 const protectedRoutes = Object.keys(protectedRoutesInfo).sort();
 
@@ -43,6 +44,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   const [route, spec] = removeSpec(pathname);
+  if (route == '/api/image' && spec == '') {
+    return NextResponse.redirect(`${getApiUrl()}/api/image`);
+  }
 
   if (isProtected(route)) {
     const access = protectedRoutesInfo[route];

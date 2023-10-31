@@ -10,7 +10,6 @@ const mapActivityToPlotData = (
   activity: IActivityData[]
 ): IPlotData[] => {
   if (activity.length == 0) return [];
-  console.log(activity);
   const sorted_activity = activity
     .map((item) => ({
       count: item.count,
