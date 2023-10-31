@@ -45,7 +45,12 @@ export async function middleware(request: NextRequest) {
   }
   const [route, spec] = removeSpec(pathname);
   if (route == '/api/image' && spec == '') {
-    return NextResponse.redirect(`${getApiUrl()}/api/image`);
+    const formData = await request.formData();
+    const response = await fetch(`${getApiUrl()}/api/image`, {
+      method: 'POST',
+      body: formData,
+    });
+    return NextResponse.json(await response.json());
   }
 
   if (isProtected(route)) {
