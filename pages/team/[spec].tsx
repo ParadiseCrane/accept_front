@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import Link from 'next/link';
@@ -137,8 +137,11 @@ export default TeamProfile;
 
 const API_URL = getApiUrl();
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query || typeof query?.spec !== 'string') {
     return {
       redirect: {
         permanent: false,
@@ -146,7 +149,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     };
   }
-  const response = await fetch(`${API_URL}/api/team/${params.spec}`);
+  const response = await fetch(`${API_URL}/api/team/${query.spec}`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      'content-type': 'application/json',
+    } as { [key: string]: string },
+  });
   if (response.status === 307) {
     let data = await response.json();
     return {
@@ -170,12 +179,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permanent: false,
       destination: '/404',
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 };
