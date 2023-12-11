@@ -148,7 +148,7 @@ const Description: FC<{
           <div className={styles.tasksWrapper}>
             {((!registered && tournament.status.spec != 2) ||
               (!special && tournament.status.spec == 0)) && (
-              <Overlay />
+              <Overlay blur={3} />
             )}
             <PrimitiveTaskTable
               tasks={tasks}

@@ -28,7 +28,7 @@ const Sticky: FC<{
   return (
     <Affix
       ref={ref}
-      zIndex={199}
+      zIndex={200}
       position={{ bottom: 20, right: 20 }}
     >
       <Transition transition="slide-up" mounted={visible}>
