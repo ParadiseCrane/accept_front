@@ -14,12 +14,11 @@ import { useLocale } from '@hooks/useLocale';
 import {
   Clock,
   Confetti,
-  Infinity,
+  Infinity as InfinityIcon,
   Plus,
   Run,
 } from 'tabler-icons-react';
 import { ITag } from '@custom-types/data/ITag';
-
 import { BaseSearch } from '@custom-types/data/request';
 import { useRequest } from '@hooks/useRequest';
 import { ILocale } from '@custom-types/ui/ILocale';
@@ -183,7 +182,7 @@ const getAssignmentIcon = (
   if (assignment.infinite) {
     return (
       <Tip position="bottom" label={locale.tip.status.infinite}>
-        <Infinity color="purple" />
+        <InfinityIcon color="purple" />
       </Tip>
     );
   }

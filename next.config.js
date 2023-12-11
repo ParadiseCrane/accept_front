@@ -1,6 +1,6 @@
 const { API_ENDPOINT, WEBSOCKET_API } = process.env;
 
-console.info('Config', { API_ENDPOINT, WEBSOCKET_API });
+console.info('Config', { API_ENDPOINT });
 
 /** @type {import('next').NextConfig} */
 module.exports = {
@@ -15,16 +15,16 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/back/:slug*',
-        destination: `${API_ENDPOINT}/api/:slug*`,
-      },
-      {
         source: '/profile',
         destination: `/profile/me`,
       },
       {
         source: '/edu',
         destination: `/task/list`,
+      },
+      {
+        source: '/api/image/:slug*',
+        destination: `${API_ENDPOINT}/api/image/:slug*`,
       },
     ];
   },
@@ -38,11 +38,6 @@ module.exports = {
       {
         source: '/assignment/:slug*',
         destination: '/edu/assignment/:slug*',
-        permanent: false,
-      },
-      {
-        source: '/api/image',
-        destination: `${API_ENDPOINT}/api/image`,
         permanent: false,
       },
     ];

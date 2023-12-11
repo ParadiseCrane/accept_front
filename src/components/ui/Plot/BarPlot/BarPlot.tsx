@@ -1,9 +1,10 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo, useMemo, useState } from 'react';
+import { FC, ReactNode, memo, useMemo, useState } from 'react';
 import PlotTooltip from '../PlotTooltip/PlotTooltip';
 import Bar from './Bar/Bar';
 import styles from './barPlot.module.css';
 import { ColorSwatch } from '@ui/basics';
+import { callback } from '@custom-types/ui/atomic';
 
 const PADDING = 0.1; // percent
 const ROW_LINES = 10;
@@ -12,13 +13,26 @@ const BarPlot: FC<{
   title?: string;
   data: IPlotData[];
   hideLabels?: boolean;
-}> = ({ title, data, hideLabels }) => {
+  hideColorSwatch?: boolean;
+  hideRowLabels?: boolean;
+  aspectRatio?: number;
+  hoverLabel?: callback<IPlotData, ReactNode>;
+}> = ({
+  title,
+  data,
+  hideLabels,
+  hideColorSwatch,
+  hideRowLabels,
+  aspectRatio = 0.5,
+  hoverLabel,
+}) => {
   const [toolTipLabel, setToolTipLabel] = useState<
-    string | undefined
+    ReactNode | undefined
   >(undefined);
 
   const padding = (300 / (data.length + 1)) * PADDING;
   const width = (300 - padding * (data.length + 1)) / data.length;
+  const height = 300 * aspectRatio;
 
   const upperBound = useMemo(
     () =>
@@ -30,22 +44,25 @@ const BarPlot: FC<{
   );
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={styles.wrapper}
+      style={{ aspectRatio: 330 / (height + 16) }}
+    >
       {title && <div className={styles.title}>{title}</div>}
-      <PlotTooltip label={toolTipLabel} />
+      <PlotTooltip>{toolTipLabel}</PlotTooltip>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 330 166" //0 0 330 166
+        viewBox={`0 0 330 ${height + 15}`}
       >
         <g>
-          {new Array(ROW_LINES).fill(0).map((_, index) => (
+          {new Array(ROW_LINES + 1).fill(0).map((_, index) => (
             <line
               key={index}
-              x1="20"
+              x1={hideRowLabels ? '0' : '20'}
               x2="320"
-              y1={index * (150 / ROW_LINES)}
-              y2={index * (150 / ROW_LINES)}
+              y1={index * (height / ROW_LINES)}
+              y2={index * (height / ROW_LINES)}
               stroke="black"
               strokeWidth={0.2}
               opacity="0.2"
@@ -54,10 +71,10 @@ const BarPlot: FC<{
         </g>
         <g>
           <line
-            x1="20"
-            x2="20"
+            x1={hideRowLabels ? '0' : '20'}
+            x2={hideRowLabels ? '0' : '20'}
             y1={0}
-            y2={155}
+            y2={height + 5}
             stroke="black"
             strokeWidth={0.2}
             opacity="0.2"
@@ -66,23 +83,24 @@ const BarPlot: FC<{
             x1="320"
             x2="320"
             y1={0}
-            y2={155}
+            y2={height + 5}
             stroke="black"
             strokeWidth={0.2}
             opacity="0.2"
           />
-          {new Array(ROW_LINES + 1).fill(0).map((_, index) => (
-            <text
-              key={index}
-              className={styles.labels}
-              x={15}
-              y={index * (155 / ROW_LINES)}
-              textAnchor="end"
-            >
-              {Math.round(upperBound / ROW_LINES) *
-                (ROW_LINES - index)}
-            </text>
-          ))}
+          {!hideRowLabels &&
+            new Array(ROW_LINES + 1).fill(0).map((_, index) => (
+              <text
+                key={index}
+                className={styles.labels}
+                x={15}
+                y={index * ((height + 5) / ROW_LINES)}
+                textAnchor="end"
+              >
+                {Math.round(upperBound / ROW_LINES) *
+                  (ROW_LINES - index)}
+              </text>
+            ))}
         </g>
         {data.map((item, index) => (
           <Bar
@@ -90,15 +108,18 @@ const BarPlot: FC<{
             data={item}
             index={index}
             width={width}
-            height={155 * (item.amount / upperBound)}
+            height={(height + 5) * (item.amount / upperBound)}
             length={data.length}
             padding={padding}
+            totalHeight={height}
             setTooltipLabel={setToolTipLabel}
             hideLabels={hideLabels}
+            hideRowLabels={hideRowLabels}
+            hoverLabel={hoverLabel}
           />
         ))}
       </svg>
-      {hideLabels && (
+      {!hideColorSwatch && (
         <div className={styles.legendWrapper}>
           {data.map((item, index) => (
             <div key={index} className={styles.legendItem}>

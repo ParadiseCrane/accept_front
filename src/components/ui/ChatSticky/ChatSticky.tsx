@@ -27,7 +27,7 @@ const ChatSticky: FC<{ spec: string; host: string }> = ({
       <Affix
         ref={ref}
         position={{ bottom: 0, right: '200px' }}
-        zIndex={100}
+        zIndex={201}
       >
         <div style={{ visibility: showChat ? 'visible' : 'hidden' }}>
           {window && (

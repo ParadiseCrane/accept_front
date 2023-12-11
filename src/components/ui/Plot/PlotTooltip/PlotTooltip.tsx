@@ -1,7 +1,14 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import {
+  FC,
+  ReactNode,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styles from './plotTooltip.module.css';
 
-const PlotTooltip: FC<{ label?: string }> = ({ label }) => {
+const PlotTooltip: FC<{ children?: ReactNode }> = ({ children }) => {
   const [coords, setCoords] = useState([0, 0]);
 
   const processMouseEvent = useCallback((event: MouseEvent) => {
@@ -18,12 +25,12 @@ const PlotTooltip: FC<{ label?: string }> = ({ label }) => {
     <div
       className={styles.wrapper}
       style={{
-        display: label === undefined ? 'none' : 'block',
+        display: children === undefined ? 'none' : 'block',
         left: coords[0],
         top: coords[1],
       }}
     >
-      {label}
+      {children}
     </div>
   );
 };

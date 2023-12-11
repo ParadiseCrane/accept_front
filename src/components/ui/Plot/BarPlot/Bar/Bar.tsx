@@ -1,6 +1,7 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo, useCallback } from 'react';
+import { FC, ReactNode, memo, useCallback } from 'react';
 import styles from './bar.module.css';
+import { callback } from '@custom-types/ui/atomic';
 
 const Bar: FC<{
   index: number;
@@ -9,8 +10,11 @@ const Bar: FC<{
   height: number;
   length: number;
   padding: number;
-  setTooltipLabel: (_: string | undefined) => void;
+  setTooltipLabel: (_: ReactNode | undefined) => void;
   hideLabels?: boolean;
+  hideRowLabels?: boolean;
+  totalHeight: number;
+  hoverLabel?: callback<IPlotData, ReactNode>;
 }> = ({
   index,
   data,
@@ -20,9 +24,13 @@ const Bar: FC<{
   padding,
   setTooltipLabel,
   hideLabels = false,
+  hideRowLabels = false,
+  totalHeight,
+  hoverLabel = (item) => item.amount,
 }) => {
+  const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
-    () => setTooltipLabel(data.amount.toString()),
+    () => setTooltipLabel(hoverLabel(data)),
     [setTooltipLabel, data.amount]
   );
   const onLeave = useCallback(
@@ -39,24 +47,29 @@ const Bar: FC<{
       >
         <rect
           className={styles.bar}
-          x={20 + index * width + padding * (index + 1)}
+          x={left_padding + index * width + padding * (index + 1)}
           width={width}
-          y={155 - height}
+          y={totalHeight + 5 - height}
           height={2 + height}
           fill={data.color}
         />
         <rect
-          x={20 + index * (300 / length)}
+          x={left_padding + index * (300 / length)}
           width={300 / length}
-          y={155}
+          y={totalHeight + 5}
           height={10}
           fill="white"
         />
         {!hideLabels && (
           <text
             className={styles.labels}
-            x={20 + width * index + padding * (index + 1) + width / 2}
-            y={162}
+            x={
+              left_padding +
+              width * index +
+              padding * (index + 1) +
+              width / 2
+            }
+            y={totalHeight + 12}
             textAnchor="middle"
           >
             {data.label}

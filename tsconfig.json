@@ -26,13 +26,20 @@
       "@hooks/*": ["src/hooks/*"],
       "@layouts/*": ["src/layouts/*"],
       "@styles/*": ["styles/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/task_test/post/[task_spec]"
+    "pages/api/task_test/post/[task_spec]",
+    "src/utils/imageLoader.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
