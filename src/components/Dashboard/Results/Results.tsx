@@ -119,7 +119,7 @@ const Results: FC<{
 
   const table_data: IData[][] = useMemo(() => {
     if (!data || data.results.length == 0) return [];
-    let rows: IData[][] = data.results.map((participant_result) =>
+    return data.results.map((participant_result) =>
       participant_result.best
         .map((task_result, index) => ({
           best: (
@@ -138,44 +138,29 @@ const Results: FC<{
               )
             : undefined,
         }))
-        .concat({
-          best: (
-            <div
-              style={{
-                color: getTotalScoreColor(participant_result.score),
-              }}
-            >
-              {participant_result.score.toString()}
-            </div>
-          ),
-          rest: undefined,
-        })
+        .concat([
+          {
+            best: (
+              <div
+                style={{
+                  color: getTotalScoreColor(participant_result.score),
+                }}
+              >
+                {participant_result.score.toString()}
+              </div>
+            ),
+            rest: undefined,
+          },
+          {
+            best: <>{participant_result.totalTime.toString()}</>,
+            rest: undefined,
+          },
+          {
+            best: <>{participant_result.place.toString()}</>,
+            rest: undefined,
+          },
+        ])
     );
-
-    let current = 1;
-    let streak = 1;
-    let last_score = -1;
-    rows[0] = rows[0].concat({
-      best: <>{current.toString()}</>,
-    });
-    last_score = data.results[0].score;
-    for (let i = 1; i < rows.length; i++) {
-      const current_score = data.results[i].score;
-      if (current_score == last_score) {
-        streak += 1;
-        rows[i] = rows[i].concat({
-          best: <>{current.toString()}</>,
-        });
-        continue;
-      }
-      current += streak;
-      streak = 1;
-      last_score = current_score;
-      rows[i] = rows[i].concat({
-        best: <>{current.toString()}</>,
-      });
-    }
-    return rows;
   }, [data, fetchRestResults, displayMode, full]);
 
   return (
@@ -237,6 +222,7 @@ const Results: FC<{
           ]}
           fixedRightColumns={[
             <>{locale.assignment.score}</>,
+            <>{locale.assignment.totalTime}</>,
             <>{locale.assignment.place}</>,
           ]}
           rows={data.results.map((result, index) =>
