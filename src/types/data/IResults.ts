@@ -16,6 +16,8 @@ export interface IResult {
   passedTests: number;
   percentTests: number;
   score: number;
+  place: number;
+  totalTime: number;
 }
 
 export interface IParticipantDisplay {
@@ -27,6 +29,8 @@ export interface IParticipantResult {
   best: (IResult | undefined)[];
   score: number;
   participant: IParticipantDisplay;
+  totalTime: number;
+  place: number;
 }
 
 export interface IActivityResults {
