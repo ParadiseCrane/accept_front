@@ -29,6 +29,7 @@ import { getLocalDate } from '@utils/datetime';
 import { Tip } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
 import Link from 'next/link';
+import { mapTournamentStatus } from '@utils/mapStatus';
 
 interface Item {
   value: any;
@@ -56,8 +57,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.status.value > b.status.value
         ? 1
         : a.status.value == b.status.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -73,8 +74,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -102,8 +103,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -119,8 +120,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -136,8 +137,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.maxTeamSize > b.maxTeamSize
         ? 1
         : a.maxTeamSize == b.maxTeamSize
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -186,7 +187,8 @@ const processData = (
     (tournament: ITournamentDisplay): any => ({
       ...tournament,
       status: {
-        value: tournament.status.spec,
+        // value: tournament.status.spec,
+        value: mapTournamentStatus(tournament.status.spec),
         display: <>{getTournamentIcon(tournament, locale)}</>,
       },
       start: {
@@ -243,7 +245,7 @@ function TournamentList() {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [],
+    sort_by: [{ field: 'status', order: 1 }],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],

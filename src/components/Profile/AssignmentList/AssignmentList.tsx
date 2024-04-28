@@ -38,6 +38,7 @@ import SingularSticky from '@ui/Sticky/SingularSticky';
 import { useUser } from '@hooks/useUser';
 import { Tip } from '@ui/basics';
 import Link from 'next/link';
+import { mapAssignmentStatus } from '@utils/mapStatus';
 
 interface Item {
   value: any;
@@ -64,11 +65,11 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'state',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.infinite || a.state.value > b.state.value
+      a.state.value > b.state.value
         ? 1
         : a.state.value == b.state.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -83,8 +84,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -99,8 +100,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.groups.value > b.groups.value
         ? 1
         : a.groups.value == b.groups.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -115,8 +116,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -131,8 +132,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -148,8 +149,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.infinite || a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -165,8 +166,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.taskNumber.value > b.taskNumber.value
         ? 1
         : a.taskNumber.value == b.taskNumber.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -179,13 +180,6 @@ const getAssignmentIcon = (
   assignment: IAssignmentDisplay,
   locale: ILocale
 ): ReactNode => {
-  if (assignment.infinite) {
-    return (
-      <Tip position="bottom" label={locale.tip.status.infinite}>
-        <InfinityIcon color="purple" />
-      </Tip>
-    );
-  }
   if (assignment.status.spec === 0) {
     return (
       <Tip position="bottom" label={locale.tip.status.pending}>
@@ -194,6 +188,13 @@ const getAssignmentIcon = (
     );
   }
   if (assignment.status.spec === 1) {
+    if (assignment.infinite) {
+      return (
+        <Tip position="bottom" label={locale.tip.status.infinite}>
+          <InfinityIcon color="purple" />
+        </Tip>
+      );
+    }
     return (
       <Tip position="bottom" label={locale.tip.status.running}>
         <Run color="var(--positive)" />
@@ -215,11 +216,12 @@ const processData = (
   tags: ITag[];
   groups: IGroup[];
 } => {
+  console.log(data);
   const assignments = data.assignments.map(
     (assignment: IAssignmentDisplay): any => ({
       ...assignment,
       state: {
-        value: assignment.status.spec,
+        value: mapAssignmentStatus(assignment.status.spec),
         display: getAssignmentIcon(assignment, locale),
       },
       title: {
@@ -311,7 +313,7 @@ const AssignmentList: FC<{ url?: string }> = ({
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [],
+    sort_by: [{ field: 'state', order: 1 }],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],
