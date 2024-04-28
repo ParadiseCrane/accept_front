@@ -19,8 +19,6 @@ import {
 } from 'tabler-icons-react';
 import { PasswordInput, TextInput } from '@ui/basics';
 import Stepper from '@ui/Stepper/Stepper';
-import { useWidth } from '@hooks/useWidth';
-import { rem } from '@mantine/core';
 
 const stepFields = [
   ['login'],
@@ -31,7 +29,6 @@ const stepFields = [
 function SignUp() {
   const { locale, lang } = useLocale();
   const router = useRouter();
-  const { width } = useWidth();
 
   const form = useForm({
     initialValues: {
@@ -46,14 +43,14 @@ function SignUp() {
         value.length < 5
           ? locale.auth.errors.login.len
           : !value.match(/^[a-zA-Z][a-zA-Z_]+$/)
-          ? locale.auth.errors.login.symbols
-          : null,
+            ? locale.auth.errors.login.symbols
+            : null,
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
           : !value.match(/^[a-zA-Z\d\.]+$/)
-          ? locale.auth.errors.password.symbols
-          : null,
+            ? locale.auth.errors.password.symbols
+            : null,
       confirmPassword: (value, values) =>
         value !== values.password ? locale.auth.errors.confirm : null,
       email: (value) =>
@@ -66,10 +63,10 @@ function SignUp() {
         value.length > 50
           ? locale.auth.errors.name.len
           : value.trim().split(' ').length < 2
-          ? locale.auth.errors.name.surname
-          : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-          ? locale.auth.errors.name.invalid
-          : null,
+            ? locale.auth.errors.name.surname
+            : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
+              ? locale.auth.errors.name.invalid
+              : null,
     },
     validateInputOnBlur: true,
   });
@@ -137,18 +134,9 @@ function SignUp() {
         form={form}
         stepFields={stepFields}
         icons={[
-          <LetterCase
-            key={0}
-            style={{ width: rem(24), height: rem(24) }}
-          />,
-          <ShieldLock
-            key={1}
-            style={{ width: rem(24), height: rem(24) }}
-          />,
-          <AlignJustified
-            key={2}
-            style={{ width: rem(24), height: rem(24) }}
-          />,
+          <LetterCase key="0" />,
+          <ShieldLock key="1" />,
+          <AlignJustified key="2" />,
         ]}
         descriptions={['', '', '']}
         labels={locale.auth.steps.labels}
