@@ -20,7 +20,7 @@ const MemberSelector: FC<{
   useEffect(() => {
     if (!opened) return;
     sendRequest<string[], IUserDisplay[]>(
-      `${type}/participants/list/${entity}`,
+      `${type}/bundle-participants/list/${entity}`,
       'POST',
       exclude
     ).then((res) => {
