@@ -8,7 +8,7 @@ export default async function AssignmentSchemaFromTournament(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/assignment_schema/from-tournament`,
+    url: `api/assignment_schema/from_tournament`,
     method: 'POST',
   });
 }

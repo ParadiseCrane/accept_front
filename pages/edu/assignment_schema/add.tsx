@@ -5,7 +5,6 @@ import { ReactNode, useCallback } from 'react';
 import { useUser } from '@hooks/useUser';
 import Form from '@components/AssignmentSchema/Form/Form';
 
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import {
   errorNotification,
@@ -49,7 +48,7 @@ function AddAssignmentSchema() {
         'POST',
         locale.notify.assignmentSchema.create,
         lang,
-        (response: IAssignmentSchema) => response.spec,
+        (response: string) => response,
         body
       );
     },

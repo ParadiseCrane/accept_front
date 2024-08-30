@@ -3,7 +3,6 @@ import { Plus } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { ITag } from '@custom-types/data/ITag';
 import { Icon, TextInput } from '@ui/basics';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import modalStyles from '@styles/ui/modal.module.css';
@@ -33,12 +32,12 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
   const handleSubmit = useCallback(
     (title: string) => {
       if (validate(title)) {
-        requestWithNotify<{ title: string }, ITag>(
+        requestWithNotify<{ title: string }, string>(
           addURL,
           'POST',
           locale.tag.add,
           lang,
-          (response: ITag) => response.spec,
+          (response) => response,
           {
             title: title,
           },

@@ -15,7 +15,7 @@ import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
 import { useRequest } from '@hooks/useRequest';
 
-function Attempt(props: { attempt: IAttempt; author: string }) {
+function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
 
   const { locale } = useLocale();
@@ -109,8 +109,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     const res = await response.json();
     return {
       props: {
-        attempt: res.attempt,
-        author: res.author,
+        attempt: res,
       },
     };
   }

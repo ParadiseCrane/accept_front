@@ -62,12 +62,12 @@ function AssignmentAdd(props: IAssignmentAddBundle) {
         groups: form.values.groups,
       };
 
-      requestWithNotify<IAssignmentAdd, IAssignmentAdd>(
+      requestWithNotify<IAssignmentAdd, string>(
         'assignment/add',
         'POST',
         locale.notify.assignment.create,
         lang,
-        (response) => response.spec,
+        (response) => response,
         assignment
       );
       const notification: INewNotification = {
