@@ -84,10 +84,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [whoAmI]);
 
   const signIn = useCallback(
-    async (login: string, password: string) => {
+    async (organization: string, login: string, password: string) => {
       const res = await isSuccessful('auth/signin', 'POST', {
-        login: login,
-        password: password,
+        organization,
+        login,
+        password,
       });
       if (!res.error) {
         await whoAmI();
@@ -102,7 +103,6 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     const res = await isSuccessful('auth/signout', 'GET');
     if (!res.error) {
       clearCookie('access_token_cookie');
-      clearCookie('refresh_token_cookie');
       clearCookie('user');
       setValue((prev) => ({
         ...prev,

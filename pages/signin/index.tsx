@@ -2,6 +2,7 @@ import {
   ReactElement,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { LoginLayout } from '@layouts/LoginLayout';
@@ -9,7 +10,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { useRouter } from 'next/router';
 import { useForm } from '@mantine/form';
-import { Button, PasswordInput, TextInput } from '@ui/basics';
+import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
 import styles from '@styles/auth/login.module.css';
 import Link from 'next/link';
 import {
@@ -17,17 +18,51 @@ import {
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
+import { useRequest } from '@hooks/useRequest';
+import { IOrganization } from '@custom-types/data/IOrganization';
+import { SelectItem } from '@mantine/core';
 
 function SignIn() {
   const { locale } = useLocale();
   const { signIn } = useUser();
   const router = useRouter();
+
+  const {
+    data: organizations,
+    loading: organizations_loading,
+    error,
+  } = useRequest<object, IOrganization[], SelectItem[]>(
+    'organization/list',
+    'GET',
+    undefined,
+    (organizations: IOrganization[]) =>
+      organizations.map(
+        (organization) =>
+          ({
+            value: organization.spec,
+            label: organization.name,
+          }) as SelectItem
+      )
+  );
+
+  const valid_organizations = useMemo(
+    () => organizations?.map((item) => item.value) || [],
+    [organizations]
+  );
+
   const form = useForm({
     initialValues: {
+      organization: '',
       login: '',
       password: '',
     },
     validate: {
+      organization: (value) =>
+        value === ''
+          ? 'Выберите организацию' // TODO add locale
+          : !valid_organizations.includes(value)
+            ? 'Неверная организация' // TODO add locale
+            : null,
       login: (value) =>
         value.length == 0 ? locale.auth.errors.login.exists : null,
       password: (value) =>
@@ -40,30 +75,36 @@ function SignIn() {
   const [toSignIn, setToSignIn] = useState(false);
 
   const handleSignIn = useCallback(
-    (values: { login: string; password: string }) => {
+    (values: {
+      organization: string;
+      login: string;
+      password: string;
+    }) => {
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
         message: locale.loading + '...',
       });
       setLoading(true);
-      signIn(values.login, values.password).then((res) => {
-        if (res) {
-          successNotification({
-            id,
-            title: locale.notify.auth.signIn.success,
-            autoClose: 5000,
-          });
-          router.push((router.query.referrer as string) || '/');
-        } else {
-          errorNotification({
-            id,
-            title: locale.notify.auth.signIn.error,
-            autoClose: 5000,
-          });
+      signIn(values.organization, values.login, values.password).then(
+        (res) => {
+          if (res) {
+            successNotification({
+              id,
+              title: locale.notify.auth.signIn.success,
+              autoClose: 5000,
+            });
+            router.push((router.query.referrer as string) || '/');
+          } else {
+            errorNotification({
+              id,
+              title: locale.notify.auth.signIn.error,
+              autoClose: 5000,
+            });
+          }
+          setLoading(false);
         }
-        setLoading(false);
-      });
+      );
     },
     [form, locale, signIn, router]
   );
@@ -91,6 +132,19 @@ function SignIn() {
   return (
     <>
       <form className={styles.formWrapper}>
+        <Select
+          required
+          id="organization"
+          label={'Организация'} // TODO add locale
+          data={organizations || []}
+          disabled={!!!organizations || organizations_loading}
+          placeholder={'Выберете организацию'} // TODO add locale
+          classNames={{
+            label: styles.label,
+          }}
+          size="lg"
+          {...form.getInputProps('organization')}
+        />
         <TextInput
           required
           id="login"

@@ -216,7 +216,6 @@ const processData = (
   tags: ITag[];
   groups: IGroup[];
 } => {
-  console.log(data);
   const assignments = data.assignments.map(
     (assignment: IAssignmentDisplay): any => ({
       ...assignment,
