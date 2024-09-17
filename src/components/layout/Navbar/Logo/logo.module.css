@@ -3,7 +3,7 @@
   text-decoration: none;
   display: flex;
   flex-direction: row;
-  gap: var(--spacer-m);
+  gap: var(--spacer-xs);
   align-items: center;
   font-weight: 400;
 }
