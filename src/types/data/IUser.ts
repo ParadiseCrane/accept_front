@@ -9,6 +9,16 @@ export interface Role {
   accessLevel: number;
 }
 
+export interface IWhoAmIResponse {
+  current_user: IUserDisplay;
+  users: IUserOrganization[];
+}
+
+export interface IUserOrganization {
+  user: string;
+  organization: string;
+}
+
 export interface IUser {
   login: string;
   name: string;
@@ -22,7 +32,8 @@ export interface IUser {
 
 export interface IUserContext {
   authorized: boolean;
-  user: IUser | undefined | null;
+  user: IUserDisplay | undefined | null;
+  accounts: IUserOrganization[];
   accessLevel: number;
   isUser: boolean;
   isStudent: boolean;

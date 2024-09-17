@@ -1,5 +1,9 @@
 import { accessLevels } from '@constants/protectedRoutes';
-import { IUser, IUserContext } from '@custom-types/data/IUser';
+import {
+  IUser,
+  IUserContext,
+  IWhoAmIResponse,
+} from '@custom-types/data/IUser';
 import { isSuccessful, sendRequest } from '@requests/request';
 import { clearCookie, getCookie, setCookie } from '@utils/cookies';
 import {
@@ -20,10 +24,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   const whoAmI = useCallback(async () => {
     const cookie_user = getCookie('user');
     if (!cookie_user) {
-      const res = await sendRequest<{}, IUser>('auth/whoami', 'GET');
+      const res = await sendRequest<{}, IWhoAmIResponse>(
+        'auth/whoami',
+        'GET'
+      );
       if (!res.error) {
-        const accessLevel = res.response.role.accessLevel;
-        const user = res.response;
+        const user = res.response.current_user;
+        const accessLevel = user.role.accessLevel;
         setCookie('user', JSON.stringify(user), {
           path: '/',
         });
@@ -31,8 +38,9 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
         setValue((prev) => ({
           ...prev,
           authorized: true,
-          user: res.response,
+          user: user,
           accessLevel,
+          accounts: res.response.users,
           isUser: user.role.accessLevel >= accessLevels.user,
           isStudent: accessLevel >= accessLevels.student,
           isTeacher: accessLevel >= accessLevels.teacher,
@@ -44,6 +52,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
           ...prev,
           authorized: false,
           user: undefined,
+          accounts: [],
           accessLevel: 0,
           isUser: false,
           isStudent: false,
@@ -55,11 +64,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     } else {
       try {
         const user = JSON.parse(cookie_user) as IUser;
+        // TODO accounts
 
         setValue((prev) => ({
           ...prev,
           authorized: true,
-
           user: user,
           accessLevel: user.role.accessLevel,
           isUser: user.role.accessLevel >= accessLevels.user,
@@ -77,6 +86,8 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refresh = useCallback(async () => {
+    // TODO
+    return;
     const res = await isSuccessful('auth/refresh', 'GET');
     if (!res.error) {
       await whoAmI();
@@ -107,7 +118,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
       setValue((prev) => ({
         ...prev,
         authorized: false,
-
+        accounts: [],
         user: undefined,
         accessLevel: 0,
         isUser: false,
@@ -166,6 +177,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   const [value, setValue] = useState<IUserContext>(() => ({
     authorized: false,
     user: undefined,
+    accounts: [],
     accessLevel: 0,
     isUser: false,
     isStudent: false,

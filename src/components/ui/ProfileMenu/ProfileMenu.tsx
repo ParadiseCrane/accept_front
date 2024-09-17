@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react';
+import { FC, memo, useCallback, useEffect } from 'react';
 import { Group, Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
@@ -17,7 +17,11 @@ import Link from 'next/link';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel } = useUser();
+  const { user, signOut, accessLevel, accounts } = useUser();
+
+  useEffect(() => {
+    console.log(accounts);
+  }, [accounts]);
 
   const { unviewed } = useBackNotifications();
 
@@ -46,14 +50,19 @@ const ProfileMenu: FC<{}> = ({}) => {
   return (
     <>
       <Menu
-        trigger="hover"
+        trigger="click"
         zIndex={1000}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
       >
         <Menu.Target>
           <div>
+            {/* TODO check is div needed */}
             <Indicator label={unviewed} disabled={unviewed <= 0}>
-              <UserAvatar login={user?.login} alt={'Users avatar'} />
+              <UserAvatar
+                login={user?.login}
+                alt={'Users avatar'}
+                classNames={{ root: styles.avatar }}
+              />
             </Indicator>
           </div>
         </Menu.Target>
@@ -61,6 +70,35 @@ const ProfileMenu: FC<{}> = ({}) => {
           <Menu.Label className={styles.label}>
             {user?.shortName || ''}
           </Menu.Label>
+          {accounts.length > 0 && (
+            <>
+              <Menu.Divider />
+              <Menu.Label className={styles.label}>
+                {'Аккаунты'}
+              </Menu.Label>
+
+              {accounts.map((item, index) => (
+                <Menu.Item
+                  icon={
+                    <UserAvatar
+                      radius="md"
+                      size="md"
+                      login={item.user}
+                      alt={'Users avatar'}
+                    />
+                  }
+                >
+                  {item.organization}
+                </Menu.Item>
+              ))}
+            </>
+          )}
+
+          <Menu.Divider />
+          <Menu.Label className={styles.label}>
+            {'Полезное'}
+          </Menu.Label>
+
           {menuLinks
             .filter(
               (item) =>
@@ -72,22 +110,21 @@ const ProfileMenu: FC<{}> = ({}) => {
                 component={Link}
                 href={item.href}
                 key={index}
+                icon={item.icon}
               >
-                <Group spacing="xs" className={styles.wrapper}>
-                  {item.icon}
-                  <div>{item.text(locale)}</div>
-                </Group>
+                {item.text(locale)}
               </Menu.Item>
             ))}
-          <Menu.Item onClick={handleSignOut}>
-            <Group spacing="xs" className={styles.wrapper}>
-              <Group className={styles.wrapper}>
-                <Logout color="var(--secondary)" size={20} />
-                <div>
-                  {locale.mainHeaderLinks.profileLinks.signOut}
-                </div>
-              </Group>
-            </Group>
+          <Menu.Divider />
+          <Menu.Label className={styles.label}>
+            {'Аккаунт'}
+          </Menu.Label>
+
+          <Menu.Item
+            onClick={handleSignOut}
+            icon={<Logout color="var(--secondary)" size={20} />}
+          >
+            {locale.mainHeaderLinks.profileLinks.signOut}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
