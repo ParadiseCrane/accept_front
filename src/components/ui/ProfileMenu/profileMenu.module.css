@@ -1,6 +1,8 @@
 .wrapper {
-  flex-wrap: nowrap;
-  gap: var(--spacer-xs);
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  /* gap: 5px */
 }
 
 .label {
