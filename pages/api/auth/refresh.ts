@@ -19,7 +19,7 @@ export default async function refresh(
       const data = await response.json();
       res.setHeader('Set-Cookie', [
         createTokenCookie(
-          'access_token_cookie',
+          'access_token',
           data['new_access_token'],
           data['new_access_token_max_age']
         ),

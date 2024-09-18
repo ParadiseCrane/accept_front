@@ -1,10 +1,8 @@
+import { getCookieValue } from '@utils/cookies';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { env } from 'process';
 
 const url = env.API_ENDPOINT + '/api/whoami';
-
-const getCookieValue = (cookies: string, name: string) =>
-  cookies.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop();
 
 export default async function whoami(
   req: NextApiRequest,
@@ -15,10 +13,7 @@ export default async function whoami(
     const access_token = getCookieValue(cookies, 'access_token');
 
     const response = await fetch(url, {
-      headers: {
-        cookie: cookies,
-        Authorization: `Bearer ${access_token}`,
-      } as {
+      headers: req.headers as {
         [key: string]: string;
       },
     });

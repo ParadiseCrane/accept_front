@@ -31,3 +31,6 @@ export const clearCookie = (name: string) => {
     'Max-Age': 0,
   });
 };
+
+export const getCookieValue = (cookies: string, name: string) =>
+  cookies.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop();

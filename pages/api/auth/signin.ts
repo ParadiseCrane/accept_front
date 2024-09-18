@@ -1,11 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { env } from 'process';
 import { createTokenCookie } from '@utils/createTokenCookie';
+import { getCookieValue } from '@utils/cookies';
 
 const url = env.API_ENDPOINT + '/api/login';
-
-const getCookieValue = (cookies: string, name: string) =>
-  cookies.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop();
 
 export default async function signIn(
   req: NextApiRequest,

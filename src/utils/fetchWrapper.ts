@@ -1,6 +1,7 @@
 import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
+import { getCookieValue } from './cookies';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -18,6 +19,10 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     props;
   const fetchMethod = method || 'GET';
   const fetch_url = `${getApiUrl()}/${url}`;
+  const access_token = getCookieValue(
+    req.headers.cookie || '',
+    'access_token'
+  );
   const fetch_data = {
     method: fetchMethod,
     credentials: 'include' as RequestCredentials,
@@ -30,6 +35,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   };
   let response = await fetch(fetch_url, fetch_data);
@@ -49,7 +55,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
 
         res.setHeader('Set-Cookie', [
           createTokenCookie(
-            'access_token_cookie',
+            'access_token',
             refresh_data['new_access_token'],
             refresh_data['new_access_token_max_age']
           ),
@@ -60,7 +66,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
           headers: {
             ...fetch_data.headers,
             cookie:
-              `access_token_cookie=${refresh_data['new_access_token']};` +
+              `access_token=${refresh_data['new_access_token']};` +
               fetch_data.headers.cookie,
           },
         });

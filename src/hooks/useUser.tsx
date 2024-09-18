@@ -2,6 +2,7 @@ import { accessLevels } from '@constants/protectedRoutes';
 import {
   IUser,
   IUserContext,
+  IUserOrganization,
   IWhoAmIResponse,
 } from '@custom-types/data/IUser';
 import { isSuccessful, sendRequest } from '@requests/request';
@@ -23,53 +24,24 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
 }) => {
   const whoAmI = useCallback(async () => {
     const cookie_user = getCookie('user');
-    if (!cookie_user) {
-      const res = await sendRequest<{}, IWhoAmIResponse>(
-        'auth/whoami',
-        'GET'
-      );
-      if (!res.error) {
-        const user = res.response.current_user;
-        const accessLevel = user.role.accessLevel;
-        setCookie('user', JSON.stringify(user), {
-          path: '/',
-        });
+    const cookie_accounts = getCookie('accounts');
 
-        setValue((prev) => ({
-          ...prev,
-          authorized: true,
-          user: user,
-          accessLevel,
-          accounts: res.response.users,
-          isUser: user.role.accessLevel >= accessLevels.user,
-          isStudent: accessLevel >= accessLevels.student,
-          isTeacher: accessLevel >= accessLevels.teacher,
-          isAdmin: accessLevel >= accessLevels.admin,
-          isDeveloper: accessLevel >= accessLevels.student,
-        }));
-      } else {
-        setValue((prev) => ({
-          ...prev,
-          authorized: false,
-          user: undefined,
-          accounts: [],
-          accessLevel: 0,
-          isUser: false,
-          isStudent: false,
-          isTeacher: false,
-          isAdmin: false,
-          isDeveloper: false,
-        }));
-      }
-    } else {
+    // if user is saved
+    if (
+      typeof cookie_user === 'string' &&
+      typeof cookie_accounts === 'string'
+    ) {
       try {
         const user = JSON.parse(cookie_user) as IUser;
-        // TODO accounts
+        const accounts = JSON.parse(
+          cookie_accounts
+        ) as IUserOrganization[];
 
         setValue((prev) => ({
           ...prev,
           authorized: true,
           user: user,
+          accounts: accounts,
           accessLevel: user.role.accessLevel,
           isUser: user.role.accessLevel >= accessLevels.user,
           isStudent: user.role.accessLevel >= accessLevels.student,
@@ -82,7 +54,55 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
         setCookie('user', '', { 'max-age': 0 });
         whoAmI();
       }
+      return;
     }
+    // fetch whoami
+    const res = await sendRequest<{}, IWhoAmIResponse>(
+      'auth/whoami',
+      'GET'
+    );
+    // if error empty current data
+    if (res.error) {
+      setValue((prev) => ({
+        ...prev,
+        authorized: false,
+        user: undefined,
+        accounts: [],
+        accessLevel: 0,
+        isUser: false,
+        isStudent: false,
+        isTeacher: false,
+        isAdmin: false,
+        isDeveloper: false,
+      }));
+      return;
+    }
+    const user = res.response.current_user;
+    const accounts = res.response.users;
+    const accessLevel = user.role.accessLevel;
+    setCookie('user', JSON.stringify(user), {
+      Path: '/',
+      SameSite: 'Strict',
+    });
+
+    setCookie('accounts', JSON.stringify(accounts), {
+      Path: '/',
+      SameSite: 'Strict',
+    });
+
+    setValue((prev) => ({
+      ...prev,
+      authorized: true,
+      user: user,
+      accessLevel,
+      accounts: res.response.users,
+      isUser: user.role.accessLevel >= accessLevels.user,
+      isStudent: accessLevel >= accessLevels.student,
+      isTeacher: accessLevel >= accessLevels.teacher,
+      isAdmin: accessLevel >= accessLevels.admin,
+      isDeveloper: accessLevel >= accessLevels.student,
+    }));
+    return;
   }, []);
 
   const refresh = useCallback(async () => {
@@ -113,7 +133,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   const signOut = useCallback(async () => {
     const res = await isSuccessful('auth/signout', 'GET');
     if (!res.error) {
-      clearCookie('access_token_cookie');
+      clearCookie('access_token');
       clearCookie('user');
       setValue((prev) => ({
         ...prev,
@@ -133,11 +153,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (getCookie('access_token_cookie')) {
+    if (getCookie('access_token')) {
       whoAmI();
       return 0;
     }
-    if (getCookie('refresh_token_cookie')) {
+    if (getCookie('refresh_token')) {
       refresh();
       return 1;
     }
@@ -157,11 +177,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [refresh, whoAmI]);
 
   const checkTokensExpiration = useCallback(() => {
-    if (!!!getCookie('refresh_token_cookie')) {
+    if (!!!getCookie('refresh_token')) {
       whoAmI();
       return;
     }
-    if (!!!getCookie('access_token_cookie')) {
+    if (!!!getCookie('access_token')) {
       refresh();
       return;
     }

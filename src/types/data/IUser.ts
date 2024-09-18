@@ -15,7 +15,7 @@ export interface IWhoAmIResponse {
 }
 
 export interface IUserOrganization {
-  user: string;
+  login: string;
   organization: string;
 }
 

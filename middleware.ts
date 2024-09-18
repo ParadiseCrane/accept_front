@@ -57,12 +57,12 @@ export async function middleware(request: NextRequest) {
     const access = protectedRoutesInfo[route];
 
     const access_token = request.cookies.get(
-      'access_token_cookie'
+      'access_token'
       //@ts-ignore
     )?.value;
 
     const headers = access_token
-      ? { Cookie: `access_token_cookie=${access_token}` }
+      ? { Cookie: `access_token=${access_token}` }
       : undefined;
 
     const accepted = await access(

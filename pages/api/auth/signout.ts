@@ -20,9 +20,8 @@ export default async function signOut(
       res.setHeader(keyArr[0], keyArr[1] as string)
     );
     res.setHeader('Set-Cookie', [
-      createTokenCookie('access_token_cookie', ''),
-      createTokenCookie('refresh_token_cookie', ''),
-      createTokenCookie('hero', 'Evgenich_bug_in_Maxim', 5),
+      createTokenCookie('access_token', '', undefined),
+      createTokenCookie('refresh_token', '', undefined),
     ]);
     res.status(200).send('Success');
   } catch {

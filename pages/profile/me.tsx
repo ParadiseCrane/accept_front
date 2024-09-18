@@ -29,9 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const response = await fetch(`${API_URL}/api/bundle/profile`, {
-    headers: {
-      cookie: req.headers.cookie,
-    } as { [key: string]: string },
+    headers: req.headers as { [key: string]: string },
   });
 
   if (response.status === 200) {
