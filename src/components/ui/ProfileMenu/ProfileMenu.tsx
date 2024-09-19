@@ -120,7 +120,8 @@ const ProfileMenu: FC<{}> = ({}) => {
           </Menu.Label>
 
           <Menu.Item
-            onClick={handleSignOut}
+            component={Link}
+            href={'/add_account'}
             icon={<Plus color="var(--secondary)" size={20} />}
           >
             {'Добавить аккаунт'}
