@@ -134,6 +134,9 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     const res = await isSuccessful('auth/signout', 'GET');
     if (!res.error) {
       clearCookie('access_token');
+      clearCookie('refresh_token');
+      clearCookie('session_id');
+      clearCookie('accounts');
       clearCookie('user');
       setValue((prev) => ({
         ...prev,
@@ -153,7 +156,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (getCookie('access_token')) {
+    if (getCookie('access_token') && getCookie('accounts')) {
       whoAmI();
       return 0;
     }
@@ -176,13 +179,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     return 2;
   }, [refresh, whoAmI]);
 
-  const checkTokensExpiration = useCallback(() => {
+  const checkTokensExpiration = useCallback(async () => {
     if (!!!getCookie('refresh_token')) {
-      whoAmI();
+      await whoAmI();
       return;
     }
     if (!!!getCookie('access_token')) {
-      refresh();
+      await refresh();
       return;
     }
   }, [refresh, whoAmI]);
