@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useLocale } from '@hooks/useLocale';
-import { Button, UserAvatar } from '@ui/basics';
+import { Button } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
 import { useRouter } from 'next/router';
 import ProfileMenu from '@ui/ProfileMenu/ProfileMenu';

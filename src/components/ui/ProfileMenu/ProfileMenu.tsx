@@ -1,5 +1,5 @@
-import { FC, memo, useCallback, useEffect } from 'react';
-import { Group, Menu } from '@mantine/core';
+import { FC, memo, useCallback } from 'react';
+import { Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
 import {
