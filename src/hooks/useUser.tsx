@@ -156,11 +156,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (getCookie('access_token') && getCookie('accounts')) {
+    if (!!getCookie('access_token')) {
       whoAmI();
       return 0;
     }
-    if (getCookie('refresh_token')) {
+    if (!!getCookie('refresh_token')) {
       refresh();
       return 1;
     }
