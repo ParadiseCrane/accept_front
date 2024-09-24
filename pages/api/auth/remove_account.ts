@@ -8,7 +8,7 @@ export default async function SignUp(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/remove_account/${req.body.login}`,
+    url: 'api/remove_account',
     method: 'DELETE',
   });
 }

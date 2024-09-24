@@ -5,9 +5,11 @@ import { useLocale } from '@hooks/useLocale';
 import Link from 'next/link';
 import styles from './logo.module.css';
 import { useHotkeys } from '@mantine/hooks';
+import { useUser } from '@hooks/useUser';
 
 const Logo: FC = () => {
   const { locale } = useLocale();
+  const { user } = useUser();
   const [jumpItem, setJumpItem] = useState('');
   let letters = useMemo(
     () => locale.accept.split(''),
@@ -43,6 +45,9 @@ const Logo: FC = () => {
           </span>
         ))}
       </div>
+      <span style={{ fontSize: 'var(--font-size-s)' }}>
+        {user?.organization}
+      </span>
     </Link>
   );
 };

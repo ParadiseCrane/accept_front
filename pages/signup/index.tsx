@@ -19,7 +19,6 @@ import {
 } from 'tabler-icons-react';
 import { PasswordInput, TextInput } from '@ui/basics';
 import Stepper from '@ui/Stepper/Stepper';
-import { useWidth } from '@hooks/useWidth';
 import { rem } from '@mantine/core';
 
 const stepFields = [
@@ -31,7 +30,6 @@ const stepFields = [
 function SignUp() {
   const { locale, lang } = useLocale();
   const router = useRouter();
-  const { width } = useWidth();
 
   const form = useForm({
     initialValues: {

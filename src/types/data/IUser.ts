@@ -10,7 +10,7 @@ export interface Role {
 }
 
 export interface IWhoAmIResponse {
-  current_user: IUserDisplay;
+  current_user: IUserOrgDisplay;
   users: IUserOrganization[];
 }
 
@@ -29,10 +29,9 @@ export interface IUser {
   groups: IGroup[];
   role: Role;
 }
-
 export interface IUserContext {
   authorized: boolean;
-  user: IUserDisplay | undefined | null;
+  user: IUserOrgDisplay | undefined | null;
   accounts: IUserOrganization[];
   accessLevel: number;
   isUser: boolean;
@@ -64,6 +63,10 @@ export interface IUserDisplay {
   login: string;
   role: IRole;
   shortName: string;
+}
+
+export interface IUserOrgDisplay extends IUserDisplay {
+  organization: string;
 }
 
 export interface IParticipant extends IUserDisplay {

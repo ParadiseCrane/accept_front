@@ -1,7 +1,7 @@
 import { accessLevels } from '@constants/protectedRoutes';
 import {
-  IUser,
   IUserContext,
+  IUserOrgDisplay,
   IUserOrganization,
   IWhoAmIResponse,
 } from '@custom-types/data/IUser';
@@ -32,7 +32,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
       typeof cookie_accounts === 'string'
     ) {
       try {
-        const user = JSON.parse(cookie_user) as IUser;
+        const user = JSON.parse(cookie_user) as IUserOrgDisplay;
         const accounts = JSON.parse(
           cookie_accounts
         ) as IUserOrganization[];

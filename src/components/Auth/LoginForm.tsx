@@ -137,7 +137,7 @@ const LoginForm: FC<{
           label={'Организация'} // TODO add locale
           data={organizations || []}
           disabled={!!!organizations || organizations_loading}
-          placeholder={'Выберете организацию'} // TODO add locale
+          placeholder={'Выберите организацию'} // TODO add locale
           classNames={{
             label: styles.label,
           }}

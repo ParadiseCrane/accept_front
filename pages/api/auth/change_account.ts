@@ -13,12 +13,14 @@ export default async function changeAccount(
   const access_token = getCookieValue(cookies, 'access_token');
 
   const headers = {
+    'content-type': 'application/json',
     cookie: cookies,
     Authorization: `Bearer ${access_token}`,
   };
 
-  const response = await fetch(url + `/${req.body.login}`, {
+  const response = await fetch(url, {
     method: 'PUT',
+    body: JSON.stringify(req.body),
     headers: headers as { [key: string]: string },
   });
   if (response.status === 200) {
@@ -27,10 +29,10 @@ export default async function changeAccount(
       createTokenCookie(
         'access_token',
         data['access_token'],
-        new Date(data['access_token_expires'])
+        new Date(data['expiration'])
       ),
     ]);
-    return res.status(200).send('Success');
+    return res.status(200).json(data);
   }
   return res.status(401).send('error');
 }

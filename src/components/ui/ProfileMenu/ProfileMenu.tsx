@@ -47,35 +47,39 @@ const ProfileMenu: FC<{}> = ({}) => {
   }, [locale, signOut]);
 
   const changeAccount = useCallback(
-    (login: string) => {
+    (login: string, organization: string) => {
       return () =>
-        sendRequest<{ login: string }, object>(
+        sendRequest<{ login: string; organization: string }, object>(
           '/auth/change_account',
           'POST',
-          { login }
+          { login, organization }
         ).then((res) => {
           if (!res.error) {
             clearCookie('user');
             refreshAccess();
+            window.location.reload();
           }
         });
     },
     [refreshAccess]
   );
 
-  const removeAccount = useCallback((login: string) => {
-    return () =>
-      sendRequest<{ login: string }, object>(
-        '/auth/remove_account',
-        'PUT',
-        { login }
-      ).then((res) => {
-        if (!res.error) {
-          clearCookie('accounts');
-          refreshAccess();
-        }
-      });
-  }, []);
+  const removeAccount = useCallback(
+    (login: string, organization: string) => {
+      return () =>
+        sendRequest<{ login: string; organization: string }, object>(
+          '/auth/remove_account',
+          'PUT',
+          { login, organization }
+        ).then((res) => {
+          if (!res.error) {
+            clearCookie('accounts');
+            refreshAccess();
+          }
+        });
+    },
+    [refreshAccess]
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -153,7 +157,10 @@ const ProfileMenu: FC<{}> = ({}) => {
                         alignItems: 'center',
                         gap: 'var(--spacer-xs)',
                       }}
-                      onClick={changeAccount(item.login)}
+                      onClick={changeAccount(
+                        item.login,
+                        item.organization
+                      )}
                     >
                       <UserAvatar
                         radius="md"
@@ -165,7 +172,10 @@ const ProfileMenu: FC<{}> = ({}) => {
                     </button>
                     <Icon
                       size="xs"
-                      onClick={removeAccount(item.login)}
+                      onClick={removeAccount(
+                        item.login,
+                        item.organization
+                      )}
                     >
                       <Trash color="#00000060" />
                     </Icon>

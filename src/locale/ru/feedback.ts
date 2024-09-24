@@ -17,7 +17,7 @@ export const feedback = {
     message: 'Сообщение',
     title: 'Заголовок',
     validation: {
-      subject: 'Выберете тему',
+      subject: 'Выберите тему',
       message: 'Сообщение не должно быть короче 5 символов',
       title: 'Заголовок не должен быть короче 5 символов',
     },
@@ -29,7 +29,7 @@ export const feedback = {
     },
     requestViewed: {
       loading: 'Загрузка',
-      error: 'Ошибка при отмечании просмотренным',
+      error: 'Ошибка!',
     },
   },
 };
