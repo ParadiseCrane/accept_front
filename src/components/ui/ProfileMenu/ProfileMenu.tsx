@@ -8,16 +8,19 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator, UserAvatar } from '@ui/basics';
+import { Icon, Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
-import { Logout, Plus } from 'tabler-icons-react';
+import { Logout, Plus, Trash } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
+import { sendRequest } from '@requests/request';
+import { clearCookie } from '@utils/cookies';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel, accounts } = useUser();
+  const { user, signOut, accessLevel, accounts, refreshAccess } =
+    useUser();
 
   const { unviewed } = useBackNotifications();
 
@@ -42,6 +45,37 @@ const ProfileMenu: FC<{}> = ({}) => {
       }
     });
   }, [locale, signOut]);
+
+  const changeAccount = useCallback(
+    (login: string) => {
+      return () =>
+        sendRequest<{ login: string }, object>(
+          '/auth/change_account',
+          'POST',
+          { login }
+        ).then((res) => {
+          if (!res.error) {
+            clearCookie('user');
+            refreshAccess();
+          }
+        });
+    },
+    [refreshAccess]
+  );
+
+  const removeAccount = useCallback((login: string) => {
+    return () =>
+      sendRequest<{ login: string }, object>(
+        '/auth/remove_account',
+        'PUT',
+        { login }
+      ).then((res) => {
+        if (!res.error) {
+          clearCookie('accounts');
+          refreshAccess();
+        }
+      });
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -97,18 +131,45 @@ const ProfileMenu: FC<{}> = ({}) => {
               </Menu.Label>
 
               {accounts.map((item, index) => (
-                <Menu.Item
-                  key={index}
-                  icon={
-                    <UserAvatar
-                      radius="md"
-                      size="md"
-                      login={item.login}
-                      alt={'Users avatar'}
-                    />
-                  }
-                >
-                  {item.organization}
+                <Menu.Item key={index} component="div">
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <button
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        color: 'inherit',
+                        padding: 0,
+                        font: 'inherit',
+                        outline: 'inherit',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 'var(--spacer-xs)',
+                      }}
+                      onClick={changeAccount(item.login)}
+                    >
+                      <UserAvatar
+                        radius="md"
+                        size="md"
+                        login={item.login}
+                        alt={'Users avatar'}
+                      />
+                      {item.organization}
+                    </button>
+                    <Icon
+                      size="xs"
+                      onClick={removeAccount(item.login)}
+                    >
+                      <Trash color="#00000060" />
+                    </Icon>
+                  </div>
                 </Menu.Item>
               ))}
             </>
