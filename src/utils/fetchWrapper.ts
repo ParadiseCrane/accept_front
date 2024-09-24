@@ -2,6 +2,7 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
 import { getCookieValue } from './cookies';
+import { IUserOrgDisplay } from '@custom-types/data/IUser';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -30,8 +31,8 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
       fetchMethod == 'GET'
         ? null
         : customBody
-        ? JSON.stringify(customBody)
-        : JSON.stringify(req.body),
+          ? JSON.stringify(customBody)
+          : JSON.stringify(req.body),
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,
@@ -41,11 +42,38 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
   let response = await fetch(fetch_url, fetch_data);
 
   if (response.status == 401 || response.status == 403) {
+    const session = getCookieValue(
+      req.headers.cookie || '',
+      'session_id'
+    );
+
+    const cookie_user = getCookieValue(
+      req.headers.cookie || '',
+      'user'
+    );
+    if (typeof cookie_user !== 'string') {
+      if (!!!notWriteToRes) {
+        const data = await response.json();
+
+        res.status(response.status).json(data);
+      }
+      return response;
+    }
+    const user = JSON.parse(cookie_user) as IUserOrgDisplay;
+
     try {
       const refresh_response = await fetch(refresh_url, {
         method: 'POST',
         credentials: 'include',
-        headers: { cookie: req.headers.cookie } as {
+        body: JSON.stringify({
+          session,
+          login: user.login,
+          organization: user.organization,
+        }),
+        headers: {
+          cookie: req.headers.cookie,
+          'content-type': 'application/json',
+        } as {
           [key: string]: string;
         },
       });
@@ -56,8 +84,8 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
         res.setHeader('Set-Cookie', [
           createTokenCookie(
             'access_token',
-            refresh_data['new_access_token'],
-            refresh_data['new_access_token_max_age']
+            refresh_data['access_token'],
+            new Date(refresh_data['expiration'])
           ),
         ]);
 
@@ -65,9 +93,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
           ...fetch_data,
           headers: {
             ...fetch_data.headers,
-            cookie:
-              `access_token=${refresh_data['new_access_token']};` +
-              fetch_data.headers.cookie,
+            Authorization: `Bearer ${refresh_data['access_token']}`,
           },
         });
       }

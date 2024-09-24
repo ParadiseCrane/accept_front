@@ -45,7 +45,13 @@ const Logo: FC = () => {
           </span>
         ))}
       </div>
-      <span style={{ fontSize: 'var(--font-size-s)' }}>
+      <span
+        style={{
+          fontSize: 'var(--font-size-s)',
+          alignSelf: 'start',
+          color: 'var(--secondary)',
+        }}
+      >
         {user?.organization}
       </span>
     </Link>
