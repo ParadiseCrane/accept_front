@@ -6,6 +6,7 @@ import Link from 'next/link';
 import styles from './logo.module.css';
 import { useHotkeys } from '@mantine/hooks';
 import { useUser } from '@hooks/useUser';
+import { Badge } from '@mantine/core';
 
 const Logo: FC = () => {
   const { locale } = useLocale();
@@ -45,15 +46,16 @@ const Logo: FC = () => {
           </span>
         ))}
       </div>
-      <span
-        style={{
-          fontSize: 'var(--font-size-s)',
-          alignSelf: 'start',
-          color: 'var(--secondary)',
-        }}
-      >
-        {user?.organization}
-      </span>
+      {user?.organization && (
+        <Badge
+          style={{
+            alignSelf: 'start',
+          }}
+          size="md"
+        >
+          {user?.organization}
+        </Badge>
+      )}
     </Link>
   );
 };
