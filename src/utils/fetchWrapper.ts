@@ -61,43 +61,38 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     }
     const user = JSON.parse(cookie_user) as IUserOrgDisplay;
 
-    try {
-      const refresh_response = await fetch(refresh_url, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify({
-          session,
-          login: user.login,
-          organization: user.organization,
-        }),
-        headers: {
-          cookie: req.headers.cookie,
-          'content-type': 'application/json',
-        } as {
-          [key: string]: string;
-        },
-      });
+    const refresh_token = getCookieValue(
+      req.headers.cookie || '',
+      'refresh_token'
+    );
 
-      if (refresh_response.status === 200) {
-        const refresh_data = await refresh_response.json();
+    const refresh_response = await fetch(refresh_url, {
+      method: 'GET',
+      headers: { refresh_token } as { [key: string]: string },
+    });
 
-        res.setHeader('Set-Cookie', [
-          createTokenCookie(
-            'access_token',
-            refresh_data['access_token'],
-            new Date(refresh_data['expiration'])
-          ),
-        ]);
+    if (refresh_response.status !== 200) return;
 
-        response = await fetch(fetch_url, {
-          ...fetch_data,
-          headers: {
-            ...fetch_data.headers,
-            Authorization: `Bearer ${refresh_data['access_token']}`,
-          },
-        });
-      }
-    } catch {}
+    const refresh_data = await refresh_response.json();
+    res.setHeader('Set-Cookie', [
+      createTokenCookie(
+        'access_token',
+        refresh_data['access_token'],
+        new Date(refresh_data['access_token_expires'])
+      ),
+      createTokenCookie(
+        'refresh_token',
+        refresh_data['refresh_token'],
+        new Date(refresh_data['refresh_token_expires'])
+      ),
+    ]);
+    response = await fetch(fetch_url, {
+      ...fetch_data,
+      headers: {
+        ...fetch_data.headers,
+        Authorization: `Bearer ${refresh_data['access_token']}`,
+      },
+    });
   }
 
   if (!!!notWriteToRes) {

@@ -50,6 +50,11 @@ export default async function signIn(
           new Date(data['access_token_expires'])
         ),
         createTokenCookie(
+          'refresh_token',
+          data['refresh_token'],
+          new Date(data['refresh_token_expires'])
+        ),
+        createTokenCookie(
           'session_id',
           data['session_id'],
           undefined

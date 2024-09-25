@@ -106,8 +106,6 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refresh = useCallback(async () => {
-    // TODO
-    return;
     const res = await isSuccessful('auth/refresh', 'GET');
     if (!res.error) {
       await whoAmI();
