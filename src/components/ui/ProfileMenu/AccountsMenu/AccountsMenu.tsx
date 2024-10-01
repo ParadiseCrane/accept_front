@@ -77,7 +77,6 @@ const AccountsMenu: FC<{}> = ({}) => {
             clearCookie('user');
             clearCookie('accounts');
             refreshAccess();
-            window.location.reload();
           }
         });
     },
@@ -135,22 +134,16 @@ const AccountsMenu: FC<{}> = ({}) => {
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                 }}
               >
-                <button
+                <div
                   style={{
-                    border: 'none',
-                    background: 'none',
-                    color: 'inherit',
-                    padding: 0,
-                    font: 'inherit',
-                    outline: 'inherit',
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 'var(--spacer-xs)',
+                    width: '100%',
                   }}
                   onClick={changeAccount(
                     item.login,
@@ -164,7 +157,7 @@ const AccountsMenu: FC<{}> = ({}) => {
                     alt={'Users avatar'}
                   />
                   {item.organization}
-                </button>
+                </div>
                 <Icon
                   size="xs"
                   onClick={removeAccount(

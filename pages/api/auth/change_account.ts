@@ -28,7 +28,7 @@ export default async function changeAccount(
     res.setHeader('Set-Cookie', [
       createTokenCookie(
         'access_token',
-        data['access_token'],
+        data['token'],
         new Date(data['expiration'])
       ),
     ]);
