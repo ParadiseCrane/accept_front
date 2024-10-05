@@ -16,17 +16,17 @@ import Link from 'next/link';
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
+  // TODO переделать обратно на const после выполнения задачи
   let { user, signOut, accessLevel, accounts, refreshAccess } =
     useUser();
 
   // TODO remove this
   // множу аккаунты, чтобы сделать меню
-  // accounts = [...accounts, ...accounts, ...accounts];
+  // accounts = [accounts[0]];
   // console.log(accounts);
   // console.log(user);
 
   const filteredAccounts = accounts.filter(function (value) {
-    console.log(value);
     if (
       !(
         value.login == user?.login &&
@@ -165,52 +165,60 @@ const AccountsMenu: FC<{}> = ({}) => {
         </Menu.Label>
         <Menu.Divider />
 
-        {accounts.map((item, index) => (
-          <div key={index}>
-            <Menu.Item component="div">
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
+        <div className={styles.dropdown_account_list_wrapper}>
+          {accounts.map((item, index) => (
+            <div key={index}>
+              <Menu.Item component="div">
                 <div
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 'var(--spacer-xs)',
-                    width: '100%',
                   }}
-                  onClick={changeAccount(
-                    item.login,
-                    item.organization
-                  )}
                 >
-                  <UserAvatar
-                    radius="md"
-                    size="md"
-                    login={item.login}
-                    alt={'Users avatar'}
-                  />
-                  {item.organization}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 'var(--spacer-xs)',
+                      width: '100%',
+                    }}
+                    onClick={changeAccount(
+                      item.login,
+                      item.organization
+                    )}
+                  >
+                    <UserAvatar
+                      radius="md"
+                      size="md"
+                      login={item.login}
+                      alt={'Users avatar'}
+                    />
+                    {item.organization}
+                  </div>
+                  <Icon
+                    size="xs"
+                    onClick={removeAccount(
+                      item.login,
+                      item.organization
+                    )}
+                  >
+                    <Trash color="#00000060" />
+                  </Icon>
                 </div>
-                <Icon
-                  size="xs"
-                  onClick={removeAccount(
-                    item.login,
-                    item.organization
-                  )}
-                >
-                  <Trash color="#00000060" />
-                </Icon>
-              </div>
-            </Menu.Item>
-            <Menu.Divider />
-          </div>
-        ))}
+              </Menu.Item>
+              <Menu.Divider
+                // если элемент в списке последний, то мы не отображаем divider
+                style={{
+                  display: index == accounts.length - 1 ? 'none' : '',
+                }}
+              />
+            </div>
+          ))}
+        </div>
 
+        <Menu.Divider />
         <Menu.Item
           component={Link}
           href={'/add_account'}

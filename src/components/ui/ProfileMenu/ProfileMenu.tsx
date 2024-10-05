@@ -5,7 +5,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useBackNotifications } from '@hooks/useBackNotifications';
 import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
-import { Logout } from 'tabler-icons-react';
+import { Logout, Plus } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
@@ -13,7 +13,10 @@ import AccountsMenu from './AccountsMenu/AccountsMenu';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel } = useUser();
+  // TODO переделать обратно на const после выполнения задачи
+  let { user, signOut, accessLevel, accounts } = useUser();
+
+  // accounts = [accounts[0]];
 
   const { unviewed } = useBackNotifications();
 
@@ -58,6 +61,20 @@ const ProfileMenu: FC<{}> = ({}) => {
                 {item.text(locale)}
               </Menu.Item>
             ))}
+
+          {/* TODO пока вставил сюда без локализации
+              потом исправить и сделать нормально
+              в каком порядке должны идти кнопки? 
+              то есть после какой добавить кнопку "Добавить аккаунт"?
+           */}
+          <Menu.Item
+            component={Link}
+            href={'/add_account'}
+            icon={<Plus color="var(--secondary)" size={20} />}
+            style={{ display: accounts.length == 1 ? '' : 'none' }}
+          >
+            {'Добавить аккаунт'}
+          </Menu.Item>
 
           <Menu.Divider />
           <Menu.Item

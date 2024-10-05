@@ -10,7 +10,11 @@ interface AvatarProps extends MantineAvatarProps {
   login?: string;
   organization?: string;
 }
-
+// TODO продолжить добавление организаций
+// какие данные как запрашивать?
+// есть ли отдельный запрос только для людей с логином? только для людей с организацией?
+// для людей с логином и организацией?
+// какие запросы отвечают за каждый из вариантов?
 const UserAvatar: FC<AvatarProps> = ({
   login,
   organization,
