@@ -8,12 +8,17 @@ import { FC, memo } from 'react';
 
 interface AvatarProps extends MantineAvatarProps {
   login?: string;
+  organization?: string;
 }
 
-const UserAvatar: FC<AvatarProps> = ({ login, ...props }) => {
+const UserAvatar: FC<AvatarProps> = ({
+  login,
+  organization,
+  ...props
+}) => {
   return (
     <MantineAvatar
-      src={login ? link(login) : undefined}
+      src={login ? link(login + organization) : undefined}
       size="lg"
       radius="lg"
       {...props}

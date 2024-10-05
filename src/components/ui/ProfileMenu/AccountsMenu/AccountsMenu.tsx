@@ -16,8 +16,34 @@ import Link from 'next/link';
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel, accounts, refreshAccess } =
+  let { user, signOut, accessLevel, accounts, refreshAccess } =
     useUser();
+
+  // TODO remove this
+  // множу аккаунты, чтобы сделать меню
+  // accounts = [...accounts, ...accounts, ...accounts];
+  // console.log(accounts);
+  // console.log(user);
+
+  const filteredAccounts = accounts.filter(function (value) {
+    console.log(value);
+    if (
+      !(
+        value.login == user?.login &&
+        value.organization == user.organization
+      )
+    ) {
+      return value;
+    }
+  });
+
+  // boolean переменная, которая будет контролировать
+  // отображать все три аватарки или 2 аватара +...остаток
+  // то есть третий маленький аватар меняется на +1 / +2 и т.д.
+  const showAccountsLeft: boolean = accounts.length > 3;
+
+  // какое число отображать в кружочке после +
+  const accountsLeftNumber = accounts.length - 2;
 
   const removeSession = useCallback(() => {
     const id = newNotification({
@@ -104,8 +130,11 @@ const AccountsMenu: FC<{}> = ({}) => {
         <div>
           <div className={styles.accounts}>
             {accounts.length > 0 &&
-              accounts
-                .slice(0, Math.min(2, accounts.length))
+              filteredAccounts
+                .slice(
+                  0,
+                  Math.min(showAccountsLeft ? 2 : 3, accounts.length)
+                )
                 .map((item, index) => (
                   <UserAvatar
                     style={{
@@ -117,6 +146,15 @@ const AccountsMenu: FC<{}> = ({}) => {
                     size="sm"
                   />
                 ))}
+            {accounts.length > 3 ? (
+              <div className={styles.accounts_left_wrapper}>
+                <div className={styles.accounts_left}>
+                  +{accountsLeftNumber}
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: 'none' }}></div>
+            )}
           </div>
         </div>
       </Menu.Target>
