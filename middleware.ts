@@ -23,8 +23,8 @@ const isProtected = (route: string): boolean => {
 const PUBLIC_FILE = /\.(.*)$/;
 const SPEC = /\/[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/;
 
-const removeSpec = (pathname: string): [string, string] => {
-  let spec = '';
+const removeSpec = (pathname: string): [string, string?] => {
+  let spec = undefined;
   let path = pathname;
   if (SPEC.test(pathname.toLowerCase())) {
     path = pathname.slice(0, pathname.lastIndexOf('/'));
@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
     )?.value;
 
     const headers = access_token
-      ? { Cookie: `access_token=${access_token}` }
+      ? { Authorization: `Bearer ${access_token}` }
       : undefined;
 
     const accepted = await access(

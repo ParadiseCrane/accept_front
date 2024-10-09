@@ -1,5 +1,6 @@
-import { checkRead, checkWrite } from '@utils/checkAccess';
+import { checkWrapper } from '@utils/checkAccess';
 
+// TODO: SOmehow remove
 export const accessLevels = {
   user: 1,
   student: 2,
@@ -10,76 +11,50 @@ export const accessLevels = {
 
 export const protectedRoutesInfo: {
   [key: string]: (
-    _target: string,
-    _headers: { Cookie: string } | undefined,
+    _entity_spec: string | undefined,
+    _headers: { Authorization: string } | undefined,
     _pathname: string,
     _searchParams?: URLSearchParams
   ) => Promise<string | boolean>;
 } = {
-  '/dashboard/assignment': checkWrite,
-  '/dashboard/tournament': checkWrite,
-  '/tournament': checkRead,
-  '/tournament/add': (_, headers, pathname, searchParams) =>
-    checkWrite('tournament_add', headers, pathname, searchParams),
-  '/tournament/edit': checkWrite,
-  '/edu/assignment_schema/add': (
-    _,
-    headers,
-    pathname,
-    searchParams
-  ) =>
-    checkWrite(
-      'assignment_schema_add',
-      headers,
-      pathname,
-      searchParams
-    ),
-  '/edu/assignment_schema/edit': checkWrite,
-  '/edu/assignment_schema/list': (
-    _,
-    headers,
-    pathname,
-    searchParams
-  ) =>
-    checkRead(
-      'assignment_schema_list',
-      headers,
-      pathname,
-      searchParams
-    ),
-  '/edu/assignment_schema': checkRead,
-  '/edu/assignment': checkRead,
-  '/edu/assignment/add': (_, headers, pathname, searchParams) =>
-    checkWrite('assignment_add', headers, pathname, searchParams),
-  '/edu/assignment/edit': checkWrite,
-  '/group/add': (_, headers, pathname, searchParams) =>
-    checkWrite('group_modification', headers, pathname, searchParams),
-  '/group/edit': (_, headers, pathname, searchParams) =>
-    checkWrite('group_modification', headers, pathname, searchParams),
-  '/notification/add': (_, headers, pathname, searchParams) =>
-    checkWrite('notification_add', headers, pathname, searchParams),
+  // TODO: Check rights
+  '/tournament': checkWrapper('read', 'tournament'),
+  '/tournament/add': checkWrapper('add', 'tournament'),
+  '/tournament/edit': checkWrapper('write', 'tournament'),
+  '/edu/assignment_schema/add': checkWrapper('add', 'assignment_schema'),
+  '/edu/assignment_schema/edit': checkWrapper('write', 'assignment_schema'),
+  '/edu/assignment_schema/list': checkWrapper('read_list', 'assignment_schema'),
+  '/edu/assignment_schema': checkWrapper('read', 'assignment_schema'),
+  '/edu/assignment': checkWrapper('read', 'assignment'),
+  '/edu/assignment/add': checkWrapper('add', 'assignment'),
+  '/edu/assignment/edit': checkWrapper('write', 'assignment'),
+  '/group/add': checkWrapper('add', 'group'),
+  '/group/edit': checkWrapper('write', 'assignment'),
+  '/group/list': checkWrapper('read_list', 'group'),
+  '/notification/add': checkWrapper('add', 'notification'),
   '/task/add': (_, headers, pathname, searchParams) => {
     const tournament_spec = searchParams?.get('tournament');
     if (!tournament_spec)
-      return checkWrite('task_add', headers, pathname, searchParams);
-
-    return checkWrite(
+      return checkWrapper('add', 'task')(
+        undefined,
+        headers,
+        pathname,
+        searchParams
+      );
+    return checkWrapper('moderate', 'tournament')(
       tournament_spec,
       headers,
       pathname,
       searchParams
     );
   },
-  '/task': checkRead,
-  '/task/edit': checkWrite,
-  '/task/tests': checkWrite,
-  '/user/list': (_, headers, pathname, searchParams) =>
-    checkRead('user_list', headers, pathname, searchParams),
-  '/group/list': (_, headers, pathname, searchParams) =>
-    checkRead('group_list', headers, pathname, searchParams),
-  '/dashboard/admin': (_, headers, pathname, searchParams) =>
-    checkRead('admin_dashboard', headers, pathname, searchParams),
-  '/dashboard/developer': (_, headers, pathname, searchParams) =>
-    checkRead('developer_dashboard', headers, pathname, searchParams),
-  '/attempt': checkRead,
+  '/user/list': checkWrapper('read_list', 'user'),
+  '/task': checkWrapper('read', 'task'),
+  '/task/edit': checkWrapper('write', 'task'),
+  '/task/tests': checkWrapper('write', 'task'),
+  '/dashboard/admin': checkWrapper('read', 'admin_dashboard'),
+  '/dashboard/assignment': checkWrapper('moderate', 'assignment'),
+  '/dashboard/developer': checkWrapper('read', 'developer_dashboard'),
+  '/dashboard/tournament': checkWrapper('moderate', 'tournament'),
+  '/attempt': checkWrapper('read', 'attempt'),
 };
