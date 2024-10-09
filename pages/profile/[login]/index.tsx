@@ -43,16 +43,27 @@ export const getServerSideProps: GetServerSideProps = async (
         destination: '/profile/me',
       },
     };
+  const access_token: string = req.cookies['access_token'] || '';
 
-  const login = req.url
-    .slice(req.url.lastIndexOf('/') + 1)
-    .split('.')[0];
+  const login: string | undefined = req.url
+    .split('/')
+    .reverse()
+    .find((v) => v.length != 0);
+
+  if (!!!login) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/404',
+      },
+    };
+  }
 
   const response = await fetch(
     `${API_URL}/api/bundle/profile/${login}`,
     {
       headers: {
-        cookie: req.headers.cookie,
+        Authorization: `Bearer ${access_token}`,
       } as { [key: string]: string },
     }
   );
@@ -74,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (
         attempt_info: profileData.attempt_info,
         task_info: profileData.task_info,
         rating_info: profileData.rating_info,
-      },
+      } as IFullProfileBundle,
     };
   }
   return {

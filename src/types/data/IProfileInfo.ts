@@ -38,9 +38,8 @@ export interface IRatingInfo {
   score: number;
 }
 
-// TODO make fields optional, in case there are no tasks
 export interface IFullProfileBundle extends IMinimalProfileBundle {
   attempt_info: IAttemptInfo;
   task_info: ITaskInfo;
-  rating_info: IRatingInfo;
+  rating_info?: IRatingInfo;
 }

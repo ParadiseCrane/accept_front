@@ -28,8 +28,11 @@ const API_URL = getApiUrl();
 export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
+  const access_token: string = req.cookies['access_token'] || '';
   const response = await fetch(`${API_URL}/api/bundle/profile`, {
-    headers: req.headers as { [key: string]: string },
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
   });
 
   if (response.status === 200) {
@@ -40,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         attempt_info: profileData.attempt_info,
         task_info: profileData.task_info,
         rating_info: profileData.rating_info,
-      },
+      } as IFullProfileBundle,
     };
   }
   return {
