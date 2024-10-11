@@ -2,7 +2,6 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
 import { getCookieValue } from './cookies';
-import { IUserOrgDisplay } from '@custom-types/data/IUser';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -16,14 +15,10 @@ interface FetchWrapperProps {
 const refresh_url = `${getApiUrl()}/api/refresh`;
 
 export const fetchWrapper = async (props: FetchWrapperProps) => {
-  const { req, res, url, method, customBody, notWriteToRes, ..._ } =
-    props;
+  const { req, res, url, method, customBody, notWriteToRes, ..._ } = props;
   const fetchMethod = method || 'GET';
   const fetch_url = `${getApiUrl()}/${url}`;
-  const access_token = getCookieValue(
-    req.headers.cookie || '',
-    'access_token'
-  );
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
   const fetch_data = {
     method: fetchMethod,
     credentials: 'include' as RequestCredentials,
@@ -42,15 +37,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
   let response = await fetch(fetch_url, fetch_data);
 
   if (response.status == 401 || response.status == 403) {
-    const session = getCookieValue(
-      req.headers.cookie || '',
-      'session_id'
-    );
-
-    const cookie_user = getCookieValue(
-      req.headers.cookie || '',
-      'user'
-    );
+    const cookie_user = getCookieValue(req.headers.cookie || '', 'user');
     if (typeof cookie_user !== 'string') {
       if (!!!notWriteToRes) {
         const data = await response.json();
@@ -59,7 +46,6 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
       }
       return response;
     }
-    const user = JSON.parse(cookie_user) as IUserOrgDisplay;
 
     const refresh_token = getCookieValue(
       req.headers.cookie || '',

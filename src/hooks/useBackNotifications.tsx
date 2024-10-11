@@ -30,9 +30,7 @@ interface INotificationContext {
   refetchNewNotifications: () => void;
 }
 
-const BackNotificationsContext = createContext<INotificationContext>(
-  null!
-);
+const BackNotificationsContext = createContext<INotificationContext>(null!);
 
 export const BackNotificationsProvider: FC<{
   children: ReactNode;
@@ -42,15 +40,15 @@ export const BackNotificationsProvider: FC<{
   const { user } = useUser();
 
   const fetchNotifications = useCallback(
-    (skip: boolean) => {
+    (skip?: boolean) => {
       if (!!!user)
         return new Promise((res, _rej) => {
           res(true);
         });
-      return sendRequest<
-        undefined,
-        { unviewed: number; hasNew: boolean }
-      >(`notification/new-info/${skip}`, 'GET').then((res) => {
+      return sendRequest<undefined, { unviewed: number; hasNew: boolean }>(
+        `notification/new-info/${skip || false}`,
+        'GET'
+      ).then((res) => {
         if (!res.error) {
           setUnviewed(res.response.unviewed);
           if (res.response.hasNew) {
@@ -95,7 +93,7 @@ export const BackNotificationsProvider: FC<{
           lang,
           Array.from(new Set(viewed)),
           () => {
-            setTimeout(fetchNotifications, 500);
+            setTimeout(() => fetchNotifications(false), 500);
             onSuccess();
           }
         );

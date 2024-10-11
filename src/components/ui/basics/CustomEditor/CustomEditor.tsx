@@ -1,19 +1,12 @@
 import { useLocale } from '@hooks/useLocale';
-import {
-  FC,
-  ReactNode,
-  memo,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react';
 import { InputWrapper } from '@ui/basics';
 
 const editorConfiguration = {
   simpleUpload: {
     uploadUrl: `/api/image`,
 
-    withCredentials: false,
+    withCredentials: true,
   },
 };
 
@@ -66,9 +59,7 @@ const CustomEditor: FC<{
         ) : (
           <div
             style={{
-              fontSize: shrink
-                ? 'var(--font-size-xs)'
-                : 'var(--font-size-s)',
+              fontSize: shrink ? 'var(--font-size-xs)' : 'var(--font-size-s)',
             }}
           >
             {locale.loading + '...'}
