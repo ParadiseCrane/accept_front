@@ -17,6 +17,7 @@ const ProfileMenu: FC<{}> = ({}) => {
   let { user, signOut, accessLevel, accounts } = useUser();
 
   // accounts = [accounts[0]];
+  // accounts = [...accounts, ...accounts, ...accounts];
 
   const { unviewed } = useBackNotifications();
 

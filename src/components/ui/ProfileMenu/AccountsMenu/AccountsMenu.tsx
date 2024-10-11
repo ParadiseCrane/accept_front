@@ -22,6 +22,10 @@ const AccountsMenu: FC<{}> = ({}) => {
 
   // TODO remove this
   // множу аккаунты, чтобы сделать меню
+  // ПРОБЛЕМА: размеры маленьких аватаров меняется в зависимости от ширины экрана
+  // пока я захаркодил 19.5px, но надо либо сделать для всех установленный размер
+  // либо вычислять размер через id меню (проблема - отслеживать размер через JS затратно)
+  accounts = [...accounts, ...accounts, ...accounts];
   // accounts = [accounts[0]];
   // console.log(accounts);
   // console.log(user);
@@ -128,7 +132,7 @@ const AccountsMenu: FC<{}> = ({}) => {
     >
       <Menu.Target>
         <div>
-          <div className={styles.accounts}>
+          <div className={styles.accounts} id="accounts_menu_id">
             {accounts.length > 0 &&
               filteredAccounts
                 .slice(
@@ -143,6 +147,7 @@ const AccountsMenu: FC<{}> = ({}) => {
                     }}
                     key={index}
                     login={item.login}
+                    // organization={item,}
                     size="sm"
                   />
                 ))}

@@ -15,6 +15,9 @@ interface AvatarProps extends MantineAvatarProps {
 // есть ли отдельный запрос только для людей с логином? только для людей с организацией?
 // для людей с логином и организацией?
 // какие запросы отвечают за каждый из вариантов?
+
+// Dima VK
+// DimaVK
 const UserAvatar: FC<AvatarProps> = ({
   login,
   organization,
