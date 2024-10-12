@@ -33,6 +33,7 @@ const ProfileMenu: FC<{}> = ({}) => {
             <Indicator label={unviewed} disabled={unviewed <= 0}>
               <UserAvatar
                 login={user?.login}
+                organization={user?.organization}
                 alt={'User avatar'}
                 classNames={{ root: styles.avatar }}
               />

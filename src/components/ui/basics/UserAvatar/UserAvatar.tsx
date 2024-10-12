@@ -1,4 +1,5 @@
 import { link } from '@constants/Avatar';
+import { useUser } from '@hooks/useUser';
 import {
   Avatar as MantineAvatar,
   AvatarProps as MantineAvatarProps,
@@ -11,21 +12,17 @@ interface AvatarProps extends MantineAvatarProps {
   organization?: string;
 }
 // TODO продолжить добавление организаций
-// какие данные как запрашивать?
-// есть ли отдельный запрос только для людей с логином? только для людей с организацией?
-// для людей с логином и организацией?
-// какие запросы отвечают за каждый из вариантов?
 
-// Dima VK
-// DimaVK
 const UserAvatar: FC<AvatarProps> = ({
   login,
   organization,
   ...props
 }) => {
+  const { user } = useUser();
+  const organizationLocal = organization ?? user?.organization;
   return (
     <MantineAvatar
-      src={login ? link(login + organization) : undefined}
+      src={login ? link(login + organizationLocal) : undefined}
       size="lg"
       radius="lg"
       {...props}

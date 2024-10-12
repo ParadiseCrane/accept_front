@@ -1,8 +1,8 @@
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
-import { Menu } from '@mantine/core';
-import { Icon, UserAvatar } from '@ui/basics';
-import { FC, memo, useCallback } from 'react';
+import { Avatar as MantineAvatar, Menu } from '@mantine/core';
+import { Icon, Tip, UserAvatar } from '@ui/basics';
+import { FC, memo, useCallback, useState } from 'react';
 import styles from './accountsMenu.module.css';
 import {
   errorNotification,
@@ -25,7 +25,7 @@ const AccountsMenu: FC<{}> = ({}) => {
   // ПРОБЛЕМА: размеры маленьких аватаров меняется в зависимости от ширины экрана
   // пока я захаркодил 19.5px, но надо либо сделать для всех установленный размер
   // либо вычислять размер через id меню (проблема - отслеживать размер через JS затратно)
-  accounts = [...accounts, ...accounts, ...accounts];
+  // accounts = [...accounts, ...accounts, ...accounts];
   // accounts = [accounts[0]];
   // console.log(accounts);
   // console.log(user);
@@ -121,6 +121,8 @@ const AccountsMenu: FC<{}> = ({}) => {
     removeSession();
   }, [accounts.length, removeAccount, removeSession, user]);
 
+  const [showModal, toggleModal] = useState(false);
+
   return (
     <Menu
       // opened={true}
@@ -147,16 +149,21 @@ const AccountsMenu: FC<{}> = ({}) => {
                     }}
                     key={index}
                     login={item.login}
-                    // organization={item,}
+                    organization={item.organization}
                     size="sm"
                   />
                 ))}
             {accounts.length > 3 ? (
-              <div className={styles.accounts_left_wrapper}>
-                <div className={styles.accounts_left}>
-                  +{accountsLeftNumber}
-                </div>
-              </div>
+              <MantineAvatar
+                style={{
+                  marginLeft: '-5px',
+                  outline: '1px solid white',
+                }}
+                radius="lg"
+                size="sm"
+              >
+                +{accountsLeftNumber}
+              </MantineAvatar>
             ) : (
               <div style={{ display: 'none' }}></div>
             )}
@@ -171,7 +178,7 @@ const AccountsMenu: FC<{}> = ({}) => {
         <Menu.Divider />
 
         <div className={styles.dropdown_account_list_wrapper}>
-          {accounts.map((item, index) => (
+          {filteredAccounts.map((item, index) => (
             <div key={index}>
               <Menu.Item component="div">
                 <div
@@ -198,19 +205,32 @@ const AccountsMenu: FC<{}> = ({}) => {
                       radius="md"
                       size="md"
                       login={item.login}
+                      organization={item.organization}
                       alt={'Users avatar'}
                     />
                     {item.organization}
                   </div>
-                  <Icon
-                    size="xs"
-                    onClick={removeAccount(
-                      item.login,
-                      item.organization
-                    )}
-                  >
-                    <Trash color="#00000060" />
-                  </Icon>
+                  {/* TODO add locale */}
+                  <Tip position="bottom" label={'Выйти из аккаунта'}>
+                    <Icon
+                      size="xs"
+                      onClick={removeAccount(
+                        item.login,
+                        item.organization
+                      )}
+                      className={styles.trash_icon}
+                    >
+                      <Trash color="#00000060" />
+                    </Icon>
+                    {/* <ConfirmLogoutModal
+                      confirm={() => {
+                        removeAccount(item.login, item.organization);
+                      }}
+                      iconStyle={styles.trash_icon}
+                    >
+                      text
+                    </ConfirmLogoutModal> */}
+                  </Tip>
                 </div>
               </Menu.Item>
               <Menu.Divider
