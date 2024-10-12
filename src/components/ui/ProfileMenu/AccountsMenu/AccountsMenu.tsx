@@ -1,7 +1,7 @@
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Avatar as MantineAvatar, Menu } from '@mantine/core';
-import { Icon, Tip, UserAvatar } from '@ui/basics';
+import { Tip, UserAvatar } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';
 import styles from './accountsMenu.module.css';
 import {
@@ -11,8 +11,9 @@ import {
 } from '@utils/notificationFunctions';
 import { sendRequest } from '@requests/request';
 import { clearCookie } from '@utils/cookies';
-import { Logout, Plus, Trash } from 'tabler-icons-react';
+import { Logout, Plus } from 'tabler-icons-react';
 import Link from 'next/link';
+import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -121,11 +122,13 @@ const AccountsMenu: FC<{}> = ({}) => {
     removeSession();
   }, [accounts.length, removeAccount, removeSession, user]);
 
-  const [showModal, toggleModal] = useState(false);
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(
+    undefined
+  );
 
   return (
     <Menu
-      // opened={true}
+      opened={showMenu}
       position="bottom-end"
       zIndex={999}
       transitionProps={{ transition: 'scale-y', duration: 150 }}
@@ -212,24 +215,18 @@ const AccountsMenu: FC<{}> = ({}) => {
                   </div>
                   {/* TODO add locale */}
                   <Tip position="bottom" label={'Выйти из аккаунта'}>
-                    <Icon
-                      size="xs"
-                      onClick={removeAccount(
+                    <ConfirmLogoutModal
+                      openMenu={() => {
+                        toggleMenu(true);
+                      }}
+                      closeMenu={() => {
+                        toggleMenu(undefined);
+                      }}
+                      confirm={removeAccount(
                         item.login,
                         item.organization
                       )}
-                      className={styles.trash_icon}
-                    >
-                      <Trash color="#00000060" />
-                    </Icon>
-                    {/* <ConfirmLogoutModal
-                      confirm={() => {
-                        removeAccount(item.login, item.organization);
-                      }}
-                      iconStyle={styles.trash_icon}
-                    >
-                      text
-                    </ConfirmLogoutModal> */}
+                    />
                   </Tip>
                 </div>
               </Menu.Item>
