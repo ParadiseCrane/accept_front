@@ -14,6 +14,7 @@ import { clearCookie } from '@utils/cookies';
 import { Logout, Plus } from 'tabler-icons-react';
 import Link from 'next/link';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
+import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -211,7 +212,10 @@ const AccountsMenu: FC<{}> = ({}) => {
                       organization={item.organization}
                       alt={'Users avatar'}
                     />
-                    {item.organization}
+                    <UserLoginOrganization
+                      login={item.login}
+                      organization={item.organization}
+                    />
                   </div>
                   {/* TODO add locale */}
                   <Tip position="bottom" label={'Выйти из аккаунта'}>
@@ -233,7 +237,10 @@ const AccountsMenu: FC<{}> = ({}) => {
               <Menu.Divider
                 // если элемент в списке последний, то мы не отображаем divider
                 style={{
-                  display: index == accounts.length - 1 ? 'none' : '',
+                  display:
+                    index == filteredAccounts.length - 1
+                      ? 'none'
+                      : '',
                 }}
               />
             </div>

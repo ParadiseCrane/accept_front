@@ -3,26 +3,11 @@
   flex-direction: row;
 }
 
-.accounts_left_wrapper {
-  height: 19.5px;
-  width: 19.5px;
-  outline: white solid 1px;
-  border: 2px solid var(--primary);
-  background-color: white;
-  border-radius: 50%;
-  margin-left: -5px;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.accounts_left {
-  font-size: 12px;
-  height: min-content;
-}
-
 .dropdown_account_list_wrapper {
   max-height: 200px;
   overflow: scroll;
 }
+
+.accounts_dropdown_login {}
+
+.accounts_dropdown_organization {}
