@@ -11,3 +11,7 @@
 .accounts_dropdown_login {}
 
 .accounts_dropdown_organization {}
+
+.trash_icon:hover svg {
+  stroke: red;
+}

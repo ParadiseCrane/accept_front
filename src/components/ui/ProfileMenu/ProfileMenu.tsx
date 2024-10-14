@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useState } from 'react';
 import { Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
@@ -10,6 +10,7 @@ import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
 import AccountsMenu from './AccountsMenu/AccountsMenu';
+import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -21,9 +22,14 @@ const ProfileMenu: FC<{}> = ({}) => {
 
   const { unviewed } = useBackNotifications();
 
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(
+    undefined
+  );
+
   return (
     <div className={styles.wrapper}>
       <Menu
+        opened={showMenu}
         trigger="hover"
         zIndex={1000}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
@@ -79,12 +85,23 @@ const ProfileMenu: FC<{}> = ({}) => {
           </Menu.Item>
 
           <Menu.Divider />
-          <Menu.Item
-            onClick={signOut}
-            icon={<Logout color="var(--secondary)" size={20} />}
+          <ConfirmLogoutModal
+            openMenu={() => {
+              toggleMenu(true);
+            }}
+            closeMenu={() => {
+              toggleMenu(undefined);
+            }}
+            confirm={signOut}
+            // TODO добавить локализацию
+            modalText="Вы уверены, что хотите завершить сессию?"
           >
-            {locale.mainHeaderLinks.profileLinks.signOut}
-          </Menu.Item>
+            <Menu.Item
+              icon={<Logout color="var(--secondary)" size={20} />}
+            >
+              {locale.mainHeaderLinks.profileLinks.signOut}
+            </Menu.Item>
+          </ConfirmLogoutModal>
         </Menu.Dropdown>
       </Menu>
       <AccountsMenu />

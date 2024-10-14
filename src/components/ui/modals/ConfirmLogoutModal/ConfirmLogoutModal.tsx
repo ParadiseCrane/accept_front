@@ -2,10 +2,8 @@ import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Icon } from '@ui/basics';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
 import styles from './confirmLogoutModal.module.css';
-import { Trash } from 'tabler-icons-react';
 
 const ConfirmLogoutModal: FC<{
   confirm: pureCallback<void>;
@@ -14,6 +12,8 @@ const ConfirmLogoutModal: FC<{
   disabled?: boolean;
   openMenu: pureCallback<void>;
   closeMenu: pureCallback<void>;
+  modalText?: string;
+  children?: ReactNode;
 }> = ({
   confirm,
   onClose = () => {},
@@ -21,6 +21,8 @@ const ConfirmLogoutModal: FC<{
   kind,
   openMenu,
   closeMenu,
+  modalText,
+  children,
 }) => {
   const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
@@ -39,22 +41,21 @@ const ConfirmLogoutModal: FC<{
 
   return (
     <>
-      <Icon
-        size="xs"
+      <div
         onClick={() => {
           openModal();
           openMenu();
         }}
-        className={styles.trash_icon}
       >
-        <Trash color="#00000060" />
-      </Icon>
+        {children}
+      </div>
       <SimpleModal
         opened={opened}
         close={closeModal}
         title={locale.sure}
         classNames={{ body: styles.wrapper }}
       >
+        <span>{modalText}</span>
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{

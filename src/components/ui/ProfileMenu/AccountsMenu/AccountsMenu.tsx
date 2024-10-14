@@ -1,7 +1,7 @@
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Avatar as MantineAvatar, Menu } from '@mantine/core';
-import { Tip, UserAvatar } from '@ui/basics';
+import { Icon, Tip, UserAvatar } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';
 import styles from './accountsMenu.module.css';
 import {
@@ -11,7 +11,7 @@ import {
 } from '@utils/notificationFunctions';
 import { sendRequest } from '@requests/request';
 import { clearCookie } from '@utils/cookies';
-import { Logout, Plus } from 'tabler-icons-react';
+import { Logout, Plus, Trash } from 'tabler-icons-react';
 import Link from 'next/link';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
@@ -123,6 +123,7 @@ const AccountsMenu: FC<{}> = ({}) => {
     removeSession();
   }, [accounts.length, removeAccount, removeSession, user]);
 
+  // вот здесь важный момент
   const [showMenu, toggleMenu] = useState<undefined | boolean>(
     undefined
   );
@@ -230,7 +231,15 @@ const AccountsMenu: FC<{}> = ({}) => {
                         item.login,
                         item.organization
                       )}
-                    />
+                      // TODO добавить локализацию
+                      modalText={
+                        'Вы уверены, что хотите выйти из аккаунта?'
+                      }
+                    >
+                      <Icon size="xs" className={styles.trash_icon}>
+                        <Trash color="#00000060" />
+                      </Icon>
+                    </ConfirmLogoutModal>
                   </Tip>
                 </div>
               </Menu.Item>
