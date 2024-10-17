@@ -94,7 +94,10 @@ const ProfileMenu: FC<{}> = ({}) => {
             }}
             confirm={signOut}
             // TODO добавить локализацию
-            modalText="Вы уверены, что хотите завершить сессию?"
+            title={'Выход из сессии'}
+            modalText={
+              'Вы действительно хотите выйти из всех аккаунтов?'
+            }
           >
             <Menu.Item
               icon={<Logout color="var(--secondary)" size={20} />}

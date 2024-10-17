@@ -12,6 +12,7 @@ const ConfirmLogoutModal: FC<{
   disabled?: boolean;
   openMenu: pureCallback<void>;
   closeMenu: pureCallback<void>;
+  title: string;
   modalText?: string;
   children?: ReactNode;
 }> = ({
@@ -21,6 +22,7 @@ const ConfirmLogoutModal: FC<{
   kind,
   openMenu,
   closeMenu,
+  title,
   modalText,
   children,
 }) => {
@@ -52,12 +54,12 @@ const ConfirmLogoutModal: FC<{
       <SimpleModal
         opened={opened}
         close={closeModal}
-        title={locale.sure}
+        title={title}
         classNames={{ body: styles.wrapper }}
       >
         <span>{modalText}</span>
         <SimpleButtonGroup
-          reversePositive={false}
+          reversePositive={true}
           actionButton={{
             onClick: onConfirm,
             props: { disabled },

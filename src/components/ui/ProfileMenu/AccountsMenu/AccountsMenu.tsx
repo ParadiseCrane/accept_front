@@ -232,9 +232,8 @@ const AccountsMenu: FC<{}> = ({}) => {
                         item.organization
                       )}
                       // TODO добавить локализацию
-                      modalText={
-                        'Вы уверены, что хотите выйти из аккаунта?'
-                      }
+                      title={'Подтвердите действие'}
+                      modalText={`Вы уверены, что хотите выйти из аккаунта ${item.login} (${item.organization})?`}
                     >
                       <Icon size="xs" className={styles.trash_icon}>
                         <Trash color="#00000060" />
