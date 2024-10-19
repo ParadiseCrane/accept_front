@@ -52,12 +52,12 @@ export const sendRequest = <ISend, IReceive>(
       res.status === 200
         ? res.json().then((res: any) => ({
             error: false,
-            detail: res.detail,
+            detail: res?.detail,
             response: res as IReceive,
           }))
         : res.json().then((res: any) => ({
             error: true,
-            detail: res.detail,
+            detail: res?.detail,
             response: {},
           }))
     )
@@ -92,16 +92,12 @@ export const isSuccessful = <ISend>(
     .then((res) =>
       res.status === 200
         ? { error: false, detail: '' }
-        : res
-            .json()
-            .then((res) => ({ error: true, detail: res.detail }))
+        : res.json().then((res) => ({ error: true, detail: res.detail }))
     )
     .catch(processServerError);
 };
 
-const CheckStorage = <IReceive>(
-  key: string
-): IReceive | undefined => {
+const CheckStorage = <IReceive>(key: string): IReceive | undefined => {
   const valueString = window.localStorage.getItem(key);
   if (!valueString) {
     return undefined;

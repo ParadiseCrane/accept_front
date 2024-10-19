@@ -18,6 +18,7 @@ import { timezoneDate } from '@utils/datetime';
 import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { getCookieValue } from '@utils/cookies';
 
 function TournamentEdit(props: ITournamentEditBundle) {
   const { locale, lang } = useLocale();
@@ -73,8 +74,7 @@ function TournamentEdit(props: ITournamentEditBundle) {
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
-        allowRegistrationAfterStart:
-          form.values.allowRegistrationAfterStart,
+        allowRegistrationAfterStart: form.values.allowRegistrationAfterStart,
         start: form.values.start,
         end: form.values.end,
         frozeResults: form.values.frozeResults,
@@ -129,12 +129,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
   const response = await fetch(
     `${API_URL}/api/bundle/tournament-edit/${spec}`,
     {
       headers: {
         cookie: req.headers.cookie,
+        Authorization: `Bearer ${access_token}`,
       } as { [key: string]: string },
     }
   );

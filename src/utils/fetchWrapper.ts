@@ -26,8 +26,8 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
       fetchMethod == 'GET'
         ? null
         : customBody
-          ? JSON.stringify(customBody)
-          : JSON.stringify(req.body),
+        ? JSON.stringify(customBody)
+        : JSON.stringify(req.body),
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,

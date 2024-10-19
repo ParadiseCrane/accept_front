@@ -8,6 +8,7 @@ import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import styles from '@styles/results.module.css';
+import { getCookieValue } from '@utils/cookies';
 
 function Tournament({ tournament }: { tournament: ITournament }) {
   const { user, isTeacher } = useUser();
@@ -29,10 +30,7 @@ function Tournament({ tournament }: { tournament: ITournament }) {
             type={'tournament'}
             isFinished={tournament.status.spec == 2}
             endDate={tournament.end}
-            full={
-              isTeacher ||
-              (!!user && user?.login in tournament.moderators)
-            }
+            full={isTeacher || (!!user && user?.login in tournament.moderators)}
             is_team={tournament.maxTeamSize != 1}
           />
         </div>
@@ -61,10 +59,12 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
   const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
     headers: {
       cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   });
 

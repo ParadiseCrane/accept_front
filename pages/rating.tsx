@@ -11,6 +11,7 @@ import tableStyles from '@styles/ui/primitiveTable.module.css';
 import styles from '@styles/rating.module.css';
 import Link from 'next/link';
 import { Crown, Trophy } from 'tabler-icons-react';
+import { getCookieValue } from '@utils/cookies';
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -22,7 +23,7 @@ function Rating(props: { users: IRatingInfo[] }) {
   const users = props.users.map(
     (item, index) => ({ ...item, index } as IndexedRatingInfo)
   );
-  const best_score = users[0].score;
+  const best_score = users.length > 0 ? users[0].score : 0;
 
   const rowComponent = useCallback(
     (user: IndexedRatingInfo) => (
@@ -40,10 +41,7 @@ function Rating(props: { users: IRatingInfo[] }) {
           )}
         </td>
         <td>
-          <Link
-            href={`/profile/${user.user.login}`}
-            className={styles.link}
-          >
+          <Link href={`/profile/${user.user.login}`} className={styles.link}>
             {user.user.login}
           </Link>
         </td>
@@ -93,9 +91,20 @@ const API_URL = getApiUrl();
 
 export const getServerSideProps: GetServerSideProps = async ({
   res,
+  req,
   ..._
 }) => {
-  const response = await fetch(`${API_URL}/api/rating/${LIMIT}`);
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const response = await fetch(`${API_URL}/api/rating/${LIMIT}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+      cookie: req.headers.cookie,
+
+      'content-type': 'application/json',
+    } as { [key: string]: string },
+  });
   if (response.status === 200) {
     res.setHeader(
       'Cache-Control',

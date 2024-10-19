@@ -17,6 +17,7 @@ import { Loader } from '@mantine/core';
 import { Download } from 'tabler-icons-react';
 import { getApiUrl } from '@utils/getServerUrl';
 import { useRequest } from '@hooks/useRequest';
+import { getCookieValue } from '@utils/cookies';
 function TestsPage(props: { spec: string }) {
   const task_spec = props.spec;
 
@@ -41,10 +42,7 @@ function TestsPage(props: { spec: string }) {
   const downloadTests = useCallback(async () => {
     setLoading(true);
     let tests: ITaskTestData[] = [];
-    await requestWithError<
-      ITaskTestsPayload,
-      { tests_data: ITaskTestData[] }
-    >(
+    await requestWithError<ITaskTestsPayload, { tests_data: ITaskTestData[] }>(
       `task_test/full/${task_spec}`,
       'GET',
       locale.notify.task.tests,
@@ -141,9 +139,12 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
   const response = await fetch(`${API_URL}/api/task/exists/${spec}`, {
     headers: {
+      Authorization: `Bearer ${access_token}`,
+
       cookie: req.headers.cookie,
     } as { [key: string]: string },
   });
