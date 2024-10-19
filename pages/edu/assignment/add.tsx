@@ -1,5 +1,5 @@
 import { ReactNode, useCallback } from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import {
@@ -19,6 +19,7 @@ import { INewNotification } from '@custom-types/data/notification';
 import { sendRequest } from '@requests/request';
 import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { getCookieValue } from '@utils/cookies';
 
 const initialValues = {
   origin: '',
@@ -31,8 +32,7 @@ const initialValues = {
   dates: 0,
   notificationTitle: 'Вам задан новый урок',
   notificationDescription: '',
-  notificationShortDescription:
-    'Проверьте вкладку "Мои уроки" в профиле',
+  notificationShortDescription: 'Проверьте вкладку "Мои уроки" в профиле',
 };
 
 function AssignmentAdd(props: IAssignmentAddBundle) {
@@ -113,10 +113,19 @@ export default AssignmentAdd;
 
 const API_URL = getApiUrl();
 
-export const getStaticProps: GetStaticProps = async () => {
-  const response = await fetch(
-    `${API_URL}/api/bundle/assignment-add`
-  );
+export const getServerSideProps: GetServerSideProps = async ({
+  query: _,
+  req,
+}) => {
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const response = await fetch(`${API_URL}/api/bundle/assignment-add`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
+  });
   if (response.status === 200) {
     const response_json = await response.json();
     return {

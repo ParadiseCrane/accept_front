@@ -99,8 +99,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
-
-      'content-type': 'application/json',
     } as { [key: string]: string },
   });
 

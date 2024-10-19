@@ -90,19 +90,19 @@ function Task(props: {
   );
 
   useEffect(() => {
-    let id: undefined | NodeJS.Timer = undefined;
+    let id: undefined | number = undefined;
     if (type !== 'regular' && typeof querySpec == 'string') {
       if (id) {
-        clearInterval(id);
+        window.clearInterval(id);
       }
       fetch_tasks(querySpec)();
-      id = setInterval(fetch_tasks(querySpec), 5000);
+      id = window.setInterval(fetch_tasks(querySpec), 5000);
     } else {
       setTasks([]);
     }
     return () => {
       if (id) {
-        clearInterval(id);
+        window.clearInterval(id);
       }
     };
   }, [querySpec, type, fetch_tasks]);

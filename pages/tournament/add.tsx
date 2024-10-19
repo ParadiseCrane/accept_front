@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useMemo } from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { useLocale } from '@hooks/useLocale';
@@ -21,6 +21,7 @@ import { IUserDisplay } from '@custom-types/data/IUser';
 import { Item } from '@custom-types/ui/atomic';
 
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { getCookieValue } from '@utils/cookies';
 
 function TournamentAdd(props: ITournamentAddBundle) {
   const { locale, lang } = useLocale();
@@ -86,8 +87,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
-        allowRegistrationAfterStart:
-          form.values.allowRegistrationAfterStart,
+        allowRegistrationAfterStart: form.values.allowRegistrationAfterStart,
         start: form.values.start,
         end: form.values.end,
         frozeResults: form.values.frozeResults,
@@ -129,10 +129,19 @@ export default TournamentAdd;
 
 const API_URL = getApiUrl();
 
-export const getStaticProps: GetStaticProps = async () => {
-  const response = await fetch(
-    `${API_URL}/api/bundle/tournament-add`
-  );
+export const getServerSideProps: GetServerSideProps = async ({
+  query: _,
+  req,
+}) => {
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const response = await fetch(`${API_URL}/api/bundle/tournament-add`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
+  });
   if (response.status === 200) {
     const response_json = await response.json();
     return {
@@ -141,7 +150,7 @@ export const getStaticProps: GetStaticProps = async () => {
         tags: response_json.tags,
         securities: response_json.securities,
       } as ITournamentAddBundle,
-      revalidate: REVALIDATION_TIME.tournament.add,
+      // revalidate: REVALIDATION_TIME.tournament.add,
     };
   }
   return {
