@@ -176,8 +176,7 @@ const AccountsMenu: FC<{}> = ({}) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label className={styles.label}>
-          {'Управление аккаунтами'}
-          {/* TODO: Add locale */}
+          {locale.accounts.manageAccounts}
         </Menu.Label>
         <Menu.Divider />
 
@@ -232,7 +231,6 @@ const AccountsMenu: FC<{}> = ({}) => {
                         item.login,
                         item.organization
                       )}
-                      // TODO добавить локализацию
                       title={locale.accounts.confirmAction}
                       modalText={`${locale.accounts.confirmLogOut} ${item.login} (${item.organization})?`}
                     >
@@ -270,8 +268,7 @@ const AccountsMenu: FC<{}> = ({}) => {
           onClick={removeSession}
           icon={<Logout color="var(--secondary)" size={20} />}
         >
-          {'Выйти из аккаунта'}
-          {/* TODO: Add locale */}
+          {locale.accounts.logOut}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
