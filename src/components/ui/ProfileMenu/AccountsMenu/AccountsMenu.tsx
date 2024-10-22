@@ -18,19 +18,8 @@ import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  // TODO переделать обратно на const после выполнения задачи
-  let { user, signOut, accessLevel, accounts, refreshAccess } =
+  const { user, signOut, accessLevel, accounts, refreshAccess } =
     useUser();
-
-  // TODO remove this
-  // множу аккаунты, чтобы сделать меню
-  // ПРОБЛЕМА: размеры маленьких аватаров меняется в зависимости от ширины экрана
-  // пока я захаркодил 19.5px, но надо либо сделать для всех установленный размер
-  // либо вычислять размер через id меню (проблема - отслеживать размер через JS затратно)
-  // accounts = [...accounts, ...accounts, ...accounts];
-  // accounts = [accounts[0]];
-  // console.log(accounts);
-  // console.log(user);
 
   const filteredAccounts = accounts.filter(function (value) {
     if (
@@ -46,10 +35,13 @@ const AccountsMenu: FC<{}> = ({}) => {
   // boolean переменная, которая будет контролировать
   // отображать все три аватарки или 2 аватара +...остаток
   // то есть третий маленький аватар меняется на +1 / +2 и т.д.
-  const showAccountsLeft: boolean = accounts.length > 3;
+  const showAccountsLeft: boolean = filteredAccounts.length > 3;
 
   // какое число отображать в кружочке после +
-  const accountsLeftNumber = accounts.length - 2;
+  const accountsLeftText =
+    filteredAccounts.length - 2 > 9
+      ? `9+`
+      : `+${filteredAccounts.length - 2}`;
 
   const removeSession = useCallback(() => {
     const id = newNotification({
@@ -144,7 +136,10 @@ const AccountsMenu: FC<{}> = ({}) => {
               filteredAccounts
                 .slice(
                   0,
-                  Math.min(showAccountsLeft ? 2 : 3, accounts.length)
+                  Math.min(
+                    showAccountsLeft ? 2 : 3,
+                    filteredAccounts.length
+                  )
                 )
                 .map((item, index) => (
                   <UserAvatar
@@ -163,11 +158,15 @@ const AccountsMenu: FC<{}> = ({}) => {
                 style={{
                   marginLeft: '-5px',
                   outline: '1px solid white',
+                  color: 'var(--primary)',
                 }}
+                classNames={{ placeholder: styles.accounts_left }}
                 radius="lg"
                 size="sm"
+                color="var(--primary)"
+                variant="transparent"
               >
-                +{accountsLeftNumber}
+                {accountsLeftText}
               </MantineAvatar>
             ) : (
               <div style={{ display: 'none' }}></div>

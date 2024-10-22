@@ -14,11 +14,7 @@ import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  // TODO переделать обратно на const после выполнения задачи
-  let { user, signOut, accessLevel, accounts } = useUser();
-
-  // accounts = [accounts[0]];
-  // accounts = [...accounts, ...accounts, ...accounts];
+  const { user, signOut, accessLevel, accounts } = useUser();
 
   const { unviewed } = useBackNotifications();
 
