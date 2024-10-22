@@ -217,8 +217,10 @@ const AccountsMenu: FC<{}> = ({}) => {
                       organization={item.organization}
                     />
                   </div>
-                  {/* TODO add locale */}
-                  <Tip position="bottom" label={'Выйти из аккаунта'}>
+                  <Tip
+                    position="bottom"
+                    label={locale.accounts.logOut}
+                  >
                     <ConfirmLogoutModal
                       openMenu={() => {
                         toggleMenu(true);
@@ -231,8 +233,8 @@ const AccountsMenu: FC<{}> = ({}) => {
                         item.organization
                       )}
                       // TODO добавить локализацию
-                      title={'Подтвердите действие'}
-                      modalText={`Вы уверены, что хотите выйти из аккаунта ${item.login} (${item.organization})?`}
+                      title={locale.accounts.confirmAction}
+                      modalText={`${locale.accounts.confirmLogOut} ${item.login} (${item.organization})?`}
                     >
                       <Icon size="xs" className={styles.trash_icon}>
                         <Trash color="#00000060" />

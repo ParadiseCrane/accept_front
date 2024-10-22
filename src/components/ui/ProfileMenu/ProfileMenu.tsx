@@ -66,19 +66,12 @@ const ProfileMenu: FC<{}> = ({}) => {
               </Menu.Item>
             ))}
 
-          {/* TODO пока вставил сюда без локализации
-              потом исправить и сделать нормально
-              в каком порядке должны идти кнопки? 
-              то есть после какой добавить кнопку "Добавить аккаунт"?
-           */}
           <Menu.Item
             component={Link}
             href={'/add_account'}
             icon={<Plus color="var(--secondary)" size={20} />}
             style={{ display: accounts.length == 1 ? '' : 'none' }}
-          >
-            {'Добавить аккаунт'}
-          </Menu.Item>
+          ></Menu.Item>
 
           <Menu.Divider />
           <ConfirmLogoutModal
@@ -89,11 +82,8 @@ const ProfileMenu: FC<{}> = ({}) => {
               toggleMenu(undefined);
             }}
             confirm={signOut}
-            // TODO добавить локализацию
-            title={'Выход из сессии'}
-            modalText={
-              'Вы действительно хотите выйти из всех аккаунтов?'
-            }
+            title={locale.accounts.sessionLogout}
+            modalText={locale.accounts.confirmSessionLogout}
           >
             <Menu.Item
               icon={<Logout color="var(--secondary)" size={20} />}
