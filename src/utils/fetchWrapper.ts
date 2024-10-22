@@ -28,6 +28,7 @@ export const fetchWrapperStatic = async ({
   };
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: any;
+  auth?: boolean;
 }) => {
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 

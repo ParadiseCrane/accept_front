@@ -1,9 +1,8 @@
 import { ReactNode, useState } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useUser } from '@hooks/useUser';
 import { useWidth } from '@hooks/useWidth';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
 import Sticky from '@ui/Sticky/Sticky';
 import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import Description from '@components/Assignment/Description/Description';
@@ -17,8 +16,8 @@ import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import Timer from '@ui/Timer/Timer';
 import Title from '@ui/Title/Title';
 import { useLocale } from '@hooks/useLocale';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { IStickyAction } from '@ui/Sticky/Sticky';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function Assignment(props: { assignment: IAssignment }) {
   const assignment = props.assignment;
@@ -66,9 +65,7 @@ function Assignment(props: { assignment: IAssignment }) {
 
   return (
     <>
-      <Title
-        title={`${locale.titles.assignment.spec} ${assignment.title}`}
-      />
+      <Title title={`${locale.titles.assignment.spec} ${assignment.title}`} />
       <DeleteModal
         active={activeModal}
         setActive={setActiveModal}
@@ -80,9 +77,7 @@ function Assignment(props: { assignment: IAssignment }) {
         }
       />
       {isTeacher && <Sticky actions={actions} />}
-      {user && (
-        <ChatSticky spec={assignment.spec} host={user.login} />
-      )}
+      {user && <ChatSticky spec={assignment.spec} host={user.login} />}
       <Timer url={`assignment/info/${assignment.spec}`} />
       <Description assignment={assignment} />
     </>
@@ -95,10 +90,11 @@ Assignment.getLayout = (page: ReactNode) => {
 
 export default Assignment;
 
-const API_URL = getApiUrl();
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query.spec) {
     return {
       redirect: {
         permanent: false,
@@ -106,16 +102,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     };
   }
-  const response = await fetch(
-    `${API_URL}/api/assignment/${params.spec}`
-  );
+  const response = await fetchWrapperStatic({
+    url: `assignment/${query.spec}`,
+    req,
+  });
+
   if (response.status === 200) {
     const assignment = await response.json();
     return {
       props: {
         assignment,
       },
-      revalidate: REVALIDATION_TIME.assignment.page,
     };
   }
   return {
@@ -123,12 +120,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permanent: false,
       destination: '/404',
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 };

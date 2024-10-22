@@ -1,6 +1,5 @@
 import { ReactNode, useCallback } from 'react';
-import { GetServerSideProps, GetStaticProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import {
   IAssignmentAdd,
@@ -18,8 +17,7 @@ import { UseFormReturnType } from '@mantine/form/lib/types';
 import { INewNotification } from '@custom-types/data/notification';
 import { sendRequest } from '@requests/request';
 import Title from '@ui/Title/Title';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
-import { getCookieValue } from '@utils/cookies';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 const initialValues = {
   origin: '',
@@ -111,21 +109,15 @@ AssignmentAdd.getLayout = (page: ReactNode) => {
 
 export default AssignmentAdd;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query: _,
   req,
 }) => {
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
-
-  const response = await fetch(`${API_URL}/api/bundle/assignment-add`, {
-    method: 'GET',
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: 'bundle/assignment-add',
+    req,
   });
+
   if (response.status === 200) {
     const response_json = await response.json();
     return {
@@ -133,7 +125,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         assignment_schemas: response_json.schemas,
         groups: response_json.groups,
       },
-      revalidate: REVALIDATION_TIME.assignment.add,
     };
   }
   return {
