@@ -98,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const assignmentSchemaResponse = await fetchWrapperStatic({
-    url: `api/assignment_schema/${query.spec}`,
+    url: `assignment_schema/${query.spec}`,
     req,
   });
 

@@ -45,7 +45,7 @@ export const fetchWrapperStatic = async ({
     } as { [key: string]: string },
   };
 
-  return await fetch(`${getApiUrl()}/${url}`, fetch_data);
+  return await fetch(`${getApiUrl()}/api/${url}`, fetch_data);
 };
 
 export const fetchWrapper = async (props: FetchWrapperProps) => {
