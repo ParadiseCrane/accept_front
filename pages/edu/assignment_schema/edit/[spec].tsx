@@ -7,14 +7,13 @@ import { Item } from '@custom-types/ui/atomic';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import Form from '@components/AssignmentSchema/Form/Form';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import Title from '@ui/Title/Title';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function EditAssignmentSchema({
   assignment_schema,
@@ -85,10 +84,11 @@ EditAssignmentSchema.getLayout = (page: ReactNode) => {
 
 export default EditAssignmentSchema;
 
-const API_URL = getApiUrl();
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query.spec) {
     return {
       redirect: {
         permanent: false,
@@ -96,9 +96,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     };
   }
-  const assignmentSchemaResponse = await fetch(
-    `${API_URL}/api/assignment_schema/${params.spec}`
-  );
+
+  const assignmentSchemaResponse = await fetchWrapperStatic({
+    url: `api/assignment_schema/${query.spec}`,
+    req,
+  });
+
   if (assignmentSchemaResponse.status === 200) {
     const assignmentSchema: IAssignmentSchema =
       await assignmentSchemaResponse.json();
@@ -106,7 +109,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
         assignment_schema: assignmentSchema,
       },
-      revalidate: REVALIDATION_TIME.assignment_schema.edit,
     };
   }
 
@@ -115,12 +117,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permanent: false,
       destination: '/404',
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 };

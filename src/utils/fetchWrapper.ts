@@ -2,6 +2,8 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
 import { getCookieValue } from './cookies';
+import { IncomingMessage } from 'http';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -13,6 +15,38 @@ interface FetchWrapperProps {
 }
 
 const refresh_url = `${getApiUrl()}/api/refresh`;
+
+export const fetchWrapperStatic = async ({
+  url,
+  req,
+  method = 'GET',
+  body = undefined,
+}: {
+  url: string;
+  req: IncomingMessage & {
+    cookies: NextApiRequestCookies;
+  };
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  body?: any;
+}) => {
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const fetch_data = {
+    method: method,
+    credentials: 'include' as RequestCredentials,
+    body:
+      !['GET', 'DELETE'].includes(method) && !!!body
+        ? JSON.stringify(body)
+        : null,
+    headers: {
+      'content-type': 'application/json',
+      // cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
+  };
+
+  return await fetch(`${getApiUrl()}/${url}`, fetch_data);
+};
 
 export const fetchWrapper = async (props: FetchWrapperProps) => {
   const { req, res, url, method, customBody, notWriteToRes, ..._ } = props;

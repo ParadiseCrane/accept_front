@@ -1,6 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import Description from '@components/AssignmentSchema/Description/Description';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -9,7 +8,7 @@ import { Pencil, Trash } from 'tabler-icons-react';
 import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function AssignmentSchema(props: { assignment: IAssignmentSchema }) {
   const assignment = props.assignment;
@@ -55,10 +54,11 @@ AssignmentSchema.getLayout = (page: ReactNode) => {
 
 export default AssignmentSchema;
 
-const API_ENDPOINT = getApiUrl();
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query?.spec) {
     return {
       redirect: {
         permanent: false,
@@ -66,18 +66,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     };
   }
-  const assignment = await fetch(
-    `${API_ENDPOINT}/api/assignment_schema/${params.spec}`,
-    {
-      method: 'GET',
-    }
-  );
-  if (assignment.status === 200) {
+
+  // TODO: Rewrite all using this
+  const assignmentSchema = await fetchWrapperStatic({
+    url: `api/assignment_schema/${query.spec}`,
+    req,
+  });
+
+  if (assignmentSchema.status === 200) {
     return {
       props: {
-        assignment: await assignment.json(),
+        assignment: await assignmentSchema.json(),
       },
-      revalidate: REVALIDATION_TIME.assignment_schema.page,
     };
   }
   return {
@@ -85,12 +85,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permanent: false,
       destination: '/404',
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 };

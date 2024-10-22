@@ -1,5 +1,6 @@
 export const DEFAULT_TIME = 10;
 
+// TODO: Check for usability
 export const REVALIDATION_TIME = {
   assignment: {
     page: 60,
