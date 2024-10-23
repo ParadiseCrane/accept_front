@@ -3,7 +3,7 @@ Disallow: /api/
 Disallow: /attempt/
 Disallow: /dashboard/
 Disallow: /group/
-Disallow: /edu/assignment_schema/
+Disallow: /assignment_schema/
 Disallow: /profile/
 Disallow: /signin/
 Disallow: /signout/

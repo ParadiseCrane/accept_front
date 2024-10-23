@@ -21,6 +21,7 @@ import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function Assignment(props: { assignment: IAssignment }) {
   const assignment = props.assignment;
+
   const [activeModal, setActiveModal] = useState(false);
   const { locale } = useLocale();
 
@@ -47,7 +48,7 @@ function Assignment(props: { assignment: IAssignment }) {
           height={STICKY_SIZES[width] / 3}
         />
       ),
-      href: `/edu/assignment/edit/${assignment.spec}`,
+      href: `/assignment/edit/${assignment.spec}`,
       description: locale.tip.sticky.assignment.edit,
     },
     {
@@ -66,6 +67,7 @@ function Assignment(props: { assignment: IAssignment }) {
   return (
     <>
       <Title title={`${locale.titles.assignment.spec} ${assignment.title}`} />
+
       <DeleteModal
         active={activeModal}
         setActive={setActiveModal}
@@ -98,10 +100,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/404',
       },
     };
   }
+
   const response = await fetchWrapperStatic({
     url: `assignment/${query.spec}`,
     req,
@@ -109,6 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (response.status === 200) {
     const assignment = await response.json();
+
     return {
       props: {
         assignment,

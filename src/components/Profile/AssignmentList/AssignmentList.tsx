@@ -68,8 +68,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.state.value > b.state.value
         ? 1
         : a.state.value == b.state.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -84,8 +84,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -100,8 +100,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.groups.value > b.groups.value
         ? 1
         : a.groups.value == b.groups.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -116,8 +116,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -132,8 +132,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -149,8 +149,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.infinite || a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -166,8 +166,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.taskNumber.value > b.taskNumber.value
         ? 1
         : a.taskNumber.value == b.taskNumber.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -229,7 +229,7 @@ const processData = (
           <div className={tableStyles.titleWrapper}>
             <Link
               className={tableStyles.title}
-              href={`/edu/assignment/${assignment.spec}`}
+              href={`/assignment/${assignment.spec}`}
             >
               {assignment.title}
             </Link>
@@ -293,9 +293,7 @@ const processData = (
 
 const defaultOnPage = 10;
 
-const AssignmentList: FC<{ url?: string }> = ({
-  url = 'assignment/my',
-}) => {
+const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
   const { locale } = useLocale();
   const [list, setList] = useState<IAssignmentDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
@@ -381,9 +379,7 @@ const AssignmentList: FC<{ url?: string }> = ({
         currentGroups.length > 0
           ? tagged.filter((assignment) =>
               hasSubarray(
-                assignment.groups.value.map(
-                  (group: IGroup) => group.spec
-                ),
+                assignment.groups.value.map((group: IGroup) => group.spec),
                 currentGroups
               )
             )
@@ -463,7 +459,7 @@ const AssignmentList: FC<{ url?: string }> = ({
       {isTeacher && (
         <SingularSticky
           color={'var(--positive)'}
-          href={'/edu/assignment/add'}
+          href={'/assignment/add'}
           icon={<Plus height={20} width={20} />}
           description={locale.tip.sticky.assignment.add}
         />

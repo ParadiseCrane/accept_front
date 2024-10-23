@@ -30,7 +30,7 @@ function AssignmentSchema(props: { assignment: IAssignmentSchema }) {
         actions={[
           {
             color: 'green',
-            href: `/edu/assignment_schema/edit/${assignment.spec}`,
+            href: `/assignment_schema/edit/${assignment.spec}`,
             icon: <Pencil height={20} width={20} />,
             description: locale.tip.sticky.assignmentSchema.edit,
           },

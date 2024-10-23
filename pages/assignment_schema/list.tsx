@@ -1,13 +1,7 @@
 import Table from '@ui/Table/Table';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { useLocale } from '@hooks/useLocale';
 import {
@@ -33,10 +27,7 @@ interface Item {
 }
 
 interface IAssignmentSchemaDisplayList
-  extends Omit<
-    IAssignmentSchemaDisplay,
-    'title' | 'author' | 'taskNumber'
-  > {
+  extends Omit<IAssignmentSchemaDisplay, 'title' | 'author' | 'taskNumber'> {
   title: Item;
   author: Item;
   taskNumber: Item;
@@ -113,7 +104,7 @@ const processData = (
           <div className={tableStyles.titleWrapper}>
             <Link
               className={tableStyles.title}
-              href={`/edu/assignment_schema/${assignment_schema.spec}`}
+              href={`/assignment_schema/${assignment_schema.spec}`}
             >
               {assignment_schema.title}
             </Link>
@@ -122,9 +113,7 @@ const processData = (
                 {assignment_schema.tags.map((tag, idx) => (
                   <div className={tableStyles.tag} key={idx}>
                     {tag.title +
-                      (idx == assignment_schema.tags.length - 1
-                        ? ''
-                        : ', ')}
+                      (idx == assignment_schema.tags.length - 1 ? '' : ', ')}
                   </div>
                 ))}
               </span>
@@ -147,9 +136,7 @@ const defaultOnPage = 10;
 function AssignmentList() {
   const { locale } = useLocale();
 
-  const [list, setList] = useState<IAssignmentSchemaDisplayList[]>(
-    []
-  );
+  const [list, setList] = useState<IAssignmentSchemaDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [currentTags, setCurrentTags] = useState<string[]>([]);
 
@@ -291,7 +278,7 @@ function AssignmentList() {
         }
       />
       <SingularSticky
-        href={`/edu/assignment_schema/add`}
+        href={`/assignment_schema/add`}
         icon={<Plus height={25} width={25} />}
         description={locale.tip.sticky.assignmentSchema.add}
       />

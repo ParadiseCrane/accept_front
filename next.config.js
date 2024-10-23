@@ -28,18 +28,4 @@ module.exports = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: '/assignment_schema/:slug*',
-        destination: '/edu/assignment_schema/:slug*',
-        permanent: false,
-      },
-      {
-        source: '/assignment/:slug*',
-        destination: '/edu/assignment/:slug*',
-        permanent: false,
-      },
-    ];
-  },
 };

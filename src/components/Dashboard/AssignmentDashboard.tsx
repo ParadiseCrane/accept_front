@@ -43,10 +43,7 @@ const AssignmentDashboard: FC<{
     'GET'
   );
 
-  const refetchAssignment = useInterval(
-    () => refetch(false),
-    60 * 1000
-  );
+  const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
 
   const { hasNewMessages } = useChatHosts();
 
@@ -95,9 +92,7 @@ const AssignmentDashboard: FC<{
         page: assignment && (
           <Results
             spec={spec}
-            isFinished={
-              !assignment.infinite && assignment.status.spec == 2
-            }
+            isFinished={!assignment.infinite && assignment.status.spec == 2}
             endDate={assignment.end}
             type={'assignment'}
             full
@@ -133,10 +128,7 @@ const AssignmentDashboard: FC<{
       },
       {
         page: assignment && (
-          <CreateNotification
-            spec={assignment.spec}
-            type={'assignment'}
-          />
+          <CreateNotification spec={assignment.spec} type={'assignment'} />
         ),
         icon: <BellPlus color="var(--secondary)" />,
         title: locale.dashboard.assignment.createNotification,
@@ -159,7 +151,7 @@ const AssignmentDashboard: FC<{
           height={STICKY_SIZES[width] / 3}
         />
       ),
-      href: `/edu/assignment/edit/${spec}`,
+      href: `/assignment/edit/${spec}`,
       description: locale.tip.sticky.assignment.edit,
     },
     {
