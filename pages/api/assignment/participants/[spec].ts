@@ -1,13 +1,14 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function Hosts(
+export default async function AssignmentParticipants(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/hosts/all/${req.query.entity}`,
+    url: `api/assignment-participants/${req.query.spec}`,
+    method: 'POST',
   });
 }

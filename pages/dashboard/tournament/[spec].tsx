@@ -17,7 +17,8 @@ function TournamentDashboardPage(props: { spec: string }) {
     <>
       <Title title={locale.titles.dashboard.tournament} />
       <ChatHostsProvider
-        entity={props.spec}
+        spec={props.spec}
+        entity={'tournament'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <TournamentDashboard spec={props.spec} />
@@ -43,9 +44,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     };
   }
-  const response = await fetch(
-    `${API_URL}/api/tournament/${params.spec}`
-  );
+  const response = await fetch(`${API_URL}/api/tournament/${params.spec}`);
   if (response.status === 200) {
     const resp: ITournamentResponse = await response.json();
     return {

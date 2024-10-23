@@ -194,7 +194,11 @@ function Tournament(props: {
       <Title title={`${locale.titles.tournament.spec} ${tournament.title}`} />
       {getSticky()}
       {user && (special || is_participant) && (
-        <ChatSticky spec={tournament.spec} host={user.login} />
+        <ChatSticky
+          entity={'tournament'}
+          spec={tournament.spec}
+          host={user.login}
+        />
       )}
       <Timer url={`tournament/info/${tournament.spec}`} />
       <Description tournament={tournament} is_participant={is_participant} />

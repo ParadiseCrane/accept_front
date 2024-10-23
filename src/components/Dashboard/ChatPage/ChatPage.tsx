@@ -1,11 +1,4 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './chatPage.module.css';
 import Chat from '@ui/Chat/Chat';
 import { IChatMessage } from '@custom-types/data/IMessage';
@@ -21,15 +14,14 @@ import { useLocale } from '@hooks/useLocale';
 import Fuse from 'fuse.js';
 import { IHostData, useChatHosts } from '@hooks/useChatHosts';
 import { Eye, Search } from 'tabler-icons-react';
+import { IActivity } from '@custom-types/data/atomic';
 
 const ChatPage: FC<{
-  entity: string;
-  type: 'tournament' | 'assignment';
-}> = ({ entity, type }) => {
+  spec: string;
+  entity: IActivity;
+}> = ({ entity, spec }) => {
   const { locale } = useLocale();
-  const [currentHost, setCurrentHost] = useState<string | undefined>(
-    undefined
-  );
+  const [currentHost, setCurrentHost] = useState<string | undefined>(undefined);
 
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -40,8 +32,7 @@ const ChatPage: FC<{
     loading,
   } = useChatHosts();
 
-  const [searchedHosts, setSearchedHosts] =
-    useState<IHostData[]>(hosts);
+  const [searchedHosts, setSearchedHosts] = useState<IHostData[]>(hosts);
 
   const [searchString, setSearchString] = useState<string>('');
 
@@ -67,9 +58,7 @@ const ChatPage: FC<{
       keys: ['user.login', 'user.shortName'],
       findAllMatches: true,
     });
-    const searched = fuse
-      .search(searchString)
-      .map((item) => item.item);
+    const searched = fuse.search(searchString).map((item) => item.item);
     setSearchedHosts(searched);
   }, [hosts, searchString]);
 
@@ -98,8 +87,8 @@ const ChatPage: FC<{
               <div className={styles.emptyMessage}>
                 <div>{locale.dashboard.chat.emptyMessage}</div>
                 <InitiateChatModal
+                  spec={spec}
                   entity={entity}
-                  type={type}
                   exclude={hostLogins}
                   onSuccess={fetchInitialHosts}
                   small
@@ -110,9 +99,7 @@ const ChatPage: FC<{
             <div className={styles.hostsWrapper}>
               <TextInput
                 icon={<Search />}
-                onChange={(e) =>
-                  setSearchString(e.target.value.trim())
-                }
+                onChange={(e) => setSearchString(e.target.value.trim())}
                 placeholder={locale.dashboard.chat.search.placeholder}
               />
               <div className={styles.hostList}>
@@ -168,8 +155,8 @@ const ChatPage: FC<{
                 )}
               </div>
               <InitiateChatModal
+                spec={spec}
                 entity={entity}
-                type={type}
                 exclude={hostLogins}
                 onSuccess={fetchInitialHosts}
               />
@@ -179,6 +166,7 @@ const ChatPage: FC<{
             <div className={styles.chat}>
               <Chat
                 key={currentHost}
+                spec={spec}
                 entity={entity}
                 host={currentHost}
                 opened={true}

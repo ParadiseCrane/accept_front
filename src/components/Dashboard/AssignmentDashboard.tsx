@@ -80,7 +80,7 @@ const AssignmentDashboard: FC<{
         title: locale.dashboard.assignment.mainInfo,
       },
       {
-        page: <ChatPage entity={spec} type="assignment" />,
+        page: <ChatPage entity={'assignment'} spec={spec} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />

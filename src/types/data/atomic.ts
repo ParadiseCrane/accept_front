@@ -106,3 +106,5 @@ export interface IActivityData {
   count: number;
   date: Date;
 }
+
+export type IActivity = 'assignment' | 'tournament';

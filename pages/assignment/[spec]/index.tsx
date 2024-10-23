@@ -79,7 +79,13 @@ function Assignment(props: { assignment: IAssignment }) {
         }
       />
       {isTeacher && <Sticky actions={actions} />}
-      {user && <ChatSticky spec={assignment.spec} host={user.login} />}
+      {user && (
+        <ChatSticky
+          entity={'assignment'}
+          spec={assignment.spec}
+          host={user.login}
+        />
+      )}
       <Timer url={`assignment/info/${assignment.spec}`} />
       <Description assignment={assignment} />
     </>

@@ -62,8 +62,8 @@ function Task(props: {
       router.query.assignment
         ? 'assignment'
         : router.query.tournament
-        ? 'tournament'
-        : 'regular',
+          ? 'tournament'
+          : 'regular',
     [router.query]
   );
 
@@ -180,7 +180,9 @@ function Task(props: {
             homeHref={`/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
-          {user && <ChatSticky spec={querySpec} host={user.login} />}
+          {user && (
+            <ChatSticky entity={type} spec={querySpec} host={user.login} />
+          )}
           <Timer url={`${type}/info/${querySpec}`} />
         </>
       )}

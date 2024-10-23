@@ -47,15 +47,12 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data, refetch } = useRequest<
-    undefined,
-    ITournamentResponse
-  >(`tournament/${spec}`, 'GET');
-
-  const refetchTournament = useInterval(
-    () => refetch(false),
-    60 * 1000
+  const { data, refetch } = useRequest<undefined, ITournamentResponse>(
+    `tournament/${spec}`,
+    'GET'
   );
+
+  const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
 
   useEffect(() => {
     refetchTournament.start();
@@ -92,7 +89,7 @@ const TournamentDashboard: FC<{
         title: locale.dashboard.tournament.mainInfo,
       },
       {
-        page: <ChatPage entity={spec} type="tournament" />,
+        page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />{' '}
@@ -156,10 +153,7 @@ const TournamentDashboard: FC<{
       },
       {
         page: tournament && (
-          <CreateNotification
-            spec={tournament.spec}
-            type="tournament"
-          />
+          <CreateNotification spec={tournament.spec} type="tournament" />
         ),
         icon: <BellPlus color="var(--secondary)" />,
         title: locale.dashboard.tournament.createNotification,

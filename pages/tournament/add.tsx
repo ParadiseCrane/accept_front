@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { useLocale } from '@hooks/useLocale';
@@ -20,7 +20,6 @@ import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { Item } from '@custom-types/ui/atomic';
 
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { getCookieValue } from '@utils/cookies';
 
 function TournamentAdd(props: ITournamentAddBundle) {

@@ -1,17 +1,13 @@
 import { TimelineItemProps } from '@mantine/core';
 import { ReactNode } from 'react';
 
-export interface MyTimelineItemProps extends TimelineItemProps {
+export interface MyTimelineItemProps
+  extends Omit<TimelineItemProps, 'content'> {
   content: ReactNode;
   date: string;
 }
 
-export type HistoryItemType =
-  | 'new'
-  | 'bugfix'
-  | 'update'
-  | 'style'
-  | 'soon';
+export type HistoryItemType = 'new' | 'bugfix' | 'update' | 'style' | 'soon';
 
 export type HistoryItemVersion = 1 | 2;
 
