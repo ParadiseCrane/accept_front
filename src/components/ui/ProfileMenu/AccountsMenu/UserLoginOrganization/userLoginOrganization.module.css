@@ -1,0 +1,12 @@
+.user_login_organization {
+  display: flex;
+  flex-direction: column;
+}
+
+.login {
+  font-weight: bold;
+}
+
+.organization {
+  color: grey;
+}

@@ -30,6 +30,7 @@ import { contacts } from './contacts';
 import { executor } from './executor';
 import { tip } from './tip';
 import { team } from './team';
+import { accounts } from './accounts';
 
 const ru = {
   accept: 'Accept',
@@ -102,6 +103,7 @@ const ru = {
   executor,
   tip,
   team,
+  accounts,
 };
 
 export default ru;
