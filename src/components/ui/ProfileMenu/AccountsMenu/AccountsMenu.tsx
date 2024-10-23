@@ -18,15 +18,11 @@ import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel, accounts, refreshAccess } =
-    useUser();
+  const { user, signOut, accessLevel, accounts, refreshAccess } = useUser();
 
   const filteredAccounts = accounts.filter(function (value) {
     if (
-      !(
-        value.login == user?.login &&
-        value.organization == user.organization
-      )
+      !(value.login == user?.login && value.organization == user.organization)
     ) {
       return value;
     }
@@ -39,9 +35,7 @@ const AccountsMenu: FC<{}> = ({}) => {
 
   // какое число отображать в кружочке после +
   const accountsLeftText =
-    filteredAccounts.length - 2 > 9
-      ? `9+`
-      : `+${filteredAccounts.length - 2}`;
+    filteredAccounts.length - 2 > 9 ? `9+` : `+${filteredAccounts.length - 2}`;
 
   const removeSession = useCallback(() => {
     const id = newNotification({
@@ -116,9 +110,7 @@ const AccountsMenu: FC<{}> = ({}) => {
   }, [accounts.length, removeAccount, removeSession, user]);
 
   // вот здесь важный момент
-  const [showMenu, toggleMenu] = useState<undefined | boolean>(
-    undefined
-  );
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(undefined);
 
   return (
     <Menu
@@ -136,10 +128,7 @@ const AccountsMenu: FC<{}> = ({}) => {
               filteredAccounts
                 .slice(
                   0,
-                  Math.min(
-                    showAccountsLeft ? 2 : 3,
-                    filteredAccounts.length
-                  )
+                  Math.min(showAccountsLeft ? 2 : 3, filteredAccounts.length)
                 )
                 .map((item, index) => (
                   <UserAvatar
@@ -199,10 +188,7 @@ const AccountsMenu: FC<{}> = ({}) => {
                       gap: 'var(--spacer-xs)',
                       width: '100%',
                     }}
-                    onClick={changeAccount(
-                      item.login,
-                      item.organization
-                    )}
+                    onClick={changeAccount(item.login, item.organization)}
                   >
                     <UserAvatar
                       radius="md"
@@ -216,10 +202,7 @@ const AccountsMenu: FC<{}> = ({}) => {
                       organization={item.organization}
                     />
                   </div>
-                  <Tip
-                    position="bottom"
-                    label={locale.accounts.logOut}
-                  >
+                  <Tip position="bottom" label={locale.accounts.logOut}>
                     <ConfirmLogoutModal
                       openMenu={() => {
                         toggleMenu(true);
@@ -227,10 +210,7 @@ const AccountsMenu: FC<{}> = ({}) => {
                       closeMenu={() => {
                         toggleMenu(undefined);
                       }}
-                      confirm={removeAccount(
-                        item.login,
-                        item.organization
-                      )}
+                      confirm={removeAccount(item.login, item.organization)}
                       title={locale.accounts.confirmAction}
                       modalText={`${locale.accounts.confirmLogOut} ${item.login} (${item.organization})?`}
                     >
@@ -244,10 +224,7 @@ const AccountsMenu: FC<{}> = ({}) => {
               <Menu.Divider
                 // если элемент в списке последний, то мы не отображаем divider
                 style={{
-                  display:
-                    index == filteredAccounts.length - 1
-                      ? 'none'
-                      : '',
+                  display: index == filteredAccounts.length - 1 ? 'none' : '',
                 }}
               />
             </div>
@@ -260,7 +237,7 @@ const AccountsMenu: FC<{}> = ({}) => {
           href={'/add_account'}
           icon={<Plus color="var(--secondary)" size={20} />}
         >
-          {'Добавить аккаунт'}
+          {locale.accounts.addAccount}
         </Menu.Item>
         <Menu.Divider />
 

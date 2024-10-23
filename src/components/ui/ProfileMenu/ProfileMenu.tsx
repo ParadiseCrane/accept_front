@@ -18,9 +18,7 @@ const ProfileMenu: FC<{}> = ({}) => {
 
   const { unviewed } = useBackNotifications();
 
-  const [showMenu, toggleMenu] = useState<undefined | boolean>(
-    undefined
-  );
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(undefined);
 
   return (
     <div className={styles.wrapper}>
@@ -52,8 +50,7 @@ const ProfileMenu: FC<{}> = ({}) => {
           {menuLinks
             .filter(
               (item) =>
-                !item.permission ||
-                accessLevel >= accessLevels[item.permission]
+                !item.permission || accessLevel >= accessLevels[item.permission]
             )
             .map((item, index) => (
               <Menu.Item
@@ -71,7 +68,9 @@ const ProfileMenu: FC<{}> = ({}) => {
             href={'/add_account'}
             icon={<Plus color="var(--secondary)" size={20} />}
             style={{ display: accounts.length == 1 ? '' : 'none' }}
-          ></Menu.Item>
+          >
+            {locale.accounts.addAccount}
+          </Menu.Item>
 
           <Menu.Divider />
           <ConfirmLogoutModal
@@ -85,9 +84,7 @@ const ProfileMenu: FC<{}> = ({}) => {
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}
           >
-            <Menu.Item
-              icon={<Logout color="var(--secondary)" size={20} />}
-            >
+            <Menu.Item icon={<Logout color="var(--secondary)" size={20} />}>
               {locale.mainHeaderLinks.profileLinks.signOut}
             </Menu.Item>
           </ConfirmLogoutModal>
