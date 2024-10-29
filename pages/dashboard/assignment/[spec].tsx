@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import AssignmentDashboard from '@components/Dashboard/AssignmentDashboard';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function AssignmentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();
@@ -31,11 +32,8 @@ AssignmentDashboardPage.getLayout = (page: ReactNode) => {
 
 export default AssignmentDashboardPage;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req,
-}) => {
-  if (!query.spec) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params || !params.spec) {
     return {
       redirect: {
         permanent: false,
@@ -43,21 +41,15 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-
-  const response = await fetchWrapperStatic({
-    url: `exists/assignment/${query.spec}`,
-    req,
-  });
-
-  if (response.status === 200) {
-    return {
-      props: { spec: query.spec },
-    };
-  }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    props: { spec: params.spec },
+    revalidate: REVALIDATION_TIME.dashboard.assignment,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
   };
 };
