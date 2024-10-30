@@ -16,6 +16,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/code-highlight/styles.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -51,7 +52,7 @@ const theme = createTheme({
       '#87ceeb',
       '#87ceeb',
     ],
-    future: ['#f880fe',
+    future: [
       '#f880fe',
       '#f880fe',
       '#f880fe',
@@ -61,7 +62,9 @@ const theme = createTheme({
       '#f880fe',
       '#f880fe',
       '#f880fe',
-      '#f880fe',],
+      '#f880fe',
+      '#f880fe',
+    ],
   },
 });
 

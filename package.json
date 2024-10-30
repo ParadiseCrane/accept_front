@@ -19,6 +19,7 @@
     "@emotion/serialize": "^1.1.1",
     "@emotion/server": "^11.10.0",
     "@emotion/utils": "^1.2.0",
+    "@mantine/code-highlight": "^7.13.4",
     "@mantine/core": "^7.13.4",
     "@mantine/dates": "^7.13.4",
     "@mantine/dropzone": "^7.13.4",

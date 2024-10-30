@@ -1,11 +1,12 @@
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { FC, memo } from 'react';
-import { Prism as MantinePrism } from '@mantine/prism';
+
 import { ILanguage } from '@custom-types/data/atomic';
 import styles from './code.module.css';
 // @ts-ignore
 import Prism from 'prism-react-renderer/prism';
 import { useLocale } from '@hooks/useLocale';
+import { CodeHighlight } from '@mantine/code-highlight';
 // @ts-ignore
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
 
@@ -57,15 +58,14 @@ const Code: FC<{ attempt: IAttempt }> = ({ attempt }) => {
 
   return (
     <div className={styles.codeWrapper}>
-      <MantinePrism
+      <CodeHighlight
         language={getLang(attempt.language)}
         copyLabel={locale.copy.label}
         copiedLabel={locale.copy.done}
-        trim={false}
-        withLineNumbers
+        code={attempt.programText}
       >
         {attempt.programText}
-      </MantinePrism>
+      </CodeHighlight>
     </div>
   );
 };
