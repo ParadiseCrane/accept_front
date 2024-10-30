@@ -4,21 +4,8 @@ import { FC, memo } from 'react';
 import { ILanguage } from '@custom-types/data/atomic';
 import styles from './code.module.css';
 // @ts-ignore
-import Prism from 'prism-react-renderer/prism';
 import { useLocale } from '@hooks/useLocale';
 import { CodeHighlight } from '@mantine/code-highlight';
-// @ts-ignore
-(typeof global !== 'undefined' ? global : window).Prism = Prism;
-
-require('prismjs/components/prism-java');
-require('prismjs/components/prism-pascal');
-require('prismjs/components/prism-csharp');
-require('prismjs/components/prism-cobol');
-require('prismjs/components/prism-fortran');
-require('prismjs/components/prism-haskell');
-require('prismjs/components/prism-javascript');
-require('prismjs/components/prism-lua');
-require('prismjs/components/prism-rust');
 
 const getLang = (language: ILanguage): any => {
   switch (language.shortName) {

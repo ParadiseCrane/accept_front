@@ -94,7 +94,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const spec = query.spec;
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
-  const response = await fetch(`${API_URL}/api/bundle/attempt/${spec}`, {
+  const response = await fetch(`${API_URL}/api/attempt/${spec}`, {
     method: 'GET',
     headers: {
       cookie: req.headers.cookie,
