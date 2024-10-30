@@ -8,7 +8,7 @@ import '@styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { Badge, createTheme, MantineProvider } from '@mantine/core';
 import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
 import styles from '@styles/spinner.module.css';
@@ -27,6 +27,13 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const theme = createTheme({
+  components: {
+    Badge: Badge.extend({
+      defaultProps: {
+        variant: 'outline',
+      },
+    }),
+  },
   colors: {
     white: [
       '#ffffff',

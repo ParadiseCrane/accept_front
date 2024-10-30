@@ -31,10 +31,7 @@ const getRatingColor = (rating: number) => {
   }
 };
 
-const MainInfo: FC<{ user: IUser; place?: number }> = ({
-  user,
-  place,
-}) => {
+const MainInfo: FC<{ user: IUser; place?: number }> = ({ user, place }) => {
   return (
     <div className={styles.main}>
       <div className={styles.avatarWrapper}>
@@ -57,12 +54,7 @@ const MainInfo: FC<{ user: IUser; place?: number }> = ({
               <span className={styles.name}>{user.patronymic}</span>
             )}
           </div>
-          <Badge
-            style={{
-              color: getRoleColor(user.role.accessLevel),
-              background: `${getRoleColor(user.role.accessLevel)}30`,
-            }}
-          >
+          <Badge color={getRoleColor(user.role.accessLevel)}>
             {user.role.name}
           </Badge>
         </div>
