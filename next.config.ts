@@ -1,16 +1,16 @@
-const { API_ENDPOINT, WEBSOCKET_API } = process.env;
+import { NextConfig } from 'next';
 
-console.info('Config', { API_ENDPOINT });
-
-/** @type {import('next').NextConfig} */
-module.exports = {
-  env: {
-    WEBSOCKET_API,
-  },
+const nextConfig: NextConfig = {
   modularizeImports: {
     '@tabler/icons': {
       transform: '@tabler/icons/{{member}}',
     },
+  },
+  expireTime: 1800, // half hour
+  experimental: {
+    staticGenerationRetryCount: 1,
+    staticGenerationMaxConcurrency: 3,
+    staticGenerationMinPagesPerWorker: 25,
   },
   async rewrites() {
     return [
@@ -24,8 +24,10 @@ module.exports = {
       },
       {
         source: '/api/image/:slug*',
-        destination: `${API_ENDPOINT}/api/image/:slug*`,
+        destination: `${process.env.API_ENDPOINT}/api/image/:slug*`,
       },
     ];
   },
 };
+
+export default nextConfig;
