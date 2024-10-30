@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 import { MultiSelect } from '@ui/basics';
 import { TaskItemProps, TaskSelectProps } from './TaskSelect';
 import { ITaskDisplay } from '@custom-types/data/ITask';
+import { SelectItem } from '@custom-types/ui/atomic';
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
   label,
@@ -46,13 +47,9 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
         clearable
         maxDropdownHeight={400}
         nothingFound={nothingFound}
-        filter={(value, selected, item) =>
-          item.label
-            ?.toLowerCase()
-            .includes(value.toLowerCase().trim()) ||
-          item.value
-            .toLowerCase()
-            .includes(value.toLowerCase().trim())
+        filter={(value: string, selected: boolean, item: SelectItem) =>
+          item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
+          item.value.toLowerCase().includes(value.toLowerCase().trim())
         }
         {...additionalProps}
         onChange={(specs) => {

@@ -15,10 +15,7 @@ import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import { shrinkText } from '@utils/shrinkText';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
-import {
-  IListAction,
-  IListMessage,
-} from '@custom-types/ui/IListMessage';
+import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
 import ReadModal from './ReadModal/ReadModal';
 
 const ON_PAGE = 10;
@@ -47,10 +44,7 @@ const MessageList: FC<{
   const [activePage, setPage] = useState(1);
 
   const displayedMessages = useMemo(() => {
-    return messages.slice(
-      ON_PAGE * (activePage - 1),
-      ON_PAGE * activePage
-    );
+    return messages.slice(ON_PAGE * (activePage - 1), ON_PAGE * activePage);
   }, [activePage, messages]);
 
   const { locale } = useLocale();
@@ -100,10 +94,7 @@ const MessageList: FC<{
     [messages.length]
   );
 
-  const shouldShowPagination = useMemo(
-    () => totalPages > 1,
-    [totalPages]
-  );
+  const shouldShowPagination = useMemo(() => totalPages > 1, [totalPages]);
 
   useEffect(() => {
     setPage((activePage) => Math.min(activePage, totalPages));
@@ -131,30 +122,22 @@ const MessageList: FC<{
                   <div>
                     <Checkbox
                       checked={selected.length > 0}
-                      indeterminate={
-                        selected.length !== messages.length
-                      }
+                      indeterminate={selected.length !== messages.length}
                       onChange={() => setSelected([])}
                     />
                   </div>
                 </Tooltip>
-                <div className={styles.lengthWrapper}>
-                  {selected.length}
-                </div>
+                <div className={styles.lengthWrapper}>{selected.length}</div>
 
                 {actions.map((action, index) => (
                   <Icon
                     key={index}
                     disabled={
-                      action.disabled
-                        ? action.disabled(selected)
-                        : false
+                      action.disabled ? action.disabled(selected) : false
                     }
                     size="xs"
                     tooltipLabel={action.tooltipLabel}
-                    onClick={() =>
-                      action.onClick(selected, setSelected)
-                    }
+                    onClick={() => action.onClick(selected, setSelected)}
                   >
                     {action.icon}
                   </Icon>
@@ -180,9 +163,7 @@ const MessageList: FC<{
             {displayedMessages.map((message, index) => (
               <div
                 key={index}
-                className={`${rowClassName(message)} ${
-                  styles.message
-                }`}
+                className={`${rowClassName(message)} ${styles.message}`}
               >
                 <div className={styles.checkboxWrapper}>
                   <Checkbox
@@ -195,9 +176,7 @@ const MessageList: FC<{
                   onClick={() => handleOpenModal(index)}
                 >
                   <div className={styles.titleWrapper}>
-                    <div className={styles.title}>
-                      {messageTitle(message)}
-                    </div>
+                    <div className={styles.title}>{messageTitle(message)}</div>
                     <div className={styles.subject}>
                       {shrinkText(message.subject, 80)}
                     </div>
@@ -215,7 +194,6 @@ const MessageList: FC<{
           {shouldShowPagination && (
             <Pagination
               total={totalPages}
-              position="center"
               value={activePage}
               onChange={setPage}
             />

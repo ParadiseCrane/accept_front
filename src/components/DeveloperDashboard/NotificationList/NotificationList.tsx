@@ -142,7 +142,7 @@ const NotificationList: FC<{}> = ({}) => {
   return (
     <div>
       <TextInput
-        icon={<Search />}
+        leftSection={<Search />}
         classNames={{
           input: styles.search,
         }}

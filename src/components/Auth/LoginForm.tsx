@@ -1,17 +1,9 @@
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
-import { SelectItem } from '@mantine/core';
 import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
 import Link from 'next/link';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from '@styles/auth/login.module.css';
 import { useForm } from '@mantine/form';
 import {
@@ -20,6 +12,7 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 import { useRouter } from 'next/router';
+import { SelectItem } from '@custom-types/ui/atomic';
 
 const LoginForm: FC<{
   signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
@@ -43,7 +36,7 @@ const LoginForm: FC<{
           ({
             value: organization.spec,
             label: organization.name,
-          }) as SelectItem
+          } as SelectItem)
       )
   );
 
@@ -63,8 +56,8 @@ const LoginForm: FC<{
         value === ''
           ? 'Выберите организацию' // TODO add locale
           : !valid_organizations.includes(value)
-            ? 'Неверная организация' // TODO add locale
-            : null,
+          ? 'Неверная организация' // TODO add locale
+          : null,
       login: (value) =>
         value.length == 0 ? locale.auth.errors.login.exists : null,
       password: (value) =>
@@ -74,36 +67,30 @@ const LoginForm: FC<{
   });
 
   const handleSignIn = useCallback(
-    (values: {
-      organization: string;
-      login: string;
-      password: string;
-    }) => {
+    (values: { organization: string; login: string; password: string }) => {
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
         message: locale.loading + '...',
       });
       setLoading(true);
-      signIn(values.organization, values.login, values.password).then(
-        (res) => {
-          if (res) {
-            successNotification({
-              id,
-              title: locale.notify.auth.signIn.success,
-              autoClose: 5000,
-            });
-            router.push((router.query.referrer as string) || '/');
-          } else {
-            errorNotification({
-              id,
-              title: locale.notify.auth.signIn.error,
-              autoClose: 5000,
-            });
-          }
-          setLoading(false);
+      signIn(values.organization, values.login, values.password).then((res) => {
+        if (res) {
+          successNotification({
+            id,
+            title: locale.notify.auth.signIn.success,
+            autoClose: 5000,
+          });
+          router.push((router.query.referrer as string) || '/');
+        } else {
+          errorNotification({
+            id,
+            title: locale.notify.auth.signIn.error,
+            autoClose: 5000,
+          });
         }
-      );
+        setLoading(false);
+      });
     },
     [form, locale, signIn, router]
   );

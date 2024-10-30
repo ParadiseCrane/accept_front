@@ -127,9 +127,7 @@ const Stepper: FC<{
               ) : undefined
             }
             completedIcon={
-              getErrorsStep(index) ? (
-                <AlertCircle color={'white'} />
-              ) : undefined
+              getErrorsStep(index) ? <AlertCircle color={'white'} /> : undefined
             }
             color={getErrorsStep(index) ? 'red' : undefined}
           >
@@ -137,24 +135,16 @@ const Stepper: FC<{
           </MantineStepper.Step>
         ))}
       </MantineStepper>
-      <Group position="center" className={stepperStyles.buttons}>
+      <Group align="center" className={stepperStyles.buttons}>
         {currentStep !== 0 && (
-          <Button
-            variant="outline"
-            onClick={prevStep}
-            shrink={shrink}
-          >
+          <Button variant="outline" onClick={prevStep} shrink={shrink}>
             {locale.form.back}
           </Button>
         )}
         <Button
-          onClick={
-            currentStep !== LAST_PAGE ? nextStep : handleSubmit
-          }
+          onClick={currentStep !== LAST_PAGE ? nextStep : handleSubmit}
           shrink={shrink}
-          disabled={
-            currentStep !== LAST_PAGE && getErrorsStep(currentStep)
-          }
+          disabled={currentStep !== LAST_PAGE && getErrorsStep(currentStep)}
         >
           {currentStep === LAST_PAGE ? buttonLabel : locale.form.next}
         </Button>

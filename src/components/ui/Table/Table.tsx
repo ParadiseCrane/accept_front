@@ -57,10 +57,7 @@ const Table: FC<{
 
   const [localRows, setLocalRows] = useState<any[]>(rows);
   const page = useMemo(
-    () =>
-      Math.floor(
-        searchParams.pager.skip / (searchParams.pager.limit || 1)
-      ),
+    () => Math.floor(searchParams.pager.skip / (searchParams.pager.limit || 1)),
     [searchParams.pager.limit, searchParams.pager.skip]
   );
   const perPage = useMemo(
@@ -109,8 +106,7 @@ const Table: FC<{
         }
         searchParams.sort_by.map(
           (item) =>
-            (localColumns[columns_indexes[item.field]].sorted =
-              item.order)
+            (localColumns[columns_indexes[item.field]].sorted = item.order)
         );
 
         return localColumns;
@@ -125,9 +121,7 @@ const Table: FC<{
     });
   }, [columns]);
 
-  const [selectedColumns, setSelectedColumns] = useState<
-    string[] | undefined
-  >(
+  const [selectedColumns, setSelectedColumns] = useState<string[] | undefined>(
     columns
       .filter((column) => !column.hidable || !column.hidden)
       .map((column) => column.key)
@@ -218,9 +212,7 @@ const Table: FC<{
     >
       {!loading && empty && isEmpty ? (
         <div
-          className={`${styles.emptyMessage} ${
-            classNames?.emptyMessage || ''
-          }`}
+          className={`${styles.emptyMessage} ${classNames?.emptyMessage || ''}`}
         >
           {empty}
         </div>
@@ -230,7 +222,7 @@ const Table: FC<{
             {withSearch && (
               <div className={styles.search}>
                 <TextInput
-                  icon={<Search />}
+                  leftSection={<Search />}
                   classNames={{
                     input: styles.inputElem,
                   }}
@@ -265,7 +257,7 @@ const Table: FC<{
               <div style={{ position: 'relative' }}>
                 <LoadingOverlay
                   visible={loading}
-                  loader={<Loader size="lg" />}
+                  loaderProps={{ radius: 'lg' }}
                 />
                 <InnerTable
                   columns={localColumns}

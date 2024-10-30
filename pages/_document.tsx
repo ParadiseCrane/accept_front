@@ -1,4 +1,4 @@
-import { ServerStyles, createStylesServer } from '@mantine/next';
+// import { ServerStyles, createStylesServer } from '@mantine/next';
 import { ColorSchemeScript } from '@mantine/core';
 import Document, {
   DocumentContext,
@@ -8,7 +8,7 @@ import Document, {
   NextScript,
 } from 'next/document';
 
-const stylesServer = createStylesServer();
+// const stylesServer = createStylesServer();
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -17,11 +17,11 @@ class MyDocument extends Document {
       ...initialProps,
       styles: [
         initialProps.styles,
-        <ServerStyles
-          html={initialProps.html}
-          server={stylesServer}
-          key="styles"
-        />,
+        // <ServerStyles
+        //   html={initialProps.html}
+        //   server={stylesServer}
+        //   key="styles"
+        // />,
       ],
     };
   }

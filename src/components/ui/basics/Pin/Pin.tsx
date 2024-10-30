@@ -13,6 +13,7 @@ interface Props extends MantinePinProps {
   label?: ReactNode;
   helperContent?: IDropdownContent;
   shrink?: boolean;
+  rightSection: ReactNode;
 }
 
 const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {
@@ -21,10 +22,7 @@ const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {
     // @ts-expect-error
     <InputWrapper {...props}>
       <div
-        className={concatClassNames(
-          styles.inputWrapper,
-          classNames?.wrapper
-        )}
+        className={concatClassNames(styles.inputWrapper, classNames?.wrapper)}
       >
         <MantinePin length={PIN_LENGTH} size={'xl'} {...props} />
         {rightSection}

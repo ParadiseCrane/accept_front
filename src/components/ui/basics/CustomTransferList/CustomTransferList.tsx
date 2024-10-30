@@ -40,11 +40,7 @@ const defaultItemComponent = ({
   onClick,
   index,
 }: ICustomTransferListItemComponentProps): ReactNode => (
-  <div
-    key={index}
-    onClick={onClick}
-    className={styles.defaultItemWrapper}
-  >
+  <div key={index} onClick={onClick} className={styles.defaultItemWrapper}>
     {item.value}
   </div>
 );
