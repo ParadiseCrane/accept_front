@@ -1,4 +1,5 @@
 import { ServerStyles, createStylesServer } from '@mantine/next';
+import { ColorSchemeScript } from '@mantine/core';
 import Document, {
   DocumentContext,
   Head,
@@ -26,7 +27,7 @@ class MyDocument extends Document {
   }
   render() {
     return (
-      <Html lang="ru">
+      <Html lang="ru" suppressHydrationWarning>
         <Head>
           <link rel="shortcut" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,6 +44,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap"
             rel="stylesheet"
           />
+          <ColorSchemeScript defaultColorScheme="auto" />
         </Head>
         <body>
           <Main />

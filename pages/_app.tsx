@@ -8,10 +8,14 @@ import '@styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider } from '@mantine/core';
 import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
 import styles from '@styles/spinner.module.css';
+import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
+import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -20,6 +24,14 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+const theme = createTheme({
+  colors: {
+    white: ['#ffffff'],
+    'old-accept': ['#87ceeb'],
+    future: ['#f880fe'],
+  },
+});
 
 function Accept({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -41,16 +53,7 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
   }, [router]);
 
   return (
-    <MantineProvider
-      withCSSVariables
-      theme={{
-        colors: {
-          white: ['#ffffff'],
-          'old-accept': ['#87ceeb'],
-          future: ['#f880fe'],
-        },
-      }}
-    >
+    <MantineProvider theme={theme}>
       <DatesProvider settings={{ locale: 'ru' }}>
         <WidthProvider>
           <LocaleProvider>

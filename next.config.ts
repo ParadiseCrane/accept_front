@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
+    // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
   async rewrites() {
     return [
