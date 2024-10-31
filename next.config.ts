@@ -1,6 +1,12 @@
 import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // uncomment for docker deployment
+  // output: "standalone",
+  typescript: {
+    // uncomment for docker deployment
+    // ignoreBuildErrors: true
+  },
   modularizeImports: {
     '@tabler/icons': {
       transform: '@tabler/icons/{{member}}',
