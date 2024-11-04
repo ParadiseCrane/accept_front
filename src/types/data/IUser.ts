@@ -45,6 +45,7 @@ export interface IUserContext {
 }
 
 export interface IRegUser {
+  organization: string;
   login: string;
   name: string;
   surname: string;
