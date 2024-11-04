@@ -1,5 +1,5 @@
 import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
-import { Text } from '@mantine/core';
+import { ComboboxItem, Text } from '@mantine/core';
 import { Select, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
@@ -86,9 +86,12 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         clearable
         maxDropdownHeight={400}
         nothingFound={nothingFound}
-        filter={(value: string, item: SelectItem) =>
-          item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.value.toLowerCase().includes(value.toLowerCase().trim())
+        filter={({ options, search }) =>
+          (options as ComboboxItem[]).filter(
+            (item) =>
+              item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
+              item.value.toLowerCase().includes(search.toLowerCase().trim())
+          )
         }
         {...additionalProps}
         onChange={(login) => {
