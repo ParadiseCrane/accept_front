@@ -8,7 +8,14 @@ import '@styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { Badge, createTheme, MantineProvider } from '@mantine/core';
+import {
+  ActionIcon,
+  Badge,
+  colorsTuple,
+  createTheme,
+  MantineProvider,
+  rem,
+} from '@mantine/core';
 import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
 import styles from '@styles/spinner.module.css';
@@ -27,51 +34,35 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const theme = createTheme({
+  primaryColor: 'primary',
   components: {
     Badge: Badge.extend({
       defaultProps: {
         variant: 'outline',
       },
     }),
+    ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        style: { backgroundColor: 'transparent' },
+      },
+    }),
   },
   colors: {
-    white: [
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
-      '#ffffff',
+    primary: [
+      '#e1f8ff',
+      '#cdecff',
+      '#9ed6fc',
+      '#6bbff7',
+      '#41acf3',
+      '#259ff1',
+      '#0c99f2',
+      '#0085d8',
+      '#0076c3',
+      '#0066ad',
     ],
-    'old-accept': [
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-      '#87ceeb',
-    ],
-    future: [
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-      '#f880fe',
-    ],
+    white: colorsTuple('#ffffff'),
+    'old-accept': colorsTuple('#87ceeb'),
+    future: colorsTuple('#f880fe'),
   },
 });
 
