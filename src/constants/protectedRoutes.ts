@@ -1,6 +1,6 @@
 import { checkWrapper } from '@utils/checkAccess';
 
-// TODO: SOmehow remove
+// TODO: Somehow remove
 export const accessLevels = {
   user: 1,
   student: 2,

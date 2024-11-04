@@ -53,18 +53,17 @@ const Button: FC<MyButtonProps> = ({
                   // @ts-expect-error
                   component={props.href ? Link : 'button'}
                   {...props}
-                  // TODO: fix and uncomment
-                  // classNames={{
-                  //   ...props.classNames,
-                  //   label: concatClassNames(
-                  //     styles.label,
-                  //     props.classNames?.label
-                  //   ),
-                  //   root: concatClassNames(
-                  //     styles.root,
-                  //     props.classNames?.root
-                  //   ),
-                  // }}
+                  classNames={{
+                    ...props.classNames,
+                    // TODO: Fix types
+                    label: concatClassNames(
+                      styles.label,
+                      // @ts-ignore
+                      props.classNames?.label
+                    ),
+                    // @ts-ignore
+                    root: concatClassNames(styles.root, props.classNames?.root),
+                  }}
                 />
               </div>
             </HoverCard.Target>

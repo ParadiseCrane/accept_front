@@ -30,9 +30,10 @@ const TextArea: FC<TextAreaProps> = ({
         classNames={{
           ...props.classNames,
           // TODO: fix types
-          // input:
-          //   props?.classNames?.input +
-          //   (monospace ? ' ' + styles.monospace : ''),
+          input:
+            // @ts-ignore
+            props?.classNames?.input +
+            (monospace ? ' ' + styles.monospace : ''),
         }}
         label={undefined}
       />
