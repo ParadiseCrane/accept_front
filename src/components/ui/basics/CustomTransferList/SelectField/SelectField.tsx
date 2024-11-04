@@ -16,31 +16,11 @@ import {
 import { callback, pureCallback } from '@custom-types/ui/atomic';
 import Fuse from 'fuse.js';
 import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
-import {
-  CSSObject,
-  DefaultProps,
-  TextInputStylesNames,
-} from '@mantine/core';
 import useVirtual from 'react-cool-virtual';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
 import { useLocale } from '@hooks/useLocale';
 
-export interface DefaultSelectFieldProps
-  extends DefaultProps<
-    | 'fieldWrapper'
-    | 'fieldTitle'
-    | 'itemsWrapper'
-    | 'inputDescription'
-    | 'inputError'
-    | 'inputIcon'
-    | 'inputInput'
-    | 'inputLabel'
-    | 'inputRequired'
-    | 'inputRightSection'
-    | 'inputRoot'
-    | 'inputWrapper'
-  > {}
-export interface Props extends DefaultSelectFieldProps {
+export interface Props {
   title: string;
   value: ICustomTransferListItem[];
   selectItems: callback<string[], pureCallback<void>>;
@@ -49,6 +29,7 @@ export interface Props extends DefaultSelectFieldProps {
   leftSection?: boolean;
   rightSection?: boolean;
   extraActions?: ReactNode[];
+  classNames: any;
 }
 
 const defaultClassNames = {
@@ -58,8 +39,9 @@ const defaultClassNames = {
   titleSearchWrapper: styles.titleSearchWrapper,
 };
 
-const inputStyles: Partial<Record<TextInputStylesNames, CSSObject>> =
-  { icon: { pointerEvents: 'unset' } };
+const inputStyles: any = {
+  icon: { pointerEvents: 'unset' },
+};
 
 const SelectFieldComponent: FC<Props> = ({
   title,
@@ -158,21 +140,17 @@ const SelectFieldComponent: FC<Props> = ({
       <div className={classNames.titleSearchWrapper}>
         <div className={classNames.fieldTitle}>{title}</div>
         <div className={styles.searchWrapper}>
-          {withLeftSection && (
-            <>{extraActions?.map((item) => item)}</>
-          )}
+          {withLeftSection && <>{extraActions?.map((item) => item)}</>}
           <TextInput
             value={search}
             onChange={onSearch}
             styles={inputStyles}
             classNames={inputClassNames}
-            icon={leftSection}
+            leftSection={leftSection}
             rightSection={rightSection}
             placeholder={locale.form.search}
           />
-          {withRightSection && (
-            <>{extraActions?.map((item) => item)}</>
-          )}
+          {withRightSection && <>{extraActions?.map((item) => item)}</>}
         </div>
       </div>
       <div className={classNames.itemsWrapper} ref={outerRef}>
