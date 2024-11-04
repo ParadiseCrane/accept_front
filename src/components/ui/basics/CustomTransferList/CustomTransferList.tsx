@@ -12,17 +12,18 @@ import {
   DefaultSelectFieldProps,
   SelectField,
 } from './SelectField/SelectField';
-import { DefaultProps } from '@mantine/core';
 
 import styles from './customTransferList.module.css';
 
 interface Props
-  extends DefaultProps<'wrapper'>,
-    Omit<
-      MyInputWrapperProps,
-      'children' | 'onChange' | 'classNames' | 'styles'
-    > {
+  extends Omit<
+    MyInputWrapperProps,
+    'children' | 'onChange' | 'classNames' | 'styles'
+  > {
   value: ICustomTransferListData;
+  // TODO: add className types
+  classNames: any;
+  styles: any;
   onChange: (_: ICustomTransferListData) => void;
   titles?: [string, string];
   loading?: boolean;
