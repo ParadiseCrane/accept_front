@@ -9,7 +9,7 @@ import InputWrapper from '@ui/basics/InputWrapper/InputWrapper';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
 import { LoadingOverlay } from '@ui/basics';
 import {
-  DefaultSelectFieldProps,
+  Props as DefaultSelectFieldProps,
   SelectField,
 } from './SelectField/SelectField';
 
@@ -22,8 +22,8 @@ interface Props
   > {
   value: ICustomTransferListData;
   // TODO: add className types
-  classNames: any;
-  styles: any;
+  classNames?: any;
+  styles?: any;
   onChange: (_: ICustomTransferListData) => void;
   titles?: [string, string];
   loading?: boolean;
@@ -152,7 +152,7 @@ const CustomTransferList: FC<Props> = ({
           searchKeys={searchKeys}
           rightSection
           extraActions={extraActions[0]}
-          {...selectFieldClassNames}
+          classNames={selectFieldClassNames}
         />
         <SelectField
           title={titles[1]}
@@ -162,7 +162,7 @@ const CustomTransferList: FC<Props> = ({
           searchKeys={searchKeys}
           leftSection
           extraActions={extraActions[1]}
-          {...selectFieldClassNames}
+          classNames={selectFieldClassNames}
         />
       </div>
     </InputWrapper>

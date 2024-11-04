@@ -16,9 +16,7 @@ const TextArea: FC<TextAreaProps> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <InputLabel
         label={label}
@@ -31,9 +29,10 @@ const TextArea: FC<TextAreaProps> = ({
         {...props}
         classNames={{
           ...props.classNames,
-          input:
-            props?.classNames?.input +
-            (monospace ? ' ' + styles.monospace : ''),
+          // TODO: fix types
+          // input:
+          //   props?.classNames?.input +
+          //   (monospace ? ' ' + styles.monospace : ''),
         }}
         label={undefined}
       />

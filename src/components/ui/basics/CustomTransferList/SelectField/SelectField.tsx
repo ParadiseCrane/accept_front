@@ -29,7 +29,7 @@ export interface Props {
   leftSection?: boolean;
   rightSection?: boolean;
   extraActions?: ReactNode[];
-  classNames: any;
+  classNames?: any;
 }
 
 const defaultClassNames = {

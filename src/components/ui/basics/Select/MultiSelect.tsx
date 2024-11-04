@@ -13,6 +13,8 @@ const DynamicMultiSelect = dynamic<MultiSelectProps>(() =>
 interface Props extends MultiSelectProps {
   helperContent?: IDropdownContent;
   shrink?: boolean;
+  // TODO: remove any
+  classNames?: any;
 }
 
 const MultiSelect: FC<Props> = ({
@@ -24,9 +26,7 @@ const MultiSelect: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <InputLabel
         label={label}
@@ -42,10 +42,7 @@ const MultiSelect: FC<Props> = ({
           error: props.classNames?.error || inputStyles.error,
           value: props.classNames?.value || inputStyles.selectValue,
           input: props.classNames?.input || inputStyles.selectInput,
-          root: concatClassNames(
-            props.classNames?.root,
-            inputStyles.root
-          ),
+          root: concatClassNames(props.classNames?.root, inputStyles.root),
         }}
         label={undefined}
       />

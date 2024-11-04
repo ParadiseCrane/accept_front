@@ -10,6 +10,8 @@ import inputStyles from '@styles/ui/input.module.css';
 interface Props extends NumberInputProps {
   helperContent?: IDropdownContent;
   shrink?: boolean;
+  // TODO: remove any
+  classNames?: any;
 }
 
 const NumberInput: FC<Props> = ({
@@ -21,9 +23,7 @@ const NumberInput: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <InputLabel
         label={label}

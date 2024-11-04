@@ -36,41 +36,35 @@ const Button: FC<MyButtonProps> = ({
           transitionProps={{ transition: 'scale', duration: 300 }}
           {...hoverCardProps}
         >
-          <div
-            className={targetWrapperClassName}
-            style={targetWrapperStyle}
-          >
+          <div className={targetWrapperClassName} style={targetWrapperStyle}>
             <HoverCard.Target {...hoverCardTargetProps}>
               <div
                 ref={button}
                 style={{ ...buttonWrapperStyle }}
                 className={
-                  `${styles.buttonWrapper} ${
-                    shrink ? styles.shrink : ''
-                  }` +
+                  `${styles.buttonWrapper} ${shrink ? styles.shrink : ''}` +
                   ' ' +
                   (props.disabled
                     ? styles.disabled
-                    : `${kind && styles[kind]} ${
-                        variant && styles[variant]
-                      }`)
+                    : `${kind && styles[kind]} ${variant && styles[variant]}`)
                 }
               >
                 <MantineButton
                   // @ts-expect-error
                   component={props.href ? Link : 'button'}
                   {...props}
-                  classNames={{
-                    ...props.classNames,
-                    label: concatClassNames(
-                      styles.label,
-                      props.classNames?.label
-                    ),
-                    root: concatClassNames(
-                      styles.root,
-                      props.classNames?.root
-                    ),
-                  }}
+                  // TODO: fix and uncomment
+                  // classNames={{
+                  //   ...props.classNames,
+                  //   label: concatClassNames(
+                  //     styles.label,
+                  //     props.classNames?.label
+                  //   ),
+                  //   root: concatClassNames(
+                  //     styles.root,
+                  //     props.classNames?.root
+                  //   ),
+                  // }}
                 />
               </div>
             </HoverCard.Target>

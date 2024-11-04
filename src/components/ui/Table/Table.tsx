@@ -20,7 +20,7 @@ import { LoadingOverlay, MultiSelect, TextInput } from '@ui/basics';
 
 const Table: FC<{
   columns: ITableColumn[];
-  classNames: any;
+  classNames?: any;
   defaultOnPage: number;
   onPage: number[];
   withSearch?: boolean;

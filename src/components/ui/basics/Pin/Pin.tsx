@@ -14,6 +14,7 @@ interface Props extends MantinePinProps {
   helperContent?: IDropdownContent;
   shrink?: boolean;
   rightSection: ReactNode;
+  classNames?: any;
 }
 
 const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {

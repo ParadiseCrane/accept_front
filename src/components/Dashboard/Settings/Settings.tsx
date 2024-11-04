@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import {
   ITournament,
   ITournamentSettingsBundle,
@@ -24,21 +17,14 @@ import {
 } from '@custom-types/ui/basics/customTransferList';
 import CreateAssignment from './CreateAssignment/CreateAssignment';
 
-const Settings: FC<{ tournament: ITournament }> = ({
-  tournament,
-}) => {
+const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
   const { locale, lang } = useLocale();
 
-  const [tasks, setTasks] =
-    useState<ICustomTransferListData>(undefined);
-  const [settings, setSettings] = useState<ITournamentSettingsBundle>(
-    null!
-  );
+  const [tasks, setTasks] = useState<ICustomTransferListData>(undefined);
+  const [settings, setSettings] = useState<ITournamentSettingsBundle>(null!);
 
-  const [
-    allowRegistrationAfterStart,
-    setAllowRegistrationAfterStart,
-  ] = useState(tournament.allowRegistrationAfterStart);
+  const [allowRegistrationAfterStart, setAllowRegistrationAfterStart] =
+    useState(tournament.allowRegistrationAfterStart);
 
   useEffect(() => {
     let cleanUp = false;
@@ -87,10 +73,7 @@ const Settings: FC<{ tournament: ITournament }> = ({
 
   const updateRegistration = useCallback(
     (newValue: boolean) => {
-      requestWithNotify<
-        { allowRegistrationAfterStart: boolean },
-        boolean
-      >(
+      requestWithNotify<{ allowRegistrationAfterStart: boolean }, boolean>(
         `tournament/settings/allowRegistrationAfterStart/${tournament.spec}`,
         'POST',
         locale.notify.tournament.settings.allowRegistrationAfterStart,
@@ -139,9 +122,7 @@ const Settings: FC<{ tournament: ITournament }> = ({
       <div className={styles.section}>
         <div className={styles.sectionTitle}>
           {locale.dashboard.tournament.settings.sections.tasks}
-          <Helper
-            dropdownContent={locale.helpers.tournament.settings.tasks}
-          />
+          <Helper dropdownContent={locale.helpers.tournament.settings.tasks} />
         </div>
         <CustomTransferList
           titles={[
@@ -169,10 +150,7 @@ const Settings: FC<{ tournament: ITournament }> = ({
       </div>
       <div className={styles.section}>
         <div className={styles.sectionTitle}>
-          {
-            locale.dashboard.tournament.settings.sections
-              .createAssignmentSchema
-          }
+          {locale.dashboard.tournament.settings.sections.createAssignmentSchema}
         </div>
         <CreateAssignment tournament={tournament} />
       </div>
