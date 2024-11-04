@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useEffect } from 'react';
 import { MultiSelectProps } from '@mantine/core';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import dynamic from 'next/dynamic';
@@ -36,6 +36,7 @@ const MultiSelect: FC<Props> = ({
       <DynamicMultiSelect
         size={shrink ? 'sm' : 'md'}
         clearable={false}
+        // label={undefined}
         {...props}
         classNames={{
           ...props.classNames,
@@ -44,7 +45,6 @@ const MultiSelect: FC<Props> = ({
           input: props.classNames?.input || inputStyles.selectInput,
           root: concatClassNames(props.classNames?.root, inputStyles.root),
         }}
-        label={undefined}
       />
     </div>
   );

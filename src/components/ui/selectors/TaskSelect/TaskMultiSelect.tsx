@@ -3,6 +3,7 @@ import { MultiSelect } from '@ui/basics';
 import { TaskItemProps, TaskSelectProps } from './TaskSelect';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { SelectItem } from '@custom-types/ui/atomic';
+import { ComboboxItem } from '@mantine/core';
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
   label,
@@ -46,10 +47,13 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
         placeholder={placeholder}
         clearable
         maxDropdownHeight={400}
-        nothingFound={nothingFound}
-        filter={(value: string, selected: boolean, item: SelectItem) =>
-          item.label?.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.value.toLowerCase().includes(value.toLowerCase().trim())
+        nothingFoundMessage={nothingFound}
+        filter={({ options, search }) =>
+          (options as ComboboxItem[]).filter(
+            (item) =>
+              item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
+              item.value.toLowerCase().includes(search.toLowerCase().trim())
+          )
         }
         {...additionalProps}
         onChange={(specs) => {

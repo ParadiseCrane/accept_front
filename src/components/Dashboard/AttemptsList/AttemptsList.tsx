@@ -39,10 +39,7 @@ const refactorAttempt = (
   },
   date: {
     display: (
-      <Link
-        className={tableStyles.link}
-        href={`/attempt/${attempt.spec}`}
-      >
+      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -66,10 +63,7 @@ const refactorAttempt = (
   author: {
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link
-          className={tableStyles.link}
-          href={`/profile/${attempt.author}`}
-        >
+        <Link className={tableStyles.link} href={`/profile/${attempt.author}`}>
           {attempt.author}
         </Link>
       </div>
@@ -84,11 +78,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'date',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.date.value > b.date.value
-        ? -1
-        : a.date.value == b.date.value
-        ? 0
-        : 1,
+      a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
     sorted: -1,
     allowMiddleState: false,
     hidable: false,
@@ -148,14 +138,7 @@ const AttemptList: FC<{
   endDate: Date;
   type: 'assignment' | 'tournament' | 'current' | 'all';
   banned?: boolean;
-}> = ({
-  spec,
-  shouldNotRefetch,
-  isFinished,
-  endDate,
-  type,
-  banned,
-}) => {
+}> = ({ spec, shouldNotRefetch, isFinished, endDate, type, banned }) => {
   const { locale } = useLocale();
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
@@ -164,8 +147,7 @@ const AttemptList: FC<{
     isFinished ? 'end' : 'actual'
   );
   const refactor = useCallback(
-    (attempt: IAttemptDisplay) =>
-      refactorAttempt(attempt, type, spec),
+    (attempt: IAttemptDisplay) => refactorAttempt(attempt, type, spec),
     [type, spec]
   );
 
@@ -190,18 +172,14 @@ const AttemptList: FC<{
             },
           ]}
           value={fetchDate}
-          onChange={(value) =>
-            setFetchDate(value as 'actual' | 'end')
-          }
+          onChange={(value) => setFetchDate(value as 'actual' | 'end')}
         />
       )}
       <div className={styles.selectors}>
         <UserSelect
           label={locale.dashboard.attemptsList.user.label}
           placeholder={locale.dashboard.attemptsList.user.placeholder}
-          nothingFound={
-            locale.dashboard.attemptsList.user.nothingFound
-          }
+          nothingFound={locale.dashboard.attemptsList.user.nothingFound}
           users={data?.users || []}
           select={(users: IUserDisplay[] | undefined) => {
             if (users) setUserSearch(users.map((user) => user.login));
@@ -212,9 +190,7 @@ const AttemptList: FC<{
         <TaskSelect
           label={locale.dashboard.attemptsList.task.label}
           placeholder={locale.dashboard.attemptsList.task.placeholder}
-          nothingFound={
-            locale.dashboard.attemptsList.task.nothingFound
-          }
+          nothingFound={locale.dashboard.attemptsList.task.nothingFound}
           tasks={data?.tasks || []}
           select={(tasks: ITaskBaseInfo[] | undefined) => {
             if (tasks) setTaskSearch(tasks.map((task) => task.spec));
