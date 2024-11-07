@@ -26,10 +26,10 @@ function Rating(props: { users: IRatingInfo[] }) {
   const best_score = users.length > 0 ? users[0].score : 0;
 
   const rowComponent = useCallback(
-    (user: IndexedRatingInfo) => (
+    (item: IndexedRatingInfo) => (
       <>
         <td>
-          {user.score == best_score ? (
+          {item.score == best_score ? (
             <Crown
               strokeWidth={1.3}
               fill={'#FFD700'}
@@ -37,16 +37,16 @@ function Rating(props: { users: IRatingInfo[] }) {
               style={{ marginLeft: '-5px' }}
             />
           ) : (
-            user.index + 1
+            item.index + 1
           )}
         </td>
         <td>
-          <Link href={`/profile/${user.user.login}`} className={styles.link}>
-            {user.user.login}
+          <Link href={`/profile/${item.user.login}`} className={styles.link}>
+            {item.user.login}
           </Link>
         </td>
-        <td>{user.user.shortName}</td>
-        <td>{user.score}</td>
+        <td>{item.user.shortName}</td>
+        <td>{item.score}</td>
       </>
     ),
     [best_score]

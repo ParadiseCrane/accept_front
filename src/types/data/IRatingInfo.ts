@@ -1,6 +1,6 @@
-import { IUserDisplay } from './IUser';
+import { IUserBaseInfo } from './IUser';
 
 export interface IRatingInfo {
-  user: IUserDisplay;
+  user: IUserBaseInfo;
   score: number;
 }
