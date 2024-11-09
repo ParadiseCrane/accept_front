@@ -9,6 +9,7 @@ import {
   ChevronRight,
 } from 'tabler-icons-react';
 import styles from './table.module.css';
+import { ActionIconGroup, Group } from '@mantine/core';
 
 const PageNavigation: FC<{
   onPage: number[];
@@ -59,68 +60,53 @@ const PageNavigation: FC<{
                   input: styles.selectPerPage,
                 }}
                 defaultValue={defaultOnPage.toString()}
-                onChange={(value) =>
-                  handlePerPageChange(Number(value))
-                }
+                onChange={(value) => handlePerPageChange(Number(value))}
               />
             </div>
-
-            <div className={styles.pageNavigation}>
-              <Icon
-                style={{
-                  backgroundColor: '#ffffff00',
-                  border: 'none',
-                }}
-                size="xs"
-                disabled={page == 0}
-                onClick={() => handlePageChange(0)}
-              >
-                <ArrowNarrowLeft />
-              </Icon>
-              <Icon
-                style={{
-                  backgroundColor: '#ffffff00',
-                  border: 'none',
-                }}
-                disabled={page == 0}
-                size="xs"
-                onClick={() =>
-                  handlePageChange(Math.max(page - 1, 0))
-                }
-              >
-                <ChevronLeft />
-              </Icon>
+            <Group gap="xs">
+              <ActionIconGroup>
+                <Icon
+                  color="gray"
+                  size="xs"
+                  disabled={page == 0}
+                  onClick={() => handlePageChange(0)}
+                >
+                  <ArrowNarrowLeft />
+                </Icon>
+                <Icon
+                  color="gray"
+                  disabled={page == 0}
+                  size="xs"
+                  onClick={() => handlePageChange(Math.max(page - 1, 0))}
+                >
+                  <ChevronLeft />
+                </Icon>
+              </ActionIconGroup>
               <div>
                 {page * perPage + 1} -{' '}
                 {perPage
                   ? Math.min((page + 1) * perPage, totalLength)
                   : totalLength}
               </div>
-              <Icon
-                style={{
-                  backgroundColor: '#ffffff00',
-                  border: 'none',
-                }}
-                size="xs"
-                disabled={page == lastPage}
-                onClick={() =>
-                  handlePageChange(Math.min(page + 1, lastPage))
-                }
-              >
-                <ChevronRight />
-              </Icon>
-              <Icon
-                style={{
-                  backgroundColor: '#ffffff00',
-                  border: 'none',
-                }}
-                size="xs"
-                disabled={page == lastPage}
-                onClick={() => handlePageChange(lastPage)}
-              >
-                <ArrowNarrowRight />
-              </Icon>
-            </div>
+              <ActionIconGroup>
+                <Icon
+                  color="gray"
+                  size="xs"
+                  disabled={page == lastPage}
+                  onClick={() => handlePageChange(Math.min(page + 1, lastPage))}
+                >
+                  <ChevronRight />
+                </Icon>
+                <Icon
+                  color="gray"
+                  size="xs"
+                  disabled={page == lastPage}
+                  onClick={() => handlePageChange(lastPage)}
+                >
+                  <ArrowNarrowRight />
+                </Icon>
+              </ActionIconGroup>
+            </Group>
           </div>
         )}
       </div>

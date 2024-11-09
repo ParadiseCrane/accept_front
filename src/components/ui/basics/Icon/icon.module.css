@@ -3,3 +3,6 @@
   height: 100%;
   cursor: pointer;
 }
+.wrapper {
+  line-height: 0;
+}

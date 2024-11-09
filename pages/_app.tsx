@@ -1,10 +1,15 @@
+import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
+import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/code-highlight/styles.css';
+import '@styles/globals.css';
 import { BackNotificationsProvider } from '@hooks/useBackNotifications';
 import { LocaleProvider } from '@hooks/useLocale';
 import { UserProvider } from '@hooks/useUser';
 import { WidthProvider } from '@hooks/useWidth';
 import { Notifications } from '@mantine/notifications';
 import { DatesProvider } from '@mantine/dates';
-import '@styles/globals.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, useEffect, useState } from 'react';
@@ -19,11 +24,7 @@ import {
 import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
 import styles from '@styles/spinner.module.css';
-import '@mantine/core/styles.css';
-import '@mantine/dropzone/styles.css';
-import '@mantine/notifications/styles.css';
-import '@mantine/dates/styles.css';
-import '@mantine/code-highlight/styles.css';
+import actionIconStyles from '@styles/ui/actionIcon.module.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -35,11 +36,10 @@ type AppPropsWithLayout = AppProps & {
 
 const theme = createTheme({
   primaryColor: 'primary',
-  // scale: 1 / (12 / 16),
   fontSizes: {
-    xs: '0.8rem',
-    sm: '1rem',
-    md: '1.2rem',
+    xs: '0.6rem',
+    sm: '0.8rem',
+    md: '1rem',
     lg: '1.4rem',
     xl: '1.7rem',
   },
@@ -51,7 +51,8 @@ const theme = createTheme({
     }),
     ActionIcon: ActionIcon.extend({
       defaultProps: {
-        style: { backgroundColor: 'transparent' },
+        variant: 'transparent',
+        className: actionIconStyles.button,
       },
     }),
   },
