@@ -123,7 +123,7 @@ const Table: FC<{
 
   const [selectedColumns, setSelectedColumns] = useState<string[] | undefined>(
     columns
-      .filter((column) => !column.hidable || !column.hidden)
+      .filter((column) => column.hidable && !column.hidden)
       .map((column) => column.key)
   );
 
@@ -238,9 +238,7 @@ const Table: FC<{
                   data={availableColumns}
                   value={selectedColumns}
                   onChange={handleChange}
-                  placeholder={
-                      locale.placeholders.showColumns
-                  }
+                  placeholder={locale.placeholders.showColumns}
                 />
               </div>
             )}
