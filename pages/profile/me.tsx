@@ -12,7 +12,7 @@ function MyProfile(props: IFullProfileBundle) {
   return (
     <>
       <Title title={locale.titles.profile.me} />
-      <Profile {...props} />;
+      <Profile {...props} />
     </>
   );
 }
@@ -25,9 +25,7 @@ export default MyProfile;
 
 const API_URL = getApiUrl();
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const access_token: string = req.cookies['access_token'] || '';
   const response = await fetch(`${API_URL}/api/bundle/profile`, {
     headers: {

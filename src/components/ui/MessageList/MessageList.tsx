@@ -9,7 +9,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Pagination, Tooltip } from '@mantine/core';
+import { Center, Pagination, Tooltip } from '@mantine/core';
 import { Checkbox, Icon, LoadingOverlay } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
@@ -95,7 +95,6 @@ const MessageList: FC<{
   );
 
   const shouldShowPagination = useMemo(() => totalPages > 1, [totalPages]);
-
   useEffect(() => {
     setPage((activePage) => Math.min(activePage, totalPages));
   }, [totalPages]);
@@ -158,7 +157,7 @@ const MessageList: FC<{
           </div>
           <div
             className={styles.messages}
-            style={{ minHeight: `${55 * ON_PAGE}px` }}
+            style={{ minHeight: `${55 * Math.min(ON_PAGE, totalPages)}px` }}
           >
             {displayedMessages.map((message, index) => (
               <div
@@ -192,11 +191,13 @@ const MessageList: FC<{
             ))}
           </div>
           {shouldShowPagination && (
-            <Pagination
-              total={totalPages}
-              value={activePage}
-              onChange={setPage}
-            />
+            <Center>
+              <Pagination
+                total={totalPages}
+                value={activePage}
+                onChange={setPage}
+              />
+            </Center>
           )}
         </>
       ) : (

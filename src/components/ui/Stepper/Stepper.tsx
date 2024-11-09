@@ -1,5 +1,5 @@
 import { useLocale } from '@hooks/useLocale';
-import { Group } from '@mantine/core';
+import { Center } from '@mantine/core';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { Stepper as MantineStepper } from '@mantine/core';
@@ -135,7 +135,7 @@ const Stepper: FC<{
           </MantineStepper.Step>
         ))}
       </MantineStepper>
-      <Group align="center" className={stepperStyles.buttons}>
+      <Center className={stepperStyles.buttons}>
         {currentStep !== 0 && (
           <Button variant="outline" onClick={prevStep} shrink={shrink}>
             {locale.form.back}
@@ -148,7 +148,7 @@ const Stepper: FC<{
         >
           {currentStep === LAST_PAGE ? buttonLabel : locale.form.next}
         </Button>
-      </Group>
+      </Center>
     </>
   );
 };
