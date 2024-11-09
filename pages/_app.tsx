@@ -35,6 +35,7 @@ type AppPropsWithLayout = AppProps & {
 
 const theme = createTheme({
   autoContrast: true,
+  defaultRadius: 'sm',
   primaryColor: 'primary',
   fontSizes: {
     xs: '0.5rem',
