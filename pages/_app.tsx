@@ -35,6 +35,14 @@ type AppPropsWithLayout = AppProps & {
 
 const theme = createTheme({
   primaryColor: 'primary',
+  // scale: 1 / (12 / 16),
+  fontSizes: {
+    xs: '0.8rem',
+    sm: '1rem',
+    md: '1.2rem',
+    lg: '1.4rem',
+    xl: '1.7rem',
+  },
   components: {
     Badge: Badge.extend({
       defaultProps: {
