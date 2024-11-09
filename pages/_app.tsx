@@ -34,13 +34,14 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const theme = createTheme({
+  autoContrast: true,
   primaryColor: 'primary',
   fontSizes: {
-    xs: '0.6rem',
-    sm: '0.8rem',
-    md: '1rem',
-    lg: '1.4rem',
-    xl: '1.7rem',
+    xs: '0.5rem',
+    sm: '0.7rem',
+    md: '0.9rem',
+    lg: '1.1rem',
+    xl: '1.4rem',
   },
   headings: {
     fontWeight: '400',
