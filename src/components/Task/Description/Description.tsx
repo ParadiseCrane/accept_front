@@ -1,7 +1,7 @@
 import { FC, memo, useEffect } from 'react';
 import { ITask } from '@custom-types/data/ITask';
 import styles from './description.module.css';
-import { Table } from '@mantine/core';
+import { Group, Table, Title } from '@mantine/core';
 import { useLocale } from '@hooks/useLocale';
 
 import CopyButton from '@ui/CopyButton/CopyButton';
@@ -87,15 +87,54 @@ const Description: FC<{
         <div className={styles.examplesLabel}>
           {locale.task.description.examples.title}
         </div>
-        {task.examples.map((example, index) => (
-          <Table
-            key={index}
-            striped
-            verticalSpacing="md"
-            className={styles.table}
-          >
-            <tbody className={styles.tbody}>
-              <tr>
+        {/* {task.examples.map((example, index) => ( */}
+        <Table
+          striped
+          withColumnBorders
+          verticalSpacing="md"
+          className={styles.table}
+        >
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Td>
+                <Title order={4}>
+                  {locale.task.description.examples.input}
+                </Title>
+              </Table.Td>
+              <Table.Td>
+                <Title order={4}>
+                  {locale.task.description.examples.output}
+                </Title>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {task.examples.map((example, index) => (
+              <Table.Tr>
+                <Table.Td>
+                  <Group
+                    wrap="nowrap"
+                    justify="space-between"
+                    align="flex-start"
+                  >
+                    {example.inputData}
+                    <CopyButton toCopy={example.inputData} />
+                  </Group>
+                </Table.Td>
+                <Table.Td>
+                  <Group
+                    wrap="nowrap"
+                    justify="space-between"
+                    align="flex-start"
+                  >
+                    {example.outputData}
+                    <CopyButton toCopy={example.outputData} />
+                  </Group>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+            {/* <tbody className={styles.tbody}> */}
+            {/* <tr>
                 <td>
                   <div className={styles.exampleHeader}>
                     {locale.task.description.examples.input}
@@ -104,9 +143,7 @@ const Description: FC<{
                 </td>
               </tr>
               <tr>
-                <td className={styles.exampleData}>
-                  {example.inputData}
-                </td>
+                <td className={styles.exampleData}>{example.inputData}</td>
               </tr>
               <tr>
                 <td>
@@ -117,19 +154,16 @@ const Description: FC<{
                 </td>
               </tr>
               <tr>
-                <td className={styles.exampleData}>
-                  {example.outputData}
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        ))}
+                <td className={styles.exampleData}>{example.outputData}</td>
+              </tr> */}
+            {/* </tbody> */}
+          </Table.Tbody>
+        </Table>
+        {/* ))} */}
       </div>
       {task.remark && (
         <div className={styles.remarkWrapper}>
-          <div className={styles.remarkLabel}>
-            {locale.task.form.remark}
-          </div>
+          <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
           <div
             className={styles.remark}
             dangerouslySetInnerHTML={{ __html: task.remark }}

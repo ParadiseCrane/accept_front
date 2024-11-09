@@ -43,6 +43,9 @@ const theme = createTheme({
     lg: '1.4rem',
     xl: '1.7rem',
   },
+  headings: {
+    fontWeight: '400',
+  },
   components: {
     Badge: Badge.extend({
       defaultProps: {

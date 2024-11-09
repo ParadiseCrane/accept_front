@@ -78,13 +78,13 @@
 }
 
 .table td {
+  width: 50%;
   font-size: var(--font-size-s) !important;
   padding: var(--spacer-xs) var(--spacer-s) !important;
   overflow-wrap: anywhere;
 }
 
 .table tr {
-  width: 70%;
   border: 1px solid #dee2e6;
 }
 
@@ -126,8 +126,8 @@
   .table {
     break-inside: avoid;
   }
-
+  /*
   .tbody tr {
     width: 50px;
-  }
+  } */
 }
