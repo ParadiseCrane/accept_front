@@ -19,7 +19,7 @@ const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
       }}
       {...tipProps}
     >
-      {children}
+      <span>{children}</span>
     </Tooltip>
   );
 };
