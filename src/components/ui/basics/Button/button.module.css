@@ -14,24 +14,6 @@
   --font-size: var(--font-size-btn-m);
 }
 
-.label {
-  font-size: var(--font-size);
-  line-height: calc(var(--font-size) * 1.2);
-  color: var(--main-color);
-  font-weight: 400;
-}
-
-.root {
-  background-color: var(--bg-color);
-  padding: var(--spacer-xs) var(--spacer-s);
-  height: fit-content;
-  border-color: var(--border-color);
-}
-
-.root:hover {
-  background-color: var(--hover-color);
-}
-
 .outline.buttonWrapper {
   --bg-color: #fff;
   --main-color: var(--primary);
@@ -90,9 +72,28 @@
 
 /* should be at bottom */
 .disabled.buttonWrapper {
-  --bg-color: var(--dark5);
+  --bg-color: var(--dark6);
+  --hover-color: var(--dark6);
   --main-color: var(--dark2);
-  --border-color: var(--dark2);
+  --border-color: #fff;
+}
+
+.label {
+  font-size: var(--font-size);
+  line-height: calc(var(--font-size) * 1.2);
+  color: var(--main-color);
+  font-weight: 400;
+}
+
+.root {
+  background-color: var(--bg-color);
+  padding: var(--spacer-xs) var(--spacer-s);
+  height: fit-content;
+  border-color: var(--border-color);
+}
+
+.root:hover {
+  background-color: var(--hover-color);
 }
 
 .header .root {

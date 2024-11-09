@@ -19,7 +19,6 @@ import {
   colorsTuple,
   createTheme,
   MantineProvider,
-  rem,
 } from '@mantine/core';
 import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
