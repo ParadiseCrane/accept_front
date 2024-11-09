@@ -238,7 +238,9 @@ const Table: FC<{
                   data={availableColumns}
                   value={selectedColumns}
                   onChange={handleChange}
-                  placeholder={locale.placeholders.showColumns}
+                  placeholder={
+                      locale.placeholders.showColumns
+                  }
                 />
               </div>
             )}
