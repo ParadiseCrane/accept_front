@@ -87,11 +87,11 @@ const Description: FC<{
         <div className={styles.examplesLabel}>
           {locale.task.description.examples.title}
         </div>
-        {/* {task.examples.map((example, index) => ( */}
         <Table
           striped
           withColumnBorders
           verticalSpacing="md"
+          highlightOnHover
           className={styles.table}
         >
           <Table.Thead>
@@ -111,7 +111,7 @@ const Description: FC<{
           <Table.Tbody>
             {task.examples.map((example, index) => (
               <Table.Tr>
-                <Table.Td>
+                <Table.Td valign="top">
                   <Group
                     wrap="nowrap"
                     justify="space-between"
@@ -121,7 +121,7 @@ const Description: FC<{
                     <CopyButton toCopy={example.inputData} />
                   </Group>
                 </Table.Td>
-                <Table.Td>
+                <Table.Td valign="top">
                   <Group
                     wrap="nowrap"
                     justify="space-between"
@@ -133,33 +133,8 @@ const Description: FC<{
                 </Table.Td>
               </Table.Tr>
             ))}
-            {/* <tbody className={styles.tbody}> */}
-            {/* <tr>
-                <td>
-                  <div className={styles.exampleHeader}>
-                    {locale.task.description.examples.input}
-                    <CopyButton toCopy={example.inputData} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td className={styles.exampleData}>{example.inputData}</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className={styles.exampleHeader}>
-                    {locale.task.description.examples.output}
-                    <CopyButton toCopy={example.outputData || ''} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td className={styles.exampleData}>{example.outputData}</td>
-              </tr> */}
-            {/* </tbody> */}
           </Table.Tbody>
         </Table>
-        {/* ))} */}
       </div>
       {task.remark && (
         <div className={styles.remarkWrapper}>
