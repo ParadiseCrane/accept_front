@@ -3,6 +3,7 @@ import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useMemo } from 'react';
 import styles from './descriptionInfo.module.css';
 import { IHintAlarmType } from '@custom-types/data/atomic';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const DescriptionInfo: FC<{
   form: any;
@@ -21,6 +22,7 @@ const DescriptionInfo: FC<{
 
   return (
     <>
+      <TipTapEditor />
       <CustomEditor
         label={locale.task.form.description}
         form={form}
@@ -55,9 +57,7 @@ const DescriptionInfo: FC<{
             form={form}
             field={'hintAlarmType'}
             items={hintAlarmTypeItems}
-            onChange={(value) =>
-              form.setFieldValue('hintAlarmType', value)
-            }
+            onChange={(value) => form.setFieldValue('hintAlarmType', value)}
           />
           <NumberInput
             label={locale.task.form.hint.showAfter}

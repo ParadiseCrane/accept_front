@@ -30,6 +30,7 @@
     "@mantine/modals": "^7.13.4",
     "@mantine/notifications": "^7.13.4",
     "@mantine/tiptap": "^7.14.0",
+    "@tiptap/extension-color": "^2.9.1",
     "@tiptap/extension-document": "^2.9.1",
     "@tiptap/extension-dropcursor": "^2.9.1",
     "@tiptap/extension-highlight": "^2.9.1",
@@ -58,6 +59,7 @@
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-to-print": "^2.14.7",
     "tabler-icons-react": "^1.54.0",
+    "tiptap-extension-resize-image": "^1.1.9",
     "uuid": "8.3.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.11/xlsx-0.18.11.tgz"
   },
