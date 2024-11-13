@@ -24,6 +24,7 @@ import 'dayjs/locale/ru';
 import { useRouter } from 'next/router';
 import styles from '@styles/spinner.module.css';
 import actionIconStyles from '@styles/ui/actionIcon.module.css';
+import 'katex/dist/katex.min.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;

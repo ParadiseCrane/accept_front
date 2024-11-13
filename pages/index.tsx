@@ -5,6 +5,7 @@ import TopContent from '@components/MainPage/TopContent/TopContent';
 import { useLocale } from '@hooks/useLocale';
 import { ProjectCard } from '@components/MainPage/ProjectCard/ProjectCard';
 import { cardList } from '@constants/CardList';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 function IndexPage() {
   const { locale } = useLocale();
@@ -13,15 +14,10 @@ function IndexPage() {
     <>
       <Title title={locale.titles.main} />
       <TopContent />
+      <TipTapEditor />
       <div style={{ marginBottom: 'var(--spacer-huge)' }}>
         {cardList.map((card, index) => {
-          return (
-            <ProjectCard
-              key={index}
-              left={index % 2 == 0}
-              card={card}
-            />
-          );
+          return <ProjectCard key={index} left={index % 2 == 0} card={card} />;
         })}
       </div>
     </>
