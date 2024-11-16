@@ -1,4 +1,8 @@
 export const errors = {
+  organization: {
+    notSelected: 'Organization wasn\'t selected',
+    exists: 'Incorrect organization',
+  },
   login: {
     len: 'Login shorter than 5 symbols',
     symbols: 'Login includes invalid symbols',
