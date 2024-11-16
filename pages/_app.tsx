@@ -18,6 +18,7 @@ import {
   Badge,
   colorsTuple,
   createTheme,
+  em,
   MantineProvider,
 } from '@mantine/core';
 import 'dayjs/locale/ru';
@@ -35,14 +36,24 @@ type AppPropsWithLayout = AppProps & {
 
 const theme = createTheme({
   autoContrast: true,
+  luminanceThreshold: 0.6,
   defaultRadius: 'sm',
   primaryColor: 'primary',
+  focusRing: 'auto',
+  fontFamily: 'Roboto',
+  breakpoints: {
+    xs: em(480),
+    sm: em(768),
+    md: em(1280),
+    lg: em(1440),
+    xl: em(1920),
+  },
   fontSizes: {
-    xs: '0.5rem',
-    sm: '0.7rem',
-    md: '0.9rem',
+    xs: '0.7rem',
+    sm: '0.9rem',
+    md: '1rem',
     lg: '1.1rem',
-    xl: '1.4rem',
+    xl: '1.3rem',
   },
   headings: {
     fontWeight: '400',
@@ -59,6 +70,11 @@ const theme = createTheme({
         className: actionIconStyles.button,
       },
     }),
+    // Input: Input.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
   },
   colors: {
     primary: [

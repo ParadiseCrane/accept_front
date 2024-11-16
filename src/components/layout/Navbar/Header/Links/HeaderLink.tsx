@@ -22,8 +22,7 @@ export const HeaderLink: FC<{
           items={link.links
             .filter(
               (item) =>
-                !item.permission ||
-                accessLevel >= accessLevels[item.permission]
+                !item.permission || accessLevel >= accessLevels[item.permission]
             )
             .map((dropdownLink) => ({
               href: dropdownLink.href,
@@ -35,8 +34,7 @@ export const HeaderLink: FC<{
           <Button kind="header">{link.text(locale)}</Button>
         </Dropdown>
       ) : (
-        (!link.permission ||
-          accessLevel >= accessLevels[link.permission]) && (
+        (!link.permission || accessLevel >= accessLevels[link.permission]) && (
           <Link href={link.href} className={linkStyles.headerLink}>
             {link.text(locale)}
           </Link>
