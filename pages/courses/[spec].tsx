@@ -1,40 +1,42 @@
-import Logo from '@components/layout/Navbar/Logo/Logo';
-import SignIn from '@components/layout/Navbar/SignIn/SignIn';
+import Footer from '@components/Courses/Footer';
+import Header from '@components/Courses/Header';
+import Main from '@components/Courses/Main';
+import NavBar from '@components/Courses/NavBar';
+import { ICourse } from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
-import {
-  ActionIcon,
-  AppShell,
-  Burger,
-  Center,
-  Group,
-  Kbd,
-  NavLink,
-  Text,
-  Title,
-} from '@mantine/core';
-import { useCounter, useDisclosure, useHotkeys } from '@mantine/hooks';
+import { useMoveThroughArray } from '@hooks/useStateHistory';
+import { AppShell } from '@mantine/core';
+import { useDisclosure, useHash, useIsFirstRender } from '@mantine/hooks';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
+import { useEffect } from 'react';
 
-interface ICourse {
-  spec: string;
-  title: string;
-  description: string;
-  image: string;
-  children: ICourse[] | ITask[];
-}
+const flattenCourse = (item: ICourse | ITask): (ICourse | ITask)[] => {
+  if (!('children' in item)) return [item];
+  let specs: (ICourse | ITask)[] = [item];
+  for (var i = 0; i < item.children.length; i++) {
+    specs = specs.concat(flattenCourse(item.children[i]));
+  }
+  return specs;
+};
 
 function Course(props: { course: ICourse }) {
   const course = props.course;
 
   const [opened, { toggle }] = useDisclosure();
-  const [] = useCounter();
-  useHotkeys([
-    ['ctrl + ,', () => console.log('prev page')],
-    ['ctrl + .', () => console.log('next page')],
-  ]);
+  const [value, handlers, array] = useMoveThroughArray(
+    flattenCourse(course),
+    (item, hash) => item.spec == hash
+  );
+  const [hash, setHash] = useHash();
+
+  useEffect(() => {
+    handlers.currentByHash(hash.slice(1));
+  }, [hash]);
+
+  useEffect(() => {
+    if (!!value && value.spec !== hash.slice(1)) setHash(value.spec);
+  }, [value]);
 
   return (
     <>
@@ -52,126 +54,39 @@ function Course(props: { course: ICourse }) {
         padding="md"
         layout="alt"
       >
-        <AppShell.Header p={'sm'}>
-          <Group justify="space-between">
-            <Group>
-              <Burger
-                opened={opened}
-                onClick={toggle}
-                hiddenFrom="sm"
-                size="sm"
-              />
-              <Logo size="sm" />
-            </Group>
-            <SignIn size="md" />
-          </Group>
-        </AppShell.Header>
+        <Header opened={opened} toggle={toggle} />
+        <NavBar course={course} />
+        <Footer prev={handlers.prev} next={handlers.next} />
 
-        <AppShell.Navbar p="md">
-          <NavLink href="#intro" label="Introduction" />
-          <NavLink href="#unit1" label="Unit 1">
-            <NavLink href="#lesson1" label="Lesson 1" />
-            <NavLink href="#lesson2" label="Lesson 2" />
-            <NavLink href="#lesson3" label="Lesson 3">
-              <NavLink href="#" label="Task 1" />
-              <NavLink href="#" label="Task 2" />
-              <NavLink href="#" label="Task 3" />
-              <NavLink href="#" label="Task 4" />
-            </NavLink>
-            <NavLink href="#lesson4" label="Lesson 4" />
-          </NavLink>
-          <NavLink href="#" label="Unit 2">
-            <NavLink href="#" label="Lesson 1" />
-            <NavLink href="#" label="Lesson 2" />
-            <NavLink href="#" label="Lesson 3" />
-          </NavLink>
-          <NavLink href="#" label="Unit 3">
-            <NavLink href="#" label="Lesson 1" />
-            <NavLink href="#" label="Lesson 2" />
-            <NavLink href="#" label="Lesson 3" />
-          </NavLink>
-          <NavLink href="#" label="Unit 4">
-            <NavLink href="#" label="Lesson 1" />
-            <NavLink href="#" label="Lesson 2" />
-            <NavLink href="#" label="Lesson 3" />
-          </NavLink>
-        </AppShell.Navbar>
-
-        <AppShell.Footer>
-          <Group justify="space-between" p={'md'}>
-            <Group>
-              <ActionIcon>
-                <ArrowLeft />
-              </ActionIcon>
-              <div>
-                <Kbd>Ctrl</Kbd> + <Kbd>&lt;</Kbd>
-              </div>
-            </Group>
-            <Group>
-              <div>
-                <Kbd>Ctrl</Kbd> + <Kbd>&gt;</Kbd>
-              </div>
-              <ActionIcon>
-                <ArrowRight />
-              </ActionIcon>
-            </Group>
-          </Group>
-        </AppShell.Footer>
-
-        <AppShell.Main>
-          <Image
-            src={course.image}
-            alt="Picture of the course"
-            width={600}
-            height={200}
-            sizes="100vw"
-            style={{
-              width: '100%',
-              objectFit: 'cover',
-            }}
-          />
-          <Center>
-            <Title order={1}>{course.title}</Title>
-          </Center>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-          <Text>{course.description}</Text>
-        </AppShell.Main>
+        <Main key={hash} course={value} />
       </AppShell>
     </>
   );
 }
 
 export default Course;
+
+const generateLesson = (
+  unit: number,
+  index: number,
+  tasks: number
+): ICourse => ({
+  spec: `${Math.floor(Math.random() * 1000)}`,
+  title: `Lesson ${index + 1}`,
+  description: `Description of unit ${unit + 1} lesson ${index + 1}`,
+  image: '',
+  children: [],
+});
+
+const generateUnit = (index: number): ICourse => ({
+  spec: `${Math.floor(Math.random() * 1000)}`,
+  title: `Unit ${index + 1}`,
+  description: `Description of unit ${index + 1}`,
+  image: '',
+  children: Array.apply(null, Array(5)).map((x, i) =>
+    generateLesson(index, i, 3)
+  ),
+});
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
@@ -186,6 +101,10 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  let units: ICourse[] = Array.apply(null, Array(5)).map((x, i) =>
+    generateUnit(i)
+  );
+
   let course: ICourse = {
     spec: query.spec,
     title: 'Test course',
@@ -193,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       'During this course we will test all features that are present in Accept courses.',
     image:
       'https://wallpapers.com/images/hd/nice-background-epwgnra8o2fouefa.jpg',
-    children: [],
+    children: units,
   };
 
   return {
