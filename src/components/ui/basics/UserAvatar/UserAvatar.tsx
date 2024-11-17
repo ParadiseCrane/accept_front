@@ -13,11 +13,7 @@ interface AvatarProps extends MantineAvatarProps {
 }
 // TODO продолжить добавление организаций
 
-const UserAvatar: FC<AvatarProps> = ({
-  login,
-  organization,
-  ...props
-}) => {
+const UserAvatar: FC<AvatarProps> = ({ login, organization, ...props }) => {
   const { user } = useUser();
   const organizationLocal = organization ?? user?.organization;
   return (
