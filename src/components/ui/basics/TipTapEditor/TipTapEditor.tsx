@@ -35,154 +35,35 @@ import {
   Eye,
 } from 'tabler-icons-react';
 import styles from './TipTapEditor.module.css';
+import { InsertLatexExpression } from './Components/InsertLatex';
+import { ToggleBold } from './Components/ToggleBold';
+import { ToggleItalic } from './Components/ToggleItalic';
+import { ToggleUnderline } from './Components/ToggleUnderline';
+import { ToggleStrikethrough } from './Components/ToggleStriketrough';
+import { ToggleCode } from './Components/ToggleCode';
+import { InsertImageAsFile, InsertImageAsUrl } from './Components/InsertImage';
+import { ToggleBulletList, ToggleOrderedList } from './Components/ToggleList';
+import {
+  ToggleSubscript,
+  ToggleSuperscript,
+} from './Components/ToggleSubSuper';
+import { ToggleBlockquote } from './Components/ToggleBlockquote';
+import {
+  AlignCenterButton,
+  AlignJustifyButton,
+  AlignLeftButton,
+  AlignRightButton,
+} from './Components/Align';
+import { RedoButton, UndoButton } from './Components/UndoRedo';
+import {
+  ToggleHeading1,
+  ToggleHeading2,
+  ToggleHeading3,
+  ToggleHeading4,
+} from './Components/ToggleHeaders';
 
 const content =
   '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
-
-const insertLatexFunction = ({
-  editor,
-  expression,
-}: {
-  editor: Editor;
-  expression: string;
-}) => {
-  const characterFilter = expression.replaceAll('$', '');
-  editor?.commands.insertContent(
-    `<span data-latex="${characterFilter}" data-evaluate="no" data-display="no" data-type="inlineMath">${expression}</span>`
-  );
-};
-
-const loadImageAsFile = ({
-  files,
-  editor,
-}: {
-  files: FileList | null;
-  editor: Editor;
-}) => {
-  const reader = new FileReader();
-  reader.onload = function () {
-    if (typeof reader.result === 'string') {
-      // return reader.result;
-      editor?.chain().focus().setImage({ src: reader.result }).run();
-    }
-    return '';
-  };
-  if (files !== null) {
-    reader.readAsDataURL(files[0]);
-  }
-};
-
-const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-  editor
-    .chain()
-    .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
-    .run();
-};
-
-const InsertLatexExpression = ({
-  editor,
-  expression,
-}: {
-  editor: Editor;
-  expression: string;
-}) => {
-  return (
-    <RichTextEditor.Control
-      onClick={() =>
-        insertLatexFunction({ editor: editor, expression: expression })
-      }
-      aria-label="Insert LaTeX expression"
-      title="Insert LaTeX expression"
-    >
-      <Tex stroke={'black'} size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};
-
-const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
-  return (
-    <RichTextEditor.Control aria-label="Upload image" title="Upload image">
-      <input
-        type="file"
-        accept={'image/*'}
-        className="Input__input"
-        onChange={(e) =>
-          loadImageAsFile({ files: e.target.files, editor: editor })
-        }
-        style={{ display: 'none' }}
-        id="upload-image-as-file"
-      />
-      <label
-        htmlFor="upload-image-as-file"
-        style={{ display: 'flex', flexDirection: 'column' }}
-        className={styles.upload_image}
-      >
-        <PhotoUp size={'1rem'} />
-      </label>
-    </RichTextEditor.Control>
-  );
-};
-
-const InsertImageByUrl = ({ editor }: { editor: Editor }) => {
-  return (
-    <RichTextEditor.Control
-      onClick={() => {
-        loadImageFromUrl({
-          editor: editor,
-          src: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        });
-      }}
-      aria-label="Upload image from URL"
-      title="Upload image from URL"
-    >
-      <PhotoSearch size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};
-
-const CustomBold = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isActive('bold');
-  return (
-    <RichTextEditor.Control
-      onClick={() => {
-        editor.chain().toggleMark('bold').run();
-      }}
-      aria-label="Toggle bold"
-      title="Toggle bold"
-    >
-      <BoldIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};
-
-const CustomItalic = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isActive('italic');
-  return (
-    <RichTextEditor.Control
-      onClick={() => {
-        editor.chain().toggleItalic().run();
-      }}
-      aria-label="Toggle italic"
-      title="Toggle italic"
-    >
-      <ItalicIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};
-
-const ViewState = ({ editor }: { editor: Editor }) => {
-  return (
-    <RichTextEditor.Control
-      onClick={() => {
-        console.log(editor.view.state.selection);
-      }}
-      aria-label="View state"
-      title="View state"
-    >
-      <Eye size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};
 
 export const TipTapEditor = () => {
   const editor = useEditor({
@@ -228,13 +109,12 @@ export const TipTapEditor = () => {
           className={styles.toolbar}
         >
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ViewState editor={editor} />
-            <CustomBold editor={editor} />
-            <CustomItalic editor={editor} />
-            <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
+            <ToggleBold editor={editor} />
+            <ToggleItalic editor={editor} />
+            <ToggleUnderline editor={editor} />
+            <ToggleStrikethrough editor={editor} />
             <RichTextEditor.ClearFormatting />
-            <RichTextEditor.Code />
+            <ToggleCode editor={editor} />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
@@ -243,22 +123,22 @@ export const TipTapEditor = () => {
               expression="$x^n + y^n = z^n$"
             />
             <InsertImageAsFile editor={editor} />
-            <InsertImageByUrl editor={editor} />
+            <InsertImageAsUrl editor={editor} />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <RichTextEditor.H1 />
-            <RichTextEditor.H2 />
-            <RichTextEditor.H3 />
-            <RichTextEditor.H4 />
+            <ToggleHeading1 editor={editor} />
+            <ToggleHeading2 editor={editor} />
+            <ToggleHeading3 editor={editor} />
+            <ToggleHeading4 editor={editor} />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <RichTextEditor.Blockquote />
-            <RichTextEditor.BulletList />
-            <RichTextEditor.OrderedList />
-            <RichTextEditor.Subscript />
-            <RichTextEditor.Superscript />
+            <ToggleBlockquote editor={editor} />
+            <ToggleBulletList editor={editor} />
+            <ToggleOrderedList editor={editor} />
+            <ToggleSubscript editor={editor} />
+            <ToggleSuperscript editor={editor} />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
@@ -267,15 +147,15 @@ export const TipTapEditor = () => {
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <RichTextEditor.AlignLeft />
-            <RichTextEditor.AlignCenter />
-            <RichTextEditor.AlignJustify />
-            <RichTextEditor.AlignRight />
+            <AlignLeftButton editor={editor} />
+            <AlignCenterButton editor={editor} />
+            <AlignRightButton editor={editor} />
+            <AlignJustifyButton editor={editor} />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <RichTextEditor.Undo />
-            <RichTextEditor.Redo />
+            <UndoButton editor={editor} />
+            <RedoButton editor={editor} />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
