@@ -15,6 +15,8 @@ function IndexPage() {
       <Title title={locale.titles.main} />
       <TopContent />
       <TipTapEditor />
+      <TipTapEditor />
+      <TipTapEditor />
       <div style={{ marginBottom: 'var(--spacer-huge)' }}>
         {cardList.map((card, index) => {
           return <ProjectCard key={index} left={index % 2 == 0} card={card} />;

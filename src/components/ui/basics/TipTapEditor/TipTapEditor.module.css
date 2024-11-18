@@ -35,3 +35,7 @@
   outline: auto;
   outline-width: 5px;
 }
+
+.upload_image:hover {
+  cursor: pointer;
+}
