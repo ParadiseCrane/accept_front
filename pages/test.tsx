@@ -13,8 +13,6 @@ function TestPage() {
       }}
     >
       <TipTapEditor />
-      <TipTapEditor />
-      <TipTapEditor />
     </div>
   );
 }

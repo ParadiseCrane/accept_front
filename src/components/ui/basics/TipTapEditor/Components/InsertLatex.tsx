@@ -1,36 +1,65 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Tex } from 'tabler-icons-react';
+import { useState } from 'react';
+import { Math } from 'tabler-icons-react';
+import { LatexModal } from './LatexModal';
 
-const insertLatexFunction = ({
+export const insertLatexFunction = ({
   editor,
   expression,
+  inline,
 }: {
   editor: Editor;
   expression: string;
+  inline: boolean;
 }) => {
   const characterFilter = expression.replaceAll('$', '');
-  editor?.commands.insertContent(
-    `<span data-latex="${characterFilter}" data-evaluate="no" data-display="no" data-type="inlineMath">${expression}</span>`
-  );
+  const dataDisplay = inline ? 'no' : 'yes';
+  editor
+    ?.chain()
+    .clearContent()
+    .insertContent(
+      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
+    )
+    .run();
 };
 
-export const InsertLatexExpression = ({
-  editor,
-  expression,
-}: {
-  editor: Editor;
-  expression: string;
-}) => {
+export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
+  const [showModal, setShowModal] = useState(false);
   return (
-    <RichTextEditor.Control
-      onClick={() =>
-        insertLatexFunction({ editor: editor, expression: expression })
-      }
-      aria-label="Insert LaTeX expression"
-      title="Insert LaTeX expression"
-    >
-      <Tex stroke={'black'} size={'1rem'} />
-    </RichTextEditor.Control>
+    <>
+      <RichTextEditor.Control
+        aria-label="Insert LaTeX expression"
+        title="Insert LaTeX expression"
+      >
+        <Math
+          stroke={'black'}
+          size={'1rem'}
+          onClick={() => {
+            setShowModal(true);
+          }}
+        />
+      </RichTextEditor.Control>
+
+      <LatexModal
+        isOpened={showModal}
+        insertExpression={({
+          expression,
+          inline,
+        }: {
+          expression: string;
+          inline: boolean;
+        }) => {
+          insertLatexFunction({
+            editor: editor,
+            expression: expression,
+            inline: inline,
+          });
+        }}
+        close={() => {
+          setShowModal(false);
+        }}
+      />
+    </>
   );
 };
