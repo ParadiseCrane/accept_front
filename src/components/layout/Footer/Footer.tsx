@@ -21,6 +21,15 @@ const Footer: FC = () => {
           </ActionIcon>
         </div>
         <div className={styles.github}>
+          <ActionIcon
+            size={32}
+            component={Link}
+            href={'https://github.com/ParadiseCrane'}
+          >
+            <BrandGithub size={32} color={'white'} />
+          </ActionIcon>
+        </div>
+        <div className={styles.github}>
           <ActionIcon component={Link} href={'https://github.com/RetroMeras'}>
             <BrandGithub size={24} color={'white'} />
           </ActionIcon>
