@@ -2,6 +2,8 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
 import styles from '../TipTapEditor.module.css';
+import { useState } from 'react';
+import { ImageUrlModal } from './ImageUrlModal';
 
 const loadImageAsFile = ({
   files,
@@ -23,12 +25,12 @@ const loadImageAsFile = ({
   }
 };
 
-const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-  editor
-    .chain()
-    .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
-    .run();
-};
+// const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
+//   editor
+//     .chain()
+//     .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
+//     .run();
+// };
 
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
   return (
@@ -55,18 +57,25 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
 };
 
 export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
+  const [show, setShow] = useState(false);
   return (
-    <RichTextEditor.Control
-      onClick={() => {
-        loadImageFromUrl({
-          editor: editor,
-          src: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        });
-      }}
-      aria-label="Upload image from URL"
-      title="Upload image from URL"
-    >
-      <PhotoSearch size={'1rem'} />
-    </RichTextEditor.Control>
+    <>
+      <RichTextEditor.Control
+        onClick={() => {
+          setShow(true);
+        }}
+        aria-label="Upload image from URL"
+        title="Upload image from URL"
+      >
+        <PhotoSearch size={'1rem'} />
+      </RichTextEditor.Control>
+      {show && (
+        <ImageUrlModal
+          isOpened={show}
+          close={() => setShow(false)}
+          editor={editor}
+        />
+      )}
+    </>
   );
 };

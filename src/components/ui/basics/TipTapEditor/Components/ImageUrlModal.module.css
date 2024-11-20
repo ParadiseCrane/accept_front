@@ -1,4 +1,4 @@
-.latex_modal_background {
+.image_url_modal_background {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.074);
   left: 0;
@@ -7,12 +7,12 @@
   height: 100%;
 }
 
-.latex_modal_wrapper {
+.image_url_modal_wrapper {
   z-index: 5;
   background-color: wheat;
 }
 
-.latex_modal_body {
+.image_url_modal_body {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -23,28 +23,16 @@
   font-size: large;
 }
 
-.latex_modal_input {
+.image_url_modal_input {
   width: 100%;
 }
 
-.latex_modal_input:focus {
+.image_url_modal_input:focus {
   outline: none;
 }
 
-.input_with_editor {
+.input {
   display: flex;
   flex-direction: column;
   gap: 15px;
-}
-
-.checkbox_area {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-.checkbox_with_label {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
 }

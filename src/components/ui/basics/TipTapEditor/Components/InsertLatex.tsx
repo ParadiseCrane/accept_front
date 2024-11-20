@@ -40,7 +40,6 @@ export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
           }}
         />
       </RichTextEditor.Control>
-
       <LatexModal
         isOpened={showModal}
         insertExpression={({
