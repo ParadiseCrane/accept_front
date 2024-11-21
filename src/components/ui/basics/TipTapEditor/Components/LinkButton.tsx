@@ -2,6 +2,7 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Link as LinkIcon, Unlink as UnlinkIcon } from 'tabler-icons-react';
+import { LinkModal } from './LinkModal';
 
 export const LinkButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('link') : false;
@@ -11,20 +12,10 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
     <div>
       <RichTextEditor.Control
         onClick={() => {
-          if (show) {
-            setShow(false);
+          if (isActive) {
+            // console.log('link is', editor.getAttributes('link')['href']);
           } else {
-            if (isActive) {
-              console.log('link is', editor.getAttributes('link')['href']);
-              setShow(true);
-            } else {
-              editor
-                .chain()
-                .setLink({
-                  href: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-                })
-                .run();
-            }
+            setShow(true);
           }
         }}
         aria-label="Set link"
@@ -32,6 +23,13 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
       >
         <LinkIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
       </RichTextEditor.Control>
+      {show && (
+        <LinkModal
+          isOpened={show}
+          close={() => setShow(false)}
+          editor={editor}
+        />
+      )}
     </div>
   );
 };

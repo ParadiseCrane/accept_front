@@ -38,7 +38,6 @@ import { ToggleBold } from './Components/ToggleBold';
 import { ToggleItalic } from './Components/ToggleItalic';
 import { ToggleUnderline } from './Components/ToggleUnderline';
 import { ToggleStrikethrough } from './Components/ToggleStrikethrough';
-import { ToggleCode } from './Components/ToggleCode';
 import { InsertImageAsFile, InsertImageAsUrl } from './Components/InsertImage';
 import { ToggleBulletList, ToggleOrderedList } from './Components/ToggleList';
 import {
@@ -65,7 +64,7 @@ import { LinkButton, UnlinkButton } from './Components/LinkButton';
 import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 
 const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
 
 const lowlight = createLowlight(all);
 
@@ -156,8 +155,6 @@ export const TipTapEditor = () => {
               <ToggleUnderline editor={editor} />
               <ToggleStrikethrough editor={editor} />
               <RichTextEditor.ClearFormatting />
-              {/* TODO думаю убрать просто код */}
-              <ToggleCode editor={editor} />
               <ToggleCodeBlock editor={editor} />
             </RichTextEditor.ControlsGroup>
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
