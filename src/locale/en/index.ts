@@ -31,6 +31,7 @@ import { executor } from './executor';
 import { tip } from './tip';
 import { team } from './team';
 import { accounts } from './accounts';
+import { organization } from './organization';
 
 const en = {
   accept: 'Accept',
@@ -104,6 +105,7 @@ const en = {
   tip,
   team,
   accounts,
+  organization,
 };
 
 export default en;

@@ -54,9 +54,9 @@ const LoginForm: FC<{
     validate: {
       organization: (value) =>
         value === ''
-          ? 'Выберите организацию' // TODO add locale
+          ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
-          ? 'Неверная организация' // TODO add locale
+          ? locale.auth.errors.organization.exists
           : null,
       login: (value) =>
         value.length == 0 ? locale.auth.errors.login.exists : null,

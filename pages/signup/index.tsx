@@ -65,9 +65,9 @@ function SignUp() {
     validate: {
       organization: (value) =>
         value === ''
-          ? 'Выберите организацию' // TODO add locale
+          ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
-          ? 'Неверная организация' // TODO add locale
+          ? locale.auth.errors.organization.exists
           : null,
       login: (value) =>
         value.length < 5
@@ -178,10 +178,10 @@ function SignUp() {
             <Select
               required
               id="organization"
-              label={'Организация'} // TODO add locale
+              label={locale.auth.labels.organization}
               data={organizations || []}
               disabled={!!!organizations || organizations_loading}
-              placeholder={'Выберите организацию'} // TODO add locale
+              placeholder={locale.auth.placeholders.organization}
               classNames={{
                 label: styles.label,
               }}

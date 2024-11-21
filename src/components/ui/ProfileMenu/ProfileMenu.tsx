@@ -25,7 +25,7 @@ const ProfileMenu: FC<{}> = ({}) => {
       <Menu
         opened={showMenu}
         trigger="hover"
-        zIndex={1000}
+        zIndex={100}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
       >
         <Menu.Target>

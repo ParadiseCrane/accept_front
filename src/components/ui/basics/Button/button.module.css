@@ -67,7 +67,7 @@
   --main-color: var(--dark1);
   --border-color: #ffffff00;
   --hover-color: #9dd5ff42;
-  --font-size: var(--font-size-btn-xl);
+  --font-size: var(--font-size-btn-l);
 }
 
 /* should be at bottom */

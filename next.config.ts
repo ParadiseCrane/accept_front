@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/api/image/:slug*',
-        destination: `${process.env.API_ENDPOINT}/api/image/:slug*`,
+        destination: `${process.env.API_ENDPOINT}/api/image_temp/:slug*`, //TODO: temp!
       },
     ];
   },
