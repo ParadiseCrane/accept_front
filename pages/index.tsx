@@ -15,13 +15,7 @@ function IndexPage() {
       <TopContent />
       <div style={{ marginBottom: 'var(--spacer-huge)' }}>
         {cardList.map((card, index) => {
-          return (
-            <ProjectCard
-              key={index}
-              left={index % 2 == 0}
-              card={card}
-            />
-          );
+          return <ProjectCard key={index} left={index % 2 == 0} card={card} />;
         })}
       </div>
     </>
