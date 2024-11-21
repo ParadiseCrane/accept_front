@@ -173,7 +173,6 @@ export const TipTapEditor = () => {
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <UndoButton editor={editor} />
               <RedoButton editor={editor} />
-              <ClearButton editor={editor} />
               <ExportContentForEditor editor={editor} />
               <ExportContentForHTML editor={editor} />
             </RichTextEditor.ControlsGroup>

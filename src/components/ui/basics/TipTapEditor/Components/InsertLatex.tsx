@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Math } from 'tabler-icons-react';
 import { LatexModal } from './LatexModal';
 
-export const insertLatexFunction = ({
+const insertLatexFunction = ({
   editor,
   expression,
   inline,
@@ -17,7 +17,6 @@ export const insertLatexFunction = ({
   const dataDisplay = inline ? 'no' : 'yes';
   editor
     ?.chain()
-    .clearContent()
     .insertContent(
       `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
     )

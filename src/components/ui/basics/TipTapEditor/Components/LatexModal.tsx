@@ -10,9 +10,28 @@ import styles from './LatexModal.module.css';
 import { Editor, useEditor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { RichTextEditor } from '@mantine/tiptap';
-import { insertLatexFunction } from './InsertLatex';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Checkbox } from '@ui/basics';
+
+const insertLatexFunction = ({
+  editor,
+  expression,
+  inline,
+}: {
+  editor: Editor;
+  expression: string;
+  inline: boolean;
+}) => {
+  const characterFilter = expression.replaceAll('$', '');
+  const dataDisplay = inline ? 'no' : 'yes';
+  editor
+    ?.chain()
+    .clearContent()
+    .insertContent(
+      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
+    )
+    .run();
+};
 
 export const LatexModal = ({
   isOpened,

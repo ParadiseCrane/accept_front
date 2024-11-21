@@ -181,3 +181,7 @@ body {
 .ProseMirror:focus {
   outline: none;
 }
+
+.ProseMirror img {
+  margin-bottom: 0px;
+}
