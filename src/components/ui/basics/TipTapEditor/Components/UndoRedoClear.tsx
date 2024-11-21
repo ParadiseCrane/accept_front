@@ -31,18 +31,3 @@ export const RedoButton = ({ editor }: { editor: Editor }) => {
     </RichTextEditor.Control>
   );
 };
-
-export const ClearButton = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.can().redo();
-  return (
-    <RichTextEditor.Control
-      onClick={() => {
-        editor.commands.clearContent();
-      }}
-      aria-label="Clear content"
-      title="Clear content"
-    >
-      <Eraser style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
-    </RichTextEditor.Control>
-  );
-};

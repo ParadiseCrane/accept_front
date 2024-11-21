@@ -5,6 +5,7 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Code } from '@tiptap/extension-code';
 import { CodeBlock } from '@tiptap/extension-code-block';
+import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
 import { Color } from '@tiptap/extension-color';
 import { Document } from '@tiptap/extension-document';
 import { Dropcursor } from '@tiptap/extension-dropcursor';
@@ -26,6 +27,11 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
 import { useEditor, BubbleMenu, Editor } from '@tiptap/react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
+import { all, createLowlight } from 'lowlight';
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
 import styles from './TipTapEditor.module.css';
 import { InsertLatexExpression } from './Components/InsertLatex';
 import { ToggleBold } from './Components/ToggleBold';
@@ -46,11 +52,7 @@ import {
   AlignLeftButton,
   AlignRightButton,
 } from './Components/Align';
-import {
-  ClearButton,
-  RedoButton,
-  UndoButton,
-} from './Components/UndoRedoClear';
+import { RedoButton, UndoButton } from './Components/UndoRedoClear';
 import {
   ToggleHeading1,
   ToggleHeading2,
@@ -60,9 +62,19 @@ import {
 import { useState } from 'react';
 import { Edit, FileExport } from 'tabler-icons-react';
 import { LinkButton, UnlinkButton } from './Components/LinkButton';
+import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 
 const content =
   '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+
+const lowlight = createLowlight(all);
+
+// This is only an example, all supported languages are already loaded above
+// but you can also register only specific languages to reduce bundle-size
+lowlight.register('html', html);
+lowlight.register('css', css);
+lowlight.register('js', js);
+lowlight.register('ts', ts);
 
 const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
   return (
@@ -102,6 +114,10 @@ export const TipTapEditor = () => {
       BulletList,
       Code,
       CodeBlock,
+      CodeBlockLowlight.configure({
+        lowlight: lowlight,
+        defaultLanguage: 'javascript',
+      }),
       Color,
       Document,
       Dropcursor,
@@ -140,7 +156,9 @@ export const TipTapEditor = () => {
               <ToggleUnderline editor={editor} />
               <ToggleStrikethrough editor={editor} />
               <RichTextEditor.ClearFormatting />
+              {/* TODO думаю убрать просто код */}
               <ToggleCode editor={editor} />
+              <ToggleCodeBlock editor={editor} />
             </RichTextEditor.ControlsGroup>
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <InsertLatexExpression editor={editor} />

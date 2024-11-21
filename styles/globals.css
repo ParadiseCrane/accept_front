@@ -160,28 +160,3 @@ body {
 .ck-editor__editable {
   max-height: 400px;
 }
-
-.ProseMirror {
-  padding: 8px;
-  max-height: 400px;
-  overflow-y: auto;
-  border-color: rgb(204, 206, 209);
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-bottom-style: solid;
-  border-bottom-width: 0.8px;
-  border-left-style: solid;
-  border-left-width: 0.8px;
-  border-right-style: solid;
-  border-right-width: 0.8px;
-  border-top-style: solid;
-  border-top-width: 0.8px;
-}
-
-.ProseMirror:focus {
-  outline: none;
-}
-
-.ProseMirror img {
-  margin-bottom: 0px;
-}

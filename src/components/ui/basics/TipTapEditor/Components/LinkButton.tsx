@@ -2,13 +2,10 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Link as LinkIcon, Unlink as UnlinkIcon } from 'tabler-icons-react';
-import styles from './LinkButton.module.css';
 
 export const LinkButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('link') : false;
   const [show, setShow] = useState(false);
-
-  const link = isActive ? editor.getAttributes('link')['href'] : '';
 
   return (
     <div>
@@ -35,7 +32,6 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
       >
         <LinkIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
       </RichTextEditor.Control>
-      {show && <LinkModal link={link} close={() => setShow(false)} />}
     </div>
   );
 };
@@ -51,15 +47,5 @@ export const UnlinkButton = ({ editor }: { editor: Editor }) => {
     >
       <UnlinkIcon size={'1rem'} />
     </RichTextEditor.Control>
-  );
-};
-
-const LinkModal = ({ link, close }: { link: string; close: any }) => {
-  return (
-    <div className={styles.link_modal_wrapper}>
-      <div className={styles.link_modal_body}>
-        <div onClick={close}>Close</div>
-      </div>
-    </div>
   );
 };

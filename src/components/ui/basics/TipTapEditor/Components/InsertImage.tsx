@@ -25,13 +25,6 @@ const loadImageAsFile = ({
   }
 };
 
-// const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-//   editor
-//     .chain()
-//     .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
-//     .run();
-// };
-
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control aria-label="Upload image" title="Upload image">
