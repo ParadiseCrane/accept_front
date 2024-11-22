@@ -9,7 +9,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
   const [show, setShow] = useState(false);
 
   return (
-    <div>
+    <>
       <RichTextEditor.Control
         onClick={() => {
           if (isActive) {
@@ -30,7 +30,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
           editor={editor}
         />
       )}
-    </div>
+    </>
   );
 };
 

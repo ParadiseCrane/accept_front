@@ -65,6 +65,7 @@ import { Edit, FileExport } from 'tabler-icons-react';
 import { LinkButton, UnlinkButton } from './Components/LinkButton';
 import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+import { ColorPickerButton } from './Components/ColorPicker';
 
 const content =
   '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
@@ -168,13 +169,14 @@ export const TipTapEditor = () => {
               <ToggleUnderline editor={editor} />
               <ToggleStrikethrough editor={editor} />
               <RichTextEditor.ClearFormatting />
+              <ColorPickerButton editor={editor} />
+            </RichTextEditor.ControlsGroup>
+            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <ToggleCodeBlock
                 editor={editor}
                 lowlight={lowlight}
                 languages={languages}
               />
-            </RichTextEditor.ControlsGroup>
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <InsertLatexExpression editor={editor} />
               <InsertImageAsFile editor={editor} />
               <InsertImageAsUrl editor={editor} />
@@ -205,8 +207,8 @@ export const TipTapEditor = () => {
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <UndoButton editor={editor} />
               <RedoButton editor={editor} />
-              <ExportContentForEditor editor={editor} />
-              <ExportContentForHTML editor={editor} />
+              {/* <ExportContentForEditor editor={editor} />
+              <ExportContentForHTML editor={editor} /> */}
             </RichTextEditor.ControlsGroup>
           </RichTextEditor.Toolbar>
         )}
