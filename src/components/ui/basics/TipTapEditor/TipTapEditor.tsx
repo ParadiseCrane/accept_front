@@ -31,6 +31,8 @@ import { all, createLowlight } from 'lowlight';
 import css from 'highlight.js/lib/languages/css';
 import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import csharp from 'highlight.js/lib/languages/csharp';
 import html from 'highlight.js/lib/languages/xml';
 import styles from './TipTapEditor.module.css';
 import { InsertLatexExpression } from './Components/InsertLatex';
@@ -62,18 +64,30 @@ import { useState } from 'react';
 import { Edit, FileExport } from 'tabler-icons-react';
 import { LinkButton, UnlinkButton } from './Components/LinkButton';
 import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
+import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 
 const content =
   '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
 
 const lowlight = createLowlight(all);
 
-// This is only an example, all supported languages are already loaded above
-// but you can also register only specific languages to reduce bundle-size
-lowlight.register('html', html);
-lowlight.register('css', css);
-lowlight.register('js', js);
-lowlight.register('ts', ts);
+const languages: IProgrammingLanguage[] = [
+  { nameAsString: 'Default', name: 'html', nameAsFn: html },
+  { nameAsString: 'HTML', name: 'html', nameAsFn: html },
+  { nameAsString: 'CSS', name: 'css', nameAsFn: css },
+  { nameAsString: 'JavaScript', name: 'js', nameAsFn: js },
+  { nameAsString: 'TypeScript', name: 'ts', nameAsFn: ts },
+  { nameAsString: 'Python', name: 'python', nameAsFn: python },
+  { nameAsString: 'C#', name: 'csharp', nameAsFn: csharp },
+];
+
+const registerLanguages = () => {
+  for (let i = 0; i < languages.length; i++) {
+    lowlight.register(languages[i].nameAsString, languages[i].nameAsFn);
+  }
+};
+
+registerLanguages();
 
 const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
   return (
@@ -115,7 +129,6 @@ export const TipTapEditor = () => {
       CodeBlock,
       CodeBlockLowlight.configure({
         lowlight: lowlight,
-        defaultLanguage: 'javascript',
       }),
       Color,
       Document,
@@ -155,7 +168,11 @@ export const TipTapEditor = () => {
               <ToggleUnderline editor={editor} />
               <ToggleStrikethrough editor={editor} />
               <RichTextEditor.ClearFormatting />
-              <ToggleCodeBlock editor={editor} />
+              <ToggleCodeBlock
+                editor={editor}
+                lowlight={lowlight}
+                languages={languages}
+              />
             </RichTextEditor.ControlsGroup>
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <InsertLatexExpression editor={editor} />

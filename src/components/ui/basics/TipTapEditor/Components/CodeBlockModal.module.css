@@ -1,0 +1,10 @@
+.code_block_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: large;
+}
