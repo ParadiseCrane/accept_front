@@ -1,4 +1,4 @@
-import { ColorPicker as MantineColorPicker } from '@mantine/core';
+import { ColorPicker as MantineColorPicker, Menu } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
@@ -7,41 +7,38 @@ import styles from './ColorPicker.module.css';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 
 export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
-  const [show, setShow] = useState(false);
   const initialColor = editor.getAttributes('textStyle')['color'] ?? '#000000';
 
   return (
-    <div className={styles.color_picker_wrapper}>
-      <RichTextEditor.Control
-        onClick={() => {
-          setShow((value) => !value);
-        }}
-        aria-label="Remove link"
-        title="Remove link"
-      >
-        <ColorPickerIcon size={'1rem'} />
-      </RichTextEditor.Control>
-      {show && (
-        <ColorPickerModal
-          editor={editor}
-          close={() => setShow(false)}
-          initialColor={initialColor}
-        />
-      )}
-    </div>
+    <Menu shadow="md">
+      <Menu.Target>
+        <RichTextEditor.Control
+          aria-label="Change font color"
+          title="Change font color"
+        >
+          <ColorPickerIcon size={'1rem'} />
+        </RichTextEditor.Control>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <ColorPickerModal editor={editor} initialColor={initialColor} />
+      </Menu.Dropdown>
+    </Menu>
   );
 };
 
 const ColorPickerModal = ({
   editor,
-  close,
   initialColor,
 }: {
   editor: Editor;
-  close: () => void;
   initialColor: string;
 }) => {
   const [color, setColor] = useState(initialColor);
+
+  const changeColor = (color: string) => {
+    setColor(color);
+    editor.chain().focus().setColor(color).run();
+  };
 
   return (
     <div className={styles.color_picker_modal_wrapper}>
@@ -69,19 +66,8 @@ const ColorPickerModal = ({
           '#fd7e14',
         ]}
         value={color}
-        onColorSwatchClick={(item) => setColor(item)}
-        onChangeEnd={(item) => setColor(item)}
-      />
-      <SimpleButtonGroup
-        reversePositive={false}
-        actionButton={{
-          onClick: () => {
-            editor.chain().focus().setColor(color).run();
-            close();
-          },
-          label: 'Set color',
-        }}
-        cancelButton={{ onClick: close, label: 'Close' }}
+        onColorSwatchClick={(item) => changeColor(item)}
+        onChangeEnd={(item) => changeColor(item)}
       />
     </div>
   );

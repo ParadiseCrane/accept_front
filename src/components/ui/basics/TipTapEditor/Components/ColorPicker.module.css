@@ -8,10 +8,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  position: absolute;
   z-index: 5;
-  top: 20px;
   background-color: var(--mantine-color-body);
-  border-radius: var(--paper-radius);
-  box-shadow: var(--mb-shadow, var(--mantine-shadow-xl));
+  border-radius: 5px;
 }
