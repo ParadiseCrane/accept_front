@@ -53,7 +53,7 @@ import {
   AlignLeftButton,
   AlignRightButton,
 } from './Components/Align';
-import { RedoButton, UndoButton } from './Components/UndoRedoClear';
+import { RedoButton, UndoButton } from './Components/UndoRedo';
 import {
   ToggleHeading1,
   ToggleHeading2,
@@ -67,6 +67,8 @@ import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from './Components/ColorPickerButton';
 import { HighLightColorButton } from './Components/HighlightColorButton';
+import { Divider } from '@mantine/core';
+import { ClearFormattingButton } from './Components/ClearFormattingButton';
 
 const content =
   '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
@@ -169,10 +171,11 @@ export const TipTapEditor = () => {
               <ToggleItalic editor={editor} />
               <ToggleUnderline editor={editor} />
               <ToggleStrikethrough editor={editor} />
-              <RichTextEditor.ClearFormatting />
+              <ClearFormattingButton editor={editor} />
               <ColorPickerButton editor={editor} />
               <HighLightColorButton editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <ToggleCodeBlock
                 editor={editor}
@@ -183,12 +186,14 @@ export const TipTapEditor = () => {
               <InsertImageAsFile editor={editor} />
               <InsertImageAsUrl editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <ToggleHeading1 editor={editor} />
               <ToggleHeading2 editor={editor} />
               <ToggleHeading3 editor={editor} />
               <ToggleHeading4 editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <ToggleBlockquote editor={editor} />
               <ToggleBulletList editor={editor} />
@@ -196,16 +201,19 @@ export const TipTapEditor = () => {
               <ToggleSubscript editor={editor} />
               <ToggleSuperscript editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <LinkButton editor={editor} />
               <UnlinkButton editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <AlignLeftButton editor={editor} />
               <AlignCenterButton editor={editor} />
               <AlignRightButton editor={editor} />
               <AlignJustifyButton editor={editor} />
             </RichTextEditor.ControlsGroup>
+            <Divider orientation="vertical" />
             <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
               <UndoButton editor={editor} />
               <RedoButton editor={editor} />

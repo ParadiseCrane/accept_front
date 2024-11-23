@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Bold } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleBold = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('bold') : false;
@@ -12,7 +13,7 @@ export const ToggleBold = ({ editor }: { editor: Editor }) => {
       aria-label="Toggle bold"
       title="Toggle bold"
     >
-      <Bold style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={Bold} />
     </RichTextEditor.Control>
   );
 };

@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { List, ListNumbers } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('bulletList') : false;
@@ -12,7 +13,7 @@ export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
       aria-label="Bullet list"
       title="Bullet list"
     >
-      <List style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={List} />
     </RichTextEditor.Control>
   );
 };
@@ -27,7 +28,7 @@ export const ToggleOrderedList = ({ editor }: { editor: Editor }) => {
       aria-label="Ordered list"
       title="Ordered list"
     >
-      <ListNumbers style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={ListNumbers} />
     </RichTextEditor.Control>
   );
 };

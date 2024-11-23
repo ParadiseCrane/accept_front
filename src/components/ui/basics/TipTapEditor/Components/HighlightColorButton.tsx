@@ -2,7 +2,8 @@ import { Menu } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Highlight as HighlightIcon } from 'tabler-icons-react';
-import { ColorPickerModal } from './ColorPickerModal';
+import { ColorPickerModal } from './Modals/ColorPickerModal';
+import { IconWrapper } from './IconWrapper';
 
 export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
   const initialColor = editor.getAttributes('textStyle')['color'] ?? '#ffffff';
@@ -18,7 +19,7 @@ export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
           aria-label="Highlight text"
           title="Highlight text"
         >
-          <HighlightIcon size={'1rem'} />
+          <IconWrapper isActive={false} IconChild={HighlightIcon} />
         </RichTextEditor.Control>
       </Menu.Target>
       <Menu.Dropdown>

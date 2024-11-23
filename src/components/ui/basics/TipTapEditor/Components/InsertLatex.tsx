@@ -2,7 +2,8 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Math } from 'tabler-icons-react';
-import { LatexModal } from './LatexModal';
+import { LatexModal } from './Modals/LatexModal';
+import { IconWrapper } from './IconWrapper';
 
 const insertLatexFunction = ({
   editor,
@@ -30,14 +31,11 @@ export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
       <RichTextEditor.Control
         aria-label="Insert LaTeX expression"
         title="Insert LaTeX expression"
+        onClick={() => {
+          setShowModal(true);
+        }}
       >
-        <Math
-          stroke={'black'}
-          size={'1rem'}
-          onClick={() => {
-            setShowModal(true);
-          }}
-        />
+        <IconWrapper isActive={false} IconChild={Math} />
       </RichTextEditor.Control>
       <LatexModal
         isOpened={showModal}

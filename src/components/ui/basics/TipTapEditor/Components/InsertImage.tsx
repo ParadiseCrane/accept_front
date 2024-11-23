@@ -3,7 +3,8 @@ import { Editor } from '@tiptap/react';
 import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
 import styles from '../TipTapEditor.module.css';
 import { useState } from 'react';
-import { ImageUrlModal } from './ImageUrlModal';
+import { ImageUrlModal } from './Modals/ImageUrlModal';
+import { IconWrapper } from './IconWrapper';
 
 const loadImageAsFile = ({
   files,
@@ -43,7 +44,7 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
         style={{ display: 'flex', flexDirection: 'column' }}
         className={styles.upload_image}
       >
-        <PhotoUp size={'1rem'} />
+        <IconWrapper isActive={false} IconChild={PhotoUp} />
       </label>
     </RichTextEditor.Control>
   );
@@ -60,7 +61,7 @@ export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
         aria-label="Upload image from URL"
         title="Upload image from URL"
       >
-        <PhotoSearch size={'1rem'} />
+        <IconWrapper isActive={false} IconChild={PhotoSearch} />
       </RichTextEditor.Control>
       {show && (
         <ImageUrlModal

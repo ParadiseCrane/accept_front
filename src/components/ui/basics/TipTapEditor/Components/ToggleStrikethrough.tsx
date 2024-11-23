@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Strikethrough } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleStrikethrough = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('strike') : false;
@@ -12,7 +13,7 @@ export const ToggleStrikethrough = ({ editor }: { editor: Editor }) => {
       aria-label="Toggle strikethrough"
       title="Toggle strikethrough"
     >
-      <Strikethrough style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={Strikethrough} />
     </RichTextEditor.Control>
   );
 };

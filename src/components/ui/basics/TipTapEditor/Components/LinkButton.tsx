@@ -2,7 +2,8 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Link as LinkIcon, Unlink as UnlinkIcon } from 'tabler-icons-react';
-import { LinkModal } from './LinkModal';
+import { LinkModal } from './Modals/LinkModal';
+import { IconWrapper } from './IconWrapper';
 
 export const LinkButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('link') : false;
@@ -21,7 +22,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
         aria-label="Set link"
         title="Set link"
       >
-        <LinkIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+        <IconWrapper isActive={isActive} IconChild={LinkIcon} />
       </RichTextEditor.Control>
       {show && (
         <LinkModal
@@ -43,7 +44,7 @@ export const UnlinkButton = ({ editor }: { editor: Editor }) => {
       aria-label="Remove link"
       title="Remove link"
     >
-      <UnlinkIcon size={'1rem'} />
+      <IconWrapper isActive={false} IconChild={UnlinkIcon} />
     </RichTextEditor.Control>
   );
 };

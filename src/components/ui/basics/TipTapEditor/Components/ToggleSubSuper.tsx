@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Subscript, Superscript } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('subscript') : false;
@@ -12,7 +13,7 @@ export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
       aria-label="Toggle subscript"
       title="Toggle subscript"
     >
-      <Subscript style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={Subscript} />
     </RichTextEditor.Control>
   );
 };
@@ -27,7 +28,7 @@ export const ToggleSuperscript = ({ editor }: { editor: Editor }) => {
       aria-label="Toggle superscript"
       title="Toggle superscript"
     >
-      <Superscript style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={Superscript} />
     </RichTextEditor.Control>
   );
 };

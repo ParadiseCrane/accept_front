@@ -4,7 +4,8 @@ import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
 import styles from './ColorPicker.module.css';
-import { ColorPickerModal } from './ColorPickerModal';
+import { ColorPickerModal } from './Modals/ColorPickerModal';
+import { IconWrapper } from './IconWrapper';
 
 export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
   const initialColor = editor.getAttributes('textStyle')['color'] ?? '#000000';
@@ -20,7 +21,7 @@ export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
           aria-label="Change font color"
           title="Change font color"
         >
-          <ColorPickerIcon size={'1rem'} />
+          <IconWrapper isActive={false} IconChild={ColorPickerIcon} />
         </RichTextEditor.Control>
       </Menu.Target>
       <Menu.Dropdown>

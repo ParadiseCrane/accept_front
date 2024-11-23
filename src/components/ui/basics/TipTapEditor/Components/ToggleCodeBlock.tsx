@@ -1,9 +1,10 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Code } from 'tabler-icons-react';
-import { CodeBlockModal } from './CodeBlockModal';
+import { CodeBlockModal } from './Modals/CodeBlockModal';
 import { useState } from 'react';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleCodeBlock = ({
   editor,
@@ -29,7 +30,7 @@ export const ToggleCodeBlock = ({
         aria-label="Toggle code block"
         title="Toggle code block"
       >
-        <Code style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+        <IconWrapper isActive={isActive} IconChild={Code} />
       </RichTextEditor.Control>
       <CodeBlockModal
         isOpened={show}

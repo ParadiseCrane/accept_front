@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { ArrowForwardUp, ArrowBackUp, Eraser } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const UndoButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.can().undo();
@@ -12,7 +13,7 @@ export const UndoButton = ({ editor }: { editor: Editor }) => {
       aria-label="Undo"
       title="Undo"
     >
-      <ArrowBackUp style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={ArrowBackUp} />
     </RichTextEditor.Control>
   );
 };
@@ -27,7 +28,7 @@ export const RedoButton = ({ editor }: { editor: Editor }) => {
       aria-label="Redo"
       title="Redo"
     >
-      <ArrowForwardUp style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={ArrowForwardUp} />
     </RichTextEditor.Control>
   );
 };

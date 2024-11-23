@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Italic } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const ToggleItalic = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('italic') : false;
@@ -12,7 +13,7 @@ export const ToggleItalic = ({ editor }: { editor: Editor }) => {
       aria-label="Toggle italic"
       title="Toggle italic"
     >
-      <Italic style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={Italic} />
     </RichTextEditor.Control>
   );
 };

@@ -6,6 +6,7 @@ import {
   AlignRight as AlignRightIcon,
   AlignJustified as AlignJustifyIcon,
 } from 'tabler-icons-react';
+import { IconWrapper } from './IconWrapper';
 
 export const AlignLeftButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
@@ -19,7 +20,7 @@ export const AlignLeftButton = ({ editor }: { editor: Editor }) => {
       aria-label="Align left"
       title="Align left"
     >
-      <AlignLeftIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={AlignLeftIcon} />
     </RichTextEditor.Control>
   );
 };
@@ -36,10 +37,7 @@ export const AlignCenterButton = ({ editor }: { editor: Editor }) => {
       aria-label="Align center"
       title="Align center"
     >
-      <AlignCenterIcon
-        style={isActive ? { stroke: 'red' } : {}}
-        size={'1rem'}
-      />
+      <IconWrapper isActive={isActive} IconChild={AlignCenterIcon} />
     </RichTextEditor.Control>
   );
 };
@@ -56,7 +54,7 @@ export const AlignRightButton = ({ editor }: { editor: Editor }) => {
       aria-label="Align right"
       title="Align right"
     >
-      <AlignRightIcon style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={AlignRightIcon} />
     </RichTextEditor.Control>
   );
 };
@@ -73,10 +71,7 @@ export const AlignJustifyButton = ({ editor }: { editor: Editor }) => {
       aria-label="Align justify"
       title="Align justify"
     >
-      <AlignJustifyIcon
-        style={isActive ? { stroke: 'red' } : {}}
-        size={'1rem'}
-      />
+      <IconWrapper isActive={isActive} IconChild={AlignJustifyIcon} />
     </RichTextEditor.Control>
   );
 };
