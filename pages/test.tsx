@@ -12,7 +12,7 @@ function TestPage() {
         gap: '20px',
       }}
     >
-      <TipTapEditor />
+      <TipTapEditor editorMode={false} />
     </div>
   );
 }

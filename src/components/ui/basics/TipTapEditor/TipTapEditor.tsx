@@ -71,7 +71,7 @@ import { Divider } from '@mantine/core';
 import { ClearFormattingButton } from './Components/ClearFormattingButton';
 
 const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
 
 const lowlight = createLowlight(all);
 
@@ -117,7 +117,7 @@ const ExportContentForHTML = ({ editor }: { editor: Editor }) => {
   );
 };
 
-export const TipTapEditor = () => {
+export const TipTapEditor = ({ editorMode }: { editorMode: boolean }) => {
   const [data, setData] = useState(``);
 
   const editor = useEditor({
@@ -155,12 +155,15 @@ export const TipTapEditor = () => {
       Underline,
     ],
     content,
+    editable: editorMode ? true : false,
   });
+
+  const outlineClass = editorMode ? 'outline-tiptap' : '';
 
   return (
     <div>
       <RichTextEditor editor={editor}>
-        {editor && (
+        {editorMode && editor && (
           <RichTextEditor.Toolbar
             sticky
             stickyOffset={60}
@@ -222,13 +225,15 @@ export const TipTapEditor = () => {
             </RichTextEditor.ControlsGroup>
           </RichTextEditor.Toolbar>
         )}
-        <RichTextEditor.Content className={styles.content} />
+        <RichTextEditor.Content
+          className={`${styles.content} ${outlineClass}`}
+        />
       </RichTextEditor>
-      <div
+      {/* <div
         dangerouslySetInnerHTML={{
           __html: data,
         }}
-      />
+      /> */}
     </div>
   );
 };

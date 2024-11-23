@@ -6,7 +6,7 @@ import { ColorPickerModal } from './Modals/ColorPickerModal';
 import { IconWrapper } from './IconWrapper';
 
 export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
-  const initialColor = editor.getAttributes('textStyle')['color'] ?? '#ffffff';
+  const initialColor = '#ffffff';
 
   const changeColor = (color: string) => {
     editor.chain().focus().setHighlight({ color: color }).run();

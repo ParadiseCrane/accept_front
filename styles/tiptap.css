@@ -1,4 +1,16 @@
 .ProseMirror {
+  border-color: transparent;
+  border: none;
+  overflow-y: visible;
+  max-height: none;
+  outline: none;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.outline-tiptap {
   padding: 8px;
   max-height: 400px;
   overflow-y: auto;
@@ -13,10 +25,6 @@
   border-right-width: 0.8px;
   border-top-style: solid;
   border-top-width: 0.8px;
-}
-
-.ProseMirror:focus {
-  outline: none;
 }
 
 .ProseMirror img {
