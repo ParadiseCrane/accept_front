@@ -25,7 +25,7 @@ import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
-import { useEditor, BubbleMenu, Editor } from '@tiptap/react';
+import { useEditor, Editor } from '@tiptap/react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { all, createLowlight } from 'lowlight';
 import css from 'highlight.js/lib/languages/css';
@@ -67,8 +67,8 @@ import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from './Components/ColorPickerButton';
 import { HighLightColorButton } from './Components/HighlightColorButton';
-import { Divider } from '@mantine/core';
 import { ClearFormattingButton } from './Components/ClearFormattingButton';
+import { ToolbarDivider } from './Components/ToolbarDivider';
 
 const lowlight = createLowlight(all);
 
@@ -180,8 +180,8 @@ export const TipTapEditor = ({
             <ColorPickerButton editor={editor} />
             <HighLightColorButton editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <ToggleCodeBlock
               editor={editor}
               lowlight={lowlight}
@@ -191,35 +191,35 @@ export const TipTapEditor = ({
             <InsertImageAsFile editor={editor} />
             <InsertImageAsUrl editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <ToggleHeading1 editor={editor} />
             <ToggleHeading2 editor={editor} />
             <ToggleHeading3 editor={editor} />
             <ToggleHeading4 editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <ToggleBlockquote editor={editor} />
             <ToggleBulletList editor={editor} />
             <ToggleOrderedList editor={editor} />
             <ToggleSubscript editor={editor} />
             <ToggleSuperscript editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <LinkButton editor={editor} />
             <UnlinkButton editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <AlignLeftButton editor={editor} />
             <AlignCenterButton editor={editor} />
             <AlignRightButton editor={editor} />
             <AlignJustifyButton editor={editor} />
           </RichTextEditor.ControlsGroup>
-          <Divider orientation="vertical" />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
             {/* <ExportContentForEditor editor={editor} />
