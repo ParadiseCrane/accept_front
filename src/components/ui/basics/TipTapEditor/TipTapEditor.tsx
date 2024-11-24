@@ -70,7 +70,6 @@ import {
 const lowlight = createLowlight(all);
 
 const languages: IProgrammingLanguage[] = [
-  { nameAsString: 'Default', name: 'html', nameAsFn: html },
   { nameAsString: 'HTML', name: 'html', nameAsFn: html },
   { nameAsString: 'CSS', name: 'css', nameAsFn: css },
   { nameAsString: 'JavaScript', name: 'js', nameAsFn: js },

@@ -3,11 +3,17 @@ import styles from './ImageUrlModal.module.css';
 import { Editor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { useLocale } from '@hooks/useLocale';
 
 const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
+  const { locale } = useLocale();
   editor
     .chain()
-    .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
+    .setImage({
+      src: src,
+      alt: locale.tiptap.imageAltTitle,
+      title: locale.tiptap.imageAltTitle,
+    })
     .run();
 };
 
@@ -21,6 +27,7 @@ export const ImageUrlModal = ({
   editor: Editor;
 }) => {
   const [src, setSrc] = useState('');
+  const { locale } = useLocale();
 
   const onClose = () => {
     setSrc('');
@@ -30,7 +37,7 @@ export const ImageUrlModal = ({
   return (
     <SimpleModal opened={isOpened} close={onClose}>
       <div className={styles.image_url_modal_body}>
-        <span className={styles.title}>Insert image by URL</span>
+        <span className={styles.title}>{locale.tiptap.imageURL}</span>
         <div className={styles.input}>
           <input
             className={styles.image_url_modal_input}
@@ -46,9 +53,9 @@ export const ImageUrlModal = ({
               loadImageFromUrl({ editor: editor, src: src });
               onClose();
             },
-            label: 'Insert',
+            label: locale.tiptap.insert,
           }}
-          cancelButton={{ onClick: onClose, label: 'Close' }}
+          cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
     </SimpleModal>

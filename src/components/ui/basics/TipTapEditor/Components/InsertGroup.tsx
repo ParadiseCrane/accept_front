@@ -6,6 +6,7 @@ import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { ChevronDown, CirclePlus } from 'tabler-icons-react';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+import { useLocale } from '@hooks/useLocale';
 
 export const InsertGroupSeparate = ({
   editor,
@@ -43,6 +44,7 @@ export const InsertGroupCollapsed = ({
   lowlight: any;
   languages: IProgrammingLanguage[];
 }) => {
+  const { locale } = useLocale();
   return (
     <div className={className}>
       <HoverCard
@@ -52,7 +54,10 @@ export const InsertGroupCollapsed = ({
         styles={{ dropdown: { padding: '3px' } }}
       >
         <HoverCard.Target>
-          <RichTextEditor.Control aria-label="Insert" title="Insert">
+          <RichTextEditor.Control
+            aria-label={locale.tiptap.insert}
+            title={locale.tiptap.insert}
+          >
             <CirclePlus size={'1.2rem'} style={{ stroke: '#444746' }} />
             <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>

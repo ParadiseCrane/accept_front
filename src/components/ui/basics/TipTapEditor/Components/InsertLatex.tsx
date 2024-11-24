@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Math } from 'tabler-icons-react';
 import { LatexModal } from './Modals/LatexModal';
 import { IconWrapper } from './IconWrapper';
+import { useLocale } from '@hooks/useLocale';
 
 const insertLatexFunction = ({
   editor,
@@ -26,11 +27,12 @@ const insertLatexFunction = ({
 
 export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
   const [showModal, setShowModal] = useState(false);
+  const { locale } = useLocale();
   return (
     <>
       <RichTextEditor.Control
-        aria-label="Insert LaTeX expression"
-        title="Insert LaTeX expression"
+        aria-label={locale.tiptap.latex}
+        title={locale.tiptap.latex}
         onClick={() => {
           setShowModal(true);
         }}

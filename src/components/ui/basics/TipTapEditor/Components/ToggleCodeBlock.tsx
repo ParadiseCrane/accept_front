@@ -5,6 +5,7 @@ import { CodeBlockModal } from './Modals/CodeBlockModal';
 import { useState } from 'react';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { IconWrapper } from './IconWrapper';
+import { useLocale } from '@hooks/useLocale';
 
 export const ToggleCodeBlock = ({
   editor,
@@ -17,6 +18,7 @@ export const ToggleCodeBlock = ({
 }) => {
   const isActive = editor.isFocused ? editor.isActive('codeBlock') : false;
   const [show, setShow] = useState(false);
+  const { locale } = useLocale();
   return (
     <>
       <RichTextEditor.Control
@@ -27,8 +29,8 @@ export const ToggleCodeBlock = ({
             editor.commands.toggleCodeBlock();
           }
         }}
-        aria-label="Toggle code block"
-        title="Toggle code block"
+        aria-label={locale.tiptap.codeBlock}
+        title={locale.tiptap.codeBlock}
       >
         <IconWrapper isActive={isActive} IconChild={Code} />
       </RichTextEditor.Control>

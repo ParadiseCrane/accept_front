@@ -5,6 +5,7 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Select } from '@ui/basics';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+import { useLocale } from '@hooks/useLocale';
 
 const insertCodeBlock = ({
   editor,
@@ -13,7 +14,11 @@ const insertCodeBlock = ({
   editor: Editor;
   language: IProgrammingLanguage | null;
 }) => {
-  if (language === null || language.nameAsString === 'Default') {
+  const { locale } = useLocale();
+  if (
+    language === null ||
+    language.nameAsString === locale.tiptap.defaultLanguage
+  ) {
     editor?.chain().setCodeBlock().run();
   } else {
     editor?.chain().setCodeBlock({ language: language.name }).run();
@@ -47,14 +52,18 @@ export const CodeBlockModal = ({
     }
   };
 
+  const { locale } = useLocale();
+
   return (
     <SimpleModal opened={isOpened} close={onClose}>
       <div className={styles.latex_modal_body}>
-        <span className={styles.title}>Choose language</span>
+        <span className={styles.title}>
+          {locale.tiptap.chooseProgrammingLanguage}
+        </span>
         <Select
-          label={'Language'}
+          label={locale.tiptap.language}
           disabled={false}
-          placeholder={'Choose programming language'}
+          placeholder={locale.tiptap.chooseProgrammingLanguage}
           classNames={{
             label: styles.label,
           }}
@@ -76,9 +85,9 @@ export const CodeBlockModal = ({
 
               onClose();
             },
-            label: 'Insert',
+            label: locale.tiptap.insert,
           }}
-          cancelButton={{ onClick: onClose, label: 'Close' }}
+          cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
     </SimpleModal>

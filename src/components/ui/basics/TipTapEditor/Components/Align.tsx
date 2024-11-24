@@ -9,6 +9,7 @@ import {
 } from 'tabler-icons-react';
 import { IconWrapper } from './IconWrapper';
 import { HoverCard } from '@mantine/core';
+import { useLocale } from '@hooks/useLocale';
 
 export const AlignGroupSeparate = ({
   editor,
@@ -34,6 +35,7 @@ export const AlignGroupCollapsed = ({
   editor: Editor;
   className: string;
 }) => {
+  const { locale } = useLocale();
   return (
     <div className={className}>
       <HoverCard
@@ -44,8 +46,8 @@ export const AlignGroupCollapsed = ({
       >
         <HoverCard.Target>
           <RichTextEditor.Control
-            aria-label="Toggle align"
-            title="Toggle align"
+            aria-label={locale.tiptap.align}
+            title={locale.tiptap.align}
           >
             <AlignLeftIcon size={'1.2rem'} style={{ stroke: '#444746' }} />
             <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
@@ -66,13 +68,14 @@ const AlignLeftButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
     ? editor.isActive({ textAlign: 'left' })
     : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().setTextAlign('left').run();
       }}
-      aria-label="Align left"
-      title="Align left"
+      aria-label={locale.tiptap.alignLeft}
+      title={locale.tiptap.alignLeft}
     >
       <IconWrapper isActive={isActive} IconChild={AlignLeftIcon} />
     </RichTextEditor.Control>
@@ -83,13 +86,14 @@ const AlignCenterButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
     ? editor.isActive({ textAlign: 'center' })
     : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().setTextAlign('center').run();
       }}
-      aria-label="Align center"
-      title="Align center"
+      aria-label={locale.tiptap.alignCenter}
+      title={locale.tiptap.alignCenter}
     >
       <IconWrapper isActive={isActive} IconChild={AlignCenterIcon} />
     </RichTextEditor.Control>
@@ -100,13 +104,14 @@ const AlignRightButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
     ? editor.isActive({ textAlign: 'right' })
     : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().setTextAlign('right').run();
       }}
-      aria-label="Align right"
-      title="Align right"
+      aria-label={locale.tiptap.alignRight}
+      title={locale.tiptap.alignRight}
     >
       <IconWrapper isActive={isActive} IconChild={AlignRightIcon} />
     </RichTextEditor.Control>
@@ -117,13 +122,14 @@ const AlignJustifyButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
     ? editor.isActive({ textAlign: 'justify' })
     : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().setTextAlign('justify').run();
       }}
-      aria-label="Align justify"
-      title="Align justify"
+      aria-label={locale.tiptap.alignJustify}
+      title={locale.tiptap.alignJustify}
     >
       <IconWrapper isActive={isActive} IconChild={AlignJustifyIcon} />
     </RichTextEditor.Control>

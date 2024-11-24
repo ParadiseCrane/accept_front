@@ -4,9 +4,11 @@ import { Editor } from '@tiptap/react';
 import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
 import { ColorPickerModal } from './Modals/ColorPickerModal';
 import { IconWrapper } from './IconWrapper';
+import { useLocale } from '@hooks/useLocale';
 
 export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
   const initialColor = editor.getAttributes('textStyle')['color'] ?? '#000000';
+  const { locale } = useLocale();
 
   const changeColor = (color: string) => {
     editor.chain().focus().setColor(color).run();
@@ -21,8 +23,8 @@ export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
     >
       <HoverCard.Target>
         <RichTextEditor.Control
-          aria-label="Change font color"
-          title="Change font color"
+          aria-label={locale.tiptap.fontColor}
+          title={locale.tiptap.fontColor}
         >
           <IconWrapper isActive={false} IconChild={ColorPickerIcon} />
         </RichTextEditor.Control>

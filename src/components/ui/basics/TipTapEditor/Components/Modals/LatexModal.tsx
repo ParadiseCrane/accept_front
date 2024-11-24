@@ -12,6 +12,7 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { RichTextEditor } from '@mantine/tiptap';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Checkbox } from '@ui/basics';
+import { useLocale } from '@hooks/useLocale';
 
 const insertLatexFunction = ({
   editor,
@@ -50,6 +51,7 @@ export const LatexModal = ({
 }) => {
   const [input, setInput] = useState('');
   const [inline, setInline] = useState(true);
+  const { locale } = useLocale();
 
   useEffect(() => {}, [inline]);
 
@@ -88,7 +90,7 @@ export const LatexModal = ({
   return (
     <SimpleModal opened={isOpened} close={onClose}>
       <div className={styles.latex_modal_body}>
-        <span className={styles.title}>Insert LaTeX expression</span>
+        <span className={styles.title}>{locale.tiptap.latex}</span>
         {editor && (
           <div className={styles.input_with_editor}>
             <input
@@ -110,7 +112,7 @@ export const LatexModal = ({
         {editor && (
           <div className={styles.checkbox_area}>
             <div className={styles.checkbox_with_label}>
-              <label>Inline</label>
+              <label>{locale.tiptap.inline}</label>
               <Checkbox
                 checked={inline}
                 onChange={() =>
@@ -123,7 +125,7 @@ export const LatexModal = ({
               />
             </div>
             <div className={styles.checkbox_with_label}>
-              <label>Block</label>
+              <label>{locale.tiptap.block}</label>
               <Checkbox
                 checked={!inline}
                 onChange={() =>
@@ -144,9 +146,9 @@ export const LatexModal = ({
               insertExpression({ expression: input, inline: inline });
               onClose();
             },
-            label: 'Insert',
+            label: locale.tiptap.insert,
           }}
-          cancelButton={{ onClick: onClose, label: 'Close' }}
+          cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
     </SimpleModal>

@@ -4,6 +4,7 @@ import { Editor } from '@tiptap/react';
 import { Highlight as HighlightIcon } from 'tabler-icons-react';
 import { ColorPickerModal } from './Modals/ColorPickerModal';
 import { IconWrapper } from './IconWrapper';
+import { useLocale } from '@hooks/useLocale';
 
 export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
   const initialColor = '#ffffff';
@@ -11,7 +12,7 @@ export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
   const changeColor = (color: string) => {
     editor.chain().focus().setHighlight({ color: color }).run();
   };
-
+  const { locale } = useLocale();
   return (
     <HoverCard
       shadow="md"
@@ -21,8 +22,8 @@ export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
     >
       <HoverCard.Target>
         <RichTextEditor.Control
-          aria-label="Highlight text"
-          title="Highlight text"
+          aria-label={locale.tiptap.highlightColor}
+          title={locale.tiptap.highlightColor}
         >
           <IconWrapper isActive={false} IconChild={HighlightIcon} />
         </RichTextEditor.Control>

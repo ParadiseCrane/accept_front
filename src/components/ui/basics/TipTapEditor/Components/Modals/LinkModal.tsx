@@ -3,6 +3,7 @@ import styles from './LinkModal.module.css';
 import { Editor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { useLocale } from '@hooks/useLocale';
 
 export const LinkModal = ({
   isOpened,
@@ -14,6 +15,7 @@ export const LinkModal = ({
   editor: Editor;
 }) => {
   const [src, setSrc] = useState('');
+  const { locale } = useLocale();
 
   const onClose = () => {
     setSrc('');
@@ -39,9 +41,9 @@ export const LinkModal = ({
               editor.commands.setLink({ href: src });
               onClose();
             },
-            label: 'Set link',
+            label: locale.tiptap.setLink,
           }}
-          cancelButton={{ onClick: onClose, label: 'Close' }}
+          cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
     </SimpleModal>
