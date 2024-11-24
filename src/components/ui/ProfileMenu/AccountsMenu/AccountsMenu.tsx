@@ -116,7 +116,7 @@ const AccountsMenu: FC<{}> = ({}) => {
     <Menu
       opened={showMenu}
       position="bottom-end"
-      zIndex={999}
+      // zIndex={999}
       transitionProps={{ transition: 'scale-y', duration: 150 }}
       openDelay={200}
       trigger="hover"

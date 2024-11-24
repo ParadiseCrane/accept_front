@@ -35,12 +35,10 @@ const SimpleModal: FC<SimpleModalProps> = ({
       title={
         <div className={modalStyles.titleWrapper}>
           <div className={modalStyles.title}>{title}</div>
-          {helperContent && (
-            <Helper dropdownContent={helperContent} />
-          )}
+          {helperContent && <Helper dropdownContent={helperContent} />}
         </div>
       }
-      zIndex={9900}
+      // zIndex={9900}
       onClose={close}
       {...props}
     >
