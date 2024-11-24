@@ -70,9 +70,6 @@ import { HighLightColorButton } from './Components/HighlightColorButton';
 import { Divider } from '@mantine/core';
 import { ClearFormattingButton } from './Components/ClearFormattingButton';
 
-const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul><h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p>RichTextEditor component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. RichTextEditor is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
-
 const lowlight = createLowlight(all);
 
 const languages: IProgrammingLanguage[] = [
@@ -117,7 +114,13 @@ const ExportContentForHTML = ({ editor }: { editor: Editor }) => {
   );
 };
 
-export const TipTapEditor = ({ editorMode }: { editorMode: boolean }) => {
+export const TipTapEditor = ({
+  editorMode,
+  content,
+}: {
+  editorMode: boolean;
+  content: string;
+}) => {
   const [data, setData] = useState(``);
 
   const editor = useEditor({
@@ -161,79 +164,70 @@ export const TipTapEditor = ({ editorMode }: { editorMode: boolean }) => {
   const outlineClass = editorMode ? 'outline-tiptap' : '';
 
   return (
-    <div>
-      <RichTextEditor editor={editor}>
-        {editorMode && editor && (
-          <RichTextEditor.Toolbar
-            sticky
-            stickyOffset={60}
-            className={styles.toolbar}
-          >
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <ToggleBold editor={editor} />
-              <ToggleItalic editor={editor} />
-              <ToggleUnderline editor={editor} />
-              <ToggleStrikethrough editor={editor} />
-              <ClearFormattingButton editor={editor} />
-              <ColorPickerButton editor={editor} />
-              <HighLightColorButton editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <ToggleCodeBlock
-                editor={editor}
-                lowlight={lowlight}
-                languages={languages}
-              />
-              <InsertLatexExpression editor={editor} />
-              <InsertImageAsFile editor={editor} />
-              <InsertImageAsUrl editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <ToggleHeading1 editor={editor} />
-              <ToggleHeading2 editor={editor} />
-              <ToggleHeading3 editor={editor} />
-              <ToggleHeading4 editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <ToggleBlockquote editor={editor} />
-              <ToggleBulletList editor={editor} />
-              <ToggleOrderedList editor={editor} />
-              <ToggleSubscript editor={editor} />
-              <ToggleSuperscript editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <LinkButton editor={editor} />
-              <UnlinkButton editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <AlignLeftButton editor={editor} />
-              <AlignCenterButton editor={editor} />
-              <AlignRightButton editor={editor} />
-              <AlignJustifyButton editor={editor} />
-            </RichTextEditor.ControlsGroup>
-            <Divider orientation="vertical" />
-            <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-              <UndoButton editor={editor} />
-              <RedoButton editor={editor} />
-              {/* <ExportContentForEditor editor={editor} />
+    <RichTextEditor editor={editor}>
+      {editorMode && editor && (
+        <RichTextEditor.Toolbar
+          sticky
+          stickyOffset={60}
+          className={styles.toolbar}
+        >
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToggleBold editor={editor} />
+            <ToggleItalic editor={editor} />
+            <ToggleUnderline editor={editor} />
+            <ToggleStrikethrough editor={editor} />
+            <ClearFormattingButton editor={editor} />
+            <ColorPickerButton editor={editor} />
+            <HighLightColorButton editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToggleCodeBlock
+              editor={editor}
+              lowlight={lowlight}
+              languages={languages}
+            />
+            <InsertLatexExpression editor={editor} />
+            <InsertImageAsFile editor={editor} />
+            <InsertImageAsUrl editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToggleHeading1 editor={editor} />
+            <ToggleHeading2 editor={editor} />
+            <ToggleHeading3 editor={editor} />
+            <ToggleHeading4 editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <ToggleBlockquote editor={editor} />
+            <ToggleBulletList editor={editor} />
+            <ToggleOrderedList editor={editor} />
+            <ToggleSubscript editor={editor} />
+            <ToggleSuperscript editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <LinkButton editor={editor} />
+            <UnlinkButton editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <AlignLeftButton editor={editor} />
+            <AlignCenterButton editor={editor} />
+            <AlignRightButton editor={editor} />
+            <AlignJustifyButton editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <Divider orientation="vertical" />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <UndoButton editor={editor} />
+            <RedoButton editor={editor} />
+            {/* <ExportContentForEditor editor={editor} />
               <ExportContentForHTML editor={editor} /> */}
-            </RichTextEditor.ControlsGroup>
-          </RichTextEditor.Toolbar>
-        )}
-        <RichTextEditor.Content
-          className={`${styles.content} ${outlineClass}`}
-        />
-      </RichTextEditor>
-      {/* <div
-        dangerouslySetInnerHTML={{
-          __html: data,
-        }}
-      /> */}
-    </div>
+          </RichTextEditor.ControlsGroup>
+        </RichTextEditor.Toolbar>
+      )}
+      <RichTextEditor.Content className={`${styles.content} ${outlineClass}`} />
+    </RichTextEditor>
   );
 };
