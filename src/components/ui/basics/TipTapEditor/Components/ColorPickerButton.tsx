@@ -1,9 +1,7 @@
-import { ColorPicker as MantineColorPicker, Menu } from '@mantine/core';
+import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { useState } from 'react';
 import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
-import styles from './ColorPicker.module.css';
 import { ColorPickerModal } from './Modals/ColorPickerModal';
 import { IconWrapper } from './IconWrapper';
 
@@ -15,22 +13,27 @@ export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
   };
 
   return (
-    <Menu shadow="md" position="bottom-start" withArrow>
-      <Menu.Target>
+    <HoverCard
+      shadow="md"
+      position="bottom-start"
+      withArrow
+      styles={{ dropdown: { padding: '0px' } }}
+    >
+      <HoverCard.Target>
         <RichTextEditor.Control
           aria-label="Change font color"
           title="Change font color"
         >
           <IconWrapper isActive={false} IconChild={ColorPickerIcon} />
         </RichTextEditor.Control>
-      </Menu.Target>
-      <Menu.Dropdown>
+      </HoverCard.Target>
+      <HoverCard.Dropdown>
         <ColorPickerModal
           editor={editor}
           initialColor={initialColor}
           changeColor={changeColor}
         />
-      </Menu.Dropdown>
-    </Menu>
+      </HoverCard.Dropdown>
+    </HoverCard>
   );
 };

@@ -1,4 +1,4 @@
-import { Menu } from '@mantine/core';
+import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Highlight as HighlightIcon } from 'tabler-icons-react';
@@ -13,22 +13,27 @@ export const HighLightColorButton = ({ editor }: { editor: Editor }) => {
   };
 
   return (
-    <Menu shadow="md" position="bottom-start" withArrow>
-      <Menu.Target>
+    <HoverCard
+      shadow="md"
+      position="bottom-start"
+      withArrow
+      styles={{ dropdown: { padding: '0px' } }}
+    >
+      <HoverCard.Target>
         <RichTextEditor.Control
           aria-label="Highlight text"
           title="Highlight text"
         >
           <IconWrapper isActive={false} IconChild={HighlightIcon} />
         </RichTextEditor.Control>
-      </Menu.Target>
-      <Menu.Dropdown>
+      </HoverCard.Target>
+      <HoverCard.Dropdown>
         <ColorPickerModal
           editor={editor}
           initialColor={initialColor}
           changeColor={changeColor}
         />
-      </Menu.Dropdown>
-    </Menu>
+      </HoverCard.Dropdown>
+    </HoverCard>
   );
 };

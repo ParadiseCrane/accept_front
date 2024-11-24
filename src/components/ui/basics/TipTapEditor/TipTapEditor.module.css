@@ -43,3 +43,57 @@
 .toolbar_divider {
   margin: 0px 5px;
 }
+
+.headings_group_separate {
+  display: flex;
+}
+
+.headings_group_collapsed {
+  display: none;
+}
+
+.align_group_separate {
+  display: flex;
+}
+
+.align_group_collapsed {
+  display: none;
+}
+
+.insert_group_separate {
+  display: flex;
+}
+
+.insert_group_collapsed {
+  display: none;
+}
+
+@media (width <=800px) {
+  .insert_group_separate {
+    display: none;
+  }
+
+  .insert_group_collapsed {
+    display: flex;
+  }
+}
+
+@media (width <=900px) {
+  .align_group_separate {
+    display: none;
+  }
+
+  .align_group_collapsed {
+    display: flex;
+  }
+}
+
+@media (width <=1000px) {
+  .headings_group_separate {
+    display: none;
+  }
+
+  .headings_group_collapsed {
+    display: flex;
+  }
+}
