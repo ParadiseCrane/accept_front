@@ -41,12 +41,13 @@ const loadImageAsFile = async ({
   files,
   editor,
   timeout,
+  locale,
 }: {
   files: FileList | null;
   editor: Editor;
   timeout: number;
+  locale: any;
 }) => {
-  const { locale } = useLocale();
   if (files && files[0]) {
     const formData = new FormData();
     formData.append('upload', files[0]);
@@ -97,6 +98,7 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
             files: e.target.files,
             editor: editor,
             timeout: 4000,
+            locale: locale,
           });
         }}
         style={{ display: 'none' }}

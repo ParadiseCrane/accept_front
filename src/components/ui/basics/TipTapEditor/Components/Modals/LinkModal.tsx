@@ -25,7 +25,7 @@ export const LinkModal = ({
   return (
     <SimpleModal opened={isOpened} close={onClose}>
       <div className={styles.link_modal_body}>
-        <span className={styles.title}>Set link</span>
+        <span className={styles.title}>{locale.tiptap.setLink}</span>
         <div className={styles.input}>
           <input
             className={styles.link_modal_input}

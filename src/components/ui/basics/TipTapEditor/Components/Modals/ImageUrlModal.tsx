@@ -5,8 +5,15 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { useLocale } from '@hooks/useLocale';
 
-const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-  const { locale } = useLocale();
+const loadImageFromUrl = ({
+  src,
+  editor,
+  locale,
+}: {
+  src: string;
+  editor: Editor;
+  locale: any;
+}) => {
   editor
     .chain()
     .setImage({
@@ -50,7 +57,7 @@ export const ImageUrlModal = ({
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              loadImageFromUrl({ editor: editor, src: src });
+              loadImageFromUrl({ editor: editor, src: src, locale: locale });
               onClose();
             },
             label: locale.tiptap.insert,

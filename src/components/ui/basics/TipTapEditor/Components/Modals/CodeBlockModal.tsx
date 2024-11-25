@@ -14,11 +14,7 @@ const insertCodeBlock = ({
   editor: Editor;
   language: IProgrammingLanguage | null;
 }) => {
-  const { locale } = useLocale();
-  if (
-    language === null ||
-    language.nameAsString === locale.tiptap.defaultLanguage
-  ) {
+  if (language === null || language.nameAsString === 'Default') {
     editor?.chain().setCodeBlock().run();
   } else {
     editor?.chain().setCodeBlock({ language: language.name }).run();
