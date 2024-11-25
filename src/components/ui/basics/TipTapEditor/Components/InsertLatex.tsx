@@ -34,7 +34,9 @@ export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
         aria-label={locale.tiptap.latex}
         title={locale.tiptap.latex}
         onClick={() => {
-          setShowModal(true);
+          if (editor.isFocused) {
+            setShowModal(true);
+          }
         }}
       >
         <IconWrapper isActive={false} IconChild={Math} />

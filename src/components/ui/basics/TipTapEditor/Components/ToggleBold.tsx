@@ -10,7 +10,9 @@ export const ToggleBold = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().toggleMark('bold').run();
+        if (editor.isFocused) {
+          editor.chain().toggleMark('bold').run();
+        }
       }}
       aria-label={locale.tiptap.bold}
       title={locale.tiptap.bold}

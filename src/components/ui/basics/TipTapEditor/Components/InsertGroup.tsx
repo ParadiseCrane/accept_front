@@ -62,16 +62,18 @@ export const InsertGroupCollapsed = ({
             <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
-        <HoverCard.Dropdown>
-          <ToggleCodeBlock
-            editor={editor}
-            lowlight={lowlight}
-            languages={languages}
-          />
-          <InsertLatexExpression editor={editor} />
-          <InsertImageAsFile editor={editor} />
-          <InsertImageAsUrl editor={editor} />
-        </HoverCard.Dropdown>
+        {editor.isFocused && (
+          <HoverCard.Dropdown>
+            <ToggleCodeBlock
+              editor={editor}
+              lowlight={lowlight}
+              languages={languages}
+            />
+            <InsertLatexExpression editor={editor} />
+            <InsertImageAsFile editor={editor} />
+            <InsertImageAsUrl editor={editor} />
+          </HoverCard.Dropdown>
+        )}
       </HoverCard>
     </div>
   );
