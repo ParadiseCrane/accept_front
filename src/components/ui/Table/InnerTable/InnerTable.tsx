@@ -7,12 +7,9 @@ const InnerTable: FC<{
   columns: ITableColumn[];
   rows: any[];
   sort: (_: string, __: -1 | 0 | 1) => void;
-  classNames: any;
+  classNames?: any;
 }> = ({ columns, classNames, rows, sort }) => {
-  const keys = useMemo(
-    () => columns.map((column) => column.key),
-    [columns]
-  );
+  const keys = useMemo(() => columns.map((column) => column.key), [columns]);
 
   const gridTemplate = useMemo(() => {
     let total = 0;
@@ -21,9 +18,7 @@ const InnerTable: FC<{
     });
     return {
       gridTemplateColumns:
-        columns
-          .map((column) => (column.size / total) * 100)
-          .join('% ') + '%',
+        columns.map((column) => (column.size / total) * 100).join('% ') + '%',
     };
   }, [columns]);
 

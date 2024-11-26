@@ -55,9 +55,7 @@ const DescriptionInfo: FC<{
             form={form}
             field={'hintAlarmType'}
             items={hintAlarmTypeItems}
-            onChange={(value) =>
-              form.setFieldValue('hintAlarmType', value)
-            }
+            onChange={(value) => form.setFieldValue('hintAlarmType', value)}
           />
           <NumberInput
             label={locale.task.form.hint.showAfter}

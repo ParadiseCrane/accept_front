@@ -118,8 +118,8 @@ const Dropzone: FC<{
         }}
       >
         <Group
-          position="center"
-          spacing="xl"
+          align="center"
+          gap="xl"
           style={{ minHeight: 220, pointerEvents: 'none' }}
         >
           <MantineDropzone.Accept>

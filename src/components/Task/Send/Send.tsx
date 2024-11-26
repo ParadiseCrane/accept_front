@@ -37,16 +37,11 @@ const Send: FC<{
 
   const [language, setLanguage] = useLocalStorage<string>({
     key: 'previous_program_lang',
-    defaultValue:
-      languages.length > 0 ? languages[0].spec.toString() : '1',
+    defaultValue: languages.length > 0 ? languages[0].spec.toString() : '1',
   });
 
   useEffect(() => {
-    if (
-      !languages
-        .map((item) => item.spec.toString())
-        .includes(language)
-    ) {
+    if (!languages.map((item) => item.spec.toString()).includes(language)) {
       setLanguage(languages[0].spec.toString());
     }
   }, [language, languages, setLanguage]);
@@ -120,10 +115,8 @@ const Send: FC<{
             )
           }
           hoverCardDropdownProps={buttonDropdownProps}
-          leftIcon={
-            <SendPlane
-              color={!isValid ? 'black' : 'var(--primary)'}
-            />
+          leftSection={
+            <SendPlane color={!isValid ? 'black' : 'var(--primary)'} />
           }
         >
           {locale.task.submit}

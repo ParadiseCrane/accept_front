@@ -1,12 +1,6 @@
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import TaskLayout from '@layouts/TaskLayout';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { IBarTask, ITask } from '@custom-types/data/ITask';
 import { GetServerSideProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
@@ -29,11 +23,11 @@ import dynamic from 'next/dynamic';
 import Description from '@components/Task/Description/Description';
 import Head from 'next/head';
 import { Kbd } from '@ui/basics';
+import { getCookieValue } from '@utils/cookies';
 
-const DynamicSend = dynamic(
-  () => import('@components/Task/Send/Send'),
-  { ssr: false }
-);
+const DynamicSend = dynamic(() => import('@components/Task/Send/Send'), {
+  ssr: false,
+});
 const DynamicSendText = dynamic(
   () => import('@components/Task/SendText/SendText'),
   { ssr: false }
@@ -68,8 +62,8 @@ function Task(props: {
       router.query.assignment
         ? 'assignment'
         : router.query.tournament
-        ? 'tournament'
-        : 'regular',
+          ? 'tournament'
+          : 'regular',
     [router.query]
   );
 
@@ -96,19 +90,19 @@ function Task(props: {
   );
 
   useEffect(() => {
-    let id: undefined | NodeJS.Timer = undefined;
+    let id: undefined | number = undefined;
     if (type !== 'regular' && typeof querySpec == 'string') {
       if (id) {
-        clearInterval(id);
+        window.clearInterval(id);
       }
       fetch_tasks(querySpec)();
-      id = setInterval(fetch_tasks(querySpec), 5000);
+      id = window.setInterval(fetch_tasks(querySpec), 5000);
     } else {
       setTasks([]);
     }
     return () => {
       if (id) {
-        clearInterval(id);
+        window.clearInterval(id);
       }
     };
   }, [querySpec, type, fetch_tasks]);
@@ -186,7 +180,9 @@ function Task(props: {
             homeHref={`/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
-          {user && <ChatSticky spec={querySpec} host={user.login} />}
+          {user && (
+            <ChatSticky entity={type} spec={querySpec} host={user.login} />
+          )}
           <Timer url={`${type}/info/${querySpec}`} />
         </>
       )}
@@ -202,9 +198,7 @@ function Task(props: {
           opened={openedHint}
           close={() => setOpenedHint(false)}
         >
-          <div
-            dangerouslySetInnerHTML={{ __html: task.hint.content }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: task.hint.content }} />
         </SimpleModal>
       )}
       {isUser && !isTeacher && showHint && task.hint && (
@@ -256,9 +250,7 @@ function Task(props: {
           ))
         }
         results={(currentTab) =>
-          isUser && (
-            <DynamicResults activeTab={currentTab} spec={task.spec} />
-          )
+          isUser && <DynamicResults activeTab={currentTab} spec={task.spec} />
         }
       />
     </>
@@ -286,17 +278,16 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
-  const response = await fetch(
-    `${API_URL}/api/bundle/task-page/${spec}`,
-    {
-      method: 'GET',
-      headers: {
-        cookie: req.headers.cookie,
-        'content-type': 'application/json',
-      } as { [key: string]: string },
-    }
-  );
+  const response = await fetch(`${API_URL}/api/bundle/task-page/${spec}`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+      'content-type': 'application/json',
+    } as { [key: string]: string },
+  });
   if (response.status === 200) {
     const response_json = await response.json();
 

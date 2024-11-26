@@ -24,6 +24,7 @@ import { useLocale } from '@hooks/useLocale';
 import Timer from '@ui/Timer/Timer';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
+import { getCookieValue } from '@utils/cookies';
 
 function Tournament(props: {
   tournament: ITournament;
@@ -190,18 +191,17 @@ function Tournament(props: {
 
   return (
     <>
-      <Title
-        title={`${locale.titles.tournament.spec} ${tournament.title}`}
-      />
+      <Title title={`${locale.titles.tournament.spec} ${tournament.title}`} />
       {getSticky()}
       {user && (special || is_participant) && (
-        <ChatSticky spec={tournament.spec} host={user.login} />
+        <ChatSticky
+          entity={'tournament'}
+          spec={tournament.spec}
+          host={user.login}
+        />
       )}
       <Timer url={`tournament/info/${tournament.spec}`} />
-      <Description
-        tournament={tournament}
-        is_participant={is_participant}
-      />
+      <Description tournament={tournament} is_participant={is_participant} />
     </>
   );
 }
@@ -227,10 +227,12 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
   const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
     headers: {
       cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   });
 

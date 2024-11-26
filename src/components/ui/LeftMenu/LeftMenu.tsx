@@ -1,5 +1,5 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { Group, Navbar, UnstyledButton } from '@mantine/core';
+import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
 import { FC, ReactNode, memo, useState } from 'react';
 import styles from './leftMenu.module.css';
 
@@ -12,37 +12,20 @@ const LeftMenu: FC<{
 
   return (
     <div className={styles.wrapper}>
-      <Navbar
-        p="xs"
-        width={{ base: 300 }}
-        withBorder={false}
-        zIndex={10}
-      >
-        {topContent && <Navbar.Section>{topContent}</Navbar.Section>}
-        <Navbar.Section grow mt="md">
+      <Box p="xs" w={300}>
+        {topContent && <>{topContent}</>}
+        <>
           {links.map((element, idx) => (
-            <UnstyledButton
+            <NavLink
               key={idx}
-              className={`${styles.button} ${
-                current === idx ? styles.activeButton : ''
-              }`}
+              active={idx == current}
               onClick={() => setCurrent(idx)}
-            >
-              <Group spacing="xs" className={styles.groupWrapper}>
-                <div
-                  className={`${styles.line} ${
-                    current === idx ? styles.activeLine : ''
-                  }`}
-                ></div>
-                <Group className={styles.groupWrapper}>
-                  {element.icon}
-                  <div>{element.title}</div>
-                </Group>
-              </Group>
-            </UnstyledButton>
+              label={element.title}
+              leftSection={element.icon}
+            />
           ))}
-        </Navbar.Section>
-      </Navbar>
+        </>
+      </Box>
       <div className={styles.pageWrapper}>
         {links[current]?.page || links[0]?.page || ''}
       </div>

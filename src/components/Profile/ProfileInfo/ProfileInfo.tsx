@@ -15,7 +15,7 @@ const ProfileInfo: FC<IFullProfileBundle> = ({
 }) => {
   return (
     <div className={styles.wrapper}>
-      <MainInfo user={user} place={rating_info.place} />
+      <MainInfo user={user} place={rating_info?.place} />
       <GroupsInfo user={user} />
       <ShortStatistics
         ratingInfo={rating_info}

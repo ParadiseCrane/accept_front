@@ -1,4 +1,5 @@
 import { link } from '@constants/Avatar';
+import { useUser } from '@hooks/useUser';
 import {
   Avatar as MantineAvatar,
   AvatarProps as MantineAvatarProps,
@@ -8,12 +9,20 @@ import { FC, memo } from 'react';
 
 interface AvatarProps extends MantineAvatarProps {
   login?: string;
+  organization?: string;
 }
+// TODO продолжить добавление организаций
 
-const UserAvatar: FC<AvatarProps> = ({ login, ...props }) => {
+const UserAvatar: FC<AvatarProps> = ({
+  login,
+  organization,
+  ...props
+}) => {
+  const { user } = useUser();
+  const organizationLocal = organization ?? user?.organization;
   return (
     <MantineAvatar
-      src={login ? link(login) : undefined}
+      src={login ? link(login + organizationLocal) : undefined}
       size="lg"
       radius="lg"
       {...props}

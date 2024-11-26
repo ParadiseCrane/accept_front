@@ -1,6 +1,9 @@
 import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
+import { getCookieValue } from './cookies';
+import { IncomingMessage } from 'http';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -13,11 +16,44 @@ interface FetchWrapperProps {
 
 const refresh_url = `${getApiUrl()}/api/refresh`;
 
+export const fetchWrapperStatic = async ({
+  url,
+  req,
+  method = 'GET',
+  body = undefined,
+}: {
+  url: string;
+  req: IncomingMessage & {
+    cookies: NextApiRequestCookies;
+  };
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  body?: any;
+  auth?: boolean;
+}) => {
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const fetch_data = {
+    method: method,
+    credentials: 'include' as RequestCredentials,
+    body:
+      !['GET', 'DELETE'].includes(method) && !!!body
+        ? JSON.stringify(body)
+        : null,
+    headers: {
+      'content-type': 'application/json',
+      // cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
+  };
+
+  return await fetch(`${getApiUrl()}/api/${url}`, fetch_data);
+};
+
 export const fetchWrapper = async (props: FetchWrapperProps) => {
-  const { req, res, url, method, customBody, notWriteToRes, ..._ } =
-    props;
+  const { req, res, url, method, customBody, notWriteToRes, ..._ } = props;
   const fetchMethod = method || 'GET';
   const fetch_url = `${getApiUrl()}/${url}`;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
   const fetch_data = {
     method: fetchMethod,
     credentials: 'include' as RequestCredentials,
@@ -30,42 +66,54 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   };
   let response = await fetch(fetch_url, fetch_data);
 
   if (response.status == 401 || response.status == 403) {
-    try {
-      const refresh_response = await fetch(refresh_url, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { cookie: req.headers.cookie } as {
-          [key: string]: string;
-        },
-      });
+    const cookie_user = getCookieValue(req.headers.cookie || '', 'user');
+    if (typeof cookie_user !== 'string') {
+      if (!!!notWriteToRes) {
+        const data = await response.json();
 
-      if (refresh_response.status === 200) {
-        const refresh_data = await refresh_response.json();
-
-        res.setHeader('Set-Cookie', [
-          createTokenCookie(
-            'access_token_cookie',
-            refresh_data['new_access_token'],
-            refresh_data['new_access_token_max_age']
-          ),
-        ]);
-
-        response = await fetch(fetch_url, {
-          ...fetch_data,
-          headers: {
-            ...fetch_data.headers,
-            cookie:
-              `access_token_cookie=${refresh_data['new_access_token']};` +
-              fetch_data.headers.cookie,
-          },
-        });
+        res.status(response.status).json(data);
       }
-    } catch {}
+      return response;
+    }
+
+    const refresh_token = getCookieValue(
+      req.headers.cookie || '',
+      'refresh_token'
+    );
+
+    const refresh_response = await fetch(refresh_url, {
+      method: 'GET',
+      headers: { refresh_token } as { [key: string]: string },
+    });
+
+    if (refresh_response.status !== 200) return;
+
+    const refresh_data = await refresh_response.json();
+    res.setHeader('Set-Cookie', [
+      createTokenCookie(
+        'access_token',
+        refresh_data['access_token'],
+        new Date(refresh_data['access_token_expires'])
+      ),
+      createTokenCookie(
+        'refresh_token',
+        refresh_data['refresh_token'],
+        new Date(refresh_data['refresh_token_expires'])
+      ),
+    ]);
+    response = await fetch(fetch_url, {
+      ...fetch_data,
+      headers: {
+        ...fetch_data.headers,
+        Authorization: `Bearer ${refresh_data['access_token']}`,
+      },
+    });
   }
 
   if (!!!notWriteToRes) {

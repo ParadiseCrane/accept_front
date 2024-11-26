@@ -15,9 +15,7 @@ interface Props extends Omit<TabsProps, 'children'> {
 }
 
 const Tabs: FC<Props> = ({ pages, defaultPage, ...props }) => {
-  const [activeTab, setActiveTab] = useState<string | null>(
-    defaultPage
-  );
+  const [activeTab, setActiveTab] = useState<string | null>(defaultPage);
 
   return (
     <MantineTabs
@@ -27,7 +25,7 @@ const Tabs: FC<Props> = ({ pages, defaultPage, ...props }) => {
       }}
       styles={{ tabLabel: { fontSize: 'var(--font-size-s)' } }}
       value={activeTab}
-      onTabChange={setActiveTab}
+      onChange={setActiveTab}
       {...props}
     >
       <MantineTabs.List grow>

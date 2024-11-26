@@ -1,12 +1,5 @@
 import { Button, LoadingOverlay, Modal } from '@ui/basics';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './readModal.module.css';
 import { Group } from '@mantine/core';
 import { useLocale } from '@hooks/useLocale';
@@ -20,18 +13,9 @@ const ReadModal: FC<{
   notLoading?: boolean;
   close: (_: string[]) => void;
   loading: boolean;
-}> = ({
-  opened,
-  messages,
-  defaultSelected,
-  notLoading,
-  close,
-  loading,
-}) => {
+}> = ({ opened, messages, defaultSelected, notLoading, close, loading }) => {
   const { locale } = useLocale();
-  const [current, setCurrent] = useState(
-    defaultSelected ? defaultSelected : 0
-  );
+  const [current, setCurrent] = useState(defaultSelected ? defaultSelected : 0);
 
   const [_, setViewed] = useState<string[]>([]);
 
@@ -40,10 +24,7 @@ const ReadModal: FC<{
     setViewed([]);
   }, [defaultSelected]);
 
-  const message = useMemo(
-    () => messages[current],
-    [messages, current]
-  );
+  const message = useMemo(() => messages[current], [messages, current]);
 
   useEffect(() => {
     if (messages[current])
@@ -97,9 +78,7 @@ const ReadModal: FC<{
                 <div className={styles.author}>
                   {locale.notification.form.author}: {message.author}
                 </div>
-                <div className={styles.date}>
-                  {getLocalDate(message.date)}
-                </div>
+                <div className={styles.date}>{getLocalDate(message.date)}</div>
               </div>
             ) : (
               <div className={styles.seeProfileWrapper}>
@@ -122,7 +101,7 @@ const ReadModal: FC<{
             />
           </>
         )}
-        <Group position="center" mt="xl" pb="md">
+        <Group align="center" mt="xl" pb="md">
           {!(current == 0) && (
             <Button variant="light" onClick={prevOne}>
               {locale.form.back}

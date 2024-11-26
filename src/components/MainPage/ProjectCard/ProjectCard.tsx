@@ -28,15 +28,13 @@ export const ProjectCard: FC<{
           >
             <div className={styles.title}>{card.title(locale)}</div>
           </div>
-          <div className={styles.description}>
-            {card.description(locale)}
-          </div>
+          <div className={styles.description}>{card.description(locale)}</div>
 
           <Button
             className={styles.button}
             variant="outline"
             href={card.href}
-            rightIcon={
+            rightSection={
               <ChevronRight
                 color="var(--primary)"
                 size={ICON_SIZES['md'][width]}

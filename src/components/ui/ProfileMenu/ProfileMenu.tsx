@@ -1,59 +1,42 @@
-import { FC, memo, useCallback } from 'react';
-import { Group, Menu } from '@mantine/core';
+import { FC, memo, useState } from 'react';
+import { Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
-import {
-  errorNotification,
-  newNotification,
-  successNotification,
-} from '@utils/notificationFunctions';
 import { useBackNotifications } from '@hooks/useBackNotifications';
 import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
-import { Logout } from 'tabler-icons-react';
+import { Logout, Plus } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
+import AccountsMenu from './AccountsMenu/AccountsMenu';
+import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel } = useUser();
+  const { user, signOut, accessLevel, accounts } = useUser();
 
   const { unviewed } = useBackNotifications();
 
-  const handleSignOut = useCallback(() => {
-    const id = newNotification({
-      title: locale.notify.auth.signOut.loading,
-      message: locale.loading + '...',
-    });
-    signOut().then((res) => {
-      if (res) {
-        successNotification({
-          id,
-          title: locale.notify.auth.signOut.success,
-          autoClose: 5000,
-        });
-      } else {
-        errorNotification({
-          id,
-          title: locale.notify.auth.signOut.error,
-          autoClose: 5000,
-        });
-      }
-    });
-  }, [locale, signOut]);
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(undefined);
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <Menu
+        opened={showMenu}
         trigger="hover"
-        zIndex={1000}
+        zIndex={100}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
       >
         <Menu.Target>
           <div>
             <Indicator label={unviewed} disabled={unviewed <= 0}>
-              <UserAvatar login={user?.login} alt={'Users avatar'} />
+              <UserAvatar
+                login={user?.login}
+                organization={user?.organization}
+                alt={'User avatar'}
+                classNames={{ root: styles.avatar }}
+              />
             </Indicator>
           </div>
         </Menu.Target>
@@ -61,37 +44,56 @@ const ProfileMenu: FC<{}> = ({}) => {
           <Menu.Label className={styles.label}>
             {user?.shortName || ''}
           </Menu.Label>
+
+          <Menu.Divider />
+
           {menuLinks
             .filter(
               (item) =>
-                !item.permission ||
-                accessLevel >= accessLevels[item.permission]
+                !item.permission || accessLevel >= accessLevels[item.permission]
             )
             .map((item, index) => (
               <Menu.Item
                 component={Link}
                 href={item.href}
                 key={index}
+                leftSection={item.icon}
               >
-                <Group spacing="xs" className={styles.wrapper}>
-                  {item.icon}
-                  <div>{item.text(locale)}</div>
-                </Group>
+                {item.text(locale)}
               </Menu.Item>
             ))}
-          <Menu.Item onClick={handleSignOut}>
-            <Group spacing="xs" className={styles.wrapper}>
-              <Group className={styles.wrapper}>
-                <Logout color="var(--secondary)" size={20} />
-                <div>
-                  {locale.mainHeaderLinks.profileLinks.signOut}
-                </div>
-              </Group>
-            </Group>
+
+          <Menu.Item
+            component={Link}
+            href={'/add_account'}
+            leftSection={<Plus color="var(--secondary)" size={20} />}
+            style={{ display: accounts.length == 1 ? '' : 'none' }}
+          >
+            {locale.accounts.addAccount}
           </Menu.Item>
+
+          <Menu.Divider />
+          <ConfirmLogoutModal
+            openMenu={() => {
+              toggleMenu(true);
+            }}
+            closeMenu={() => {
+              toggleMenu(undefined);
+            }}
+            confirm={signOut}
+            title={locale.accounts.sessionLogout}
+            modalText={locale.accounts.confirmSessionLogout}
+          >
+            <Menu.Item
+              leftSection={<Logout color="var(--secondary)" size={20} />}
+            >
+              {locale.mainHeaderLinks.profileLinks.signOut}
+            </Menu.Item>
+          </ConfirmLogoutModal>
         </Menu.Dropdown>
       </Menu>
-    </>
+      <AccountsMenu />
+    </div>
   );
 };
 

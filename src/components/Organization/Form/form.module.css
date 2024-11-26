@@ -1,0 +1,13 @@
+.buttonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacer-l);
+}
+
+.readOnlySwitch {
+  width: fit-content;
+  display: flex;
+  gap: var(--spacer-xs);
+  align-items: center;
+}

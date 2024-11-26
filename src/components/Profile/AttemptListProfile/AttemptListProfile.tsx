@@ -31,10 +31,7 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   date: {
     display: (
-      <Link
-        className={tableStyles.link}
-        href={`/attempt/${attempt.spec}`}
-      >
+      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -46,10 +43,7 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   task: {
     display: (
-      <Link
-        href={`/task/${attempt.task.spec}`}
-        className={styles.taskLink}
-      >
+      <Link href={`/task/${attempt.task.spec}`} className={styles.taskLink}>
         {attempt.task.title}
       </Link>
     ),
@@ -63,11 +57,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'date',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.date.value > b.date.value
-        ? -1
-        : a.date.value == b.date.value
-        ? 0
-        : 1,
+      a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
     sorted: -1,
     allowMiddleState: false,
     hidable: false,
@@ -126,6 +116,7 @@ const AttemptListProfile: FC<{}> = ({}) => {
           if (tasks) setTaskSearch(tasks.map((task) => task.spec));
           else setTaskSearch([]);
         }}
+        multiple
       ></TaskSelect>
       <AttemptList
         key={taskSearch.toString()}

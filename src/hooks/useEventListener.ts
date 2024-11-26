@@ -25,7 +25,7 @@ function useEventListener<
   element?: RefObject<T>
 ) {
   // Create a ref that stores handler
-  const savedHandler = useRef<typeof handler>();
+  const savedHandler = useRef<typeof handler>(null!);
 
   useEffect(() => {
     // Define the listening target

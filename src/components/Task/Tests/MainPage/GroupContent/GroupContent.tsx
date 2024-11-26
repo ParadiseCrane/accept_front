@@ -82,20 +82,14 @@ const GroupContent: FC<{
         switch (name) {
           case 'input':
             inputs.push({
-              index: +files[i].name.slice(
-                5,
-                files[i].name.lastIndexOf('.')
-              ),
+              index: +files[i].name.slice(5, files[i].name.lastIndexOf('.')),
               content: await files[i].text(),
             });
             break;
 
           case 'output':
             outputs.push({
-              index: +files[i].name.slice(
-                6,
-                files[i].name.lastIndexOf('.')
-              ),
+              index: +files[i].name.slice(6, files[i].name.lastIndexOf('.')),
               content: await files[i].text(),
             });
             break;
@@ -110,11 +104,7 @@ const GroupContent: FC<{
       let tests: ITaskTestData[] = [];
       if (checkType.spec == 0 && taskType.spec == 0) {
         // tests and code
-        for (
-          let i = 0;
-          i < Math.min(inputs.length, outputs.length);
-          i++
-        ) {
+        for (let i = 0; i < Math.min(inputs.length, outputs.length); i++) {
           if (inputs[i].index != i || outputs[i].index != i) break;
           tests.push({
             inputData: inputs[i].content,
@@ -145,8 +135,7 @@ const GroupContent: FC<{
         errorNotification({
           id,
           title: locale.notify.task_test.dropValidation.empty.title,
-          message:
-            locale.notify.task_test.dropValidation.empty.message,
+          message: locale.notify.task_test.dropValidation.empty.message,
           autoClose: 5000,
         });
         return;
@@ -167,10 +156,7 @@ const GroupContent: FC<{
     [locale]
   );
 
-  const hideInput = useMemo(
-    () => taskType.spec == 1,
-    [taskType.spec]
-  );
+  const hideInput = useMemo(() => taskType.spec == 1, [taskType.spec]);
   const hideOutput = useMemo(() => !!checker, [checker]);
 
   const EditAction = useCallback(
@@ -187,17 +173,12 @@ const GroupContent: FC<{
         <HelperTip
           key={index * 2 + 1}
           multiline
-          width={400}
+          // width={400}
+          w={400}
           label={locale.task.tests.prohibitEdit(truncate_limit)}
         />
       ),
-    [
-      hideInput,
-      hideOutput,
-      locale.task.tests,
-      refetch,
-      truncate_limit,
-    ]
+    [hideInput, hideOutput, locale.task.tests, refetch, truncate_limit]
   );
 
   return (
@@ -236,9 +217,7 @@ const GroupContent: FC<{
                     : item.outputData,
                 }))}
                 label={
-                  locale.task.tests.test +
-                  ' #' +
-                  (test_offset + index + 1)
+                  locale.task.tests.test + ' #' + (test_offset + index + 1)
                 }
                 inLabel={locale.task.form.inputTest}
                 outLabel={locale.task.form.outputTest}
@@ -248,16 +227,10 @@ const GroupContent: FC<{
                 maxRows={7}
                 minRows={7}
                 openInputNewTab={
-                  <OpenTestInNewTab
-                    spec={test.spec}
-                    field={'input'}
-                  />
+                  <OpenTestInNewTab spec={test.spec} field={'input'} />
                 }
                 openOutputNewTab={
-                  <OpenTestInNewTab
-                    spec={test.spec}
-                    field={'output'}
-                  />
+                  <OpenTestInNewTab spec={test.spec} field={'output'} />
                 }
                 additionalActions={[
                   <DeleteTest

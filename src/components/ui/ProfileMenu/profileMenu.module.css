@@ -1,9 +1,20 @@
 .wrapper {
-  flex-wrap: nowrap;
-  gap: var(--spacer-xs);
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  /* gap: 5px */
 }
 
 .label {
   font-size: var(--font-size-xs);
   color: var(--dark3);
+}
+
+.accounts {
+  display: flex;
+  flex-direction: row;
+}
+
+.accounts:hover {
+  scale: 1.1;
 }

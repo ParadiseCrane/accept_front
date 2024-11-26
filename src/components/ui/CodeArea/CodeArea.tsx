@@ -19,11 +19,7 @@ const get_selection = (ref: HTMLTextAreaElement) => {
   return [start, end];
 };
 
-const find_selected_lines = (
-  value: string,
-  start: number,
-  end: number
-) => {
+const find_selected_lines = (value: string, start: number, end: number) => {
   value = value.trimEnd() + '\n'; // for last line to work properly in case of not having \n at the end
   let rows = value.split('\n');
   let acc_len = 0;
@@ -54,8 +50,7 @@ const find_selected_lines = (
   let prev_row = [0, 0];
   if (prev_index >= 0) prev_row = row_bounds[prev_index];
   let next_row = [value.length, value.length];
-  if (next_index < row_bounds.length)
-    next_row = row_bounds[next_index];
+  if (next_index < row_bounds.length) next_row = row_bounds[next_index];
 
   let beginning = value.substring(0, prev_row[0]);
   let prev = value.substring(prev_row[0], prev_row[1]);
@@ -104,9 +99,7 @@ const CodeArea: FC<{
     let [start, end] = get_selection(ref);
 
     let value = ref.value;
-    ref.value = `${value.substring(0, start)}\t${value.substring(
-      end
-    )}`;
+    ref.value = `${value.substring(0, start)}\t${value.substring(end)}`;
     setCode(ref.value);
 
     ref.selectionStart = start + 1;
@@ -175,8 +168,7 @@ const CodeArea: FC<{
       const id = newNotification({
         autoClose: 2000,
         title: locale.ui.codeArea.notification.uploading.title,
-        message:
-          locale.ui.codeArea.notification.uploading.description,
+        message: locale.ui.codeArea.notification.uploading.description,
       });
       if (!files[0]) {
         errorNotification({
@@ -229,7 +221,7 @@ const CodeArea: FC<{
             classNames={classNames}
             placeholder={placeholder || locale.placeholders.code}
             onChange={(e) => setCode(e.target.value)}
-            minRows={minRows || 20}
+            minRows={minRows}
             onKeyDown={getHotkeyHandler([
               ['Tab', tab],
               ['mod+Enter', send_keyboard],

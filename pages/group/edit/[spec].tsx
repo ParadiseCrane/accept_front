@@ -3,8 +3,7 @@ import { useLocale } from '@hooks/useLocale';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { UseFormReturnType } from '@mantine/form';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { IGroup } from '@custom-types/data/IGroup';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -14,7 +13,7 @@ import {
 } from '@utils/notificationFunctions';
 import Title from '@ui/Title/Title';
 import { useRequest } from '@hooks/useRequest';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function EditGroup(props: { group: IGroup; members: string[] }) {
   const { data: users } = useRequest<{}, IUserDisplay[]>(
@@ -89,23 +88,22 @@ EditGroup.getLayout = (page: ReactNode) => {
 
 export default EditGroup;
 
-const API_URL = getApiUrl();
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query.spec) {
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/404',
       },
     };
   }
-  const groupBundleResponse = await fetch(
-    `${API_URL}/api/bundle/group-edit/${params.spec}`,
-    {
-      method: 'GET',
-    }
-  );
+  const groupBundleResponse = await fetchWrapperStatic({
+    url: `bundle/group-edit/${query.spec}`,
+    req,
+  });
   if (groupBundleResponse.status === 200) {
     const groupBundle = await groupBundleResponse.json();
     return {
@@ -113,7 +111,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         group: groupBundle.group,
         members: groupBundle.members,
       },
-      revalidate: REVALIDATION_TIME.group.edit,
     };
   }
   return {
@@ -121,12 +118,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       permanent: false,
       destination: '/404',
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
   };
 };

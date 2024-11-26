@@ -5,9 +5,12 @@ import { useLocale } from '@hooks/useLocale';
 import Link from 'next/link';
 import styles from './logo.module.css';
 import { useHotkeys } from '@mantine/hooks';
+import { useUser } from '@hooks/useUser';
+import { Badge } from '@mantine/core';
 
 const Logo: FC = () => {
   const { locale } = useLocale();
+  const { user } = useUser();
   const [jumpItem, setJumpItem] = useState('');
   let letters = useMemo(
     () => locale.accept.split(''),
@@ -32,7 +35,7 @@ const Logo: FC = () => {
 
   return (
     <Link href="/" className={styles.logoWrapper}>
-      <Image src={logo} width={64} height={64} alt="Accept" />
+      <Image src={logo} width={48} height={48} alt="Accept" />
       <div className={styles.name}>
         {letters.map((item, index) => (
           <span
@@ -43,6 +46,16 @@ const Logo: FC = () => {
           </span>
         ))}
       </div>
+      {user?.organization && (
+        <Badge
+          style={{
+            alignSelf: 'start',
+          }}
+          size="md"
+        >
+          {user?.organization}
+        </Badge>
+      )}
     </Link>
   );
 };

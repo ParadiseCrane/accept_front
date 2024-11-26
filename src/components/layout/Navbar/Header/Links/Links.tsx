@@ -10,7 +10,7 @@ const Links: FC<{
 }> = ({ links }) => {
   return (
     <div>
-      <Group position="right" spacing="xl">
+      <Group align="center" gap="xl">
         {links.map((link, index) => (
           <HeaderLink key={index} link={link} />
         ))}

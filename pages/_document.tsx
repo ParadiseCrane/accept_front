@@ -1,4 +1,5 @@
-import { ServerStyles, createStylesServer } from '@mantine/next';
+// import { ServerStyles, createStylesServer } from '@mantine/next';
+import { ColorSchemeScript } from '@mantine/core';
 import Document, {
   DocumentContext,
   Head,
@@ -7,7 +8,7 @@ import Document, {
   NextScript,
 } from 'next/document';
 
-const stylesServer = createStylesServer();
+// const stylesServer = createStylesServer();
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -16,27 +17,24 @@ class MyDocument extends Document {
       ...initialProps,
       styles: [
         initialProps.styles,
-        <ServerStyles
-          html={initialProps.html}
-          server={stylesServer}
-          key="styles"
-        />,
+        // <ServerStyles
+        //   html={initialProps.html}
+        //   server={stylesServer}
+        //   key="styles"
+        // />,
       ],
     };
   }
   render() {
     return (
-      <Html lang="ru">
+      <Html lang="ru" suppressHydrationWarning>
         <Head>
           <link rel="shortcut" href="/favicon.ico" />
-          <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com"
-          />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
             href="https://fonts.gstatic.com"
-            crossOrigin="true"
+            crossOrigin="anonymous"
           />
           <link
             href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap"
@@ -46,6 +44,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap"
             rel="stylesheet"
           />
+          <ColorSchemeScript defaultColorScheme="auto" />
         </Head>
         <body>
           <Main />

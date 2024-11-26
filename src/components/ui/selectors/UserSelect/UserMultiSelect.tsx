@@ -1,17 +1,12 @@
-import React, {
-  FC,
-  forwardRef,
-  memo,
-  useCallback,
-  useMemo,
-} from 'react';
-import { Text } from '@mantine/core';
+import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
+import { ComboboxItem, Text } from '@mantine/core';
 import { MultiSelect, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
 import Link from 'next/link';
 import { UserItemProps, UserSelectProps } from './UserSelect';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { SelectItem } from '@custom-types/ui/atomic';
 
 const UserMultiSelect: FC<UserSelectProps> = ({
   label,
@@ -90,14 +85,13 @@ const UserMultiSelect: FC<UserSelectProps> = ({
         placeholder={placeholder}
         clearable
         maxDropdownHeight={400}
-        nothingFound={nothingFound}
-        filter={(value, selected, item) =>
-          item.label
-            ?.toLowerCase()
-            .includes(value.toLowerCase().trim()) ||
-          item.value
-            .toLowerCase()
-            .includes(value.toLowerCase().trim())
+        nothingFoundMessage={nothingFound}
+        filter={({ options, search }) =>
+          (options as ComboboxItem[]).filter(
+            (item) =>
+              item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
+              item.value.toLowerCase().includes(search.toLowerCase().trim())
+          )
         }
         {...additionalProps}
         onChange={(logins) => {

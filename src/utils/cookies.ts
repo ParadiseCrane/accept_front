@@ -10,7 +10,7 @@ export const setCookie = (
       cookie += `${key}=${value};`;
     }
   }
-  document.cookie = cookie;
+  document.cookie = cookie + 'Secure;';
 };
 
 export const getCookie = (
@@ -31,3 +31,6 @@ export const clearCookie = (name: string) => {
     'Max-Age': 0,
   });
 };
+
+export const getCookieValue = (cookies: string, name: string) =>
+  cookies.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop();

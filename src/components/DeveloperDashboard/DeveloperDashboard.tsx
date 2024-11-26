@@ -7,6 +7,8 @@ import {
   TestPipe,
   TestPipe2,
   UserExclamation,
+  Atom,
+  ListDetails,
 } from 'tabler-icons-react';
 import FeedbackList from './FeedbackList/FeedbackList';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
@@ -16,6 +18,7 @@ import Executor from './Executor/Executor';
 import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
 import Analytics from './Analytics/Analytics';
 import AllAttempts from './AllAttempts/AllAttempts';
+import Organizations from './Organizations/Organizations';
 // import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = ({}) => {
@@ -42,6 +45,11 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         page: <NotificationList />,
         icon: <BellRinging color="var(--secondary)" />,
         title: locale.dashboard.developer.notificationList,
+      },
+      {
+        page: <Organizations />,
+        icon: <ListDetails color="var(--secondary)" />,
+        title: locale.dashboard.developer.organizationList,
       },
       {
         page: <Executor />,

@@ -17,7 +17,8 @@ function TournamentDashboardPage(props: { spec: string }) {
     <>
       <Title title={locale.titles.dashboard.tournament} />
       <ChatHostsProvider
-        entity={props.spec}
+        spec={props.spec}
+        entity={'tournament'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <TournamentDashboard spec={props.spec} />
@@ -32,32 +33,18 @@ TournamentDashboardPage.getLayout = (page: ReactNode) => {
 
 export default TournamentDashboardPage;
 
-const API_URL = getApiUrl();
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+  if (!params || !params.spec) {
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/404',
       },
     };
   }
-  const response = await fetch(
-    `${API_URL}/api/tournament/${params.spec}`
-  );
-  if (response.status === 200) {
-    const resp: ITournamentResponse = await response.json();
-    return {
-      props: { spec: resp.tournament.spec },
-      revalidate: REVALIDATION_TIME.dashboard.tournament,
-    };
-  }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    props: { spec: params.spec },
+    revalidate: REVALIDATION_TIME.dashboard.tournament,
   };
 };
 

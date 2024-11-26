@@ -9,6 +9,16 @@ export interface Role {
   accessLevel: number;
 }
 
+export interface IWhoAmIResponse {
+  current_user: IUserOrgDisplay;
+  users: IUserOrganization[];
+}
+
+export interface IUserOrganization {
+  login: string;
+  organization: string;
+}
+
 export interface IUser {
   login: string;
   name: string;
@@ -19,22 +29,23 @@ export interface IUser {
   groups: IGroup[];
   role: Role;
 }
-
 export interface IUserContext {
   authorized: boolean;
-  user: IUser | undefined | null;
+  user: IUserOrgDisplay | undefined | null;
+  accounts: IUserOrganization[];
   accessLevel: number;
   isUser: boolean;
   isStudent: boolean;
   isTeacher: boolean;
   isAdmin: boolean;
-  signIn: (_: string, __: string) => Promise<Boolean>;
+  signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
   signOut: pureCallback<Promise<Boolean>>;
   refresh: pureCallback<Promise<void>>;
   refreshAccess: pureCallback<number>;
 }
 
 export interface IRegUser {
+  organization: string;
   login: string;
   name: string;
   surname: string;
@@ -49,10 +60,17 @@ export interface IUserListBundle {
   roles: IRole[];
 }
 
-export interface IUserDisplay {
+export interface IUserBaseInfo {
   login: string;
-  role: IRole;
   shortName: string;
+}
+
+export interface IUserDisplay extends IUserBaseInfo {
+  role: IRole;
+}
+
+export interface IUserOrgDisplay extends IUserDisplay {
+  organization: string;
 }
 
 export interface IParticipant extends IUserDisplay {

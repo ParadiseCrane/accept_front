@@ -1,16 +1,11 @@
-import React, {
-  FC,
-  forwardRef,
-  memo,
-  useCallback,
-  useMemo,
-} from 'react';
-import { Text } from '@mantine/core';
+import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
+import { ComboboxItem, Text } from '@mantine/core';
 import { Select, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
 import Link from 'next/link';
 import { UserItemProps, UserSelectProps } from './UserSelect';
+import { SelectItem } from '@custom-types/ui/atomic';
 
 const UserSingleSelect: FC<UserSelectProps> = ({
   label,
@@ -72,9 +67,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         select(undefined);
         return;
       }
-      const userIndex = users.findIndex(
-        (item) => item.login === login
-      );
+      const userIndex = users.findIndex((item) => item.login === login);
       if (userIndex >= 0) {
         select([users[userIndex]]);
       }
@@ -93,13 +86,12 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         clearable
         maxDropdownHeight={400}
         nothingFound={nothingFound}
-        filter={(value, item) =>
-          item.label
-            ?.toLowerCase()
-            .includes(value.toLowerCase().trim()) ||
-          item.value
-            .toLowerCase()
-            .includes(value.toLowerCase().trim())
+        filter={({ options, search }) =>
+          (options as ComboboxItem[]).filter(
+            (item) =>
+              item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
+              item.value.toLowerCase().includes(search.toLowerCase().trim())
+          )
         }
         {...additionalProps}
         onChange={(login) => {

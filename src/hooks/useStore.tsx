@@ -6,9 +6,7 @@ import React, {
   useSyncExternalStore,
 } from 'react';
 
-export default function createFastContext<Store>(
-  initialState: Store
-) {
+export default function createFastContext<Store>(initialState: Store) {
   function useStoreData(): {
     get: () => Store;
     set: (_: Partial<Store>) => void;
@@ -39,9 +37,7 @@ export default function createFastContext<Store>(
 
   type UseStoreDataReturnType = ReturnType<typeof useStoreData>;
 
-  const StoreContext = createContext<UseStoreDataReturnType | null>(
-    null
-  );
+  const StoreContext = createContext<UseStoreDataReturnType | null>(null);
 
   function Provider({ children }: { children: React.ReactNode }) {
     return (
