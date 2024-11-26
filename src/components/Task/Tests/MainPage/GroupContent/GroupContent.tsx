@@ -23,6 +23,8 @@ import { setter } from '@custom-types/ui/atomic';
 import styles from './groupContent.module.css';
 import { MAX_TEST_LENGTH } from '@constants/Limits';
 
+const filterNonDigits = (s: string) => s.match(/\d/g)?.join('') || '0';
+
 const GroupContent: FC<{
   group_index: number;
   test_offset: number;
@@ -74,22 +76,23 @@ const GroupContent: FC<{
         index: number;
       }[] = [];
       for (let i = 0; i < length; i++) {
-        const name = files[i].name.startsWith('input')
+        const file = files[i];
+        const name = file.name.startsWith('i')
           ? 'input'
-          : files[i].name.startsWith('output')
+          : file.name.startsWith('o')
           ? 'output'
           : '';
         switch (name) {
           case 'input':
             inputs.push({
-              index: +files[i].name.slice(5, files[i].name.lastIndexOf('.')),
+              index: +filterNonDigits(file.name),
               content: await files[i].text(),
             });
             break;
 
           case 'output':
             outputs.push({
-              index: +files[i].name.slice(6, files[i].name.lastIndexOf('.')),
+              index: +filterNonDigits(file.name),
               content: await files[i].text(),
             });
             break;
@@ -100,36 +103,34 @@ const GroupContent: FC<{
 
       inputs.sort((a, b) => a.index - b.index);
       outputs.sort((a, b) => a.index - b.index);
-
       let tests: ITaskTestData[] = [];
       if (checkType.spec == 0 && taskType.spec == 0) {
         // tests and code
         for (let i = 0; i < Math.min(inputs.length, outputs.length); i++) {
           if (inputs[i].index != i || outputs[i].index != i) break;
           tests.push({
-            inputData: inputs[i].content,
-            outputData: outputs[i].content,
+            inputData: inputs[i].content.trimEnd(),
+            outputData: outputs[i].content.trimEnd(),
           });
         }
       } else if (taskType.spec == 1) {
         // text task
         for (let i = 0; i < outputs.length; i++) {
-          if (outputs[i].index != i) break;
           tests.push({
             inputData: '',
-            outputData: outputs[i].content,
+            outputData: outputs[i].content.trimEnd(),
           });
         }
       } else if (checkType.spec == 1) {
         // checker
         for (let i = 0; i < inputs.length; i++) {
-          if (inputs[i].index != i) break;
           tests.push({
-            inputData: inputs[i].content,
+            inputData: inputs[i].content.trimEnd(),
             outputData: '',
           });
         }
       }
+
       if (tests.length == 0) {
         const id = newNotification({});
         errorNotification({
