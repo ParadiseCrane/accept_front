@@ -3,14 +3,7 @@ import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import Link from 'next/link';
-import {
-  FC,
-  Fragment,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
 import { callback } from '@custom-types/ui/atomic';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
@@ -75,9 +68,7 @@ const DeleteModal: FC<{
         title={locale.task.modals.deletion}
       >
         <div className={modalStyles.verticalContent}>
-          <div>
-            {locale.task.modals.delete + ` '${task.title}' ?`}
-          </div>
+          <div>{locale.task.modals.delete + ` '${task.title}' ?`}</div>
           {assignment_schemas.length > 0 && (
             <div>
               <div>
@@ -86,19 +77,17 @@ const DeleteModal: FC<{
               </div>
               <br />
               <div className={deleteModalStyles.list}>
-                {assignment_schemas.map(
-                  (assignment_schema, index) => (
-                    <Fragment key={index}>
-                      <Link
-                        href={`/edu/assignment_schema/${assignment_schema.spec}`}
-                        className={deleteModalStyles.link}
-                        target="_blank"
-                      >
-                        {assignment_schema.title}
-                      </Link>
-                    </Fragment>
-                  )
-                )}
+                {assignment_schemas.map((assignment_schema, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      href={`/assignment_schema/${assignment_schema.spec}`}
+                      className={deleteModalStyles.link}
+                      target="_blank"
+                    >
+                      {assignment_schema.title}
+                    </Link>
+                  </Fragment>
+                ))}
               </div>
             </div>
           )}

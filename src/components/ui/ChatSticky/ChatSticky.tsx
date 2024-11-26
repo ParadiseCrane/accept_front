@@ -7,9 +7,11 @@ import { MessageCircle2 } from 'tabler-icons-react';
 import { useClickOutside } from '@mantine/hooks';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { useUser } from '@hooks/useUser';
+import { IActivity } from '@custom-types/data/atomic';
 
-const ChatSticky: FC<{ spec: string; host: string }> = ({
+const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
   spec,
+  entity,
   host,
 }) => {
   const [showChat, setShowChat] = useState(false);
@@ -24,15 +26,12 @@ const ChatSticky: FC<{ spec: string; host: string }> = ({
 
   return (
     <>
-      <Affix
-        ref={ref}
-        position={{ bottom: 0, right: '200px' }}
-        zIndex={100}
-      >
+      <Affix ref={ref} position={{ bottom: 0, right: '200px' }} zIndex={100}>
         <div style={{ visibility: showChat ? 'visible' : 'hidden' }}>
           {window && (
             <Chat
-              entity={spec}
+              entity={entity}
+              spec={spec}
               host={host}
               indicateNew={indicateNew}
               opened={showChat}

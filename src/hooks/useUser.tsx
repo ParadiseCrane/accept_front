@@ -1,5 +1,10 @@
 import { accessLevels } from '@constants/protectedRoutes';
-import { IUser, IUserContext } from '@custom-types/data/IUser';
+import {
+  IUserContext,
+  IUserOrgDisplay,
+  IUserOrganization,
+  IWhoAmIResponse,
+} from '@custom-types/data/IUser';
 import { isSuccessful, sendRequest } from '@requests/request';
 import { clearCookie, getCookie, setCookie } from '@utils/cookies';
 import {
@@ -19,48 +24,24 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
 }) => {
   const whoAmI = useCallback(async () => {
     const cookie_user = getCookie('user');
-    if (!cookie_user) {
-      const res = await sendRequest<{}, IUser>('auth/whoami', 'GET');
-      if (!res.error) {
-        const accessLevel = res.response.role.accessLevel;
-        const user = res.response;
-        setCookie('user', JSON.stringify(user), {
-          path: '/',
-        });
+    const cookie_accounts = getCookie('accounts');
 
-        setValue((prev) => ({
-          ...prev,
-          authorized: true,
-          user: res.response,
-          accessLevel,
-          isUser: user.role.accessLevel >= accessLevels.user,
-          isStudent: accessLevel >= accessLevels.student,
-          isTeacher: accessLevel >= accessLevels.teacher,
-          isAdmin: accessLevel >= accessLevels.admin,
-          isDeveloper: accessLevel >= accessLevels.student,
-        }));
-      } else {
-        setValue((prev) => ({
-          ...prev,
-          authorized: false,
-          user: undefined,
-          accessLevel: 0,
-          isUser: false,
-          isStudent: false,
-          isTeacher: false,
-          isAdmin: false,
-          isDeveloper: false,
-        }));
-      }
-    } else {
+    // if user is saved
+    if (
+      typeof cookie_user === 'string' &&
+      typeof cookie_accounts === 'string'
+    ) {
       try {
-        const user = JSON.parse(cookie_user) as IUser;
+        const user = JSON.parse(cookie_user) as IUserOrgDisplay;
+        const accounts = JSON.parse(
+          cookie_accounts
+        ) as IUserOrganization[];
 
         setValue((prev) => ({
           ...prev,
           authorized: true,
-
           user: user,
+          accounts: accounts,
           accessLevel: user.role.accessLevel,
           isUser: user.role.accessLevel >= accessLevels.user,
           isStudent: user.role.accessLevel >= accessLevels.student,
@@ -73,7 +54,55 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
         setCookie('user', '', { 'max-age': 0 });
         whoAmI();
       }
+      return;
     }
+    // fetch whoami
+    const res = await sendRequest<{}, IWhoAmIResponse>(
+      'auth/whoami',
+      'GET'
+    );
+    // if error empty current data
+    if (res.error) {
+      setValue((prev) => ({
+        ...prev,
+        authorized: false,
+        user: undefined,
+        accounts: [],
+        accessLevel: 0,
+        isUser: false,
+        isStudent: false,
+        isTeacher: false,
+        isAdmin: false,
+        isDeveloper: false,
+      }));
+      return;
+    }
+    const user = res.response.current_user;
+    const accounts = res.response.users;
+    const accessLevel = user.role.accessLevel;
+    setCookie('user', JSON.stringify(user), {
+      Path: '/',
+      SameSite: 'Strict',
+    });
+
+    setCookie('accounts', JSON.stringify(accounts), {
+      Path: '/',
+      SameSite: 'Strict',
+    });
+
+    setValue((prev) => ({
+      ...prev,
+      authorized: true,
+      user: user,
+      accessLevel,
+      accounts: res.response.users,
+      isUser: user.role.accessLevel >= accessLevels.user,
+      isStudent: accessLevel >= accessLevels.student,
+      isTeacher: accessLevel >= accessLevels.teacher,
+      isAdmin: accessLevel >= accessLevels.admin,
+      isDeveloper: accessLevel >= accessLevels.student,
+    }));
+    return;
   }, []);
 
   const refresh = useCallback(async () => {
@@ -84,10 +113,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [whoAmI]);
 
   const signIn = useCallback(
-    async (login: string, password: string) => {
+    async (organization: string, login: string, password: string) => {
       const res = await isSuccessful('auth/signin', 'POST', {
-        login: login,
-        password: password,
+        organization,
+        login,
+        password,
       });
       if (!res.error) {
         await whoAmI();
@@ -101,13 +131,15 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   const signOut = useCallback(async () => {
     const res = await isSuccessful('auth/signout', 'GET');
     if (!res.error) {
-      clearCookie('access_token_cookie');
-      clearCookie('refresh_token_cookie');
+      clearCookie('access_token');
+      clearCookie('refresh_token');
+      clearCookie('session_id');
+      clearCookie('accounts');
       clearCookie('user');
       setValue((prev) => ({
         ...prev,
         authorized: false,
-
+        accounts: [],
         user: undefined,
         accessLevel: 0,
         isUser: false,
@@ -122,11 +154,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (getCookie('access_token_cookie')) {
+    if (!!getCookie('access_token')) {
       whoAmI();
       return 0;
     }
-    if (getCookie('refresh_token_cookie')) {
+    if (!!getCookie('refresh_token')) {
       refresh();
       return 1;
     }
@@ -145,13 +177,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     return 2;
   }, [refresh, whoAmI]);
 
-  const checkTokensExpiration = useCallback(() => {
-    if (!!!getCookie('refresh_token_cookie')) {
-      whoAmI();
+  const checkTokensExpiration = useCallback(async () => {
+    if (!!!getCookie('refresh_token')) {
+      await whoAmI();
       return;
     }
-    if (!!!getCookie('access_token_cookie')) {
-      refresh();
+    if (!!!getCookie('access_token')) {
+      await refresh();
       return;
     }
   }, [refresh, whoAmI]);
@@ -166,6 +198,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   const [value, setValue] = useState<IUserContext>(() => ({
     authorized: false,
     user: undefined,
+    accounts: [],
     accessLevel: 0,
     isUser: false,
     isStudent: false,

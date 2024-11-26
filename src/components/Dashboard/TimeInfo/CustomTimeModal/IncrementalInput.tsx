@@ -12,17 +12,15 @@ const IncrementalInput: FC<{
   title: string;
 }> = ({ onChange, initialValue, title }) => {
   const [value, setValue] = useState(initialValue);
-  const handlers = useRef<NumberInputHandlers>();
+  const handlers = useRef<NumberInputHandlers>(null!);
 
   return (
-    <Group spacing={20} dir="row">
-      <Group spacing={5}>
+    <Group gap={20} dir="row">
+      <Group gap={5}>
         <ActionIcon
           size={42}
           variant="default"
-          onClick={() =>
-            handlers.current && handlers.current.decrement()
-          }
+          onClick={() => handlers.current && handlers.current.decrement()}
         >
           –
         </ActionIcon>
@@ -31,8 +29,8 @@ const IncrementalInput: FC<{
           hideControls
           value={value}
           onChange={(val) => {
-            setValue(val || 0);
-            onChange(val || 0);
+            setValue(+val || 0);
+            onChange(+val || 0);
           }}
           handlersRef={handlers}
           styles={{ input: { width: 60, textAlign: 'center' } }}
@@ -41,9 +39,7 @@ const IncrementalInput: FC<{
         <ActionIcon
           size={42}
           variant="default"
-          onClick={() =>
-            handlers.current && handlers.current.increment()
-          }
+          onClick={() => handlers.current && handlers.current.increment()}
         >
           +
         </ActionIcon>

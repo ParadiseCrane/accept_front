@@ -1,2 +1,1 @@
-import { env } from 'process';
-export const getApiUrl = () => env.API_ENDPOINT;
+export const getApiUrl = () => process.env.API_ENDPOINT;

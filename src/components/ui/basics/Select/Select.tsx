@@ -7,6 +7,8 @@ import { IDropdownContent } from '@custom-types/ui/basics/helper';
 interface Props extends SelectProps {
   helperContent?: IDropdownContent;
   shrink?: boolean;
+  // TODO: remove any
+  classNames?: any;
 }
 
 const Select: FC<Props> = ({
@@ -18,9 +20,7 @@ const Select: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <InputLabel
         label={label}

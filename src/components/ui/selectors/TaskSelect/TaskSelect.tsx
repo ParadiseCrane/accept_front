@@ -3,8 +3,7 @@ import { ITaskBaseInfo } from '@custom-types/data/ITask';
 import TaskMultiSelect from './TaskMultiSelect';
 import TaskSingleSelect from './TaskSingleSelect';
 
-export interface TaskItemProps
-  extends React.ComponentPropsWithoutRef<'div'> {
+export interface TaskItemProps extends React.ComponentPropsWithoutRef<'div'> {
   image: string;
   label: string;
   role: string;

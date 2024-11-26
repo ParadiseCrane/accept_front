@@ -1,0 +1,9 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-m);
+}
+
+.trash_icon:hover svg {
+  stroke: red;
+}

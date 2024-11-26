@@ -27,17 +27,14 @@ const getCurrentOrder = (
 const Column: FC<{
   column: ITableColumn;
   onSort: (_: string, __: -1 | 0 | 1) => void;
-  classNames: any;
+  classNames?: any;
 }> = ({ column, onSort, classNames }) => {
   const [currentOrder, setCurrentOrder] = useState(
     !column.allowMiddleState && column.sorted == 0 ? 1 : column.sorted
   );
 
   const nextOrder = useCallback(() => {
-    const newOrder = getCurrentOrder(
-      currentOrder,
-      column.allowMiddleState
-    );
+    const newOrder = getCurrentOrder(currentOrder, column.allowMiddleState);
     setCurrentOrder(newOrder);
     onSort(column.key, newOrder);
   }, [column.allowMiddleState, onSort, column.key, currentOrder]);

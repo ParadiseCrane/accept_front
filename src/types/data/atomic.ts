@@ -29,7 +29,7 @@ export interface ITestResult {
 }
 
 export interface ITestResultDisplay {
-  test: number; //test spec
+  test: number; //test number
   verdict: IVerdict;
 }
 
@@ -85,11 +85,6 @@ export interface IFullTestResult {
   verdict: IVerdict;
 }
 
-export interface IPartialTestResult {
-  test: number; // index
-  verdict: IVerdict;
-}
-
 export interface IAnalyticsData {
   path: string;
   average: number;
@@ -106,3 +101,5 @@ export interface IActivityData {
   count: number;
   date: Date;
 }
+
+export type IActivity = 'assignment' | 'tournament';

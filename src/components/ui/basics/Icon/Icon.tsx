@@ -24,11 +24,7 @@ const Icon: FC<MyIconProps> = ({
   return (
     <div className={`${styles.wrapper} ${wrapperClassName || ''}`}>
       {mounted && (
-        <Tip
-          label={tooltipLabel}
-          disabled={!!!tooltipLabel}
-          {...tooltipProps}
-        >
+        <Tip label={tooltipLabel} disabled={!!!tooltipLabel} {...tooltipProps}>
           <ActionIcon
             component={props.onClick ? 'button' : 'a'}
             {...props}

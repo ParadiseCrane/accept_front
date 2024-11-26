@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 const Row: FC<{
   keys: string[];
   row: any;
-  classNames: any;
+  classNames?: any;
   even: boolean;
   gridTemplate: object;
 }> = ({ keys, row, classNames, even, gridTemplate }) => {
@@ -13,10 +13,7 @@ const Row: FC<{
       className={even ? classNames.even : classNames.odd}
     >
       {keys.map((key, index) => (
-        <td
-          className={classNames[key] + ' ' + classNames.cell}
-          key={index}
-        >
+        <td className={classNames[key] + ' ' + classNames.cell} key={index}>
           {row[key]
             ? typeof row[key] === 'object'
               ? row[key].display

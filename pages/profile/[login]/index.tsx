@@ -1,5 +1,4 @@
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import { ReactNode } from 'react';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
@@ -8,6 +7,7 @@ import { useUser } from '@hooks/useUser';
 import Title from '@ui/Title/Title';
 import ProfileSticky from '@components/Profile/ProfileSticky/ProfileSticky';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 function UserProfile(props: IFullProfileBundle) {
   const { isAdmin, accessLevel } = useUser();
@@ -30,32 +30,22 @@ UserProfile.getLayout = (page: ReactNode) => {
 
 export default UserProfile;
 
-const API_URL = getApiUrl();
-
-export const getServerSideProps: GetServerSideProps = async (
-  context
-) => {
-  const req = context.req;
-  if (!req || !req.url)
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query.login)
     return {
       redirect: {
         permanent: false,
-        destination: '/profile/me',
+        destination: '/404',
       },
     };
 
-  const login = req.url
-    .slice(req.url.lastIndexOf('/') + 1)
-    .split('.')[0];
-
-  const response = await fetch(
-    `${API_URL}/api/bundle/profile/${login}`,
-    {
-      headers: {
-        cookie: req.headers.cookie,
-      } as { [key: string]: string },
-    }
-  );
+  const response = await fetchWrapperStatic({
+    url: `bundle/profile/${query.login}`,
+    req,
+  });
 
   if (response.status === 307) {
     return {
@@ -74,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (
         attempt_info: profileData.attempt_info,
         task_info: profileData.task_info,
         rating_info: profileData.rating_info,
-      },
+      } as IFullProfileBundle,
     };
   }
   return {

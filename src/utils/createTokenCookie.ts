@@ -1,13 +1,10 @@
 import { serialize } from 'cookie';
 
-export const createTokenCookie = (
-  name: string,
-  value: string,
-  maxAge?: any
-) =>
+export const createTokenCookie = (name: string, value: string, expires: any) =>
   serialize(name, value, {
-    maxAge: maxAge || 0,
-    secure: process.env.NODE_ENV !== 'development',
+    expires,
+    // secure: process.env.NODE_ENV !== 'development',
+    secure: false,
     path: '/',
     sameSite: 'strict',
   });

@@ -17,6 +17,7 @@ import TitleInput from '@components/Team/TitleInput/TitleInput';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
 import MemberItem from '@components/Team/MemberItem/MemberItem';
+import { getCookieValue } from '@utils/cookies';
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -80,11 +81,7 @@ function TeamProfile(props: { team: ITeam }) {
       )}
       <Title title={`${locale.team.self} ${team.name}`} />
       <div className={styles.main}>
-        <TitleInput
-          special={special}
-          spec={team.spec}
-          title={team.name}
-        />
+        <TitleInput special={special} spec={team.spec} title={team.name} />
         <div className={styles.info}>
           <div className={styles.date}>
             {locale.team.page.registrationDate}{' '}
@@ -103,9 +100,7 @@ function TeamProfile(props: { team: ITeam }) {
         </div>
       </div>
       <div className={styles.capitanWrapper}>
-        <div className={styles.capitanLabel}>
-          {locale.team.page.capitan}
-        </div>
+        <div className={styles.capitanLabel}>{locale.team.page.capitan}</div>
         <MemberItem team={team} participant={team.capitan} />
       </div>
       <div className={styles.participantsWrapper}>
@@ -118,9 +113,7 @@ function TeamProfile(props: { team: ITeam }) {
               key={index}
               team={team}
               participant={participant}
-              special={
-                special && participant.login != team.capitan.login
-              }
+              special={special && participant.login != team.capitan.login}
             />
           ))}
         </div>
@@ -149,10 +142,14 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
   const response = await fetch(`${API_URL}/api/team/${query.spec}`, {
     method: 'GET',
     headers: {
       cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+
       'content-type': 'application/json',
     } as { [key: string]: string },
   });

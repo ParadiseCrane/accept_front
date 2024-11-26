@@ -43,8 +43,7 @@ const DeleteModal: FC<{
       >
         <div className={modalStyles.verticalContent}>
           <div>
-            {locale.assignmentSchema.modals.delete +
-              ` '${assignment.title}' ?`}
+            {locale.assignmentSchema.modals.delete + ` '${assignment.title}' ?`}
           </div>
 
           {!toList ? (
@@ -64,7 +63,7 @@ const DeleteModal: FC<{
           ) : (
             <Button
               variant="outline"
-              href="/edu/assignment_schema/list"
+              href="/assignment_schema/list"
               targetWrapperClassName={deleteModalStyles.toListButton}
             >
               {locale.toList}

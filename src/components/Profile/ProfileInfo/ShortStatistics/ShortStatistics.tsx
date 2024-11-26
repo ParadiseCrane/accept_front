@@ -7,7 +7,7 @@ import { FC, memo, useMemo } from 'react';
 import styles from './shortStatistics.module.css';
 
 const ShortStatistics: FC<{
-  ratingInfo: IRatingInfo;
+  ratingInfo?: IRatingInfo;
   attemptInfo: IAttemptInfo;
 }> = ({ ratingInfo, attemptInfo }) => {
   const { locale } = useLocale();
@@ -38,22 +38,24 @@ const ShortStatistics: FC<{
           <span className={styles.value}>{okAttempts}</span>
         </div>
       </div>
-      <div className={styles.ratingInfo}>
-        <div>
-          <span>
-            {locale.profile.info.shortStatistics.totalScore}
-          </span>
-          {' - '}
-          <span className={styles.value}>{ratingInfo.score}</span>
+      {ratingInfo && (
+        <div className={styles.ratingInfo}>
+          <div>
+            <span>
+              {locale.profile.info.shortStatistics.totalScore}
+            </span>
+            {' - '}
+            <span className={styles.value}>{ratingInfo.score}</span>
+          </div>
+          <div>
+            <span>
+              {locale.profile.info.shortStatistics.ratingPlace}
+            </span>
+            {' - '}
+            <span className={styles.value}>{ratingInfo.place}</span>
+          </div>
         </div>
-        <div>
-          <span>
-            {locale.profile.info.shortStatistics.ratingPlace}
-          </span>
-          {' - '}
-          <span className={styles.value}>{ratingInfo.place}</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

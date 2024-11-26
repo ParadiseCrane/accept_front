@@ -1,12 +1,5 @@
 import { useLocale } from '@hooks/useLocale';
-import {
-  FC,
-  ReactNode,
-  memo,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react';
 import { InputWrapper } from '@ui/basics';
 
 const editorConfiguration = {
@@ -14,6 +7,7 @@ const editorConfiguration = {
     uploadUrl: `/api/image`,
 
     withCredentials: false,
+    // withCredentials: true,
   },
 };
 
@@ -27,7 +21,7 @@ const CustomEditor: FC<{
 }> = ({ name, label, form, helperContent, shrink }) => {
   const { locale } = useLocale();
 
-  const editorRef = useRef<any>();
+  const editorRef = useRef<any>(null!);
   const { CKEditor, Editor } = editorRef.current || {
     CKEditor: {},
     Editor: {},
@@ -66,9 +60,7 @@ const CustomEditor: FC<{
         ) : (
           <div
             style={{
-              fontSize: shrink
-                ? 'var(--font-size-xs)'
-                : 'var(--font-size-s)',
+              fontSize: shrink ? 'var(--font-size-xs)' : 'var(--font-size-s)',
             }}
           >
             {locale.loading + '...'}

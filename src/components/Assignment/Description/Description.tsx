@@ -83,6 +83,7 @@ const Description: FC<{ assignment: IAssignment }> = ({
         <PrimitiveTaskTable
           tasks={tasks}
           linkQuery={`assignment=${assignment.spec}`}
+          empty={locale.tournament.emptyTasks}
         />
       </div>
     </div>

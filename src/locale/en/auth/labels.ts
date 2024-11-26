@@ -1,4 +1,5 @@
 export const labels = {
+  organization: 'Organization',
   login: 'Login',
   password: 'Password',
   confirmPassword: 'Confirm password',

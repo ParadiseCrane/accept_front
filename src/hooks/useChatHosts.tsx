@@ -12,6 +12,7 @@ import {
 } from 'react';
 import { useRefetch } from './useRefetch';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
+import { IActivity } from '@custom-types/data/atomic';
 
 export interface IHostData {
   user: IUserDisplay;
@@ -31,35 +32,36 @@ const ChatHostsContext = createContext<IChatHostsContext>(null!);
 
 export const ChatHostsProvider: FC<{
   children: ReactNode;
-  entity: string;
+  entity: IActivity;
+  spec: string;
   updateIntervalSeconds: number;
-}> = ({ children, entity, updateIntervalSeconds }) => {
+}> = ({ children, entity, spec, updateIntervalSeconds }) => {
   const [hosts, setHosts] = useState<IHostData[]>([]);
   const [hasNewMessages, setHasNewMessages] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetchInitialHosts = useCallback(() => {
     setLoading(true);
-    return sendRequest<undefined, IHostData[]>(
-      `hosts/all/${entity}`,
-      'GET'
+    return sendRequest<{ entity: IActivity; spec: string }, IHostData[]>(
+      'hosts/all',
+      'POST',
+      {
+        entity,
+        spec,
+      }
     ).then((res) => {
       if (!res.error) {
         let sorted = res.response.sort((a, b) => b.amount - a.amount);
-        setHasNewMessages(
-          sorted.length > 0 ? sorted[0].amount > 0 : false
-        );
+        setHasNewMessages(sorted.length > 0 ? sorted[0].amount > 0 : false);
         setHosts(sorted);
         setLoading(false);
       }
     });
-  }, [entity]);
+  }, [entity, spec]);
 
   const selectHost = useCallback((login: string) => {
     setHosts((old_hosts) => {
-      const index = old_hosts.findIndex(
-        (item) => item.user.login == login
-      );
+      const index = old_hosts.findIndex((item) => item.user.login == login);
       if (index >= 0) {
         old_hosts[index].amount = 0;
       }

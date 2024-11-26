@@ -12,14 +12,15 @@ import {
 } from '@utils/notificationFunctions';
 import { sendRequest } from '@requests/request';
 import { callback } from '@custom-types/ui/atomic';
+import { IActivity } from '@custom-types/data/atomic';
 
 const InitiateChatModal: FC<{
   exclude: string[];
-  entity: string;
-  type: 'tournament' | 'assignment';
+  spec: string;
+  entity: IActivity;
   onSuccess: callback<string>;
   small?: boolean;
-}> = ({ exclude, entity, type, onSuccess, small }) => {
+}> = ({ exclude, spec, entity, onSuccess, small }) => {
   const { locale } = useLocale();
   const [startChatModal, setStartChatModal] = useState(false);
   const close = useCallback(() => setStartChatModal(false), []);
@@ -31,9 +32,7 @@ const InitiateChatModal: FC<{
     },
     validate: {
       user: (value) =>
-        value
-          ? null
-          : locale.dashboard.chat.userModal.validation.user,
+        value ? null : locale.dashboard.chat.userModal.validation.user,
       message: (value) =>
         value.trim().length > 0
           ? null
@@ -53,6 +52,7 @@ const InitiateChatModal: FC<{
       return;
     }
     sendRequest('chat', 'POST', {
+      spec,
       entity,
       host: form.values.user,
       moderator: true,
@@ -71,14 +71,12 @@ const InitiateChatModal: FC<{
         });
       }
     });
-  }, [entity, form, locale, onSuccess]);
+  }, [entity, spec, form, locale, onSuccess]);
 
   return (
     <>
       <Button
-        className={
-          small ? styles.addHostButtonSmall : styles.addHostButton
-        }
+        className={small ? styles.addHostButtonSmall : styles.addHostButton}
         variant="light"
         onClick={() => setStartChatModal(true)}
       >
@@ -92,7 +90,7 @@ const InitiateChatModal: FC<{
         <div className={styles.wrapper}>
           <MemberSelector
             entity={entity}
-            type={type}
+            spec={spec}
             opened={startChatModal}
             exclude={exclude}
             form={form}
@@ -100,9 +98,7 @@ const InitiateChatModal: FC<{
           />
           <TextArea
             label={locale.dashboard.chat.userModal.message.label}
-            placeholder={
-              locale.dashboard.chat.userModal.message.placeholder
-            }
+            placeholder={locale.dashboard.chat.userModal.message.placeholder}
             {...form.getInputProps('message')}
           />
           <SimpleButtonGroup

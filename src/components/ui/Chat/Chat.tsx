@@ -1,12 +1,5 @@
 import { Icon } from '@ui/basics';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Send } from 'tabler-icons-react';
 import styles from './chat.module.css';
 import { IChatMessage } from '@custom-types/data/IMessage';
@@ -16,12 +9,14 @@ import { getLocalDate } from '@utils/datetime';
 import { sendRequest } from '@requests/request';
 import { useLongPooling } from '@hooks/useLongPooling';
 import { getHotkeyHandler } from '@mantine/hooks';
+import { IActivity } from '@custom-types/data/atomic';
 
 const Chat: FC<{
   indicateNew?: () => void;
   opened: boolean;
   isMessageMine: (_: IChatMessage) => boolean;
-  entity: string;
+  spec: string;
+  entity: IActivity;
   host: string;
   wrapperStyles: any;
   moderator?: boolean;
@@ -29,6 +24,7 @@ const Chat: FC<{
   indicateNew,
   opened,
   entity,
+  spec,
   host,
   isMessageMine,
   wrapperStyles,
@@ -49,9 +45,7 @@ const Chat: FC<{
     setMessages((oldMessages) => {
       if (oldMessages.length == 0) return messages;
       if (messages.length == 0) return oldMessages;
-      if (
-        oldMessages[oldMessages.length - 1].spec == messages[0].spec
-      )
+      if (oldMessages[oldMessages.length - 1].spec == messages[0].spec)
         return oldMessages;
       return [...oldMessages, ...messages];
     });
@@ -62,29 +56,25 @@ const Chat: FC<{
     if (messages.length > 0)
       setTimeout(() => {
         if (messagesDiv.current)
-          messagesDiv.current.scrollTop =
-            messagesDiv.current.scrollHeight;
+          messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
       }, 100);
   }, []);
 
   const fetchMessages = useCallback(
     (skip: boolean) => {
-      return sendRequest<{}, IChatMessage[]>(
-        `chat/new/${skip}`,
-        'POST',
-        {
-          entity,
-          host,
-          moderator: !!moderator,
-        }
-      ).then((res) => {
+      return sendRequest<{}, IChatMessage[]>(`chat/new/${skip}`, 'POST', {
+        entity,
+        spec,
+        host,
+        moderator: !!moderator,
+      }).then((res) => {
         if (!res.error) {
           appendMessages(res.response);
           if (indicateNew && res.response.length > 0) indicateNew();
         }
       });
     },
-    [entity, host, moderator, appendMessages, indicateNew]
+    [entity, spec, host, moderator, appendMessages, indicateNew]
   );
 
   const handleSend = useCallback(() => {
@@ -93,6 +83,7 @@ const Chat: FC<{
     setMessage('');
     sendRequest<{}, IChatMessage>('chat', 'POST', {
       entity,
+      spec,
       host,
       moderator: !!moderator,
       content: localMessage,
@@ -101,22 +92,24 @@ const Chat: FC<{
         appendMessages([res.response]);
       }
     });
-  }, [entity, host, moderator, message, appendMessages]);
+  }, [entity, spec, host, moderator, message, appendMessages]);
 
   useEffect(() => {
-    if (newMessages.length > 0)
+    if (opened && newMessages.length > 0)
       sendRequest<{}, boolean>('/chat/viewed', 'POST', {
         specs: newMessages,
         entity,
+        spec,
         moderator: !!moderator,
       }).then(() => setNewMessages([]));
-  }, [opened, newMessages, entity, moderator]);
+  }, [opened, newMessages, entity, moderator, spec]);
 
   useEffect(() => {
     if (firstFetchDone || !opened) return;
     setFirstFetchDone(true);
     sendRequest<{}, IChatMessage[]>('chat/all', 'POST', {
       entity,
+      spec,
       host,
       moderator: !!moderator,
     }).then((res) => {
@@ -125,14 +118,13 @@ const Chat: FC<{
         setTimeout(() => {
           if (messagesDiv.current) {
             messagesDiv.current.style.scrollBehavior = 'auto';
-            messagesDiv.current.scrollTop =
-              messagesDiv.current.scrollHeight;
+            messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
             messagesDiv.current.style.scrollBehavior = 'smooth';
           }
         }, 100);
       }
     });
-  }, [entity, host, moderator, opened, firstFetchDone]);
+  }, [entity, host, moderator, opened, firstFetchDone, spec]);
 
   useLongPooling(fetchMessages, refetchIntervalSeconds);
 
@@ -150,9 +142,7 @@ const Chat: FC<{
               <div className={styles.user}>{message.author}</div>
 
               <div className={styles.content}>{message.content}</div>
-              <div className={styles.date}>
-                {getLocalDate(message.date)}
-              </div>
+              <div className={styles.date}>{getLocalDate(message.date)}</div>
             </div>
           </div>
         ))}

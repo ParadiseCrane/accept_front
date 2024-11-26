@@ -4,11 +4,7 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 
-import {
-  IResponse,
-  availableMethods,
-  sendRequest,
-} from '@requests/request';
+import { IResponse, availableMethods, sendRequest } from '@requests/request';
 import { IAvailableLang } from '@custom-types/ui/ILocale';
 import { callback, setter } from '@custom-types/ui/atomic';
 
@@ -48,8 +44,7 @@ export const requestWithNotify = <T, V>(
         id,
         title: locale.error,
         message:
-          res.detail.description &&
-          res.detail.description[lang] != undefined
+          res.detail.description && res.detail.description[lang] != undefined
             ? res.detail.description[lang]
             : res.detail,
         autoClose: defaultAutoClose,

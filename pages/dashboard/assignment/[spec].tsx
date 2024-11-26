@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
 import AssignmentDashboard from '@components/Dashboard/AssignmentDashboard';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
 function AssignmentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();
@@ -16,7 +16,8 @@ function AssignmentDashboardPage(props: { spec: string }) {
     <>
       <Title title={locale.titles.dashboard.assignment} />
       <ChatHostsProvider
-        entity={props.spec}
+        spec={props.spec}
+        entity={'assignment'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <AssignmentDashboard spec={props.spec} />
@@ -31,31 +32,18 @@ AssignmentDashboardPage.getLayout = (page: ReactNode) => {
 
 export default AssignmentDashboardPage;
 
-const API_URL = getApiUrl();
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || typeof params?.spec !== 'string') {
+  if (!params || !params.spec) {
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/404',
       },
     };
   }
-  const response = await fetch(
-    `${API_URL}/api/assignment/${params.spec}`
-  );
-  if (response.status === 200) {
-    return {
-      props: { spec: params.spec },
-      revalidate: REVALIDATION_TIME.dashboard.assignment,
-    };
-  }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    props: { spec: params.spec },
+    revalidate: REVALIDATION_TIME.dashboard.assignment,
   };
 };
 

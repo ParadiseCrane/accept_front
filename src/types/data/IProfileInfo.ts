@@ -41,5 +41,5 @@ export interface IRatingInfo {
 export interface IFullProfileBundle extends IMinimalProfileBundle {
   attempt_info: IAttemptInfo;
   task_info: ITaskInfo;
-  rating_info: IRatingInfo;
+  rating_info?: IRatingInfo;
 }

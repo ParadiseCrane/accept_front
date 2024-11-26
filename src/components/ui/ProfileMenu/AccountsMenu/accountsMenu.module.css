@@ -1,0 +1,18 @@
+.accounts {
+  display: flex;
+  flex-direction: row;
+}
+
+.dropdown_account_list_wrapper {
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.trash_icon:hover svg {
+  stroke: red;
+}
+
+.accounts_left {
+  background-color: rgb(242, 242, 242);
+  font-size: calc(2.375rem / 2.5);
+}

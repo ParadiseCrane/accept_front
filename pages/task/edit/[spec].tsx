@@ -20,6 +20,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { Item } from '@custom-types/ui/atomic';
 
 import Title from '@ui/Title/Title';
+import { getCookieValue } from '@utils/cookies';
 
 function EditTask(props: {
   task: ITaskEdit;
@@ -44,8 +45,7 @@ function EditTask(props: {
       hintAlarmType: task.hint?.alarmType.spec.toString() || '0',
       hintAlarm: task.hint?.alarm || 0,
       shouldRestrictLanguages:
-        task.allowedLanguages.length > 0 ||
-        task.allowedLanguages.length > 0,
+        task.allowedLanguages.length > 0 || task.allowedLanguages.length > 0,
 
       taskType: task.taskType.spec.toString(),
 
@@ -102,12 +102,8 @@ function EditTask(props: {
           time: constraintsTime,
           memory: constraintsMemory,
         },
-        allowedLanguages: allowedLanguages.map(
-          (lang: Item) => lang.value
-        ),
-        forbiddenLanguages: forbiddenLanguages.map(
-          (lang: Item) => lang.value
-        ),
+        allowedLanguages: allowedLanguages.map((lang: Item) => lang.value),
+        forbiddenLanguages: forbiddenLanguages.map((lang: Item) => lang.value),
         tags: tags.map((tag: Item) => tag.value),
       };
       if (!form.values.shouldRestrictLanguages) {
@@ -177,16 +173,17 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const response = await fetch(
-    `${API_URL}/api/bundle/task-edit/${spec}`,
-    {
-      method: 'GET',
-      headers: {
-        cookie: req.headers.cookie,
-        'content-type': 'application/json',
-      } as { [key: string]: string },
-    }
-  );
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+
+  const response = await fetch(`${API_URL}/api/bundle/task-edit/${spec}`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+
+      'content-type': 'application/json',
+    } as { [key: string]: string },
+  });
 
   if (response.status === 200) {
     const taskBundle = await response.json();

@@ -9,11 +9,9 @@ export interface Item {
   [key: string]: any;
 }
 
-export type IWidth =
-  | '320'
-  | '480'
-  | '768'
-  | '1024'
-  | '1280'
-  | '1440'
-  | '1920';
+export type IWidth = '320' | '480' | '768' | '1024' | '1280' | '1440' | '1920';
+
+export interface SelectItem {
+  value: string;
+  label: string;
+}

@@ -14,8 +14,9 @@ import TextAnswer from '@components/Attempt/TextAnswer/TextAnswer';
 import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
 import { useRequest } from '@hooks/useRequest';
+import { getCookieValue } from '@utils/cookies';
 
-function Attempt(props: { attempt: IAttempt; author: string }) {
+function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
 
   const { locale } = useLocale();
@@ -53,9 +54,7 @@ function Attempt(props: { attempt: IAttempt; author: string }) {
 
   return (
     <div className={styles.wrapper}>
-      <Title
-        title={`${locale.titles.attempt} ${attempt.author.login}`}
-      />
+      <Title title={`${locale.titles.attempt} ${attempt.author.login}`} />
 
       {!loading && !error && data && (
         <>
@@ -93,24 +92,21 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
+  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
-  const response = await fetch(
-    `${API_URL}/api/bundle/attempt/${spec}`,
-    {
-      method: 'GET',
-      headers: {
-        cookie: req.headers.cookie,
-        'content-type': 'application/json',
-      } as { [key: string]: string },
-    }
-  );
+  const response = await fetch(`${API_URL}/api/attempt/${spec}`, {
+    method: 'GET',
+    headers: {
+      cookie: req.headers.cookie,
+      Authorization: `Bearer ${access_token}`,
+    } as { [key: string]: string },
+  });
 
   if (response.status === 200) {
     const res = await response.json();
     return {
       props: {
-        attempt: res.attempt,
-        author: res.author,
+        attempt: res,
       },
     };
   }

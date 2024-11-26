@@ -1,18 +1,22 @@
-type AccessType = 'read' | 'write';
+import {
+  IRightsPayload,
+  IRulesAction,
+  IRulesEntity,
+} from '@custom-types/data/rights';
 
 const requestRights = async <T>(
-  type: AccessType,
-  target: string,
-  headers: { Cookie: string } | undefined,
+  payload: IRightsPayload,
+  headers: { Authorization: string } | undefined,
   pathname: string
 ): Promise<T | string> => {
-  const response = await fetch(
-    `${process.env.API_ENDPOINT}/api/rights/${type}/${target}`,
-    {
-      method: 'GET',
-      headers: headers,
-    }
-  );
+  const response = await fetch(`${process.env.API_ENDPOINT}/api/rights`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'content-type': 'application/json',
+      Authorization: headers?.Authorization || '',
+    },
+  });
 
   if (response.status === 401) {
     return `/signin?referrer=${pathname}`;
@@ -25,44 +29,32 @@ const requestRights = async <T>(
   return await response.json();
 };
 
-export const checkWrite = async (
-  target: string,
-  headers: { Cookie: string } | undefined,
-  pathname: string,
-  _searchParams?: any
-): Promise<boolean | string> => {
-  const response = await requestRights<boolean>(
-    'write',
-    target,
-    headers,
-    pathname
-  );
-  return response;
-};
-
-export const checkRead = async (
-  target: string,
-  headers: { Cookie: string } | undefined,
-  pathname: string,
-  _searchParams?: any
-): Promise<boolean | string> => {
-  const response = await requestRights<boolean>(
-    'read',
-    target,
-    headers,
-    pathname
-  );
-  return response;
-};
+export const checkWrapper =
+  (action: IRulesAction, entity?: IRulesEntity) =>
+  (
+    entity_spec: string | undefined,
+    headers: { Authorization: string } | undefined,
+    pathname: string,
+    _searchParams?: any
+  ) =>
+    requestRights<boolean>(
+      {
+        action,
+        entity_spec,
+        entity: entity,
+      },
+      headers,
+      pathname
+    );
 
 export const checkTestRights = async (
-  target: string,
-  headers: { Cookie: string } | undefined,
+  entity_spec: string,
+  headers: { Authorization: string } | undefined,
   pathname: string,
   _searchParams?: any
 ): Promise<boolean | string> => {
   const response = await fetch(
-    `${process.env.API_ENDPOINT}/api/test-rights/${target}`,
+    `${process.env.API_ENDPOINT}/api/test-rights/${entity_spec}`,
     {
       method: 'GET',
       headers: headers,
