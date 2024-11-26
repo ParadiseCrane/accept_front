@@ -32,9 +32,7 @@ const Dropdown: FC<{
           : undefined
       }
     >
-      <Menu.Target>
-        <div>{children}</div>
-      </Menu.Target>
+      <Menu.Target>{children}</Menu.Target>
       <Menu.Dropdown>
         {items.map((item, index) => (
           <Menu.Item

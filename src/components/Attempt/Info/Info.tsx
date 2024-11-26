@@ -18,9 +18,9 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
 
   const rows = useMemo(
     () =>
-      attempt.results.map((row) => ({
+      attempt.results.map((row, index) => ({
         ...row,
-        index: row.test + 1,
+        index: index + 1, // row.test + 1
       })),
     [attempt.results]
   );
@@ -35,8 +35,7 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     if (!columnSizes || columnSizes.length < columns.length) {
       total = columns.length;
       return {
-        gridTemplateColumns:
-          columns.map((_) => 100 / total).join('% ') + '%',
+        gridTemplateColumns: columns.map((_) => 100 / total).join('% ') + '%',
       };
     }
     for (let i = 0; i < columns.length; i++) {
@@ -44,9 +43,8 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     }
     return {
       gridTemplateColumns:
-        columns
-          .map((_, idx) => (columnSizes[idx] / total) * 100)
-          .join('% ') + '%',
+        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join('% ') +
+        '%',
     };
   }, [columnSizes, columns]);
 
@@ -56,10 +54,7 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         <div>{isBrowser && getLocalDate(attempt.date)}</div>
         <div>
           {locale.attempt.task}{' '}
-          <Link
-            href={`/task/${attempt.task.spec}`}
-            className={styles.link}
-          >
+          <Link href={`/task/${attempt.task.spec}`} className={styles.link}>
             {attempt.task.title}
           </Link>
         </div>
@@ -134,14 +129,10 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
                     }
                     style={gridTemplate}
                   >
-                    <td
-                      className={`${tableStyles.cell} ${styles.cell}`}
-                    >
+                    <td className={`${tableStyles.cell} ${styles.cell}`}>
                       {row.index}
                     </td>
-                    <td
-                      className={`${tableStyles.cell} ${styles.cell}`}
-                    >
+                    <td className={`${tableStyles.cell} ${styles.cell}`}>
                       <VerdictWrapper verdict={row.verdict} full />
                     </td>
                   </tr>

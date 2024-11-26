@@ -8,6 +8,7 @@ export default async function validateLogin(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/validateLogin/${req.query.login}`,
+    url: `api/validateLogin`,
+    method: 'POST',
   });
 }

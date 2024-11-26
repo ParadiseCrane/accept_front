@@ -10,7 +10,7 @@ export const setCookie = (
       cookie += `${key}=${value};`;
     }
   }
-  document.cookie = cookie;
+  document.cookie = cookie + 'Secure;';
 };
 
 export const getCookie = (

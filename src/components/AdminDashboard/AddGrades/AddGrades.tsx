@@ -12,19 +12,16 @@ const initialLetters = allowedLetters.slice(0, 5);
 const AddGrades: FC<{}> = ({}) => {
   const { locale, lang } = useLocale();
 
-  const [grades, setGrades] = useState<
-    { number: number; letters: string[] }[]
-  >([]);
+  const [grades, setGrades] = useState<{ number: number; letters: string[] }[]>(
+    []
+  );
 
   const addGrade = useCallback(
     () =>
       setGrades((grades) => [
         ...grades,
         {
-          number:
-            grades.length > 0
-              ? grades[grades.length - 1].number + 1
-              : 1,
+          number: grades.length > 0 ? grades[grades.length - 1].number + 1 : 1,
           letters: initialLetters,
         },
       ]),
@@ -43,10 +40,10 @@ const AddGrades: FC<{}> = ({}) => {
   );
 
   const setNumber = useCallback((index: number) => {
-    return (number: number) => {
+    return (number: string | number) => {
       setGrades((grades) => {
         let new_grades = grades;
-        new_grades[index].number = number;
+        new_grades[index].number = +number;
         return [...new_grades];
       });
     };
@@ -66,10 +63,7 @@ const AddGrades: FC<{}> = ({}) => {
     grades.forEach((grade) => {
       grade.letters.forEach((letter) => {
         if (grade.number > 0 && grade.number < 12)
-          requestWithNotify<
-            { group: IGroup; members: string[] },
-            boolean
-          >(
+          requestWithNotify<{ group: IGroup; members: string[] }, boolean>(
             'group/add',
             'POST',
             locale.notify.group.create,

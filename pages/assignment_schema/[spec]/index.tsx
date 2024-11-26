@@ -67,7 +67,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  // TODO: Rewrite all using this
   const assignmentSchema = await fetchWrapperStatic({
     url: `assignment_schema/${query.spec}`,
     req,

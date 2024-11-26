@@ -25,7 +25,7 @@ const ProfileMenu: FC<{}> = ({}) => {
       <Menu
         opened={showMenu}
         trigger="hover"
-        zIndex={1000}
+        zIndex={100}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
       >
         <Menu.Target>
@@ -57,7 +57,7 @@ const ProfileMenu: FC<{}> = ({}) => {
                 component={Link}
                 href={item.href}
                 key={index}
-                icon={item.icon}
+                leftSection={item.icon}
               >
                 {item.text(locale)}
               </Menu.Item>
@@ -66,7 +66,7 @@ const ProfileMenu: FC<{}> = ({}) => {
           <Menu.Item
             component={Link}
             href={'/add_account'}
-            icon={<Plus color="var(--secondary)" size={20} />}
+            leftSection={<Plus color="var(--secondary)" size={20} />}
             style={{ display: accounts.length == 1 ? '' : 'none' }}
           >
             {locale.accounts.addAccount}
@@ -84,7 +84,9 @@ const ProfileMenu: FC<{}> = ({}) => {
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}
           >
-            <Menu.Item icon={<Logout color="var(--secondary)" size={20} />}>
+            <Menu.Item
+              leftSection={<Logout color="var(--secondary)" size={20} />}
+            >
               {locale.mainHeaderLinks.profileLinks.signOut}
             </Menu.Item>
           </ConfirmLogoutModal>

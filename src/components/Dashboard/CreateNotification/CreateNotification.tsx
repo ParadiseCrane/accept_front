@@ -24,9 +24,7 @@ const CreateNotification: FC<{
     },
     validate: {
       notificationTitle: (value) =>
-        value.length == 0
-          ? locale.notification.form.validate.title
-          : null,
+        value.length == 0 ? locale.notification.form.validate.title : null,
 
       notificationShortDescription: () => null,
       notificationDescription: () => null,
@@ -63,9 +61,7 @@ const CreateNotification: FC<{
         <div className={styles.notificationLabel}>
           <div>{locale.notification.notification}</div>
           <Helper
-            dropdownContent={
-              locale.helpers.notification.assignmentCreation
-            }
+            dropdownContent={locale.helpers.notification.assignmentCreation}
           />
         </div>
         <TextInput
@@ -77,11 +73,9 @@ const CreateNotification: FC<{
           label={locale.notification.form.shortDescription}
           helperContent={
             <div>
-              {locale.helpers.notification.shortDescription.map(
-                (p, idx) => (
-                  <p key={idx}>{p}</p>
-                )
-              )}
+              {locale.helpers.notification.shortDescription.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
             </div>
           }
           {...form.getInputProps('notificationShortDescription')}
@@ -89,11 +83,9 @@ const CreateNotification: FC<{
         <CustomEditor
           helperContent={
             <div>
-              {locale.helpers.notification.description.map(
-                (p, idx) => (
-                  <p key={idx}>{p}</p>
-                )
-              )}
+              {locale.helpers.notification.description.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
             </div>
           }
           label={locale.notification.form.description}
@@ -101,7 +93,7 @@ const CreateNotification: FC<{
           name={'notificationDescription'}
         />
       </div>
-      <Group position="center">
+      <Group align="center">
         <Button
           disabled={Object.keys(form.errors).length > 0}
           onClick={handleSubmit}

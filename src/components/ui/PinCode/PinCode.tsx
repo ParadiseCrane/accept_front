@@ -14,13 +14,11 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
   const { locale } = useLocale();
 
   const fetchPin = useCallback(() => {
-    sendRequest<undefined, string>(`pin_code/${origin}`, 'GET').then(
-      (res) => {
-        if (!res.error) {
-          setPin(res.response);
-        }
+    sendRequest<undefined, string>(`pin_code/${origin}`, 'GET').then((res) => {
+      if (!res.error) {
+        setPin(res.response);
       }
-    );
+    });
   }, [origin]);
 
   useEffect(() => {
@@ -28,13 +26,11 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
   }, [fetchPin]);
 
   const refreshPin = useCallback(() => {
-    sendRequest<undefined, string>(`pin_code/${origin}`, 'PUT').then(
-      (res) => {
-        if (!res.error) {
-          setPin(res.response);
-        }
+    sendRequest<undefined, string>(`pin_code/${origin}`, 'PUT').then((res) => {
+      if (!res.error) {
+        setPin(res.response);
       }
-    );
+    });
   }, [origin]);
 
   return (

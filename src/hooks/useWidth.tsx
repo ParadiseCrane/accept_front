@@ -17,18 +17,16 @@ export interface IWidthContext {
 
 const WidthContext = createContext<IWidthContext>(null!);
 
-export const WidthProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const WidthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [numberWidth, setNumberWidth] = useState(320);
   const [width, setWidth] = useState<IWidth>('320');
 
-  const is480 = useMediaQuery('(min-width: 480px)');
-  const is768 = useMediaQuery('(min-width: 768px)');
-  const is1024 = useMediaQuery('(min-width: 1024px)');
-  const is1280 = useMediaQuery('(min-width: 1280px)');
-  const is1440 = useMediaQuery('(min-width: 1440px)');
-  const is1920 = useMediaQuery('(min-width: 1920px)');
+  const is480 = useMediaQuery('(min-width: 480px)') || false;
+  const is768 = useMediaQuery('(min-width: 768px)') || false;
+  const is1024 = useMediaQuery('(min-width: 1024px)') || false;
+  const is1280 = useMediaQuery('(min-width: 1280px)') || false;
+  const is1440 = useMediaQuery('(min-width: 1440px)') || false;
+  const is1920 = useMediaQuery('(min-width: 1920px)') || false;
 
   useEffect(() => {
     if (is1920) {

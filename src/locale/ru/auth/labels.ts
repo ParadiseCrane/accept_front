@@ -1,4 +1,5 @@
 export const labels = {
+  organization: 'Организация',
   login: 'Логин',
   password: 'Пароль',
   confirmPassword: 'Подтверждение пароля',

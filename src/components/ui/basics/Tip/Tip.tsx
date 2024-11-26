@@ -5,6 +5,7 @@ const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
   return (
     <Tooltip
       withArrow
+      inline
       arrowSize={7}
       styles={{
         tooltip: {

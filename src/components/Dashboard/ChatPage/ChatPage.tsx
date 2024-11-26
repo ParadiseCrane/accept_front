@@ -98,7 +98,7 @@ const ChatPage: FC<{
           ) : (
             <div className={styles.hostsWrapper}>
               <TextInput
-                icon={<Search />}
+                leftSection={<Search />}
                 onChange={(e) => setSearchString(e.target.value.trim())}
                 placeholder={locale.dashboard.chat.search.placeholder}
               />

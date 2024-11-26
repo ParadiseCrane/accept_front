@@ -82,7 +82,7 @@ const SendText: FC<{
               </div>
             ) : undefined
           }
-          leftIcon={
+          leftSection={
             <SendPlane
               color={!form.isValid() ? 'black' : 'var(--primary)'}
             />

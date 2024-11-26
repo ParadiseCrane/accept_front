@@ -29,7 +29,7 @@ export interface ITestResult {
 }
 
 export interface ITestResultDisplay {
-  test: number; //test spec
+  test: number; //test number
   verdict: IVerdict;
 }
 
@@ -82,11 +82,6 @@ export interface IConstraints {
 
 export interface IFullTestResult {
   test: ITaskTestData;
-  verdict: IVerdict;
-}
-
-export interface IPartialTestResult {
-  test: number; // index
   verdict: IVerdict;
 }
 

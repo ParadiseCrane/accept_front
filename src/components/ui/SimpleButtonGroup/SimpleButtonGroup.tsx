@@ -19,7 +19,7 @@ const SimpleButtonGroup: FC<{
   const { locale } = useLocale();
 
   return (
-    <Group position="right" spacing="lg">
+    <Group align="right" gap="lg">
       <Button
         variant="outline"
         kind={reversePositive ? 'positive' : 'negative'}

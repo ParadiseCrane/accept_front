@@ -21,6 +21,8 @@ function AddAccount() {
         login,
         password,
       }).then(async (res) => {
+        if (!res || res.error) return false;
+
         clearCookie('accounts');
         refreshAccess();
         return res.response;

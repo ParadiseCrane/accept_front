@@ -17,10 +17,7 @@ import { ILocale } from '@custom-types/ui/ILocale';
 import Fuse from 'fuse.js';
 import { hasSubarray } from '@utils/hasSubarray';
 import { customTableSort } from '@utils/customTableSort';
-import {
-  IParticipantListBundle,
-  IUser,
-} from '@custom-types/data/IUser';
+import { IParticipantListBundle, IUser } from '@custom-types/data/IUser';
 import { IGroup } from '@custom-types/data/IGroup';
 import { IRole } from '@custom-types/data/atomic';
 import { capitalize } from '@utils/capitalize';
@@ -31,8 +28,7 @@ interface Item<T = any> {
   display: string | ReactNode;
 }
 
-interface IUserDisplayList
-  extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+interface IUserDisplayList extends Omit<IUser, 'login' | 'shortName' | 'role'> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;

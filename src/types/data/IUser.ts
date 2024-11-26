@@ -45,6 +45,7 @@ export interface IUserContext {
 }
 
 export interface IRegUser {
+  organization: string;
   login: string;
   name: string;
   surname: string;
@@ -59,10 +60,13 @@ export interface IUserListBundle {
   roles: IRole[];
 }
 
-export interface IUserDisplay {
+export interface IUserBaseInfo {
   login: string;
-  role: IRole;
   shortName: string;
+}
+
+export interface IUserDisplay extends IUserBaseInfo {
+  role: IRole;
 }
 
 export interface IUserOrgDisplay extends IUserDisplay {

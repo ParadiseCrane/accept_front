@@ -6,7 +6,8 @@ const editorConfiguration = {
   simpleUpload: {
     uploadUrl: `/api/image`,
 
-    withCredentials: true,
+    withCredentials: false,
+    // withCredentials: true,
   },
 };
 
@@ -20,7 +21,7 @@ const CustomEditor: FC<{
 }> = ({ name, label, form, helperContent, shrink }) => {
   const { locale } = useLocale();
 
-  const editorRef = useRef<any>();
+  const editorRef = useRef<any>(null!);
   const { CKEditor, Editor } = editorRef.current || {
     CKEditor: {},
     Editor: {},

@@ -37,12 +37,6 @@
   justify-content: space-between;
 }
 
-.pageNavigation {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .perPageWrapper {
   display: flex;
   flex-direction: row;
