@@ -1,7 +1,7 @@
-import Footer from '@components/Courses/Footer';
-import Header from '@components/Courses/Header';
-import Main from '@components/Courses/Main';
-import NavBar from '@components/Courses/NavBar';
+import Footer from '@components/Course/Footer';
+import Header from '@components/Course/Header';
+import Main from '@components/Course/Main';
+import NavBar from '@components/Course/NavBar';
 import { ICourse } from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
