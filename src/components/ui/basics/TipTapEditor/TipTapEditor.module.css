@@ -68,16 +68,6 @@
   display: none;
 }
 
-@media (width <=800px) {
-  .insert_group_separate {
-    display: none;
-  }
-
-  .insert_group_collapsed {
-    display: flex;
-  }
-}
-
 @media (width <=900px) {
   .align_group_separate {
     display: none;

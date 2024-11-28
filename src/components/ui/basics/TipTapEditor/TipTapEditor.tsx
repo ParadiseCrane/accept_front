@@ -62,10 +62,7 @@ import {
   HeadingsGroupSeparate,
   HeadingsGroupCollapsed,
 } from './Components/ToggleHeadings';
-import {
-  InsertGroupCollapsed,
-  InsertGroupSeparate,
-} from './Components/InsertGroup';
+import { InsertGroupSeparate } from './Components/InsertGroup';
 
 const lowlight = createLowlight(all);
 
@@ -181,12 +178,6 @@ export const TipTapEditor = ({
             <InsertGroupSeparate
               editor={editor}
               className={styles.insert_group_separate}
-              lowlight={lowlight}
-              languages={languages}
-            />
-            <InsertGroupCollapsed
-              editor={editor}
-              className={styles.insert_group_collapsed}
               lowlight={lowlight}
               languages={languages}
             />
