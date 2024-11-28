@@ -10,9 +10,7 @@ export const ToggleBlockquote = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleBlockquote().run();
-        }
+        editor.chain().toggleBlockquote().run();
       }}
       aria-label={locale.tiptap.quote}
       title={locale.tiptap.quote}

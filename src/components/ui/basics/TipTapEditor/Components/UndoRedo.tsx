@@ -10,9 +10,7 @@ export const UndoButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.commands.undo();
-        }
+        editor.commands.undo();
       }}
       aria-label={locale.tiptap.undo}
       title={locale.tiptap.undo}
@@ -28,9 +26,7 @@ export const RedoButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.commands.redo();
-        }
+        editor.commands.redo();
       }}
       aria-label={locale.tiptap.redo}
       title={locale.tiptap.redo}

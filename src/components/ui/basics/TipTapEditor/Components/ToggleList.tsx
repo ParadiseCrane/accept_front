@@ -10,9 +10,7 @@ export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleBulletList().run();
-        }
+        editor.chain().toggleBulletList().run();
       }}
       aria-label={locale.tiptap.bulletList}
       title={locale.tiptap.bulletList}
@@ -28,9 +26,7 @@ export const ToggleOrderedList = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleOrderedList().run();
-        }
+        editor.chain().toggleOrderedList().run();
       }}
       aria-label={locale.tiptap.orderedList}
       title={locale.tiptap.orderedList}

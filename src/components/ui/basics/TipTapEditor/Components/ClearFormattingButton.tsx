@@ -9,9 +9,7 @@ export const ClearFormattingButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().unsetAllMarks().run();
-        }
+        editor.chain().unsetAllMarks().run();
       }}
       aria-label={locale.tiptap.clearFormatting}
       title={locale.tiptap.clearFormatting}

@@ -10,9 +10,7 @@ export const ToggleItalic = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleItalic().run();
-        }
+        editor.chain().toggleItalic().run();
       }}
       aria-label={locale.tiptap.italic}
       title={locale.tiptap.italic}

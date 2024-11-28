@@ -54,14 +54,12 @@ export const HeadingsGroupCollapsed = ({
             <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
-        {editor.isFocused && (
-          <HoverCard.Dropdown>
-            <ToggleHeading1 editor={editor} />
-            <ToggleHeading2 editor={editor} />
-            <ToggleHeading3 editor={editor} />
-            <ToggleHeading4 editor={editor} />
-          </HoverCard.Dropdown>
-        )}
+        <HoverCard.Dropdown>
+          <ToggleHeading1 editor={editor} />
+          <ToggleHeading2 editor={editor} />
+          <ToggleHeading3 editor={editor} />
+          <ToggleHeading4 editor={editor} />
+        </HoverCard.Dropdown>
       </HoverCard>
     </div>
   );
@@ -75,9 +73,7 @@ const ToggleHeading1 = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleHeading({ level: 1 }).run();
-        }
+        editor.chain().toggleHeading({ level: 1 }).run();
       }}
       aria-label={locale.tiptap.heading1}
       title={locale.tiptap.heading1}
@@ -95,9 +91,7 @@ const ToggleHeading2 = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleHeading({ level: 2 }).run();
-        }
+        editor.chain().toggleHeading({ level: 2 }).run();
       }}
       aria-label={locale.tiptap.heading2}
       title={locale.tiptap.heading2}
@@ -115,9 +109,7 @@ const ToggleHeading3 = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleHeading({ level: 3 }).run();
-        }
+        editor.chain().toggleHeading({ level: 3 }).run();
       }}
       aria-label={locale.tiptap.heading3}
       title={locale.tiptap.heading3}
@@ -135,9 +127,7 @@ const ToggleHeading4 = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleHeading({ level: 4 }).run();
-        }
+        editor.chain().toggleHeading({ level: 4 }).run();
       }}
       aria-label={locale.tiptap.heading4}
       title={locale.tiptap.heading4}

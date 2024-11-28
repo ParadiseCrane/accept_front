@@ -35,12 +35,10 @@ import python from 'highlight.js/lib/languages/python';
 import csharp from 'highlight.js/lib/languages/csharp';
 import html from 'highlight.js/lib/languages/xml';
 import styles from './TipTapEditor.module.css';
-import { InsertLatexExpression } from './Components/InsertLatex';
 import { ToggleBold } from './Components/ToggleBold';
 import { ToggleItalic } from './Components/ToggleItalic';
 import { ToggleUnderline } from './Components/ToggleUnderline';
 import { ToggleStrikethrough } from './Components/ToggleStrikethrough';
-import { InsertImageAsFile, InsertImageAsUrl } from './Components/InsertImage';
 import { ToggleBulletList, ToggleOrderedList } from './Components/ToggleList';
 import {
   ToggleSubscript,
@@ -52,7 +50,6 @@ import { RedoButton, UndoButton } from './Components/UndoRedo';
 import { useState } from 'react';
 import { Edit, FileExport } from 'tabler-icons-react';
 import { LinkButton, UnlinkButton } from './Components/LinkButton';
-import { ToggleCodeBlock } from './Components/ToggleCodeBlock';
 import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from './Components/ColorPickerButton';
 import { HighLightColorButton } from './Components/HighlightColorButton';

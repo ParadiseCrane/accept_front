@@ -10,9 +10,7 @@ export const ToggleUnderline = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        if (editor.isFocused) {
-          editor.chain().toggleUnderline().run();
-        }
+        editor.chain().toggleUnderline().run();
       }}
       aria-label={locale.tiptap.underline}
       title={locale.tiptap.underline}
