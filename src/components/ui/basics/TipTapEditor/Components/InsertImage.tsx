@@ -42,41 +42,42 @@ const loadImageAsFile = async ({
   editor,
   timeout,
   locale,
+  width,
 }: {
   files: FileList | null;
   editor: Editor;
   timeout: number;
   locale: any;
+  width: string;
 }) => {
   if (files && files[0]) {
     const formData = new FormData();
     formData.append('upload', files[0]);
     try {
-      const response = await fetch('/api/image', {
-        method: 'POST',
-        body: formData,
-        signal: AbortSignal.timeout(timeout),
-      });
+      const response: Response | any = await Promise.race([
+        fetch('/api/image', {
+          method: 'POST',
+          body: formData,
+        }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), timeout)
+        ),
+      ]);
       const json = await response.json();
       const src: string = json['url'];
       editor
-        ?.chain()
-        .focus()
-        .setImage({
-          src: src,
-          alt: locale.tiptap.imageAltTitle,
-          title: locale.tiptap.imageAltTitle,
-        })
+        .chain()
+        .insertContent(
+          `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageAltTitle}" draggable="true">`
+        )
         .run();
     } catch (error) {
+      const src = 'https://cdn-icons-png.flaticon.com/512/4154/4154393.png';
       editor
-        ?.chain()
-        .focus()
-        .setImage({
-          src: 'https://cdn-icons-png.flaticon.com/512/4154/4154393.png',
-          alt: locale.tiptap.imageUploadFail,
-          title: locale.tiptap.imageUploadFail,
-        })
+        .chain()
+        .insertContent(
+          `<img src="${src}" alt="${locale.tiptap.imageUploadFail}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageUploadFail}" draggable="true">`
+        )
         .run();
     }
   }
@@ -99,6 +100,7 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
             editor: editor,
             timeout: 4000,
             locale: locale,
+            width: '300px',
           });
         }}
         style={{ display: 'none' }}

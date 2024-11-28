@@ -92,18 +92,6 @@ const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
   );
 };
 
-const ExportContentForHTML = ({ editor }: { editor: Editor }) => {
-  return (
-    <FileExport
-      stroke={'black'}
-      size={'1rem'}
-      onClick={() => {
-        console.log('for HTML', editor.$doc.element.getHTML());
-      }}
-    />
-  );
-};
-
 export const TipTapEditor = ({
   editorMode,
   content,
@@ -218,8 +206,7 @@ export const TipTapEditor = ({
             <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
-            {/* <ExportContentForEditor editor={editor} />
-              <ExportContentForHTML editor={editor} /> */}
+            {/* <ExportContentForEditor editor={editor} /> */}
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}

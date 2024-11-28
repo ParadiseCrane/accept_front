@@ -9,18 +9,18 @@ const loadImageFromUrl = ({
   src,
   editor,
   locale,
+  width,
 }: {
   src: string;
   editor: Editor;
   locale: any;
+  width: string;
 }) => {
   editor
     .chain()
-    .setImage({
-      src: src,
-      alt: locale.tiptap.imageAltTitle,
-      title: locale.tiptap.imageAltTitle,
-    })
+    .insertContent(
+      `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageAltTitle}" draggable="true">`
+    )
     .run();
 };
 
@@ -57,8 +57,15 @@ export const ImageUrlModal = ({
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              loadImageFromUrl({ editor: editor, src: src, locale: locale });
-              onClose();
+              if (src.includes('http')) {
+                loadImageFromUrl({
+                  editor: editor,
+                  src: src,
+                  locale: locale,
+                  width: '300px',
+                });
+                onClose();
+              }
             },
             label: locale.tiptap.insert,
           }}
