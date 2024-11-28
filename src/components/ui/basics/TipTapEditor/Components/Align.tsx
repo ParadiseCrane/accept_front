@@ -53,12 +53,14 @@ export const AlignGroupCollapsed = ({
             <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
-        <HoverCard.Dropdown>
-          <AlignLeftButton editor={editor} />
-          <AlignCenterButton editor={editor} />
-          <AlignRightButton editor={editor} />
-          <AlignJustifyButton editor={editor} />
-        </HoverCard.Dropdown>
+        {editor.isFocused && (
+          <HoverCard.Dropdown>
+            <AlignLeftButton editor={editor} />
+            <AlignCenterButton editor={editor} />
+            <AlignRightButton editor={editor} />
+            <AlignJustifyButton editor={editor} />
+          </HoverCard.Dropdown>
+        )}
       </HoverCard>
     </div>
   );
@@ -72,7 +74,9 @@ const AlignLeftButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('left').run();
+        if (editor.isFocused) {
+          editor.chain().setTextAlign('left').run();
+        }
       }}
       aria-label={locale.tiptap.alignLeft}
       title={locale.tiptap.alignLeft}
@@ -90,7 +94,9 @@ const AlignCenterButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('center').run();
+        if (editor.isFocused) {
+          editor.chain().setTextAlign('center').run();
+        }
       }}
       aria-label={locale.tiptap.alignCenter}
       title={locale.tiptap.alignCenter}
@@ -108,7 +114,9 @@ const AlignRightButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('right').run();
+        if (editor.isFocused) {
+          editor.chain().setTextAlign('right').run();
+        }
       }}
       aria-label={locale.tiptap.alignRight}
       title={locale.tiptap.alignRight}
@@ -126,7 +134,9 @@ const AlignJustifyButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('justify').run();
+        if (editor.isFocused) {
+          editor.chain().setTextAlign('justify').run();
+        }
       }}
       aria-label={locale.tiptap.alignJustify}
       title={locale.tiptap.alignJustify}

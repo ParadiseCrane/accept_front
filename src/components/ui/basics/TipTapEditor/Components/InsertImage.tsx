@@ -89,21 +89,23 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.imageFile}
       title={locale.tiptap.imageFile}
     >
-      <input
-        type="file"
-        accept={'image/*'}
-        className="Input__input"
-        onChange={(e) => {
-          loadImageAsFile({
-            files: e.target.files,
-            editor: editor,
-            timeout: 4000,
-            locale: locale,
-          });
-        }}
-        style={{ display: 'none' }}
-        id="upload-image-as-file"
-      />
+      {editor.isFocused && (
+        <input
+          type="file"
+          accept={'image/*'}
+          className="Input__input"
+          onChange={(e) => {
+            loadImageAsFile({
+              files: e.target.files,
+              editor: editor,
+              timeout: 4000,
+              locale: locale,
+            });
+          }}
+          style={{ display: 'none' }}
+          id="upload-image-as-file"
+        />
+      )}
       <label
         htmlFor="upload-image-as-file"
         style={{ display: 'flex', flexDirection: 'column' }}
@@ -122,14 +124,16 @@ export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
     <>
       <RichTextEditor.Control
         onClick={() => {
-          setShow(true);
+          if (editor.isFocused) {
+            setShow(true);
+          }
         }}
         aria-label={locale.tiptap.imageURL}
         title={locale.tiptap.imageURL}
       >
         <IconWrapper isActive={false} IconChild={PhotoSearch} />
       </RichTextEditor.Control>
-      {show && (
+      {show && editor.isFocused && (
         <ImageUrlModal
           isOpened={show}
           close={() => setShow(false)}

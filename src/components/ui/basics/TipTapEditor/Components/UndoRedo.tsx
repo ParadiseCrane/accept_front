@@ -5,12 +5,14 @@ import { IconWrapper } from './IconWrapper';
 import { useLocale } from '@hooks/useLocale';
 
 export const UndoButton = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.can().undo();
+  const isActive = editor.isFocused ? editor.can().undo() : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.commands.undo();
+        if (editor.isFocused) {
+          editor.commands.undo();
+        }
       }}
       aria-label={locale.tiptap.undo}
       title={locale.tiptap.undo}
@@ -21,12 +23,14 @@ export const UndoButton = ({ editor }: { editor: Editor }) => {
 };
 
 export const RedoButton = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.can().redo();
+  const isActive = editor.isFocused ? editor.can().redo() : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.commands.redo();
+        if (editor.isFocused) {
+          editor.commands.redo();
+        }
       }}
       aria-label={locale.tiptap.redo}
       title={locale.tiptap.redo}

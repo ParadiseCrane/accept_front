@@ -23,10 +23,12 @@ export const ToggleCodeBlock = ({
     <>
       <RichTextEditor.Control
         onClick={() => {
-          if (!isActive) {
-            setShow(true);
-          } else {
-            editor.commands.toggleCodeBlock();
+          if (editor.isFocused) {
+            if (!isActive) {
+              setShow(true);
+            } else {
+              editor.commands.toggleCodeBlock();
+            }
           }
         }}
         aria-label={locale.tiptap.codeBlock}

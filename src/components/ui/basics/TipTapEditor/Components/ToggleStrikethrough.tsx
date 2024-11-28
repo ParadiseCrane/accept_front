@@ -10,7 +10,9 @@ export const ToggleStrikethrough = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().toggleStrike().run();
+        if (editor.isFocused) {
+          editor.chain().toggleStrike().run();
+        }
       }}
       aria-label={locale.tiptap.striketrough}
       title={locale.tiptap.striketrough}

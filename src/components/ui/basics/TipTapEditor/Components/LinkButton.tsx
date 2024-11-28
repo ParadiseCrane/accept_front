@@ -15,10 +15,12 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
     <>
       <RichTextEditor.Control
         onClick={() => {
-          if (isActive) {
-            // console.log('link is', editor.getAttributes('link')['href']);
-          } else {
-            setShow(true);
+          if (editor.isFocused) {
+            if (isActive) {
+              // console.log('link is', editor.getAttributes('link')['href']);
+            } else {
+              setShow(true);
+            }
           }
         }}
         aria-label={locale.tiptap.setLink}
@@ -26,7 +28,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
       >
         <IconWrapper isActive={isActive} IconChild={LinkIcon} />
       </RichTextEditor.Control>
-      {show && (
+      {show && editor.isFocused && (
         <LinkModal
           isOpened={show}
           close={() => setShow(false)}
@@ -42,7 +44,9 @@ export const UnlinkButton = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().unsetLink().run();
+        if (editor.isFocused) {
+          editor.chain().unsetLink().run();
+        }
       }}
       aria-label={locale.tiptap.removeLink}
       title={locale.tiptap.removeLink}

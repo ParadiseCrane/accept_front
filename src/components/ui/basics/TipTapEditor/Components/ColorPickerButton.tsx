@@ -29,13 +29,15 @@ export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
           <IconWrapper isActive={false} IconChild={ColorPickerIcon} />
         </RichTextEditor.Control>
       </HoverCard.Target>
-      <HoverCard.Dropdown>
-        <ColorPickerModal
-          editor={editor}
-          initialColor={initialColor}
-          changeColor={changeColor}
-        />
-      </HoverCard.Dropdown>
+      {editor.isFocused && (
+        <HoverCard.Dropdown>
+          <ColorPickerModal
+            editor={editor}
+            initialColor={initialColor}
+            changeColor={changeColor}
+          />
+        </HoverCard.Dropdown>
+      )}
     </HoverCard>
   );
 };

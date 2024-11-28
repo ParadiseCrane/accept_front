@@ -10,7 +10,9 @@ export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().unsetSuperscript().toggleSubscript().run();
+        if (editor.isFocused) {
+          editor.chain().unsetSuperscript().toggleSubscript().run();
+        }
       }}
       aria-label={locale.tiptap.subscript}
       title={locale.tiptap.subscript}
@@ -26,7 +28,9 @@ export const ToggleSuperscript = ({ editor }: { editor: Editor }) => {
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().unsetSubscript().toggleSuperscript().run();
+        if (editor.isFocused) {
+          editor.chain().unsetSubscript().toggleSuperscript().run();
+        }
       }}
       aria-label={locale.tiptap.superscript}
       title={locale.tiptap.superscript}
