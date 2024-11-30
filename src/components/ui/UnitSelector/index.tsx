@@ -1,8 +1,8 @@
-import { Accordion, ActionIcon, Box, Group, TextInput } from '@mantine/core';
+import { ActionIcon, Group, TextInput } from '@mantine/core';
 import { FC, memo, useMemo } from 'react';
 import UnitDisplay from './UnitDisplay';
 import { IUnit } from '@custom-types/data/ICourse';
-import { Button, InputWrapper } from '@ui/basics';
+import { InputWrapper } from '@ui/basics';
 import { Plus } from 'tabler-icons-react';
 
 const UnitSelector: FC<{ title_props: any; initial_units: IUnit[] }> = ({
