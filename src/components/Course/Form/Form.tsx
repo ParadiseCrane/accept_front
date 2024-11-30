@@ -16,16 +16,18 @@ const Form: FC<{
   const { locale } = useLocale();
   const form = useForm<ICourseAdd>({ initialValues: initialValues });
   return (
-    <Stack>
-      <TextInput {...form.getInputProps('title')} />
+    <Stack m={'xl'} maw={'60%'}>
+      {/* <ImageSelector /> */}
+      <UnitSelector
+        title_props={{ ...form.getInputProps('title') }}
+        initial_units={form.values.children}
+      />
       {/* TODO: Add locale */}
       <CustomEditor
         label={locale.assignmentSchema.form.description}
         form={form}
         name="description"
       />
-      {/* <ImageSelector /> */}
-      <UnitSelector initial_units={form.values.children} />
     </Stack>
   );
 };

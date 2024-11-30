@@ -71,6 +71,7 @@ const generateLesson = (
   index: number,
   tasks: number
 ): ICourse => ({
+  kind: 'lesson',
   spec: `${Math.floor(Math.random() * 1000)}`,
   title: `Lesson ${index + 1}`,
   description: `Description of unit ${unit + 1} lesson ${index + 1}`,
@@ -79,6 +80,7 @@ const generateLesson = (
 });
 
 const generateUnit = (index: number): ICourse => ({
+  kind: 'unit',
   spec: `${Math.floor(Math.random() * 1000)}`,
   title: `Unit ${index + 1}`,
   description: `Description of unit ${index + 1}`,
@@ -106,6 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   );
 
   let course: ICourse = {
+    kind: 'course',
     spec: query.spec,
     title: 'Test course',
     description:

@@ -1,6 +1,7 @@
 import { ITask } from './ITask';
 
 export interface ICourse {
+  kind: "course" | "unit" | "lesson";
   spec: string;
   title: string;
   description: string;

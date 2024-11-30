@@ -17,24 +17,54 @@ interface ICourseAddBundle {}
 
 const initialValues: ICourseAdd = {
   spec: '123',
-  title: 'Test course',
-  description: 'Test',
+  title: 'Тестовый курс',
+  description: 'Тестовое описание',
   image: '',
   children: [
     {
       id: '124',
       kind: 'unit',
-      title: 'First',
+      title: 'Первый модуль',
       units: [
-        { id: '135', kind: 'lesson', title: '1.1', units: [] },
-        { id: '136', kind: 'lesson', title: '1.2', units: [] },
-        { id: '137', kind: 'lesson', title: '1.3', units: [] },
-        { id: '138', kind: 'lesson', title: '1.4', units: [] },
+        { id: '135', kind: 'lesson', title: 'Урок 1.1', units: [] },
+        { id: '136', kind: 'lesson', title: 'Урок 1.2', units: [] },
+        { id: '137', kind: 'lesson', title: 'Урок 1.3', units: [] },
+        { id: '138', kind: 'lesson', title: 'Урок 1.4', units: [] },
       ],
     },
-    { id: '125', kind: 'unit', title: 'Second', units: [] },
-    { id: '126', kind: 'unit', title: 'Third', units: [] },
-    { id: '127', kind: 'unit', title: 'Forth', units: [] },
+    {
+      id: '125',
+      kind: 'unit',
+      title: 'Второй модуль',
+      units: [
+        { id: '135', kind: 'lesson', title: 'Урок 2.1', units: [] },
+        { id: '136', kind: 'lesson', title: 'Урок 2.2', units: [] },
+        { id: '137', kind: 'lesson', title: 'Урок 2.3', units: [] },
+        { id: '138', kind: 'lesson', title: 'Урок 2.4', units: [] },
+      ],
+    },
+    {
+      id: '126',
+      kind: 'unit',
+      title: 'Третий модуль',
+      units: [
+        { id: '135', kind: 'lesson', title: 'Урок 3.1', units: [] },
+        { id: '136', kind: 'lesson', title: 'Урок 3.2', units: [] },
+        { id: '137', kind: 'lesson', title: 'Урок 3.3', units: [] },
+        { id: '138', kind: 'lesson', title: 'Урок 3.4', units: [] },
+      ],
+    },
+    {
+      id: '127',
+      kind: 'unit',
+      title: 'Четвертый модуль',
+      units: [
+        { id: '135', kind: 'lesson', title: 'Урок 4.1', units: [] },
+        { id: '136', kind: 'lesson', title: 'Урок 4.2', units: [] },
+        { id: '137', kind: 'lesson', title: 'Урок 4.3', units: [] },
+        { id: '138', kind: 'lesson', title: 'Урок 4.4', units: [] },
+      ],
+    },
   ],
 };
 
