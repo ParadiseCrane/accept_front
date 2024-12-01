@@ -11,7 +11,6 @@ interface FetchWrapperProps {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   customBody?: any;
-  notWriteToRes?: boolean;
 }
 
 const refresh_url = `${getApiUrl()}/api/refresh`;
@@ -50,7 +49,7 @@ export const fetchWrapperStatic = async ({
 };
 
 export const fetchWrapper = async (props: FetchWrapperProps) => {
-  const { req, res, url, method, customBody, notWriteToRes, ..._ } = props;
+  const { req, res, url, method, customBody, ..._ } = props;
   const fetchMethod = method || 'GET';
   const fetch_url = `${getApiUrl()}/${url}`;
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
@@ -70,15 +69,15 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     } as { [key: string]: string },
   };
   let response = await fetch(fetch_url, fetch_data);
+  // console.log(response);
 
   if (response.status == 401 || response.status == 403) {
     const cookie_user = getCookieValue(req.headers.cookie || '', 'user');
     if (typeof cookie_user !== 'string') {
-      if (!!!notWriteToRes) {
-        const data = await response.json();
+      const data = await response.json();
 
-        res.status(response.status).json(data);
-      }
+      res.status(response.status).json(data);
+
       return response;
     }
 
@@ -116,10 +115,9 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     });
   }
 
-  if (!!!notWriteToRes) {
-    const data = await response.json();
+  const data = await response.json();
 
-    res.status(response.status).json(data);
-  }
+  res.status(response.status).json(data);
+
   return response;
 };

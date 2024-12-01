@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ImageUrlModal } from './Modals/ImageUrlModal';
 import { IconWrapper } from './IconWrapper';
 import { useLocale } from '@hooks/useLocale';
+import { getCookie } from '@utils/cookies';
 
 // const loadImageAsFile = ({
 //   files,
@@ -54,10 +55,15 @@ const loadImageAsFile = async ({
     const formData = new FormData();
     formData.append('upload', files[0]);
     try {
+      const access_token = getCookie('access_token');
       const response: Response | any = await Promise.race([
         fetch('/api/image', {
           method: 'POST',
           body: formData,
+          credentials: 'include' as RequestCredentials,
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          } as { [key: string]: string },
         }),
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error('timeout')), timeout)
