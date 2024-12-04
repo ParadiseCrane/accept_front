@@ -85,9 +85,6 @@ const Description: FC<{
             description={
               <div
                 className={styles.description}
-                // dangerouslySetInnerHTML={{
-                //   __html: tournament.description,
-                // }}
                 children={
                   <TipTapEditor
                     editorMode={false}
@@ -120,7 +117,6 @@ const Description: FC<{
       </div>
       <div
         className={styles.description}
-        // dangerouslySetInnerHTML={{ __html: tournament.description }}
         children={
           <TipTapEditor
             editorMode={false}

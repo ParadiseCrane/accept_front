@@ -53,7 +53,6 @@ const Description: FC<{
       </div>
       <div
         className={styles.description}
-        // dangerouslySetInnerHTML={{ __html: task.description }}
         children={
           <TipTapEditor
             editorMode={false}
@@ -78,7 +77,6 @@ const Description: FC<{
           </div>
           <div
             className={styles.inputFormat}
-            // dangerouslySetInnerHTML={{ __html: task.inputFormat }}
             children={
               <TipTapEditor
                 editorMode={false}
@@ -94,7 +92,6 @@ const Description: FC<{
           </div>
           <div
             className={styles.outputFormat}
-            // dangerouslySetInnerHTML={{ __html: task.outputFormat }}
             children={
               <TipTapEditor
                 editorMode={false}
@@ -163,7 +160,6 @@ const Description: FC<{
           <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
           <div
             className={styles.remark}
-            // dangerouslySetInnerHTML={{ __html: task.remark }}
             children={
               <TipTapEditor
                 editorMode={false}

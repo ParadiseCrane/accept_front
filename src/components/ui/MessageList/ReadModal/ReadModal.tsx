@@ -96,9 +96,6 @@ const ReadModal: FC<{
         {message && (
           <>
             <div
-              // dangerouslySetInnerHTML={{
-              //   __html: message.message,
-              // }}
               children={
                 <TipTapEditor
                   editorMode={false}

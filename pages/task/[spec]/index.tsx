@@ -200,7 +200,6 @@ function Task(props: {
           close={() => setOpenedHint(false)}
         >
           <div
-            // dangerouslySetInnerHTML={{ __html: task.hint.content }}
             children={
               <TipTapEditor
                 editorMode={false}

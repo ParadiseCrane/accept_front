@@ -76,7 +76,6 @@ const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
       </div>
       <div
         className={styles.description}
-        // dangerouslySetInnerHTML={{ __html: assignment.description }}
         children={
           <TipTapEditor
             editorMode={false}

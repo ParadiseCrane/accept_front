@@ -21,9 +21,6 @@ const Preview: FC<{ form: any }> = ({ form }) => {
           close={() => setOpenedHint(false)}
         >
           <div
-            // dangerouslySetInnerHTML={{
-            //   __html: form.values.hintContent,
-            // }}
             children={
               <TipTapEditor
                 editorMode={false}

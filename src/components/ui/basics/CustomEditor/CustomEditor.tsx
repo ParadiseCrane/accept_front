@@ -48,29 +48,13 @@ const CustomEditor: FC<{
         {...form.getInputProps(name)}
       >
         {isLoaded ? (
-          // <CKEditor
-          //   name={name}
-          //   editor={Editor}
-          //   data={form.values[name]}
-          //   config={editorConfiguration}
-          // onChange={(_: any, editor: any) => {
-          //   const data = editor.getData();
-          //   form.setFieldValue(name, data);
-          // }}
-          // onBlur={() => form.validateField(name)}
-          // />
           <TipTapEditor
             editorMode={true}
             content={form.values[name]}
-            // onUpdate={(_: any, editor: Editor) => {
-            //   const data = editor.getData();
-            //   form.setFieldValue(name, data);
-            // }}
             form={form}
             onUpdate={(editor: EditorType) => {
               const data = editor.getHTML();
               form.setFieldValue(name, data);
-              console.log('form', form);
             }}
             onBlur={() => {
               form.validateField(name);
