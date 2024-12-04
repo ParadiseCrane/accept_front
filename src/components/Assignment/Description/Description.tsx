@@ -7,10 +7,9 @@ import { ITaskDisplay } from '@custom-types/data/ITask';
 import { sendRequest } from '@requests/request';
 import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
 import { letterFromIndex } from '@utils/letterFromIndex';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
-const Description: FC<{ assignment: IAssignment }> = ({
-  assignment,
-}) => {
+const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
   const { locale } = useLocale();
   const [startDate, setStartDate] = useState('-');
   const [endDate, setEndDate] = useState('-');
@@ -77,7 +76,14 @@ const Description: FC<{ assignment: IAssignment }> = ({
       </div>
       <div
         className={styles.description}
-        dangerouslySetInnerHTML={{ __html: assignment.description }}
+        // dangerouslySetInnerHTML={{ __html: assignment.description }}
+        children={
+          <TipTapEditor
+            editorMode={false}
+            content={assignment.description}
+            onUpdate={() => {}}
+          />
+        }
       />
       <div className={styles.tasksWrapper}>
         <PrimitiveTaskTable

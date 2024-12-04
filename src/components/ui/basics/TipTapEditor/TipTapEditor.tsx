@@ -87,6 +87,7 @@ const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
       size={'1rem'}
       onClick={() => {
         console.log('for editor', editor.getHTML());
+        console.log('for HTML', editor.$doc.element.getHTML());
       }}
     />
   );
@@ -95,9 +96,17 @@ const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
 export const TipTapEditor = ({
   editorMode,
   content,
+  form,
+  name,
+  onUpdate,
+  onBlur,
 }: {
   editorMode: boolean;
   content: string;
+  form?: any;
+  name?: any;
+  onUpdate: (editor: Editor) => void;
+  onBlur?: any;
 }) => {
   const [data, setData] = useState(``);
 
@@ -137,6 +146,17 @@ export const TipTapEditor = ({
     ],
     content,
     editable: editorMode ? true : false,
+    onUpdate: () => {
+      onUpdate(editor!);
+    },
+    onBlur: onBlur,
+    // onUpdate: () => {
+    //   const data = editor?.getHTML();
+    //   form.setFieldValue(name, data);
+    // },
+    // onBlur: () => {
+    //   form.validateField(name);
+    // },
   });
 
   const outlineClass = editorMode ? 'outline-tiptap' : '';

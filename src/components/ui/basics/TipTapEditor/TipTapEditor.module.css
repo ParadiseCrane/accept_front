@@ -12,6 +12,7 @@
   border-right-width: 0.8px;
   border-top-style: solid;
   border-top-width: 0.8px;
+  overflow-x: auto;
 }
 
 .toolbar_group {
@@ -68,7 +69,7 @@
   display: none;
 }
 
-@media (width <=900px) {
+@media (width <=1050px) {
   .align_group_separate {
     display: none;
   }
@@ -78,7 +79,7 @@
   }
 }
 
-@media (width <=1000px) {
+@media (width <=1150px) {
   .headings_group_separate {
     display: none;
   }

@@ -5,6 +5,7 @@ import { Group } from '@mantine/core';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import { IListMessage } from '@custom-types/ui/IListMessage';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const ReadModal: FC<{
   opened: boolean;
@@ -95,9 +96,16 @@ const ReadModal: FC<{
         {message && (
           <>
             <div
-              dangerouslySetInnerHTML={{
-                __html: message.message,
-              }}
+              // dangerouslySetInnerHTML={{
+              //   __html: message.message,
+              // }}
+              children={
+                <TipTapEditor
+                  editorMode={false}
+                  content={message.message}
+                  onUpdate={() => {}}
+                />
+              }
             />
           </>
         )}

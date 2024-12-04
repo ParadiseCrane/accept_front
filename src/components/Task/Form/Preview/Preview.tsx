@@ -6,6 +6,7 @@ import { STICKY_SIZES } from '@constants/Sizes';
 import { useWidth } from '@hooks/useWidth';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useLocale } from '@hooks/useLocale';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const Preview: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -20,9 +21,16 @@ const Preview: FC<{ form: any }> = ({ form }) => {
           close={() => setOpenedHint(false)}
         >
           <div
-            dangerouslySetInnerHTML={{
-              __html: form.values.hintContent,
-            }}
+            // dangerouslySetInnerHTML={{
+            //   __html: form.values.hintContent,
+            // }}
+            children={
+              <TipTapEditor
+                editorMode={false}
+                content={form.values.hintContent}
+                onUpdate={() => {}}
+              />
+            }
           />
         </SimpleModal>
       )}
