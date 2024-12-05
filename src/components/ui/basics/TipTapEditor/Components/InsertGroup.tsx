@@ -2,7 +2,6 @@ import { Editor } from '@tiptap/react';
 import { InsertImageAsFile, InsertImageAsUrl } from './InsertImage';
 import { InsertLatexExpression } from './InsertLatex';
 import { ToggleCodeBlock } from './ToggleCodeBlock';
-import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 
 export const InsertGroupSeparate = ({
   editor,
@@ -13,7 +12,7 @@ export const InsertGroupSeparate = ({
   editor: Editor;
   className: string;
   lowlight: any;
-  languages: IProgrammingLanguage[];
+  languages: any[];
 }) => {
   return (
     <div className={className}>

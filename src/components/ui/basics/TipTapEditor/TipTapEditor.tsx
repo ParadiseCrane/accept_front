@@ -50,7 +50,7 @@ import { RedoButton, UndoButton } from './Components/UndoRedo';
 import { useState } from 'react';
 import { Edit, FileExport } from 'tabler-icons-react';
 import { LinkButton, UnlinkButton } from './Components/LinkButton';
-import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from './Components/ColorPickerButton';
 import { HighLightColorButton } from './Components/HighlightColorButton';
 import { ClearFormattingButton } from './Components/ClearFormattingButton';
@@ -60,25 +60,7 @@ import {
   HeadingsGroupCollapsed,
 } from './Components/ToggleHeadings';
 import { InsertGroupSeparate } from './Components/InsertGroup';
-
-const lowlight = createLowlight(all);
-
-const languages: IProgrammingLanguage[] = [
-  { nameAsString: 'HTML', name: 'html', nameAsFn: html },
-  { nameAsString: 'CSS', name: 'css', nameAsFn: css },
-  { nameAsString: 'JavaScript', name: 'js', nameAsFn: js },
-  { nameAsString: 'TypeScript', name: 'ts', nameAsFn: ts },
-  { nameAsString: 'Python', name: 'python', nameAsFn: python },
-  { nameAsString: 'C#', name: 'csharp', nameAsFn: csharp },
-];
-
-const registerLanguages = () => {
-  for (let i = 0; i < languages.length; i++) {
-    lowlight.register(languages[i].nameAsString, languages[i].nameAsFn);
-  }
-};
-
-registerLanguages();
+import { useLocale } from '@hooks/useLocale';
 
 const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
   return (
@@ -108,7 +90,31 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
-  const [data, setData] = useState(``);
+  const lowlight = createLowlight(all);
+
+  const { locale } = useLocale();
+
+  const languages = [
+    {
+      nameAsString: locale.tiptap.defaultLanguage,
+      name: 'default',
+      nameAsFn: null,
+    },
+    { nameAsString: 'HTML', name: 'html', nameAsFn: html },
+    { nameAsString: 'CSS', name: 'css', nameAsFn: css },
+    { nameAsString: 'JavaScript', name: 'js', nameAsFn: js },
+    { nameAsString: 'TypeScript', name: 'ts', nameAsFn: ts },
+    { nameAsString: 'Python', name: 'python', nameAsFn: python },
+    { nameAsString: 'C#', name: 'csharp', nameAsFn: csharp },
+  ];
+
+  const registerLanguages = () => {
+    for (let i = 1; i < languages.length; i++) {
+      lowlight.register(languages[i].nameAsString, languages[i].nameAsFn!);
+    }
+  };
+
+  registerLanguages();
 
   const editor = useEditor({
     immediatelyRender: false,

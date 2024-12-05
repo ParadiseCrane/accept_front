@@ -3,7 +3,6 @@ import { Editor } from '@tiptap/react';
 import { Code } from 'tabler-icons-react';
 import { CodeBlockModal } from './Modals/CodeBlockModal';
 import { useState } from 'react';
-import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { IconWrapper } from './IconWrapper';
 import { useLocale } from '@hooks/useLocale';
 
@@ -14,7 +13,7 @@ export const ToggleCodeBlock = ({
 }: {
   editor: Editor;
   lowlight: any;
-  languages: IProgrammingLanguage[];
+  languages: any[];
 }) => {
   const isActive = editor.isFocused ? editor.isActive('codeBlock') : false;
   const [show, setShow] = useState(false);
@@ -23,11 +22,11 @@ export const ToggleCodeBlock = ({
     <>
       <RichTextEditor.Control
         onClick={() => {
-            if (!isActive) {
-              setShow(true);
-            } else {
-              editor.commands.toggleCodeBlock();
-            }
+          if (!isActive) {
+            setShow(true);
+          } else {
+            editor.commands.toggleCodeBlock();
+          }
         }}
         aria-label={locale.tiptap.codeBlock}
         title={locale.tiptap.codeBlock}

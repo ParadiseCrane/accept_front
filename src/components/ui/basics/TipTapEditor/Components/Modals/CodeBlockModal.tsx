@@ -4,17 +4,18 @@ import { Editor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Select } from '@ui/basics';
-import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { useLocale } from '@hooks/useLocale';
 
 const insertCodeBlock = ({
   editor,
   language,
+  defaultLanguage,
 }: {
   editor: Editor;
-  language: IProgrammingLanguage | null;
+  language: any | null;
+  defaultLanguage: string;
 }) => {
-  if (language === null || language.nameAsString === 'Default') {
+  if (language === null || language.nameAsString === defaultLanguage) {
     editor?.chain().setCodeBlock().run();
   } else {
     editor?.chain().setCodeBlock({ language: language.name }).run();
@@ -31,16 +32,16 @@ export const CodeBlockModal = ({
   isOpened: boolean;
   close: any;
   lowlight: any;
-  languages: IProgrammingLanguage[];
+  languages: any[];
   editor: Editor;
 }) => {
-  const [input, setInput] = useState<IProgrammingLanguage | null>(null);
+  const [input, setInput] = useState<any | null>(null);
 
   const onClose = () => {
     close();
   };
 
-  const setInputByString = (nameAsString: string) => {
+  const setInputByString = (nameAsString: string | null) => {
     for (let i = 0; i < languages.length; i++) {
       if (languages[i].nameAsString === nameAsString) {
         setInput(languages[i]);
@@ -49,6 +50,13 @@ export const CodeBlockModal = ({
   };
 
   const { locale } = useLocale();
+
+  const languagesForSelect = languages.flatMap((language: any) => [
+    {
+      value: language.nameAsString,
+      additionalValue: language.name,
+    },
+  ]);
 
   return (
     <SimpleModal opened={isOpened} close={onClose}>
@@ -64,21 +72,20 @@ export const CodeBlockModal = ({
             label: styles.label,
           }}
           size="lg"
-          data={languages.flatMap((language: IProgrammingLanguage) => [
-            {
-              value: language.nameAsString,
-              additionalValue: language.name,
-            },
-          ])}
+          data={languagesForSelect}
           onChange={(nameAsString: string) => setInputByString(nameAsString)}
+          defaultValue={locale.tiptap.defaultLanguage}
           {...lowlight}
         />
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              insertCodeBlock({ editor: editor, language: input });
-
+              insertCodeBlock({
+                editor: editor,
+                language: input,
+                defaultLanguage: locale.tiptap.defaultLanguage,
+              });
               onClose();
             },
             label: locale.tiptap.insert,
