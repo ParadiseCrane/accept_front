@@ -53,7 +53,6 @@ const CustomEditor: FC<{
             content={form.values[name]}
             form={form}
             onUpdate={(editor: EditorType) => {
-              console.log();
               const data = editor.getHTML();
               form.setFieldValue(name, data);
             }}

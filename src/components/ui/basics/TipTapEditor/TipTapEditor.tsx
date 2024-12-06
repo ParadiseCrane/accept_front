@@ -62,19 +62,6 @@ import {
 import { InsertGroupSeparate } from './Components/InsertGroup';
 import { useLocale } from '@hooks/useLocale';
 
-const ExportContentForEditor = ({ editor }: { editor: Editor }) => {
-  return (
-    <Edit
-      stroke={'black'}
-      size={'1rem'}
-      onClick={() => {
-        console.log('for editor', editor.getHTML());
-        console.log('for HTML', editor.$doc.element.getHTML());
-      }}
-    />
-  );
-};
-
 export const TipTapEditor = ({
   editorMode,
   content,
@@ -232,7 +219,6 @@ export const TipTapEditor = ({
             <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
-            {/* <ExportContentForEditor editor={editor} /> */}
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}

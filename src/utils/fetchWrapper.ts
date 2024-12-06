@@ -69,7 +69,6 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
     } as { [key: string]: string },
   };
   let response = await fetch(fetch_url, fetch_data);
-  // console.log(response);
 
   if (response.status == 401 || response.status == 403) {
     const cookie_user = getCookieValue(req.headers.cookie || '', 'user');
