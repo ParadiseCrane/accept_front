@@ -32,6 +32,7 @@
     "ckeditor5-custom-build": "link:./ckeditor5-custom",
     "client-zip": "^2.2.2",
     "cookie": "0.5.0",
+    "cookies-next": "^5.0.2",
     "dayjs": "^1.11.4",
     "fuse.js": "^6.6.2",
     "next": "^14",
