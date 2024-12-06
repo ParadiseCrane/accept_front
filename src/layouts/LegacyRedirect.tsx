@@ -10,14 +10,19 @@ export const LegacyRedirect: FC<{}> = ({}) => {
   return (
     <div className={styles.wrapper}>
       <Title title={'Переезд!'} />
-      <div style={{ fontSize: '10rem', textAlign: 'center' }}>
-        {'🏎️ᯓᡣ𐭩'}
+      <div
+        style={{
+          fontSize: '10rem',
+          textAlign: 'center',
+          marginBottom: '1rem',
+        }}
+      >
+        🚛🚛🚛🚛
       </div>
       <div
         style={{
           textAlign: 'center',
           fontSize: '2.2rem',
-          marginTop: '-3rem',
         }}
       >
         <div>Accept переехал на новый адрес!</div>
@@ -53,7 +58,7 @@ export const LegacyRedirect: FC<{}> = ({}) => {
         </Link>
       </div>
       <div style={{ color: 'var(--primary)' }}>
-        чтобы продолжить на этом сайте, добавьте в куках "skip"="1"
+        чтобы продолжить на этом сайте, добавьте в куках skip=1
       </div>
     </div>
   );
