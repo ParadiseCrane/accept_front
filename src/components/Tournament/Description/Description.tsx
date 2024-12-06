@@ -92,7 +92,12 @@ const Description: FC<{
                 }}
               />
             }
-            tasks={tasks.map((task) => task.spec)}
+            tasks={
+              (!registered && tournament.status.spec != 2) ||
+              (!special && tournament.status.spec == 0)
+                ? []
+                : tasks.map((task) => task.spec)
+            }
           />
         </div>
         <div className={styles.info}>
