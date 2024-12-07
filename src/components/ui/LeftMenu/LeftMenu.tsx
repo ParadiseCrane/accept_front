@@ -1,14 +1,25 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
-import { FC, ReactNode, memo, useState } from 'react';
+import { FC, ReactNode, memo, useEffect, useState } from 'react';
 import styles from './leftMenu.module.css';
 
 const LeftMenu: FC<{
   links: IMenuLink[];
   initialStep?: number;
   topContent?: ReactNode;
-}> = ({ links, initialStep, topContent }) => {
+  changeParams?: (section: string) => void;
+  router: any;
+}> = ({ links, initialStep, topContent, changeParams, router }) => {
   const [current, setCurrent] = useState(initialStep || 0);
+  const [initialLoad, setInitialLoad] = useState(true);
+  let section = router.query.section as string;
+  useEffect(() => {
+    if (initialLoad) {
+      let section = router.query.section as string;
+      changeParams!(section!);
+      setInitialLoad(false);
+    }
+  });
 
   return (
     <div className={styles.wrapper}>
@@ -19,7 +30,11 @@ const LeftMenu: FC<{
             <NavLink
               key={idx}
               active={idx == current}
-              onClick={() => setCurrent(idx)}
+              onClick={() => {
+                setCurrent(idx);
+                // changeParams!(idx);
+                changeParams!(links[idx].section!);
+              }}
               label={element.title}
               leftSection={element.icon}
             />
