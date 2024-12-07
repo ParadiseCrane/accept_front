@@ -1,0 +1,17 @@
+.icon_wrapper_active {
+  margin: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  background-color: #D3E3FD;
+}
+
+.icon_wrapper {
+  margin: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}

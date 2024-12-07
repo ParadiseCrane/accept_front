@@ -1,17 +1,3 @@
-.image_url_modal_background {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.074);
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.image_url_modal_wrapper {
-  z-index: 5;
-  background-color: wheat;
-}
-
 .image_url_modal_body {
   display: flex;
   flex-direction: column;

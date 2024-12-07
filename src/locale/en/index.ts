@@ -32,6 +32,7 @@ import { tip } from './tip';
 import { team } from './team';
 import { accounts } from './accounts';
 import { organization } from './organization';
+import { tiptap } from './tiptap/tiptap';
 
 const en = {
   accept: 'Accept',
@@ -106,6 +107,7 @@ const en = {
   team,
   accounts,
   organization,
+  tiptap,
 };
 
 export default en;

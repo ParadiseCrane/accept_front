@@ -1,6 +1,8 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react';
 import { InputWrapper } from '@ui/basics';
+import { TipTapEditor } from '../TipTapEditor/TipTapEditor';
+import { Editor as EditorType } from '@tiptap/react';
 
 const editorConfiguration = {
   simpleUpload: {
@@ -46,16 +48,17 @@ const CustomEditor: FC<{
         {...form.getInputProps(name)}
       >
         {isLoaded ? (
-          <CKEditor
-            name={name}
-            editor={Editor}
-            data={form.values[name]}
-            config={editorConfiguration}
-            onChange={(_: any, editor: any) => {
-              const data = editor.getData();
+          <TipTapEditor
+            editorMode={true}
+            content={form.values[name]}
+            form={form}
+            onUpdate={(editor: EditorType) => {
+              const data = editor.getHTML();
               form.setFieldValue(name, data);
             }}
-            onBlur={() => form.validateField(name)}
+            onBlur={() => {
+              form.validateField(name);
+            }}
           />
         ) : (
           <div

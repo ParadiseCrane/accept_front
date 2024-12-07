@@ -10,6 +10,7 @@ import { sendRequest } from '@requests/request';
 import { setter } from '@custom-types/ui/atomic';
 import { AlertCircle } from 'tabler-icons-react';
 import TagList from '@ui/TagList/TagList';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const Description: FC<{
   task: ITask;
@@ -52,7 +53,13 @@ const Description: FC<{
       </div>
       <div
         className={styles.description}
-        dangerouslySetInnerHTML={{ __html: task.description }}
+        children={
+          <TipTapEditor
+            editorMode={false}
+            content={task.description}
+            onUpdate={() => {}}
+          />
+        }
       />
       {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
@@ -70,7 +77,13 @@ const Description: FC<{
           </div>
           <div
             className={styles.inputFormat}
-            dangerouslySetInnerHTML={{ __html: task.inputFormat }}
+            children={
+              <TipTapEditor
+                editorMode={false}
+                content={task.inputFormat}
+                onUpdate={() => {}}
+              />
+            }
           />
         </div>
         <div className={styles.outputFormat}>
@@ -79,7 +92,13 @@ const Description: FC<{
           </div>
           <div
             className={styles.outputFormat}
-            dangerouslySetInnerHTML={{ __html: task.outputFormat }}
+            children={
+              <TipTapEditor
+                editorMode={false}
+                content={task.outputFormat}
+                onUpdate={() => {}}
+              />
+            }
           />
         </div>
       </div>
@@ -141,7 +160,13 @@ const Description: FC<{
           <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
           <div
             className={styles.remark}
-            dangerouslySetInnerHTML={{ __html: task.remark }}
+            children={
+              <TipTapEditor
+                editorMode={false}
+                content={task.remark}
+                onUpdate={() => {}}
+              />
+            }
           />
         </div>
       )}
