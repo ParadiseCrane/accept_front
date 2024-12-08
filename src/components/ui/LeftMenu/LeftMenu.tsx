@@ -39,8 +39,12 @@ const LeftMenu: FC<{
   };
 
   const changeParams = (section: string) => {
+    let pathName = router.pathname;
+    if (pathName.includes('spec')) {
+      pathName = pathName.replace('[spec]', `${router.query.spec}`);
+    }
     const newPathObject = {
-      pathname: router.pathname,
+      pathname: pathName,
       query: { section: section },
     };
     router.push(newPathObject, undefined, { shallow: true });
