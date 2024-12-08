@@ -87,7 +87,7 @@ const getLinks = ({
           page: <CreateNotification />,
           icon: <BellPlus color="var(--secondary)" />,
           title: locale.profile.createNotification,
-          section: 'create',
+          section: 'create_notification',
         },
         {
           page: <Settings user={user} />,
@@ -149,7 +149,6 @@ const Profile: FC<IFullProfileBundle> = ({
   rating_info,
 }) => {
   const { unviewed } = useBackNotifications();
-  const router = useRouter();
 
   const { locale } = useLocale();
 
@@ -168,7 +167,6 @@ const Profile: FC<IFullProfileBundle> = ({
   return (
     <LeftMenu
       links={links}
-      router={router}
       topContent={
         <div className={styles.header}>
           <UserAvatar login={user.login} />

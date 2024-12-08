@@ -78,6 +78,7 @@ const AssignmentDashboard: FC<{
         ),
         icon: <Vocabulary color="var(--secondary)" />,
         title: locale.dashboard.assignment.mainInfo,
+        section: 'assignment',
       },
       {
         page: <ChatPage entity={'assignment'} spec={spec} />,
@@ -87,6 +88,7 @@ const AssignmentDashboard: FC<{
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
+        section: 'chat',
       },
       {
         page: assignment && (
@@ -100,8 +102,8 @@ const AssignmentDashboard: FC<{
           />
         ),
         icon: <Table color="var(--secondary)" />,
-
         title: locale.dashboard.assignment.results,
+        section: 'results',
       },
       {
         page: assignment && (
@@ -115,16 +117,19 @@ const AssignmentDashboard: FC<{
         ),
         icon: <AlignRight color="var(--secondary)" />,
         title: locale.dashboard.assignment.attempts,
+        section: 'attempts',
       },
       {
         page: <ParticipantsList type={'assignment'} spec={spec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.assignment.participants,
+        section: 'participants',
       },
       {
         page: <TaskList type={'assignment'} spec={spec} />,
         icon: <Puzzle color="var(--secondary)" />,
         title: locale.dashboard.assignment.tasks,
+        section: 'tasks',
       },
       {
         page: assignment && (
@@ -132,6 +137,7 @@ const AssignmentDashboard: FC<{
         ),
         icon: <BellPlus color="var(--secondary)" />,
         title: locale.dashboard.assignment.createNotification,
+        section: 'create_notifications',
       },
     ],
     [assignment, hasNewMessages, locale, refetch, spec]

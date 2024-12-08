@@ -2,16 +2,15 @@ import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
 import { FC, ReactNode, memo, useEffect, useState } from 'react';
 import styles from './leftMenu.module.css';
+import { useRouter } from 'next/router';
 
 const LeftMenu: FC<{
   links: IMenuLink[];
   initialStep?: number;
   topContent?: ReactNode;
-  router: any;
-}> = ({ links, initialStep, topContent, router }) => {
-  // const [current, setCurrent] = useState(initialStep || 0);
+}> = ({ links, topContent }) => {
+  const router = useRouter();
   const [initialLoad, setInitialLoad] = useState(true);
-  let section = router.query.section as string;
   useEffect(() => {
     if (initialLoad) {
       let section = router.query.section as string;
@@ -57,8 +56,6 @@ const LeftMenu: FC<{
               key={idx}
               active={element.section == router.query.section}
               onClick={() => {
-                // setCurrent(idx);
-                // changeParams!(idx);
                 changeParams!(links[idx].section!);
               }}
               label={element.title}
@@ -67,10 +64,7 @@ const LeftMenu: FC<{
           ))}
         </>
       </Box>
-      <div className={styles.pageWrapper}>
-        {/* {links[current]?.page || links[0]?.page || ''} */}
-        {displayPage()}
-      </div>
+      <div className={styles.pageWrapper}>{displayPage()}</div>
     </div>
   );
 };
