@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo } from 'react';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
 import {
@@ -28,9 +28,6 @@ import {
   ITaskInfo,
 } from '@custom-types/data/IProfileInfo';
 import { IUser } from '@custom-types/data/IUser';
-// attempt_info: IAttemptInfo;
-// task_info: ITaskInfo
-// rating_info: IRatingInfo | undefined
 
 const getLinks = ({
   user,
@@ -158,61 +155,6 @@ const Profile: FC<IFullProfileBundle> = ({
 
   const { isTeacher } = useUser();
 
-  // const links: IMenuLink[] = useMemo(() => {
-  //   let globalLinks = [
-  //     {
-  //       page: (
-  //         <ProfileInfo
-  //           user={user}
-  //           attempt_info={attempt_info}
-  //           task_info={task_info}
-  //           rating_info={rating_info}
-  //         />
-  //       ),
-  //       icon: <Robot color="var(--secondary)" />,
-  //       title: locale.profile.profile,
-  //       section: 'profile',
-  //     },
-  //     {
-  //       page: <NotificationList />,
-  //       icon: (
-  //         <Indicator disabled={unviewed <= 0} size={8}>
-  //           <BellRinging color="var(--secondary)" />
-  //         </Indicator>
-  //       ),
-  //       title: locale.profile.notification,
-  //       section: 'notifications',
-  //     },
-  //     {
-  //       page: <AssignmentList />,
-  //       icon: <Chalkboard color="var(--secondary)" />,
-  //       title: locale.profile.assignments,
-  //       section: 'assignments',
-  //     },
-  //     {
-  //       page: <AttemptListProfile />,
-  //       icon: <AlignRight color="var(--secondary)" />,
-  //       title: locale.profile.attempts,
-  //       section: 'attempts',
-  //     },
-  //     {
-  //       page: <Settings user={user} />,
-  //       icon: <SettingsIcon color="var(--secondary)" />,
-  //       title: locale.profile.settings,
-  //       section: 'settings',
-  //     },
-  //   ];
-  //   if (isTeacher) {
-  //     globalLinks.splice(4, 0, {
-  //       page: <CreateNotification />,
-  //       icon: <BellPlus color="var(--secondary)" />,
-  //       title: locale.profile.createNotification,
-  //       section: 'create',
-  //     });
-  //   }
-  //   return globalLinks;
-  // }, [user, attempt_info, task_info, rating_info, locale, unviewed, isTeacher]);
-
   const links = getLinks({
     attempt_info: attempt_info,
     isTeacher: isTeacher,
@@ -223,34 +165,9 @@ const Profile: FC<IFullProfileBundle> = ({
     user: user,
   });
 
-  console.log('links', links);
-
-  const initialStep = useMemo(() => {
-    let section = router.query.section as string;
-    if (!section) return 0;
-    let idx = links.findIndex((element) => element.section == section);
-    return idx > 0 ? idx : 0;
-  }, [links, router.query.section]);
-
-  const changeParams = (section: string) => {
-    // const section = links[idx].section ?? 'profile';
-    const newPathObject = {
-      pathname: router.pathname,
-      query: { section: section },
-    };
-    router.push(newPathObject, undefined, { shallow: true });
-  };
-
-  useEffect(() => {
-    const section = router.query.section as string;
-    // changeParams(section);
-  }, [isTeacher]);
-
   return (
     <LeftMenu
       links={links}
-      initialStep={initialStep}
-      changeParams={changeParams}
       router={router}
       topContent={
         <div className={styles.header}>
