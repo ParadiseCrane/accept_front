@@ -39,9 +39,15 @@ const LeftMenu: FC<{
   };
 
   const changeParams = (section: string) => {
+    const regExp = /\[.*?\]/g;
     let pathName = router.pathname;
-    if (pathName.includes('spec')) {
-      pathName = pathName.replace('[spec]', `${router.query.spec}`);
+    const list = pathName.match(regExp);
+    if (list) {
+      for (let i = 0; i < list.length; i++) {
+        const variableName = list[i].replace('[', '').replace(']', '');
+        const value = router.query[variableName];
+        pathName = pathName.replace(`[${variableName}]`, `${value}`);
+      }
     }
     const newPathObject = {
       pathname: pathName,
