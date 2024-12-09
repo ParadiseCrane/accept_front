@@ -51,6 +51,14 @@ const Description: FC<{
     [user, tournament.banned]
   );
 
+  const showTasks = useMemo(
+    () =>
+      special ||
+      (registered && tournament.status.spec != 0) ||
+      tournament.status.spec == 2,
+    [registered, special, tournament.status.spec]
+  );
+
   useEffect(() => {
     let cleanUp = false;
     if (tournament.tasks.length && !isPreview) {
@@ -94,7 +102,8 @@ const Description: FC<{
                 }
               />
             }
-            tasks={tasks.map((task) => task.spec)}
+            tasks={showTasks ? tasks.map((task) => task.spec) : []}
+            // tasks={tasks.map((task) => task.spec)}
           />
         </div>
         <div className={styles.info}>
@@ -149,10 +158,7 @@ const Description: FC<{
           )}
 
           <div className={styles.tasksWrapper}>
-            {((!registered && tournament.status.spec != 2) ||
-              (!special && tournament.status.spec == 0)) && (
-              <Overlay />
-            )}
+            {!showTasks && <Overlay />}
             <PrimitiveTaskTable
               tasks={tasks}
               linkQuery={`tournament=${tournament.spec}`}
@@ -160,8 +166,8 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                    ? locale.tournament.emptyTasks
-                    : locale.tournament.needRegistration
+                  ? locale.tournament.emptyTasks
+                  : locale.tournament.needRegistration
               }
             />
           </div>

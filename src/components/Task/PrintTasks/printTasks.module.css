@@ -1,10 +1,12 @@
 @media print {
   .pageWrapper {
     break-after: always;
+    page-break-after: always;
   }
 
   .tournamentInfo {
     break-after: always;
+    page-break-after: always;
   }
 }
 

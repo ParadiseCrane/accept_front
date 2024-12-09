@@ -44,11 +44,7 @@ const PrintTasks: FC<{
           </div>
           {tasks.map((task, index) => (
             <div className={styles.pageWrapper} key={index}>
-              <Description
-                task={task}
-                setShowHint={() => false}
-                preview
-              />
+              <Description task={task} setShowHint={() => false} preview />
             </div>
           ))}
         </div>
