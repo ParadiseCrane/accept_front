@@ -1,13 +1,7 @@
 import Table from '@ui/Table/Table';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { useLocale } from '@hooks/useLocale';
 import {
@@ -48,17 +42,25 @@ interface ITournamentDisplayList
   status: Item;
 }
 
+const sortForStatus = (a: any, b: any) => {
+  let returnValue: 0 | 1 | -1 = 0;
+  if ((a == 1 && b == 0 && a > b) || (a == 0 && b == 2 && a < b)) {
+    returnValue = 1;
+  } else if (a == b) {
+    returnValue = 0;
+  } else {
+    returnValue = -1;
+  }
+  return returnValue;
+};
+
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: '',
     key: 'status',
     sortable: true,
     sortFunction: (a: any, b: any) => {
-      return a.status.value > b.status.value
-        ? 1
-        : a.status.value == b.status.value
-          ? 0
-          : -1;
+      return sortForStatus(a.status.value, b.status.value);
     },
     sorted: 0,
     allowMiddleState: true,
@@ -74,8 +76,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -103,8 +105,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -120,8 +122,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -137,8 +139,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.maxTeamSize > b.maxTeamSize
         ? 1
         : a.maxTeamSize == b.maxTeamSize
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -278,8 +280,7 @@ function TournamentList() {
     'GET',
     undefined,
     (() => {
-      return (data: ITournamentListBundle) =>
-        processData(data, locale);
+      return (data: ITournamentListBundle) => processData(data, locale);
     })()
   );
 
