@@ -59,6 +59,50 @@ interface IAssignmentDisplayList
   state: Item;
 }
 
+const sortByStartEnd = ({
+  a,
+  b,
+  startEnd,
+}: {
+  a: any;
+  b: any;
+  startEnd: 'start' | 'end';
+}) => {
+  if (a.state.value == 0 && b.state.value == 0) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value > b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else if (a.state.value == 1 && b.state.value == 1) {
+    if (startEnd == 'start') {
+      return a.start.value > b.start.value
+        ? 1
+        : a.start.value == b.start.value
+        ? 0
+        : -1;
+    } else {
+      return 0;
+    }
+  } else if (a.state.value == 2 && b.state.value == 2) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value < b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else {
+    return 0;
+  }
+};
+
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: '',
@@ -216,7 +260,7 @@ const processData = (
   tags: ITag[];
   groups: IGroup[];
 } => {
-  const assignments = data.assignments.map(
+  const assignmentsData = data.assignments.map(
     (assignment: IAssignmentDisplay): any => ({
       ...assignment,
       state: {
@@ -286,6 +330,16 @@ const processData = (
       },
     })
   );
+  const running = assignmentsData
+    .filter((element) => element.state.value === 0)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
+  const pending = assignmentsData
+    .filter((element) => element.state.value === 1)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'start' }));
+  const finished = assignmentsData
+    .filter((element) => element.state.value === 2)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
+  const assignments = [...running, ...pending, ...finished];
   const tags = data.tags;
   const groups = data.groups;
   return { assignments, tags, groups };
@@ -310,7 +364,8 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'state', order: 1 }],
+    // sort_by: [{ field: 'state', order: 1 }],
+    sort_by: [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],
