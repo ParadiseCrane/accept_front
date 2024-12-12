@@ -42,16 +42,59 @@ interface ITournamentDisplayList
   status: Item;
 }
 
-const sortForStatus = (a: any, b: any) => {
-  let returnValue: 0 | 1 | -1 = 0;
+const sortByStatus = (a: any, b: any) => {
   if ((a == 1 && b == 0 && a > b) || (a == 0 && b == 2 && a < b)) {
-    returnValue = 1;
+    return 1;
   } else if (a == b) {
-    returnValue = 0;
+    return 0;
   } else {
-    returnValue = -1;
+    return -1;
   }
-  return returnValue;
+};
+
+const sortByStartEnd = ({
+  a,
+  b,
+  startEnd,
+}: {
+  a: any;
+  b: any;
+  startEnd: 'start' | 'end';
+}) => {
+  //1 -текущие; 0 - ожидаются; 2 - завершенные
+  if (a.status.value == 1 && b.status.value == 1) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value < b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else if (a.status.value == 0 && b.status.value == 0) {
+    if (startEnd == 'start') {
+      return a.start.value < b.start.value
+        ? 1
+        : a.start.value == b.start.value
+        ? 0
+        : -1;
+    } else {
+      return 0;
+    }
+  } else if (a.status.value == 2 && b.status.value == 2) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value > b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else {
+    return 0;
+  }
 };
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
@@ -60,7 +103,12 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'status',
     sortable: true,
     sortFunction: (a: any, b: any) => {
-      return sortForStatus(a.status.value, b.status.value);
+      return a.status.value > b.status.value
+        ? 1
+        : a.status.value == b.status.value
+        ? 0
+        : -1;
+      // return sortByStatus(a.status.value, b.status.value);
     },
     sorted: 0,
     allowMiddleState: true,
@@ -107,6 +155,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
         : a.start.value == b.start.value
         ? 0
         : -1;
+      // return sortByStartEnd({ a: a, b: b, startEnd: 'start' });
     },
     sorted: 0,
     allowMiddleState: true,
@@ -124,6 +173,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
         : a.end.value == b.end.value
         ? 0
         : -1;
+      // return sortByStartEnd({ a: a, b: b, startEnd: 'end' });
     },
     sorted: 0,
     allowMiddleState: true,
