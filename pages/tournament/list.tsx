@@ -42,16 +42,6 @@ interface ITournamentDisplayList
   status: Item;
 }
 
-const sortByStatus = (a: any, b: any) => {
-  if ((a == 1 && b == 0 && a > b) || (a == 0 && b == 2 && a < b)) {
-    return 1;
-  } else if (a == b) {
-    return 0;
-  } else {
-    return -1;
-  }
-};
-
 const sortByStartEnd = ({
   a,
   b,
@@ -61,20 +51,19 @@ const sortByStartEnd = ({
   b: any;
   startEnd: 'start' | 'end';
 }) => {
-  //1 -текущие; 0 - ожидаются; 2 - завершенные
-  if (a.status.value == 1 && b.status.value == 1) {
+  if (a.status.value == 0 && b.status.value == 0) {
     if (startEnd == 'start') {
       return 0;
     } else {
-      return a.end.value < b.end.value
+      return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
         ? 0
         : -1;
     }
-  } else if (a.status.value == 0 && b.status.value == 0) {
+  } else if (a.status.value == 1 && b.status.value == 1) {
     if (startEnd == 'start') {
-      return a.start.value < b.start.value
+      return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
         ? 0
@@ -86,7 +75,7 @@ const sortByStartEnd = ({
     if (startEnd == 'start') {
       return 0;
     } else {
-      return a.end.value > b.end.value
+      return a.end.value < b.end.value
         ? 1
         : a.end.value == b.end.value
         ? 0
@@ -108,7 +97,6 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
         : a.status.value == b.status.value
         ? 0
         : -1;
-      // return sortByStatus(a.status.value, b.status.value);
     },
     sorted: 0,
     allowMiddleState: true,
@@ -155,7 +143,6 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
         : a.start.value == b.start.value
         ? 0
         : -1;
-      // return sortByStartEnd({ a: a, b: b, startEnd: 'start' });
     },
     sorted: 0,
     allowMiddleState: true,
@@ -173,7 +160,6 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
         : a.end.value == b.end.value
         ? 0
         : -1;
-      // return sortByStartEnd({ a: a, b: b, startEnd: 'end' });
     },
     sorted: 0,
     allowMiddleState: true,
@@ -235,7 +221,7 @@ const processData = (
   tournaments: ITournamentDisplayList[];
   tags: ITag[];
 } => {
-  const tournaments = data.tournaments.map(
+  const tournamentsData = data.tournaments.map(
     (tournament: ITournamentDisplay): any => ({
       ...tournament,
       status: {
@@ -276,6 +262,16 @@ const processData = (
       },
     })
   );
+  const running = tournamentsData
+    .filter((element) => element.status.value === 0)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
+  const pending = tournamentsData
+    .filter((element) => element.status.value === 1)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'start' }));
+  const finished = tournamentsData
+    .filter((element) => element.status.value === 2)
+    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
+  const tournaments = [...running, ...pending, ...finished];
   const tags = data.tags;
   return { tournaments, tags };
 };
@@ -297,7 +293,8 @@ function TournamentList() {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'status', order: 1 }],
+    // sort_by: [{ field: 'status', order: 1 }],
+    sort_by: [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],
