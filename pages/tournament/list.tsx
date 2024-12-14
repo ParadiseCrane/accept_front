@@ -214,6 +214,18 @@ const getTournamentIcon = (
   }
 };
 
+const getSortValue = (tournament: any): number => {
+  if (tournament.status.spec === 1) {
+    return 300000000000 - Math.floor(new Date(tournament.end).getTime() / 1000);
+  } else if (tournament.status.spec === 0) {
+    return (
+      200000000000 - Math.floor(new Date(tournament.start).getTime() / 1000)
+    );
+  } else {
+    return 100000000000 + Math.floor(new Date(tournament.end).getTime() / 1000);
+  }
+};
+
 const processData = (
   data: ITournamentListBundle,
   locale: ILocale
@@ -221,12 +233,12 @@ const processData = (
   tournaments: ITournamentDisplayList[];
   tags: ITag[];
 } => {
-  const tournamentsData = data.tournaments.map(
+  const tournaments = data.tournaments.map(
     (tournament: ITournamentDisplay): any => ({
       ...tournament,
       status: {
-        // value: tournament.status.spec,
-        value: mapTournamentStatus(tournament.status.spec),
+        // value: mapTournamentStatus(tournament.status.spec),
+        value: getSortValue(tournament),
         display: <>{getTournamentIcon(tournament, locale)}</>,
       },
       start: {
@@ -262,16 +274,6 @@ const processData = (
       },
     })
   );
-  const running = tournamentsData
-    .filter((element) => element.status.value === 0)
-    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
-  const pending = tournamentsData
-    .filter((element) => element.status.value === 1)
-    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'start' }));
-  const finished = tournamentsData
-    .filter((element) => element.status.value === 2)
-    .sort((a, b) => sortByStartEnd({ a: a, b: b, startEnd: 'end' }));
-  const tournaments = [...running, ...pending, ...finished];
   const tags = data.tags;
   return { tournaments, tags };
 };
@@ -293,8 +295,8 @@ function TournamentList() {
       skip: 0,
       limit: defaultOnPage,
     },
-    // sort_by: [{ field: 'status', order: 1 }],
-    sort_by: [],
+    sort_by: [{ field: 'status', order: -1 }],
+    // sort_by: [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],

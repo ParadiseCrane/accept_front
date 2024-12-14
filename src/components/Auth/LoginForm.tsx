@@ -1,3 +1,5 @@
+'use client';
+
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
@@ -13,6 +15,7 @@ import {
 } from '@utils/notificationFunctions';
 import { useRouter } from 'next/router';
 import { SelectItem } from '@custom-types/ui/atomic';
+import { getOrganizationFromLS } from '@utils/manageLocalStorage';
 
 const LoginForm: FC<{
   signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
@@ -45,9 +48,31 @@ const LoginForm: FC<{
     [organizations]
   );
 
+  const [initialOrganization, setInitialOrganization] = useState('');
+  useEffect(() => {
+    const orgFromLS = getOrganizationFromLS() ?? '';
+    if (
+      orgFromLS &&
+      organizations?.filter((element) => element.value == orgFromLS)
+    ) {
+      const label = organizations?.filter(
+        (element) => element.value == orgFromLS
+      )[0].label;
+      console.log('setInitialOrganization', label);
+      setInitialOrganization(label);
+      form.setFieldValue('organization', label);
+      console.log('form', form.getInputProps('organization'));
+    }
+  }, [organizations_loading]);
+
+  // let initialOrganization = getOrganizationFromLS() ?? '';
+  // // organizations?.filter((element) => element.value )
+  // console.log('initialOrganization', initialOrganization);
+  // console.log('organizations', organizations);
+
   const form = useForm({
     initialValues: {
-      organization: '',
+      organization: initialOrganization,
       login: '',
       password: '',
     },

@@ -11,6 +11,7 @@ import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
 import AccountsMenu from './AccountsMenu/AccountsMenu';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
+import { putOrganizationToLS } from '@utils/manageLocalStorage';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -80,7 +81,10 @@ const ProfileMenu: FC<{}> = ({}) => {
             closeMenu={() => {
               toggleMenu(undefined);
             }}
-            confirm={signOut}
+            confirm={() => {
+              signOut();
+              putOrganizationToLS({value: user?.organization});
+            }}
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}
           >
