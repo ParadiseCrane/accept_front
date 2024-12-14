@@ -148,7 +148,7 @@ const Description: FC<{
           <div className={styles.tasksWrapper}>
             {((!registered && tournament.status.spec != 2) ||
               (!special && tournament.status.spec == 0)) && (
-              <Overlay blur={3} />
+              <Overlay />
             )}
             <PrimitiveTaskTable
               tasks={tasks}
@@ -157,8 +157,8 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                  ? locale.tournament.emptyTasks
-                  : locale.tournament.needRegistration
+                    ? locale.tournament.emptyTasks
+                    : locale.tournament.needRegistration
               }
             />
           </div>

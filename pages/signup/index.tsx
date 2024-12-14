@@ -73,14 +73,14 @@ function SignUp() {
         value.length < 5
           ? locale.auth.errors.login.len
           : !value.match(/^[a-zA-Z][a-zA-Z_]+$/)
-          ? locale.auth.errors.login.symbols
-          : null,
+            ? locale.auth.errors.login.symbols
+            : null,
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
           : !value.match(/^[a-zA-Z\d\.]+$/)
-          ? locale.auth.errors.password.symbols
-          : null,
+            ? locale.auth.errors.password.symbols
+            : null,
       confirmPassword: (value, values) =>
         value !== values.password ? locale.auth.errors.confirm : null,
       email: (value) =>
@@ -93,10 +93,10 @@ function SignUp() {
         value.length > 50
           ? locale.auth.errors.name.len
           : value.trim().split(' ').length < 2
-          ? locale.auth.errors.name.surname
-          : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-          ? locale.auth.errors.name.invalid
-          : null,
+            ? locale.auth.errors.name.surname
+            : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
+              ? locale.auth.errors.name.invalid
+              : null,
     },
     validateInputOnBlur: true,
   });

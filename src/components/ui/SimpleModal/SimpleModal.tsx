@@ -38,7 +38,6 @@ const SimpleModal: FC<SimpleModalProps> = ({
           {helperContent && <Helper dropdownContent={helperContent} />}
         </div>
       }
-      // zIndex={9900}
       onClose={close}
       {...props}
     >

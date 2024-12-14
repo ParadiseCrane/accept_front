@@ -26,7 +26,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
 
   return (
     <>
-      <Affix ref={ref} position={{ bottom: 0, right: '200px' }} zIndex={201}>
+      <Affix ref={ref} position={{ bottom: 0, right: '200px' }} zIndex={100}>
         <div style={{ visibility: showChat ? 'visible' : 'hidden' }}>
           {window && (
             <Chat

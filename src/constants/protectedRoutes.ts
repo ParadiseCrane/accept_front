@@ -28,6 +28,8 @@ export const protectedRoutesInfo: {
   '/assignment': checkWrapper('read', 'assignment'),
   '/assignment/add': checkWrapper('add', 'assignment'),
   '/assignment/edit': checkWrapper('write', 'assignment'),
+  '/organization/add': checkWrapper('moderate', 'organization'),
+  '/organization/edit': checkWrapper('moderate', 'organization'),
   '/group/add': checkWrapper('add', 'group'),
   '/group/edit': checkWrapper('write', 'assignment'),
   '/group/list': checkWrapper('read_list', 'group'),
