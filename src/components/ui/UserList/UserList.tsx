@@ -22,6 +22,7 @@ import { IGroup } from '@custom-types/data/IGroup';
 import { IRole } from '@custom-types/data/atomic';
 import { capitalize } from '@utils/capitalize';
 import { MultiSelect } from '@ui/basics';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface Item<T = any> {
   value: T;
@@ -35,8 +36,6 @@ interface IUserDisplayList extends Omit<IUser, 'login' | 'shortName' | 'role'> {
   banned: Item<boolean>;
   banReason?: Item<string>;
 }
-
-const DEFAULT_ON_PAGE = 10;
 
 const UsersList: FC<{
   url: string;

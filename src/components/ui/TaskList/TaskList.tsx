@@ -20,6 +20,7 @@ import { ILocale } from '@custom-types/ui/ILocale';
 import { BaseSearch } from '@custom-types/data/request';
 import { customTableSort } from '@utils/customTableSort';
 import { MultiSelect } from '@ui/basics';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface Item {
   value: any;
@@ -27,17 +28,12 @@ interface Item {
 }
 
 interface ITaskDisplayList
-  extends Omit<
-    ITaskDisplay,
-    'title' | 'author' | 'verdict' | 'complexity'
-  > {
+  extends Omit<ITaskDisplay, 'title' | 'author' | 'verdict' | 'complexity'> {
   title: Item;
   author: Item;
   verdict: Item;
   complexity: Item;
 }
-
-const DEFAULT_ON_PAGE = 10;
 
 const TaskList: FC<{
   url: string;
@@ -97,11 +93,7 @@ const TaskList: FC<{
     sort_by: [],
     search_params: {
       search: '',
-      keys: [
-        'title.value',
-        'author.value',
-        'verdict.value.shortText',
-      ],
+      keys: ['title.value', 'author.value', 'verdict.value.shortText'],
     },
   });
 

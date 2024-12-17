@@ -135,10 +135,10 @@ const LoginForm: FC<{
         <Select
           required
           id="organization"
-          label={'Организация'} // TODO add locale
+          label={locale.auth.labels.organization}
           data={organizations || []}
           disabled={!!!organizations || organizations_loading}
-          placeholder={'Выберите организацию'} // TODO add locale
+          placeholder={locale.auth.placeholders.chooseOrganization}
           classNames={{
             label: styles.label,
           }}

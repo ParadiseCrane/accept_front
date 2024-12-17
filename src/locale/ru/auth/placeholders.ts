@@ -7,4 +7,5 @@ export const placeholders = {
   name: 'Иван',
   surname: 'Иванов',
   patronymic: 'Иванович',
+  chooseOrganization: 'Выберите организацию',
 };

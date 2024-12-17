@@ -17,21 +17,11 @@ import { BaseSearch } from '@custom-types/data/request';
 import Fuse from 'fuse.js';
 import { customTableSort } from '@utils/customTableSort';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { IOrganization } from '@custom-types/data/IOrganization';
-
-interface Item {
-  // TODO: Move somewhere
-  value: any;
-  display: string | ReactNode;
-}
-
-interface IOrganizationList
-  extends Omit<IOrganization, 'name' | 'allowRegistration'> {
-  name: Item;
-  allowRegistration: Item;
-}
-
-const DEFAULT_ON_PAGE = 10; //TODO: Move to constants
+import {
+  IOrganization,
+  IOrganizationList,
+} from '@custom-types/data/IOrganization';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 const OrganizationList: FC<{
   url: string;

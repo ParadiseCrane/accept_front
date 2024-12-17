@@ -1,18 +1,8 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRequest } from '@hooks/useRequest';
 import { useLocale } from '@hooks/useLocale';
-import {
-  ITeamDisplay,
-  ITeamDisplayWithBanned,
-} from '@custom-types/data/ITeam';
+import { ITeamDisplay, ITeamDisplayWithBanned } from '@custom-types/data/ITeam';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -24,6 +14,7 @@ import Fuse from 'fuse.js';
 import { customTableSort } from '@utils/customTableSort';
 import BanButton from './BanButton/BanButton';
 import { setter } from '@custom-types/ui/atomic';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -31,11 +22,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'name',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.name.value > b.name.value
-        ? 1
-        : a.name.value == b.name.value
-        ? 0
-        : -1,
+      a.name.value > b.name.value ? 1 : a.name.value == b.name.value ? 0 : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -76,11 +63,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'ban',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.ban.value > b.ban.value
-        ? 1
-        : a.ban.value == b.ban.value
-        ? 0
-        : -1,
+      a.ban.value > b.ban.value ? 1 : a.ban.value == b.ban.value ? 0 : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -99,10 +82,7 @@ const processData = (
     name: {
       value: team.name,
       display: (
-        <Link
-          className={tableStyles.title}
-          href={`/team/${team.spec}`}
-        >
+        <Link className={tableStyles.title} href={`/team/${team.spec}`}>
           {team.name}
         </Link>
       ),
@@ -123,18 +103,12 @@ const processData = (
     ban: {
       value: team.banned,
       display: (
-        <BanButton
-          team={team}
-          spec={spec}
-          onSuccess={() => refetch(false)}
-        />
+        <BanButton team={team} spec={spec} onSuccess={() => refetch(false)} />
         // <>{team.banned ? 'Banned' : 'Not banned'}</>
       ),
     },
   }));
 };
-
-const DEFAULT_ON_PAGE = 10;
 
 const TeamList: FC<{ spec: string }> = ({ spec }) => {
   const { locale } = useLocale();
@@ -149,30 +123,19 @@ const TeamList: FC<{ spec: string }> = ({ spec }) => {
     sort_by: [],
     search_params: {
       search: '',
-      keys: [
-        'name.value',
-        'capitan.value.login',
-        'capitan.value.shortName',
-      ],
+      keys: ['name.value', 'capitan.value.login', 'capitan.value.shortName'],
     },
   });
 
   const columns = useMemo(() => initialColumns(locale), [locale]);
   const [refetchCounter, setRefetchCounter] = useState(0);
-  const refetchKal = useCallback(
-    () => setRefetchCounter((val) => val + 1),
-    []
-  );
+  const refetchKal = useCallback(() => setRefetchCounter((val) => val + 1), []);
 
-  const { data, loading, refetch } = useRequest<
-    {},
-    ITeamDisplayWithBanned[]
-  >(
+  const { data, loading, refetch } = useRequest<{}, ITeamDisplayWithBanned[]>(
     `team/list/${spec}`,
     'GET',
     undefined,
-    (data: ITeamDisplayWithBanned[]) =>
-      processData(data, spec, refetchKal)
+    (data: ITeamDisplayWithBanned[]) => processData(data, spec, refetchKal)
   );
 
   useEffect(() => {

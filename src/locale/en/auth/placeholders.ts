@@ -7,4 +7,5 @@ export const placeholders = {
   name: 'John',
   surname: 'Doe',
   patronymic: '',
+  chooseOrganization: 'Choose an organization',
 };
