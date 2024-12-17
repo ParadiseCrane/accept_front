@@ -74,7 +74,7 @@ const loadImageAsFile = async ({
       editor
         .chain()
         .insertContent(
-          `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageAltTitle}" draggable="true">`
+          `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageAltTitle}" draggable="true">`
         )
         .run();
     } catch (error) {
@@ -82,7 +82,7 @@ const loadImageAsFile = async ({
       editor
         .chain()
         .insertContent(
-          `<img src="${src}" alt="${locale.tiptap.imageUploadFail}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageUploadFail}" draggable="true">`
+          `<img src="${src}" alt="${locale.tiptap.imageUploadFail}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageUploadFail}" draggable="true" display="block">`
         )
         .run();
     }

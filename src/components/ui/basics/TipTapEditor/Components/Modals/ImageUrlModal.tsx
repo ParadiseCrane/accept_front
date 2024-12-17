@@ -19,7 +19,7 @@ const loadImageFromUrl = ({
   editor
     .chain()
     .insertContent(
-      `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer;" title="${locale.tiptap.imageAltTitle}" draggable="true">`
+      `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageAltTitle}" draggable="true" display="block">`
     )
     .run();
 };

@@ -158,7 +158,7 @@ export const TipTapEditor = ({
     <RichTextEditor editor={editor}>
       {editorMode && editor && (
         <RichTextEditor.Toolbar
-          sticky
+          sticky={true}
           stickyOffset={60}
           className={styles.toolbar}
         >
