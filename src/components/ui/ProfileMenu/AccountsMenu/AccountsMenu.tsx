@@ -15,6 +15,7 @@ import { Logout, Plus, Trash } from 'tabler-icons-react';
 import Link from 'next/link';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
+import { putOrganizationToLS } from '@utils/manageLocalStorage';
 
 const AccountsMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -92,6 +93,7 @@ const AccountsMenu: FC<{}> = ({}) => {
           }
         ).then((res) => {
           if (!res.error) {
+            putOrganizationToLS({ value: organization });
             clearCookie('user');
             clearCookie('accounts');
             refreshAccess();

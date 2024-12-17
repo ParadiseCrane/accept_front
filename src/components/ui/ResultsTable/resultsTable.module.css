@@ -43,19 +43,19 @@
   box-shadow: inset 0 -1px black;
 }
 
-.wrapperTable > tr > td > table > thead > tr > th,
-.wrapperTable > tr > td > table > tbody > tr > td {
+.wrapperTable>tr>td>table>thead>tr>th,
+.wrapperTable>tr>td>table>tbody>tr>td {
   height: 50px;
   padding-right: var(--spacer-s);
   padding-left: var(--spacer-xs);
 }
 
 .leftTable,
-.rightTable > thead > th {
+.rightTable>thead>th {
   z-index: 5;
 }
 
-.wrapperTable > tr > td:first-of-type {
+.wrapperTable>tr>td:first-of-type {
   background: white;
   position: sticky;
   z-index: 5;
@@ -64,7 +64,7 @@
   padding-left: var(--spacer-xs);
 }
 
-.wrapperTable > tr > td:last-of-type {
+.wrapperTable>tr>td:last-of-type {
   background: white;
   position: sticky;
   z-index: 5;
@@ -73,6 +73,6 @@
   padding-left: var(--spacer-xs);
 }
 
-.wrapperTable > tr > td {
+.wrapperTable>tr>td {
   padding: 0 !important;
 }

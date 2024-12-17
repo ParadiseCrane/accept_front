@@ -22,9 +22,9 @@ const Form: FC<{
     initialValues,
     validate: {
       spec: (value) =>
-        value.length < 3 ? locale.organization.form.validation.spec : null,
+        value.length < 3 ? locale.organization.form.validation.spec(3) : null,
       name: (value) =>
-        value.length < 3 ? locale.organization.form.validation.name : null,
+        value.length < 3 ? locale.organization.form.validation.name(3) : null,
       description: (value) =>
         value.length == 0
           ? locale.organization.form.validation.description

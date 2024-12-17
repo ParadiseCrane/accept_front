@@ -1,3 +1,5 @@
+'use client';
+
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
@@ -13,6 +15,8 @@ import {
 } from '@utils/notificationFunctions';
 import { useRouter } from 'next/router';
 import { SelectItem } from '@custom-types/ui/atomic';
+import { getOrganizationFromLS } from '@utils/manageLocalStorage';
+import { organization } from '@locale/en/organization';
 
 const LoginForm: FC<{
   signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
@@ -44,6 +48,16 @@ const LoginForm: FC<{
     () => organizations?.map((item) => item.value) || [],
     [organizations]
   );
+
+  useEffect(() => {
+    const orgFromLS = getOrganizationFromLS() ?? '';
+    if (
+      orgFromLS &&
+      organizations?.filter((element) => element.value == orgFromLS)
+    ) {
+      form.setFieldValue('organization', orgFromLS);
+    }
+  }, [organizations_loading]);
 
   const form = useForm({
     initialValues: {
@@ -121,10 +135,10 @@ const LoginForm: FC<{
         <Select
           required
           id="organization"
-          label={'Организация'} // TODO add locale
+          label={locale.auth.labels.organization}
           data={organizations || []}
           disabled={!!!organizations || organizations_loading}
-          placeholder={'Выберите организацию'} // TODO add locale
+          placeholder={locale.auth.placeholders.chooseOrganization}
           classNames={{
             label: styles.label,
           }}

@@ -1,8 +1,5 @@
 import { FC, memo, useMemo } from 'react';
-import {
-  IndicatorProps,
-  Indicator as MantineIndicator,
-} from '@mantine/core';
+import { IndicatorProps, Indicator as MantineIndicator } from '@mantine/core';
 import styles from './indicator.module.css';
 
 const OVERFLOW_COUNT = 99;
@@ -46,6 +43,9 @@ const Indicator: FC<CustomIndicatorProps> = ({
         indicator: {
           backgroundColor: props.color || 'var(--accent)',
           fontSize: `${font_size}px`,
+        },
+        root: {
+          display: 'flex',
         },
       }}
       classNames={{ indicator: blink ? styles.blink : '' }}

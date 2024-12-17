@@ -59,6 +59,18 @@ interface IAssignmentDisplayList
   state: Item;
 }
 
+const getSortValue = (assignment: any): number => {
+  if (assignment.status.spec === 1) {
+    return 300000000000 - Math.floor(new Date(assignment.end).getTime() / 1000);
+  } else if (assignment.status.spec === 0) {
+    return (
+      200000000000 - Math.floor(new Date(assignment.start).getTime() / 1000)
+    );
+  } else {
+    return 100000000000 + Math.floor(new Date(assignment.end).getTime() / 1000);
+  }
+};
+
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: '',
@@ -220,7 +232,8 @@ const processData = (
     (assignment: IAssignmentDisplay): any => ({
       ...assignment,
       state: {
-        value: mapAssignmentStatus(assignment.status.spec),
+        // value: mapAssignmentStatus(assignment.status.spec),
+        value: getSortValue(assignment),
         display: getAssignmentIcon(assignment, locale),
       },
       title: {
@@ -310,7 +323,8 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'state', order: 1 }],
+    sort_by: [{ field: 'state', order: -1 }],
+    // sort_by: [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],

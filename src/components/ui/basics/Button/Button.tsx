@@ -22,6 +22,10 @@ const Button: FC<MyButtonProps> = ({
 
   const [mounted, setMounted] = useState(false);
 
+  // TODO remove any
+  const component: any = props.href ? Link : 'button';
+  const propsClassName: any = props.classNames;
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -50,19 +54,15 @@ const Button: FC<MyButtonProps> = ({
                 }
               >
                 <MantineButton
-                  // @ts-expect-error
-                  component={props.href ? Link : 'button'}
+                  component={component}
                   {...props}
                   classNames={{
                     ...props.classNames,
-                    // TODO: Fix types
                     label: concatClassNames(
                       styles.label,
-                      // @ts-ignore
-                      props.classNames?.label
+                      propsClassName?.label
                     ),
-                    // @ts-ignore
-                    root: concatClassNames(styles.root, props.classNames?.root),
+                    root: concatClassNames(styles.root, propsClassName?.root),
                   }}
                 />
               </div>
