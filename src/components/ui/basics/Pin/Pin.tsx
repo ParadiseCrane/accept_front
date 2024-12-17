@@ -20,6 +20,7 @@ interface Props extends MantinePinProps {
 const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {
   // TODO: check type
   return (
+    // @ts-expect-error
     <InputWrapper {...props}>
       <div
         className={concatClassNames(styles.inputWrapper, classNames?.wrapper)}

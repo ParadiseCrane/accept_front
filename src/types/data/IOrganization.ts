@@ -9,7 +9,6 @@ export interface IOrganization {
 }
 
 export interface IItem {
-  // TODO: Move somewhere
   value: any;
   display: string | ReactNode;
 }
