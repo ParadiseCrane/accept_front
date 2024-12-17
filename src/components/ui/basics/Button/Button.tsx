@@ -22,6 +22,7 @@ const Button: FC<MyButtonProps> = ({
 
   const [mounted, setMounted] = useState(false);
 
+  // TODO remove any
   const component: any = props.href ? Link : 'button';
   const propsClassName: any = props.classNames;
 
