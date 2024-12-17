@@ -5,7 +5,7 @@ import { useUser } from '@hooks/useUser';
 import { useRouter } from 'next/router';
 import ProfileMenu from '@ui/ProfileMenu/ProfileMenu';
 
-const SignIn: FC = () => {
+const SignIn: FC<{ size?: 'md' | 'lg' }> = ({ size = 'lg' }) => {
   const { locale } = useLocale();
   const router = useRouter();
   const { user } = useUser();
@@ -27,7 +27,7 @@ const SignIn: FC = () => {
           {locale.mainHeaderLinks.signIn}
         </Button>
       ) : (
-        <ProfileMenu />
+        <ProfileMenu size={size} />
       )}
     </>
   );

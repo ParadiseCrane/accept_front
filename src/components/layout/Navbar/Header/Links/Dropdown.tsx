@@ -20,7 +20,7 @@ const Dropdown: FC<{
       position="bottom-start"
       offset={8}
       trigger="hover"
-      zIndex={1000}
+      // zIndex={1000}
       openDelay={200}
       closeDelay={200}
       transitionProps={

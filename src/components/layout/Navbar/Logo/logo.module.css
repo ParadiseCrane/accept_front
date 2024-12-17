@@ -9,7 +9,6 @@
 }
 
 .name {
-  font-size: var(--font-size-xxl);
   line-height: var(--spacer-s);
 }
 

@@ -6,16 +6,18 @@ import Link from 'next/link';
 import styles from './logo.module.css';
 import { useHotkeys } from '@mantine/hooks';
 import { useUser } from '@hooks/useUser';
-import { Badge } from '@mantine/core';
+import { Badge, Title } from '@mantine/core';
 
-const Logo: FC = () => {
+const imageSize = {
+  md: 48,
+  sm: 32,
+};
+
+const Logo: FC<{ size?: 'sm' | 'md' }> = ({ size = 'md' }) => {
   const { locale } = useLocale();
   const { user } = useUser();
   const [jumpItem, setJumpItem] = useState('');
-  let letters = useMemo(
-    () => locale.accept.split(''),
-    [locale.accept]
-  );
+  let letters = useMemo(() => locale.accept.split(''), [locale.accept]);
 
   useHotkeys(
     letters.map((item) => [
@@ -23,10 +25,7 @@ const Logo: FC = () => {
       () => {
         setJumpItem(item);
         setTimeout(
-          () =>
-            setJumpItem((old_item) =>
-              old_item == item ? '' : old_item
-            ),
+          () => setJumpItem((old_item) => (old_item == item ? '' : old_item)),
           300
         );
       },
@@ -35,17 +34,21 @@ const Logo: FC = () => {
 
   return (
     <Link href="/" className={styles.logoWrapper}>
-      <Image src={logo} width={48} height={48} alt="Accept" />
-      <div className={styles.name}>
+      <Image
+        src={logo}
+        width={imageSize[size]}
+        height={imageSize[size]}
+        alt="Accept"
+      />
+      {/* <div className={styles.name}> */}
+      <Title order={1} size="1.4em">
         {letters.map((item, index) => (
-          <span
-            key={index}
-            className={item == jumpItem ? styles.jump : ''}
-          >
+          <span key={index} className={item == jumpItem ? styles.jump : ''}>
             {item}
           </span>
         ))}
-      </div>
+      </Title>
+      {/* </div> */}
       {user?.organization && (
         <Badge
           style={{

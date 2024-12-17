@@ -13,7 +13,7 @@ import AccountsMenu from './AccountsMenu/AccountsMenu';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 import { putOrganizationToLS } from '@utils/manageLocalStorage';
 
-const ProfileMenu: FC<{}> = ({}) => {
+const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
   const { locale } = useLocale();
   const { user, signOut, accessLevel, accounts } = useUser();
 
@@ -34,6 +34,8 @@ const ProfileMenu: FC<{}> = ({}) => {
             <Indicator label={unviewed} disabled={unviewed <= 0}>
               <UserAvatar
                 login={user?.login}
+                size={size}
+                radius={size}
                 organization={user?.organization}
                 alt={'User avatar'}
                 classNames={{ root: styles.avatar }}
