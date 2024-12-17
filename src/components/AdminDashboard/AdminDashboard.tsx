@@ -26,31 +26,37 @@ const AdminDashboard: FC<{}> = ({}) => {
         page: <AssignmentList url="assignment/list" />,
         icon: <Chalkboard color="var(--secondary)" />,
         title: locale.dashboard.admin.assignmentList,
+        section: 'assignments',
       },
       {
         page: <AddUsers />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.admin.addUsers,
+        section: 'add_users',
       },
       {
         page: <AddUser />,
         icon: <UserPlus color="var(--secondary)" />,
         title: locale.dashboard.admin.addUser,
+        section: 'add_user',
       },
       {
         page: <AddGrade />,
         icon: <AlphabetCyrillic color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrade,
+        section: 'add_grade',
       },
       {
         page: <AddGrades />,
         icon: <PlaylistAdd color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrades,
+        section: 'add_grades',
       },
       {
         page: <ChangeGrades />,
         icon: <AB2 color="var(--secondary)" />,
         title: locale.dashboard.admin.changeGrades,
+        section: 'change_grades',
       },
     ],
     [locale]

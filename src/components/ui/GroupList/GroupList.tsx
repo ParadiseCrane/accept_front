@@ -17,6 +17,7 @@ import { BaseSearch } from '@custom-types/data/request';
 import Fuse from 'fuse.js';
 import { customTableSort } from '@utils/customTableSort';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface Item {
   value: any;
@@ -29,8 +30,6 @@ interface IGroupDisplayList
   participants: Item;
   readonly: Item;
 }
-
-const DEFAULT_ON_PAGE = 10;
 
 const GroupsList: FC<{
   url: string;

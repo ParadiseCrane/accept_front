@@ -87,6 +87,7 @@ const TournamentDashboard: FC<{
         ),
         icon: <Vocabulary color="var(--secondary)" />,
         title: locale.dashboard.tournament.mainInfo,
+        section: 'tournament',
       },
       {
         page: <ChatPage spec={spec} entity="tournament" />,
@@ -96,6 +97,7 @@ const TournamentDashboard: FC<{
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
+        section: 'chat',
       },
       {
         page: tournament && (
@@ -110,6 +112,7 @@ const TournamentDashboard: FC<{
         ),
         icon: <Table color="var(--secondary)" />,
         title: locale.dashboard.tournament.results,
+        section: 'results',
       },
       {
         page: tournament && (
@@ -124,6 +127,7 @@ const TournamentDashboard: FC<{
         ),
         icon: <AlignRight color="var(--secondary)" />,
         title: locale.dashboard.tournament.attempts,
+        section: 'attempts',
       },
       {
         page: (
@@ -135,11 +139,13 @@ const TournamentDashboard: FC<{
         ),
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.tournament.participants,
+        section: 'participants',
       },
       {
         page: <TaskList type={'tournament'} spec={spec} />,
         icon: <Puzzle color="var(--secondary)" />,
         title: locale.dashboard.tournament.tasks,
+        section: 'tasks',
       },
       {
         page: (
@@ -150,6 +156,7 @@ const TournamentDashboard: FC<{
         ),
         icon: <AddressBook color="var(--secondary)" />,
         title: locale.dashboard.tournament.registrationManagement,
+        section: 'registration',
       },
       {
         page: tournament && (
@@ -157,6 +164,7 @@ const TournamentDashboard: FC<{
         ),
         icon: <BellPlus color="var(--secondary)" />,
         title: locale.dashboard.tournament.createNotification,
+        section: 'create_notification',
       },
       {
         page: tournament && (
@@ -172,11 +180,13 @@ const TournamentDashboard: FC<{
         ),
         icon: <Ban color="var(--secondary)" />,
         title: locale.dashboard.tournament.bannedAttempts,
+        section: 'banned_attempts',
       },
       {
         page: tournament && <Settings tournament={tournament} />,
         icon: <SettingsIcon color="var(--secondary)" />,
         title: locale.dashboard.tournament.settings.self,
+        section: 'settings',
       },
     ];
 
@@ -185,6 +195,7 @@ const TournamentDashboard: FC<{
         page: <TeamList spec={spec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.tournament.teams,
+        section: 'teams',
       });
     }
 

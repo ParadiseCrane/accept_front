@@ -17,8 +17,7 @@ import { BaseSearch } from '@custom-types/data/request';
 import Fuse from 'fuse.js';
 import { customTableSort } from '@utils/customTableSort';
 import { IStudentAdd } from '@custom-types/data/IStudent';
-
-const DEFAULT_ON_PAGE = 10;
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 const NewUsersList: FC<{
   data: IStudentAdd[];

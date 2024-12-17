@@ -4,6 +4,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/code-highlight/styles.css';
 import '@styles/globals.css';
+import '@styles/tiptap.css';
 import { BackNotificationsProvider } from '@hooks/useBackNotifications';
 import { LocaleProvider } from '@hooks/useLocale';
 import { UserProvider } from '@hooks/useUser';

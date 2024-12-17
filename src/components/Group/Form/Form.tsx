@@ -16,13 +16,7 @@ const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
   hideReadonly?: boolean;
   initialValues: any;
-}> = ({
-  initialValues,
-  handleSubmit,
-  buttonText,
-  users,
-  hideReadonly,
-}) => {
+}> = ({ initialValues, handleSubmit, buttonText, users, hideReadonly }) => {
   const { locale } = useLocale();
   const { isAdmin } = useUser();
 
@@ -30,11 +24,9 @@ const Form: FC<{
     initialValues,
     validate: {
       name: (value) =>
-        value.length < 3 ? locale.group.form.validation.name : null,
+        value.length < 3 ? locale.group.form.validation.name(3) : null,
       members: (value) => {
-        value.length < 2
-          ? locale.group.form.validation.members
-          : null;
+        value.length < 2 ? locale.group.form.validation.members(2) : null;
       },
     },
     validateInputOnBlur: true,

@@ -1,15 +1,8 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react';
 import { InputWrapper } from '@ui/basics';
-
-const editorConfiguration = {
-  simpleUpload: {
-    uploadUrl: `/api/image`,
-
-    withCredentials: false,
-    // withCredentials: true,
-  },
-};
+import { TipTapEditor } from '../TipTapEditor/TipTapEditor';
+import { Editor as EditorType } from '@tiptap/react';
 
 const CustomEditor: FC<{
   name: string;
@@ -21,22 +14,6 @@ const CustomEditor: FC<{
 }> = ({ name, label, form, helperContent, shrink }) => {
   const { locale } = useLocale();
 
-  const editorRef = useRef<any>(null!);
-  const { CKEditor, Editor } = editorRef.current || {
-    CKEditor: {},
-    Editor: {},
-  };
-
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(true);
-    editorRef.current = {
-      CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
-      Editor: require('ckeditor5-custom/build/ckeditor'),
-    };
-  }, []);
-
   return (
     <div>
       <InputWrapper
@@ -45,27 +22,18 @@ const CustomEditor: FC<{
         shrink={shrink}
         {...form.getInputProps(name)}
       >
-        {isLoaded ? (
-          <CKEditor
-            name={name}
-            editor={Editor}
-            data={form.values[name]}
-            config={editorConfiguration}
-            onChange={(_: any, editor: any) => {
-              const data = editor.getData();
-              form.setFieldValue(name, data);
-            }}
-            onBlur={() => form.validateField(name)}
-          />
-        ) : (
-          <div
-            style={{
-              fontSize: shrink ? 'var(--font-size-xs)' : 'var(--font-size-s)',
-            }}
-          >
-            {locale.loading + '...'}
-          </div>
-        )}
+        <TipTapEditor
+          editorMode={true}
+          content={form.values[name]}
+          form={form}
+          onUpdate={(editor: EditorType) => {
+            const data = editor.getHTML();
+            form.setFieldValue(name, data);
+          }}
+          onBlur={() => {
+            form.validateField(name);
+          }}
+        />
       </InputWrapper>
     </div>
   );

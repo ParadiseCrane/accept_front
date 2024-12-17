@@ -30,36 +30,43 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         page: <FeedbackList />,
         icon: <UserExclamation color="var(--secondary)" />,
         title: locale.dashboard.developer.feedbackList,
+        section: 'feedback',
       },
       {
         page: <CurrentAttempts />,
         icon: <TestPipe color="var(--secondary)" />,
         title: locale.dashboard.developer.currentAttempts.title,
+        section: 'current_attempts',
       },
       {
         page: <AllAttempts />,
         icon: <TestPipe2 color="var(--secondary)" />,
         title: locale.dashboard.developer.allAttempts,
+        section: 'all_attempts',
       },
       {
         page: <NotificationList />,
         icon: <BellRinging color="var(--secondary)" />,
         title: locale.dashboard.developer.notificationList,
+        section: 'notifications',
       },
       {
         page: <Organizations />,
         icon: <ListDetails color="var(--secondary)" />,
         title: locale.dashboard.developer.organizationList,
+        section: 'organizations',
       },
       {
         page: <Executor />,
         icon: <Terminal color="var(--secondary)" />,
         title: locale.dashboard.developer.executor,
+        section: 'executor',
       },
       {
         page: <Analytics />,
         icon: <DeviceAnalytics color="var(--secondary)" />,
         title: locale.dashboard.developer.analytics.title,
+        section: 'analytics',
       },
     ],
     [locale]

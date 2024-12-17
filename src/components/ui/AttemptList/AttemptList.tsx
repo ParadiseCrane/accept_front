@@ -14,18 +14,14 @@ import { useLocale } from '@hooks/useLocale';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { useUser } from '@hooks/useUser';
-import {
-  BaseSearch,
-  UserTaskSearch,
-} from '@custom-types/data/request';
+import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { sendRequest } from '@requests/request';
 import { useRefetch } from '@hooks/useRefetch';
-
-const DEFAULT_ON_PAGE = 10;
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface PagerResponse {
   data: IAttemptDisplay[];
@@ -136,19 +132,10 @@ const AttemptList: FC<{
         setLoading(false);
       })
       .catch(onError);
-  }, [
-    onError,
-    processData,
-    searchParams,
-    taskSearch,
-    toDate,
-    url,
-    userSearch,
-  ]);
+  }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
 
   const refetch = useCallback(() => {
-    if (activeTab && !shouldNotRefetch && needRefetch)
-      return fetch_data();
+    if (activeTab && !shouldNotRefetch && needRefetch) return fetch_data();
     return new Promise<void>((res) => {
       res();
     });

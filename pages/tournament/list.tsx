@@ -1,13 +1,7 @@
 import Table from '@ui/Table/Table';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { useLocale } from '@hooks/useLocale';
 import {
@@ -48,6 +42,50 @@ interface ITournamentDisplayList
   status: Item;
 }
 
+const sortByStartEnd = ({
+  a,
+  b,
+  startEnd,
+}: {
+  a: any;
+  b: any;
+  startEnd: 'start' | 'end';
+}) => {
+  if (a.status.value == 0 && b.status.value == 0) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value > b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else if (a.status.value == 1 && b.status.value == 1) {
+    if (startEnd == 'start') {
+      return a.start.value > b.start.value
+        ? 1
+        : a.start.value == b.start.value
+        ? 0
+        : -1;
+    } else {
+      return 0;
+    }
+  } else if (a.status.value == 2 && b.status.value == 2) {
+    if (startEnd == 'start') {
+      return 0;
+    } else {
+      return a.end.value < b.end.value
+        ? 1
+        : a.end.value == b.end.value
+        ? 0
+        : -1;
+    }
+  } else {
+    return 0;
+  }
+};
+
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: '',
@@ -57,8 +95,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.status.value > b.status.value
         ? 1
         : a.status.value == b.status.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -74,8 +112,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -103,8 +141,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -120,8 +158,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -137,8 +175,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.maxTeamSize > b.maxTeamSize
         ? 1
         : a.maxTeamSize == b.maxTeamSize
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -176,6 +214,18 @@ const getTournamentIcon = (
   }
 };
 
+const getSortValue = (tournament: any): number => {
+  if (tournament.status.spec === 1) {
+    return 300000000000 - Math.floor(new Date(tournament.end).getTime() / 1000);
+  } else if (tournament.status.spec === 0) {
+    return (
+      200000000000 - Math.floor(new Date(tournament.start).getTime() / 1000)
+    );
+  } else {
+    return 100000000000 + Math.floor(new Date(tournament.end).getTime() / 1000);
+  }
+};
+
 const processData = (
   data: ITournamentListBundle,
   locale: ILocale
@@ -187,8 +237,8 @@ const processData = (
     (tournament: ITournamentDisplay): any => ({
       ...tournament,
       status: {
-        // value: tournament.status.spec,
-        value: mapTournamentStatus(tournament.status.spec),
+        // value: mapTournamentStatus(tournament.status.spec),
+        value: getSortValue(tournament),
         display: <>{getTournamentIcon(tournament, locale)}</>,
       },
       start: {
@@ -245,7 +295,8 @@ function TournamentList() {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'status', order: 1 }],
+    sort_by: [{ field: 'status', order: -1 }],
+    // sort_by: [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value'],
@@ -278,8 +329,7 @@ function TournamentList() {
     'GET',
     undefined,
     (() => {
-      return (data: ITournamentListBundle) =>
-        processData(data, locale);
+      return (data: ITournamentListBundle) => processData(data, locale);
     })()
   );
 

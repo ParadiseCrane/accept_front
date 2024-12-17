@@ -24,6 +24,7 @@ import Description from '@components/Task/Description/Description';
 import Head from 'next/head';
 import { Kbd } from '@ui/basics';
 import { getCookieValue } from '@utils/cookies';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const DynamicSend = dynamic(() => import('@components/Task/Send/Send'), {
   ssr: false,
@@ -62,8 +63,8 @@ function Task(props: {
       router.query.assignment
         ? 'assignment'
         : router.query.tournament
-          ? 'tournament'
-          : 'regular',
+        ? 'tournament'
+        : 'regular',
     [router.query]
   );
 
@@ -198,7 +199,15 @@ function Task(props: {
           opened={openedHint}
           close={() => setOpenedHint(false)}
         >
-          <div dangerouslySetInnerHTML={{ __html: task.hint.content }} />
+          <div
+            children={
+              <TipTapEditor
+                editorMode={false}
+                content={task.hint.content}
+                onUpdate={() => {}}
+              />
+            }
+          />
         </SimpleModal>
       )}
       {isUser && !isTeacher && showHint && task.hint && (

@@ -11,6 +11,7 @@ import { sendRequest } from '@requests/request';
 import { letterFromIndex } from '@utils/letterFromIndex';
 import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
 import RegistrationButton from './RegistrationButton/RegistrationButton';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const Description: FC<{
   tournament: ITournament;
@@ -30,8 +31,7 @@ const Description: FC<{
       title: `${letterFromIndex(index)}. ${task.title}`,
     }))
   );
-  const [successfullyRegistered, setSuccessfullyRegistered] =
-    useState(false);
+  const [successfullyRegistered, setSuccessfullyRegistered] = useState(false);
 
   const special = useMemo(
     () =>
@@ -49,6 +49,14 @@ const Description: FC<{
   const banned = useMemo(
     () => !!user && tournament.banned.includes(user.login),
     [user, tournament.banned]
+  );
+
+  const showTasks = useMemo(
+    () =>
+      special ||
+      (registered && tournament.status.spec != 0) ||
+      tournament.status.spec == 2,
+    [registered, special, tournament.status.spec]
   );
 
   useEffect(() => {
@@ -81,18 +89,21 @@ const Description: FC<{
         <div className={styles.title}>
           {tournament.title}
           <PrintTasks
-            title={
-              <div className={styles.title}>{tournament.title}</div>
-            }
+            title={<div className={styles.title}>{tournament.title}</div>}
             description={
               <div
                 className={styles.description}
-                dangerouslySetInnerHTML={{
-                  __html: tournament.description,
-                }}
+                children={
+                  <TipTapEditor
+                    editorMode={false}
+                    content={tournament.description}
+                    onUpdate={() => {}}
+                  />
+                }
               />
             }
-            tasks={tasks.map((task) => task.spec)}
+            tasks={showTasks ? tasks.map((task) => task.spec) : []}
+            // tasks={tasks.map((task) => task.spec)}
           />
         </div>
         <div className={styles.info}>
@@ -108,15 +119,20 @@ const Description: FC<{
               {getLocalDate(tournament.start)}
             </div>
             <div className={styles.duration}>
-              {locale.tournament.form.endDate}:{' '}
-              {getLocalDate(tournament.end)}
+              {locale.tournament.form.endDate}: {getLocalDate(tournament.end)}
             </div>
           </div>
         </div>
       </div>
       <div
         className={styles.description}
-        dangerouslySetInnerHTML={{ __html: tournament.description }}
+        children={
+          <TipTapEditor
+            editorMode={false}
+            content={tournament.description}
+            onUpdate={() => {}}
+          />
+        }
       />
       {!loading && (
         <>
@@ -125,11 +141,7 @@ const Description: FC<{
               {locale.tournament.banned}!
             </div>
           ) : (
-            !(
-              tournament.status.spec === 2 ||
-              isPreview ||
-              special
-            ) && (
+            !(tournament.status.spec === 2 || isPreview || special) && (
               <RegistrationButton
                 spec={tournament.spec}
                 withPin={tournament.security == 1}
@@ -146,10 +158,7 @@ const Description: FC<{
           )}
 
           <div className={styles.tasksWrapper}>
-            {((!registered && tournament.status.spec != 2) ||
-              (!special && tournament.status.spec == 0)) && (
-              <Overlay />
-            )}
+            {!showTasks && <Overlay />}
             <PrimitiveTaskTable
               tasks={tasks}
               linkQuery={`tournament=${tournament.spec}`}
@@ -157,8 +166,8 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                    ? locale.tournament.emptyTasks
-                    : locale.tournament.needRegistration
+                  ? locale.tournament.emptyTasks
+                  : locale.tournament.needRegistration
               }
             />
           </div>

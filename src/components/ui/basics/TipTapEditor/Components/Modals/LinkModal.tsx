@@ -1,17 +1,11 @@
 import { useState } from 'react';
-import styles from './ImageUrlModal.module.css';
+import styles from './LinkModal.module.css';
 import { Editor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { useLocale } from '@hooks/useLocale';
 
-const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-  editor
-    .chain()
-    .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
-    .run();
-};
-
-export const ImageUrlModal = ({
+export const LinkModal = ({
   isOpened,
   close,
   editor,
@@ -21,6 +15,7 @@ export const ImageUrlModal = ({
   editor: Editor;
 }) => {
   const [src, setSrc] = useState('');
+  const { locale } = useLocale();
 
   const onClose = () => {
     setSrc('');
@@ -29,11 +24,11 @@ export const ImageUrlModal = ({
 
   return (
     <SimpleModal opened={isOpened} close={onClose}>
-      <div className={styles.image_url_modal_body}>
-        <span className={styles.title}>Insert image by URL</span>
+      <div className={styles.link_modal_body}>
+        <span className={styles.title}>{locale.tiptap.setLink}</span>
         <div className={styles.input}>
           <input
-            className={styles.image_url_modal_input}
+            className={styles.link_modal_input}
             onChange={(e) => {
               setSrc(e.target.value);
             }}
@@ -43,12 +38,12 @@ export const ImageUrlModal = ({
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              loadImageFromUrl({ editor: editor, src: src });
+              editor.commands.setLink({ href: src });
               onClose();
             },
-            label: 'Insert',
+            label: locale.tiptap.setLink,
           }}
-          cancelButton={{ onClick: onClose, label: 'Close' }}
+          cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
     </SimpleModal>

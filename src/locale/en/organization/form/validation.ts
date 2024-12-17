@@ -1,5 +1,7 @@
 export const validation = {
-  spec: 'Spec организации должен содержать хотя бы 3 символа',
-  name: 'Название организации должно содержать хотя бы 3 символа',
-  description: 'Описание организации не должно быть пустым',
-}; // TODO: Fix locale
+  spec: (number: number) =>
+    `Minimum length of organization spec is ${number} characters`,
+  name: (number: number) =>
+    `Minimum length of organization name is ${number} characters`,
+  description: 'Organization description must not be empty',
+};

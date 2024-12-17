@@ -1,0 +1,24 @@
+.link_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: large;
+}
+
+.link_modal_input {
+  width: 100%;
+}
+
+.link_modal_input:focus {
+  outline: none;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

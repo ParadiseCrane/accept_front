@@ -7,6 +7,7 @@ import { sendRequest } from '@requests/request';
 import TagList from '@ui/TagList/TagList';
 import { LoadingOverlay } from '@ui/basics';
 import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 
 const Description: FC<{
   assignment: IAssignmentSchema;
@@ -55,7 +56,13 @@ const Description: FC<{
       </div>
       <div
         className={styles.description}
-        dangerouslySetInnerHTML={{ __html: assignment.description }}
+        children={
+          <TipTapEditor
+            editorMode={false}
+            content={assignment.description}
+            onUpdate={() => {}}
+          />
+        }
       ></div>
       <div
         style={{
