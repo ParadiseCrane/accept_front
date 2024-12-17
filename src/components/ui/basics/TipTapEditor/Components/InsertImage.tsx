@@ -7,6 +7,7 @@ import { ImageUrlModal } from './Modals/ImageUrlModal';
 import { IconWrapper } from './IconWrapper';
 import { useLocale } from '@hooks/useLocale';
 import { getCookie } from '@utils/cookies';
+import { imageInsertFunction } from '../TipTapEditor';
 
 // const loadImageAsFile = ({
 //   files,
@@ -74,7 +75,11 @@ const loadImageAsFile = async ({
       editor
         .chain()
         .insertContent(
-          `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageAltTitle}" draggable="true">`
+          imageInsertFunction({
+            src: src,
+            alt: locale.tiptap.imageAltTitle,
+            width: width,
+          })
         )
         .run();
     } catch (error) {
@@ -82,7 +87,11 @@ const loadImageAsFile = async ({
       editor
         .chain()
         .insertContent(
-          `<img src="${src}" alt="${locale.tiptap.imageUploadFail}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageUploadFail}" draggable="true" display="block">`
+          imageInsertFunction({
+            src: src,
+            alt: locale.tiptap.imageUploadFail,
+            width: width,
+          })
         )
         .run();
     }

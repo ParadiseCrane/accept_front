@@ -62,6 +62,18 @@ import {
 import { InsertGroupSeparate } from './Components/InsertGroup';
 import { useLocale } from '@hooks/useLocale';
 
+export const imageInsertFunction = ({
+  src,
+  alt,
+  width,
+}: {
+  src: string;
+  alt: string;
+  width: string;
+}): string => {
+  return `<img src="${src}" alt="${alt}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${alt}" draggable="true" display="block">`;
+};
+
 export const TipTapEditor = ({
   editorMode,
   content,

@@ -4,6 +4,7 @@ import { Editor } from '@tiptap/react';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { useLocale } from '@hooks/useLocale';
+import { imageInsertFunction } from '../../TipTapEditor';
 
 const loadImageFromUrl = ({
   src,
@@ -19,7 +20,11 @@ const loadImageFromUrl = ({
   editor
     .chain()
     .insertContent(
-      `<img src="${src}" alt="${locale.tiptap.imageAltTitle}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${locale.tiptap.imageAltTitle}" draggable="true" display="block">`
+      imageInsertFunction({
+        src: src,
+        alt: locale.tiptap.imageAltTitle,
+        width: width,
+      })
     )
     .run();
 };
