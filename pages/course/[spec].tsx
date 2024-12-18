@@ -7,6 +7,7 @@ import { ITask } from '@custom-types/data/ITask';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash, useIsFirstRender } from '@mantine/hooks';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
@@ -102,6 +103,29 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
+
+  const response = await fetchWrapperStatic({
+    url: `course/${query.spec}`,
+    req,
+  });
+
+  console.log(response);
+
+  // if (response.status === 200) {
+  //   const assignment = await response.json();
+
+  //   return {
+  //     props: {
+  //       assignment,
+  //     },
+  //   };
+  // }
+  // return {
+  //   redirect: {
+  //     permanent: false,
+  //     destination: '/404',
+  //   },
+  // };
 
   let units: ICourse[] = Array.apply(null, Array(5)).map((x, i) =>
     generateUnit(i)

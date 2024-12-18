@@ -1,12 +1,18 @@
 import { ITask } from './ITask';
 
-export interface ICourse {
-  kind: "course" | "unit" | "lesson";
-  spec: string;
+export interface ICourseResponse {
   title: string;
   description: string;
+  kind: 'course' | 'unit' | 'lesson';
   image: string;
-  children: ICourse[] | ITask[];
+  children: ICourseUnit[];
+}
+
+export interface ICourseUnit {
+  spec: string;
+  kind: 'course' | 'unit' | 'lesson';
+  title: string;
+  order: string;
 }
 
 export interface ICourseAdd {
@@ -15,6 +21,15 @@ export interface ICourseAdd {
   description: string;
   image: string;
   children: IUnit[];
+}
+
+export interface ICourse {
+  kind: 'course' | 'unit' | 'lesson';
+  spec: string;
+  title: string;
+  description: string;
+  image: string;
+  children: ICourse[] | ITask[];
 }
 
 export interface IUnit {
