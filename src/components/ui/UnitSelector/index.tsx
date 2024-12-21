@@ -27,12 +27,6 @@ const unitsInitialValue: ICourseUnit[] = [
     order: '1|1',
   },
   {
-    spec: 'spec111',
-    kind: 'lesson',
-    title: 'Урок 1.1',
-    order: '1|1|1',
-  },
-  {
     spec: 'spec12',
     kind: 'lesson',
     title: 'Урок 2',
@@ -43,18 +37,6 @@ const unitsInitialValue: ICourseUnit[] = [
     kind: 'lesson',
     title: 'Урок 3',
     order: '1|3',
-  },
-  {
-    spec: 'spec131',
-    kind: 'lesson',
-    title: 'Урок 3.1',
-    order: '1|3|1',
-  },
-  {
-    spec: 'spec1311',
-    kind: 'lesson',
-    title: 'Урок 3.1.1',
-    order: '1|3|1|1',
   },
   {
     spec: 'spec2',

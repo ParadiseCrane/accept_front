@@ -109,7 +109,10 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
   const parent = data.currentUnit;
   const children = data.treeUnitList.filter(
     (element) =>
-      element.order.includes(parent.order) && element.order !== parent.order
+      element.parentSpec === parent.spec &&
+      element.order.includes(parent.order) &&
+      element.order !== parent.order &&
+      element.depth === parent.depth + 1
   );
   if (children.length === 0) {
     const parentIndex = data.treeUnitList.indexOf(parent);
@@ -169,6 +172,7 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       treeUnitList: [
         ...firstPart,
         { ...parent, childrenVisible: true },
+        // ...children,
         ...visibleChildren,
         newElement,
         ...secondPart,
