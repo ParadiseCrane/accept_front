@@ -5,11 +5,18 @@ import { CaretDown, CaretRight, Plus, Trash } from 'tabler-icons-react';
 
 export const CourseUnitDisplay = ({
   treeUnit,
+  addTreeUnit,
+  deleteTreeUnit,
+  toggleChildrenVisibility,
 }: {
   treeUnit: ITreeUnit;
-  addTreeUnit: ({ spec }: { spec: string }) => void;
-  deleteTreeUnit: ({ spec }: { spec: string }) => void;
-  toggleChildrenVisibility: ({ spec }: { spec: string }) => void;
+  addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  toggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => void;
 }) => {
   return (
     <Box
@@ -30,7 +37,12 @@ export const CourseUnitDisplay = ({
             <Trash />
           </ActionIcon>
 
-          <ActionIcon variant="outline" onClick={() => {}}>
+          <ActionIcon
+            variant="outline"
+            onClick={() => {
+              toggleChildrenVisibility({ currentUnit: treeUnit });
+            }}
+          >
             {treeUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
           </ActionIcon>
         </ActionIcon.Group>
