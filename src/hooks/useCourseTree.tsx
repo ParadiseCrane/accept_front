@@ -1,5 +1,5 @@
 import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const getParentSpec = ({
   courseUnit,
@@ -16,20 +16,6 @@ const getParentSpec = ({
         element.order === courseUnit.order.split('|').slice(0, -1).join('|')
     )[0].spec;
   }
-};
-
-const getInitialMaxDepth = ({
-  treeUnitList,
-}: {
-  treeUnitList: ITreeUnit[];
-}) => {
-  let maxDepth = 0;
-  for (let i = 0; i < treeUnitList.length; i++) {
-    if (maxDepth < treeUnitList[i].depth) {
-      maxDepth = treeUnitList[i].depth;
-    }
-  }
-  return maxDepth;
 };
 
 const createTreeUnit = ({
@@ -54,6 +40,18 @@ const createTreeUnit = ({
   };
 };
 
+const setNewIndexValues = ({
+  treeUnitList,
+}: {
+  treeUnitList: ITreeUnit[];
+}): ITreeUnit[] => {
+  const list: ITreeUnit[] = [];
+  for (let i = 0; i < treeUnitList.length; i++) {
+    list.push({ ...treeUnitList[i], index: i });
+  }
+  return list;
+};
+
 const createTreeUnitList = ({
   courseUnitList,
 }: {
@@ -71,8 +69,6 @@ const createTreeUnitList = ({
   }
   return list;
 };
-
-const recursivelyHideChildren = () => {};
 
 const localToggleChildrenVisibility = (
   data: ILocalMethodInput
@@ -110,10 +106,95 @@ const localToggleChildrenVisibility = (
 };
 
 const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
-  return [];
+  const parent = data.currentUnit;
+  const children = data.treeUnitList.filter(
+    (element) =>
+      element.order.includes(parent.order) && element.order !== parent.order
+  );
+  if (children.length === 0) {
+    const parentIndex = data.treeUnitList.indexOf(parent);
+    const firstPart = data.treeUnitList.slice(0, parentIndex);
+    const secondPart = data.treeUnitList.slice(
+      parentIndex + 1,
+      data.treeUnitList.length
+    );
+    // TODO запрашивать тип (kind) через контекстное меню
+    const isModule = true;
+    const newElement: ITreeUnit = {
+      spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}1`,
+      kind: isModule ? 'unit' : 'lesson',
+      title: isModule ? 'Новый модуль' : 'Новый урок',
+      order: `${parent.order}|1`,
+      depth: parent.depth + 1,
+      index: parentIndex + 1,
+      parentSpec: parent.spec,
+      visible: true,
+      childrenVisible: false,
+    };
+    return [
+      ...firstPart,
+      { ...parent, childrenVisible: true },
+      newElement,
+      ...secondPart,
+    ];
+  } else {
+    const parentIndex = data.treeUnitList.indexOf(parent);
+    const visibleChildren: ITreeUnit[] = [];
+    for (let i = 0; i < children.length; i++) {
+      visibleChildren.push({ ...children[i], visible: true });
+    }
+    const lastChildIndex = data.treeUnitList.indexOf([...children].pop()!);
+    const lastChildOrder = Number([...children].pop()?.order.split('|').pop()!);
+    const firstPart = data.treeUnitList.slice(0, parentIndex);
+    const secondPart = data.treeUnitList.slice(
+      lastChildIndex + 1,
+      data.treeUnitList.length
+    );
+    // // TODO запрашивать тип (kind) через контекстное меню
+    const isModule = true;
+    const newElement: ITreeUnit = {
+      spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
+        lastChildOrder + 1
+      }`,
+      kind: isModule ? 'unit' : 'lesson',
+      title: isModule ? 'Новый модуль' : 'Новый урок',
+      order: `${parent.order}|${lastChildOrder + 1}`,
+      depth: parent.depth + 1,
+      index: lastChildIndex + 1,
+      parentSpec: parent.spec,
+      visible: true,
+      childrenVisible: false,
+    };
+    return setNewIndexValues({
+      treeUnitList: [
+        ...firstPart,
+        { ...parent, childrenVisible: true },
+        ...visibleChildren,
+        newElement,
+        ...secondPart,
+      ],
+    });
+  }
+  return data.treeUnitList;
 };
 
 const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
+  return [];
+};
+
+const localMoveLevelUp = (data: ILocalMethodInput): ITreeUnit[] => {
+  return [];
+};
+
+const localMoveLevelDown = (data: ILocalMethodInput): ITreeUnit[] => {
+  return [];
+};
+
+const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
+  return [];
+};
+
+const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
   return [];
 };
 
@@ -126,6 +207,10 @@ interface IUseCourseTree {
   }) => void;
   addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveLevelUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveLevelDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
 }
 
 interface ILocalMethodInput {
@@ -155,7 +240,10 @@ export const useCourseTree = ({
       ).length > 1
     ) {
       setTreeUnitList(
-        localToggleChildrenVisibility({ currentUnit, treeUnitList })
+        localToggleChildrenVisibility({
+          currentUnit,
+          treeUnitList,
+        })
       );
     }
   };
@@ -165,13 +253,30 @@ export const useCourseTree = ({
   };
 
   const deleteTreeUnit = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
-    setTreeUnitList(localDeleteTreeUnit({ currentUnit, treeUnitList }));
+    setTreeUnitList(
+      localDeleteTreeUnit({
+        currentUnit,
+        treeUnitList,
+      })
+    );
   };
+
+  const moveLevelUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
+
+  const moveLevelDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
+
+  const moveUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
+
+  const moveDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
 
   return {
     treeUnitList,
     toggleChildrenVisibility,
     addTreeUnit,
     deleteTreeUnit,
+    moveLevelUp,
+    moveLevelDown,
+    moveUp,
+    moveDown,
   };
 };

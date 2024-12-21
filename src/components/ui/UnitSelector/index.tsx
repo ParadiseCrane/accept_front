@@ -128,6 +128,12 @@ const unitsInitialValue: ICourseUnit[] = [
     title: 'Урок 3',
     order: '4|3',
   },
+  {
+    spec: 'spec5',
+    kind: 'unit',
+    title: 'Модуль 5',
+    order: '5',
+  },
 ];
 
 const UnitSelector: FC<{

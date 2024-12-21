@@ -27,9 +27,15 @@ export const CourseUnitDisplay = ({
       }}
     >
       <Group gap={0}>
-        <TextInput defaultValue={treeUnit.title} />
+        <TextInput value={treeUnit.title} />
         <ActionIcon.Group>
-          <ActionIcon variant="outline">
+          <ActionIcon
+            variant="outline"
+            onClick={() => {
+              addTreeUnit({ currentUnit: treeUnit });
+            }}
+            style={{ display: treeUnit.kind === 'lesson' ? 'none' : '' }}
+          >
             <Plus />
           </ActionIcon>
 
@@ -42,6 +48,7 @@ export const CourseUnitDisplay = ({
             onClick={() => {
               toggleChildrenVisibility({ currentUnit: treeUnit });
             }}
+            style={{ display: treeUnit.kind === 'lesson' ? 'none' : '' }}
           >
             {treeUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
           </ActionIcon>
