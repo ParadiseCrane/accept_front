@@ -15,6 +15,18 @@ export interface ICourseUnit {
   order: string;
 }
 
+export interface ITreeUnit {
+  spec: string;
+  kind: 'course' | 'unit' | 'lesson';
+  title: string;
+  order: string;
+  depth: number;
+  index: number;
+  parentSpec: string;
+  visible: boolean;
+  childrenVisible: boolean;
+}
+
 export interface ICourseAdd {
   spec: string;
   title: string;

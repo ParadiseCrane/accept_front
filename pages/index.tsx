@@ -1,3 +1,5 @@
+'use client';
+
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ReactElement } from 'react';
 import Title from '@ui/Title/Title';

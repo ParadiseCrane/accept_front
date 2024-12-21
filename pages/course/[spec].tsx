@@ -23,6 +23,7 @@ const flattenCourse = (item: ICourse | ITask): (ICourse | ITask)[] => {
 
 function Course(props: { course: ICourse }) {
   const course = props.course;
+  console.log('course', course);
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers, array] = useMoveThroughArray(
@@ -104,19 +105,19 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const response = await fetchWrapperStatic({
-    url: `course/${query.spec}`,
-    req,
-  });
+  // const response = await fetchWrapperStatic({
+  //   url: `course/${query.spec}`,
+  //   req,
+  // });
 
-  console.log(response);
+  // console.log('response course', response.status);
 
   // if (response.status === 200) {
-  //   const assignment = await response.json();
+  //   const course = await response.json();
 
   //   return {
   //     props: {
-  //       assignment,
+  //       course,
   //     },
   //   };
   // }

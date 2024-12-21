@@ -88,14 +88,16 @@ function CourseAdd(props: ICourseAddBundle) {
         ...form.values,
       };
 
-      requestWithNotify<ICourseAdd, string>(
-        'course/add',
-        'POST',
-        locale.notify.course.create,
-        lang,
-        (response) => response,
-        course
-      );
+      console.log('course from form', course);
+
+      // requestWithNotify<ICourseAdd, string>(
+      //   'course/add',
+      //   'POST',
+      //   locale.notify.course.create,
+      //   lang,
+      //   (response) => response,
+      //   course
+      // );
     },
     [lang, locale, user?.login]
   );
