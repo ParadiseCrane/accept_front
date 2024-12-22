@@ -16,14 +16,20 @@ export interface ICourseUnit {
 }
 
 export interface ITreeUnit {
+  // id элемента
   spec: string;
   kind: 'course' | 'unit' | 'lesson';
   title: string;
   order: string;
+  // глубина элемента
   depth: number;
+  // порядок элемента
   index: number;
+  // значение id родителя
   parentSpec: string;
+  // значение видимости элемента
   visible: boolean;
+  // значение видимости дочерних элементов
   childrenVisible: boolean;
 }
 
