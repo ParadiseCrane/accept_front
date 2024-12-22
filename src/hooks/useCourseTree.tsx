@@ -228,9 +228,9 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
 };
 
 const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
-  const list: ITreeUnit[] = [];
-
-  return [];
+  return data.treeUnitList.filter(
+    (element) => !element.order.startsWith(data.currentUnit.order)
+  );
 };
 
 const localMoveLevelUp = (data: ILocalMethodInput): ITreeUnit[] => {

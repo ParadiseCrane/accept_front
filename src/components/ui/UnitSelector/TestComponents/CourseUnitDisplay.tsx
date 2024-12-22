@@ -39,7 +39,12 @@ export const CourseUnitDisplay = ({
             <Plus />
           </ActionIcon>
 
-          <ActionIcon variant="outline">
+          <ActionIcon
+            variant="outline"
+            onClick={() => {
+              deleteTreeUnit({ currentUnit: treeUnit });
+            }}
+          >
             <Trash />
           </ActionIcon>
 
