@@ -153,7 +153,7 @@ const afterNewElementPart = ({
 };
 
 // от последнего дочернего элемента и до конца
-const afterLastChildrenPart = ({
+const afterLastChildPart = ({
   treeUnitList,
   lastChildIndex,
 }: {
@@ -192,7 +192,7 @@ const localToggleChildrenVisibility = (
       ...beforeParentPart({ parent, treeUnitList: data.treeUnitList }),
       { ...parent, childrenVisible: !parent.childrenVisible },
       ...children,
-      ...afterLastChildrenPart({
+      ...afterLastChildPart({
         lastChildIndex: children.pop()!.index,
         treeUnitList: data.treeUnitList,
       }),
@@ -204,117 +204,72 @@ const localToggleChildrenVisibility = (
 const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
   // TODO запрашивать тип (kind) через контекстное меню
   const isModule = true;
+  // для удобства
   const parent = data.currentUnit;
-  const children = data.treeUnitList.filter(
-    (element) => element.parentSpec === parent.spec
-  );
+  const children = findChildrenAllLevels({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
   // находим индекс последнего дочернего элемента
-  const lastChildIndex = data.treeUnitList
-    .filter(
-      (element) =>
-        element.order.startsWith(data.currentUnit.order) &&
-        element.order !== data.currentUnit.order
-    )
-    .pop()?.index;
-  // дочерние есть
-  if (lastChildIndex) {
+  let lastChildIndex = [...children].pop()?.index ?? 0;
+  let lastChildOrderLastDigit = 0;
+  // предполагаем, что дочерних нет, поэтому пусто
+  let betweenParentAndNewElement: ITreeUnit[] = [];
+  // если есть дочерние элементы
+  if (lastChildIndex !== 0) {
     // находим последнее число в поле order для последнего дочернего элемента
-    const lastChildOrderLastDigit = Number(
+    lastChildOrderLastDigit = Number(
       [...children].pop()!.order.split('|').pop()!
     );
-    // элементы до родителя
-    const beforeParent = beforeParentPart({
-      parent: parent,
-      treeUnitList: data.treeUnitList,
-    });
-    // между родителем и новым элементом
-    const middlePart = betweenParentAndNewElementPart({
+    // дочерние есть, заполняем
+    betweenParentAndNewElement = betweenParentAndNewElementPart({
       parent,
       treeUnitList: data.treeUnitList,
       lastChildIndex,
     });
-    // после нового элемента
-    const secondPart = data.treeUnitList.slice(
-      lastChildIndex + 1,
-      data.treeUnitList.length
-    );
-    // если у родителя не видны дочерние элементы
-    if (!parent.childrenVisible) {
-      for (let i = 0; i < middlePart.length; i++) {
-        if (middlePart[i].parentSpec === parent.spec) {
-          // включаем видимость у прямых потомков
-          middlePart[i] = { ...middlePart[i], visible: true };
-        }
+  }
+  const newElement: ITreeUnit = {
+    spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
+      lastChildOrderLastDigit + 1
+    }`,
+    kind: isModule ? 'unit' : 'lesson',
+    title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
+      lastChildOrderLastDigit + 1
+    }`,
+    order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
+    orderAsNumber: getOrderAsNumber({
+      order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
+    }),
+    depth: parent.depth + 1,
+    index: 0,
+    parentSpec: parent.spec,
+    visible: true,
+    childrenVisible: false,
+  };
+  // если у родителя были скрыты дети, отображаем прямых потомков
+  if (!parent.childrenVisible) {
+    for (let i = 0; i < betweenParentAndNewElement.length; i++) {
+      if (betweenParentAndNewElement[i].parentSpec === parent.spec) {
+        betweenParentAndNewElement[i] = {
+          ...betweenParentAndNewElement[i],
+          visible: true,
+        };
       }
     }
-    // новый элемент
-    const newElement: ITreeUnit = {
-      spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
-        lastChildOrderLastDigit + 1
-      }`,
-      kind: isModule ? 'unit' : 'lesson',
-      title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
-        lastChildOrderLastDigit + 1
-      }`,
-      order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
-      orderAsNumber: getOrderAsNumber({
-        order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
+  }
+  return setNewIndexValues({
+    treeUnitList: [
+      ...beforeParentPart({ parent, treeUnitList: data.treeUnitList }),
+      { ...parent, childrenVisible: true },
+      ...betweenParentAndNewElement,
+      newElement,
+      ...afterLastChildPart({
+        lastChildIndex:
+          lastChildIndex === 0 ? parent.index + 1 : lastChildIndex,
+        treeUnitList: data.treeUnitList,
       }),
-      depth: parent.depth + 1,
-      index: 0,
-      parentSpec: parent.spec,
-      visible: true,
-      childrenVisible: false,
-    };
-    // до родителя
-    // родитель с включенной видимостью дочерних элементов
-    // дочерние элементы с включенной видимостью
-    // новый элемент
-    // оставшаяся часть
-    return setNewIndexValues({
-      treeUnitList: [
-        ...beforeParent,
-        { ...parent, childrenVisible: true },
-        ...middlePart,
-        newElement,
-        ...secondPart,
-      ].sort((a, b) => a.orderAsNumber - b.orderAsNumber),
-    });
-  }
-  // дочерних нет
-  else {
-    // от начала и до родителя
-    const beforeParent = beforeParentPart({
-      parent: parent,
-      treeUnitList: data.treeUnitList,
-    });
-    // от нового элемента и до конца массива
-    const secondPart = data.treeUnitList.slice(
-      parent.index + 1,
-      data.treeUnitList.length
-    );
-    // новый элемент
-    const newElement: ITreeUnit = {
-      spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}1`,
-      kind: isModule ? 'unit' : 'lesson',
-      title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}1`,
-      order: `${parent.order}|1`,
-      orderAsNumber: getOrderAsNumber({ order: `${parent.order}|1` }),
-      depth: parent.depth + 1,
-      index: 0,
-      parentSpec: parent.spec,
-      visible: true,
-      childrenVisible: false,
-    };
-    return setNewIndexValues({
-      treeUnitList: [
-        ...beforeParent,
-        { ...parent, childrenVisible: true },
-        newElement,
-        ...secondPart,
-      ].sort((a, b) => a.orderAsNumber - b.orderAsNumber),
-    });
-  }
+    ],
+  });
 };
 
 const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
