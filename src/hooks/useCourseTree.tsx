@@ -117,51 +117,87 @@ const findChildrenDirect = ({
   return treeUnitList.filter((element) => element.parentSpec === parent.spec);
 };
 
+// все элементы до родителя
+const beforeParentPart = ({
+  parent,
+  treeUnitList,
+}: {
+  parent: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+}): ITreeUnit[] => {
+  return treeUnitList.slice(0, parent.index);
+};
+
+// элементы между родителем и новым вставленным элементом
+const betweenParentAndNewElementPart = ({
+  parent,
+  treeUnitList,
+  lastChildIndex,
+}: {
+  parent: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+  lastChildIndex: number;
+}): ITreeUnit[] => {
+  return treeUnitList.slice(parent.index + 1, lastChildIndex + 1);
+};
+
+// все элементы, идущие после нового вставленного элемента
+const afterNewElementPart = ({
+  treeUnitList,
+  lastChildIndex,
+}: {
+  treeUnitList: ITreeUnit[];
+  lastChildIndex: number;
+}): ITreeUnit[] => {
+  return treeUnitList.slice(lastChildIndex + 1, treeUnitList.length);
+};
+
+// от последнего дочернего элемента и до конца
+const afterLastChildrenPart = ({
+  treeUnitList,
+  lastChildIndex,
+}: {
+  treeUnitList: ITreeUnit[];
+  lastChildIndex: number;
+}) => {
+  return treeUnitList.slice(lastChildIndex + 1, treeUnitList.length);
+};
+
 // метод по изменению видимости дочерних элементов
 const localToggleChildrenVisibility = (
   data: ILocalMethodInput
 ): ITreeUnit[] => {
-  const list: ITreeUnit[] = [];
-  // если сейчас дочерние элементы видны, то скрываем
-  if (data.currentUnit.childrenVisible) {
-    for (let i = 0; i < data.treeUnitList.length; i++) {
-      if (data.treeUnitList[i].spec === data.currentUnit.spec) {
-        // меняем значение childrenVisible для родительского элемента
-        // (на который нажали)
-        list.push({ ...data.treeUnitList[i], childrenVisible: false });
-      } else if (
-        data.treeUnitList[i].order.startsWith(data.currentUnit.order) &&
-        data.treeUnitList[i].order !== data.currentUnit.order
-      ) {
-        // меняем значение видимости для дочерних элементов
-        // для всех ниже родительского через значение order
-        list.push({
-          ...data.treeUnitList[i],
-          childrenVisible: false,
-          visible: false,
-        });
-      } else {
-        // иначе оставляем элемент без изменений
-        list.push(data.treeUnitList[i]);
-      }
+  // родительский элемент (для удобства)
+  const parent = data.currentUnit;
+  const children: ITreeUnit[] = findChildrenAllLevels({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
+  // если у него видны дочерние элементы, то скрываем всех потомков всех уровней
+  if (parent.childrenVisible) {
+    for (let i = 0; i < children.length; i++) {
+      children[i] = { ...children[i], visible: false, childrenVisible: false };
     }
   }
-  // если были скрыты, показываем
+  // если скрыты, то показываем только прямых потомков
   else {
-    for (let i = 0; i < data.treeUnitList.length; i++) {
-      if (data.treeUnitList[i].spec === data.currentUnit.spec) {
-        // для родителя меняем значение childrenVisible
-        list.push({ ...data.treeUnitList[i], childrenVisible: true });
-      } else if (data.treeUnitList[i].parentSpec === data.currentUnit.spec) {
-        // для дочерних меняем значение видимости
-        list.push({ ...data.treeUnitList[i], visible: true });
-      } else {
-        // иначе без изменений
-        list.push(data.treeUnitList[i]);
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].parentSpec === parent.spec) {
+        children[i] = { ...children[i], visible: true };
       }
     }
   }
-  return list;
+  return setNewIndexValues({
+    treeUnitList: [
+      ...beforeParentPart({ parent, treeUnitList: data.treeUnitList }),
+      { ...parent, childrenVisible: !parent.childrenVisible },
+      ...children,
+      ...afterLastChildrenPart({
+        lastChildIndex: children.pop()!.index,
+        treeUnitList: data.treeUnitList,
+      }),
+    ],
+  });
 };
 
 // метод по добавлению нового элемента в дерево
@@ -187,12 +223,16 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       [...children].pop()!.order.split('|').pop()!
     );
     // элементы до родителя
-    const firstPart = data.treeUnitList.slice(0, parent.index);
+    const beforeParent = beforeParentPart({
+      parent: parent,
+      treeUnitList: data.treeUnitList,
+    });
     // между родителем и новым элементом
-    const middlePart = data.treeUnitList.slice(
-      parent.index + 1,
-      lastChildIndex + 1
-    );
+    const middlePart = betweenParentAndNewElementPart({
+      parent,
+      treeUnitList: data.treeUnitList,
+      lastChildIndex,
+    });
     // после нового элемента
     const secondPart = data.treeUnitList.slice(
       lastChildIndex + 1,
@@ -233,7 +273,7 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
     // оставшаяся часть
     return setNewIndexValues({
       treeUnitList: [
-        ...firstPart,
+        ...beforeParent,
         { ...parent, childrenVisible: true },
         ...middlePart,
         newElement,
@@ -244,7 +284,10 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
   // дочерних нет
   else {
     // от начала и до родителя
-    const firstPart = data.treeUnitList.slice(0, parent.index);
+    const beforeParent = beforeParentPart({
+      parent: parent,
+      treeUnitList: data.treeUnitList,
+    });
     // от нового элемента и до конца массива
     const secondPart = data.treeUnitList.slice(
       parent.index + 1,
@@ -265,7 +308,7 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
     };
     return setNewIndexValues({
       treeUnitList: [
-        ...firstPart,
+        ...beforeParent,
         { ...parent, childrenVisible: true },
         newElement,
         ...secondPart,
