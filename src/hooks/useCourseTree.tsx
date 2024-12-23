@@ -1,5 +1,22 @@
 import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
+import { date } from '@locale/en/date';
 import { Dispatch, SetStateAction, useState } from 'react';
+
+// максимальное количество уровней вложенности
+const maxDepth: number = 4;
+
+// высчитываем значение поля
+const getOrderAsNumber = ({ order }: { order: string }): number => {
+  let orderAsNumber = 0;
+  let orderAsList = order.split('|');
+  const numOfIterations =
+    orderAsList.length >= maxDepth ? maxDepth : orderAsList.length;
+  for (let i = 0; i < numOfIterations; i++) {
+    orderAsNumber =
+      orderAsNumber + Number(orderAsList[i]) * Math.pow(1000, maxDepth - i - 1);
+  }
+  return orderAsNumber;
+};
 
 // получаем значение для поля parentSpec
 const getParentSpec = ({
@@ -31,6 +48,7 @@ const createTreeUnit = ({
 }): ITreeUnit => {
   return {
     ...courseUnit,
+    orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
     depth: courseUnit.order.split('|').length,
     index: index,
     parentSpec: getParentSpec({
@@ -72,6 +90,31 @@ const createTreeUnitList = ({
     );
   }
   return list;
+};
+
+// находим дочерние элементы всех уровней
+const findChildrenAllLevels = ({
+  parent,
+  treeUnitList,
+}: {
+  parent: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+}): ITreeUnit[] => {
+  return treeUnitList.filter(
+    (element) =>
+      element.order.startsWith(parent.order) && element.order !== parent.order
+  );
+};
+
+// находим прямых потомков
+const findChildrenDirect = ({
+  parent,
+  treeUnitList,
+}: {
+  parent: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+}): ITreeUnit[] => {
+  return treeUnitList.filter((element) => element.parentSpec === parent.spec);
 };
 
 // метод по изменению видимости дочерних элементов
@@ -174,6 +217,9 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
         lastChildOrderLastDigit + 1
       }`,
       order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
+      orderAsNumber: getOrderAsNumber({
+        order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
+      }),
       depth: parent.depth + 1,
       index: 0,
       parentSpec: parent.spec,
@@ -192,7 +238,7 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
         ...middlePart,
         newElement,
         ...secondPart,
-      ],
+      ].sort((a, b) => a.orderAsNumber - b.orderAsNumber),
     });
   }
   // дочерних нет
@@ -210,6 +256,7 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       kind: isModule ? 'unit' : 'lesson',
       title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}1`,
       order: `${parent.order}|1`,
+      orderAsNumber: getOrderAsNumber({ order: `${parent.order}|1` }),
       depth: parent.depth + 1,
       index: 0,
       parentSpec: parent.spec,
@@ -222,30 +269,55 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
         { ...parent, childrenVisible: true },
         newElement,
         ...secondPart,
-      ],
+      ].sort((a, b) => a.orderAsNumber - b.orderAsNumber),
     });
   }
 };
 
 const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
-  return data.treeUnitList.filter(
-    (element) => !element.order.startsWith(data.currentUnit.order)
-  );
+  return setNewIndexValues({
+    treeUnitList: data.treeUnitList.filter(
+      (element) => !element.order.startsWith(data.currentUnit.order)
+    ),
+  });
 };
 
-const localMoveLevelUp = (data: ILocalMethodInput): ITreeUnit[] => {
+// сделать дочерним элементом родителя родителя
+const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
   return [];
 };
 
-const localMoveLevelDown = (data: ILocalMethodInput): ITreeUnit[] => {
+// можно только на один уровень ниже, чем элемент над ним
+const localMoveDepthDown = (data: ILocalMethodInput): ITreeUnit[] => {
   return [];
 };
 
 const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
+  // если у элемента order заканчивается на 1 и мы нажимаем вверх
+  // то родитель меняется
+  const parentChanges = Number(data.currentUnit.order.split('|').pop()!) === 1;
+  // находим родительский элемент нажатого элемента
+  const parent = data.treeUnitList.filter(
+    (element) => element.spec === data.currentUnit.parentSpec
+  )[0];
+  if (parentChanges) {
+  }
+  // случай, когда не меняем parent (не является крайним элементом среди дочерних)
+  else {
+  }
+
+  // находим все дочерние элементы родителя (все уровни)
+  const allElementsInsideParent = data.treeUnitList.filter(
+    (element) =>
+      element.order.startsWith(parent.order) && element.order !== parent.order
+  );
+  // случай, когда меняем parent (является крайним элементом среди дочерних)
   return [];
 };
 
 const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
+  // если у элемента order заканчивается на число как у последнего элемента
+  // и мы нажимаем вверх, то родитель меняется
   return [];
 };
 
@@ -257,12 +329,13 @@ interface IUseCourseTree {
   }: {
     currentUnit: ITreeUnit;
   }) => void;
+  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  moveLevelUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  moveLevelDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
 }
 
 // интерфейс входных данных для локальных методов
@@ -301,6 +374,20 @@ export const useCourseTree = ({
     }
   };
 
+  const canAddTreeUnit = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }): boolean => {
+    if (
+      currentUnit.kind === 'lesson' ||
+      currentUnit.order.split('|').length === maxDepth
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const addTreeUnit = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
     setTreeUnitList(localAddTreeUnit({ currentUnit, treeUnitList }));
   };
@@ -314,9 +401,9 @@ export const useCourseTree = ({
     );
   };
 
-  const moveLevelUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
+  const moveDepthUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
 
-  const moveLevelDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
+  const moveDepthDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
 
   const moveUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {};
 
@@ -325,11 +412,12 @@ export const useCourseTree = ({
   return {
     treeUnitList,
     toggleChildrenVisibility,
+    canAddTreeUnit,
     addTreeUnit,
     deleteTreeUnit,
-    moveLevelUp,
-    moveLevelDown,
     moveUp,
     moveDown,
+    moveDepthUp,
+    moveDepthDown,
   };
 };

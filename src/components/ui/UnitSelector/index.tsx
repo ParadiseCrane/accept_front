@@ -150,9 +150,14 @@ const UnitSelector: FC<{
   // const units = useMemo(() => [...initial_units], [initial_units]);
   const {
     treeUnitList,
+    canAddTreeUnit,
     addTreeUnit,
     deleteTreeUnit,
     toggleChildrenVisibility,
+    moveUp,
+    moveDown,
+    moveDepthUp,
+    moveDepthDown,
   } = useCourseTree({ courseUnitList: unitsInitialValue });
   console.log('tree units', treeUnitList);
 
@@ -168,6 +173,7 @@ const UnitSelector: FC<{
       {treeUnitList.map((unit, index) => (
         <CourseUnitDisplay
           treeUnit={unit}
+          canAddTreeUnit={canAddTreeUnit}
           addTreeUnit={addTreeUnit}
           deleteTreeUnit={deleteTreeUnit}
           toggleChildrenVisibility={toggleChildrenVisibility}

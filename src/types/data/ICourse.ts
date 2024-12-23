@@ -21,6 +21,8 @@ export interface ITreeUnit {
   kind: 'course' | 'unit' | 'lesson';
   title: string;
   order: string;
+  // порядок в виде числа для сортировки
+  orderAsNumber: number;
   // глубина элемента
   depth: number;
   // порядок элемента
