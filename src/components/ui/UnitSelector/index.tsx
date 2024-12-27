@@ -15,6 +15,12 @@ import { useCourseTree } from '@hooks/useCourseTree';
 
 const unitsInitialValue: ICourseUnit[] = [
   {
+    spec: 'spec0',
+    kind: 'course',
+    title: 'Название курса',
+    order: '0',
+  },
+  {
     spec: 'spec1',
     kind: 'unit',
     title: 'Модуль 1',
@@ -150,7 +156,6 @@ const UnitSelector: FC<{
   // const units = useMemo(() => [...initial_units], [initial_units]);
   const {
     treeUnitList,
-    canAddTreeUnit,
     addTreeUnit,
     deleteTreeUnit,
     toggleChildrenVisibility,
@@ -158,25 +163,40 @@ const UnitSelector: FC<{
     moveDown,
     moveDepthUp,
     moveDepthDown,
+    canToggleChildrenVisibility,
+    canAddTreeUnit,
+    canMoveUp,
+    canMoveDown,
+    canMoveDepthUp,
+    canMoveDepthDown,
   } = useCourseTree({ courseUnitList: unitsInitialValue });
   console.log('tree units', treeUnitList);
 
   return (
     <InputWrapper label={'Название'}>
-      <Group gap={0}>
+      {/* <Group gap={0}>
         <TextInput {...title_props} />
         <ActionIcon kind="positive" variant="outline">
           <Plus />
         </ActionIcon>
-      </Group>
+      </Group> */}
 
       {treeUnitList.map((unit, index) => (
         <CourseUnitDisplay
-          treeUnit={unit}
-          canAddTreeUnit={canAddTreeUnit}
+          currentUnit={unit}
           addTreeUnit={addTreeUnit}
           deleteTreeUnit={deleteTreeUnit}
           toggleChildrenVisibility={toggleChildrenVisibility}
+          moveUp={moveUp}
+          moveDown={moveDown}
+          moveDepthUp={moveDepthUp}
+          moveDepthDown={moveDepthDown}
+          canToggleChildrenVisibility={canToggleChildrenVisibility}
+          canAddTreeUnit={canAddTreeUnit}
+          canMoveUp={canMoveUp}
+          canMoveDown={canMoveDown}
+          canMoveDepthUp={canMoveDepthUp}
+          canMoveDepthDown={canMoveDepthDown}
         />
       ))}
       {/* {initial_units.map((unit, index) => (

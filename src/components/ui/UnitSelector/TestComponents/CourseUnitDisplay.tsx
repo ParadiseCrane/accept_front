@@ -14,14 +14,22 @@ import {
 } from 'tabler-icons-react';
 
 export const CourseUnitDisplay = ({
-  treeUnit,
-  canAddTreeUnit,
+  currentUnit,
   addTreeUnit,
   deleteTreeUnit,
   toggleChildrenVisibility,
+  moveUp,
+  moveDown,
+  moveDepthUp,
+  moveDepthDown,
+  canToggleChildrenVisibility,
+  canAddTreeUnit,
+  canMoveUp,
+  canMoveDown,
+  canMoveDepthUp,
+  canMoveDepthDown,
 }: {
-  treeUnit: ITreeUnit;
-  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  currentUnit: ITreeUnit;
   addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   toggleChildrenVisibility: ({
@@ -29,25 +37,39 @@ export const CourseUnitDisplay = ({
   }: {
     currentUnit: ITreeUnit;
   }) => void;
+  moveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  moveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  canToggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => boolean;
+  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canMoveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canMoveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canMoveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canMoveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
 }) => {
   return (
     <Box
-      ml={'md'}
+      // ml={'md'}
       style={{
-        paddingLeft: `${treeUnit.depth * 15}px`,
-        display: treeUnit.visible ? '' : 'none',
+        paddingLeft: `${currentUnit.depth * 15}px`,
+        display: currentUnit.visible ? '' : 'none',
       }}
     >
       <Group gap={0}>
-        <TextInput value={treeUnit.title} />
+        <TextInput value={currentUnit.title} />
         <ActionIcon.Group>
           <ActionIcon
             variant="outline"
             onClick={() => {
-              addTreeUnit({ currentUnit: treeUnit });
+              addTreeUnit({ currentUnit });
             }}
             style={{
-              display: canAddTreeUnit({ currentUnit: treeUnit }) ? '' : 'none',
+              display: canAddTreeUnit({ currentUnit }) ? '' : 'none',
             }}
           >
             <Plus />
@@ -56,7 +78,7 @@ export const CourseUnitDisplay = ({
           <ActionIcon
             variant="outline"
             onClick={() => {
-              deleteTreeUnit({ currentUnit: treeUnit });
+              deleteTreeUnit({ currentUnit });
             }}
           >
             <Trash />
@@ -65,30 +87,68 @@ export const CourseUnitDisplay = ({
           <ActionIcon
             variant="outline"
             onClick={() => {
-              toggleChildrenVisibility({ currentUnit: treeUnit });
+              toggleChildrenVisibility({ currentUnit });
             }}
             style={{
-              display: canAddTreeUnit({ currentUnit: treeUnit }) ? '' : 'none',
+              display: canToggleChildrenVisibility({ currentUnit })
+                ? ''
+                : 'none',
             }}
           >
-            {treeUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+            {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
           </ActionIcon>
 
-          {/* <ActionIcon variant="outline" size={'sm'} onClick={() => {}}>
+          <ActionIcon
+            variant="outline"
+            size={'sm'}
+            onClick={() => {
+              moveUp({ currentUnit });
+            }}
+            style={{
+              display: canMoveUp({ currentUnit }) ? '' : 'none',
+            }}
+          >
             {<ArrowBigUpLine />}
           </ActionIcon>
 
-          <ActionIcon variant="outline" size={'sm'} onClick={() => {}}>
+          <ActionIcon
+            variant="outline"
+            size={'sm'}
+            onClick={() => {
+              moveDown({ currentUnit });
+            }}
+            style={{
+              display: canMoveDown({ currentUnit }) ? '' : 'none',
+            }}
+          >
             {<ArrowBigDownLine />}
           </ActionIcon>
 
-          <ActionIcon variant="outline" size={'sm'} onClick={() => {}}>
+          <ActionIcon
+            variant="outline"
+            size={'sm'}
+            onClick={() => {
+              moveDepthUp({ currentUnit });
+            }}
+            style={{
+              display: canMoveDepthUp({ currentUnit }) ? '' : 'none',
+            }}
+          >
             {<ArrowBigLeftLine />}
           </ActionIcon>
 
-          <ActionIcon variant="outline" size={'sm'} onClick={() => {}}>
+          <ActionIcon
+            variant="outline"
+            size={'sm'}
+            onClick={() => {
+              moveDepthDown({ currentUnit });
+            }}
+            style={{
+              display: canMoveDepthDown({ currentUnit }) ? '' : 'none',
+            }}
+          >
             {<ArrowBigRightLine />}
-          </ActionIcon> */}
+          </ActionIcon>
         </ActionIcon.Group>
       </Group>
       {/* <Collapse in={opened} transitionDuration={100 * unit.units.length}>
