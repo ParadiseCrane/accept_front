@@ -196,6 +196,98 @@ const findElementSibling = ({
   }
 };
 
+const excludeElementsFromList = ({
+  list,
+  elements,
+}: {
+  list: ITreeUnit[];
+  elements: ITreeUnit[];
+}): ITreeUnit[] => {
+  const elementsSpecList: string[] = [
+    ...elements.map((element) => element.spec),
+  ];
+  return list.filter((element) => !elementsSpecList.includes(element.spec));
+};
+
+const replaceOrder = ({
+  oldOrder,
+  newOrderStart,
+}: {
+  oldOrder: string;
+  newOrderStart: string;
+}): string => {
+  const numberOfElementsToReplace: number = newOrderStart.split('|').length;
+  const newOrderList = [
+    ...newOrderStart.split('|'),
+    ...oldOrder.split('|').slice(numberOfElementsToReplace, undefined),
+  ].join('|');
+  return newOrderList;
+};
+
+const moveUpDownSameParent = (
+  data: ILocalMethodInput,
+  upDown: UpOrDown
+): ITreeUnit[] => {
+  // здесь sibling точно есть
+  const sibling = findElementSibling({
+    currentElement: data.currentUnit,
+    treeUnitList: data.treeUnitList,
+    upOrDown: upDown,
+  });
+  // нашли все дочерние элементы родственника
+  const siblingChildrenAllLevels = findChildrenAllLevels({
+    parent: sibling,
+    treeUnitList: data.treeUnitList,
+  });
+  // нашли все дочерние элементы текущего элемента
+  const currentElementChildrenAllLevels = findChildrenAllLevels({
+    parent: data.currentUnit,
+    treeUnitList: data.treeUnitList,
+  });
+  // заменили oder и orderAsNumber для всех дочерних элементов
+  for (let i = 0; i < siblingChildrenAllLevels.length; i++) {
+    const newOrderString = replaceOrder({
+      oldOrder: siblingChildrenAllLevels[i].order,
+      newOrderStart: data.currentUnit.order,
+    });
+    siblingChildrenAllLevels[i] = {
+      ...siblingChildrenAllLevels[i],
+      order: newOrderString,
+      orderAsNumber: getOrderAsNumber({ order: newOrderString }),
+    };
+  }
+  for (let i = 0; i < currentElementChildrenAllLevels.length; i++) {
+    const newOrderString = replaceOrder({
+      oldOrder: currentElementChildrenAllLevels[i].order,
+      newOrderStart: sibling.order,
+    });
+    currentElementChildrenAllLevels[i] = {
+      ...currentElementChildrenAllLevels[i],
+      order: newOrderString,
+      orderAsNumber: getOrderAsNumber({ order: newOrderString }),
+    };
+  }
+  const elements: ITreeUnit[] = [
+    {
+      ...data.currentUnit,
+      order: sibling.order,
+      orderAsNumber: getOrderAsNumber({ order: sibling.order }),
+    },
+    {
+      ...sibling,
+      order: data.currentUnit.order,
+      orderAsNumber: getOrderAsNumber({ order: data.currentUnit.order }),
+    },
+    ...siblingChildrenAllLevels,
+    ...currentElementChildrenAllLevels,
+  ];
+  const newList: ITreeUnit[] = [
+    ...excludeElementsFromList({ list: data.treeUnitList, elements }),
+    ...elements,
+  ].sort((a, b) => a.orderAsNumber - b.orderAsNumber);
+  return newList;
+};
+
 // метод по изменению видимости дочерних элементов
 const localToggleChildrenVisibility = (
   data: ILocalMethodInput
@@ -366,6 +458,9 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   }
   // случай, когда не меняем parent (не является крайним элементом среди дочерних)
   else {
+    return setNewIndexValues({
+      treeUnitList: moveUpDownSameParent(data, 'UP'),
+    });
   }
   // находим все дочерние элементы родителя (все уровни)
   const allElementsInsideParent = data.treeUnitList.filter(
@@ -394,6 +489,9 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
   }
   // случай, когда не меняем parent (не является крайним элементом среди дочерних)
   else {
+    return setNewIndexValues({
+      treeUnitList: moveUpDownSameParent(data, 'DOWN'),
+    });
   }
   return data.treeUnitList;
 };
