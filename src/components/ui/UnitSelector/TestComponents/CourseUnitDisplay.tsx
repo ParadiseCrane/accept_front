@@ -24,6 +24,7 @@ export const CourseUnitDisplay = ({
   moveDepthDown,
   canToggleChildrenVisibility,
   canAddTreeUnit,
+  canDeleteTreeUnit,
   canMoveUp,
   canMoveDown,
   canMoveDepthUp,
@@ -47,6 +48,7 @@ export const CourseUnitDisplay = ({
     currentUnit: ITreeUnit;
   }) => boolean;
   canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canDeleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canMoveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canMoveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canMoveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
@@ -79,6 +81,9 @@ export const CourseUnitDisplay = ({
             variant="outline"
             onClick={() => {
               deleteTreeUnit({ currentUnit });
+            }}
+            style={{
+              display: canDeleteTreeUnit({ currentUnit }) ? '' : 'none',
             }}
           >
             <Trash />
