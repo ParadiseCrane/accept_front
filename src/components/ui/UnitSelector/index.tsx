@@ -182,25 +182,27 @@ const UnitSelector: FC<{
         </ActionIcon>
       </Group> */}
 
-      {treeUnitList.map((unit, index) => (
-        <CourseUnitDisplay
-          currentUnit={unit}
-          addTreeUnit={addTreeUnit}
-          deleteTreeUnit={deleteTreeUnit}
-          toggleChildrenVisibility={toggleChildrenVisibility}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          moveDepthUp={moveDepthUp}
-          moveDepthDown={moveDepthDown}
-          canToggleChildrenVisibility={canToggleChildrenVisibility}
-          canAddTreeUnit={canAddTreeUnit}
-          canDeleteTreeUnit={canDeleteTreeUnit}
-          canMoveUp={canMoveUp}
-          canMoveDown={canMoveDown}
-          canMoveDepthUp={canMoveDepthUp}
-          canMoveDepthDown={canMoveDepthDown}
-        />
-      ))}
+      {treeUnitList
+        .filter((element) => element.visible)
+        .map((unit, index) => (
+          <CourseUnitDisplay
+            currentUnit={unit}
+            addTreeUnit={addTreeUnit}
+            deleteTreeUnit={deleteTreeUnit}
+            toggleChildrenVisibility={toggleChildrenVisibility}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            moveDepthUp={moveDepthUp}
+            moveDepthDown={moveDepthDown}
+            canToggleChildrenVisibility={canToggleChildrenVisibility}
+            canAddTreeUnit={canAddTreeUnit}
+            canDeleteTreeUnit={canDeleteTreeUnit}
+            canMoveUp={canMoveUp}
+            canMoveDown={canMoveDown}
+            canMoveDepthUp={canMoveDepthUp}
+            canMoveDepthDown={canMoveDepthDown}
+          />
+        ))}
       {/* {initial_units.map((unit, index) => (
         <UnitDisplay key={index} unit={unit} />
       ))} */}
