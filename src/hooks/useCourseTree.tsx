@@ -224,31 +224,31 @@ const replaceOrder = ({
   return newOrderList;
 };
 
-const moveUpDownSameParent = (
-  data: ILocalMethodInput,
-  upDown: UpOrDown
-): ITreeUnit[] => {
+const moveUpDownSameParent = ({
+  currentElement,
+  sibling,
+  treeUnitList,
+}: {
+  currentElement: ITreeUnit;
+  sibling: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+}): ITreeUnit[] => {
   // здесь sibling точно есть
-  const sibling = findElementSibling({
-    currentElement: data.currentUnit,
-    treeUnitList: data.treeUnitList,
-    upOrDown: upDown,
-  });
   // нашли все дочерние элементы родственника
   const siblingChildrenAllLevels = findChildrenAllLevels({
     parent: sibling,
-    treeUnitList: data.treeUnitList,
+    treeUnitList: treeUnitList,
   });
   // нашли все дочерние элементы текущего элемента
   const currentElementChildrenAllLevels = findChildrenAllLevels({
-    parent: data.currentUnit,
-    treeUnitList: data.treeUnitList,
+    parent: currentElement,
+    treeUnitList: treeUnitList,
   });
   // заменили oder и orderAsNumber для всех дочерних элементов
   for (let i = 0; i < siblingChildrenAllLevels.length; i++) {
     const newOrderString = replaceOrder({
       oldOrder: siblingChildrenAllLevels[i].order,
-      newOrderStart: data.currentUnit.order,
+      newOrderStart: currentElement.order,
     });
     siblingChildrenAllLevels[i] = {
       ...siblingChildrenAllLevels[i],
@@ -269,23 +269,160 @@ const moveUpDownSameParent = (
   }
   const elements: ITreeUnit[] = [
     {
-      ...data.currentUnit,
+      ...currentElement,
       order: sibling.order,
       orderAsNumber: getOrderAsNumber({ order: sibling.order }),
     },
     {
       ...sibling,
-      order: data.currentUnit.order,
-      orderAsNumber: getOrderAsNumber({ order: data.currentUnit.order }),
+      order: currentElement.order,
+      orderAsNumber: getOrderAsNumber({ order: currentElement.order }),
     },
     ...siblingChildrenAllLevels,
     ...currentElementChildrenAllLevels,
   ];
   const newList: ITreeUnit[] = [
-    ...excludeElementsFromList({ list: data.treeUnitList, elements }),
+    ...excludeElementsFromList({ list: treeUnitList, elements }),
     ...elements,
   ].sort((a, b) => a.orderAsNumber - b.orderAsNumber);
   return newList;
+};
+
+const moveChildrenOneStep = ({
+  children,
+  upOrDown,
+}: {
+  children: ITreeUnit[];
+  upOrDown: UpOrDown;
+}): ITreeUnit[] => {
+  // если мы сдвигаем их вверх, то order первого прямого потомка
+  // будет заканчиваться на 1
+  // если мы сдвигаем их вниз, то order первого прямого потомка
+  // будет заканчиваться на 2
+  const localChildren = [...children];
+  const list: ITreeUnit[] = [];
+  if (upOrDown === 'UP') {
+    const depth = localChildren[0].depth;
+    const childrenToIterate = [...children].filter(
+      (element) => element.depth === depth
+    );
+    for (let i = 0; i < childrenToIterate.length; i++) {
+      const parent = childrenToIterate[i];
+      const lastDigit = Number(parent.order.split('|').pop()!) - 1;
+      const newOrder = [
+        ...parent.order.split('|').slice(0, -1),
+        lastDigit,
+      ].join('|');
+      const newParent = {
+        ...parent,
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+      };
+      list.push(newParent);
+      const children = findChildrenAllLevels({
+        parent,
+        treeUnitList: localChildren,
+      });
+      for (let y = 0; y < children.length; y++) {
+        const newOrderString = replaceOrder({
+          oldOrder: children[y].order,
+          newOrderStart: newParent.order,
+        });
+        list.push({
+          ...children[i],
+          order: newOrderString,
+          orderAsNumber: getOrderAsNumber({ order: newOrderString }),
+        });
+      }
+    }
+  } else {
+    const depth = localChildren[0].depth;
+    const childrenToIterate = [...children].filter(
+      (element) => element.depth === depth
+    );
+    for (let i = 0; i < childrenToIterate.length; i++) {
+      const parent = childrenToIterate[i];
+      const lastDigit = Number(parent.order.split('|').pop()!) + 1;
+      const newOrder = [
+        ...parent.order.split('|').slice(0, -1),
+        lastDigit,
+      ].join('|');
+      const newParent = {
+        ...parent,
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+      };
+      list.push(newParent);
+      const children = findChildrenAllLevels({
+        parent,
+        treeUnitList: localChildren,
+      });
+      for (let y = 0; y < children.length; y++) {
+        const newOrderString = replaceOrder({
+          oldOrder: children[y].order,
+          newOrderStart: newParent.order,
+        });
+        list.push({
+          ...children[i],
+          order: newOrderString,
+          orderAsNumber: getOrderAsNumber({ order: newOrderString }),
+        });
+      }
+    }
+  }
+  return list;
+};
+
+const getMovedElements = (
+  data: ILocalMethodInput,
+  parent: ITreeUnit,
+  upOrDown: UpOrDown
+): ITreeUnit[] => {
+  const parentSibling = findElementSibling({
+    currentElement: parent,
+    treeUnitList: data.treeUnitList,
+    upOrDown: upOrDown,
+  });
+  const parentSiblingChildrenDirect = findChildrenDirect({
+    parent: parentSibling,
+    treeUnitList: data.treeUnitList,
+  });
+  const sibling = [...parentSiblingChildrenDirect].pop();
+  let newOrder = '';
+  if (sibling) {
+    newOrder =
+      upOrDown === 'UP'
+        ? [
+            ...parentSibling.order.split('|'),
+            (Number(sibling.order.split('|').pop()!) + 1).toString(),
+          ].join('|')
+        : [...parentSibling.order.split('|'), '1'].join('|');
+  } else {
+    newOrder = [...parentSibling.order.split('|'), '1'].join('|');
+  }
+
+  const newCurrentElement: ITreeUnit = {
+    ...data.currentUnit,
+    order: newOrder,
+    orderAsNumber: getOrderAsNumber({ order: newOrder }),
+    parentSpec: parentSibling.spec,
+  };
+  const currentElementChildrenAllLevels = findChildrenAllLevels({
+    parent: data.currentUnit,
+    treeUnitList: data.treeUnitList,
+  });
+  for (let i = 0; i < currentElementChildrenAllLevels.length; i++) {
+    const newOrder = replaceOrder({
+      newOrderStart: newCurrentElement.order,
+      oldOrder: currentElementChildrenAllLevels[i].order,
+    });
+    currentElementChildrenAllLevels[i] = {
+      ...currentElementChildrenAllLevels[i],
+      order: newOrder,
+      orderAsNumber: getOrderAsNumber({ order: newOrder }),
+    };
+  }
+  return [newCurrentElement, ...currentElementChildrenAllLevels];
 };
 
 // метод по изменению видимости дочерних элементов
@@ -455,11 +592,49 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   // то родитель меняется
   const parentChanges = Number(data.currentUnit.order.split('|').pop()!) === 1;
   if (parentChanges) {
+    const movedElements = getMovedElements(data, parent, 'UP');
+    // мне нужны все children от parent
+    const children = findChildrenAllLevels({
+      parent,
+      treeUnitList: data.treeUnitList,
+    });
+    const childrenToMove = excludeElementsFromList({
+      list: children,
+      elements: movedElements,
+    });
+    console.log('childrenToMove', childrenToMove);
+    const movedChildren =
+      childrenToMove.length === 0
+        ? []
+        : moveChildrenOneStep({
+            children: childrenToMove,
+            upOrDown: 'UP',
+          });
+    const exclude: ITreeUnit[] = [...movedElements, ...movedChildren];
+    console.log('exclude', exclude);
+    const list = excludeElementsFromList({
+      list: data.treeUnitList,
+      elements: exclude,
+    });
+    return setNewIndexValues({
+      treeUnitList: [...list, ...movedElements, ...movedChildren].sort(
+        (a, b) => a.orderAsNumber - b.orderAsNumber
+      ),
+    });
   }
   // случай, когда не меняем parent (не является крайним элементом среди дочерних)
   else {
+    const sibling = findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'UP',
+    });
     return setNewIndexValues({
-      treeUnitList: moveUpDownSameParent(data, 'UP'),
+      treeUnitList: moveUpDownSameParent({
+        currentElement: data.currentUnit,
+        sibling,
+        treeUnitList: data.treeUnitList,
+      }),
     });
   }
   // находим все дочерние элементы родителя (все уровни)
@@ -486,11 +661,51 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       .order.split('|')
       .pop()!;
   if (parentChanges) {
+    const movedElements = getMovedElements(data, parent, 'DOWN');
+    // мне нужны все children от parentSibling
+    const parentSibling = findElementSibling({
+      currentElement: parent,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'DOWN',
+    });
+    const childrenToMove = findChildrenAllLevels({
+      parent: parentSibling,
+      treeUnitList: data.treeUnitList,
+    });
+    console.log('movedElements', movedElements);
+    console.log('childrenToMove', childrenToMove);
+    const movedChildren =
+      childrenToMove.length === 0
+        ? []
+        : moveChildrenOneStep({
+            children: childrenToMove,
+            upOrDown: 'DOWN',
+          });
+    const exclude: ITreeUnit[] = [...movedElements, ...movedChildren];
+    console.log('exclude', exclude);
+    const list = excludeElementsFromList({
+      list: data.treeUnitList,
+      elements: exclude,
+    });
+    return setNewIndexValues({
+      treeUnitList: [...list, ...movedElements, ...movedChildren].sort(
+        (a, b) => a.orderAsNumber - b.orderAsNumber
+      ),
+    });
   }
   // случай, когда не меняем parent (не является крайним элементом среди дочерних)
   else {
+    const sibling = findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'DOWN',
+    });
     return setNewIndexValues({
-      treeUnitList: moveUpDownSameParent(data, 'DOWN'),
+      treeUnitList: moveUpDownSameParent({
+        currentElement: data.currentUnit,
+        sibling,
+        treeUnitList: data.treeUnitList,
+      }),
     });
   }
   return data.treeUnitList;
@@ -537,6 +752,7 @@ const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
   return true;
 };
 
+// TODO неполные условия
 const localCanMoveUp = (data: ILocalMethodInput): boolean => {
   // если это самый высокий элемент своего уровня, то нельзя
   if (
@@ -546,10 +762,12 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
     )[0].spec
   ) {
     return false;
+  } else {
+    return true;
   }
-  return true;
 };
 
+// TODO неполные условия
 const localCanMoveDown = (data: ILocalMethodInput): boolean => {
   // если это самый низкий элемент своего уровня, то нельзя
   if (
