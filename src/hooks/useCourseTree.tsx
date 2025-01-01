@@ -212,11 +212,16 @@ const excludeElementsFromList = ({
 const replaceOrder = ({
   oldOrder,
   newOrderStart,
+  upOrDown,
 }: {
   oldOrder: string;
   newOrderStart: string;
+  upOrDown?: UpOrDown;
 }): string => {
-  const numberOfElementsToReplace: number = newOrderStart.split('|').length;
+  let numberOfElementsToReplace: number = newOrderStart.split('|').length;
+  if (upOrDown === 'UP') {
+    numberOfElementsToReplace++;
+  }
   const newOrderList = [
     ...newOrderStart.split('|'),
     ...oldOrder.split('|').slice(numberOfElementsToReplace, undefined),
@@ -288,7 +293,8 @@ const moveUpDownSameParent = ({
   return newList;
 };
 
-const moveChildrenOneStep = ({
+// сдвиг оставшихся children вверх или вниз для localMoveUp и localMoveDown
+const moveChildrenOneStepForUpDownParentChange = ({
   children,
   upOrDown,
 }: {
@@ -373,7 +379,12 @@ const moveChildrenOneStep = ({
   return list;
 };
 
-const getMovedElements = (
+//
+const moveChildrenOneStepForDepthUpDown = () => {};
+
+// метод по получению элементов, которые перемещаются при
+// localMoveUp и localMoveDown и при изменении родителя
+const getMovedElementsForUpDownParentChange = (
   data: ILocalMethodInput,
   parent: ITreeUnit,
   upOrDown: UpOrDown
@@ -423,6 +434,49 @@ const getMovedElements = (
     };
   }
   return [newCurrentElement, ...currentElementChildrenAllLevels];
+};
+
+// метод по получению элементов, которые перемещаются при
+// localMoveDepthUp и localMoveDepthDown
+const getMovedElementsForDepthUpDown = (
+  data: ILocalMethodInput,
+  upOrDown: UpOrDown
+): ITreeUnit[] => {
+  if (upOrDown === 'UP') {
+    const parent = data.treeUnitList.filter(
+      (element) => element.spec === data.currentUnit.parentSpec
+    )[0];
+    const currentElementChildrenAllLevels = findChildrenAllLevels({
+      parent: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+    });
+    const newOrder = [
+      ...parent.order.split('|').slice(0, -1),
+      Number(parent.order.split('|').pop()!) + 1,
+    ].join('|');
+    const newCurrentElement: ITreeUnit = {
+      ...data.currentUnit,
+      order: newOrder,
+      orderAsNumber: getOrderAsNumber({
+        order: newOrder,
+      }),
+    };
+    for (let i = 0; i < currentElementChildrenAllLevels.length; i++) {
+      const newOrder = replaceOrder({
+        oldOrder: currentElementChildrenAllLevels[i].order,
+        newOrderStart: newCurrentElement.order,
+        upOrDown: upOrDown,
+      });
+      currentElementChildrenAllLevels[i] = {
+        ...currentElementChildrenAllLevels[i],
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+      };
+    }
+    return [newCurrentElement, ...currentElementChildrenAllLevels];
+  } else {
+    return data.treeUnitList;
+  }
 };
 
 // метод по изменению видимости дочерних элементов
@@ -594,7 +648,11 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   const parentChanges = Number(data.currentUnit.order.split('|').pop()!) === 1;
   if (parentChanges) {
     // какие элементы перемещаются
-    const movedElements = getMovedElements(data, parent, 'UP');
+    const movedElements = getMovedElementsForUpDownParentChange(
+      data,
+      parent,
+      'UP'
+    );
     // мне нужны все children от parent
     const children = findChildrenAllLevels({
       parent,
@@ -609,7 +667,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
     const movedChildren =
       childrenToMove.length === 0
         ? []
-        : moveChildrenOneStep({
+        : moveChildrenOneStepForUpDownParentChange({
             children: childrenToMove,
             upOrDown: 'UP',
           });
@@ -660,7 +718,11 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       .pop()!;
   if (parentChanges) {
     // смотри комментарии в localMoveUp
-    const movedElements = getMovedElements(data, parent, 'DOWN');
+    const movedElements = getMovedElementsForUpDownParentChange(
+      data,
+      parent,
+      'DOWN'
+    );
     // мне нужны все children от parentSibling
     const parentSibling = findElementSibling({
       currentElement: parent,
@@ -674,7 +736,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     const movedChildren =
       childrenToMove.length === 0
         ? []
-        : moveChildrenOneStep({
+        : moveChildrenOneStepForUpDownParentChange({
             children: childrenToMove,
             upOrDown: 'DOWN',
           });
@@ -708,6 +770,9 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
 
 // сделать дочерним элементом родителя родителя
 const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
+  getMovedElementsForDepthUpDown(data, 'UP');
+  // TODO у родителя элементы должны сдвигаться вверх, если они есть
+  // TODO у родителя родителя элементы должны сдвигаться вниз, если они есть
   return data.treeUnitList;
 };
 
@@ -870,7 +935,7 @@ const localCanMoveDepthUp = (data: ILocalMethodInput): boolean => {
 };
 
 const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
-  if (data.currentUnit.order === '0') {
+  if (data.currentUnit.depth === 0) {
     return false;
   }
   if (
