@@ -770,9 +770,73 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
 
 // сделать дочерним элементом родителя родителя
 const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
-  getMovedElementsForDepthUpDown(data, 'UP');
+  // родитель текущего элемента
+  const parent = data.treeUnitList.filter(
+    (element) => element.spec === data.currentUnit.parentSpec
+  )[0];
+  // родитель родителя (новый родитель текущего элемента)
+  const parentParent = data.treeUnitList.filter(
+    (element) => element.spec === parent.parentSpec
+  )[0];
+  // элементы, которые перемещаются в результате нажатия кнопки
+  // (текущий элемент и его дочерние элементы)
+  const movedElements = getMovedElementsForDepthUpDown(data, 'UP');
   // TODO у родителя элементы должны сдвигаться вверх, если они есть
   // TODO у родителя родителя элементы должны сдвигаться вниз, если они есть
+  const parentChildren = findChildrenAllLevels({
+    parent: parent,
+    treeUnitList: data.treeUnitList,
+  });
+  const parentParentChildren = findChildrenAllLevels({
+    parent: parentParent,
+    treeUnitList: data.treeUnitList,
+  });
+  const parentChildrenToMove = excludeElementsFromList({
+    list: parentChildren,
+    elements: movedElements,
+  });
+  const parentParentChildrenToMove = excludeElementsFromList({
+    list: parentParentChildren,
+    elements: [parent, ...parentChildren],
+  });
+  const parentMovedChildren =
+    parentChildrenToMove.length === 0
+      ? []
+      : moveChildrenOneStepForUpDownParentChange({
+          children: parentChildrenToMove,
+          upOrDown: 'UP',
+        });
+  const parentParentMovedChildren =
+    parentParentChildrenToMove.length === 0
+      ? []
+      : moveChildrenOneStepForUpDownParentChange({
+          children: parentParentChildrenToMove,
+          upOrDown: 'DOWN',
+        });
+  const exclude = [
+    ...movedElements,
+    ...parentMovedChildren,
+    ...parentParentMovedChildren,
+  ];
+  const excludedList = excludeElementsFromList({
+    elements: exclude,
+    list: data.treeUnitList,
+  });
+  const list = [...exclude, ...excludedList].sort(
+    (a, b) => a.orderAsNumber - b.orderAsNumber
+  );
+  console.log('parent', parent);
+  console.log('parentParent', parentParent);
+  console.log('movedElements', movedElements);
+  console.log('parentChildren', parentChildren);
+  console.log('parentParentChildren', parentParentChildren);
+  console.log('parentChildrenToMove', parentChildrenToMove);
+  console.log('parentParentChildrenToMove', parentParentChildrenToMove);
+  console.log('parentMovedChildren', parentMovedChildren);
+  console.log('parentParentMovedChildren', parentParentMovedChildren);
+  console.log('exclude', exclude);
+  console.log('excludedList', excludedList);
+  console.log('list', list);
   return data.treeUnitList;
 };
 
