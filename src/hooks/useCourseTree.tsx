@@ -7,6 +7,20 @@ type UpOrDown = 'UP' | 'DOWN';
 // максимальное количество уровней вложенности
 const maxDepth: number = 4;
 
+const getMaxDepthFromList = ({
+  listToCheck,
+}: {
+  listToCheck: ITreeUnit[];
+}): number => {
+  let depth: number = 0;
+  for (let i = 0; i < listToCheck.length; i++) {
+    if (listToCheck[i].depth > depth) {
+      depth = listToCheck[i].depth;
+    }
+  }
+  return depth;
+};
+
 // высчитываем значение поля
 const getOrderAsNumber = ({ order }: { order: string }): number => {
   let orderAsNumber = 0;
@@ -221,6 +235,9 @@ const replaceOrder = ({
   let numberOfElementsToReplace: number = newOrderStart.split('|').length;
   if (upOrDown === 'UP') {
     numberOfElementsToReplace++;
+  }
+  if (upOrDown === 'DOWN') {
+    numberOfElementsToReplace--;
   }
   const newOrderList = [
     ...newOrderStart.split('|'),
@@ -593,7 +610,47 @@ const getMovedElementsForDepthUpDown = (
     }
     return [newCurrentElement, ...currentElementChildrenAllLevels];
   } else {
-    return data.treeUnitList;
+    // TODO для MoveDepthDown
+    const sibling = findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'UP',
+    });
+    // sibling точно есть, иначе бы у нас не появилась кнопка
+    const siblingChildrenDirect = findChildrenDirect({
+      parent: sibling,
+      treeUnitList: data.treeUnitList,
+    });
+    const newOrderLastDigit: number =
+      siblingChildrenDirect.length === 0
+        ? 1
+        : Number([...siblingChildrenDirect].pop()!.order.split('|').pop()!) + 1;
+    const newOrder = [...sibling.order.split('|'), newOrderLastDigit].join('|');
+    const newCurrentElement: ITreeUnit = {
+      ...data.currentUnit,
+      parentSpec: sibling.spec,
+      depth: data.currentUnit.depth + 1,
+      order: newOrder,
+      orderAsNumber: getOrderAsNumber({ order: newOrder }),
+    };
+    const currentElementChildrenAllLevels = findChildrenAllLevels({
+      parent: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+    });
+    for (let i = 0; i < currentElementChildrenAllLevels.length; i++) {
+      const newOrder = replaceOrder({
+        oldOrder: currentElementChildrenAllLevels[i].order,
+        newOrderStart: newCurrentElement.order,
+        upOrDown: upOrDown,
+      });
+      currentElementChildrenAllLevels[i] = {
+        ...currentElementChildrenAllLevels[i],
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+        depth: currentElementChildrenAllLevels[i].depth + 1,
+      };
+    }
+    return [newCurrentElement, ...currentElementChildrenAllLevels];
   }
 };
 
@@ -902,34 +959,32 @@ const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
   const movedElements = getMovedElementsForDepthUpDown(data, 'UP');
   // TODO у родителя элементы должны сдвигаться вверх, если они есть
   // TODO у родителя родителя элементы должны сдвигаться вниз, если они есть
-
-  //
-  //
-  // РАБОТАЕТ
+  // перемещенные элементы старого родителя
   const oldParentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: oldParent,
     treeUnitList: data.treeUnitList,
     fromWhichElement: data.currentUnit,
     upOrDown: 'UP',
   });
-  console.log('oldParentMovedChildren', oldParentMovedChildren);
-  // РАБОТАЕТ
+  // перемещенные элементы нового родителя
   const newParentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: newParent,
     treeUnitList: data.treeUnitList,
     fromWhichElement: oldParent,
     upOrDown: 'DOWN',
   });
-  console.log('newParentMovedChildren', newParentMovedChildren);
+  // какие элементы исключаем из общего списка (избегаем дублирования)
   const exclude = [
     ...oldParentMovedChildren,
     ...newParentMovedChildren,
     ...movedElements,
   ];
+  // какие элементы не перемещались
   const remainingElements = excludeElementsFromList({
     elements: exclude,
     list: data.treeUnitList,
   });
+  // объединяем два массива
   return setNewIndexValues({
     treeUnitList: [...remainingElements, ...exclude].sort(
       (a, b) => a.orderAsNumber - b.orderAsNumber
@@ -939,7 +994,34 @@ const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
 
 // можно только на один уровень ниже, чем элемент над ним
 const localMoveDepthDown = (data: ILocalMethodInput): ITreeUnit[] => {
-  return data.treeUnitList;
+  const parent = data.treeUnitList.filter(
+    (element) => element.spec === data.currentUnit.parentSpec
+  )[0];
+  // находим элементы, которые мы сдвинем вглубь
+  // РАБОТАЕТ
+  const movedElements = getMovedElementsForDepthUpDown(
+    { currentUnit: data.currentUnit, treeUnitList: data.treeUnitList },
+    'DOWN'
+  );
+  const parentMovedChildren = moveChildrenOneStepForDepthUpDown({
+    parent: parent,
+    treeUnitList: data.treeUnitList,
+    fromWhichElement: data.currentUnit,
+    upOrDown: 'UP',
+  });
+  // какие элементы исключаем из общего списка (избегаем дублирования)
+  const exclude = [...parentMovedChildren, ...movedElements];
+  // какие элементы не перемещались
+  const remainingElements = excludeElementsFromList({
+    elements: exclude,
+    list: data.treeUnitList,
+  });
+  // объединяем два массива
+  return setNewIndexValues({
+    treeUnitList: [...remainingElements, ...exclude].sort(
+      (a, b) => a.orderAsNumber - b.orderAsNumber
+    ),
+  });
 };
 
 const localCanToggleChildrenVisibility = (data: ILocalMethodInput): boolean => {
@@ -966,6 +1048,7 @@ const localCanAddTreeUnit = (data: ILocalMethodInput): boolean => {
   }
   return true;
 };
+
 const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
   if (data.currentUnit.kind === 'course') {
     return false;
@@ -1020,16 +1103,6 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
       }
     }
   }
-  if (
-    data.currentUnit.spec ===
-    data.treeUnitList.filter(
-      (element) => element.depth === data.currentUnit.depth
-    )[0].spec
-  ) {
-    return false;
-  } else {
-    return true;
-  }
 };
 
 // TODO неполные условия
@@ -1079,16 +1152,6 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
       }
     }
   }
-  // если это самый низкий элемент своего уровня, то нельзя
-  if (
-    data.currentUnit.spec ===
-    data.treeUnitList
-      .filter((element) => element.depth === data.currentUnit.depth)
-      .pop()!.spec
-  ) {
-    return false;
-  }
-  return true;
 };
 
 const localCanMoveDepthUp = (data: ILocalMethodInput): boolean => {
@@ -1101,11 +1164,17 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
   }
   if (
     data.currentUnit.spec !==
-    findElementSibling({
-      currentElement: data.currentUnit,
-      treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
-    }).spec
+      findElementSibling({
+        currentElement: data.currentUnit,
+        treeUnitList: data.treeUnitList,
+        upOrDown: 'UP',
+      }).spec &&
+    getMaxDepthFromList({
+      listToCheck: findChildrenAllLevels({
+        parent: data.currentUnit,
+        treeUnitList: data.treeUnitList,
+      }),
+    }) < maxDepth
   ) {
     return true;
   }
