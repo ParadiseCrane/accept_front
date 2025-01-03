@@ -380,7 +380,122 @@ const moveChildrenOneStepForUpDownParentChange = ({
 };
 
 //
-const moveChildrenOneStepForDepthUpDown = () => {};
+const moveChildrenOneStepForDepthUpDown = ({
+  parent,
+  treeUnitList,
+  fromWhichElement,
+  upOrDown,
+}: {
+  parent: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+  fromWhichElement: ITreeUnit;
+  upOrDown: UpOrDown;
+}): ITreeUnit[] => {
+  if (upOrDown === 'UP') {
+    const parentChildrenAllLevels = findChildrenAllLevels({
+      parent,
+      treeUnitList,
+    });
+    // смотрим, есть ли потомки ниже перемещаемого элемента
+    const sibling = findElementSibling({
+      currentElement: fromWhichElement,
+      treeUnitList: treeUnitList,
+      upOrDown: 'DOWN',
+    });
+    if (sibling.spec === fromWhichElement.spec) {
+      return [];
+    }
+    // дочерние элементы ниже нажатого элемента
+    const remainingChildren = parentChildrenAllLevels.filter(
+      (element) => element.index >= sibling.index
+    );
+    const listToIterate = remainingChildren.filter(
+      (element) => element.depth === fromWhichElement.depth
+    );
+    const list: ITreeUnit[] = [];
+    for (let i = 0; i < listToIterate.length; i++) {
+      const orderLastDigit =
+        Number(listToIterate[i].order.split('|').pop()!) - 1;
+      const newOrder = [
+        ...listToIterate[i].order.split('|').slice(0, -1),
+        orderLastDigit.toString(),
+      ].join('|');
+      list.push({
+        ...listToIterate[i],
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+      });
+      const children = findChildrenAllLevels({
+        parent: listToIterate[i],
+        treeUnitList: remainingChildren,
+      });
+      for (let y = 0; y < children.length; y++) {
+        const newChildOrder = replaceOrder({
+          newOrderStart: newOrder,
+          oldOrder: children[y].order,
+        });
+        list.push({
+          ...children[y],
+          order: newChildOrder,
+          orderAsNumber: getOrderAsNumber({ order: newChildOrder }),
+        });
+      }
+    }
+    return list;
+  } else {
+    const parentChildrenAllLevels = findChildrenAllLevels({
+      parent,
+      treeUnitList,
+    });
+    // смотрим, есть ли потомки ниже элемента, от которого отсчитываем
+    const sibling = findElementSibling({
+      currentElement: fromWhichElement,
+      treeUnitList: treeUnitList,
+      upOrDown: 'DOWN',
+    });
+    if (sibling.spec === fromWhichElement.spec) {
+      return [];
+    }
+    // дочерние элементы ниже нажатого элемента
+    const remainingChildren = parentChildrenAllLevels.filter(
+      (element) => element.index >= sibling.index
+    );
+    const listToIterate = remainingChildren.filter(
+      (element) => element.depth === fromWhichElement.depth
+    );
+    const list: ITreeUnit[] = [];
+    for (let i = 0; i < listToIterate.length; i++) {
+      const orderLastDigit =
+        Number(listToIterate[i].order.split('|').pop()!) + 1;
+      const newOrder = [
+        ...listToIterate[i].order.split('|').slice(0, -1),
+        orderLastDigit.toString(),
+      ].join('|');
+      list.push({
+        ...listToIterate[i],
+        order: newOrder,
+        orderAsNumber: getOrderAsNumber({ order: newOrder }),
+      });
+      const children = findChildrenAllLevels({
+        parent: listToIterate[i],
+        treeUnitList: remainingChildren,
+      });
+      for (let y = 0; y < children.length; y++) {
+        const newChildOrder = replaceOrder({
+          newOrderStart: newOrder,
+          oldOrder: children[y].order,
+        });
+        list.push({
+          ...children[y],
+          order: newChildOrder,
+          orderAsNumber: getOrderAsNumber({ order: newChildOrder }),
+        });
+      }
+    }
+    return list;
+  }
+  return treeUnitList;
+};
 
 // метод по получению элементов, которые перемещаются при
 // localMoveUp и localMoveDown и при изменении родителя
@@ -460,6 +575,8 @@ const getMovedElementsForDepthUpDown = (
       orderAsNumber: getOrderAsNumber({
         order: newOrder,
       }),
+      depth: data.currentUnit.depth - 1,
+      parentSpec: parent.parentSpec,
     };
     for (let i = 0; i < currentElementChildrenAllLevels.length; i++) {
       const newOrder = replaceOrder({
@@ -471,6 +588,7 @@ const getMovedElementsForDepthUpDown = (
         ...currentElementChildrenAllLevels[i],
         order: newOrder,
         orderAsNumber: getOrderAsNumber({ order: newOrder }),
+        depth: currentElementChildrenAllLevels[i].depth - 1,
       };
     }
     return [newCurrentElement, ...currentElementChildrenAllLevels];
@@ -771,73 +889,52 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
 // сделать дочерним элементом родителя родителя
 const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
   // родитель текущего элемента
-  const parent = data.treeUnitList.filter(
+  const oldParent = data.treeUnitList.filter(
     (element) => element.spec === data.currentUnit.parentSpec
   )[0];
   // родитель родителя (новый родитель текущего элемента)
-  const parentParent = data.treeUnitList.filter(
-    (element) => element.spec === parent.parentSpec
+  const newParent = data.treeUnitList.filter(
+    (element) => element.spec === oldParent.parentSpec
   )[0];
   // элементы, которые перемещаются в результате нажатия кнопки
   // (текущий элемент и его дочерние элементы)
+  // ОПРЕДЕЛЯЮТСЯ ПРАВИЛЬНО
   const movedElements = getMovedElementsForDepthUpDown(data, 'UP');
   // TODO у родителя элементы должны сдвигаться вверх, если они есть
   // TODO у родителя родителя элементы должны сдвигаться вниз, если они есть
-  const parentChildren = findChildrenAllLevels({
-    parent: parent,
+
+  //
+  //
+  // РАБОТАЕТ
+  const oldParentMovedChildren = moveChildrenOneStepForDepthUpDown({
+    parent: oldParent,
     treeUnitList: data.treeUnitList,
+    fromWhichElement: data.currentUnit,
+    upOrDown: 'UP',
   });
-  const parentParentChildren = findChildrenAllLevels({
-    parent: parentParent,
+  console.log('oldParentMovedChildren', oldParentMovedChildren);
+  // РАБОТАЕТ
+  const newParentMovedChildren = moveChildrenOneStepForDepthUpDown({
+    parent: newParent,
     treeUnitList: data.treeUnitList,
+    fromWhichElement: oldParent,
+    upOrDown: 'DOWN',
   });
-  const parentChildrenToMove = excludeElementsFromList({
-    list: parentChildren,
-    elements: movedElements,
-  });
-  const parentParentChildrenToMove = excludeElementsFromList({
-    list: parentParentChildren,
-    elements: [parent, ...parentChildren],
-  });
-  const parentMovedChildren =
-    parentChildrenToMove.length === 0
-      ? []
-      : moveChildrenOneStepForUpDownParentChange({
-          children: parentChildrenToMove,
-          upOrDown: 'UP',
-        });
-  const parentParentMovedChildren =
-    parentParentChildrenToMove.length === 0
-      ? []
-      : moveChildrenOneStepForUpDownParentChange({
-          children: parentParentChildrenToMove,
-          upOrDown: 'DOWN',
-        });
+  console.log('newParentMovedChildren', newParentMovedChildren);
   const exclude = [
+    ...oldParentMovedChildren,
+    ...newParentMovedChildren,
     ...movedElements,
-    ...parentMovedChildren,
-    ...parentParentMovedChildren,
   ];
-  const excludedList = excludeElementsFromList({
+  const remainingElements = excludeElementsFromList({
     elements: exclude,
     list: data.treeUnitList,
   });
-  const list = [...exclude, ...excludedList].sort(
-    (a, b) => a.orderAsNumber - b.orderAsNumber
-  );
-  console.log('parent', parent);
-  console.log('parentParent', parentParent);
-  console.log('movedElements', movedElements);
-  console.log('parentChildren', parentChildren);
-  console.log('parentParentChildren', parentParentChildren);
-  console.log('parentChildrenToMove', parentChildrenToMove);
-  console.log('parentParentChildrenToMove', parentParentChildrenToMove);
-  console.log('parentMovedChildren', parentMovedChildren);
-  console.log('parentParentMovedChildren', parentParentMovedChildren);
-  console.log('exclude', exclude);
-  console.log('excludedList', excludedList);
-  console.log('list', list);
-  return data.treeUnitList;
+  return setNewIndexValues({
+    treeUnitList: [...remainingElements, ...exclude].sort(
+      (a, b) => a.orderAsNumber - b.orderAsNumber
+    ),
+  });
 };
 
 // можно только на один уровень ниже, чем элемент над ним
