@@ -201,6 +201,7 @@ const UnitSelector: FC<{
             canMoveDown={canMoveDown}
             canMoveDepthUp={canMoveDepthUp}
             canMoveDepthDown={canMoveDepthDown}
+            key={unit.spec}
           />
         ))}
       {/* {initial_units.map((unit, index) => (
