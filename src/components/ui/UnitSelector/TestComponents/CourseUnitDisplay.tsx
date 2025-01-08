@@ -89,7 +89,7 @@ export const CourseUnitDisplay = ({
           <TreePopoverMenu
             icon={
               <ActionIcon variant="outline" size={'md'}>
-                {<Dots />}
+                <Dots />
               </ActionIcon>
             }
             children={
@@ -118,7 +118,7 @@ export const CourseUnitDisplay = ({
           <TreePopoverMenu
             icon={
               <ActionIcon variant="outline" size={'md'}>
-                {<ArrowsMove />}
+                <ArrowsMove />
               </ActionIcon>
             }
             children={
@@ -130,7 +130,7 @@ export const CourseUnitDisplay = ({
                   }}
                   disabled={!canMoveUp({ currentUnit })}
                 >
-                  {<ArrowBigUpLine />}
+                  <ArrowBigUpLine />
                 </ActionIcon>
 
                 <ActionIcon
@@ -140,7 +140,7 @@ export const CourseUnitDisplay = ({
                   }}
                   disabled={!canMoveDown({ currentUnit })}
                 >
-                  {<ArrowBigDownLine />}
+                  <ArrowBigDownLine />
                 </ActionIcon>
 
                 <ActionIcon
@@ -150,7 +150,7 @@ export const CourseUnitDisplay = ({
                   }}
                   disabled={!canMoveDepthUp({ currentUnit })}
                 >
-                  {<ArrowBigLeftLine />}
+                  <ArrowBigLeftLine />
                 </ActionIcon>
 
                 <ActionIcon
@@ -160,25 +160,29 @@ export const CourseUnitDisplay = ({
                   }}
                   disabled={!canMoveDepthDown({ currentUnit })}
                 >
-                  {<ArrowBigRightLine />}
+                  <ArrowBigRightLine />
                 </ActionIcon>
               </>
             }
           />
 
-          <ActionIcon
-            variant="outline"
-            onClick={() => {
-              toggleChildrenVisibility({ currentUnit });
-            }}
-            style={{
-              display: canToggleChildrenVisibility({ currentUnit })
-                ? ''
-                : 'none',
-            }}
-          >
-            {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
-          </ActionIcon>
+          {canToggleChildrenVisibility({ currentUnit }) ? (
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                toggleChildrenVisibility({ currentUnit });
+              }}
+              style={{
+                display: canToggleChildrenVisibility({ currentUnit })
+                  ? ''
+                  : 'none',
+              }}
+            >
+              {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+            </ActionIcon>
+          ) : (
+            <></>
+          )}
         </ActionIcon.Group>
       </Group>
       {/* <Collapse in={opened} transitionDuration={100 * unit.units.length}>
