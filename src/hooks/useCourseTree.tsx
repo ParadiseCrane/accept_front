@@ -204,6 +204,34 @@ const findElementSibling = ({
   }
 };
 
+const findClosestSiblingSameDepth = ({
+  currentElement,
+  treeUnitList,
+  upOrDown,
+}: {
+  currentElement: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+  upOrDown: UpOrDown;
+}): ITreeUnit => {
+  if (upOrDown === 'UP') {
+    const allSiblings = treeUnitList.filter(
+      (element) =>
+        element.index < currentElement.index &&
+        element.depth === currentElement.depth
+    );
+    console.log('allSiblings UP', allSiblings);
+    return allSiblings.length > 0 ? allSiblings.pop()! : currentElement;
+  } else {
+    const allSiblings = treeUnitList.filter(
+      (element) =>
+        element.depth === currentElement.depth &&
+        element.index > currentElement.index
+    );
+    console.log('allSiblings DOWN', allSiblings);
+    return allSiblings.length > 0 ? allSiblings[0] : currentElement;
+  }
+};
+
 // исключить элементы из массива
 const excludeElementsFromList = ({
   list,
@@ -520,7 +548,7 @@ const getMovedElementsForUpDownParentChange = (
   parent: ITreeUnit,
   upOrDown: UpOrDown
 ): ITreeUnit[] => {
-  const parentSibling = findElementSibling({
+  const parentSibling = findClosestSiblingSameDepth({
     currentElement: parent,
     treeUnitList: data.treeUnitList,
     upOrDown: upOrDown,
@@ -897,7 +925,12 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   if (parentChanges) {
     // необходимо отобразить прямых потомков нового родителя
     const parentSibling: ITreeUnit = {
-      ...findElementSibling({
+      // ...findElementSibling({
+      //   currentElement: parent,
+      //   treeUnitList: data.treeUnitList,
+      //   upOrDown: 'UP',
+      // }),
+      ...findClosestSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
         upOrDown: 'UP',
@@ -994,7 +1027,12 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     );
     // мне нужны все children от parentSibling
     const parentSibling: ITreeUnit = {
-      ...findElementSibling({
+      // ...findElementSibling({
+      //   currentElement: parent,
+      //   treeUnitList: data.treeUnitList,
+      //   upOrDown: 'DOWN',
+      // }),
+      ...findClosestSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
         upOrDown: 'DOWN',
@@ -1155,50 +1193,73 @@ const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
   return true;
 };
 
-// можно ли переместиться вверх
+// новые условия
 const localCanMoveUp = (data: ILocalMethodInput): boolean => {
-  // для элемента курса никаких кнопок
-  if (data.currentUnit.depth === 0) {
-    return false;
+  if (
+    data.treeUnitList.filter(
+      (element) =>
+        element.index < data.currentUnit.index &&
+        element.depth + 1 === data.currentUnit.depth &&
+        element.spec !== data.currentUnit.parentSpec
+    ).length > 0
+  ) {
+    return true;
   }
-  // для первого уровня (прямых потомков курса)
-  if (data.currentUnit.depth === 1) {
-    // если у него есть родственник выше него, то может
-    if (
-      data.currentUnit.spec ===
-      findElementSibling({
-        currentElement: data.currentUnit,
-        treeUnitList: data.treeUnitList,
-        upOrDown: 'UP',
-      }).spec
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-  // для всех остальных
-  const parent = data.treeUnitList.filter(
-    (element) => element.spec === data.currentUnit.parentSpec
-  )[0];
-  const parentSibling = findElementSibling({
-    currentElement: parent,
-    treeUnitList: data.treeUnitList,
-    upOrDown: 'UP',
-  });
-  if (parent.spec === parentSibling.spec) {
-    if (
-      data.currentUnit.spec ===
-      findChildrenDirect({ parent, treeUnitList: data.treeUnitList })[0].spec
-    ) {
-      return false;
-    }
-  }
-  return true;
+  return false;
+  // if (data.currentUnit.depth === 0) {
+  //   // для элемента курса никаких кнопок
+  //   return false;
+  // }
+  // // для первого уровня (прямых потомков курса)
+  // if (data.currentUnit.depth === 1) {
+  //   // если у него есть родственник выше него, то может
+  //   if (
+  //     data.currentUnit.spec ===
+  //     findElementSibling({
+  //       currentElement: data.currentUnit,
+  //       treeUnitList: data.treeUnitList,
+  //       upOrDown: 'UP',
+  //     }).spec
+  //   ) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+  // // для всех остальных
+  // const parent = data.treeUnitList.filter(
+  //   (element) => element.spec === data.currentUnit.parentSpec
+  // )[0];
+  // const parentSibling = findElementSibling({
+  //   currentElement: parent,
+  //   treeUnitList: data.treeUnitList,
+  //   upOrDown: 'UP',
+  // });
+  // if (parent.spec === parentSibling.spec) {
+  //   if (
+  //     data.currentUnit.spec ===
+  //     findChildrenDirect({ parent, treeUnitList: data.treeUnitList })[0].spec
+  //   ) {
+  //     return false;
+  //   }
+  // }
+  // return true;
 };
 
-// TODO неполные условия
+// новые условия
 const localCanMoveDown = (data: ILocalMethodInput): boolean => {
+  if (
+    data.treeUnitList.filter(
+      (element) =>
+        element.index > data.currentUnit.index &&
+        element.depth + 1 === data.currentUnit.depth &&
+        element.spec !== data.currentUnit.parentSpec
+    ).length > 0
+  ) {
+    return true;
+  }
+  return false;
+  /*
   // для элемента курса никаких кнопок
   if (data.currentUnit.depth === 0) {
     return false;
@@ -1244,6 +1305,7 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
       }
     }
   }
+    */
 };
 
 const localCanMoveDepthUp = (data: ILocalMethodInput): boolean => {
@@ -1266,7 +1328,8 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
         parent: data.currentUnit,
         treeUnitList: data.treeUnitList,
       }),
-    }) < maxDepth
+    }) < maxDepth &&
+    data.currentUnit.depth !== maxDepth
   ) {
     return true;
   }

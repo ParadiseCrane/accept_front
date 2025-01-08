@@ -1,6 +1,6 @@
 import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
 import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ArrowBigDownLine,
   ArrowBigLeftLine,
@@ -9,8 +9,7 @@ import {
   ArrowsMove,
   CaretDown,
   CaretRight,
-  Edit,
-  Pencil,
+  Dots,
   Plus,
   Trash,
 } from 'tabler-icons-react';
@@ -87,24 +86,10 @@ export const CourseUnitDisplay = ({
         />
 
         <ActionIcon.Group>
-          <ActionIcon
-            variant="outline"
-            onClick={() => {
-              toggleChildrenVisibility({ currentUnit });
-            }}
-            style={{
-              display: canToggleChildrenVisibility({ currentUnit })
-                ? ''
-                : 'none',
-            }}
-          >
-            {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
-          </ActionIcon>
-
           <TreePopoverMenu
             icon={
               <ActionIcon variant="outline" size={'md'}>
-                {<Pencil />}
+                {<Dots />}
               </ActionIcon>
             }
             children={
@@ -180,6 +165,20 @@ export const CourseUnitDisplay = ({
               </>
             }
           />
+
+          <ActionIcon
+            variant="outline"
+            onClick={() => {
+              toggleChildrenVisibility({ currentUnit });
+            }}
+            style={{
+              display: canToggleChildrenVisibility({ currentUnit })
+                ? ''
+                : 'none',
+            }}
+          >
+            {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+          </ActionIcon>
         </ActionIcon.Group>
       </Group>
       {/* <Collapse in={opened} transitionDuration={100 * unit.units.length}>
