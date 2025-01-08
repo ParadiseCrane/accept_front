@@ -651,6 +651,19 @@ const getMovedElementsForDepthUpDown = (
   }
 };
 
+const localChangeInputValue = (
+  data: ILocalMethodInput,
+  value: string
+): ITreeUnit[] => {
+  const list: ITreeUnit[] = [...data.treeUnitList];
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].spec === data.currentUnit.spec) {
+      list[i] = { ...list[i], title: value };
+    }
+  }
+  return list;
+};
+
 // метод по изменению видимости дочерних элементов
 const localToggleChildrenVisibility = (
   data: ILocalMethodInput
@@ -1218,6 +1231,13 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
 // интерфейс хука
 interface IUseCourseTree {
   treeUnitList: ITreeUnit[];
+  changeInputValue: ({
+    currentUnit,
+    value,
+  }: {
+    currentUnit: ITreeUnit;
+    value: string;
+  }) => void;
   toggleChildrenVisibility: ({
     currentUnit,
   }: {
@@ -1258,6 +1278,18 @@ export const useCourseTree = ({
       courseUnitList: courseUnitList,
     })
   );
+
+  const changeInputValue = ({
+    currentUnit,
+    value,
+  }: {
+    currentUnit: ITreeUnit;
+    value: string;
+  }) => {
+    setTreeUnitList(
+      localChangeInputValue({ currentUnit, treeUnitList }, value)
+    );
+  };
 
   const toggleChildrenVisibility = ({
     currentUnit,
@@ -1359,6 +1391,7 @@ export const useCourseTree = ({
 
   return {
     treeUnitList,
+    changeInputValue,
     toggleChildrenVisibility,
     addTreeUnit,
     deleteTreeUnit,
