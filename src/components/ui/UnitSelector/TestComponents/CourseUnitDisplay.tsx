@@ -20,7 +20,7 @@ import { useDebouncedCallback } from '@mantine/hooks';
 export const CourseUnitDisplay = ({
   currentUnit,
   addTreeUnit,
-  changeInputValue,
+  changeTitleValue,
   deleteTreeUnit,
   toggleChildrenVisibility,
   moveUp,
@@ -36,7 +36,7 @@ export const CourseUnitDisplay = ({
   canMoveDepthDown,
 }: {
   currentUnit: ITreeUnit;
-  changeInputValue: ({
+  changeTitleValue: ({
     currentUnit,
     value,
   }: {
@@ -67,7 +67,7 @@ export const CourseUnitDisplay = ({
   canMoveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
 }) => {
   const handleValueChange = useDebouncedCallback(
-    (value: string) => changeInputValue({ currentUnit: currentUnit, value }),
+    (value: string) => changeTitleValue({ currentUnit: currentUnit, value }),
     500
   );
   return (

@@ -156,7 +156,7 @@ const UnitSelector: FC<{
   // const units = useMemo(() => [...initial_units], [initial_units]);
   const {
     treeUnitList,
-    changeInputValue,
+    changeTitleValue,
     addTreeUnit,
     deleteTreeUnit,
     toggleChildrenVisibility,
@@ -189,7 +189,7 @@ const UnitSelector: FC<{
           <CourseUnitDisplay
             currentUnit={unit}
             addTreeUnit={addTreeUnit}
-            changeInputValue={changeInputValue}
+            changeTitleValue={changeTitleValue}
             deleteTreeUnit={deleteTreeUnit}
             toggleChildrenVisibility={toggleChildrenVisibility}
             moveUp={moveUp}

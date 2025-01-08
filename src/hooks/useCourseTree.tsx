@@ -332,10 +332,11 @@ const moveChildrenOneStepForUpDownParentChange = ({
         ...parent.order.split('|').slice(0, -1),
         lastDigit,
       ].join('|');
-      const newParent = {
+      const newParent: ITreeUnit = {
         ...parent,
         order: newOrder,
         orderAsNumber: getOrderAsNumber({ order: newOrder }),
+        visible: true,
       };
       list.push(newParent);
       const children = findChildrenAllLevels({
@@ -348,7 +349,7 @@ const moveChildrenOneStepForUpDownParentChange = ({
           newOrderStart: newParent.order,
         });
         list.push({
-          ...children[i],
+          ...children[y],
           order: newOrderString,
           orderAsNumber: getOrderAsNumber({ order: newOrderString }),
         });
@@ -370,6 +371,7 @@ const moveChildrenOneStepForUpDownParentChange = ({
         ...parent,
         order: newOrder,
         orderAsNumber: getOrderAsNumber({ order: newOrder }),
+        visible: true,
       };
       list.push(newParent);
       const children = findChildrenAllLevels({
@@ -382,7 +384,7 @@ const moveChildrenOneStepForUpDownParentChange = ({
           newOrderStart: newParent.order,
         });
         list.push({
-          ...children[i],
+          ...children[y],
           order: newOrderString,
           orderAsNumber: getOrderAsNumber({ order: newOrderString }),
         });
@@ -608,16 +610,22 @@ const getMovedElementsForDepthUpDown = (
     return [newCurrentElement, ...currentElementChildrenAllLevels];
   } else {
     // TODO для MoveDepthDown
-    const sibling = findElementSibling({
-      currentElement: data.currentUnit,
-      treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
-    });
+    const sibling: ITreeUnit = {
+      ...findElementSibling({
+        currentElement: data.currentUnit,
+        treeUnitList: data.treeUnitList,
+        upOrDown: 'UP',
+      }),
+      childrenVisible: true,
+    };
     // sibling точно есть, иначе бы у нас не появилась кнопка
     const siblingChildrenDirect = findChildrenDirect({
       parent: sibling,
       treeUnitList: data.treeUnitList,
     });
+    for (let i = 0; i < siblingChildrenDirect.length; i++) {
+      siblingChildrenDirect[i] = { ...siblingChildrenDirect[i], visible: true };
+    }
     const newOrderLastDigit: number =
       siblingChildrenDirect.length === 0
         ? 1
@@ -647,11 +655,17 @@ const getMovedElementsForDepthUpDown = (
         depth: currentElementChildrenAllLevels[i].depth + 1,
       };
     }
-    return [newCurrentElement, ...currentElementChildrenAllLevels];
+    return [
+      newCurrentElement,
+      ...currentElementChildrenAllLevels,
+      sibling,
+      ...siblingChildrenDirect,
+    ];
   }
 };
 
-const localChangeInputValue = (
+// метод по изменению заголовка элемента
+const localChangeTitleValue = (
   data: ILocalMethodInput,
   value: string
 ): ITreeUnit[] => {
@@ -878,7 +892,26 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   // то родитель меняется
   const parentChanges =
     Number({ ...data.currentUnit }.order.split('|').pop()!) === 1;
+  // какие элементы необходимо отобразить
+  const elementsToShow: ITreeUnit[] = [];
   if (parentChanges) {
+    // необходимо отобразить прямых потомков нового родителя
+    const parentSibling: ITreeUnit = {
+      ...findElementSibling({
+        currentElement: parent,
+        treeUnitList: data.treeUnitList,
+        upOrDown: 'UP',
+      }),
+      childrenVisible: true,
+    };
+    elementsToShow.push(parentSibling);
+    const parentSiblingChildrenDirect = findChildrenDirect({
+      parent: parentSibling,
+      treeUnitList: data.treeUnitList,
+    });
+    for (let i = 0; i < parentSiblingChildrenDirect.length; i++) {
+      elementsToShow.push({ ...parentSiblingChildrenDirect[i], visible: true });
+    }
     // какие элементы перемещаются
     const movedElements = getMovedElementsForUpDownParentChange(
       data,
@@ -903,7 +936,11 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
             children: childrenToMove,
             upOrDown: 'UP',
           });
-    const exclude: ITreeUnit[] = [...movedElements, ...movedChildren];
+    const exclude: ITreeUnit[] = [
+      ...movedElements,
+      ...movedChildren,
+      ...elementsToShow,
+    ];
     // заменяем старые элементы на новые
     const list = excludeElementsFromList({
       list: data.treeUnitList,
@@ -911,7 +948,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
     });
     // сортируем и присваиваем новые индексы
     return setNewIndexValues({
-      treeUnitList: [...list, ...movedElements, ...movedChildren].sort(
+      treeUnitList: [...list, ...exclude].sort(
         (a, b) => a.orderAsNumber - b.orderAsNumber
       ),
     });
@@ -956,11 +993,14 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       'DOWN'
     );
     // мне нужны все children от parentSibling
-    const parentSibling = findElementSibling({
-      currentElement: parent,
-      treeUnitList: data.treeUnitList,
-      upOrDown: 'DOWN',
-    });
+    const parentSibling: ITreeUnit = {
+      ...findElementSibling({
+        currentElement: parent,
+        treeUnitList: data.treeUnitList,
+        upOrDown: 'DOWN',
+      }),
+      childrenVisible: true,
+    };
     const childrenToMove = findChildrenAllLevels({
       parent: parentSibling,
       treeUnitList: data.treeUnitList,
@@ -972,13 +1012,17 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
             children: childrenToMove,
             upOrDown: 'DOWN',
           });
-    const exclude: ITreeUnit[] = [...movedElements, ...movedChildren];
+    const exclude: ITreeUnit[] = [
+      ...movedElements,
+      ...movedChildren,
+      parentSibling,
+    ];
     const list = excludeElementsFromList({
       list: data.treeUnitList,
       elements: exclude,
     });
     return setNewIndexValues({
-      treeUnitList: [...list, ...movedElements, ...movedChildren].sort(
+      treeUnitList: [...list, ...exclude].sort(
         (a, b) => a.orderAsNumber - b.orderAsNumber
       ),
     });
@@ -1052,11 +1096,12 @@ const localMoveDepthDown = (data: ILocalMethodInput): ITreeUnit[] => {
     (element) => element.spec === data.currentUnit.parentSpec
   )[0];
   // находим элементы, которые мы сдвинем вглубь
-  // РАБОТАЕТ
-  const movedElements = getMovedElementsForDepthUpDown(
+  // + элементы, которые видимость которых необходимо включить при перемещении
+  const movedElementsAndShowUpElements = getMovedElementsForDepthUpDown(
     { currentUnit: data.currentUnit, treeUnitList: data.treeUnitList },
     'DOWN'
   );
+  // оставшиеся элементы сдвигаем вверх на 1
   const parentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: parent,
     treeUnitList: data.treeUnitList,
@@ -1064,7 +1109,7 @@ const localMoveDepthDown = (data: ILocalMethodInput): ITreeUnit[] => {
     upOrDown: 'UP',
   });
   // какие элементы исключаем из общего списка (избегаем дублирования)
-  const exclude = [...parentMovedChildren, ...movedElements];
+  const exclude = [...parentMovedChildren, ...movedElementsAndShowUpElements];
   // какие элементы не перемещались
   const remainingElements = excludeElementsFromList({
     elements: exclude,
@@ -1231,7 +1276,7 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
 // интерфейс хука
 interface IUseCourseTree {
   treeUnitList: ITreeUnit[];
-  changeInputValue: ({
+  changeTitleValue: ({
     currentUnit,
     value,
   }: {
@@ -1279,7 +1324,7 @@ export const useCourseTree = ({
     })
   );
 
-  const changeInputValue = ({
+  const changeTitleValue = ({
     currentUnit,
     value,
   }: {
@@ -1287,7 +1332,7 @@ export const useCourseTree = ({
     value: string;
   }) => {
     setTreeUnitList(
-      localChangeInputValue({ currentUnit, treeUnitList }, value)
+      localChangeTitleValue({ currentUnit, treeUnitList }, value)
     );
   };
 
@@ -1391,7 +1436,7 @@ export const useCourseTree = ({
 
   return {
     treeUnitList,
-    changeInputValue,
+    changeTitleValue,
     toggleChildrenVisibility,
     addTreeUnit,
     deleteTreeUnit,
