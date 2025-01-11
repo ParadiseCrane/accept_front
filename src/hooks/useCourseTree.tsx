@@ -889,6 +889,48 @@ const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
   const deletedElements = data.treeUnitList.filter((element) =>
     element.order.startsWith(data.currentUnit.order)
   );
+  const parentChildrenAllLevels = findChildrenAllLevels({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
+  let stationaryElements: ITreeUnit[] = [
+    ...excludeElementsFromList({
+      elements: parentChildrenAllLevels,
+      list: data.treeUnitList,
+    }),
+    ...parentChildrenAllLevels.filter(
+      (element) => element.index < data.currentUnit.index
+    ),
+  ];
+  let movedElements: ITreeUnit[] = [];
+  if (data.currentUnit.spec !== [...parentChildrenAllLevels].pop()!.spec) {
+    movedElements = moveChildrenOneStepForUpDownParentChange({
+      children: excludeElementsFromList({
+        elements: [...stationaryElements, ...deletedElements],
+        list: data.treeUnitList,
+      }),
+      upOrDown: 'UP',
+    });
+  }
+
+  return setNewIndexValues({
+    treeUnitList: [...stationaryElements, ...movedElements].sort(
+      (a, b) => a.orderAsNumber - b.orderAsNumber
+    ),
+  });
+  //
+  //
+  // const parentChildrenDirect = findChildrenDirect({
+  //   parent,
+  //   treeUnitList: data.treeUnitList,
+  // });
+  // const indexToStart = parentChildrenDirect.indexOf(data.currentUnit);
+  // const stationaryElements: ITreeUnit[] = [];
+  // for() {}
+  //
+  //
+
+  /*
   const sibling = findElementSibling({
     currentElement: data.currentUnit,
     treeUnitList: data.treeUnitList,
@@ -933,6 +975,7 @@ const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       (a, b) => a.orderAsNumber - b.orderAsNumber
     ),
   });
+  */
 };
 
 // переместить элемент на 1 вверх
