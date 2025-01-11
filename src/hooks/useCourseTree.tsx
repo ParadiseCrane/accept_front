@@ -538,7 +538,6 @@ const moveChildrenOneStepForDepthUpDown = ({
     }
     return list;
   }
-  return treeUnitList;
 };
 
 // метод по получению элементов, которые перемещаются при
@@ -928,64 +927,6 @@ const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       (a, b) => a.orderAsNumber - b.orderAsNumber
     ),
   });
-  //
-  //
-  // const parentChildrenDirect = findChildrenDirect({
-  //   parent,
-  //   treeUnitList: data.treeUnitList,
-  // });
-  // const indexToStart = parentChildrenDirect.indexOf(data.currentUnit);
-  // const stationaryElements: ITreeUnit[] = [];
-  // for() {}
-  //
-  //
-
-  /*
-  const sibling = findElementSibling({
-    currentElement: data.currentUnit,
-    treeUnitList: data.treeUnitList,
-    upOrDown: 'DOWN',
-  });
-  let movedChildren: ITreeUnit[] = [];
-  // если sibling снизу существует,
-  // двигаем дочерние элементы на 1 вверх
-  if (sibling.spec !== data.currentUnit.spec) {
-    // нашли все дочерние элементы текущего элемента
-    const siblingChildrenAllLevels = findChildrenAllLevels({
-      parent: sibling,
-      treeUnitList: data.treeUnitList,
-    });
-    // заменили order и orderAsNumber для всех дочерних элементов
-    for (let i = 0; i < siblingChildrenAllLevels.length; i++) {
-      const newOrderString = replaceOrder({
-        oldOrder: siblingChildrenAllLevels[i].order,
-        newOrderStart: data.currentUnit.order,
-      });
-      siblingChildrenAllLevels[i] = {
-        ...siblingChildrenAllLevels[i],
-        order: newOrderString,
-        orderAsNumber: getOrderAsNumber({ order: newOrderString }),
-      };
-    }
-    movedChildren = [
-      ...siblingChildrenAllLevels,
-      {
-        ...sibling,
-        order: data.currentUnit.order,
-        orderAsNumber: data.currentUnit.orderAsNumber,
-      },
-    ];
-  }
-  const remainingElements = excludeElementsFromList({
-    elements: [...deletedElements, ...movedChildren],
-    list: data.treeUnitList,
-  });
-  return setNewIndexValues({
-    treeUnitList: [...movedChildren, ...remainingElements].sort(
-      (a, b) => a.orderAsNumber - b.orderAsNumber
-    ),
-  });
-  */
 };
 
 // переместить элемент на 1 вверх
@@ -1003,11 +944,6 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   if (parentChanges) {
     // необходимо отобразить прямых потомков нового родителя
     const parentSibling: ITreeUnit = {
-      // ...findElementSibling({
-      //   currentElement: parent,
-      //   treeUnitList: data.treeUnitList,
-      //   upOrDown: 'UP',
-      // }),
       ...findClosestSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
@@ -1115,11 +1051,6 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     );
     // мне нужны все children от parentSibling
     const parentSibling: ITreeUnit = {
-      // ...findElementSibling({
-      //   currentElement: parent,
-      //   treeUnitList: data.treeUnitList,
-      //   upOrDown: 'DOWN',
-      // }),
       ...findClosestSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
@@ -1313,44 +1244,6 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
     return true;
   }
   return false;
-  // if (data.currentUnit.depth === 0) {
-  //   // для элемента курса никаких кнопок
-  //   return false;
-  // }
-  // // для первого уровня (прямых потомков курса)
-  // if (data.currentUnit.depth === 1) {
-  //   // если у него есть родственник выше него, то может
-  //   if (
-  //     data.currentUnit.spec ===
-  //     findElementSibling({
-  //       currentElement: data.currentUnit,
-  //       treeUnitList: data.treeUnitList,
-  //       upOrDown: 'UP',
-  //     }).spec
-  //   ) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-  // // для всех остальных
-  // const parent = data.treeUnitList.filter(
-  //   (element) => element.spec === data.currentUnit.parentSpec
-  // )[0];
-  // const parentSibling = findElementSibling({
-  //   currentElement: parent,
-  //   treeUnitList: data.treeUnitList,
-  //   upOrDown: 'UP',
-  // });
-  // if (parent.spec === parentSibling.spec) {
-  //   if (
-  //     data.currentUnit.spec ===
-  //     findChildrenDirect({ parent, treeUnitList: data.treeUnitList })[0].spec
-  //   ) {
-  //     return false;
-  //   }
-  // }
-  // return true;
 };
 
 // новые условия
@@ -1376,53 +1269,6 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
     return true;
   }
   return false;
-  /*
-  // для элемента курса никаких кнопок
-  if (data.currentUnit.depth === 0) {
-    return false;
-  } else {
-    // для первого уровня (прямых потомков курса)
-    if (data.currentUnit.depth === 1) {
-      // если у него есть родственник выше него, то может
-      if (
-        data.currentUnit.spec ===
-        findElementSibling({
-          currentElement: data.currentUnit,
-          treeUnitList: data.treeUnitList,
-          upOrDown: 'DOWN',
-        }).spec
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    // для всех остальных
-    else {
-      const parent = data.treeUnitList.filter(
-        (element) => element.spec === data.currentUnit.parentSpec
-      )[0];
-      const parentSibling = findElementSibling({
-        currentElement: parent,
-        treeUnitList: data.treeUnitList,
-        upOrDown: 'DOWN',
-      });
-      if (parent.spec === parentSibling.spec) {
-        if (
-          data.currentUnit.spec ===
-          findChildrenDirect({ parent, treeUnitList: data.treeUnitList }).pop()!
-            .spec
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        return true;
-      }
-    }
-  }
-    */
 };
 
 const localCanMoveDepthUp = (data: ILocalMethodInput): boolean => {
