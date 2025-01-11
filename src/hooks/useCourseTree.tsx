@@ -881,29 +881,39 @@ const localAddTreeUnit = (
 };
 
 // удаление элемента и всех его дочерних элементов
-// TODO сделать изменение order и orderAsNumber
 const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
+  // находим родительский элемент
   const parent = data.treeUnitList.filter(
     (element) => element.spec === data.currentUnit.parentSpec
   )[0];
+  // находим удаленные элементы
   const deletedElements = data.treeUnitList.filter((element) =>
     element.order.startsWith(data.currentUnit.order)
   );
+  // элементы, которые могут сдвинуться, находятся на одном уровне
+  // с текущим элементом, поэтому мы находим все дочерние родителя
   const parentChildrenAllLevels = findChildrenAllLevels({
     parent,
     treeUnitList: data.treeUnitList,
   });
+  // стационарные элементы - это точно все, кроме дочерних
   let stationaryElements: ITreeUnit[] = [
     ...excludeElementsFromList({
       elements: parentChildrenAllLevels,
       list: data.treeUnitList,
     }),
+    // + дочерние, выше удаленных
     ...parentChildrenAllLevels.filter(
       (element) => element.index < data.currentUnit.index
     ),
   ];
   let movedElements: ITreeUnit[] = [];
-  if (data.currentUnit.spec !== [...parentChildrenAllLevels].pop()!.spec) {
+  // если удаляемый элемент не последний из прямых потомков родителя
+  if (
+    data.currentUnit.spec !==
+    findChildrenDirect({ parent, treeUnitList: data.treeUnitList }).pop()!.spec
+  ) {
+    // сдвигаем оставшиеся дочерние на 1 вверх
     movedElements = moveChildrenOneStepForUpDownParentChange({
       children: excludeElementsFromList({
         elements: [...stationaryElements, ...deletedElements],
