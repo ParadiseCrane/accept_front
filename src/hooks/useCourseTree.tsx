@@ -221,7 +221,6 @@ const findClosestSiblingSameDepth = ({
         element.index < currentElement.index &&
         element.depth === currentElement.depth
     );
-    console.log('allSiblings UP', allSiblings);
     return allSiblings.length > 0 ? allSiblings.pop()! : currentElement;
   } else {
     const allSiblings = treeUnitList.filter(
@@ -229,7 +228,6 @@ const findClosestSiblingSameDepth = ({
         element.depth === currentElement.depth &&
         element.index > currentElement.index
     );
-    console.log('allSiblings DOWN', allSiblings);
     return allSiblings.length > 0 ? allSiblings[0] : currentElement;
   }
 };
@@ -963,11 +961,15 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
         upOrDown: 'UP',
       }),
       childrenVisible: true,
+      visible: true,
     };
     // elementsToShow.push(parentSibling);
-    elementsToShow = recursivelyShowChildren({
-      currentUnit: parentSibling,
-      treeUnitList: data.treeUnitList,
+    elementsToShow = excludeElementsFromList({
+      elements: [parentSibling],
+      list: recursivelyShowChildren({
+        currentUnit: parentSibling,
+        treeUnitList: data.treeUnitList,
+      }),
     });
     const parentSiblingChildrenDirect = findChildrenDirect({
       parent: parentSibling,
@@ -1004,6 +1006,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
       ...movedElements,
       ...movedChildren,
       ...elementsToShow,
+      parentSibling,
     ];
     // заменяем старые элементы на новые
     const list = excludeElementsFromList({
@@ -1070,10 +1073,14 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
         upOrDown: 'DOWN',
       }),
       childrenVisible: true,
+      visible: true,
     };
-    elementsToShow = recursivelyShowChildren({
-      currentUnit: parentSibling,
-      treeUnitList: data.treeUnitList,
+    elementsToShow = excludeElementsFromList({
+      elements: [parentSibling],
+      list: recursivelyShowChildren({
+        currentUnit: parentSibling,
+        treeUnitList: data.treeUnitList,
+      }),
     });
     const childrenToMove = findChildrenAllLevels({
       parent: parentSibling,
@@ -1090,6 +1097,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       ...movedElements,
       ...movedChildren,
       ...elementsToShow,
+      parentSibling,
     ];
     const list = excludeElementsFromList({
       list: data.treeUnitList,
