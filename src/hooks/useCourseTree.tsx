@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 type UpOrDown = 'UP' | 'DOWN';
 
+export type ElementType = 'unit' | 'lesson';
+
 // максимальное количество уровней вложенности
 const maxDepth: number = 4;
 
@@ -692,6 +694,35 @@ const getMovedElementsForDepthUpDown = (
   }
 };
 
+// рекурсивно отображаем элементы до текущего
+const recursivelyShowChildren = (data: ILocalMethodInput) => {
+  const list: ITreeUnit[] = [];
+  const exclude: ITreeUnit[] = [];
+  let currentElement = data.currentUnit;
+  while (currentElement.depth >= 1) {
+    const parent: ITreeUnit = {
+      ...data.treeUnitList.filter(
+        (element) => element.spec === currentElement.parentSpec
+      )[0],
+      childrenVisible: true,
+    };
+    exclude.push(parent);
+    const childrenDirect = findChildrenDirect({
+      parent,
+      treeUnitList: data.treeUnitList,
+    });
+    for (let i = 0; i < childrenDirect.length; i++) {
+      list.push({ ...childrenDirect[i], visible: true });
+    }
+    currentElement = parent;
+  }
+  const remainingElements = excludeElementsFromList({
+    elements: exclude,
+    list,
+  });
+  return [...remainingElements, ...exclude];
+};
+
 // метод по изменению заголовка элемента
 const localChangeTitleValue = (
   data: ILocalMethodInput,
@@ -746,7 +777,7 @@ const localToggleChildrenVisibility = (
 // метод по добавлению нового элемента в дерево (для первого уровня вложенности)
 const localAddTreeUnitFirstLevel = (
   data: ILocalMethodInput,
-  isModule: boolean
+  elementType: ElementType
 ): ITreeUnit[] => {
   const parent = data.currentUnit;
   const children = findChildrenDirect({
@@ -764,13 +795,9 @@ const localAddTreeUnitFirstLevel = (
             .pop()!
         );
   const newElement: ITreeUnit = {
-    spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
-      lastChildOrderLastDigit + 1
-    }`,
-    kind: isModule ? 'unit' : 'lesson',
-    title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
-      lastChildOrderLastDigit + 1
-    }`,
+    spec: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
+    kind: elementType,
+    title: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
     order: `${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${lastChildOrderLastDigit + 1}`,
@@ -798,12 +825,13 @@ const localAddTreeUnitFirstLevel = (
 };
 
 // метод по добавлению нового элемента в дерево
-const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
-  // TODO запрашивать тип (kind) через контекстное меню
-  const isModule = true;
+const localAddTreeUnit = (
+  data: ILocalMethodInput,
+  elementType: ElementType
+): ITreeUnit[] => {
   // при создании модулей 1-го уровня вложенности перенаправляем
   if (data.currentUnit.depth === 0) {
-    return localAddTreeUnitFirstLevel(data, isModule);
+    return localAddTreeUnitFirstLevel(data, elementType);
   }
   // для удобства
   const parent = data.currentUnit;
@@ -820,13 +848,11 @@ const localAddTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
       ? 0
       : Number([...children].pop()!.order.split('|').pop()!);
   const newElement: ITreeUnit = {
-    spec: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
+    spec: `${parent.spec}new${elementType}${
       lastChildOrderLastDigit + 1
     }${uuidv4()}`,
-    kind: isModule ? 'unit' : 'lesson',
-    title: `${parent.spec}${isModule ? 'newModule' : 'newLesson'}${
-      lastChildOrderLastDigit + 1
-    }`,
+    kind: elementType,
+    title: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
     order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
@@ -921,7 +947,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   const parentChanges =
     Number({ ...data.currentUnit }.order.split('|').pop()!) === 1;
   // какие элементы необходимо отобразить
-  const elementsToShow: ITreeUnit[] = [];
+  let elementsToShow: ITreeUnit[] = [];
   if (parentChanges) {
     // необходимо отобразить прямых потомков нового родителя
     const parentSibling: ITreeUnit = {
@@ -937,7 +963,11 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
       }),
       childrenVisible: true,
     };
-    elementsToShow.push(parentSibling);
+    // elementsToShow.push(parentSibling);
+    elementsToShow = recursivelyShowChildren({
+      currentUnit: parentSibling,
+      treeUnitList: data.treeUnitList,
+    });
     const parentSiblingChildrenDirect = findChildrenDirect({
       parent: parentSibling,
       treeUnitList: data.treeUnitList,
@@ -1018,6 +1048,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       .pop()!
       .order.split('|')
       .pop()!;
+  let elementsToShow: ITreeUnit[] = [];
   if (parentChanges) {
     // смотри комментарии в localMoveUp
     const movedElements = getMovedElementsForUpDownParentChange(
@@ -1039,6 +1070,10 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
       }),
       childrenVisible: true,
     };
+    elementsToShow = recursivelyShowChildren({
+      currentUnit: parentSibling,
+      treeUnitList: data.treeUnitList,
+    });
     const childrenToMove = findChildrenAllLevels({
       parent: parentSibling,
       treeUnitList: data.treeUnitList,
@@ -1053,7 +1088,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     const exclude: ITreeUnit[] = [
       ...movedElements,
       ...movedChildren,
-      parentSibling,
+      ...elementsToShow,
     ];
     const list = excludeElementsFromList({
       list: data.treeUnitList,
@@ -1196,6 +1231,16 @@ const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
 // новые условия
 const localCanMoveUp = (data: ILocalMethodInput): boolean => {
   if (
+    data.currentUnit.spec !==
+    findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'UP',
+    }).spec
+  ) {
+    return true;
+  }
+  if (
     data.treeUnitList.filter(
       (element) =>
         element.index < data.currentUnit.index &&
@@ -1248,6 +1293,16 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
 
 // новые условия
 const localCanMoveDown = (data: ILocalMethodInput): boolean => {
+  if (
+    data.currentUnit.spec !==
+    findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'DOWN',
+    }).spec
+  ) {
+    return true;
+  }
   if (
     data.treeUnitList.filter(
       (element) =>
@@ -1351,7 +1406,13 @@ interface IUseCourseTree {
   }: {
     currentUnit: ITreeUnit;
   }) => void;
-  addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  addTreeUnit: ({
+    currentUnit,
+    elementType,
+  }: {
+    currentUnit: ITreeUnit;
+    elementType: ElementType;
+  }) => void;
   deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
@@ -1412,8 +1473,16 @@ export const useCourseTree = ({
     );
   };
 
-  const addTreeUnit = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
-    setTreeUnitList(localAddTreeUnit({ currentUnit, treeUnitList }));
+  const addTreeUnit = ({
+    currentUnit,
+    elementType,
+  }: {
+    currentUnit: ITreeUnit;
+    elementType: ElementType;
+  }) => {
+    setTreeUnitList(
+      localAddTreeUnit({ currentUnit, treeUnitList }, elementType)
+    );
   };
 
   const deleteTreeUnit = ({ currentUnit }: { currentUnit: ITreeUnit }) => {

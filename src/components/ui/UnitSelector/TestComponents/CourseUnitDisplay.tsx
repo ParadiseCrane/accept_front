@@ -10,11 +10,14 @@ import {
   CaretDown,
   CaretRight,
   Dots,
+  LayoutGridAdd,
   Plus,
+  School,
   Trash,
 } from 'tabler-icons-react';
 import { TreePopoverMenu } from './TreePopoverMenu';
 import { useDebouncedCallback } from '@mantine/hooks';
+import { ElementType } from '@hooks/useCourseTree';
 
 export const CourseUnitDisplay = ({
   currentUnit,
@@ -42,7 +45,13 @@ export const CourseUnitDisplay = ({
     currentUnit: ITreeUnit;
     value: string;
   }) => void;
-  addTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  addTreeUnit: ({
+    currentUnit,
+    elementType,
+  }: {
+    currentUnit: ITreeUnit;
+    elementType: ElementType;
+  }) => void;
   deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   toggleChildrenVisibility: ({
     currentUnit,
@@ -69,9 +78,148 @@ export const CourseUnitDisplay = ({
     (value: string) => changeTitleValue({ currentUnit: currentUnit, value }),
     500
   );
+
+  if (currentUnit.kind === 'course') {
+    return (
+      <Box
+        style={{
+          paddingLeft: `${currentUnit.depth * 15}px`,
+          display: currentUnit.visible ? '' : 'none',
+        }}
+      >
+        <Group gap={0}>
+          <TextInput
+            defaultValue={currentUnit.title}
+            onChange={(element) => {
+              handleValueChange(element.target.value);
+            }}
+          />
+
+          <ActionIcon.Group>
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                addTreeUnit({ currentUnit, elementType: 'unit' });
+              }}
+              disabled={!canAddTreeUnit({ currentUnit })}
+            >
+              <LayoutGridAdd />
+            </ActionIcon>
+
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                addTreeUnit({ currentUnit, elementType: 'lesson' });
+              }}
+              disabled={!canAddTreeUnit({ currentUnit })}
+            >
+              <School />
+            </ActionIcon>
+
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                toggleChildrenVisibility({ currentUnit });
+              }}
+              style={{
+                display: canToggleChildrenVisibility({ currentUnit })
+                  ? ''
+                  : 'none',
+              }}
+            >
+              {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+            </ActionIcon>
+          </ActionIcon.Group>
+        </Group>
+      </Box>
+    );
+  }
+
+  if (currentUnit.kind === 'lesson') {
+    return (
+      <Box
+        style={{
+          paddingLeft: `${currentUnit.depth * 15}px`,
+          display: currentUnit.visible ? '' : 'none',
+        }}
+      >
+        <Group gap={0}>
+          <TextInput
+            defaultValue={currentUnit.title}
+            onChange={(element) => {
+              handleValueChange(element.target.value);
+            }}
+          />
+
+          <ActionIcon.Group>
+            <ActionIcon
+              variant="outline"
+              onClick={() => {
+                deleteTreeUnit({ currentUnit });
+              }}
+              disabled={!canDeleteTreeUnit({ currentUnit })}
+            >
+              <Trash />
+            </ActionIcon>
+
+            <TreePopoverMenu
+              icon={
+                <ActionIcon variant="outline" size={'md'}>
+                  <ArrowsMove />
+                </ActionIcon>
+              }
+              children={
+                <>
+                  <ActionIcon
+                    size={'md'}
+                    onClick={() => {
+                      moveUp({ currentUnit });
+                    }}
+                    disabled={!canMoveUp({ currentUnit })}
+                  >
+                    <ArrowBigUpLine />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    size={'md'}
+                    onClick={() => {
+                      moveDown({ currentUnit });
+                    }}
+                    disabled={!canMoveDown({ currentUnit })}
+                  >
+                    <ArrowBigDownLine />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    size={'md'}
+                    onClick={() => {
+                      moveDepthUp({ currentUnit });
+                    }}
+                    disabled={!canMoveDepthUp({ currentUnit })}
+                  >
+                    <ArrowBigLeftLine />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    size={'md'}
+                    onClick={() => {
+                      moveDepthDown({ currentUnit });
+                    }}
+                    disabled={!canMoveDepthDown({ currentUnit })}
+                  >
+                    <ArrowBigRightLine />
+                  </ActionIcon>
+                </>
+              }
+            />
+          </ActionIcon.Group>
+        </Group>
+      </Box>
+    );
+  }
+
   return (
     <Box
-      // ml={'md'}
       style={{
         paddingLeft: `${currentUnit.depth * 15}px`,
         display: currentUnit.visible ? '' : 'none',
@@ -96,11 +244,20 @@ export const CourseUnitDisplay = ({
               <>
                 <ActionIcon
                   onClick={() => {
-                    addTreeUnit({ currentUnit });
+                    addTreeUnit({ currentUnit, elementType: 'unit' });
                   }}
                   disabled={!canAddTreeUnit({ currentUnit })}
                 >
-                  <Plus />
+                  <LayoutGridAdd />
+                </ActionIcon>
+
+                <ActionIcon
+                  onClick={() => {
+                    addTreeUnit({ currentUnit, elementType: 'lesson' });
+                  }}
+                  disabled={!canAddTreeUnit({ currentUnit })}
+                >
+                  <School />
                 </ActionIcon>
 
                 <ActionIcon
@@ -185,11 +342,6 @@ export const CourseUnitDisplay = ({
           )}
         </ActionIcon.Group>
       </Group>
-      {/* <Collapse in={opened} transitionDuration={100 * unit.units.length}>
-        {unit.units.map((item, index) => (
-          <UnitDisplay unit={item} key={index} />
-        ))}
-      </Collapse> */}
     </Box>
   );
 };
