@@ -705,6 +705,7 @@ const recursivelyShowChildren = (data: ILocalMethodInput) => {
         (element) => element.spec === currentElement.parentSpec
       )[0],
       childrenVisible: true,
+      visible: true,
     };
     exclude.push(parent);
     const childrenDirect = findChildrenDirect({
