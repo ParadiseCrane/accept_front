@@ -1,6 +1,7 @@
+import styles from './styles.module.css';
 import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
 import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowBigDownLine,
   ArrowBigLeftLine,
@@ -9,13 +10,11 @@ import {
   ArrowsMove,
   CaretDown,
   CaretRight,
-  Dots,
-  LayoutGridAdd,
-  Plus,
-  School,
+  Packages,
   Trash,
+  Box as BoxIcon,
 } from 'tabler-icons-react';
-import { TreePopoverMenu } from './TreePopoverMenu';
+import { TreePopoverMenu } from './AddButtons';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { ElementType } from '@hooks/useCourseTree';
 
@@ -78,46 +77,22 @@ export const CourseUnitDisplay = ({
     (value: string) => changeTitleValue({ currentUnit: currentUnit, value }),
     500
   );
+  const [addMenuVisible, setAddMenuVisible] = useState(false);
 
   if (currentUnit.kind === 'course') {
     return (
       <Box
+        mt={'xs'}
+        mb={'xs'}
         style={{
-          paddingLeft: `${currentUnit.depth * 15}px`,
           display: currentUnit.visible ? '' : 'none',
         }}
       >
         <Group gap={0}>
-          <TextInput
-            defaultValue={currentUnit.title}
-            onChange={(element) => {
-              handleValueChange(element.target.value);
-            }}
-          />
-
-          <ActionIcon.Group>
+          {canToggleChildrenVisibility({ currentUnit }) ? (
             <ActionIcon
-              variant="outline"
-              onClick={() => {
-                addTreeUnit({ currentUnit, elementType: 'unit' });
-              }}
-              disabled={!canAddTreeUnit({ currentUnit })}
-            >
-              <LayoutGridAdd />
-            </ActionIcon>
-
-            <ActionIcon
-              variant="outline"
-              onClick={() => {
-                addTreeUnit({ currentUnit, elementType: 'lesson' });
-              }}
-              disabled={!canAddTreeUnit({ currentUnit })}
-            >
-              <School />
-            </ActionIcon>
-
-            <ActionIcon
-              variant="outline"
+              variant="transparent"
+              size={'sm'}
               onClick={() => {
                 toggleChildrenVisibility({ currentUnit });
               }}
@@ -129,6 +104,44 @@ export const CourseUnitDisplay = ({
             >
               {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
             </ActionIcon>
+          ) : (
+            <div style={{ width: '1.375rem' }} />
+          )}
+          <TextInput
+            defaultValue={currentUnit.title}
+            onChange={(element) => {
+              handleValueChange(element.target.value);
+            }}
+          />
+
+          <ActionIcon.Group
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <ActionIcon
+              variant="transparent"
+              onClick={() => {
+                addTreeUnit({ currentUnit, elementType: 'unit' });
+              }}
+              disabled={!canAddTreeUnit({ currentUnit })}
+            >
+              <Packages />
+            </ActionIcon>
+
+            <ActionIcon
+              variant="transparent"
+              size={'sm'}
+              onClick={() => {
+                addTreeUnit({ currentUnit, elementType: 'lesson' });
+              }}
+              disabled={!canAddTreeUnit({ currentUnit })}
+              style={{ display: 'flex' }}
+            >
+              <BoxIcon />
+            </ActionIcon>
           </ActionIcon.Group>
         </Group>
       </Box>
@@ -138,9 +151,10 @@ export const CourseUnitDisplay = ({
   if (currentUnit.kind === 'lesson') {
     return (
       <Box
+        mt={'xs'}
+        mb={'xs'}
         style={{
-          paddingLeft: `${currentUnit.depth * 15}px`,
-          display: currentUnit.visible ? '' : 'none',
+          paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
         }}
       >
         <Group gap={0}>
@@ -152,19 +166,9 @@ export const CourseUnitDisplay = ({
           />
 
           <ActionIcon.Group>
-            <ActionIcon
-              variant="outline"
-              onClick={() => {
-                deleteTreeUnit({ currentUnit });
-              }}
-              disabled={!canDeleteTreeUnit({ currentUnit })}
-            >
-              <Trash />
-            </ActionIcon>
-
             <TreePopoverMenu
               icon={
-                <ActionIcon variant="outline" size={'md'}>
+                <ActionIcon variant="transparent" size={'md'}>
                   <ArrowsMove />
                 </ActionIcon>
               }
@@ -212,6 +216,16 @@ export const CourseUnitDisplay = ({
                 </>
               }
             />
+            <ActionIcon
+              className={styles.visibility}
+              variant="transparent"
+              onClick={() => {
+                deleteTreeUnit({ currentUnit });
+              }}
+              disabled={!canDeleteTreeUnit({ currentUnit })}
+            >
+              <Trash />
+            </ActionIcon>
           </ActionIcon.Group>
         </Group>
       </Box>
@@ -220,61 +234,68 @@ export const CourseUnitDisplay = ({
 
   return (
     <Box
+      className={styles.box}
+      mt={'xs'}
+      mb={'xs'}
       style={{
-        paddingLeft: `${currentUnit.depth * 15}px`,
-        display: currentUnit.visible ? '' : 'none',
+        paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
       }}
     >
+      <div
+        className={styles.add_menu}
+        style={{ display: addMenuVisible ? 'block' : 'none' }}
+      >
+        <ActionIcon
+          onClick={() => {
+            addTreeUnit({ currentUnit, elementType: 'unit' });
+          }}
+          disabled={!canAddTreeUnit({ currentUnit })}
+        >
+          <Packages />
+        </ActionIcon>
+        <ActionIcon
+          size={'sm'}
+          onClick={() => {
+            addTreeUnit({ currentUnit, elementType: 'lesson' });
+          }}
+          disabled={!canAddTreeUnit({ currentUnit })}
+        >
+          <BoxIcon />
+        </ActionIcon>
+      </div>
       <Group gap={0}>
+        {canToggleChildrenVisibility({ currentUnit }) ? (
+          <ActionIcon
+            variant="transparent"
+            size={'sm'}
+            onClick={() => {
+              toggleChildrenVisibility({ currentUnit });
+            }}
+            style={{
+              display: canToggleChildrenVisibility({ currentUnit })
+                ? ''
+                : 'none',
+            }}
+          >
+            {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+          </ActionIcon>
+        ) : (
+          <div style={{ width: '1.375rem' }} />
+        )}
+
         <TextInput
           defaultValue={currentUnit.title}
           onChange={(element) => {
             handleValueChange(element.target.value);
           }}
+          onFocus={() => setAddMenuVisible(true)}
+          onBlur={() => setAddMenuVisible(false)}
         />
 
         <ActionIcon.Group>
           <TreePopoverMenu
             icon={
-              <ActionIcon variant="outline" size={'md'}>
-                <Dots />
-              </ActionIcon>
-            }
-            children={
-              <>
-                <ActionIcon
-                  onClick={() => {
-                    addTreeUnit({ currentUnit, elementType: 'unit' });
-                  }}
-                  disabled={!canAddTreeUnit({ currentUnit })}
-                >
-                  <LayoutGridAdd />
-                </ActionIcon>
-
-                <ActionIcon
-                  onClick={() => {
-                    addTreeUnit({ currentUnit, elementType: 'lesson' });
-                  }}
-                  disabled={!canAddTreeUnit({ currentUnit })}
-                >
-                  <School />
-                </ActionIcon>
-
-                <ActionIcon
-                  onClick={() => {
-                    deleteTreeUnit({ currentUnit });
-                  }}
-                  disabled={!canDeleteTreeUnit({ currentUnit })}
-                >
-                  <Trash />
-                </ActionIcon>
-              </>
-            }
-          />
-
-          <TreePopoverMenu
-            icon={
-              <ActionIcon variant="outline" size={'md'}>
+              <ActionIcon variant="transparent" size={'md'}>
                 <ArrowsMove />
               </ActionIcon>
             }
@@ -323,23 +344,16 @@ export const CourseUnitDisplay = ({
             }
           />
 
-          {canToggleChildrenVisibility({ currentUnit }) ? (
-            <ActionIcon
-              variant="outline"
-              onClick={() => {
-                toggleChildrenVisibility({ currentUnit });
-              }}
-              style={{
-                display: canToggleChildrenVisibility({ currentUnit })
-                  ? ''
-                  : 'none',
-              }}
-            >
-              {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
-            </ActionIcon>
-          ) : (
-            <></>
-          )}
+          <ActionIcon
+            className={styles.visibility}
+            variant="transparent"
+            onClick={() => {
+              deleteTreeUnit({ currentUnit });
+            }}
+            disabled={!canDeleteTreeUnit({ currentUnit })}
+          >
+            <Trash />
+          </ActionIcon>
         </ActionIcon.Group>
       </Group>
     </Box>
