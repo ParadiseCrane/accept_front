@@ -14,9 +14,10 @@ import {
   Trash,
   Box as BoxIcon,
 } from 'tabler-icons-react';
-import { TreePopoverMenu } from './AddButtons';
+import { AddButtons, AddButtonProps } from './AddButtons';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { ElementType } from '@hooks/useCourseTree';
+import { TreePopoverMenu } from './TreePopoverMenu';
 
 export const CourseUnitDisplay = ({
   currentUnit,
@@ -75,9 +76,12 @@ export const CourseUnitDisplay = ({
 }) => {
   const handleValueChange = useDebouncedCallback(
     (value: string) => changeTitleValue({ currentUnit: currentUnit, value }),
-    500
+    1000
   );
   const [addMenuVisible, setAddMenuVisible] = useState(false);
+  const delay = (time: number): Promise<any> => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  };
 
   if (currentUnit.kind === 'course') {
     return (
@@ -87,7 +91,14 @@ export const CourseUnitDisplay = ({
         style={{
           display: currentUnit.visible ? '' : 'none',
         }}
+        className={styles.box}
       >
+        <AddButtons
+          currentUnit={currentUnit}
+          visible={addMenuVisible}
+          canAddTreeUnit={canAddTreeUnit}
+          addTreeUnit={addTreeUnit}
+        />
         <Group gap={0}>
           {canToggleChildrenVisibility({ currentUnit }) ? (
             <ActionIcon
@@ -112,37 +123,9 @@ export const CourseUnitDisplay = ({
             onChange={(element) => {
               handleValueChange(element.target.value);
             }}
+            onFocus={() => setAddMenuVisible(true)}
+            onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
           />
-
-          <ActionIcon.Group
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <ActionIcon
-              variant="transparent"
-              onClick={() => {
-                addTreeUnit({ currentUnit, elementType: 'unit' });
-              }}
-              disabled={!canAddTreeUnit({ currentUnit })}
-            >
-              <Packages />
-            </ActionIcon>
-
-            <ActionIcon
-              variant="transparent"
-              size={'sm'}
-              onClick={() => {
-                addTreeUnit({ currentUnit, elementType: 'lesson' });
-              }}
-              disabled={!canAddTreeUnit({ currentUnit })}
-              style={{ display: 'flex' }}
-            >
-              <BoxIcon />
-            </ActionIcon>
-          </ActionIcon.Group>
         </Group>
       </Box>
     );
@@ -241,28 +224,12 @@ export const CourseUnitDisplay = ({
         paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
       }}
     >
-      <div
-        className={styles.add_menu}
-        style={{ display: addMenuVisible ? 'block' : 'none' }}
-      >
-        <ActionIcon
-          onClick={() => {
-            addTreeUnit({ currentUnit, elementType: 'unit' });
-          }}
-          disabled={!canAddTreeUnit({ currentUnit })}
-        >
-          <Packages />
-        </ActionIcon>
-        <ActionIcon
-          size={'sm'}
-          onClick={() => {
-            addTreeUnit({ currentUnit, elementType: 'lesson' });
-          }}
-          disabled={!canAddTreeUnit({ currentUnit })}
-        >
-          <BoxIcon />
-        </ActionIcon>
-      </div>
+      <AddButtons
+        currentUnit={currentUnit}
+        visible={addMenuVisible}
+        canAddTreeUnit={canAddTreeUnit}
+        addTreeUnit={addTreeUnit}
+      />
       <Group gap={0}>
         {canToggleChildrenVisibility({ currentUnit }) ? (
           <ActionIcon
@@ -289,7 +256,7 @@ export const CourseUnitDisplay = ({
             handleValueChange(element.target.value);
           }}
           onFocus={() => setAddMenuVisible(true)}
-          onBlur={() => setAddMenuVisible(false)}
+          onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
         />
 
         <ActionIcon.Group>

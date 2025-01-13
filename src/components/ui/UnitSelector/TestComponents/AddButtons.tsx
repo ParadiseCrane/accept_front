@@ -1,17 +1,76 @@
-import { Popover } from '@mantine/core';
-import { ReactNode, useState } from 'react';
+import { ITreeUnit } from '@custom-types/data/ICourse';
+import { ElementType } from '@hooks/useCourseTree';
+import { ActionIcon } from '@mantine/core';
+import { Box, Packages, Plus } from 'tabler-icons-react';
+import styles from './styles.module.css';
+import { useEffect } from 'react';
 
-export const TreePopoverMenu = ({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
+export interface AddButtonProps {
+  currentUnit: ITreeUnit;
+  visible: boolean;
+  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  addTreeUnit: ({
+    currentUnit,
+    elementType,
+  }: {
+    currentUnit: ITreeUnit;
+    elementType: ElementType;
+  }) => void;
+}
+
+export const AddButtons: React.FC<AddButtonProps> = ({
+  currentUnit,
+  visible,
+  canAddTreeUnit,
+  addTreeUnit,
 }) => {
   return (
-    <Popover position="bottom-start" withArrow shadow="md">
-      <Popover.Target>{icon}</Popover.Target>
-      <Popover.Dropdown>{children}</Popover.Dropdown>
-    </Popover>
+    <div
+      className={styles.add_menu}
+      style={{ display: visible ? 'block' : 'none' }}
+    >
+      <div className={styles.add_menu_wrapper}>
+        <div className={styles.icon_pair}>
+          <ActionIcon
+            size={'sm'}
+            onClick={() => {
+              addTreeUnit({ currentUnit, elementType: 'unit' });
+            }}
+            disabled={!canAddTreeUnit({ currentUnit })}
+          >
+            <Plus />
+          </ActionIcon>
+          <ActionIcon
+            size={'sm'}
+            onClick={() => {
+              addTreeUnit({ currentUnit, elementType: 'unit' });
+            }}
+            disabled={!canAddTreeUnit({ currentUnit })}
+          >
+            <Packages />
+          </ActionIcon>
+        </div>
+        <div className={styles.icon_pair}>
+          <ActionIcon
+            size={'sm'}
+            onClick={() => {
+              addTreeUnit({ currentUnit, elementType: 'unit' });
+            }}
+            disabled={!canAddTreeUnit({ currentUnit })}
+          >
+            <Plus />
+          </ActionIcon>
+          <ActionIcon
+            size={'sm'}
+            onClick={() => {
+              addTreeUnit({ currentUnit, elementType: 'lesson' });
+            }}
+            disabled={!canAddTreeUnit({ currentUnit })}
+          >
+            <Box />
+          </ActionIcon>
+        </div>
+      </div>
+    </div>
   );
 };
