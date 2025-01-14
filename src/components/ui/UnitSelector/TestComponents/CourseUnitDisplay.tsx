@@ -116,7 +116,9 @@ export const CourseUnitDisplay = ({
               {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
             </ActionIcon>
           ) : (
-            <div style={{ width: '1.375rem' }} />
+            <ActionIcon variant="transparent" size={'sm'} disabled>
+              <CaretRight />
+            </ActionIcon>
           )}
           <TextInput
             defaultValue={currentUnit.title}
@@ -125,7 +127,6 @@ export const CourseUnitDisplay = ({
             }}
             onFocus={() => setAddMenuVisible(true)}
             onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
-            classNames={{ input: styles.input }}
           />
         </Group>
       </Box>
@@ -140,6 +141,7 @@ export const CourseUnitDisplay = ({
         style={{
           paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
         }}
+        className={styles.box}
       >
         <Group gap={0}>
           <div style={{ width: '1.375rem' }} />
@@ -249,7 +251,9 @@ export const CourseUnitDisplay = ({
             {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
           </ActionIcon>
         ) : (
-          <div style={{ width: '1.375rem' }} />
+          <ActionIcon variant="transparent" size={'sm'} disabled>
+            <CaretRight />
+          </ActionIcon>
         )}
 
         <TextInput
@@ -259,7 +263,6 @@ export const CourseUnitDisplay = ({
           }}
           onFocus={() => setAddMenuVisible(true)}
           onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
-          classNames={{ input: styles.input }}
         />
 
         <ActionIcon.Group>

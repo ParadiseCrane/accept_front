@@ -123,7 +123,7 @@ const Form: FC<{
   const { locale } = useLocale();
   const form = useForm<ICourseAdd>({ initialValues: initialValues });
   return (
-    <Stack m={'xl'} maw={'60%'}>
+    <Stack m={'xl'} maw={'80%'}>
       <Group grow align="flex-start">
         <UnitSelector
           title_props={{ ...form.getInputProps('title') }}

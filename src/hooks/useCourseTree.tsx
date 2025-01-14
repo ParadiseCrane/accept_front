@@ -113,6 +113,24 @@ const createTreeUnitList = ({
   return list;
 };
 
+const convertToCourseUnitList = ({
+  treeUnitList,
+}: {
+  treeUnitList: ITreeUnit[];
+}): ICourseUnit[] => {
+  const list: ICourseUnit[] = [];
+  for (let i = 0; i < treeUnitList.length; i++) {
+    list.push({
+      kind: treeUnitList[i].kind,
+      order: treeUnitList[i].order,
+      spec: treeUnitList[i].spec,
+      title: treeUnitList[i].title,
+    });
+  }
+  console.log('conversion result', list);
+  return list;
+};
+
 // находим дочерние элементы всех уровней
 const findChildrenAllLevels = ({
   parent,
