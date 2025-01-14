@@ -1,6 +1,6 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ElementType } from '@hooks/useCourseTree';
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon, Text, Tooltip } from '@mantine/core';
 import { Box, Packages, Plus } from 'tabler-icons-react';
 import styles from './styles.module.css';
 import { useEffect } from 'react';
@@ -24,52 +24,53 @@ export const AddButtons: React.FC<AddButtonProps> = ({
   canAddTreeUnit,
   addTreeUnit,
 }) => {
+  const disabled = !canAddTreeUnit({ currentUnit });
   return (
     <div
       className={styles.add_menu}
       style={{ display: visible ? 'block' : 'none' }}
     >
       <div className={styles.add_menu_wrapper}>
-        <div className={styles.icon_pair}>
-          <ActionIcon
-            size={'sm'}
+        <Tooltip
+          label={
+            disabled
+              ? 'Вы не можете добавить новый модуль'
+              : 'Добавить новый модуль в качестве дочернего элемента'
+          }
+        >
+          <div
+            className={styles.icon_pair}
             onClick={() => {
               addTreeUnit({ currentUnit, elementType: 'unit' });
             }}
-            disabled={!canAddTreeUnit({ currentUnit })}
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
           >
-            <Plus />
-          </ActionIcon>
-          <ActionIcon
-            size={'sm'}
-            onClick={() => {
-              addTreeUnit({ currentUnit, elementType: 'unit' });
-            }}
-            disabled={!canAddTreeUnit({ currentUnit })}
-          >
-            <Packages />
-          </ActionIcon>
-        </div>
-        <div className={styles.icon_pair}>
-          <ActionIcon
-            size={'sm'}
-            onClick={() => {
-              addTreeUnit({ currentUnit, elementType: 'unit' });
-            }}
-            disabled={!canAddTreeUnit({ currentUnit })}
-          >
-            <Plus />
-          </ActionIcon>
-          <ActionIcon
-            size={'sm'}
+            <ActionIcon size={'xs'} disabled={disabled}>
+              <Plus />
+            </ActionIcon>
+            <Text>Модуль</Text>
+          </div>
+        </Tooltip>
+        <Tooltip
+          label={
+            disabled
+              ? 'Вы не можете добавить новый урок'
+              : 'Добавить новый урок в качестве дочернего элемента'
+          }
+        >
+          <div
+            className={styles.icon_pair}
             onClick={() => {
               addTreeUnit({ currentUnit, elementType: 'lesson' });
             }}
-            disabled={!canAddTreeUnit({ currentUnit })}
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
           >
-            <Box />
-          </ActionIcon>
-        </div>
+            <ActionIcon size={'xs'} disabled={disabled}>
+              <Plus />
+            </ActionIcon>
+            <Text>Урок</Text>
+          </div>
+        </Tooltip>
       </div>
     </div>
   );

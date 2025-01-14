@@ -125,6 +125,7 @@ export const CourseUnitDisplay = ({
             }}
             onFocus={() => setAddMenuVisible(true)}
             onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
+            classNames={{ input: styles.input }}
           />
         </Group>
       </Box>
@@ -141,6 +142,7 @@ export const CourseUnitDisplay = ({
         }}
       >
         <Group gap={0}>
+          <div style={{ width: '1.375rem' }} />
           <TextInput
             defaultValue={currentUnit.title}
             onChange={(element) => {
@@ -200,7 +202,7 @@ export const CourseUnitDisplay = ({
               }
             />
             <ActionIcon
-              className={styles.visibility}
+              className={styles.delete}
               variant="transparent"
               onClick={() => {
                 deleteTreeUnit({ currentUnit });
@@ -257,6 +259,7 @@ export const CourseUnitDisplay = ({
           }}
           onFocus={() => setAddMenuVisible(true)}
           onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
+          classNames={{ input: styles.input }}
         />
 
         <ActionIcon.Group>
@@ -312,7 +315,7 @@ export const CourseUnitDisplay = ({
           />
 
           <ActionIcon
-            className={styles.visibility}
+            className={styles.delete}
             variant="transparent"
             onClick={() => {
               deleteTreeUnit({ currentUnit });

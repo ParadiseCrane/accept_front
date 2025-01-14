@@ -2,11 +2,19 @@
   position: relative;
 }
 
-.visibility {
+.input {
+  background-color: #0c9af213;
+}
+
+.delete {
   display: none;
 }
 
-.box:hover .visibility {
+.delete:hover svg {
+  stroke: red;
+}
+
+.box:hover .delete {
   display: block;
 }
 
@@ -32,4 +40,5 @@
 .icon_pair {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
