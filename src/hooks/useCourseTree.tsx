@@ -123,11 +123,12 @@ const convertToCourseUnitList = ({
     list.push({
       kind: treeUnitList[i].kind,
       order: treeUnitList[i].order,
-      spec: treeUnitList[i].spec,
+      spec: treeUnitList[i].spec.includes('newElement')
+        ? ''
+        : treeUnitList[i].spec,
       title: treeUnitList[i].title,
     });
   }
-  console.log('conversion result', list);
   return list;
 };
 
@@ -811,9 +812,9 @@ const localAddTreeUnitFirstLevel = (
             .pop()!
         );
   const newElement: ITreeUnit = {
-    spec: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
+    spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}`,
     kind: elementType,
-    title: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
+    title: `${parent.spec}newElement${lastChildOrderLastDigit + 1}`,
     order: `${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${lastChildOrderLastDigit + 1}`,
@@ -864,11 +865,9 @@ const localAddTreeUnit = (
       ? 0
       : Number([...children].pop()!.order.split('|').pop()!);
   const newElement: ITreeUnit = {
-    spec: `${parent.spec}new${elementType}${
-      lastChildOrderLastDigit + 1
-    }${uuidv4()}`,
+    spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}${uuidv4()}`,
     kind: elementType,
-    title: `${parent.spec}new${elementType}${lastChildOrderLastDigit + 1}`,
+    title: `New ${elementType}`,
     order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
