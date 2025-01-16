@@ -9,6 +9,7 @@ export interface AddButtonProps {
   currentUnit: ITreeUnit;
   visible: boolean;
   canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  canAddNewUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   addTreeUnit: ({
     currentUnit,
     elementType,
@@ -22,6 +23,7 @@ export const AddButtons: React.FC<AddButtonProps> = ({
   currentUnit,
   visible,
   canAddTreeUnit,
+  canAddNewUnit,
   addTreeUnit,
 }) => {
   const disabled = !canAddTreeUnit({ currentUnit });
@@ -31,26 +33,30 @@ export const AddButtons: React.FC<AddButtonProps> = ({
       style={{ display: visible ? 'block' : 'none' }}
     >
       <div className={styles.add_menu_wrapper}>
-        <Tooltip
-          label={
-            disabled
-              ? 'Вы не можете добавить новый модуль'
-              : 'Добавить новый модуль в качестве дочернего элемента'
-          }
-        >
-          <div
-            className={styles.icon_pair}
-            onClick={() => {
-              addTreeUnit({ currentUnit, elementType: 'unit' });
-            }}
-            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        {canAddNewUnit({ currentUnit }) ? (
+          <Tooltip
+            label={
+              disabled
+                ? 'Вы не можете добавить новый модуль'
+                : 'Добавить новый модуль в качестве дочернего элемента'
+            }
           >
-            <ActionIcon size={'xs'} disabled={disabled}>
-              <Plus />
-            </ActionIcon>
-            <Text>Модуль</Text>
-          </div>
-        </Tooltip>
+            <div
+              className={styles.icon_pair}
+              onClick={() => {
+                addTreeUnit({ currentUnit, elementType: 'unit' });
+              }}
+              style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+            >
+              <ActionIcon size={'xs'} disabled={disabled}>
+                <Plus />
+              </ActionIcon>
+              <Text>Модуль</Text>
+            </div>
+          </Tooltip>
+        ) : (
+          <></>
+        )}
         <Tooltip
           label={
             disabled

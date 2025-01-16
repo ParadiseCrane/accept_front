@@ -166,6 +166,7 @@ const UnitSelector: FC<{
     moveDepthDown,
     canToggleChildrenVisibility,
     canAddTreeUnit,
+    canAddNewUnit,
     canDeleteTreeUnit,
     canMoveUp,
     canMoveDown,
@@ -198,6 +199,7 @@ const UnitSelector: FC<{
             moveDepthDown={moveDepthDown}
             canToggleChildrenVisibility={canToggleChildrenVisibility}
             canAddTreeUnit={canAddTreeUnit}
+            canAddNewUnit={canAddNewUnit}
             canDeleteTreeUnit={canDeleteTreeUnit}
             canMoveUp={canMoveUp}
             canMoveDown={canMoveDown}
