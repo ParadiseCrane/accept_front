@@ -30,7 +30,6 @@ export const CourseUnitDisplay = ({
   moveDepthUp,
   moveDepthDown,
   canToggleChildrenVisibility,
-  canAddTreeUnit,
   canAddNewUnit,
   canDeleteTreeUnit,
   canMoveUp,
@@ -68,7 +67,6 @@ export const CourseUnitDisplay = ({
   }: {
     currentUnit: ITreeUnit;
   }) => boolean;
-  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canAddNewUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canDeleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canMoveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
@@ -98,7 +96,6 @@ export const CourseUnitDisplay = ({
         <AddButtons
           currentUnit={currentUnit}
           visible={addMenuVisible}
-          canAddTreeUnit={canAddTreeUnit}
           canAddNewUnit={canAddNewUnit}
           addTreeUnit={addTreeUnit}
         />
@@ -234,7 +231,6 @@ export const CourseUnitDisplay = ({
       <AddButtons
         currentUnit={currentUnit}
         visible={addMenuVisible}
-        canAddTreeUnit={canAddTreeUnit}
         canAddNewUnit={canAddNewUnit}
         addTreeUnit={addTreeUnit}
       />

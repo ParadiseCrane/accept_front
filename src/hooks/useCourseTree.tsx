@@ -1221,16 +1221,6 @@ const localCanToggleChildrenVisibility = (data: ILocalMethodInput): boolean => {
   return true;
 };
 
-const localCanAddTreeUnit = (data: ILocalMethodInput): boolean => {
-  if (
-    data.currentUnit.kind === 'lesson' ||
-    data.currentUnit.order.split('|').length === maxDepth
-  ) {
-    return false;
-  }
-  return true;
-};
-
 // можно ли добавить новый модуль
 const localCanAddNewUnit = (data: ILocalMethodInput): boolean => {
   return data.currentUnit.depth === maxDepth - 1 ? false : true;
@@ -1353,7 +1343,6 @@ interface IUseCourseTree {
   }: {
     currentUnit: ITreeUnit;
   }) => boolean;
-  canAddTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canAddNewUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canDeleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
   canMoveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
@@ -1457,14 +1446,6 @@ export const useCourseTree = ({
     return localCanToggleChildrenVisibility({ currentUnit, treeUnitList });
   };
 
-  const canAddTreeUnit = ({
-    currentUnit,
-  }: {
-    currentUnit: ITreeUnit;
-  }): boolean => {
-    return localCanAddTreeUnit({ currentUnit, treeUnitList });
-  };
-
   const canAddNewUnit = ({
     currentUnit,
   }: {
@@ -1516,7 +1497,6 @@ export const useCourseTree = ({
     moveDepthUp,
     moveDepthDown,
     canToggleChildrenVisibility,
-    canAddTreeUnit,
     canAddNewUnit,
     canDeleteTreeUnit,
     canMoveUp,
