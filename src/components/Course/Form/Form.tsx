@@ -5,7 +5,7 @@ import { Group, Stack } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { Button, CustomEditor } from '@ui/basics';
 import ImageSelector from '@ui/ImageSelector';
-import UnitSelector from '@ui/UnitSelector';
+import { CourseTree } from '@ui/CourseTree';
 import { FC, memo, useState } from 'react';
 
 const courseResponse: ICourseResponse = {
@@ -125,7 +125,7 @@ const Form: FC<{
   return (
     <Stack m={'xl'} maw={'80%'}>
       <Group grow align="flex-start">
-        <UnitSelector
+        <CourseTree
           title_props={{ ...form.getInputProps('title') }}
           initial_units={form.values.children}
           form={form}

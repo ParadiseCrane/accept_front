@@ -1,16 +1,8 @@
-import { ActionIcon, Group, TextInput } from '@mantine/core';
-import { FC, memo, useMemo, useState } from 'react';
-import UnitDisplay from './UnitDisplay';
-import {
-  ICourseAdd,
-  ICourseUnit,
-  ITreeUnit,
-  IUnit,
-} from '@custom-types/data/ICourse';
+import { FC, memo } from 'react';
+import { ICourseAdd, ICourseUnit, IUnit } from '@custom-types/data/ICourse';
 import { InputWrapper } from '@ui/basics';
-import { Plus } from 'tabler-icons-react';
 import { UseFormReturnType } from '@mantine/form';
-import { CourseUnitDisplay } from './TestComponents/CourseUnitDisplay';
+import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 import { useCourseTree } from '@hooks/useCourseTree';
 
 const unitsInitialValue: ICourseUnit[] = [
@@ -148,7 +140,7 @@ const unitsInitialValue: ICourseUnit[] = [
   },
 ];
 
-const UnitSelector: FC<{
+const CourseTree: FC<{
   title_props: any;
   initial_units: IUnit[];
   form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
@@ -161,16 +153,9 @@ const UnitSelector: FC<{
 
   return (
     <InputWrapper label={'Название'}>
-      {/* <Group gap={0}>
-        <TextInput {...title_props} />
-        <ActionIcon kind="positive" variant="outline">
-          <Plus />
-        </ActionIcon>
-      </Group> */}
-
       {treeUnitList
         .filter((element) => element.visible)
-        .map((unit, index) => (
+        .map((unit) => (
           <CourseUnitDisplay
             currentUnit={unit}
             actions={actions}
@@ -178,11 +163,8 @@ const UnitSelector: FC<{
             key={unit.spec}
           />
         ))}
-      {/* {initial_units.map((unit, index) => (
-        <UnitDisplay key={index} unit={unit} />
-      ))} */}
     </InputWrapper>
   );
 };
 
-export default memo(UnitSelector);
+export { CourseTree };

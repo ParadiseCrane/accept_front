@@ -1,27 +1,12 @@
 import styles from './styles.module.css';
-import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
+import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
 import React, { useState } from 'react';
-import {
-  ArrowBigDownLine,
-  ArrowBigLeftLine,
-  ArrowBigRightLine,
-  ArrowBigUpLine,
-  ArrowsMove,
-  CaretDown,
-  CaretRight,
-  Packages,
-  Trash,
-  Box as BoxIcon,
-} from 'tabler-icons-react';
-import { AddButtons, IAddButtonProps } from './AddButtons';
+import { CaretDown, CaretRight, Trash } from 'tabler-icons-react';
+import { AddButtons } from '../Buttons/AddButton/AddButton';
 import { useDebouncedCallback } from '@mantine/hooks';
-import {
-  ElementType,
-  ICourseTreeActions,
-  ICourseTreeCheckers,
-} from '@hooks/useCourseTree';
-import { TreePopoverMenu } from './TreePopoverMenu';
+import { ICourseTreeActions, ICourseTreeCheckers } from '@hooks/useCourseTree';
+import { MovementButton } from '../Buttons/MovementButton/MovementButton';
 
 export const CourseUnitDisplay = ({
   currentUnit,
@@ -112,55 +97,10 @@ export const CourseUnitDisplay = ({
           />
 
           <ActionIcon.Group>
-            <TreePopoverMenu
-              icon={
-                <ActionIcon variant="transparent" size={'md'}>
-                  <ArrowsMove />
-                </ActionIcon>
-              }
-              children={
-                <>
-                  <ActionIcon
-                    size={'md'}
-                    onClick={() => {
-                      actions.moveUp({ currentUnit });
-                    }}
-                    disabled={!checkers.canMoveUp({ currentUnit })}
-                  >
-                    <ArrowBigUpLine />
-                  </ActionIcon>
-
-                  <ActionIcon
-                    size={'md'}
-                    onClick={() => {
-                      actions.moveDown({ currentUnit });
-                    }}
-                    disabled={!checkers.canMoveDown({ currentUnit })}
-                  >
-                    <ArrowBigDownLine />
-                  </ActionIcon>
-
-                  <ActionIcon
-                    size={'md'}
-                    onClick={() => {
-                      actions.moveDepthUp({ currentUnit });
-                    }}
-                    disabled={!checkers.canMoveDepthUp({ currentUnit })}
-                  >
-                    <ArrowBigLeftLine />
-                  </ActionIcon>
-
-                  <ActionIcon
-                    size={'md'}
-                    onClick={() => {
-                      actions.moveDepthDown({ currentUnit });
-                    }}
-                    disabled={!checkers.canMoveDepthDown({ currentUnit })}
-                  >
-                    <ArrowBigRightLine />
-                  </ActionIcon>
-                </>
-              }
+            <MovementButton
+              currentUnit={currentUnit}
+              actions={actions}
+              checkers={checkers}
             />
             <ActionIcon
               className={styles.delete}
@@ -225,57 +165,11 @@ export const CourseUnitDisplay = ({
         />
 
         <ActionIcon.Group>
-          <TreePopoverMenu
-            icon={
-              <ActionIcon variant="transparent" size={'md'}>
-                <ArrowsMove />
-              </ActionIcon>
-            }
-            children={
-              <>
-                <ActionIcon
-                  size={'md'}
-                  onClick={() => {
-                    actions.moveUp({ currentUnit });
-                  }}
-                  disabled={!checkers.canMoveUp({ currentUnit })}
-                >
-                  <ArrowBigUpLine />
-                </ActionIcon>
-
-                <ActionIcon
-                  size={'md'}
-                  onClick={() => {
-                    actions.moveDown({ currentUnit });
-                  }}
-                  disabled={!checkers.canMoveDown({ currentUnit })}
-                >
-                  <ArrowBigDownLine />
-                </ActionIcon>
-
-                <ActionIcon
-                  size={'md'}
-                  onClick={() => {
-                    actions.moveDepthUp({ currentUnit });
-                  }}
-                  disabled={!checkers.canMoveDepthUp({ currentUnit })}
-                >
-                  <ArrowBigLeftLine />
-                </ActionIcon>
-
-                <ActionIcon
-                  size={'md'}
-                  onClick={() => {
-                    actions.moveDepthDown({ currentUnit });
-                  }}
-                  disabled={!checkers.canMoveDepthDown({ currentUnit })}
-                >
-                  <ArrowBigRightLine />
-                </ActionIcon>
-              </>
-            }
+          <MovementButton
+            currentUnit={currentUnit}
+            actions={actions}
+            checkers={checkers}
           />
-
           <ActionIcon
             className={styles.delete}
             variant="transparent"

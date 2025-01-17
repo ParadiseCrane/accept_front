@@ -1,3 +1,4 @@
+import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
 import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -5,9 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 type UpOrDown = 'UP' | 'DOWN';
 
 export type ElementType = 'unit' | 'lesson';
-
-// максимальное количество уровней вложенности
-const maxDepth: number = 4;
 
 const getMaxDepthFromList = ({
   listToCheck,
@@ -28,10 +26,13 @@ const getOrderAsNumber = ({ order }: { order: string }): number => {
   let orderAsNumber = 0;
   let orderAsList = order.split('|');
   const numOfIterations =
-    orderAsList.length >= maxDepth ? maxDepth : orderAsList.length;
+    orderAsList.length >= COURSE_TREE_MAX_DEPTH
+      ? COURSE_TREE_MAX_DEPTH
+      : orderAsList.length;
   for (let i = 0; i < numOfIterations; i++) {
     orderAsNumber =
-      orderAsNumber + Number(orderAsList[i]) * Math.pow(1000, maxDepth - i - 1);
+      orderAsNumber +
+      Number(orderAsList[i]) * Math.pow(1000, COURSE_TREE_MAX_DEPTH - i - 1);
   }
   return orderAsNumber;
 };
@@ -655,7 +656,6 @@ const getMovedElementsForDepthUpDown = (
     }
     return [newCurrentElement, ...currentElementChildrenAllLevels];
   } else {
-    // TODO для MoveDepthDown
     const sibling: ITreeUnit = {
       ...findElementSibling({
         currentElement: data.currentUnit,
@@ -1223,7 +1223,7 @@ const localCanToggleChildrenVisibility = (data: ILocalMethodInput): boolean => {
 
 // можно ли добавить новый модуль
 const localCanAddNewUnit = (data: ILocalMethodInput): boolean => {
-  return data.currentUnit.depth === maxDepth - 1 ? false : true;
+  return data.currentUnit.depth === COURSE_TREE_MAX_DEPTH - 1 ? false : true;
 };
 
 const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
@@ -1303,8 +1303,8 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
         parent: data.currentUnit,
         treeUnitList: data.treeUnitList,
       }),
-    }) < maxDepth &&
-    data.currentUnit.depth !== maxDepth
+    }) < COURSE_TREE_MAX_DEPTH &&
+    data.currentUnit.depth !== COURSE_TREE_MAX_DEPTH
   ) {
     return true;
   }
