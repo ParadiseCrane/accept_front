@@ -21,17 +21,11 @@ export interface ITreeUnit {
   kind: 'course' | 'unit' | 'lesson';
   title: string;
   order: string;
-  // порядок в виде числа для сортировки
   orderAsNumber: number;
-  // глубина элемента
   depth: number;
-  // порядок элемента
   index: number;
-  // значение id родителя
   parentSpec: string;
-  // значение видимости элемента
   visible: boolean;
-  // значение видимости дочерних элементов
   childrenVisible: boolean;
 }
 

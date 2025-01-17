@@ -9,9 +9,11 @@ import { taskSelector } from './taskSelector';
 import { schemasSelector } from './schemasSelector';
 import { dropzone } from './dropzone';
 import { taskTest } from './taskTest';
+import { courseTree } from './courseTree';
 
 export const ui = {
   codeArea,
+  courseTree,
   table,
   tagSelector,
   langSelector,

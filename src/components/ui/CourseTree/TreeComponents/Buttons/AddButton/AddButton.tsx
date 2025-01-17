@@ -3,6 +3,7 @@ import { ElementType } from '@hooks/useCourseTree';
 import { ActionIcon, Text, Tooltip } from '@mantine/core';
 import { Plus } from 'tabler-icons-react';
 import styles from './styles.module.css';
+import { useLocale } from '@hooks/useLocale';
 
 interface IAddButtonProps {
   currentUnit: ITreeUnit;
@@ -23,6 +24,7 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
   canAddNewUnit,
   addTreeUnit,
 }) => {
+  const { locale } = useLocale();
   return (
     <div
       className={styles.add_menu}
@@ -30,9 +32,7 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
     >
       <div className={styles.add_menu_wrapper}>
         {canAddNewUnit({ currentUnit }) ? (
-          <Tooltip
-            label={'Добавить новый модуль в качестве дочернего элемента'}
-          >
+          <Tooltip label={locale.ui.courseTree.addUnit}>
             <div
               className={styles.icon_pair}
               onClick={() => {
@@ -42,13 +42,13 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
               <ActionIcon size={'xs'}>
                 <Plus />
               </ActionIcon>
-              <Text>Модуль</Text>
+              <Text>{locale.ui.courseTree.unit}</Text>
             </div>
           </Tooltip>
         ) : (
           <></>
         )}
-        <Tooltip label={'Добавить новый урок в качестве дочернего элемента'}>
+        <Tooltip label={locale.ui.courseTree.addLesson}>
           <div
             className={styles.icon_pair}
             onClick={() => {
@@ -58,7 +58,7 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
             <ActionIcon size={'xs'}>
               <Plus />
             </ActionIcon>
-            <Text>Урок</Text>
+            <Text>{locale.ui.courseTree.lesson}</Text>
           </div>
         </Tooltip>
       </div>

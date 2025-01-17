@@ -1,6 +1,7 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ICourseTreeActions, ICourseTreeCheckers } from '@hooks/useCourseTree';
-import { ActionIcon, Popover } from '@mantine/core';
+import { useLocale } from '@hooks/useLocale';
+import { ActionIcon, Popover, Tooltip } from '@mantine/core';
 import { ReactNode, useState } from 'react';
 import {
   ArrowBigDownLine,
@@ -21,12 +22,15 @@ export const MovementButton: React.FC<IMovementButtonProps> = ({
   actions,
   checkers,
 }) => {
+  const { locale } = useLocale();
   return (
     <Popover position="bottom-start" withArrow shadow="md">
       <Popover.Target>
-        <ActionIcon variant="transparent" size={'md'}>
-          <ArrowsMove />
-        </ActionIcon>
+        <Tooltip label={locale.ui.courseTree.moveElement}>
+          <ActionIcon variant="transparent" size={'md'}>
+            <ArrowsMove />
+          </ActionIcon>
+        </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
         <>
