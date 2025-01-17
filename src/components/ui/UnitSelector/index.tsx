@@ -154,24 +154,9 @@ const UnitSelector: FC<{
   form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
 }> = ({ title_props, initial_units, form }) => {
   // const units = useMemo(() => [...initial_units], [initial_units]);
-  const {
-    treeUnitList,
-    changeTitleValue,
-    addTreeUnit,
-    deleteTreeUnit,
-    toggleChildrenVisibility,
-    moveUp,
-    moveDown,
-    moveDepthUp,
-    moveDepthDown,
-    canToggleChildrenVisibility,
-    canAddNewUnit,
-    canDeleteTreeUnit,
-    canMoveUp,
-    canMoveDown,
-    canMoveDepthUp,
-    canMoveDepthDown,
-  } = useCourseTree({ courseUnitList: unitsInitialValue });
+  const { treeUnitList, actions, checkers } = useCourseTree({
+    courseUnitList: unitsInitialValue,
+  });
   console.log('tree units', treeUnitList);
 
   return (
@@ -188,21 +173,8 @@ const UnitSelector: FC<{
         .map((unit, index) => (
           <CourseUnitDisplay
             currentUnit={unit}
-            addTreeUnit={addTreeUnit}
-            changeTitleValue={changeTitleValue}
-            deleteTreeUnit={deleteTreeUnit}
-            toggleChildrenVisibility={toggleChildrenVisibility}
-            moveUp={moveUp}
-            moveDown={moveDown}
-            moveDepthUp={moveDepthUp}
-            moveDepthDown={moveDepthDown}
-            canToggleChildrenVisibility={canToggleChildrenVisibility}
-            canAddNewUnit={canAddNewUnit}
-            canDeleteTreeUnit={canDeleteTreeUnit}
-            canMoveUp={canMoveUp}
-            canMoveDown={canMoveDown}
-            canMoveDepthUp={canMoveDepthUp}
-            canMoveDepthDown={canMoveDepthDown}
+            actions={actions}
+            checkers={checkers}
             key={unit.spec}
           />
         ))}

@@ -18,6 +18,9 @@
   display: block;
 }
 
+
+/* это для AddButtons */
+
 .add_menu {
   /* display: none; */
   position: absolute;
@@ -42,4 +45,13 @@
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+}
+
+
+/* это для MovementModal */
+
+.modal_wrapper {
+  height: 200px;
+  width: 200px;
+  background-color: bisque;
 }

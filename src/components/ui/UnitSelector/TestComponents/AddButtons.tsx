@@ -5,7 +5,7 @@ import { Box, Packages, Plus } from 'tabler-icons-react';
 import styles from './styles.module.css';
 import { useEffect } from 'react';
 
-export interface AddButtonProps {
+export interface IAddButtonProps {
   currentUnit: ITreeUnit;
   visible: boolean;
   canAddNewUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
@@ -18,7 +18,7 @@ export interface AddButtonProps {
   }) => void;
 }
 
-export const AddButtons: React.FC<AddButtonProps> = ({
+export const AddButtons: React.FC<IAddButtonProps> = ({
   currentUnit,
   visible,
   canAddNewUnit,

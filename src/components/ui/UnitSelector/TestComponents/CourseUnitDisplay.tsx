@@ -14,68 +14,27 @@ import {
   Trash,
   Box as BoxIcon,
 } from 'tabler-icons-react';
-import { AddButtons, AddButtonProps } from './AddButtons';
+import { AddButtons, IAddButtonProps } from './AddButtons';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { ElementType } from '@hooks/useCourseTree';
+import {
+  ElementType,
+  ICourseTreeActions,
+  ICourseTreeCheckers,
+} from '@hooks/useCourseTree';
 import { TreePopoverMenu } from './TreePopoverMenu';
 
 export const CourseUnitDisplay = ({
   currentUnit,
-  addTreeUnit,
-  changeTitleValue,
-  deleteTreeUnit,
-  toggleChildrenVisibility,
-  moveUp,
-  moveDown,
-  moveDepthUp,
-  moveDepthDown,
-  canToggleChildrenVisibility,
-  canAddNewUnit,
-  canDeleteTreeUnit,
-  canMoveUp,
-  canMoveDown,
-  canMoveDepthUp,
-  canMoveDepthDown,
+  actions,
+  checkers,
 }: {
   currentUnit: ITreeUnit;
-  changeTitleValue: ({
-    currentUnit,
-    value,
-  }: {
-    currentUnit: ITreeUnit;
-    value: string;
-  }) => void;
-  addTreeUnit: ({
-    currentUnit,
-    elementType,
-  }: {
-    currentUnit: ITreeUnit;
-    elementType: ElementType;
-  }) => void;
-  deleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  toggleChildrenVisibility: ({
-    currentUnit,
-  }: {
-    currentUnit: ITreeUnit;
-  }) => void;
-  moveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  moveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  moveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
-  canToggleChildrenVisibility: ({
-    currentUnit,
-  }: {
-    currentUnit: ITreeUnit;
-  }) => boolean;
-  canAddNewUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
-  canDeleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
-  canMoveUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
-  canMoveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
-  canMoveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
-  canMoveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
+  actions: ICourseTreeActions;
+  checkers: ICourseTreeCheckers;
 }) => {
   const handleValueChange = useDebouncedCallback(
-    (value: string) => changeTitleValue({ currentUnit: currentUnit, value }),
+    (value: string) =>
+      actions.changeTitleValue({ currentUnit: currentUnit, value }),
     1000
   );
   const [addMenuVisible, setAddMenuVisible] = useState(false);
@@ -96,19 +55,19 @@ export const CourseUnitDisplay = ({
         <AddButtons
           currentUnit={currentUnit}
           visible={addMenuVisible}
-          canAddNewUnit={canAddNewUnit}
-          addTreeUnit={addTreeUnit}
+          canAddNewUnit={checkers.canAddNewUnit}
+          addTreeUnit={actions.addTreeUnit}
         />
         <Group gap={0}>
-          {canToggleChildrenVisibility({ currentUnit }) ? (
+          {checkers.canToggleChildrenVisibility({ currentUnit }) ? (
             <ActionIcon
               variant="transparent"
               size={'sm'}
               onClick={() => {
-                toggleChildrenVisibility({ currentUnit });
+                actions.toggleChildrenVisibility({ currentUnit });
               }}
               style={{
-                display: canToggleChildrenVisibility({ currentUnit })
+                display: checkers.canToggleChildrenVisibility({ currentUnit })
                   ? ''
                   : 'none',
               }}
@@ -164,9 +123,9 @@ export const CourseUnitDisplay = ({
                   <ActionIcon
                     size={'md'}
                     onClick={() => {
-                      moveUp({ currentUnit });
+                      actions.moveUp({ currentUnit });
                     }}
-                    disabled={!canMoveUp({ currentUnit })}
+                    disabled={!checkers.canMoveUp({ currentUnit })}
                   >
                     <ArrowBigUpLine />
                   </ActionIcon>
@@ -174,9 +133,9 @@ export const CourseUnitDisplay = ({
                   <ActionIcon
                     size={'md'}
                     onClick={() => {
-                      moveDown({ currentUnit });
+                      actions.moveDown({ currentUnit });
                     }}
-                    disabled={!canMoveDown({ currentUnit })}
+                    disabled={!checkers.canMoveDown({ currentUnit })}
                   >
                     <ArrowBigDownLine />
                   </ActionIcon>
@@ -184,9 +143,9 @@ export const CourseUnitDisplay = ({
                   <ActionIcon
                     size={'md'}
                     onClick={() => {
-                      moveDepthUp({ currentUnit });
+                      actions.moveDepthUp({ currentUnit });
                     }}
-                    disabled={!canMoveDepthUp({ currentUnit })}
+                    disabled={!checkers.canMoveDepthUp({ currentUnit })}
                   >
                     <ArrowBigLeftLine />
                   </ActionIcon>
@@ -194,9 +153,9 @@ export const CourseUnitDisplay = ({
                   <ActionIcon
                     size={'md'}
                     onClick={() => {
-                      moveDepthDown({ currentUnit });
+                      actions.moveDepthDown({ currentUnit });
                     }}
-                    disabled={!canMoveDepthDown({ currentUnit })}
+                    disabled={!checkers.canMoveDepthDown({ currentUnit })}
                   >
                     <ArrowBigRightLine />
                   </ActionIcon>
@@ -207,9 +166,9 @@ export const CourseUnitDisplay = ({
               className={styles.delete}
               variant="transparent"
               onClick={() => {
-                deleteTreeUnit({ currentUnit });
+                actions.deleteTreeUnit({ currentUnit });
               }}
-              disabled={!canDeleteTreeUnit({ currentUnit })}
+              disabled={!checkers.canDeleteTreeUnit({ currentUnit })}
             >
               <Trash />
             </ActionIcon>
@@ -231,19 +190,19 @@ export const CourseUnitDisplay = ({
       <AddButtons
         currentUnit={currentUnit}
         visible={addMenuVisible}
-        canAddNewUnit={canAddNewUnit}
-        addTreeUnit={addTreeUnit}
+        canAddNewUnit={checkers.canAddNewUnit}
+        addTreeUnit={actions.addTreeUnit}
       />
       <Group gap={0}>
-        {canToggleChildrenVisibility({ currentUnit }) ? (
+        {checkers.canToggleChildrenVisibility({ currentUnit }) ? (
           <ActionIcon
             variant="transparent"
             size={'sm'}
             onClick={() => {
-              toggleChildrenVisibility({ currentUnit });
+              actions.toggleChildrenVisibility({ currentUnit });
             }}
             style={{
-              display: canToggleChildrenVisibility({ currentUnit })
+              display: checkers.canToggleChildrenVisibility({ currentUnit })
                 ? ''
                 : 'none',
             }}
@@ -277,9 +236,9 @@ export const CourseUnitDisplay = ({
                 <ActionIcon
                   size={'md'}
                   onClick={() => {
-                    moveUp({ currentUnit });
+                    actions.moveUp({ currentUnit });
                   }}
-                  disabled={!canMoveUp({ currentUnit })}
+                  disabled={!checkers.canMoveUp({ currentUnit })}
                 >
                   <ArrowBigUpLine />
                 </ActionIcon>
@@ -287,9 +246,9 @@ export const CourseUnitDisplay = ({
                 <ActionIcon
                   size={'md'}
                   onClick={() => {
-                    moveDown({ currentUnit });
+                    actions.moveDown({ currentUnit });
                   }}
-                  disabled={!canMoveDown({ currentUnit })}
+                  disabled={!checkers.canMoveDown({ currentUnit })}
                 >
                   <ArrowBigDownLine />
                 </ActionIcon>
@@ -297,9 +256,9 @@ export const CourseUnitDisplay = ({
                 <ActionIcon
                   size={'md'}
                   onClick={() => {
-                    moveDepthUp({ currentUnit });
+                    actions.moveDepthUp({ currentUnit });
                   }}
-                  disabled={!canMoveDepthUp({ currentUnit })}
+                  disabled={!checkers.canMoveDepthUp({ currentUnit })}
                 >
                   <ArrowBigLeftLine />
                 </ActionIcon>
@@ -307,9 +266,9 @@ export const CourseUnitDisplay = ({
                 <ActionIcon
                   size={'md'}
                   onClick={() => {
-                    moveDepthDown({ currentUnit });
+                    actions.moveDepthDown({ currentUnit });
                   }}
-                  disabled={!canMoveDepthDown({ currentUnit })}
+                  disabled={!checkers.canMoveDepthDown({ currentUnit })}
                 >
                   <ArrowBigRightLine />
                 </ActionIcon>
@@ -321,9 +280,9 @@ export const CourseUnitDisplay = ({
             className={styles.delete}
             variant="transparent"
             onClick={() => {
-              deleteTreeUnit({ currentUnit });
+              actions.deleteTreeUnit({ currentUnit });
             }}
-            disabled={!canDeleteTreeUnit({ currentUnit })}
+            disabled={!checkers.canDeleteTreeUnit({ currentUnit })}
           >
             <Trash />
           </ActionIcon>

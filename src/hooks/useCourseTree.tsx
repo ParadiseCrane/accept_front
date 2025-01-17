@@ -1314,6 +1314,11 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
 // интерфейс хука
 interface IUseCourseTree {
   treeUnitList: ITreeUnit[];
+  actions: ICourseTreeActions;
+  checkers: ICourseTreeCheckers;
+}
+
+export interface ICourseTreeActions {
   changeTitleValue: ({
     currentUnit,
     value,
@@ -1338,6 +1343,9 @@ interface IUseCourseTree {
   moveDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveDepthUp: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   moveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+}
+
+export interface ICourseTreeCheckers {
   canToggleChildrenVisibility: ({
     currentUnit,
   }: {
@@ -1488,20 +1496,24 @@ export const useCourseTree = ({
 
   return {
     treeUnitList,
-    changeTitleValue,
-    toggleChildrenVisibility,
-    addTreeUnit,
-    deleteTreeUnit,
-    moveUp,
-    moveDown,
-    moveDepthUp,
-    moveDepthDown,
-    canToggleChildrenVisibility,
-    canAddNewUnit,
-    canDeleteTreeUnit,
-    canMoveUp,
-    canMoveDown,
-    canMoveDepthUp,
-    canMoveDepthDown,
+    actions: {
+      changeTitleValue,
+      toggleChildrenVisibility,
+      addTreeUnit,
+      deleteTreeUnit,
+      moveUp,
+      moveDown,
+      moveDepthUp,
+      moveDepthDown,
+    },
+    checkers: {
+      canToggleChildrenVisibility,
+      canAddNewUnit,
+      canDeleteTreeUnit,
+      canMoveUp,
+      canMoveDown,
+      canMoveDepthUp,
+      canMoveDepthDown,
+    },
   };
 };
