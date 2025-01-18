@@ -29,7 +29,6 @@ export const CourseUnitDisplay = ({
   const delay = (time: number): Promise<any> => {
     return new Promise((resolve) => setTimeout(resolve, time));
   };
-  const { locale } = useLocale();
 
   if (currentUnit.kind === 'course') {
     return (

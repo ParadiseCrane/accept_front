@@ -12,65 +12,33 @@ import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { ICourseAdd } from '@custom-types/data/ICourse';
+import { ILocaleContext } from '@custom-types/ui/ILocale';
 
 interface ICourseAddBundle {}
 
-const initialValues: ICourseAdd = {
-  spec: '123',
-  title: 'Тестовый курс',
-  description: 'Тестовое описание',
-  image: '',
-  children: [
-    {
-      id: '124',
-      kind: 'unit',
-      title: 'Первый модуль',
-      units: [
-        { id: '135', kind: 'lesson', title: 'Урок 1.1', units: [] },
-        { id: '136', kind: 'lesson', title: 'Урок 1.2', units: [] },
-        { id: '137', kind: 'lesson', title: 'Урок 1.3', units: [] },
-        { id: '138', kind: 'lesson', title: 'Урок 1.4', units: [] },
-      ],
-    },
-    {
-      id: '125',
-      kind: 'unit',
-      title: 'Второй модуль',
-      units: [
-        { id: '135', kind: 'lesson', title: 'Урок 2.1', units: [] },
-        { id: '136', kind: 'lesson', title: 'Урок 2.2', units: [] },
-        { id: '137', kind: 'lesson', title: 'Урок 2.3', units: [] },
-        { id: '138', kind: 'lesson', title: 'Урок 2.4', units: [] },
-      ],
-    },
-    {
-      id: '126',
-      kind: 'unit',
-      title: 'Третий модуль',
-      units: [
-        { id: '135', kind: 'lesson', title: 'Урок 3.1', units: [] },
-        { id: '136', kind: 'lesson', title: 'Урок 3.2', units: [] },
-        { id: '137', kind: 'lesson', title: 'Урок 3.3', units: [] },
-        { id: '138', kind: 'lesson', title: 'Урок 3.4', units: [] },
-      ],
-    },
-    {
-      id: '127',
-      kind: 'unit',
-      title: 'Четвертый модуль',
-      units: [
-        { id: '135', kind: 'lesson', title: 'Урок 4.1', units: [] },
-        { id: '136', kind: 'lesson', title: 'Урок 4.2', units: [] },
-        { id: '137', kind: 'lesson', title: 'Урок 4.3', units: [] },
-        { id: '138', kind: 'lesson', title: 'Урок 4.4', units: [] },
-      ],
-    },
-  ],
+const getInitialValues = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}): ICourseAdd => {
+  return {
+    title: title,
+    description: description,
+    kind: 'course',
+    image: '',
+    children: [],
+  };
 };
 
 function CourseAdd(props: ICourseAddBundle) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
+  const initialValues = getInitialValues({
+    title: locale.ui.courseTree.title,
+    description: locale.ui.courseTree.description,
+  });
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {

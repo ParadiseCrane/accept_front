@@ -1,9 +1,15 @@
 import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
-import { ICourseUnit, ITreeUnit } from '@custom-types/data/ICourse';
+import { ICourseAdd, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 type UpOrDown = 'UP' | 'DOWN';
+
+interface UnitLocale {
+  unit: string;
+  lesson: string;
+}
 
 export type ElementType = 'unit' | 'lesson';
 
@@ -42,12 +48,9 @@ const getParentSpec = ({
   courseUnit,
   courseUnitList,
 }: {
-  courseUnit: ICourseUnit;
-  courseUnitList: ICourseUnit[];
+  courseUnit: IUnit;
+  courseUnitList: IUnit[];
 }): string => {
-  if (courseUnit.kind === 'course') {
-    return 'none';
-  }
   if (courseUnit.order.split('|').length === 1) {
     return [...courseUnitList][0].spec;
   } else {
@@ -58,14 +61,14 @@ const getParentSpec = ({
   }
 };
 
-// создаем объект типа ITreeUnit из ICourseUnit
+// создаем объект типа ITreeUnit из IUnit
 const createTreeUnit = ({
   courseUnit,
   courseUnitList,
   index,
 }: {
-  courseUnit: ICourseUnit;
-  courseUnitList: ICourseUnit[];
+  courseUnit: IUnit;
+  courseUnitList: IUnit[];
   index: number;
 }): ITreeUnit => {
   return {
@@ -98,11 +101,26 @@ const setNewIndexValues = ({
 // создаем массив типа ITreeUnit
 const createTreeUnitList = ({
   courseUnitList,
+  form,
 }: {
-  courseUnitList: ICourseUnit[];
+  courseUnitList: IUnit[];
+  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
 }): ITreeUnit[] => {
-  const list: ITreeUnit[] = [];
-  for (let i = 0; i < courseUnitList.length; i++) {
+  const courseElement: ITreeUnit = {
+    spec: 'spec0',
+    kind: 'course',
+    childrenVisible: form.values.children.length !== 0,
+    depth: 0,
+    index: 0,
+    order: '0',
+    orderAsNumber: 0,
+    parentSpec: 'none',
+    title: form.values.title,
+    visible: true,
+  };
+  // const childrenVisible = form.values.children.length !== 0;
+  const list: ITreeUnit[] = [courseElement];
+  for (let i = 1; i <= courseUnitList.length; i++) {
     list.push(
       createTreeUnit({
         courseUnit: courseUnitList[i],
@@ -118,17 +136,19 @@ const convertToCourseUnitList = ({
   treeUnitList,
 }: {
   treeUnitList: ITreeUnit[];
-}): ICourseUnit[] => {
-  const list: ICourseUnit[] = [];
+}): IUnit[] => {
+  const list: IUnit[] = [];
   for (let i = 0; i < treeUnitList.length; i++) {
-    list.push({
-      kind: treeUnitList[i].kind,
-      order: treeUnitList[i].order,
-      spec: treeUnitList[i].spec.includes('newElement')
-        ? ''
-        : treeUnitList[i].spec,
-      title: treeUnitList[i].title,
-    });
+    if (treeUnitList[i].kind !== 'course') {
+      list.push({
+        kind: treeUnitList[i].kind === 'unit' ? 'unit' : 'lesson',
+        order: treeUnitList[i].order,
+        spec: treeUnitList[i].spec.includes('newElement')
+          ? ''
+          : treeUnitList[i].spec,
+        title: treeUnitList[i].title,
+      });
+    }
   }
   return list;
 };
@@ -794,7 +814,8 @@ const localToggleChildrenVisibility = (
 // метод по добавлению нового элемента в дерево (для первого уровня вложенности)
 const localAddTreeUnitFirstLevel = (
   data: ILocalMethodInput,
-  elementType: ElementType
+  elementType: ElementType,
+  locale: UnitLocale
 ): ITreeUnit[] => {
   const parent = data.currentUnit;
   const children = findChildrenDirect({
@@ -814,7 +835,7 @@ const localAddTreeUnitFirstLevel = (
   const newElement: ITreeUnit = {
     spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}`,
     kind: elementType,
-    title: `${parent.spec}newElement${lastChildOrderLastDigit + 1}`,
+    title: elementType === 'lesson' ? locale.lesson : locale.unit,
     order: `${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${lastChildOrderLastDigit + 1}`,
@@ -844,11 +865,12 @@ const localAddTreeUnitFirstLevel = (
 // метод по добавлению нового элемента в дерево
 const localAddTreeUnit = (
   data: ILocalMethodInput,
-  elementType: ElementType
+  elementType: ElementType,
+  locale: UnitLocale
 ): ITreeUnit[] => {
   // при создании модулей 1-го уровня вложенности перенаправляем
   if (data.currentUnit.depth === 0) {
-    return localAddTreeUnitFirstLevel(data, elementType);
+    return localAddTreeUnitFirstLevel(data, elementType, locale);
   }
   // для удобства
   const parent = data.currentUnit;
@@ -867,7 +889,7 @@ const localAddTreeUnit = (
   const newElement: ITreeUnit = {
     spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}${uuidv4()}`,
     kind: elementType,
-    title: `New ${elementType}`,
+    title: elementType === 'lesson' ? locale.lesson : locale.unit,
     order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
@@ -1367,12 +1389,17 @@ interface ILocalMethodInput {
 
 export const useCourseTree = ({
   courseUnitList,
+  form,
+  newUnitTitleLocale,
 }: {
-  courseUnitList: ICourseUnit[];
+  courseUnitList: IUnit[];
+  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  newUnitTitleLocale: UnitLocale;
 }): IUseCourseTree => {
   const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
     createTreeUnitList({
       courseUnitList: courseUnitList,
+      form,
     })
   );
 
@@ -1409,7 +1436,11 @@ export const useCourseTree = ({
     elementType: ElementType;
   }) => {
     setTreeUnitList(
-      localAddTreeUnit({ currentUnit, treeUnitList }, elementType)
+      localAddTreeUnit(
+        { currentUnit, treeUnitList },
+        elementType,
+        newUnitTitleLocale
+      )
     );
   };
 

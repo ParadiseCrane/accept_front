@@ -5,18 +5,10 @@ export interface ICourseResponse {
   description: string;
   kind: 'course' | 'unit' | 'lesson';
   image: string;
-  children: ICourseUnit[];
-}
-
-export interface ICourseUnit {
-  spec: string;
-  kind: 'course' | 'unit' | 'lesson';
-  title: string;
-  order: string;
+  children: IUnit[];
 }
 
 export interface ITreeUnit {
-  // id элемента
   spec: string;
   kind: 'course' | 'unit' | 'lesson';
   title: string;
@@ -30,16 +22,16 @@ export interface ITreeUnit {
 }
 
 export interface ICourseAdd {
-  spec: string;
   title: string;
   description: string;
+  kind: 'course';
   image: string;
   children: IUnit[];
 }
 
 export interface ICourse {
-  kind: 'course' | 'unit' | 'lesson';
   spec: string;
+  kind: 'course' | 'unit' | 'lesson';
   title: string;
   description: string;
   image: string;
@@ -47,8 +39,8 @@ export interface ICourse {
 }
 
 export interface IUnit {
+  spec: string;
   kind: 'lesson' | 'unit';
-  id: string;
   title: string;
-  units: IUnit[];
+  order: string;
 }
