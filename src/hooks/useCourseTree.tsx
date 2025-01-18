@@ -11,6 +11,11 @@ interface UnitLocale {
   lesson: string;
 }
 
+interface ConversionOutput {
+  elementList: IUnit[];
+  title: string;
+}
+
 export type ElementType = 'unit' | 'lesson';
 
 const getMaxDepthFromList = ({
@@ -71,6 +76,9 @@ const createTreeUnit = ({
   courseUnitList: IUnit[];
   index: number;
 }): ITreeUnit => {
+  console.log('createTreeUnit unit', courseUnit);
+  console.log('createTreeUnit list', courseUnitList);
+  console.log('createTreeUnit index', index);
   return {
     ...courseUnit,
     orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
@@ -118,9 +126,8 @@ const createTreeUnitList = ({
     title: form.values.title,
     visible: true,
   };
-  // const childrenVisible = form.values.children.length !== 0;
   const list: ITreeUnit[] = [courseElement];
-  for (let i = 1; i <= courseUnitList.length; i++) {
+  for (let i = 0; i < courseUnitList.length; i++) {
     list.push(
       createTreeUnit({
         courseUnit: courseUnitList[i],
@@ -136,21 +143,26 @@ const convertToCourseUnitList = ({
   treeUnitList,
 }: {
   treeUnitList: ITreeUnit[];
-}): IUnit[] => {
+}): ConversionOutput => {
+  console.log('conversion input', treeUnitList);
   const list: IUnit[] = [];
-  for (let i = 0; i < treeUnitList.length; i++) {
-    if (treeUnitList[i].kind !== 'course') {
-      list.push({
-        kind: treeUnitList[i].kind === 'unit' ? 'unit' : 'lesson',
-        order: treeUnitList[i].order,
-        spec: treeUnitList[i].spec.includes('newElement')
-          ? ''
-          : treeUnitList[i].spec,
-        title: treeUnitList[i].title,
-      });
+  const courseElement = treeUnitList[0];
+  if (treeUnitList.length > 1) {
+    for (let i = 0; i < treeUnitList.length; i++) {
+      if (treeUnitList[i].kind !== 'course') {
+        list.push({
+          kind: treeUnitList[i].kind === 'unit' ? 'unit' : 'lesson',
+          order: treeUnitList[i].order,
+          spec: treeUnitList[i].spec,
+          // spec: treeUnitList[i].spec.includes('newElement')
+          //   ? ''
+          //   : treeUnitList[i].spec,
+          title: treeUnitList[i].title,
+        });
+      }
     }
   }
-  return list;
+  return { elementList: list, title: courseElement.title };
 };
 
 // находим дочерние элементы всех уровней
@@ -1410,9 +1422,14 @@ export const useCourseTree = ({
     currentUnit: ITreeUnit;
     value: string;
   }) => {
-    setTreeUnitList(
-      localChangeTitleValue({ currentUnit, treeUnitList }, value)
-    );
+    const newList = localChangeTitleValue({ currentUnit, treeUnitList }, value);
+    const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
+    console.log('conversionOutput', conversionOutput);
+    form.setValues({
+      children: conversionOutput.elementList,
+      title: conversionOutput.title,
+    });
+    setTreeUnitList(newList);
   };
 
   const toggleChildrenVisibility = ({
@@ -1420,12 +1437,17 @@ export const useCourseTree = ({
   }: {
     currentUnit: ITreeUnit;
   }) => {
-    setTreeUnitList(
-      localToggleChildrenVisibility({
-        currentUnit,
-        treeUnitList,
-      })
-    );
+    const newList = localToggleChildrenVisibility({
+      currentUnit,
+      treeUnitList,
+    });
+    const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
+    console.log('conversionOutput', conversionOutput);
+    form.setValues({
+      children: conversionOutput.elementList,
+      title: conversionOutput.title,
+    });
+    setTreeUnitList(newList);
   };
 
   const addTreeUnit = ({
@@ -1435,45 +1457,91 @@ export const useCourseTree = ({
     currentUnit: ITreeUnit;
     elementType: ElementType;
   }) => {
-    setTreeUnitList(
-      localAddTreeUnit(
-        { currentUnit, treeUnitList },
-        elementType,
-        newUnitTitleLocale
-      )
+    const newList = localAddTreeUnit(
+      { currentUnit, treeUnitList },
+      elementType,
+      newUnitTitleLocale
     );
+    const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
+    console.log('conversionOutput', conversionOutput);
+    form.setValues({
+      children: conversionOutput.elementList,
+      title: conversionOutput.title,
+    });
+    setTreeUnitList(newList);
   };
 
   const deleteTreeUnit = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
-    setTreeUnitList(
-      localDeleteTreeUnit({
-        currentUnit,
-        treeUnitList,
-      })
-    );
+    const newList = localDeleteTreeUnit({
+      currentUnit,
+      treeUnitList,
+    });
+    const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
+    console.log('conversionOutput', conversionOutput);
+    form.setValues({
+      children: conversionOutput.elementList,
+      title: conversionOutput.title,
+    });
+    setTreeUnitList(newList);
   };
 
   const moveDepthUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
     if (localCanMoveDepthUp({ currentUnit, treeUnitList })) {
-      setTreeUnitList(localMoveDepthUp({ currentUnit, treeUnitList }));
+      const newList = localMoveDepthUp({ currentUnit, treeUnitList });
+      const conversionOutput = convertToCourseUnitList({
+        treeUnitList: newList,
+      });
+      console.log('conversionOutput', conversionOutput);
+      form.setValues({
+        children: conversionOutput.elementList,
+        title: conversionOutput.title,
+      });
+      setTreeUnitList(newList);
     }
   };
 
   const moveDepthDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
     if (localCanMoveDepthDown({ currentUnit, treeUnitList })) {
-      setTreeUnitList(localMoveDepthDown({ currentUnit, treeUnitList }));
+      const newList = localMoveDepthDown({ currentUnit, treeUnitList });
+      const conversionOutput = convertToCourseUnitList({
+        treeUnitList: newList,
+      });
+      console.log('conversionOutput', conversionOutput);
+      form.setValues({
+        children: conversionOutput.elementList,
+        title: conversionOutput.title,
+      });
+      setTreeUnitList(newList);
     }
   };
 
   const moveUp = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
     if (localCanMoveUp({ currentUnit, treeUnitList })) {
-      setTreeUnitList(localMoveUp({ currentUnit, treeUnitList }));
+      const newList = localMoveUp({ currentUnit, treeUnitList });
+      const conversionOutput = convertToCourseUnitList({
+        treeUnitList: newList,
+      });
+      console.log('conversionOutput', conversionOutput);
+      // form.setValues({
+      //   children: conversionOutput.elementList,
+      //   title: conversionOutput.title,
+      // });
+      setTreeUnitList(newList);
     }
   };
 
   const moveDown = ({ currentUnit }: { currentUnit: ITreeUnit }) => {
     if (localCanMoveDown({ currentUnit, treeUnitList })) {
-      setTreeUnitList(localMoveDown({ currentUnit, treeUnitList }));
+      const newList = localMoveDown({ currentUnit, treeUnitList });
+      const conversionOutput = convertToCourseUnitList({
+        treeUnitList: newList,
+      });
+      console.log('conversionOutput', conversionOutput);
+      // form.setValues({
+      //   children: conversionOutput.elementList,
+      //   title: conversionOutput.title,
+      // });
+      setTreeUnitList(newList);
     }
   };
 

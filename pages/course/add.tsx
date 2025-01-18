@@ -12,7 +12,6 @@ import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { ICourseAdd } from '@custom-types/data/ICourse';
-import { ILocaleContext } from '@custom-types/ui/ILocale';
 
 interface ICourseAddBundle {}
 
