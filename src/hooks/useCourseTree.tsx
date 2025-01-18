@@ -76,9 +76,6 @@ const createTreeUnit = ({
   courseUnitList: IUnit[];
   index: number;
 }): ITreeUnit => {
-  console.log('createTreeUnit unit', courseUnit);
-  console.log('createTreeUnit list', courseUnitList);
-  console.log('createTreeUnit index', index);
   return {
     ...courseUnit,
     orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
@@ -144,7 +141,6 @@ const convertToCourseUnitList = ({
 }: {
   treeUnitList: ITreeUnit[];
 }): ConversionOutput => {
-  console.log('conversion input', treeUnitList);
   const list: IUnit[] = [];
   const courseElement = treeUnitList[0];
   if (treeUnitList.length > 1) {
@@ -1424,7 +1420,6 @@ export const useCourseTree = ({
   }) => {
     const newList = localChangeTitleValue({ currentUnit, treeUnitList }, value);
     const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
-    console.log('conversionOutput', conversionOutput);
     form.setValues({
       children: conversionOutput.elementList,
       title: conversionOutput.title,
@@ -1442,7 +1437,6 @@ export const useCourseTree = ({
       treeUnitList,
     });
     const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
-    console.log('conversionOutput', conversionOutput);
     form.setValues({
       children: conversionOutput.elementList,
       title: conversionOutput.title,
@@ -1463,7 +1457,6 @@ export const useCourseTree = ({
       newUnitTitleLocale
     );
     const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
-    console.log('conversionOutput', conversionOutput);
     form.setValues({
       children: conversionOutput.elementList,
       title: conversionOutput.title,
@@ -1477,7 +1470,6 @@ export const useCourseTree = ({
       treeUnitList,
     });
     const conversionOutput = convertToCourseUnitList({ treeUnitList: newList });
-    console.log('conversionOutput', conversionOutput);
     form.setValues({
       children: conversionOutput.elementList,
       title: conversionOutput.title,
@@ -1491,7 +1483,6 @@ export const useCourseTree = ({
       const conversionOutput = convertToCourseUnitList({
         treeUnitList: newList,
       });
-      console.log('conversionOutput', conversionOutput);
       form.setValues({
         children: conversionOutput.elementList,
         title: conversionOutput.title,
@@ -1506,7 +1497,6 @@ export const useCourseTree = ({
       const conversionOutput = convertToCourseUnitList({
         treeUnitList: newList,
       });
-      console.log('conversionOutput', conversionOutput);
       form.setValues({
         children: conversionOutput.elementList,
         title: conversionOutput.title,
@@ -1521,11 +1511,10 @@ export const useCourseTree = ({
       const conversionOutput = convertToCourseUnitList({
         treeUnitList: newList,
       });
-      console.log('conversionOutput', conversionOutput);
-      // form.setValues({
-      //   children: conversionOutput.elementList,
-      //   title: conversionOutput.title,
-      // });
+      form.setValues({
+        children: conversionOutput.elementList,
+        title: conversionOutput.title,
+      });
       setTreeUnitList(newList);
     }
   };
@@ -1536,11 +1525,10 @@ export const useCourseTree = ({
       const conversionOutput = convertToCourseUnitList({
         treeUnitList: newList,
       });
-      console.log('conversionOutput', conversionOutput);
-      // form.setValues({
-      //   children: conversionOutput.elementList,
-      //   title: conversionOutput.title,
-      // });
+      form.setValues({
+        children: conversionOutput.elementList,
+        title: conversionOutput.title,
+      });
       setTreeUnitList(newList);
     }
   };

@@ -5,10 +5,11 @@ export default async function AddCourse(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await fetchWrapper({
+  const response = await fetchWrapper({
     req: req,
     res: res,
-    url: `api/course/${req.query.spec}`,
+    url: `api/course`,
     method: 'POST',
   });
+  console.log('add course response', response);
 }

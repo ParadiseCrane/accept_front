@@ -11,7 +11,7 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import { ICourseAdd } from '@custom-types/data/ICourse';
+import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
 
 interface ICourseAddBundle {}
 
@@ -26,7 +26,8 @@ const getInitialValues = ({
     title: title,
     description: description,
     kind: 'course',
-    image: '',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
     children: [],
   };
 };
@@ -51,20 +52,31 @@ function CourseAdd(props: ICourseAddBundle) {
         return;
       }
 
-      const course = {
+      const course: ICourseAdd = {
         ...form.values,
       };
 
-      console.log('course from form', course);
+      const children: IUnit[] = [...course.children];
+      const emptyChildren: IUnit[] = [];
+      for (let i = 0; i < children.length; i++) {
+        if (children[i].spec.includes('newElement')) {
+          emptyChildren.push({ ...children[i], spec: '' });
+        } else {
+          emptyChildren.push(children[i]);
+        }
+      }
 
-      // requestWithNotify<ICourseAdd, string>(
-      //   'course/add',
-      //   'POST',
-      //   locale.notify.course.create,
-      //   lang,
-      //   (response) => response,
-      //   course
-      // );
+      const courseToSend = { ...course, children: emptyChildren };
+      console.log('courseToSend', courseToSend);
+
+      requestWithNotify<ICourseAdd, string>(
+        'course/add',
+        'POST',
+        locale.notify.course.create,
+        lang,
+        (response) => response,
+        courseToSend
+      );
     },
     [lang, locale, user?.login]
   );
