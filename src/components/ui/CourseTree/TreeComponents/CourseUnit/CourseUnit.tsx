@@ -5,9 +5,11 @@ import React, { useState } from 'react';
 import { CaretDown, CaretRight, Trash } from 'tabler-icons-react';
 import { AddButtons } from '../Buttons/AddButton/AddButton';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { ICourseTreeActions, ICourseTreeCheckers } from '@hooks/useCourseTree';
+import {
+  ICourseAddTreeActions,
+  ICourseAddTreeCheckers,
+} from '@hooks/useCourseTree';
 import { MovementButton } from '../Buttons/MovementButton/MovementButton';
-import { useLocale } from '@hooks/useLocale';
 import { DeleteButton } from '../Buttons/DeleteButton/DeleteButton';
 import { ToggleVisibilityButton } from '../Buttons/ToggleVisibilityButton/ToggleVisibilityButton';
 
@@ -17,8 +19,8 @@ export const CourseUnitDisplay = ({
   checkers,
 }: {
   currentUnit: ITreeUnit;
-  actions: ICourseTreeActions;
-  checkers: ICourseTreeCheckers;
+  actions: ICourseAddTreeActions;
+  checkers: ICourseAddTreeCheckers;
 }) => {
   const handleValueChange = useDebouncedCallback(
     (value: string) =>

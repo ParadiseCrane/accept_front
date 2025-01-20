@@ -3,7 +3,7 @@ import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
 import { InputWrapper } from '@ui/basics';
 import { UseFormReturnType } from '@mantine/form';
 import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
-import { useCourseTree } from '@hooks/useCourseTree';
+import { useCourseAddTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 
 const CourseTree: FC<{
@@ -12,7 +12,7 @@ const CourseTree: FC<{
   form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
 }> = ({ titleProps, initialUnits, form }) => {
   const { locale } = useLocale();
-  const { treeUnitList, actions, checkers } = useCourseTree({
+  const { treeUnitList, actions, checkers } = useCourseAddTree({
     courseUnitList: initialUnits,
     form,
     newUnitTitleLocale: {

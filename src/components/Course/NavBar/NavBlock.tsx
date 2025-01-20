@@ -1,13 +1,15 @@
-import { ICourse, IUnit } from '@custom-types/data/ICourse';
-import { ITask } from '@custom-types/data/ITask';
+import { ITreeUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseShowTreeActions,
+  ICourseShowTreeCheckers,
+} from '@hooks/useCourseTree';
 import { NavLink } from '@mantine/core';
-import { useHash } from '@mantine/hooks';
-import { FC, memo } from 'react';
+import { FC } from 'react';
 
-const NavBlock: FC<{ unit: IUnit }> = ({ unit }) => {
-  const [hash, setHash] = useHash();
-
-  return <NavLink label={unit.title} onClick={() => setHash(unit.spec)} />;
+export const NavBlock: FC<{
+  currentUnit: ITreeUnit;
+  actions: ICourseShowTreeActions;
+  checkers: ICourseShowTreeCheckers;
+}> = ({ currentUnit, actions, checkers }) => {
+  return <NavLink href={`#${currentUnit.spec}`} label={currentUnit.title} />;
 };
-
-export default memo(NavBlock);

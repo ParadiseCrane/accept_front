@@ -1,5 +1,10 @@
 import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
-import { ICourseAdd, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseAdd,
+  ICourseModel,
+  ITreeUnit,
+  IUnit,
+} from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -129,6 +134,38 @@ const createTreeUnitList = ({
       createTreeUnit({
         courseUnit: courseUnitList[i],
         courseUnitList: courseUnitList,
+        index: i,
+      })
+    );
+  }
+  return list;
+};
+
+const createTreeUnitListCourseShow = ({
+  course,
+  children,
+}: {
+  course: IUnit;
+  children: IUnit[];
+}): ITreeUnit[] => {
+  const courseElement: ITreeUnit = {
+    spec: course.spec,
+    kind: 'course',
+    childrenVisible: children.length !== 0,
+    depth: 0,
+    index: 0,
+    order: '0',
+    orderAsNumber: 0,
+    parentSpec: 'none',
+    title: course.title,
+    visible: true,
+  };
+  const list: ITreeUnit[] = [courseElement];
+  for (let i = 0; i < children.length; i++) {
+    list.push(
+      createTreeUnit({
+        courseUnit: children[i],
+        courseUnitList: children,
         index: i,
       })
     );
@@ -1341,14 +1378,13 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
   return false;
 };
 
-// интерфейс хука
-interface IUseCourseTree {
+interface IUseCourseAddTree {
   treeUnitList: ITreeUnit[];
-  actions: ICourseTreeActions;
-  checkers: ICourseTreeCheckers;
+  actions: ICourseAddTreeActions;
+  checkers: ICourseAddTreeCheckers;
 }
 
-export interface ICourseTreeActions {
+export interface ICourseAddTreeActions {
   changeTitleValue: ({
     currentUnit,
     value,
@@ -1375,7 +1411,7 @@ export interface ICourseTreeActions {
   moveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
 }
 
-export interface ICourseTreeCheckers {
+export interface ICourseAddTreeCheckers {
   canToggleChildrenVisibility: ({
     currentUnit,
   }: {
@@ -1389,21 +1425,50 @@ export interface ICourseTreeCheckers {
   canMoveDepthDown: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
 }
 
+interface IUseCourseAddTreeProps {
+  courseUnitList: IUnit[];
+  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  newUnitTitleLocale: UnitLocale;
+}
+
+interface IUseCourseShowTree {
+  treeUnitList: ITreeUnit[];
+  actions: ICourseShowTreeActions;
+  checkers: ICourseShowTreeCheckers;
+}
+
+export interface ICourseShowTreeActions {
+  toggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => void;
+}
+
+export interface ICourseShowTreeCheckers {
+  canToggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => boolean;
+}
+
+interface IUseCourseShowTreeProps {
+  course: IUnit;
+  children: IUnit[];
+}
+
 // интерфейс входных данных для локальных методов
 interface ILocalMethodInput {
   currentUnit: ITreeUnit;
   treeUnitList: ITreeUnit[];
 }
 
-export const useCourseTree = ({
+export const useCourseAddTree = ({
   courseUnitList,
   form,
   newUnitTitleLocale,
-}: {
-  courseUnitList: IUnit[];
-  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
-  newUnitTitleLocale: UnitLocale;
-}): IUseCourseTree => {
+}: IUseCourseAddTreeProps): IUseCourseAddTree => {
   const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
     createTreeUnitList({
       courseUnitList: courseUnitList,
@@ -1601,6 +1666,46 @@ export const useCourseTree = ({
       canMoveDown,
       canMoveDepthUp,
       canMoveDepthDown,
+    },
+  };
+};
+
+export const useCourseShowTree = ({
+  course,
+  children,
+}: IUseCourseShowTreeProps): IUseCourseShowTree => {
+  const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
+    createTreeUnitListCourseShow({
+      course,
+      children,
+    })
+  );
+
+  const toggleChildrenVisibility = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => {
+    const newList = localToggleChildrenVisibility({
+      currentUnit,
+      treeUnitList,
+    });
+    setTreeUnitList(newList);
+  };
+
+  const canToggleChildrenVisibility = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }): boolean => {
+    return localCanToggleChildrenVisibility({ currentUnit, treeUnitList });
+  };
+
+  return {
+    treeUnitList,
+    actions: { toggleChildrenVisibility },
+    checkers: {
+      canToggleChildrenVisibility,
     },
   };
 };

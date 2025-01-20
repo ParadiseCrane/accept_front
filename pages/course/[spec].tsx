@@ -2,17 +2,10 @@ import Footer from '@components/Course/Footer';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main';
 import NavBar from '@components/Course/NavBar';
-import {
-  ICourse,
-  ICourseAdd,
-  ICourseModel,
-  IUnit,
-} from '@custom-types/data/ICourse';
-import { ITask } from '@custom-types/data/ITask';
-import { useRequest } from '@hooks/useRequest';
+import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { AppShell } from '@mantine/core';
-import { useDisclosure, useHash, useIsFirstRender } from '@mantine/hooks';
+import { useDisclosure, useHash } from '@mantine/hooks';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';

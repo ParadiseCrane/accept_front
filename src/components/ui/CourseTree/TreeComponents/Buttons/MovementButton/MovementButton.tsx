@@ -1,5 +1,8 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
-import { ICourseTreeActions, ICourseTreeCheckers } from '@hooks/useCourseTree';
+import {
+  ICourseAddTreeActions,
+  ICourseAddTreeCheckers,
+} from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Popover, Tooltip } from '@mantine/core';
 import { ReactNode, useState } from 'react';
@@ -13,8 +16,8 @@ import {
 
 interface IMovementButtonProps {
   currentUnit: ITreeUnit;
-  actions: ICourseTreeActions;
-  checkers: ICourseTreeCheckers;
+  actions: ICourseAddTreeActions;
+  checkers: ICourseAddTreeCheckers;
 }
 
 export const MovementButton: React.FC<IMovementButtonProps> = ({
