@@ -29,6 +29,15 @@ export interface ICourseAdd {
   children: IUnit[];
 }
 
+export interface ICourseModel {
+  spec: string;
+  title: string;
+  description: string;
+  kind: 'course';
+  image: string;
+  children: IUnit[];
+}
+
 export interface ICourse {
   spec: string;
   kind: 'course' | 'unit' | 'lesson';
@@ -40,7 +49,7 @@ export interface ICourse {
 
 export interface IUnit {
   spec: string;
-  kind: 'lesson' | 'unit';
+  kind: 'course' | 'lesson' | 'unit';
   title: string;
   order: string;
 }

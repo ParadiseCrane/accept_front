@@ -2,8 +2,14 @@ import Footer from '@components/Course/Footer';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main';
 import NavBar from '@components/Course/NavBar';
-import { ICourse } from '@custom-types/data/ICourse';
+import {
+  ICourse,
+  ICourseAdd,
+  ICourseModel,
+  IUnit,
+} from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
+import { useRequest } from '@hooks/useRequest';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash, useIsFirstRender } from '@mantine/hooks';
@@ -12,22 +18,37 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
 
-const flattenCourse = (item: ICourse | ITask): (ICourse | ITask)[] => {
-  if (!('children' in item)) return [item];
-  let specs: (ICourse | ITask)[] = [item];
-  for (var i = 0; i < item.children.length; i++) {
-    specs = specs.concat(flattenCourse(item.children[i]));
+const flattenCourse = ({
+  course,
+  children,
+}: {
+  course: ICourseModel;
+  children: IUnit[];
+}): IUnit[] => {
+  const courseAsUnit: IUnit = {
+    kind: course.kind,
+    order: '0',
+    spec: course.spec,
+    title: course.title,
+  };
+  let units: IUnit[] = [courseAsUnit];
+  if (children.length === 0) return units;
+  for (var i = 0; i < children.length; i++) {
+    units = [...units, children[i]];
   }
-  return specs;
+  return units;
 };
 
-function Course(props: { course: ICourse }) {
+function Course(props: { course: ICourseModel }) {
   const course = props.course;
-  console.log('course', course);
+  const units: IUnit[] = flattenCourse({
+    course: course,
+    children: course.children,
+  });
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers, array] = useMoveThroughArray(
-    flattenCourse(course),
+    units,
     (item, hash) => item.spec == hash
   );
   const [hash, setHash] = useHash();
@@ -57,40 +78,16 @@ function Course(props: { course: ICourse }) {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <NavBar course={course} />
+        <NavBar units={units} />
         <Footer prev={handlers.prev} next={handlers.next} />
 
-        <Main key={hash} course={value} />
+        <Main key={hash} />
       </AppShell>
     </>
   );
 }
 
 export default Course;
-
-const generateLesson = (
-  unit: number,
-  index: number,
-  tasks: number
-): ICourse => ({
-  kind: 'lesson',
-  spec: `${Math.floor(Math.random() * 1000)}`,
-  title: `Lesson ${index + 1}`,
-  description: `Description of unit ${unit + 1} lesson ${index + 1}`,
-  image: '',
-  children: [],
-});
-
-const generateUnit = (index: number): ICourse => ({
-  kind: 'unit',
-  spec: `${Math.floor(Math.random() * 1000)}`,
-  title: `Unit ${index + 1}`,
-  description: `Description of unit ${index + 1}`,
-  image: '',
-  children: Array.apply(null, Array(5)).map((x, i) =>
-    generateLesson(index, i, 3)
-  ),
-});
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
@@ -105,47 +102,55 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  // const response = await fetchWrapperStatic({
-  //   url: `course/${query.spec}`,
-  //   req,
-  // });
+  const response = await fetchWrapperStatic({
+    url: `course-edit/${query.spec}`,
+    req,
+  });
 
-  // console.log('response course', response.status);
+  if (response.status === 200) {
+    const json = await response.json();
+    const course = {
+      ...json,
+      spec: query.spec,
+    };
 
-  // if (response.status === 200) {
-  //   const course = await response.json();
-
-  //   return {
-  //     props: {
-  //       course,
-  //     },
-  //   };
-  // }
-  // return {
-  //   redirect: {
-  //     permanent: false,
-  //     destination: '/404',
-  //   },
-  // };
-
-  let units: ICourse[] = Array.apply(null, Array(5)).map((x, i) =>
-    generateUnit(i)
-  );
-
-  let course: ICourse = {
-    kind: 'course',
-    spec: query.spec,
-    title: 'Test course',
-    description:
-      'During this course we will test all features that are present in Accept courses.',
-    image:
-      'https://wallpapers.com/images/hd/nice-background-epwgnra8o2fouefa.jpg',
-    children: units,
-  };
-
+    return {
+      props: {
+        course,
+      },
+    };
+  }
   return {
-    props: {
-      course,
+    redirect: {
+      permanent: false,
+      destination: '/404',
     },
   };
+
+  //
+  //
+  //
+  //
+  //
+  //
+  // let units: ICourse[] = Array.apply(null, Array(5)).map((x, i) =>
+  //   generateUnit(i)
+  // );
+
+  // let course: ICourse = {
+  //   kind: 'course',
+  //   spec: `${query.spec}`,
+  //   title: 'Test course',
+  //   description:
+  //     'During this course we will test all features that are present in Accept courses.',
+  //   image:
+  //     'https://wallpapers.com/images/hd/nice-background-epwgnra8o2fouefa.jpg',
+  //   children: units,
+  // };
+
+  // return {
+  //   props: {
+  //     course,
+  //   },
+  // };
 };

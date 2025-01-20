@@ -31,7 +31,7 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
       style={{ display: visible ? 'block' : 'none' }}
     >
       <div className={styles.add_menu_wrapper}>
-        {canAddNewUnit({ currentUnit }) ? (
+        {canAddNewUnit({ currentUnit }) && (
           <Tooltip label={locale.ui.courseTree.addUnit}>
             <div
               className={styles.icon_pair}
@@ -45,8 +45,6 @@ export const AddButtons: React.FC<IAddButtonProps> = ({
               <Text>{locale.ui.courseTree.unit}</Text>
             </div>
           </Tooltip>
-        ) : (
-          <></>
         )}
         <Tooltip label={locale.ui.courseTree.addLesson}>
           <div
