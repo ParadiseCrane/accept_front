@@ -68,23 +68,36 @@ export const CourseUnitDisplay = ({
     );
   }
 
-  if (currentUnit.kind === 'lesson') {
+  if (currentUnit.kind === 'unit') {
     return (
       <Box
+        className={styles.box}
         mt={'xs'}
         mb={'xs'}
         style={{
           paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
         }}
-        className={styles.box}
       >
+        <AddButtons
+          currentUnit={currentUnit}
+          visible={addMenuVisible}
+          canAddNewUnit={checkers.canAddNewUnit}
+          addTreeUnit={actions.addTreeUnit}
+        />
         <Group gap={0}>
-          <div style={{ width: '1.375rem' }} />
+          <ToggleVisibilityButton
+            currentUnit={currentUnit}
+            canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
+            toggleChildrenVisibility={actions.toggleChildrenVisibility}
+          />
+
           <TextInput
             defaultValue={currentUnit.title}
             onChange={(element) => {
               handleValueChange(element.target.value);
             }}
+            onFocus={() => setAddMenuVisible(true)}
+            onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
           />
 
           <ActionIcon.Group>
@@ -107,33 +120,20 @@ export const CourseUnitDisplay = ({
 
   return (
     <Box
-      className={styles.box}
       mt={'xs'}
       mb={'xs'}
       style={{
         paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
       }}
+      className={styles.box}
     >
-      <AddButtons
-        currentUnit={currentUnit}
-        visible={addMenuVisible}
-        canAddNewUnit={checkers.canAddNewUnit}
-        addTreeUnit={actions.addTreeUnit}
-      />
       <Group gap={0}>
-        <ToggleVisibilityButton
-          currentUnit={currentUnit}
-          canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
-          toggleChildrenVisibility={actions.toggleChildrenVisibility}
-        />
-
+        <div style={{ width: '1.375rem' }} />
         <TextInput
           defaultValue={currentUnit.title}
           onChange={(element) => {
             handleValueChange(element.target.value);
           }}
-          onFocus={() => setAddMenuVisible(true)}
-          onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
         />
 
         <ActionIcon.Group>

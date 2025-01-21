@@ -138,7 +138,7 @@ const createTreeUnitList = ({
       })
     );
   }
-  return list;
+  return setNewIndexValues({ treeUnitList: list });
 };
 
 const createTreeUnitListCourseShow = ({
@@ -165,12 +165,12 @@ const createTreeUnitListCourseShow = ({
     list.push(
       createTreeUnit({
         courseUnit: children[i],
-        courseUnitList: children,
+        courseUnitList: [courseElement, ...children],
         index: i,
       })
     );
   }
-  return list;
+  return setNewIndexValues({ treeUnitList: list });
 };
 
 const convertToCourseUnitList = ({
