@@ -11,14 +11,17 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAdd, ICourseModel, IUnit } from '@custom-types/data/ICourse';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 
 const getInitialValues = ({
   title,
   description,
+  children,
 }: {
   title: string;
   description: string;
+  children: IUnit[];
 }): ICourseAdd => {
   return {
     title: title,
@@ -26,16 +29,17 @@ const getInitialValues = ({
     kind: 'course',
     image:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
-    children: [],
+    children: children,
   };
 };
 
-function CourseAdd() {
+function CourseEdit(props: { course: ICourseModel }) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const initialValues = getInitialValues({
-    title: locale.ui.courseTree.title,
-    description: locale.ui.courseTree.description,
+    title: props.course.title,
+    description: props.course.description,
+    children: props.course.children,
   });
 
   const handleSubmit = useCallback(
@@ -86,13 +90,53 @@ function CourseAdd() {
         handleSubmit={handleSubmit}
         buttonLabel={locale.create}
         initialValues={initialValues}
+        {...props}
       />
     </>
   );
 }
 
-CourseAdd.getLayout = (page: ReactNode) => {
+CourseEdit.getLayout = (page: ReactNode) => {
   return <DefaultLayout>{page}</DefaultLayout>;
 };
 
-export default CourseAdd;
+export default CourseEdit;
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+}) => {
+  if (!query.spec || Array.isArray(query.spec)) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/404',
+      },
+    };
+  }
+
+  const response = await fetchWrapperStatic({
+    url: `course-edit/${query.spec}`,
+    req,
+  });
+
+  if (response.status === 200) {
+    const json = await response.json();
+    const course = {
+      ...json,
+      spec: query.spec,
+    };
+
+    return {
+      props: {
+        course,
+      },
+    };
+  }
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/404',
+    },
+  };
+};

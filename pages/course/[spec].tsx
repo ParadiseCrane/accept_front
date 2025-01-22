@@ -119,31 +119,4 @@ export const getServerSideProps: GetServerSideProps = async ({
       destination: '/404',
     },
   };
-
-  //
-  //
-  //
-  //
-  //
-  //
-  // let units: ICourse[] = Array.apply(null, Array(5)).map((x, i) =>
-  //   generateUnit(i)
-  // );
-
-  // let course: ICourse = {
-  //   kind: 'course',
-  //   spec: `${query.spec}`,
-  //   title: 'Test course',
-  //   description:
-  //     'During this course we will test all features that are present in Accept courses.',
-  //   image:
-  //     'https://wallpapers.com/images/hd/nice-background-epwgnra8o2fouefa.jpg',
-  //   children: units,
-  // };
-
-  // return {
-  //   props: {
-  //     course,
-  //   },
-  // };
 };
