@@ -3,12 +3,10 @@ import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
-import { ActionIcon, Anchor, Box, Group, NavLink } from '@mantine/core';
+import { Anchor } from '@mantine/core';
 import { FC } from 'react';
-import { CaretDown, CaretRight } from 'tabler-icons-react';
 import { ToggleVisibilityButton } from './ToggleVisibilityButton';
 import styles from './styles.module.css';
-import { Icon } from '@ui/basics';
 
 export const NavBlock: FC<{
   currentUnit: ITreeUnit;
