@@ -9,6 +9,7 @@ export interface ISecurity {
 
 export interface ITournamentDisplay {
   spec: string;
+  organization: string;
   author: string;
   title: string;
 
@@ -28,8 +29,7 @@ export interface ITournamentBaseInfo {
   status: ITournamentStatus;
 }
 
-export interface ITournament
-  extends Omit<ITournamentDisplay, 'teamsNumber'> {
+export interface ITournament extends Omit<ITournamentDisplay, 'teamsNumber'> {
   description: string;
   tasks: ITaskDisplay[];
 
@@ -64,6 +64,7 @@ export interface ITournamentAdd
     ITournament,
     'tasks' | 'status' | 'tags' | 'teamsNumber' | 'banned'
   > {
+  public: boolean;
   tasks: string[];
   tags: string[];
   status: number;
@@ -76,10 +77,7 @@ export interface ITournamentAdd
 }
 
 export interface ITournamentEdit
-  extends Omit<
-    ITournamentAdd,
-    'tasks' | 'assessmentType' | 'tags' | 'status'
-  > {
+  extends Omit<ITournamentAdd, 'tasks' | 'assessmentType' | 'tags' | 'status'> {
   tasks: ITaskDisplay[];
   assessmentType: IAssessmentType;
   tags: ITag[];

@@ -1,6 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
-import { CustomEditor, NumberInput, TextInput } from '@ui/basics';
+import { CustomEditor, NumberInput, Switch, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
 import { Item } from '@custom-types/ui/atomic';
 
@@ -51,6 +51,13 @@ const MainInfo: FC<{
         form={form}
         field={'tags'}
         width="80%"
+      />
+
+      <Switch
+        label={'public'} // Add locale
+        {...form.getInputProps('public', {
+          type: 'checkbox',
+        })}
       />
     </>
   );
