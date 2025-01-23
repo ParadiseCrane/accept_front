@@ -20,7 +20,6 @@ const CourseTree: FC<{
       unit: locale.ui.courseTree.newUnit,
     },
   });
-  console.log('treeUnitList', treeUnitList);
 
   return (
     <InputWrapper label={'Название и структура'}>

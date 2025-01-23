@@ -76,10 +76,12 @@ const createTreeUnit = ({
   courseUnit,
   courseUnitList,
   index,
+  editMode,
 }: {
   courseUnit: IUnit;
   courseUnitList: IUnit[];
   index: number;
+  editMode: boolean;
 }): ITreeUnit => {
   let parentSpec = '';
   if (courseUnit.order === '0') {
@@ -99,7 +101,12 @@ const createTreeUnit = ({
     orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
     depth: courseUnit.order === '0' ? 0 : courseUnit.order.split('|').length,
     index: index,
-    parentSpec,
+    parentSpec: editMode
+      ? parentSpec
+      : getParentSpec({
+          courseUnit: courseUnit,
+          courseUnitList: courseUnitList,
+        }),
     visible: courseUnit.order.split('|').length === 1 ? true : false,
     childrenVisible: courseUnit.order === '0' ? true : false,
   };
@@ -122,9 +129,11 @@ const setNewIndexValues = ({
 const createTreeUnitList = ({
   courseUnitList,
   form,
+  editMode,
 }: {
   courseUnitList: IUnit[];
   form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
     spec: 'spec0',
@@ -138,7 +147,6 @@ const createTreeUnitList = ({
     title: form.values.title,
     visible: true,
   };
-  console.log('createTreeUnitList courseUnitList', courseUnitList);
   const list: ITreeUnit[] = [courseElement];
   for (let i = 0; i < courseUnitList.length; i++) {
     list.push(
@@ -146,6 +154,7 @@ const createTreeUnitList = ({
         courseUnit: courseUnitList[i],
         courseUnitList: courseUnitList,
         index: i,
+        editMode,
       })
     );
   }
@@ -155,9 +164,11 @@ const createTreeUnitList = ({
 const createTreeUnitListCourseShow = ({
   course,
   children,
+  editMode,
 }: {
   course: IUnit;
   children: IUnit[];
+  editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
     spec: course.spec,
@@ -178,6 +189,7 @@ const createTreeUnitListCourseShow = ({
         courseUnit: children[i],
         courseUnitList: [courseElement, ...children],
         index: i,
+        editMode,
       })
     );
   }
@@ -1484,6 +1496,7 @@ export const useCourseAddTree = ({
     createTreeUnitList({
       courseUnitList: courseUnitList,
       form,
+      editMode: true,
     })
   );
 
@@ -1689,6 +1702,7 @@ export const useCourseShowTree = ({
     createTreeUnitListCourseShow({
       course,
       children,
+      editMode: false,
     })
   );
 
