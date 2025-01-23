@@ -81,15 +81,25 @@ const createTreeUnit = ({
   courseUnitList: IUnit[];
   index: number;
 }): ITreeUnit => {
+  let parentSpec = '';
+  if (courseUnit.order === '0') {
+    parentSpec = 'none';
+  } else {
+    if (courseUnit.order.split('|').length === 1) {
+      parentSpec = 'spec0';
+    } else {
+      parentSpec = getParentSpec({
+        courseUnit: courseUnit,
+        courseUnitList: courseUnitList,
+      });
+    }
+  }
   return {
     ...courseUnit,
     orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
     depth: courseUnit.order === '0' ? 0 : courseUnit.order.split('|').length,
     index: index,
-    parentSpec: getParentSpec({
-      courseUnit: courseUnit,
-      courseUnitList: courseUnitList,
-    }),
+    parentSpec,
     visible: courseUnit.order.split('|').length === 1 ? true : false,
     childrenVisible: courseUnit.order === '0' ? true : false,
   };
@@ -128,6 +138,7 @@ const createTreeUnitList = ({
     title: form.values.title,
     visible: true,
   };
+  console.log('createTreeUnitList courseUnitList', courseUnitList);
   const list: ITreeUnit[] = [courseElement];
   for (let i = 0; i < courseUnitList.length; i++) {
     list.push(
