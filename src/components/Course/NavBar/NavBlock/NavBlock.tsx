@@ -1,21 +1,30 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
+import { ITreeUnit, IUnit } from '@custom-types/data/ICourse';
 import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
 import { Anchor } from '@mantine/core';
 import { FC } from 'react';
-import { ToggleVisibilityButton } from './ToggleVisibilityButton';
+import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
 
 export const NavBlock: FC<{
+  hookUnit: IUnit;
   currentUnit: ITreeUnit;
   actions: ICourseShowTreeActions;
   checkers: ICourseShowTreeCheckers;
-}> = ({ currentUnit, actions, checkers }) => {
+}> = ({ hookUnit, currentUnit, actions, checkers }) => {
+  const active = hookUnit.spec === currentUnit.spec;
+
   if (currentUnit.kind === 'course') {
     return (
-      <div className={styles.box_wrapper}>
+      <div
+        className={styles.box_wrapper}
+        style={{
+          paddingLeft: `${currentUnit.depth}rem`,
+          backgroundColor: active ? 'var(--dark7)' : '',
+        }}
+      >
         <div className={styles.box}>
           <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
             {currentUnit.title}
@@ -32,11 +41,14 @@ export const NavBlock: FC<{
 
   if (currentUnit.kind === 'unit') {
     return (
-      <div className={styles.box_wrapper}>
-        <div
-          className={styles.box}
-          style={{ paddingLeft: `${1.375 * currentUnit.depth}rem` }}
-        >
+      <div
+        className={styles.box_wrapper}
+        style={{
+          paddingLeft: `${1.375 * currentUnit.depth}rem`,
+          backgroundColor: active ? 'var(--dark7)' : '',
+        }}
+      >
+        <div className={styles.box}>
           <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
             {currentUnit.title}
           </Anchor>
@@ -51,11 +63,14 @@ export const NavBlock: FC<{
   }
 
   return (
-    <div className={styles.box_wrapper}>
-      <div
-        className={styles.box}
-        style={{ paddingLeft: `${1.375 * currentUnit.depth}rem` }}
-      >
+    <div
+      className={styles.box_wrapper}
+      style={{
+        paddingLeft: `${1.375 * currentUnit.depth}rem`,
+        backgroundColor: active ? 'var(--dark7)' : '',
+      }}
+    >
+      <div className={styles.box}>
         <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
           {currentUnit.title}
         </Anchor>

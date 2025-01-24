@@ -43,6 +43,7 @@ export interface ICourse {
   kind: 'course' | 'unit' | 'lesson';
   title: string;
   description: string;
+  // image только для course
   image: string;
   children: ICourse[] | ITask[];
 }
