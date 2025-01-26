@@ -53,7 +53,7 @@ export const protectedRoutesInfo: {
   '/user/list': checkWrapper('read_list', 'user'),
   '/task': checkWrapper('read', 'task'),
   '/task/edit': checkWrapper('write', 'task'),
-  '/task/tests': checkWrapper('write', 'task'),
+  '/task/tests': checkWrapper('read_tests', 'task'),
   '/dashboard/admin': checkWrapper('read', 'admin_dashboard'),
   '/dashboard/assignment': checkWrapper('moderate', 'assignment'),
   '/dashboard/developer': checkWrapper('read', 'developer_dashboard'),

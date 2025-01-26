@@ -41,18 +41,20 @@ const DynamicResults = dynamic(
 function Task(props: {
   task: ITask;
   languages: ILanguage[];
-  has_rights: boolean;
+  has_write_rights: boolean;
+  has_read_tests_rights: boolean;
 }) {
   const task = props.task;
   const languages = props.languages;
-  const has_rights = props.has_rights;
+  const hasWriteRights = props.has_write_rights;
+  const hasReadTestsRights = props.has_read_tests_rights;
   const [activeModal, setActiveModal] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [openedHint, setOpenedHint] = useState(false);
   const [tasks, setTasks] = useState<IBarTask[]>([]);
 
   const { locale } = useLocale();
-  const { isTeacher, isUser, user } = useUser();
+  const { isUser, user } = useUser();
 
   const { width } = useWidth();
 
@@ -108,57 +110,64 @@ function Task(props: {
     };
   }, [querySpec, type, fetch_tasks]);
 
-  const actions: IStickyAction[] = (
-    task.hint
-      ? ([
-          {
-            color: 'grape',
-            icon: (
-              <Eye
-                width={STICKY_SIZES[width] / 3}
-                height={STICKY_SIZES[width] / 3}
-              />
-            ),
-            onClick: () => setOpenedHint(true),
-            description: locale.tip.sticky.task.hint,
-          },
-        ] as IStickyAction[])
-      : []
-  ).concat([
-    {
-      color: 'blue',
-      href: `/task/tests/${task.spec}`,
-      icon: (
-        <Notes
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      description: locale.tip.sticky.task.tests,
-    },
-    {
-      color: 'green',
-      href: `/task/edit/${task.spec}`,
-      icon: (
-        <Pencil
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      description: locale.tip.sticky.task.edit,
-    },
-    {
-      color: 'red',
-      icon: (
-        <Trash
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      onClick: () => setActiveModal(true),
-      description: locale.tip.sticky.task.delete,
-    },
-  ]);
+  const actions: IStickyAction[] = useMemo(() => {
+    let inner_actions = [];
+    if (task.hint && showHint) {
+      inner_actions.push({
+        color: 'var(--accent)',
+        icon: (
+          <Eye
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        onClick: () => setOpenedHint(true),
+        description: locale.tip.sticky.task.hint,
+      });
+    }
+    if (hasReadTestsRights) {
+      inner_actions.push({
+        color: 'blue',
+        href: `/task/tests/${task.spec}`,
+        icon: (
+          <Notes
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
+        ),
+        description: locale.tip.sticky.task.tests,
+      });
+    }
+
+    if (hasWriteRights) {
+      inner_actions.push(
+        {
+          color: 'green',
+          href: `/task/edit/${task.spec}`,
+          icon: (
+            <Pencil
+              width={STICKY_SIZES[width] / 3}
+              height={STICKY_SIZES[width] / 3}
+            />
+          ),
+          description: locale.tip.sticky.task.edit,
+        },
+        {
+          color: 'red',
+          icon: (
+            <Trash
+              width={STICKY_SIZES[width] / 3}
+              height={STICKY_SIZES[width] / 3}
+            />
+          ),
+          onClick: () => setActiveModal(true),
+          description: locale.tip.sticky.task.delete,
+        }
+      );
+    }
+
+    return inner_actions;
+  }, [showHint, hasReadTestsRights, hasWriteRights, task, width]);
 
   return (
     <>
@@ -210,20 +219,17 @@ function Task(props: {
           />
         </SimpleModal>
       )}
-      {isUser && !isTeacher && showHint && task.hint && (
+
+      {actions.length == 1 && (
         <SingularSticky
-          color="var(--accent)"
-          icon={
-            <Eye
-              width={STICKY_SIZES[width] / 3}
-              height={STICKY_SIZES[width] / 3}
-            />
-          }
-          onClick={() => setOpenedHint(true)}
-          description={locale.tip.sticky.task.hint}
+          color={actions[0].color}
+          icon={actions[0].icon}
+          onClick={actions[0].onClick}
+          href={actions[0].href}
+          description={actions[0].description}
         />
       )}
-      {has_rights && <Sticky actions={actions} />}
+      {actions.length > 1 && <Sticky actions={actions} />}
       <TaskLayout
         key={task.spec}
         title={`${locale.titles.task.spec} ${task.title}`}
@@ -304,7 +310,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         task: response_json.task,
         languages: response_json.languages,
-        has_rights: response_json.has_rights,
+        has_write_rights: response_json.has_write_rights,
+        has_read_tests_rights: response_json.has_read_tests_rights,
       },
     };
   }
