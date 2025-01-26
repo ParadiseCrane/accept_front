@@ -1,12 +1,5 @@
 import { useLocale } from '@hooks/useLocale';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { sendRequest } from '@requests/request';
 import { ITag } from '@custom-types/data/ITag';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
@@ -43,8 +36,7 @@ const TagSelector: FC<{
 }) => {
   const { locale } = useLocale();
   const initialTagsInner = useMemo(() => initialTags, []); //eslint-disable-line
-  const [tags, setTags] =
-    useState<ICustomTransferListData>(undefined);
+  const [tags, setTags] = useState<ICustomTransferListData>(undefined);
   const [allTags, setAllTags] = useState<ITag[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -109,10 +101,7 @@ const TagSelector: FC<{
   return (
     <CustomTransferList
       loading={loading}
-      titles={[
-        locale.ui.tagSelector.available,
-        locale.ui.tagSelector.used,
-      ]}
+      titles={[locale.ui.tagSelector.available, locale.ui.tagSelector.used]}
       itemComponent={itemComponent}
       extraActions={[
         [<AddTag key={1} addURL={addURL} refetch={refetch} />],
