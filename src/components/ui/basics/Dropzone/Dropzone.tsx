@@ -9,12 +9,7 @@ import {
 } from 'react';
 import { Group, Text } from '@mantine/core';
 import { Dropzone as MantineDropzone } from '@mantine/dropzone';
-import {
-  AlertCircle,
-  CircleX,
-  FileUpload,
-  Photo,
-} from 'tabler-icons-react';
+import { AlertCircle, CircleX, FileUpload, Photo } from 'tabler-icons-react';
 import { useLocale } from '@hooks/useLocale';
 import { Button, Helper } from '@ui/basics';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
@@ -37,6 +32,7 @@ const Dropzone: FC<{
 
   showButton?: boolean;
   buttonProps?: MyButtonProps;
+  disabled?: boolean;
 }> = ({
   children,
   onDrop,
@@ -50,6 +46,7 @@ const Dropzone: FC<{
 
   showButton,
   buttonProps,
+  disabled,
 }) => {
   const { locale } = useLocale();
 
@@ -81,7 +78,7 @@ const Dropzone: FC<{
     <div ref={draggable} style={{ position: 'relative' }}>
       <MantineDropzone
         openRef={openRef}
-        disabled={false}
+        disabled={disabled}
         accept={accept}
         maxSize={maxSize}
         onDrop={(files) => {
@@ -107,10 +104,7 @@ const Dropzone: FC<{
             errorNotification({
               id,
               title: locale.ui.dropzone.errors[errorCode].title,
-              message:
-                locale.ui.dropzone.errors[errorCode].message(
-                  filename
-                ),
+              message: locale.ui.dropzone.errors[errorCode].message(filename),
               autoClose: 5000,
             });
           });
@@ -161,7 +155,7 @@ const Dropzone: FC<{
         </Group>
       </MantineDropzone>
 
-      {showButton && (
+      {!disabled && showButton && (
         <div className={styles.buttons}>
           <Button
             variant="outline"

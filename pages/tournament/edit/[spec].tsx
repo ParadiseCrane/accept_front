@@ -19,9 +19,11 @@ import Form from '@components/Tournament/Form/Form';
 import { useRequest } from '@hooks/useRequest';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { getCookieValue } from '@utils/cookies';
+import { useUser } from '@hooks/useUser';
 
 function TournamentEdit(props: ITournamentEditBundle) {
   const { locale, lang } = useLocale();
+  const { user } = useUser();
 
   const { data: users } = useRequest<{}, IUserDisplay[]>(
     'user/list-display',
@@ -64,6 +66,8 @@ function TournamentEdit(props: ITournamentEditBundle) {
 
       const tournament = {
         spec: form.values.spec,
+        organization: form.values.public ? 'public' : user?.organization || '', // TODO: Move to backend
+        public: form.values.public,
         author: form.values.author,
         title: form.values.title,
         description: form.values.description,

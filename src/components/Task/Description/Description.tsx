@@ -129,7 +129,7 @@ const Description: FC<{
           </Table.Thead>
           <Table.Tbody>
             {task.examples.map((example, index) => (
-              <Table.Tr>
+              <Table.Tr key={index}>
                 <Table.Td valign="top">
                   <Group
                     wrap="nowrap"

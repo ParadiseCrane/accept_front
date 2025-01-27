@@ -1,14 +1,6 @@
-import {
-  showNotification,
-  updateNotification,
-} from '@mantine/notifications';
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { defaultClassNames } from '@constants/NotificationClassNames';
-import {
-  AlertTriangle,
-  Check,
-  InfoCircle,
-  X,
-} from 'tabler-icons-react';
+import { AlertTriangle, Check, InfoCircle, X } from 'tabler-icons-react';
 import { v4 as uuidv4 } from 'uuid';
 
 const radius = '10px';
@@ -62,13 +54,7 @@ export const infoNotification = (params: any): void => {
 export const warningNotification = (params: any): void => {
   updateNotification({
     color: 'white',
-    icon: (
-      <AlertTriangle
-        width={24}
-        height={24}
-        color={'var(--neutral)'}
-      />
-    ),
+    icon: <AlertTriangle width={24} height={24} color={'var(--neutral)'} />,
     classNames: defaultClassNames,
     loading: false,
     withCloseButton: true,

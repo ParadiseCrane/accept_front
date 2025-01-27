@@ -15,16 +15,22 @@ import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
 import { useRequest } from '@hooks/useRequest';
 import { getCookieValue } from '@utils/cookies';
+import { IRightsPayload } from '@custom-types/data/rights';
 
 function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
 
   const { locale } = useLocale();
 
-  const { data, loading, error } = useRequest<{}, boolean>(
-    `attempt/can_ban/${attempt.spec}`,
-    'GET'
-  );
+  const {
+    data: canBan,
+    loading,
+    error,
+  } = useRequest<{}, boolean>(`rights`, 'POST', {
+    entity: 'attempt',
+    entity_spec: '',
+    action: 'ban',
+  } as IRightsPayload);
 
   const pages = useMemo(
     () => [
@@ -56,7 +62,7 @@ function Attempt(props: { attempt: IAttempt }) {
     <div className={styles.wrapper}>
       <Title title={`${locale.titles.attempt} ${attempt.author.login}`} />
 
-      {!loading && !error && data && (
+      {!loading && !error && canBan && (
         <>
           {attempt.status.spec != 3 ? (
             <BanModal attempt={attempt} />

@@ -17,25 +17,27 @@ export const TagItem: FC<{
 }> = ({ item, onSelect, refetch, updateURL, deleteURL, shrink }) => {
   return (
     <div
-      className={`${styles.itemWrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${styles.itemWrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <div className={styles.item} onClick={() => onSelect()}>
         <div className={inputStyles.label}>{item.title}</div>
       </div>
-      <div className={styles.actions}>
-        <EditTag
-          item={item}
-          refetch={refetch}
-          updateURL={updateURL}
-        />
-        <DeleteTag
-          item={item}
-          refetch={refetch}
-          deleteURL={deleteURL}
-        />
-      </div>
+      {
+        <div className={styles.actions}>
+          <EditTag
+            disabled={item.predefined}
+            item={item}
+            refetch={refetch}
+            updateURL={updateURL}
+          />
+          <DeleteTag
+            disabled={item.predefined}
+            item={item}
+            refetch={refetch}
+            deleteURL={deleteURL}
+          />
+        </div>
+      }
     </div>
   );
 };

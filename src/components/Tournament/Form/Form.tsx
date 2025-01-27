@@ -15,7 +15,7 @@ import AdditionalInfo from './AdditionalInfo/AdditionalInfo';
 import { UTCDate } from '@utils/datetime';
 
 const stepFields: string[][] = [
-  ['title', 'description', 'tags'],
+  ['title', 'description', 'tags', 'public'],
   [
     'assessmentType',
     'security',
@@ -53,9 +53,7 @@ const Form: FC<{
     initialValues,
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.tournament.form.validation.title
-          : null,
+        value.length < 5 ? locale.tournament.form.validation.title : null,
       description: (value) =>
         value.length < 20
           ? locale.tournament.form.validation.description

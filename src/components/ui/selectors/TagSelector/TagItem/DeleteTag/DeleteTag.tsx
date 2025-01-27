@@ -14,7 +14,8 @@ const DeleteTag: FC<{
   item: Item;
   deleteURL: string;
   refetch: pureCallback<void>;
-}> = ({ item, refetch, deleteURL }) => {
+  disabled?: boolean;
+}> = ({ item, refetch, deleteURL, disabled }) => {
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
 
@@ -38,7 +39,12 @@ const DeleteTag: FC<{
 
   return (
     <>
-      <Icon onClick={() => setOpened(true)} color="red" size="xs">
+      <Icon
+        disabled={disabled}
+        onClick={() => setOpened(true)}
+        color="red"
+        size="xs"
+      >
         <Trash />
       </Icon>
       <SimpleModal
