@@ -16,7 +16,8 @@ const EditTag: FC<{
   item: Item;
   updateURL: string;
   refetch: pureCallback<void>;
-}> = ({ item, refetch, updateURL }) => {
+  disabled?: boolean;
+}> = ({ item, refetch, updateURL, disabled }) => {
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
   const [title, setTitle] = useState(item.title);
@@ -34,9 +35,7 @@ const EditTag: FC<{
       if (validate(title)) {
         return setError('');
       }
-      return setError(
-        locale.ui.tagSelector.minLength(locale.name, 3)
-      );
+      return setError(locale.ui.tagSelector.minLength(locale.name, 3));
     },
     [locale, validate]
   );
@@ -53,6 +52,7 @@ const EditTag: FC<{
           {
             spec: item.spec,
             title: title,
+            predefined: item.predefined,
           },
           () => {
             refetch();
@@ -68,6 +68,7 @@ const EditTag: FC<{
   return (
     <>
       <Icon
+        disabled={disabled}
         onClick={() => setOpened(true)}
         color="var(--primary)"
         size="xs"

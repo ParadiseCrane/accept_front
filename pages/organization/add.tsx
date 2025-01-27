@@ -35,12 +35,15 @@ function AddOrganization() {
         });
         return;
       }
-      requestWithNotify<IOrganization, string>(
+      requestWithNotify<
+        IOrganization,
+        { admin_login: string; admin_password: string }
+      >(
         'organization/add',
         'POST',
         locale.notify.group.create, // TODO: Fix locale
         lang,
-        (password: string) => `Password for admin:\n${password}`,
+        (res) => `${res.admin_login}\n${res.admin_password}`,
         {
           spec: form.values.spec,
           name: form.values.name,

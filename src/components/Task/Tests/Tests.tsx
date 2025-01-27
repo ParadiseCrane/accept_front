@@ -16,6 +16,7 @@ const Tests: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   task_spec,
   refetch,
@@ -24,11 +25,12 @@ const Tests: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale } = useLocale();
 
-  const pages = useMemo(
-    () => [
+  const pages = useMemo(() => {
+    let innerPages = [
       {
         value: 'main',
         title: locale.task.tests.page.main,
@@ -41,10 +43,14 @@ const Tests: FC<{
             checkType={checkType}
             taskType={taskType}
             checker={checker}
+            hasWriteRights={hasWriteRights}
           />
         ),
       },
-      {
+    ];
+
+    if (hasWriteRights) {
+      innerPages.push({
         value: 'order',
         title: locale.task.tests.page.order,
         page: () => (
@@ -54,27 +60,28 @@ const Tests: FC<{
             grouped_tests={grouped_tests}
           />
         ),
-      },
-    ],
-    [
-      checkType,
-      checker,
-      locale,
-      refetch,
-      taskType,
-      task_spec,
-      grouped_tests,
-      truncate_limit,
-    ]
-  );
+      });
+    }
+
+    return innerPages;
+  }, [
+    checkType,
+    checker,
+    locale,
+    refetch,
+    taskType,
+    task_spec,
+    grouped_tests,
+    truncate_limit,
+    hasWriteRights,
+  ]);
 
   const testsHash = useMemo(
     () =>
       grouped_tests
         .map(
           (group) =>
-            group.length.toString() +
-            group.map((item) => item.spec.slice(3))
+            group.length.toString() + group.map((item) => item.spec.slice(3))
         )
         .join(),
     [grouped_tests]

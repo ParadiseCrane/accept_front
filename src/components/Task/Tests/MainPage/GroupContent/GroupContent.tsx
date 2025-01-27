@@ -35,6 +35,7 @@ const GroupContent: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   group_index,
   test_offset,
@@ -45,6 +46,7 @@ const GroupContent: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale, lang } = useLocale();
   const addTests = useCallback(
@@ -184,6 +186,7 @@ const GroupContent: FC<{
 
   return (
     <Dropzone
+      disabled={!hasWriteRights}
       onDrop={onDrop}
       title={locale.ui.codeArea.dragFiles}
       description={''}
@@ -233,15 +236,19 @@ const GroupContent: FC<{
                 openOutputNewTab={
                   <OpenTestInNewTab spec={test.spec} field={'output'} />
                 }
-                additionalActions={[
-                  <DeleteTest
-                    key={index * 2}
-                    index={index}
-                    test={test}
-                    refetch={() => refetch(false)}
-                  />,
-                  EditAction(test, index),
-                ]}
+                additionalActions={
+                  hasWriteRights
+                    ? [
+                        <DeleteTest
+                          key={index * 2}
+                          index={index}
+                          test={test}
+                          refetch={() => refetch(false)}
+                        />,
+                        EditAction(test, index),
+                      ]
+                    : []
+                }
               />
               {(test.isInputTruncated || test.isOutputTruncated) && (
                 <div className={styles.truncationNote}>
@@ -250,11 +257,13 @@ const GroupContent: FC<{
               )}
             </div>
           ))}
-        <AddModal
-          addTests={addTests}
-          hideInput={hideInput}
-          hideOutput={hideOutput}
-        />
+        {hasWriteRights && (
+          <AddModal
+            addTests={addTests}
+            hideInput={hideInput}
+            hideOutput={hideOutput}
+          />
+        )}
       </div>
     </Dropzone>
   );

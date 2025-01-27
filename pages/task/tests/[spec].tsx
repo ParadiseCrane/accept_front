@@ -18,8 +18,9 @@ import { Download } from 'tabler-icons-react';
 import { getApiUrl } from '@utils/getServerUrl';
 import { useRequest } from '@hooks/useRequest';
 import { getCookieValue } from '@utils/cookies';
-function TestsPage(props: { spec: string }) {
+function TestsPage(props: { spec: string; has_write_rights: boolean }) {
   const task_spec = props.spec;
+  const hasWriteRights = props.has_write_rights;
 
   const { locale, lang } = useLocale();
   const [loading, setLoading] = useState(false);
@@ -112,6 +113,7 @@ function TestsPage(props: { spec: string }) {
           checkType={data.task_check_type}
           taskType={data.task_type}
           checker={data.checker}
+          hasWriteRights={hasWriteRights}
         />
       )}
     </>
@@ -141,17 +143,23 @@ export const getServerSideProps: GetServerSideProps = async ({
   const spec = query.spec;
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
 
-  const response = await fetch(`${API_URL}/api/task/exists/${spec}`, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
+  const response = await fetch(
+    `${API_URL}/api/task/write_tests_rights/${spec}`,
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
 
-      cookie: req.headers.cookie,
-    } as { [key: string]: string },
-  });
+        cookie: req.headers.cookie,
+      } as { [key: string]: string },
+    }
+  );
   if (response.status === 200) {
+    const response_json = await response.json();
+
     return {
       props: {
         spec,
+        has_write_rights: response_json,
       },
     };
   }

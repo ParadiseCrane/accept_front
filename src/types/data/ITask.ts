@@ -75,6 +75,7 @@ export interface ITask extends ITaskDisplay {
 
   testsNumber: number;
   taskType: ITaskType;
+  predefined: boolean;
 }
 
 export interface ITaskEdit extends ITask {

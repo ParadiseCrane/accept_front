@@ -40,6 +40,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
   const initialValues = useMemo(
     () => ({
       spec: '',
+      public: false,
       author: user?.login || '',
       title: '',
       description: '',
@@ -77,6 +78,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
 
       const tournament: ITournamentAdd = {
         spec: '',
+        organization: '',
+        public: form.values.public,
         author: user?.login || '',
         title: form.values.title,
         description: form.values.description,
