@@ -1,10 +1,5 @@
 import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
-import {
-  ICourseAdd,
-  ICourseModel,
-  ITreeUnit,
-  IUnit,
-} from '@custom-types/data/ICourse';
+import { ICourseAdd, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';

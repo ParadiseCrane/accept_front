@@ -45,4 +45,9 @@ export const sticky = {
   team: {
     delete: 'Удалить команду',
   },
+  course: {
+    edit: 'Редактировать курс',
+    delete: 'Удалить курс',
+    dashboard: 'Панель управления курсом',
+  },
 };
