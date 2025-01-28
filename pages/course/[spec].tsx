@@ -71,7 +71,7 @@ function Course(props: { course: ICourseModel }) {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <NavBar units={units} hookUnit={value} />
+        <NavBar units={units} hookUnit={value} image={course.image} />
         <Footer prev={handlers.prev} next={handlers.next} />
 
         <Main key={hash} />

@@ -4,6 +4,8 @@ import { useRequest } from '@hooks/useRequest';
 import { AppShell, Center, Text, Title } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
+import { Editor } from '@tiptap/core';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
@@ -52,7 +54,11 @@ const Main: FC = () => {
       <Center>
         <Title order={1}>{course.title}</Title>
       </Center>
-      <Text>{course.description}</Text>
+      <TipTapEditor
+        editorMode={false}
+        content={course.description}
+        onUpdate={() => {}}
+      />
     </AppShell.Main>
   );
 };

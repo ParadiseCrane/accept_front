@@ -33,6 +33,7 @@ import { team } from './team';
 import { accounts } from './accounts';
 import { organization } from './organization';
 import { tiptap } from './tiptap/tiptap';
+import { course } from './course';
 
 const en = {
   accept: 'Accept',
@@ -108,6 +109,7 @@ const en = {
   accounts,
   organization,
   tiptap,
+  course,
 };
 
 export default en;
