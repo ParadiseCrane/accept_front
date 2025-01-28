@@ -3,10 +3,11 @@ import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
-import { Anchor } from '@mantine/core';
+import { Anchor, Tooltip } from '@mantine/core';
 import { FC } from 'react';
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
+import { courseTooltipDelay } from '@constants/Duration';
 
 export const NavBlock: FC<{
   hookUnit: IUnit;
@@ -26,9 +27,20 @@ export const NavBlock: FC<{
         }}
       >
         <div className={styles.box}>
-          <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
-            {currentUnit.title}
-          </Anchor>
+          <Tooltip
+            label={currentUnit.title}
+            openDelay={courseTooltipDelay}
+            position="bottom"
+          >
+            <Anchor
+              href={`#${currentUnit.spec}`}
+              underline="never"
+              c={'dark'}
+              className={styles.title}
+            >
+              {currentUnit.title}
+            </Anchor>
+          </Tooltip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
             canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
@@ -49,9 +61,20 @@ export const NavBlock: FC<{
         }}
       >
         <div className={styles.box}>
-          <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
-            {currentUnit.title}
-          </Anchor>
+          <Tooltip
+            label={currentUnit.title}
+            openDelay={courseTooltipDelay}
+            position="top"
+          >
+            <Anchor
+              href={`#${currentUnit.spec}`}
+              underline="never"
+              c={'dark'}
+              className={styles.title}
+            >
+              {currentUnit.title}
+            </Anchor>
+          </Tooltip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
             canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
@@ -71,9 +94,20 @@ export const NavBlock: FC<{
       }}
     >
       <div className={styles.box}>
-        <Anchor href={`#${currentUnit.spec}`} underline="never" c={'dark'}>
-          {currentUnit.title}
-        </Anchor>
+        <Tooltip
+          label={currentUnit.title}
+          openDelay={courseTooltipDelay}
+          position="top"
+        >
+          <Anchor
+            href={`#${currentUnit.spec}`}
+            underline="never"
+            c={'dark'}
+            className={styles.title}
+          >
+            {currentUnit.title}
+          </Anchor>
+        </Tooltip>
       </div>
     </div>
   );

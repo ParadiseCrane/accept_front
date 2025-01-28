@@ -12,6 +12,7 @@ import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
+import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 
 const getInitialValues = ({
   title,
@@ -79,15 +80,16 @@ function CourseAdd() {
   );
 
   return (
-    <>
+    <Wrapper>
       <Title title={locale.titles.course.add} />
       <Form
         shouldNotify={true}
         handleSubmit={handleSubmit}
         buttonLabel={locale.create}
         initialValues={initialValues}
+        editMode={false}
       />
-    </>
+    </Wrapper>
   );
 }
 

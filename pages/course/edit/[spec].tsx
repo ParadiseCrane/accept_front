@@ -13,6 +13,7 @@ import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { ICourseAdd, ICourseModel, IUnit } from '@custom-types/data/ICourse';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 
 const getInitialValues = ({
   title,
@@ -86,16 +87,17 @@ function CourseEdit(props: { course: ICourseModel }) {
   );
 
   return (
-    <>
-      <Title title={locale.titles.course.add} />
+    <Wrapper>
+      <Title title={locale.titles.course.edit} />
       <Form
         shouldNotify={true}
         handleSubmit={handleSubmit}
         buttonLabel={locale.create}
         initialValues={initialValues}
+        editMode={true}
         {...props}
       />
-    </>
+    </Wrapper>
   );
 }
 

@@ -6,18 +6,20 @@ import { useForm, UseFormReturnType } from '@mantine/form';
 import { Button, CustomEditor } from '@ui/basics';
 import ImageSelector from '@ui/ImageSelector';
 import { CourseTree } from '@ui/CourseTree';
-import { FC, memo, useState } from 'react';
+import { FC, memo } from 'react';
+import styles from './styles.module.css';
 
 const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
   initialValues: ICourseAdd;
   buttonLabel: string;
   shouldNotify: boolean;
-}> = ({ handleSubmit, initialValues, buttonLabel, shouldNotify }) => {
+  editMode: boolean;
+}> = ({ handleSubmit, initialValues, buttonLabel, shouldNotify, editMode }) => {
   const { locale } = useLocale();
   const form = useForm<ICourseAdd>({ initialValues: initialValues });
   return (
-    <Stack m={'xl'} maw={'80%'}>
+    <Stack m={'xl'} className={styles.form}>
       <Group grow align="flex-start">
         <CourseTree
           titleProps={{ ...form.getInputProps('title') }}
@@ -33,11 +35,12 @@ const Form: FC<{
         name="description"
       />
       <Button
-        title="Send"
         onClick={() => {
           handleSubmit(form);
         }}
-      />
+      >
+        {editMode ? locale.edit : locale.create}
+      </Button>
     </Stack>
   );
 };
