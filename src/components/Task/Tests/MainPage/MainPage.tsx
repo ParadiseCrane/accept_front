@@ -19,6 +19,7 @@ const MainPage: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   task_spec,
   refetch,
@@ -27,6 +28,7 @@ const MainPage: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale, lang } = useLocale();
   const group_last_elements = useMemo(
@@ -61,11 +63,13 @@ const MainPage: FC<{
           <div key={index} className={styles.groupWrapper}>
             <div className={styles.groupLabelWrapper}>
               {`${locale.task.tests.group.label} #${index + 1}`}{' '}
-              <DeleteGroup
-                task_spec={task_spec}
-                index={index}
-                refetch={refetch}
-              />
+              {hasWriteRights && (
+                <DeleteGroup
+                  task_spec={task_spec}
+                  index={index}
+                  refetch={refetch}
+                />
+              )}
             </div>
             <GroupContent
               group_index={index}
@@ -77,23 +81,25 @@ const MainPage: FC<{
               taskType={taskType}
               checkType={checkType}
               checker={checker}
+              hasWriteRights={hasWriteRights}
             />
           </div>
         ))}
       </div>
-      <Button
-        variant="outline"
-        kind="positive"
-        onClick={addGroup}
-        fullWidth
-        disabled={
-          grouped_tests.length == 0 ||
-          grouped_tests.at(-1)?.length == 0
-        }
-        dropdownContent={locale.helpers.taskTest.group.add}
-      >
-        {locale.task.tests.group.add}
-      </Button>
+      {hasWriteRights && (
+        <Button
+          variant="outline"
+          kind="positive"
+          onClick={addGroup}
+          fullWidth
+          disabled={
+            grouped_tests.length == 0 || grouped_tests.at(-1)?.length == 0
+          }
+          dropdownContent={locale.helpers.taskTest.group.add}
+        >
+          {locale.task.tests.group.add}
+        </Button>
+      )}
     </div>
   );
 };

@@ -9,7 +9,8 @@ export type IRulesAction =
   | 'read_all'
   | 'moderate'
   | 'to_assignment'
-  | 'read_tasks';
+  | 'read_tasks'
+  | 'read_tests';
 
 export type IRulesEntity =
   | 'task'

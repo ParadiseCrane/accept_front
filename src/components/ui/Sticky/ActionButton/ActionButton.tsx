@@ -9,14 +9,14 @@ import Link from 'next/link';
 
 const ActionButton: FC<{
   action: IStickyAction;
-}> = ({ action }) => {
+  sizeRatio?: number;
+}> = ({ action, sizeRatio }) => {
   const { width } = useWidth();
+  const size = sizeRatio || 1;
   return (
     <Tip
       label={
-        <div className={stickyStyles.description}>
-          {action.description}
-        </div>
+        <div className={stickyStyles.description}>{action.description}</div>
       }
       position="left"
       openDelay={500}
@@ -24,8 +24,8 @@ const ActionButton: FC<{
       <ActionIcon
         // @ts-expect-error
         component={action.onClick ? 'button' : Link}
-        radius={40}
-        size={(STICKY_SIZES[width] * 2) / 3}
+        radius={size * 60}
+        size={size * STICKY_SIZES[width]}
         variant="filled"
         {...action}
       >

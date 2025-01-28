@@ -46,28 +46,3 @@ export const checkWrapper =
       headers,
       pathname
     );
-
-export const checkTestRights = async (
-  entity_spec: string,
-  headers: { Authorization: string } | undefined,
-  pathname: string,
-  _searchParams?: any
-): Promise<boolean | string> => {
-  const response = await fetch(
-    `${process.env.API_ENDPOINT}/api/test-rights/${entity_spec}`,
-    {
-      method: 'GET',
-      headers: headers,
-    }
-  );
-
-  if (response.status === 401) {
-    return `/signin?referrer=${pathname}`;
-  }
-  if (response.status === 403) {
-    return '/403';
-  }
-  if (response.status !== 200) return `/500`;
-
-  return await response.json();
-};
