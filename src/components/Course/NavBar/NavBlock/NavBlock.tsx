@@ -7,7 +7,7 @@ import { Anchor, Tooltip } from '@mantine/core';
 import { FC } from 'react';
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
-import { courseTooltipDelay } from '@constants/Duration';
+import { tooltipOpenDelay } from '@constants/Duration';
 
 export const NavBlock: FC<{
   hookUnit: IUnit;
@@ -29,7 +29,7 @@ export const NavBlock: FC<{
         <div className={styles.box}>
           <Tooltip
             label={currentUnit.title}
-            openDelay={courseTooltipDelay}
+            openDelay={tooltipOpenDelay}
             position="bottom"
           >
             <Anchor
@@ -63,7 +63,7 @@ export const NavBlock: FC<{
         <div className={styles.box}>
           <Tooltip
             label={currentUnit.title}
-            openDelay={courseTooltipDelay}
+            openDelay={tooltipOpenDelay}
             position="top"
           >
             <Anchor
@@ -96,7 +96,7 @@ export const NavBlock: FC<{
       <div className={styles.box}>
         <Tooltip
           label={currentUnit.title}
-          openDelay={courseTooltipDelay}
+          openDelay={tooltipOpenDelay}
           position="top"
         >
           <Anchor

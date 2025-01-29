@@ -112,9 +112,13 @@ function Course(props: { course: ICourseModel }) {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <NavBar units={units} hookUnit={value} image={course.image} />
-        <Footer prev={handlers.prev} next={handlers.next} />
-
+        <NavBar
+          units={units}
+          hookUnit={value}
+          image={course.image}
+          prev={handlers.prev}
+          next={handlers.next}
+        />
         <Main key={hash} />
         {value.spec === course.spec && actions.length > 0 && (
           <Sticky actions={actions} />

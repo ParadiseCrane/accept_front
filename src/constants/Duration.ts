@@ -1,1 +1,1 @@
-export const courseTooltipDelay = 500
+export const tooltipOpenDelay = 500;

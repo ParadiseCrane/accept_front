@@ -4,12 +4,15 @@ import { AppShell, Image } from '@mantine/core';
 import { FC, memo } from 'react';
 import { NavBlock } from './NavBlock/NavBlock';
 import { useLocale } from '@hooks/useLocale';
+import NavigationMenu from './NavigationMenu/NavigationMenu';
 
-const NavBar: FC<{ units: IUnit[]; hookUnit: IUnit; image: string }> = ({
-  units,
-  hookUnit,
-  image,
-}) => {
+const NavBar: FC<{
+  units: IUnit[];
+  hookUnit: IUnit;
+  image: string;
+  prev: () => void;
+  next: () => void;
+}> = ({ units, hookUnit, image, prev, next }) => {
   const course: IUnit = units[0];
   const children: IUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
@@ -41,6 +44,10 @@ const NavBar: FC<{ units: IUnit[]; hookUnit: IUnit; image: string }> = ({
             key={unit.spec}
           />
         ))}
+      <NavigationMenu
+        prev={prev}
+        next={next}
+      />
     </AppShell.Navbar>
   );
 };
