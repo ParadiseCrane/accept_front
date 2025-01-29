@@ -26,6 +26,7 @@ export const titles = {
     admin: 'Admin dashboard',
     assignment: 'Assignment dashboard',
     tournament: 'Tournament dashboard',
+    course: 'Course dashboard',
   },
   attempt: 'Attempt',
   assignment: {

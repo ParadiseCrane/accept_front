@@ -1,20 +1,18 @@
-import Footer from '@components/Course/Footer';
+import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main';
 import NavBar from '@components/Course/NavBar';
-import { STICKY_SIZES } from '@constants/Sizes';
 import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
-import { useWidth } from '@hooks/useWidth';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash } from '@mantine/hooks';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Dashboard, Key, Pencil, Trash } from 'tabler-icons-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
 
 const flattenCourse = ({
   course,
@@ -54,7 +52,6 @@ function Course(props: { course: ICourseModel }) {
     (item, hash) => item.spec == hash
   );
   const [hash, setHash] = useHash();
-  const { width } = useWidth();
   const { locale } = useLocale();
 
   useEffect(() => {
@@ -119,12 +116,15 @@ function Course(props: { course: ICourseModel }) {
           prev={handlers.prev}
           next={handlers.next}
         />
-        {/* <Footer prev={handlers.prev} next={handlers.next} /> */}
-
         <Main key={hash} />
         {value.spec === course.spec && actions.length > 0 && (
           <Sticky actions={actions} />
         )}
+        <DeleteModal
+          active={openModal}
+          setActive={setOpenModal}
+          course={course}
+        />
       </AppShell>
     </>
   );

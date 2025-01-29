@@ -26,6 +26,7 @@ export const titles = {
     admin: 'Панель администратора',
     assignment: 'Управление уроком',
     tournament: 'Управление турниром',
+    course: 'Управление курсом',
   },
   attempt: 'Попытка',
   assignment: {

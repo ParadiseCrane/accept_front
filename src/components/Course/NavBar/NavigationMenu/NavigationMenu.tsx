@@ -5,8 +5,6 @@ import { useHotkeys } from '@mantine/hooks';
 import { FC, memo } from 'react';
 import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
 
-import styles from './styles.module.css';
-
 const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
   prev,
   next,
@@ -17,7 +15,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
     ['ctrl + .', () => next()],
   ]);
   return (
-    <Group justify="space-between" p={'md'} className={styles.nav_menu}>
+    <Group justify="space-between" p={'md'} w={'100%'}>
       <Tooltip
         label={
           <div>

@@ -31,6 +31,7 @@ const NavBar: FC<{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          height: '100%',
         }}
       >
         <div style={{ overflow: 'scroll' }}>
