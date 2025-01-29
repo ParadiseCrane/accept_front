@@ -23,7 +23,7 @@ import { useUser } from '@hooks/useUser';
 
 function TournamentEdit(props: ITournamentEditBundle) {
   const { locale, lang } = useLocale();
-  const { user } = useUser();
+  const tournament = props.tournament;
 
   const { data: users } = useRequest<{}, IUserDisplay[]>(
     'user/list-display',
@@ -37,19 +37,27 @@ function TournamentEdit(props: ITournamentEditBundle) {
 
   const initialValues = useMemo(
     () => ({
-      ...props.tournament,
+      ...tournament,
 
-      tags: props.tournament.tags.map((tag) => ({
-        value: tag.spec,
-        label: tag.title,
-      })),
-      assessmentType: props.tournament.assessmentType.spec.toString(),
-      security: props.tournament.security.toString(),
-      start: timezoneDate(props.tournament.start),
-      end: timezoneDate(props.tournament.end),
-      frozeResults: timezoneDate(props.tournament.frozeResults),
+      tags: tournament.tags.map((spec) => {
+        const tag = props.tags.find((elem) => elem.spec == spec);
+
+        if (!tag) {
+          // TODO: Any ideas to write in normal way?
+          return;
+        }
+        return {
+          value: tag.spec,
+          label: tag.title,
+        };
+      }),
+      assessmentType: tournament.assessmentType.toString(),
+      security: tournament.security.toString(),
+      start: timezoneDate(tournament.start),
+      end: timezoneDate(tournament.end),
+      frozeResults: timezoneDate(tournament.frozeResults),
     }),
-    [props.tournament]
+    [tournament]
   );
 
   const handleSubmit = useCallback(
@@ -66,15 +74,15 @@ function TournamentEdit(props: ITournamentEditBundle) {
 
       const tournament = {
         spec: form.values.spec,
-        organization: form.values.public ? 'public' : user?.organization || '', // TODO: Move to backend
+        organization: form.values.organization,
         public: form.values.public,
         author: form.values.author,
         title: form.values.title,
         description: form.values.description,
-        tasks: form.values.tasks.map((task) => task.spec),
+        tasks: form.values.tasks,
         // @ts-ignore-line
         tags: form.values.tags.map((tag) => tag.value),
-        status: form.values.status.spec,
+        status: form.values.status,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,

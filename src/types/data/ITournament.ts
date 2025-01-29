@@ -53,7 +53,7 @@ export interface ITournamentAddBundle {
 }
 
 export interface ITournamentEditBundle {
-  tournament: ITournamentEdit;
+  tournament: ITournamentAdd;
   assessmentTypes: IAssessmentType[];
   tags: ITag[];
   securities: ISecurity[];
