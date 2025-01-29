@@ -119,6 +119,8 @@ function Course(props: { course: ICourseModel }) {
           prev={handlers.prev}
           next={handlers.next}
         />
+        {/* <Footer prev={handlers.prev} next={handlers.next} /> */}
+
         <Main key={hash} />
         {value.spec === course.spec && actions.length > 0 && (
           <Sticky actions={actions} />

@@ -10,23 +10,13 @@ const Footer: FC<{ prev: () => void; next: () => void }> = ({ prev, next }) => {
   ]);
   return (
     <AppShell.Footer>
-      <Group justify="space-between" p={'md'}>
-        <Group>
-          <ActionIcon onClick={() => prev()}>
-            <ArrowLeft />
-          </ActionIcon>
-          <div>
-            <Kbd>Ctrl</Kbd> + <Kbd>&lt;</Kbd>
-          </div>
-        </Group>
-        <Group>
-          <div>
-            <Kbd>Ctrl</Kbd> + <Kbd>&gt;</Kbd>
-          </div>
-          <ActionIcon onClick={() => next()}>
-            <ArrowRight />
-          </ActionIcon>
-        </Group>
+      <Group justify="space-between" p={'md'} display={'flex'}>
+        <ActionIcon onClick={() => prev()}>
+          <ArrowLeft />
+        </ActionIcon>
+        <ActionIcon onClick={() => next()}>
+          <ArrowRight />
+        </ActionIcon>
       </Group>
     </AppShell.Footer>
   );

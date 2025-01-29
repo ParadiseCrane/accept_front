@@ -1,7 +1,7 @@
 import { IUnit } from '@custom-types/data/ICourse';
 import { useCourseShowTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
-import { AppShell, Image } from '@mantine/core';
+import { AppShell, Image, ScrollArea } from '@mantine/core';
 import { FC, memo } from 'react';
 
 import { NavBlock } from './NavBlock/NavBlock';
@@ -26,26 +26,36 @@ const NavBar: FC<{
 
   return (
     <AppShell.Navbar p="md">
-      <Image
-        src={image}
-        radius="md"
-        h={100}
-        fit="cover"
-        mb={20}
-        alt={locale.course.courseImage}
-      />
-      {treeUnitList
-        .filter((element) => element.visible)
-        .map((unit) => (
-          <NavBlock
-            hookUnit={hookUnit}
-            currentUnit={unit}
-            actions={actions}
-            checkers={checkers}
-            key={unit.spec}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div style={{ overflow: 'scroll' }}>
+          <Image
+            src={image}
+            radius="md"
+            h={100}
+            fit="cover"
+            mb={20}
+            alt={locale.course.courseImage}
           />
-        ))}
-      <NavigationMenu prev={prev} next={next} />
+          {treeUnitList
+            .filter((element) => element.visible)
+            .map((unit) => (
+              <NavBlock
+                hookUnit={hookUnit}
+                currentUnit={unit}
+                actions={actions}
+                checkers={checkers}
+                key={unit.spec}
+              />
+            ))}
+        </div>
+        <NavigationMenu prev={prev} next={next} />
+      </div>
     </AppShell.Navbar>
   );
 };
