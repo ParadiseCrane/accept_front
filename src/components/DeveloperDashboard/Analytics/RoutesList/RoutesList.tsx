@@ -1,22 +1,14 @@
-import { useRouter } from 'next/router';
+import { IAnalyticsData, IAnalyticsResponse } from '@custom-types/data/atomic';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import Table from '@ui/Table/Table';
-import {
-  FC,
-  memo,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
 import { sendRequest } from '@requests/request';
-import {
-  IAnalyticsData,
-  IAnalyticsResponse,
-} from '@custom-types/data/atomic';
 import tableStyles from '@styles/ui/customTable.module.css';
+import Table from '@ui/Table/Table';
+import { useRouter } from 'next/router';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
+
 import styles from '../analytics.module.css';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
@@ -66,7 +58,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const RoutesList: FC<{}> = ({}) => {
+const RoutesList: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const router = useRouter();
   const columns: ITableColumn[] = useMemo(

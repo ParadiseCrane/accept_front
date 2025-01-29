@@ -1,8 +1,9 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
-import { FC, ReactNode, memo, useEffect, useState } from 'react';
-import styles from './leftMenu.module.css';
 import { useRouter } from 'next/router';
+import { FC, ReactNode, memo, useEffect, useState } from 'react';
+
+import styles from './leftMenu.module.css';
 
 const LeftMenu: FC<{
   links: IMenuLink[];

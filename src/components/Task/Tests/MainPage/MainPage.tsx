@@ -1,15 +1,16 @@
-import { FC, memo, useCallback, useMemo } from 'react';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { IChecker } from '@custom-types/data/ITask';
+import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { setter } from '@custom-types/ui/atomic';
-import GroupContent from './GroupContent/GroupContent';
-import stepperStyles from '@styles/ui/stepper.module.css';
 import { useLocale } from '@hooks/useLocale';
-import DeleteGroup from './DeleteGroup/DeleteGroup';
-import styles from './mainPage.module.css';
+import stepperStyles from '@styles/ui/stepper.module.css';
 import { Button } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useMemo } from 'react';
+
+import DeleteGroup from './DeleteGroup/DeleteGroup';
+import GroupContent from './GroupContent/GroupContent';
+import styles from './mainPage.module.css';
 
 const MainPage: FC<{
   task_spec: string;

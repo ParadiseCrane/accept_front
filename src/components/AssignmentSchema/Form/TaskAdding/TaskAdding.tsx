@@ -1,7 +1,6 @@
 import { Item } from '@custom-types/ui/atomic';
-
-import { FC, memo, useCallback } from 'react';
 import { TaskSelector } from '@ui/selectors';
+import { FC, memo, useCallback } from 'react';
 
 const TaskAdding: FC<{ form: any; initialTasks: Item[] }> = ({
   form,

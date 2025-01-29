@@ -1,12 +1,13 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { IUserDisplay } from '@custom-types/data/IUser';
+import { setter } from '@custom-types/ui/atomic';
 import { ILocale } from '@custom-types/ui/ILocale';
+import { useLocale } from '@hooks/useLocale';
 import { Button, LoadingOverlay } from '@ui/basics';
 import { UserSelector } from '@ui/selectors';
-import styles from '../registrationManagement.module.css';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useLocale } from '@hooks/useLocale';
-import { setter } from '@custom-types/ui/atomic';
-import { IUserDisplay } from '@custom-types/data/IUser';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+
+import styles from '../registrationManagement.module.css';
 
 const Solo: FC<{
   spec: string;
@@ -54,8 +55,7 @@ const Solo: FC<{
           initialUsers={participants}
           setFieldValue={setParticipants}
           titles={(locale: ILocale) => [
-            locale.dashboard.tournament.registrationManagementSelector
-              .users,
+            locale.dashboard.tournament.registrationManagementSelector.users,
             locale.dashboard.tournament.registrationManagementSelector
               .participants,
           ]}

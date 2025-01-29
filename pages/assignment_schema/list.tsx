@@ -1,25 +1,25 @@
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
 import {
   IAssignmentSchemaDisplay,
   IAssignmentSchemaListBundle,
 } from '@custom-types/data/IAssignmentSchema';
-import { Plus } from 'tabler-icons-react';
 import { ITag } from '@custom-types/data/ITag';
-import SingularSticky from '@ui/Sticky/SingularSticky';
 import { BaseSearch } from '@custom-types/data/request';
-import { useRequest } from '@hooks/useRequest';
 import { ILocale } from '@custom-types/ui/ILocale';
-import Fuse from 'fuse.js';
-import { hasSubarray } from '@utils/hasSubarray';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import tableStyles from '@styles/ui/customTable.module.css';
 import { MultiSelect } from '@ui/basics';
-import { customTableSort } from '@utils/customTableSort';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import Table from '@ui/Table/Table';
 import Title from '@ui/Title/Title';
+import { customTableSort } from '@utils/customTableSort';
+import { hasSubarray } from '@utils/hasSubarray';
+import Fuse from 'fuse.js';
 import Link from 'next/link';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Plus } from 'tabler-icons-react';
 
 interface Item {
   value: any;
@@ -42,8 +42,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -58,8 +58,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -75,8 +75,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.taskNumber.value > b.taskNumber.value
         ? 1
         : a.taskNumber.value == b.taskNumber.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,

@@ -1,3 +1,12 @@
+import { callback, pureCallback } from '@custom-types/ui/atomic';
+import {
+  ICustomTransferListItem,
+  ICustomTransferListItemComponent,
+} from '@custom-types/ui/basics/customTransferList';
+import { MyIconProps } from '@custom-types/ui/basics/icon';
+import { useLocale } from '@hooks/useLocale';
+import { Icon, TextInput } from '@ui/basics';
+import Fuse from 'fuse.js';
 import {
   ChangeEvent,
   FC,
@@ -7,18 +16,10 @@ import {
   useMemo,
   useState,
 } from 'react';
-import styles from './selectField.module.css';
-import { Icon, TextInput } from '@ui/basics';
-import {
-  ICustomTransferListItem,
-  ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { callback, pureCallback } from '@custom-types/ui/atomic';
-import Fuse from 'fuse.js';
-import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
 import useVirtual from 'react-cool-virtual';
-import { MyIconProps } from '@custom-types/ui/basics/icon';
-import { useLocale } from '@hooks/useLocale';
+import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
+
+import styles from './selectField.module.css';
 
 export interface Props {
   title: string;
@@ -113,7 +114,7 @@ const SelectFieldComponent: FC<Props> = ({
         keys: searchKeys,
         findAllMatches: true,
       }),
-    [value, searchKeys] // eslint-disable-line
+    [value, searchKeys]
   );
 
   const filteredItems = useMemo(() => {

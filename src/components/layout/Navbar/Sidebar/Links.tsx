@@ -1,11 +1,12 @@
-import { FC, Fragment, useState } from 'react';
-import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { HeaderLink } from '../Header/Links/HeaderLink';
-import { useLocale } from '@hooks/useLocale';
-import styles from './sideBar.module.css';
-import { Burger, Stack } from '@mantine/core';
-import SignIn from '../SignIn/SignIn';
 import { pureCallback } from '@custom-types/ui/atomic';
+import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
+import { useLocale } from '@hooks/useLocale';
+import { Burger, Stack } from '@mantine/core';
+import { FC, Fragment, useState } from 'react';
+
+import { HeaderLink } from '../Header/Links/HeaderLink';
+import SignIn from '../SignIn/SignIn';
+import styles from './sideBar.module.css';
 
 export const Links: FC<{
   links: IHeaderLink[];
@@ -19,11 +20,7 @@ export const Links: FC<{
 
   return (
     <>
-      <Burger
-        className={styles.burger}
-        opened={true}
-        onClick={onClose}
-      />
+      <Burger className={styles.burger} opened={true} onClick={onClose} />
       <Stack align="flex-start" className={styles.linkWrapper}>
         <SignIn />
         {links.map((link, index) => (
@@ -43,9 +40,7 @@ export const Links: FC<{
                   {dropdownLinks &&
                     dropdownLinks.map((link, index) => (
                       <Fragment key={index}>
-                        <div
-                          style={{ margin: 'var(--spacer-l) 10%' }}
-                        >
+                        <div style={{ margin: 'var(--spacer-l) 10%' }}>
                           <HeaderLink
                             link={link}
                             additionalClass={styles.noHoverLink}
@@ -56,10 +51,7 @@ export const Links: FC<{
                 </div>
               </>
             ) : (
-              <HeaderLink
-                link={link}
-                additionalClass={styles.noHoverLink}
-              />
+              <HeaderLink link={link} additionalClass={styles.noHoverLink} />
             )}
           </Fragment>
         ))}

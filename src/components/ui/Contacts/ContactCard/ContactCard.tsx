@@ -1,6 +1,7 @@
 import { IContactCard } from '@custom-types/ui/IContactCard';
-import { FC, memo } from 'react';
 import Link from 'next/link';
+import { FC, memo } from 'react';
+
 import styles from './contactCard.module.css';
 
 const ContactCard: FC<{ card: IContactCard }> = ({ card }) => {
@@ -8,9 +9,7 @@ const ContactCard: FC<{ card: IContactCard }> = ({ card }) => {
     <div className={styles.cardWrapper}>
       <div className={styles.cardTitle}>{card.title}</div>
       <div className={styles.cardContent}>
-        <div className={styles.cardDescription}>
-          {card.description}
-        </div>
+        <div className={styles.cardDescription}>{card.description}</div>
         <div className={styles.values}>
           {card.contacts.map((contact, index) => (
             <div className={styles.valueWrapper} key={index}>

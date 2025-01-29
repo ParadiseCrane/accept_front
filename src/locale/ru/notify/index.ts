@@ -1,22 +1,22 @@
-import { assignmentSchema } from './assignmentSchema';
+import { analytics } from './analytics';
 import { assignment } from './assignment';
+import { assignmentSchema } from './assignmentSchema';
 import { attempt } from './attempt';
-import { task } from './task';
-import { group } from './group';
 import { auth } from './auth';
-import { profile } from './profile';
+import { course } from './course';
+import { executor } from './executor';
+import { feedback } from './feedback';
+import { group } from './group';
 import { notification } from './notification';
+import { profile } from './profile';
+import { students } from './students';
+import { task } from './task';
+import { task_test } from './task_test';
+import { team } from './team';
+import { test_group } from './test_group';
 import { tournament } from './tournament';
 import { tournament_task } from './tournament_task';
-import { students } from './students';
 import { user } from './user';
-import { feedback } from './feedback';
-import { executor } from './executor';
-import { task_test } from './task_test';
-import { test_group } from './test_group';
-import { team } from './team';
-import { analytics } from './analytics';
-import { course } from './course';
 
 export const notify = {
   errors: {

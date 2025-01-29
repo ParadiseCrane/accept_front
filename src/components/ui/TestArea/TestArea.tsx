@@ -1,7 +1,7 @@
-import { TextArea } from '@ui/basics';
-import { FC, ReactNode, memo } from 'react';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { TextAreaProps } from '@custom-types/ui/basics/textArea';
+import { TextArea } from '@ui/basics';
+import { FC, ReactNode, memo } from 'react';
 
 export interface TestAreaProps extends TextAreaProps {
   label: ReactNode;
@@ -28,11 +28,7 @@ const TestArea: FC<TestAreaProps> = ({
       minRows={minRows || 2}
       maxRows={maxRows}
       onBlur={() =>
-        readonly
-          ? undefined
-          : !!validateField
-          ? validateField()
-          : () => {}
+        readonly ? undefined : validateField ? validateField() : () => {}
       }
       {...props}
       onChange={

@@ -1,6 +1,7 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Tooltip } from '@mantine/core';
+import { FC } from 'react';
 import { CaretDown, CaretRight } from 'tabler-icons-react';
 
 interface IToggleVisibilityButtonProps {
@@ -17,13 +18,13 @@ interface IToggleVisibilityButtonProps {
   }) => void;
 }
 
-export const ToggleVisibilityButton: React.FC<IToggleVisibilityButtonProps> = ({
+export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
   currentUnit,
   canToggleChildrenVisibility,
   toggleChildrenVisibility,
 }) => {
+  const { locale } = useLocale();
   if (canToggleChildrenVisibility({ currentUnit })) {
-    const { locale } = useLocale();
     return (
       <Tooltip
         label={

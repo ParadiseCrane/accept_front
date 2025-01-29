@@ -1,5 +1,6 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ActionIcon } from '@mantine/core';
+import React, { FC } from 'react';
 import { CaretDown, CaretRight } from 'tabler-icons-react';
 
 interface IToggleVisibilityButtonProps {
@@ -16,7 +17,7 @@ interface IToggleVisibilityButtonProps {
   }) => void;
 }
 
-export const ToggleVisibilityButton: React.FC<IToggleVisibilityButtonProps> = ({
+export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
   currentUnit,
   canToggleChildrenVisibility,
   toggleChildrenVisibility,

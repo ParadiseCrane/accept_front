@@ -4,7 +4,7 @@ import { Switch } from '@ui/basics';
 import { FC, memo, useState } from 'react';
 // import styles from './currentAttempts.module.scss'
 
-const CurrentAttempts: FC<{}> = ({}) => {
+const CurrentAttempts: FC<{}> = () => {
   const [shouldRefetch, setShouldRefetch] = useState(true);
   const { locale } = useLocale();
 
@@ -12,12 +12,8 @@ const CurrentAttempts: FC<{}> = ({}) => {
     <>
       <Switch
         checked={shouldRefetch}
-        onChange={(event) =>
-          setShouldRefetch(event.currentTarget.checked)
-        }
-        label={
-          locale.dashboard.developer.currentAttempts.shouldRefetch
-        }
+        onChange={(event) => setShouldRefetch(event.currentTarget.checked)}
+        label={locale.dashboard.developer.currentAttempts.shouldRefetch}
       />
       <AttemptsList
         type={'current'}

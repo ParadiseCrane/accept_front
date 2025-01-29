@@ -1,4 +1,5 @@
 import { Editor } from '@tiptap/react';
+
 import { InsertImageAsFile, InsertImageAsUrl } from './InsertImage';
 import { InsertLatexExpression } from './InsertLatex';
 import { ToggleCodeBlock } from './ToggleCodeBlock';

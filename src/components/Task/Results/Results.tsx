@@ -1,15 +1,12 @@
-import { FC, memo, useMemo } from 'react';
-import { ITableColumn } from '@custom-types/ui/ITable';
-
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ILocale } from '@custom-types/ui/ILocale';
-import { getLocalDate } from '@utils/datetime';
-
+import { ITableColumn } from '@custom-types/ui/ITable';
 import tableStyles from '@styles/ui/customTable.module.css';
-
 import AttemptList from '@ui/AttemptList/AttemptList';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
+import { FC, memo, useMemo } from 'react';
 
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
@@ -26,15 +23,12 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
       attempt.status.spec == 2
         ? attempt.verdict?.verdict.spec
         : attempt.status.spec == 3
-        ? attempt.status.spec - 20
-        : attempt.status.spec - 10,
+          ? attempt.status.spec - 20
+          : attempt.status.spec - 10,
   },
   date: {
     display: (
-      <Link
-        className={tableStyles.link}
-        href={`/attempt/${attempt.spec}`}
-      >
+      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -52,11 +46,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'date',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.date.value > b.date.value
-        ? -1
-        : a.date.value == b.date.value
-        ? 0
-        : 1,
+      a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
     sorted: -1,
     allowMiddleState: false,
     hidable: false,

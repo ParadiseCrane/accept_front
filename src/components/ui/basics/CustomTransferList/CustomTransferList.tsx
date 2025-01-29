@@ -1,19 +1,19 @@
-import { FC, ReactNode, memo, useCallback, useMemo } from 'react';
 import {
   ICustomTransferListData,
   ICustomTransferListItem,
   ICustomTransferListItemComponent,
   ICustomTransferListItemComponentProps,
 } from '@custom-types/ui/basics/customTransferList';
-import InputWrapper from '@ui/basics/InputWrapper/InputWrapper';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
 import { LoadingOverlay } from '@ui/basics';
+import InputWrapper from '@ui/basics/InputWrapper/InputWrapper';
+import { FC, ReactNode, memo, useCallback, useMemo } from 'react';
+
+import styles from './customTransferList.module.css';
 import {
   Props as DefaultSelectFieldProps,
   SelectField,
 } from './SelectField/SelectField';
-
-import styles from './customTransferList.module.css';
 
 interface Props
   extends Omit<
@@ -128,7 +128,7 @@ const CustomTransferList: FC<Props> = ({
 
   const inputStyles = useMemo(() => {
     let rootStyles = { root: {} };
-    if (!!height) {
+    if (height) {
       rootStyles.root = {
         maxHeight: height,
         height,

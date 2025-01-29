@@ -5,7 +5,7 @@ import {
 } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Popover, Tooltip } from '@mantine/core';
-import { ReactNode, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import {
   ArrowBigDownLine,
   ArrowBigLeftLine,
@@ -20,7 +20,7 @@ interface IMovementButtonProps {
   checkers: ICourseAddTreeCheckers;
 }
 
-export const MovementButton: React.FC<IMovementButtonProps> = ({
+export const MovementButton: FC<IMovementButtonProps> = ({
   currentUnit,
   actions,
   checkers,

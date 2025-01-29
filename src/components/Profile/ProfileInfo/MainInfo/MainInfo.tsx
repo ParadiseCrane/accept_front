@@ -1,9 +1,10 @@
 import { IUser } from '@custom-types/data/IUser';
 import { Badge } from '@mantine/core';
-import { FC, memo } from 'react';
-import styles from './mainInfo.module.css';
-import { Medal2 } from 'tabler-icons-react';
 import { UserAvatar } from '@ui/basics';
+import { FC, memo } from 'react';
+import { Medal2 } from 'tabler-icons-react';
+
+import styles from './mainInfo.module.css';
 
 const getRoleColor = (accessLevel: number) => {
   switch (accessLevel) {

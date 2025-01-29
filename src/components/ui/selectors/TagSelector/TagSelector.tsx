@@ -1,15 +1,16 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { sendRequest } from '@requests/request';
 import { ITag } from '@custom-types/data/ITag';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { TagItem } from './TagItem/TagItem';
 import { Item, setter } from '@custom-types/ui/atomic';
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { useLocale } from '@hooks/useLocale';
+import { sendRequest } from '@requests/request';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+
 import AddTag from './AddTag/AddTag';
+import { TagItem } from './TagItem/TagItem';
 
 const TagSelector: FC<{
   initialTags: Item[];
@@ -42,7 +43,7 @@ const TagSelector: FC<{
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
-      if (!!!data) return;
+      if (!data) return;
       setUsed(data[1]);
       setTags(data);
     },

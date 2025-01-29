@@ -1,10 +1,11 @@
-import { FC, memo, useCallback } from 'react';
-import { useLocale } from '@hooks/useLocale';
 import { setter } from '@custom-types/ui/atomic';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import styles from './pinModal.module.css';
-import PinCode from '@ui/PinCode/PinCode';
+import { useLocale } from '@hooks/useLocale';
 import { Button } from '@ui/basics';
+import PinCode from '@ui/PinCode/PinCode';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { FC, memo, useCallback } from 'react';
+
+import styles from './pinModal.module.css';
 
 const PinModal: FC<{
   origin: string;

@@ -1,29 +1,29 @@
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
+import { ITag } from '@custom-types/data/ITag';
 import {
   ITournamentDisplay,
   ITournamentListBundle,
 } from '@custom-types/data/ITournament';
-import { Clock, Confetti, Plus, Run } from 'tabler-icons-react';
-import { ITag } from '@custom-types/data/ITag';
-import SingularSticky from '@ui/Sticky/SingularSticky';
 import { BaseSearch } from '@custom-types/data/request';
-import { useRequest } from '@hooks/useRequest';
 import { ILocale } from '@custom-types/ui/ILocale';
-import Fuse from 'fuse.js';
-import { hasSubarray } from '@utils/hasSubarray';
-import { MultiSelect } from '@ui/basics';
-import { customTableSort } from '@utils/customTableSort';
-import Title from '@ui/Title/Title';
-import { getLocalDate } from '@utils/datetime';
-import { Tip } from '@ui/basics';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 import { useUser } from '@hooks/useUser';
-import Link from 'next/link';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import tableStyles from '@styles/ui/customTable.module.css';
+import { MultiSelect } from '@ui/basics';
+import { Tip } from '@ui/basics';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import Table from '@ui/Table/Table';
+import Title from '@ui/Title/Title';
+import { customTableSort } from '@utils/customTableSort';
+import { getLocalDate } from '@utils/datetime';
+import { hasSubarray } from '@utils/hasSubarray';
 import { mapTournamentStatus } from '@utils/mapStatus';
+import Fuse from 'fuse.js';
+import Link from 'next/link';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Clock, Confetti, Plus, Run } from 'tabler-icons-react';
 
 interface Item {
   value: any;
@@ -58,16 +58,16 @@ const sortByStartEnd = ({
       return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     }
   } else if (a.status.value == 1 && b.status.value == 1) {
     if (startEnd == 'start') {
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     } else {
       return 0;
     }
@@ -78,8 +78,8 @@ const sortByStartEnd = ({
       return a.end.value < b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     }
   } else {
     return 0;
@@ -95,8 +95,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.status.value > b.status.value
         ? 1
         : a.status.value == b.status.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -112,8 +112,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -141,8 +141,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -158,8 +158,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -175,8 +175,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.maxTeamSize > b.maxTeamSize
         ? 1
         : a.maxTeamSize == b.maxTeamSize
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,

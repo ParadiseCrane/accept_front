@@ -1,7 +1,6 @@
-import { FC, ReactNode, memo, useState } from 'react';
-
-import { Tabs as MantineTabs, TabsProps } from '@mantine/core';
 import { setter } from '@custom-types/ui/atomic';
+import { Tabs as MantineTabs, TabsProps } from '@mantine/core';
+import { FC, ReactNode, memo, useState } from 'react';
 
 interface TabPage {
   value: string;

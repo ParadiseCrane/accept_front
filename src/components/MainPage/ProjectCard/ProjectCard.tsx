@@ -3,9 +3,9 @@ import { IProjectCard } from '@custom-types/ui/IProjectCard';
 import { useLocale } from '@hooks/useLocale';
 import { useWidth } from '@hooks/useWidth';
 import { Button } from '@ui/basics';
-
 import { FC } from 'react';
 import { ChevronRight } from 'tabler-icons-react';
+
 import styles from './projectCard.module.css';
 
 export const ProjectCard: FC<{

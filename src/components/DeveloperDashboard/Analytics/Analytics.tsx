@@ -1,12 +1,13 @@
-import { FC, memo, useCallback } from 'react';
-import RoutesList from './RoutesList/RoutesList';
-import { requestWithError } from '@utils/requestWithError';
 import { useLocale } from '@hooks/useLocale';
-import { useRouter } from 'next/router';
 import { ConfirmModal } from '@ui/modals';
-import ActivityGraph from './ActivityGraph/ActivityGraph';
+import { requestWithError } from '@utils/requestWithError';
+import { useRouter } from 'next/router';
+import { FC, memo, useCallback } from 'react';
 
-const Analytics: FC<{}> = ({}) => {
+import ActivityGraph from './ActivityGraph/ActivityGraph';
+import RoutesList from './RoutesList/RoutesList';
+
+const Analytics: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const router = useRouter();
   const clearAnalytics = useCallback(() => {

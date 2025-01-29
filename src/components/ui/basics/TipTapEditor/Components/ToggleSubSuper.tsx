@@ -1,8 +1,9 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Subscript, Superscript } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
 
 export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('subscript') : false;

@@ -1,8 +1,9 @@
+import { BaseSearch } from '@custom-types/data/request';
 import { setter } from '@custom-types/ui/atomic';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { Loader } from '@mantine/core';
-import { Search } from 'tabler-icons-react';
+import { LoadingOverlay, MultiSelect, TextInput } from '@ui/basics';
 import {
   FC,
   ReactNode,
@@ -12,11 +13,11 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { Search } from 'tabler-icons-react';
+
 import InnerTable from './InnerTable/InnerTable';
-import styles from './table.module.css';
-import { BaseSearch } from '@custom-types/data/request';
 import PageNavigation from './PageNavigation';
-import { LoadingOverlay, MultiSelect, TextInput } from '@ui/basics';
+import styles from './table.module.css';
 
 const Table: FC<{
   columns: ITableColumn[];

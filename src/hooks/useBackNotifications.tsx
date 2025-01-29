@@ -4,7 +4,6 @@ import {
   infoNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-
 import { requestWithError } from '@utils/requestWithError';
 import {
   FC,
@@ -15,9 +14,10 @@ import {
   useMemo,
   useState,
 } from 'react';
+
 import { useLocale } from './useLocale';
-import { useUser } from './useUser';
 import { useLongPooling } from './useLongPooling';
+import { useUser } from './useUser';
 
 interface INotificationContext {
   unviewed: number;
@@ -41,7 +41,7 @@ export const BackNotificationsProvider: FC<{
 
   const fetchNotifications = useCallback(
     (skip?: boolean) => {
-      if (!!!user)
+      if (!user)
         return new Promise((res, _rej) => {
           res(true);
         });

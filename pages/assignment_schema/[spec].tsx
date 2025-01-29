@@ -1,14 +1,14 @@
-import { ReactNode, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
+import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
 import Description from '@components/AssignmentSchema/Description/Description';
+import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
+import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { Pencil, Trash } from 'tabler-icons-react';
-import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
-import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useMemo, useState } from 'react';
+import { Pencil, Trash } from 'tabler-icons-react';
 
 function AssignmentSchema(props: {
   schema: IAssignmentSchema;

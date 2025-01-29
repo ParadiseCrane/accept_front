@@ -1,12 +1,13 @@
-import Image from 'next/legacy/image';
-import logo from 'public/logo.svg';
-import { FC, memo, useMemo, useState } from 'react';
 import { useLocale } from '@hooks/useLocale';
-import Link from 'next/link';
-import styles from './logo.module.css';
-import { useHotkeys } from '@mantine/hooks';
 import { useUser } from '@hooks/useUser';
 import { Badge, Title } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+import Image from 'next/legacy/image';
+import Link from 'next/link';
+import logo from 'public/logo.svg';
+import { FC, memo, useMemo, useState } from 'react';
+
+import styles from './logo.module.css';
 
 const imageSize = {
   md: 48,

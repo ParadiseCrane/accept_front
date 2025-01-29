@@ -1,40 +1,29 @@
 import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import ResultsTable, {
-  IData,
-  ILabel,
-} from '@ui/ResultsTable/ResultsTable';
-import styles from './results.module.css';
-import { useRequest } from '@hooks/useRequest';
-import { LoadingOverlay, SegmentedControl, Tip } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import Link from 'next/link';
-import {
   IActivityResults,
   IResult,
   IResultPayload,
 } from '@custom-types/data/IResults';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 import { sendRequest } from '@requests/request';
+import { LoadingOverlay, SegmentedControl, Tip } from '@ui/basics';
+import ResultsTable, { IData, ILabel } from '@ui/ResultsTable/ResultsTable';
+import { letterFromIndex } from '@utils/letterFromIndex';
+import Link from 'next/link';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+
+import styles from './results.module.css';
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined
     ? '#000'
     : score === 100
-    ? 'var(--positive)'
-    : 'var(--negative)';
+      ? 'var(--positive)'
+      : 'var(--negative)';
 };
 
 const getTotalScoreColor = (score: number | undefined) => {
-  return !score || score === 0
-    ? 'var(--negative)'
-    : 'var(--positive)';
+  return !score || score === 0 ? 'var(--negative)' : 'var(--positive)';
 };
 
 const Results: FC<{
@@ -51,9 +40,7 @@ const Results: FC<{
     isFinished ? 'end' : 'actual'
   );
 
-  const [displayMode, setDisplayMode] = useState<'verdict' | 'score'>(
-    'score'
-  );
+  const [displayMode, setDisplayMode] = useState<'verdict' | 'score'>('score');
 
   const url = useMemo(() => `${type}/results/${spec}`, [spec, type]);
   const innerToDate = useMemo(
@@ -132,10 +119,7 @@ const Results: FC<{
             </div>
           ),
           rest: full
-            ? fetchRestResults(
-                participant_result.participant.identifier,
-                index
-              )
+            ? fetchRestResults(participant_result.participant.identifier, index)
             : undefined,
         }))
         .concat([
@@ -179,9 +163,7 @@ const Results: FC<{
               },
             ]}
             value={fetchDate}
-            onChange={(value) =>
-              setFetchDate(value as 'actual' | 'end')
-            }
+            onChange={(value) => setFetchDate(value as 'actual' | 'end')}
           />
         )}
         <SegmentedControl
@@ -196,9 +178,7 @@ const Results: FC<{
             },
           ]}
           value={displayMode}
-          onChange={(value) =>
-            setDisplayMode(value as 'verdict' | 'score')
-          }
+          onChange={(value) => setDisplayMode(value as 'verdict' | 'score')}
         />
       </div>
 
@@ -254,9 +234,7 @@ const Results: FC<{
           data={table_data}
         />
       ) : (
-        <div className={styles.empty}>
-          {locale.ui.table.emptyMessage}
-        </div>
+        <div className={styles.empty}>{locale.ui.table.emptyMessage}</div>
       )}
     </div>
   );

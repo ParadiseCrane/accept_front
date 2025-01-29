@@ -1,13 +1,21 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
+import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
+import Description from '@components/Tournament/Description/Description';
+import PinModal from '@components/Tournament/PinModal/PinModal';
+import { STICKY_SIZES } from '@constants/Sizes';
+import { ITournament } from '@custom-types/data/ITournament';
+import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { useWidth } from '@hooks/useWidth';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
+import ChatSticky from '@ui/ChatSticky/ChatSticky';
+import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
-import PinModal from '@components/Tournament/PinModal/PinModal';
-import Description from '@components/Tournament/Description/Description';
+import Timer from '@ui/Timer/Timer';
+import Title from '@ui/Title/Title';
+import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import {
   Dashboard,
   Key,
@@ -17,14 +25,6 @@ import {
   ShirtSport,
   Trash,
 } from 'tabler-icons-react';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { ITournament } from '@custom-types/data/ITournament';
-import Title from '@ui/Title/Title';
-import { useLocale } from '@hooks/useLocale';
-import Timer from '@ui/Timer/Timer';
-import ChatSticky from '@ui/ChatSticky/ChatSticky';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { getCookieValue } from '@utils/cookies';
 
 function Tournament(props: {
   tournament: ITournament;

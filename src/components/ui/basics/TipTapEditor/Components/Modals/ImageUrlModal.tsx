@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import styles from './ImageUrlModal.module.css';
-import { Editor } from '@tiptap/react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { useLocale } from '@hooks/useLocale';
+import { Editor } from '@tiptap/react';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { useState } from 'react';
+
 import { imageInsertFunction } from '../../TipTapEditor';
+import styles from './ImageUrlModal.module.css';
 
 const loadImageFromUrl = ({
   src,

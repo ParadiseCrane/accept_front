@@ -1,15 +1,16 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { useForm } from '@mantine/form';
-import styles from './registrationModal.module.css';
-import IsCreate from './pages/IsCreate';
-import EnterPinCode from './pages/EnterPinCode';
-import CreateTeam from './pages/CreateTeam';
-import { Stepper } from '@mantine/core';
-import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
+import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
+import { pureCallback, setter } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { Stepper } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+
+import CreateTeam from './pages/CreateTeam';
+import EnterPinCode from './pages/EnterPinCode';
+import IsCreate from './pages/IsCreate';
+import styles from './registrationModal.module.css';
 
 const RegistrationModal: FC<{
   opened: boolean;
@@ -19,9 +20,7 @@ const RegistrationModal: FC<{
   isTeam: boolean;
 }> = ({ opened, close, withPin, isTeam, handleRegistration }) => {
   const { locale } = useLocale();
-  const [isCreate, setIsCreate] = useState<boolean | undefined>(
-    undefined
-  );
+  const [isCreate, setIsCreate] = useState<boolean | undefined>(undefined);
   const [activePage, setActivePage] = useState(0);
 
   let form = useForm<{
@@ -41,27 +40,26 @@ const RegistrationModal: FC<{
         !values.withPin && values.isCreate
           ? null
           : value.length < PIN_LENGTH
-          ? locale.tournament.registration.form.validation.pin
-          : null,
+            ? locale.tournament.registration.form.validation.pin
+            : null,
       team_name: (value, values) => {
         value = value.trim().replace(/\s+/, ' ');
         return !values.isCreate
           ? null
           : value.length == 0
-          ? locale.tournament.registration.form.validation.teamName
-              .empty
-          : value.length < 4
-          ? locale.tournament.registration.form.validation.teamName.minLength(
-              4
-            )
-          : value.length > 20
-          ? locale.tournament.registration.form.validation.teamName.maxLength(
-              20
-            )
-          : !value.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
-          ? locale.tournament.registration.form.validation.teamName
-              .invalid
-          : null;
+            ? locale.tournament.registration.form.validation.teamName.empty
+            : value.length < 4
+              ? locale.tournament.registration.form.validation.teamName.minLength(
+                  4
+                )
+              : value.length > 20
+                ? locale.tournament.registration.form.validation.teamName.maxLength(
+                    20
+                  )
+                : !value.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
+                  ? locale.tournament.registration.form.validation.teamName
+                      .invalid
+                  : null;
       },
     },
     validateInputOnChange: true,
@@ -109,12 +107,9 @@ const RegistrationModal: FC<{
           classNames={{ content: styles.stepperContent }}
         >
           <Stepper.Step
-            label={
-              locale.tournament.registration.form.steps.labels[0]
-            }
+            label={locale.tournament.registration.form.steps.labels[0]}
             description={
-              locale.tournament.registration.form.steps.descriptions
-                .isCreate
+              locale.tournament.registration.form.steps.descriptions.isCreate
             }
             allowStepSelect
           >
@@ -127,16 +122,12 @@ const RegistrationModal: FC<{
           </Stepper.Step>
           {isCreate == undefined ? (
             <Stepper.Step
-              label={
-                locale.tournament.registration.form.steps.labels[1]
-              }
+              label={locale.tournament.registration.form.steps.labels[1]}
               allowStepSelect={false}
             />
           ) : isCreate ? (
             <Stepper.Step
-              label={
-                locale.tournament.registration.form.steps.labels[1]
-              }
+              label={locale.tournament.registration.form.steps.labels[1]}
               description={
                 locale.tournament.registration.form.steps.descriptions
                   .createTeam
@@ -145,27 +136,20 @@ const RegistrationModal: FC<{
               <CreateTeam
                 form={form}
                 withPin={withPin}
-                handleRegistration={
-                  handleRegistrationValidationWrapper
-                }
+                handleRegistration={handleRegistrationValidationWrapper}
               />
             </Stepper.Step>
           ) : (
             <Stepper.Step
-              label={
-                locale.tournament.registration.form.steps.labels[1]
-              }
+              label={locale.tournament.registration.form.steps.labels[1]}
               description={
-                locale.tournament.registration.form.steps.descriptions
-                  .joinTeam
+                locale.tournament.registration.form.steps.descriptions.joinTeam
               }
             >
               <EnterPinCode
                 form={form}
                 isTeam={isTeam}
-                handleRegistration={
-                  handleRegistrationValidationWrapper
-                }
+                handleRegistration={handleRegistrationValidationWrapper}
                 buttonText={locale.tournament.join}
               />
             </Stepper.Step>

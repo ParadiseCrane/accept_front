@@ -1,14 +1,14 @@
-import { FC, memo, useCallback, useState } from 'react';
-
+import { pureCallback } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import modalStyles from '@styles/ui/modal.module.css';
+import { Helper } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import modalStyles from '@styles/ui/modal.module.css';
-import { useLocale } from '@hooks/useLocale';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { Helper } from '@ui/basics';
+import { FC, memo, useCallback, useState } from 'react';
 import { AlertCircle } from 'tabler-icons-react';
+
 import styles from '../registrationButton.module.css';
-import { pureCallback } from '@custom-types/ui/atomic';
 
 const CancelRegistration: FC<{
   spec: string;

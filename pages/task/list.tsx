@@ -1,17 +1,17 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
 import { ITaskDisplay } from '@custom-types/data/ITask';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
 import { ILocale } from '@custom-types/ui/ILocale';
-import TaskList from '@ui/TaskList/TaskList';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { Plus } from 'tabler-icons-react';
-import { useUser } from '@hooks/useUser';
-import Title from '@ui/Title/Title';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import tableStyles from '@styles/ui/customTable.module.css';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import TaskList from '@ui/TaskList/TaskList';
+import Title from '@ui/Title/Title';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
+import { ReactNode } from 'react';
+import { Plus } from 'tabler-icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -22,8 +22,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -38,8 +38,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -54,8 +54,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.complexity.value > b.complexity.value
         ? 1
         : a.complexity.value == b.complexity.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -71,9 +71,9 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       (b.verdict.value ? b.verdict.value.spec : 100)
         ? 1
         : (a.verdict.value ? a.verdict.value.spec : 100) ==
-          (b.verdict.value ? b.verdict.value.spec : 100)
-        ? 0
-        : -1,
+            (b.verdict.value ? b.verdict.value.spec : 100)
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -100,8 +100,8 @@ const refactorTask = (task: ITaskDisplay): any => ({
             task.complexity < 20
               ? 'var(--positive)'
               : task.complexity > 80
-              ? 'var(--negative)'
-              : 'var(--neutral)',
+                ? 'var(--negative)'
+                : 'var(--neutral)',
         }}
       >
         {task.complexity.toString() + '%'}
@@ -112,18 +112,14 @@ const refactorTask = (task: ITaskDisplay): any => ({
     value: task.title,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link
-          className={tableStyles.title}
-          href={`/task/${task.spec}`}
-        >
+        <Link className={tableStyles.title} href={`/task/${task.spec}`}>
           {task.title}
         </Link>
         {task.tags.length > 0 && (
           <span className={tableStyles.tags}>
             {task.tags.map((tag, idx) => (
               <div className={tableStyles.tag} key={idx}>
-                {tag.title +
-                  (idx == task.tags.length - 1 ? '' : ', ')}
+                {tag.title + (idx == task.tags.length - 1 ? '' : ', ')}
               </div>
             ))}
           </span>

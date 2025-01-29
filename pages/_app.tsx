@@ -5,28 +5,29 @@ import '@mantine/dates/styles.css';
 import '@mantine/code-highlight/styles.css';
 import '@styles/globals.css';
 import '@styles/tiptap.css';
+import 'dayjs/locale/ru';
+import 'katex/dist/katex.min.css';
+
 import { BackNotificationsProvider } from '@hooks/useBackNotifications';
 import { LocaleProvider } from '@hooks/useLocale';
 import { UserProvider } from '@hooks/useUser';
 import { WidthProvider } from '@hooks/useWidth';
-import { Notifications } from '@mantine/notifications';
-import { DatesProvider } from '@mantine/dates';
-import { NextPage } from 'next';
-import type { AppProps } from 'next/app';
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import {
   ActionIcon,
   Badge,
+  MantineProvider,
   colorsTuple,
   createTheme,
   em,
-  MantineProvider,
 } from '@mantine/core';
-import 'dayjs/locale/ru';
-import { useRouter } from 'next/router';
+import { DatesProvider } from '@mantine/dates';
+import { Notifications } from '@mantine/notifications';
 import styles from '@styles/spinner.module.css';
 import actionIconStyles from '@styles/ui/actionIcon.module.css';
-import 'katex/dist/katex.min.css';
+import { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;

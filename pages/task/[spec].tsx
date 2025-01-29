@@ -1,30 +1,30 @@
+import DeleteModal from '@components/Task/DeleteModal/DeleteModal';
+import Description from '@components/Task/Description/Description';
+import { STICKY_SIZES } from '@constants/Sizes';
+import { ILanguage } from '@custom-types/data/atomic';
+import { IBarTask, ITask } from '@custom-types/data/ITask';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { useWidth } from '@hooks/useWidth';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import TaskLayout from '@layouts/TaskLayout';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { IBarTask, ITask } from '@custom-types/data/ITask';
-import { GetServerSideProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import DeleteModal from '@components/Task/DeleteModal/DeleteModal';
-import { useRouter } from 'next/router';
-import { ILanguage } from '@custom-types/data/atomic';
-import { useLocale } from '@hooks/useLocale';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { Eye, Notes, Pencil, Trash } from 'tabler-icons-react';
-import { useUser } from '@hooks/useUser';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { useWidth } from '@hooks/useWidth';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { sendRequest } from '@requests/request';
+import { Kbd } from '@ui/basics';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import ChatSticky from '@ui/ChatSticky/ChatSticky';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import TasksBar from '@ui/TasksBar/TasksBar';
 import Timer from '@ui/Timer/Timer';
-import ChatSticky from '@ui/ChatSticky/ChatSticky';
-import dynamic from 'next/dynamic';
-import Description from '@components/Task/Description/Description';
-import Head from 'next/head';
-import { Kbd } from '@ui/basics';
 import { getCookieValue } from '@utils/cookies';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Eye, Notes, Pencil, Trash } from 'tabler-icons-react';
 
 const DynamicSend = dynamic(() => import('@components/Task/Send/Send'), {
   ssr: false,
@@ -65,8 +65,8 @@ function Task(props: {
       router.query.assignment
         ? 'assignment'
         : router.query.tournament
-        ? 'tournament'
-        : 'regular',
+          ? 'tournament'
+          : 'regular',
     [router.query]
   );
 
@@ -208,15 +208,13 @@ function Task(props: {
           opened={openedHint}
           close={() => setOpenedHint(false)}
         >
-          <div
-            children={
-              <TipTapEditor
-                editorMode={false}
-                content={task.hint.content}
-                onUpdate={() => {}}
-              />
-            }
-          />
+          <div>
+            <TipTapEditor
+              editorMode={false}
+              content={task.hint.content}
+              onUpdate={() => {}}
+            />
+          </div>
         </SimpleModal>
       )}
 

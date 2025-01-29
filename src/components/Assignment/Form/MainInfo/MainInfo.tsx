@@ -1,7 +1,7 @@
-import { FC, memo } from 'react';
-import { DateTimePicker, Switch } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
+import { DateTimePicker, Switch } from '@ui/basics';
+import { FC, memo } from 'react';
 
 const MainInfo: FC<{ form: UseFormReturnType<any> }> = ({ form }) => {
   const { locale } = useLocale();
@@ -24,10 +24,7 @@ const MainInfo: FC<{ form: UseFormReturnType<any> }> = ({ form }) => {
           label={locale.assignment.form.infinite}
           {...form.getInputProps('infinite', { type: 'checkbox' })}
           onChange={(event) => {
-            form.setFieldValue(
-              'infinite',
-              event.currentTarget.checked
-            );
+            form.setFieldValue('infinite', event.currentTarget.checked);
             form.clearErrors();
           }}
         />

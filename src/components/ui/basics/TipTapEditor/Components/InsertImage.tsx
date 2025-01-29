@@ -1,13 +1,14 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
-import styles from '../TipTapEditor.module.css';
-import { useState } from 'react';
-import { ImageUrlModal } from './Modals/ImageUrlModal';
-import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
 import { getCookie } from '@utils/cookies';
+import { useState } from 'react';
+import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
+
 import { imageInsertFunction } from '../TipTapEditor';
+import styles from '../TipTapEditor.module.css';
+import { IconWrapper } from './IconWrapper';
+import { ImageUrlModal } from './Modals/ImageUrlModal';
 
 // const loadImageAsFile = ({
 //   files,
@@ -61,7 +62,7 @@ const loadImageAsFile = async ({
         fetch('/api/image', {
           method: 'POST',
           body: formData,
-          credentials: 'include' as RequestCredentials,
+          credentials: 'include',
           headers: {
             Authorization: `Bearer ${access_token}`,
           } as { [key: string]: string },

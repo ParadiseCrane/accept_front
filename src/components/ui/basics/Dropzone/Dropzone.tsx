@@ -1,3 +1,12 @@
+import { MyButtonProps } from '@custom-types/ui/basics/button';
+import { useLocale } from '@hooks/useLocale';
+import { Group, Text } from '@mantine/core';
+import { Dropzone as MantineDropzone } from '@mantine/dropzone';
+import { Button, Helper } from '@ui/basics';
+import {
+  errorNotification,
+  newNotification,
+} from '@utils/notificationFunctions';
 import {
   FC,
   ReactNode,
@@ -7,17 +16,9 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Group, Text } from '@mantine/core';
-import { Dropzone as MantineDropzone } from '@mantine/dropzone';
 import { AlertCircle, CircleX, FileUpload, Photo } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { Button, Helper } from '@ui/basics';
-import { MyButtonProps } from '@custom-types/ui/basics/button';
+
 import styles from './dropzone.module.css';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
 
 const Dropzone: FC<{
   children: ReactNode;

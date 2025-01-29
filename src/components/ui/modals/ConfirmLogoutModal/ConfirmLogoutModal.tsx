@@ -3,6 +3,7 @@ import { useLocale } from '@hooks/useLocale';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
+
 import styles from './confirmLogoutModal.module.css';
 
 const ConfirmLogoutModal: FC<{

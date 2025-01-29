@@ -1,10 +1,11 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Math } from 'tabler-icons-react';
-import { LatexModal } from './Modals/LatexModal';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
+import { LatexModal } from './Modals/LatexModal';
 
 const insertLatexFunction = ({
   editor,

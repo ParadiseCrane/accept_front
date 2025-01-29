@@ -1,9 +1,10 @@
-import { getApiUrl } from '@utils/getServerUrl';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
-import { getCookieValue } from './cookies';
+import { getApiUrl } from '@utils/getServerUrl';
 import { IncomingMessage } from 'http';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+
+import { getCookieValue } from './cookies';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -33,9 +34,10 @@ export const fetchWrapperStatic = async ({
 
   const fetch_data = {
     method: method,
+    // eslint-disable-next-line no-undef
     credentials: 'include' as RequestCredentials,
     body:
-      !['GET', 'DELETE'].includes(method) && !!!body
+      !['GET', 'DELETE'].includes(method) && !body
         ? JSON.stringify(body)
         : null,
     headers: {
@@ -55,13 +57,14 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
   const fetch_data = {
     method: fetchMethod,
+    // eslint-disable-next-line no-undef
     credentials: 'include' as RequestCredentials,
     body:
       fetchMethod == 'GET'
         ? null
         : customBody
-        ? JSON.stringify(customBody)
-        : JSON.stringify(req.body),
+          ? JSON.stringify(customBody)
+          : JSON.stringify(req.body),
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,

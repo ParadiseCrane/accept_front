@@ -2,14 +2,11 @@ import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
 } from '@custom-types/ui/IDraggableBoard';
-import { FC, memo } from 'react';
-import {
-  Draggable,
-  Droppable,
-  DroppableProps,
-} from 'react-beautiful-dnd';
-import styles from './itemList.module.css';
 import { concatClassNames } from '@utils/concatClassNames';
+import { FC, memo } from 'react';
+import { Draggable, Droppable, DroppableProps } from 'react-beautiful-dnd';
+
+import styles from './itemList.module.css';
 
 interface ItemListProps
   extends Omit<DroppableProps, 'droppableId' | 'children'> {
@@ -18,12 +15,7 @@ interface ItemListProps
   classNames?: CustomDraggableBoardClassNames;
 }
 
-const ItemList: FC<ItemListProps> = ({
-  id,
-  items,
-  classNames,
-  ...props
-}) => {
+const ItemList: FC<ItemListProps> = ({ id, items, classNames, ...props }) => {
   return (
     <Droppable type="ITEM" droppableId={id} {...props}>
       {(dropProvided, _dropSnapshot) => (
@@ -41,11 +33,7 @@ const ItemList: FC<ItemListProps> = ({
             )}
           >
             {items.map((item: IDraggableBoardItem, index: number) => (
-              <Draggable
-                key={index}
-                draggableId={item.id}
-                index={index}
-              >
+              <Draggable key={index} draggableId={item.id} index={index}>
                 {(dragProvided) => (
                   <div
                     className={concatClassNames(

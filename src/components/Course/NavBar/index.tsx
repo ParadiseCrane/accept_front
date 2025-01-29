@@ -1,9 +1,10 @@
 import { IUnit } from '@custom-types/data/ICourse';
 import { useCourseShowTree } from '@hooks/useCourseTree';
+import { useLocale } from '@hooks/useLocale';
 import { AppShell, Image } from '@mantine/core';
 import { FC, memo } from 'react';
+
 import { NavBlock } from './NavBlock/NavBlock';
-import { useLocale } from '@hooks/useLocale';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 
 const NavBar: FC<{
@@ -44,10 +45,7 @@ const NavBar: FC<{
             key={unit.spec}
           />
         ))}
-      <NavigationMenu
-        prev={prev}
-        next={next}
-      />
+      <NavigationMenu prev={prev} next={next} />
     </AppShell.Navbar>
   );
 };

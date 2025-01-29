@@ -1,9 +1,9 @@
-import { FC } from 'react';
 import { useLocale } from '@hooks/useLocale';
-import { Button } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
-import { useRouter } from 'next/router';
+import { Button } from '@ui/basics';
 import ProfileMenu from '@ui/ProfileMenu/ProfileMenu';
+import { useRouter } from 'next/router';
+import { FC } from 'react';
 
 const SignIn: FC<{ size?: 'md' | 'lg' }> = ({ size = 'lg' }) => {
   const { locale } = useLocale();

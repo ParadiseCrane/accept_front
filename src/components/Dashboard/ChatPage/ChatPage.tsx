@@ -1,7 +1,7 @@
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import styles from './chatPage.module.css';
-import Chat from '@ui/Chat/Chat';
+import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
+import { IHostData, useChatHosts } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
 import {
   Icon,
   Indicator,
@@ -9,12 +9,13 @@ import {
   TextInput,
   UserAvatar,
 } from '@ui/basics';
-import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
-import { useLocale } from '@hooks/useLocale';
+import Chat from '@ui/Chat/Chat';
 import Fuse from 'fuse.js';
-import { IHostData, useChatHosts } from '@hooks/useChatHosts';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Eye, Search } from 'tabler-icons-react';
-import { IActivity } from '@custom-types/data/atomic';
+
+import styles from './chatPage.module.css';
+import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
 
 const ChatPage: FC<{
   spec: string;

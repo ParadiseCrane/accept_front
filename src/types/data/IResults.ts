@@ -1,5 +1,5 @@
-import { ITaskBaseInfo } from './ITask';
 import { IVerdict } from './atomic';
+import { ITaskBaseInfo } from './ITask';
 
 export interface IResultPayload {
   spec: string;

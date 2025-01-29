@@ -1,4 +1,5 @@
 import { Icon } from 'tabler-icons-react';
+
 import styles from './IconWrapper.module.css';
 
 export const IconWrapper = ({

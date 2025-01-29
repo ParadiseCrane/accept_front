@@ -1,5 +1,5 @@
-import { showNotification, updateNotification } from '@mantine/notifications';
 import { defaultClassNames } from '@constants/NotificationClassNames';
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { AlertTriangle, Check, InfoCircle, X } from 'tabler-icons-react';
 import { v4 as uuidv4 } from 'uuid';
 

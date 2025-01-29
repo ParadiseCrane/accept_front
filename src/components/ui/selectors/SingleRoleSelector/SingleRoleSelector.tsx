@@ -1,7 +1,7 @@
-import { FC, memo, useMemo } from 'react';
 import { IRole } from '@custom-types/data/atomic';
 import { Select } from '@ui/basics';
 import { capitalize } from '@utils/capitalize';
+import { FC, memo, useMemo } from 'react';
 
 const SingleRoleSelector: FC<{
   label: string;
@@ -19,11 +19,7 @@ const SingleRoleSelector: FC<{
   );
   return (
     <div style={{ width: '100%' }}>
-      <Select
-        label={label}
-        data={data}
-        {...form.getInputProps(field)}
-      />
+      <Select label={label} data={data} {...form.getInputProps(field)} />
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import { FC, memo, useRef, useState } from 'react';
 import {
   ActionIcon,
   Group,
   NumberInput,
   NumberInputHandlers,
 } from '@mantine/core';
+import { FC, memo, useRef, useState } from 'react';
 
 const IncrementalInput: FC<{
   initialValue: number;

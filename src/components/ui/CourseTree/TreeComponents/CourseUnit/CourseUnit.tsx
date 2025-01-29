@@ -1,17 +1,18 @@
-import styles from './styles.module.css';
 import { ITreeUnit } from '@custom-types/data/ICourse';
-import { ActionIcon, Box, Group, TextInput, Tooltip } from '@mantine/core';
-import React, { useState } from 'react';
-import { CaretDown, CaretRight, Trash } from 'tabler-icons-react';
-import { AddButtons } from '../Buttons/AddButton/AddButton';
-import { useDebouncedCallback } from '@mantine/hooks';
 import {
   ICourseAddTreeActions,
   ICourseAddTreeCheckers,
 } from '@hooks/useCourseTree';
-import { MovementButton } from '../Buttons/MovementButton/MovementButton';
+import { ActionIcon, Box, Group, TextInput, Tooltip } from '@mantine/core';
+import { useDebouncedCallback } from '@mantine/hooks';
+import React, { useState } from 'react';
+import { CaretDown, CaretRight, Trash } from 'tabler-icons-react';
+
+import { AddButtons } from '../Buttons/AddButton/AddButton';
 import { DeleteButton } from '../Buttons/DeleteButton/DeleteButton';
+import { MovementButton } from '../Buttons/MovementButton/MovementButton';
 import { ToggleVisibilityButton } from '../Buttons/ToggleVisibilityButton/ToggleVisibilityButton';
+import styles from './styles.module.css';
 
 export const CourseUnitDisplay = ({
   currentUnit,

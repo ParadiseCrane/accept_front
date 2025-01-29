@@ -3,7 +3,7 @@ import { InputWrapper } from '@ui/basics';
 import { FC, memo } from 'react';
 import { Plus } from 'tabler-icons-react';
 
-const ImageSelector: FC<{}> = ({}) => {
+const ImageSelector: FC<{}> = () => {
   return (
     <Box>
       <InputWrapper label="Изображение" />

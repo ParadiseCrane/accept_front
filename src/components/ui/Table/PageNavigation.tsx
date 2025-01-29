@@ -1,6 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
+import { ActionIconGroup, Group } from '@mantine/core';
 import { Icon, Select } from '@ui/basics';
-
 import { FC, memo, useMemo } from 'react';
 import {
   ArrowNarrowLeft,
@@ -8,8 +8,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'tabler-icons-react';
+
 import styles from './table.module.css';
-import { ActionIconGroup, Group } from '@mantine/core';
 
 const PageNavigation: FC<{
   onPage: number[];

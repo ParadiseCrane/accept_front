@@ -1,17 +1,16 @@
+import Form from '@components/AssignmentSchema/Form/Form';
+import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form';
-import { ReactNode, useCallback } from 'react';
-import { useUser } from '@hooks/useUser';
-import Form from '@components/AssignmentSchema/Form/Form';
-
-import { requestWithNotify } from '@utils/requestWithNotify';
+import Title from '@ui/Title/Title';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { Item } from '@custom-types/ui/atomic';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { ReactNode, useCallback } from 'react';
 
 const initialValues = {
   spec: '',

@@ -1,17 +1,17 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { ILocale } from '@custom-types/ui/ILocale';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { Check, Pencil, Plus, X } from 'tabler-icons-react';
-import { useUser } from '@hooks/useUser';
+import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import tableStyles from '@styles/ui/customTable.module.css';
 import { Icon } from '@ui/basics';
 import GroupList from '@ui/GroupList/GroupList';
-import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
 import Title from '@ui/Title/Title';
-import { useLocale } from '@hooks/useLocale';
+import { ReactNode } from 'react';
+import { Check, Pencil, Plus, X } from 'tabler-icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -19,11 +19,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'name',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.name.value > b.name.value
-        ? 1
-        : a.name.value == b.name.value
-        ? 0
-        : -1,
+      a.name.value > b.name.value ? 1 : a.name.value == b.name.value ? 0 : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -38,8 +34,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.participants.value > b.participants.value
         ? 1
         : a.participants.value == b.participants.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -54,8 +50,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.readonly.value > b.readonly.value
         ? 1
         : a.readonly.value == b.readonly.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -95,9 +91,7 @@ const refactorGroup = (group: IGroupDisplay): any => ({
   readonly: {
     value: group.readonly,
     display: (
-      <div>
-        {group.readonly ? <X color="red" /> : <Check color="green" />}
-      </div>
+      <div>{group.readonly ? <X color="red" /> : <Check color="green" />}</div>
     ),
   },
 });

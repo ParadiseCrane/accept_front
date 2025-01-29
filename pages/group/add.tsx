@@ -1,17 +1,17 @@
+import Form from '@components/Group/Form/Form';
+import { IGroup } from '@custom-types/data/IGroup';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form';
-import { ReactNode, useCallback } from 'react';
-import { IGroup } from '@custom-types/data/IGroup';
-import Form from '@components/Group/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { IUserDisplay } from '@custom-types/data/IUser';
+import Title from '@ui/Title/Title';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { useRequest } from '@hooks/useRequest';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { ReactNode, useCallback } from 'react';
 
 const initialValues = {
   spec: '',
@@ -44,10 +44,7 @@ function AddGroup() {
         });
         return;
       }
-      requestWithNotify<
-        { group: IGroup; members: string[] },
-        boolean
-      >(
+      requestWithNotify<{ group: IGroup; members: string[] }, boolean>(
         'group/add',
         'POST',
         locale.notify.group.create,

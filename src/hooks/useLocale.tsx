@@ -1,4 +1,11 @@
 import {
+  IAvailableLang,
+  ILocale,
+  ILocaleContext,
+  locales,
+} from '@custom-types/ui/ILocale';
+import { useLocalStorage } from '@mantine/hooks';
+import {
   FC,
   ReactNode,
   createContext,
@@ -6,13 +13,6 @@ import {
   useContext,
   useMemo,
 } from 'react';
-import {
-  IAvailableLang,
-  ILocale,
-  ILocaleContext,
-  locales,
-} from '@custom-types/ui/ILocale';
-import { useLocalStorage } from '@mantine/hooks';
 
 const langList = Object.keys(locales) as IAvailableLang[];
 
@@ -49,9 +49,7 @@ function getMonths(locale: ILocale) {
   ];
 }
 
-export const LocaleProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const LocaleProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [lang, setLang] = useLocalStorage<IAvailableLang>({
     key: 'accept_locale',
     defaultValue: defaultLang,
@@ -76,9 +74,7 @@ export const LocaleProvider: FC<{ children: ReactNode }> = ({
   );
 
   return (
-    <LocaleContext.Provider value={value}>
-      {children}
-    </LocaleContext.Provider>
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
   );
 };
 

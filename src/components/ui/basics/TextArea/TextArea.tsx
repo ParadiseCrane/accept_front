@@ -1,9 +1,10 @@
-import { FC, memo } from 'react';
-import inputStyles from '@styles/ui/input.module.css';
-import { Textarea as MantineTextarea } from '@mantine/core';
-import { InputLabel } from '@ui/basics';
-import styles from './textArea.module.css';
 import { TextAreaProps } from '@custom-types/ui/basics/textArea';
+import { Textarea as MantineTextarea } from '@mantine/core';
+import inputStyles from '@styles/ui/input.module.css';
+import { InputLabel } from '@ui/basics';
+import { FC, memo } from 'react';
+
+import styles from './textArea.module.css';
 
 const TextArea: FC<TextAreaProps> = ({
   helperContent,

@@ -1,11 +1,12 @@
-import { FC, memo } from 'react';
-import styles from './profileInfo.module.css';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
-import MainInfo from './MainInfo/MainInfo';
-import GroupsInfo from './GroupsInfo/GroupsInfo';
-import TaskInfo from './TaskInfo/TaskInfo';
+import { FC, memo } from 'react';
+
 import AttemptInfo from './AttemptInfo/AttemptInfo';
+import GroupsInfo from './GroupsInfo/GroupsInfo';
+import MainInfo from './MainInfo/MainInfo';
+import styles from './profileInfo.module.css';
 import ShortStatistics from './ShortStatistics/ShortStatistics';
+import TaskInfo from './TaskInfo/TaskInfo';
 
 const ProfileInfo: FC<IFullProfileBundle> = ({
   user,
@@ -17,10 +18,7 @@ const ProfileInfo: FC<IFullProfileBundle> = ({
     <div className={styles.wrapper}>
       <MainInfo user={user} place={rating_info?.place} />
       <GroupsInfo user={user} />
-      <ShortStatistics
-        ratingInfo={rating_info}
-        attemptInfo={attempt_info}
-      />
+      <ShortStatistics ratingInfo={rating_info} attemptInfo={attempt_info} />
       {(task_info.total_solved > 0 || task_info.total_tried > 0) && (
         <TaskInfo {...task_info} />
       )}

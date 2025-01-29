@@ -1,21 +1,21 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useEffect } from 'react';
-import Tests from '@components/Task/Form/Tests/Tests';
 import Checker from '@components/Task/Form/Checker/Checker';
-import Preview from '@components/Task/Form/Preview/Preview';
-import MainInfo from '@components/Task/Form/MainInfo/MainInfo';
-import DescriptionInfo from '@components/Task/Form/DescriptionInfo/DescriptionInfo';
 import ConstraintsInfo from '@components/Task/Form/ConstraintsInfo/ConstraintsInfo';
+import DescriptionInfo from '@components/Task/Form/DescriptionInfo/DescriptionInfo';
 import Examples from '@components/Task/Form/Examples/Examples';
-import { callback } from '@custom-types/ui/atomic';
+import MainInfo from '@components/Task/Form/MainInfo/MainInfo';
+import Preview from '@components/Task/Form/Preview/Preview';
+import Tests from '@components/Task/Form/Tests/Tests';
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskTestData,
   ITaskType,
 } from '@custom-types/data/atomic';
-import Stepper from '@ui/Stepper/Stepper';
+import { callback } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType, useForm } from '@mantine/form';
+import Stepper from '@ui/Stepper/Stepper';
+import { FC, memo, useEffect } from 'react';
 
 const stepFields = [
   ['title', 'tags', 'complexity', 'taskType', 'checkType', 'hasHint'],
@@ -64,17 +64,11 @@ const Form: FC<{
       tags: (value) =>
         value.length < 1 ? locale.task.form.validation.tags : null,
       description: (value) =>
-        value.length < 20
-          ? locale.task.form.validation.description
-          : null,
+        value.length < 20 ? locale.task.form.validation.description : null,
       inputFormat: (value) =>
-        value.length == 0
-          ? locale.task.form.validation.inputFormat
-          : null,
+        value.length == 0 ? locale.task.form.validation.inputFormat : null,
       outputFormat: (value) =>
-        value.length == 0
-          ? locale.task.form.validation.outputFormat
-          : null,
+        value.length == 0 ? locale.task.form.validation.outputFormat : null,
       constraintsMemory: (value) =>
         value < 0 || value > 1024
           ? locale.task.form.validation.constraints.memory
@@ -87,17 +81,17 @@ const Form: FC<{
         value <= 0
           ? locale.task.form.validation.complexity.least
           : value > 100
-          ? locale.task.form.validation.complexity.most
-          : null,
+            ? locale.task.form.validation.complexity.most
+            : null,
       examples: (value) =>
         value.length < 1
           ? locale.task.form.validation.examples.number
           : value.filter(
-              (pair: ITaskTestData) =>
-                pair.inputData.trim() || pair.outputData.trim()
-            ).length != value.length
-          ? locale.task.form.validation.examples.empty
-          : null,
+                (pair: ITaskTestData) =>
+                  pair.inputData.trim() || pair.outputData.trim()
+              ).length != value.length
+            ? locale.task.form.validation.examples.empty
+            : null,
       checkerCode: (value, values) =>
         values.checkType == '1' && value.length == 0
           ? locale.task.form.validation.checkerCode
@@ -140,11 +134,7 @@ const Form: FC<{
         ) : (
           <>{locale.task.form.steps.emptyStep}</>
         ),
-        <DescriptionInfo
-          key="2"
-          form={form}
-          hintAlarmTypes={hintAlarmTypes}
-        />,
+        <DescriptionInfo key="2" form={form} hintAlarmTypes={hintAlarmTypes} />,
         <Examples key="3" form={form} />,
         <>
           {form.values.checkType === '0' ? (

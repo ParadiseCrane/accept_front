@@ -1,23 +1,23 @@
-import { ReactNode, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import Sticky from '@ui/Sticky/Sticky';
 import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import Description from '@components/Assignment/Description/Description';
-import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
 import { STICKY_SIZES } from '@constants/Sizes';
 import {
   IAssignment,
   IAssignmentDisplay,
 } from '@custom-types/data/IAssignment';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { useWidth } from '@hooks/useWidth';
+import { DefaultLayout } from '@layouts/DefaultLayout';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
+import Sticky from '@ui/Sticky/Sticky';
+import { IStickyAction } from '@ui/Sticky/Sticky';
 import Timer from '@ui/Timer/Timer';
 import Title from '@ui/Title/Title';
-import { useLocale } from '@hooks/useLocale';
-import { IStickyAction } from '@ui/Sticky/Sticky';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useState } from 'react';
+import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
 
 function Assignment(props: { assignment: IAssignment }) {
   const assignment = props.assignment;

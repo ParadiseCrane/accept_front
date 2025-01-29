@@ -2,11 +2,12 @@ import { ICourseAdd, ICourseResponse } from '@custom-types/data/ICourse';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Group, Stack } from '@mantine/core';
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { UseFormReturnType, useForm } from '@mantine/form';
 import { Button, CustomEditor } from '@ui/basics';
-import ImageSelector from '@ui/ImageSelector';
 import { CourseTree } from '@ui/CourseTree';
+import ImageSelector from '@ui/ImageSelector';
 import { FC, memo } from 'react';
+
 import styles from './styles.module.css';
 
 const Form: FC<{

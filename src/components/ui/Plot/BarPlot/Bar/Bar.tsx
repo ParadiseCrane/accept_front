@@ -1,7 +1,8 @@
+import { callback } from '@custom-types/ui/atomic';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { FC, ReactNode, memo, useCallback } from 'react';
+
 import styles from './bar.module.css';
-import { callback } from '@custom-types/ui/atomic';
 
 const Bar: FC<{
   index: number;
@@ -63,12 +64,7 @@ const Bar: FC<{
         {!hideLabels && (
           <text
             className={styles.labels}
-            x={
-              left_padding +
-              width * index +
-              padding * (index + 1) +
-              width / 2
-            }
+            x={left_padding + width * index + padding * (index + 1) + width / 2}
             y={totalHeight + 12}
             textAnchor="middle"
           >

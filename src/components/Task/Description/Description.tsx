@@ -1,16 +1,15 @@
-import { FC, memo, useEffect } from 'react';
 import { ITask } from '@custom-types/data/ITask';
-import styles from './description.module.css';
-import { Group, Table, Title } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-
-import CopyButton from '@ui/CopyButton/CopyButton';
-
-import { sendRequest } from '@requests/request';
 import { setter } from '@custom-types/ui/atomic';
-import { AlertCircle } from 'tabler-icons-react';
-import TagList from '@ui/TagList/TagList';
+import { useLocale } from '@hooks/useLocale';
+import { Group, Table, Title } from '@mantine/core';
+import { sendRequest } from '@requests/request';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import CopyButton from '@ui/CopyButton/CopyButton';
+import TagList from '@ui/TagList/TagList';
+import { FC, memo, useEffect } from 'react';
+import { AlertCircle } from 'tabler-icons-react';
+
+import styles from './description.module.css';
 
 const Description: FC<{
   task: ITask;
@@ -51,16 +50,14 @@ const Description: FC<{
       <div className={styles.tags}>
         <TagList tags={task.tags} />
       </div>
-      <div
-        className={styles.description}
-        children={
-          <TipTapEditor
-            editorMode={false}
-            content={task.description}
-            onUpdate={() => {}}
-          />
-        }
-      />
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={task.description}
+          onUpdate={() => {}}
+        />
+      </div>
+
       {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
           <AlertCircle color={'var(--negative)'} />
@@ -75,31 +72,25 @@ const Description: FC<{
           <div className={styles.formatLabel}>
             {locale.task.description.format.input}
           </div>
-          <div
-            className={styles.inputFormat}
-            children={
-              <TipTapEditor
-                editorMode={false}
-                content={task.inputFormat}
-                onUpdate={() => {}}
-              />
-            }
-          />
+          <div className={styles.inputFormat}>
+            <TipTapEditor
+              editorMode={false}
+              content={task.inputFormat}
+              onUpdate={() => {}}
+            />
+          </div>
         </div>
         <div className={styles.outputFormat}>
           <div className={styles.formatLabel}>
             {locale.task.description.format.output}
           </div>
-          <div
-            className={styles.outputFormat}
-            children={
-              <TipTapEditor
-                editorMode={false}
-                content={task.outputFormat}
-                onUpdate={() => {}}
-              />
-            }
-          />
+          <div className={styles.outputFormat}>
+            <TipTapEditor
+              editorMode={false}
+              content={task.outputFormat}
+              onUpdate={() => {}}
+            />
+          </div>
         </div>
       </div>
       <div className={styles.tablesWrapper}>
@@ -158,16 +149,14 @@ const Description: FC<{
       {task.remark && (
         <div className={styles.remarkWrapper}>
           <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
-          <div
-            className={styles.remark}
-            children={
-              <TipTapEditor
-                editorMode={false}
-                content={task.remark}
-                onUpdate={() => {}}
-              />
-            }
-          />
+          <div className={styles.remark}>
+            {' '}
+            <TipTapEditor
+              editorMode={false}
+              content={task.remark}
+              onUpdate={() => {}}
+            />{' '}
+          </div>
         </div>
       )}
     </div>

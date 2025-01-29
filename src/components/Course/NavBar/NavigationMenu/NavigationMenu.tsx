@@ -4,6 +4,7 @@ import { ActionIcon, Group, Kbd, Tooltip } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { FC, memo } from 'react';
 import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
+
 import styles from './styles.module.css';
 
 const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({

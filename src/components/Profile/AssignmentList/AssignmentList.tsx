@@ -1,5 +1,27 @@
-import Table from '@ui/Table/Table';
+import {
+  IAssignmentDisplay,
+  IAssignmentListBundle,
+} from '@custom-types/data/IAssignment';
+import { IGroup } from '@custom-types/data/IGroup';
+import { ITag } from '@custom-types/data/ITag';
+import { BaseSearch } from '@custom-types/data/request';
+import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { useUser } from '@hooks/useUser';
+import tableStyles from '@styles/ui/customTable.module.css';
+import { MultiSelect } from '@ui/basics';
+import { Tip } from '@ui/basics';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import Table from '@ui/Table/Table';
+import { colorGenerator } from '@utils/consistentColorGenerator';
+import { customTableSort } from '@utils/customTableSort';
+import { getLocalDate } from '@utils/datetime';
+import { hasSubarray } from '@utils/hasSubarray';
+import { mapAssignmentStatus } from '@utils/mapStatus';
+import Fuse from 'fuse.js';
+import Link from 'next/link';
 import {
   FC,
   ReactNode,
@@ -9,8 +31,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
 import {
   Clock,
   Confetti,
@@ -18,27 +38,8 @@ import {
   Plus,
   Run,
 } from 'tabler-icons-react';
-import { ITag } from '@custom-types/data/ITag';
-import { BaseSearch } from '@custom-types/data/request';
-import { useRequest } from '@hooks/useRequest';
-import { ILocale } from '@custom-types/ui/ILocale';
-import Fuse from 'fuse.js';
-import { hasSubarray } from '@utils/hasSubarray';
-import { MultiSelect } from '@ui/basics';
-import { customTableSort } from '@utils/customTableSort';
-import { getLocalDate } from '@utils/datetime';
-import {
-  IAssignmentDisplay,
-  IAssignmentListBundle,
-} from '@custom-types/data/IAssignment';
+
 import styles from './assignmentList.module.css';
-import { IGroup } from '@custom-types/data/IGroup';
-import { colorGenerator } from '@utils/consistentColorGenerator';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { useUser } from '@hooks/useUser';
-import { Tip } from '@ui/basics';
-import Link from 'next/link';
-import { mapAssignmentStatus } from '@utils/mapStatus';
 
 interface Item {
   value: any;
@@ -80,8 +81,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.state.value > b.state.value
         ? 1
         : a.state.value == b.state.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -96,8 +97,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -112,8 +113,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.groups.value > b.groups.value
         ? 1
         : a.groups.value == b.groups.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -128,8 +129,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -144,8 +145,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -161,8 +162,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.infinite || a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -178,8 +179,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.taskNumber.value > b.taskNumber.value
         ? 1
         : a.taskNumber.value == b.taskNumber.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,

@@ -1,27 +1,21 @@
+import { callback } from '@custom-types/ui/atomic';
 import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+  CustomDraggableBoardClassNames,
+  IDraggableBoardColumn,
+} from '@custom-types/ui/IDraggableBoard';
+import { concatClassNames } from '@utils/concatClassNames';
+import { reorderColumns } from '@utils/reorderCustomBoard';
+import { reorderList } from '@utils/reorderList';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   DragDropContext,
   DropResult,
   Droppable,
   DroppableProps,
 } from 'react-beautiful-dnd';
-import { callback } from '@custom-types/ui/atomic';
-import {
-  CustomDraggableBoardClassNames,
-  IDraggableBoardColumn,
-} from '@custom-types/ui/IDraggableBoard';
+
 import BoardColumn from './BoardColumn/BoardColumn';
-import { reorderList } from '@utils/reorderList';
 import styles from './customDraggableBoard.module.css';
-import { reorderColumns } from '@utils/reorderCustomBoard';
-import { concatClassNames } from '@utils/concatClassNames';
 
 const CustomDraggableBoard: FC<{
   columns: IDraggableBoardColumn[];
@@ -32,13 +26,7 @@ const CustomDraggableBoard: FC<{
   droppableProps?: DroppableProps;
   horizontal?: boolean;
   classNames?: CustomDraggableBoardClassNames;
-}> = ({
-  columns,
-  setColumns,
-  droppableProps,
-  horizontal,
-  classNames,
-}) => {
+}> = ({ columns, setColumns, droppableProps, horizontal, classNames }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -98,10 +86,7 @@ const CustomDraggableBoard: FC<{
 
   return (
     <div
-      className={concatClassNames(
-        classNames?.wrapper,
-        styles.wrapper
-      )}
+      className={concatClassNames(classNames?.wrapper, styles.wrapper)}
       key={wrapperHash}
     >
       {mounted && (
@@ -124,18 +109,16 @@ const CustomDraggableBoard: FC<{
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {columns.map(
-                  (item: IDraggableBoardColumn, index: number) => (
-                    <BoardColumn
-                      key={index}
-                      id={item.id}
-                      columnIndex={index}
-                      label={item.columnLabel}
-                      items={item.values}
-                      classNames={classNames}
-                    />
-                  )
-                )}
+                {columns.map((item: IDraggableBoardColumn, index: number) => (
+                  <BoardColumn
+                    key={index}
+                    id={item.id}
+                    columnIndex={index}
+                    label={item.columnLabel}
+                    items={item.values}
+                    classNames={classNames}
+                  />
+                ))}
                 {provided.placeholder}
               </div>
             )}

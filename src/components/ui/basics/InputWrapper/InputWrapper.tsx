@@ -1,9 +1,8 @@
-import { FC, memo } from 'react';
-import { Input as MantineInput } from '@mantine/core';
-
-import inputStyles from '@styles/ui/input.module.css';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
+import { Input as MantineInput } from '@mantine/core';
+import inputStyles from '@styles/ui/input.module.css';
 import { InputLabel } from '@ui/basics';
+import { FC, memo } from 'react';
 
 const InputWrapper: FC<MyInputWrapperProps> = ({
   helperContent,
@@ -15,9 +14,7 @@ const InputWrapper: FC<MyInputWrapperProps> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
     >
       <InputLabel
         label={label}

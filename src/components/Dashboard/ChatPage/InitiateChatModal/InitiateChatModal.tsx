@@ -1,18 +1,19 @@
+import { IActivity } from '@custom-types/data/atomic';
+import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { FC, memo, useCallback, useState } from 'react';
-import MemberSelector from './MemberSelector/MemberSelector';
-import styles from './initiateChatModal.module.css';
-import { Button, TextArea } from '@ui/basics';
 import { useForm } from '@mantine/form';
+import { sendRequest } from '@requests/request';
+import { Button, TextArea } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import { sendRequest } from '@requests/request';
-import { callback } from '@custom-types/ui/atomic';
-import { IActivity } from '@custom-types/data/atomic';
+import { FC, memo, useCallback, useState } from 'react';
+
+import styles from './initiateChatModal.module.css';
+import MemberSelector from './MemberSelector/MemberSelector';
 
 const InitiateChatModal: FC<{
   exclude: string[];

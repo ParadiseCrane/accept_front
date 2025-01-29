@@ -1,10 +1,21 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import Results from '@components/Dashboard/Results/Results';
+import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
 import ParticipantsList from '@components/Dashboard/ParticipantsList/ParticipantsList';
-import TaskList from './TaskList/TaskList';
-import CreateNotification from './CreateNotification/CreateNotification';
+import Results from '@components/Dashboard/Results/Results';
+import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
+import { STICKY_SIZES } from '@constants/Sizes';
+import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
+import { IMenuLink } from '@custom-types/ui/IMenuLink';
+import { useChatHosts } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { useUser } from '@hooks/useUser';
+import { useWidth } from '@hooks/useWidth';
+import { useInterval } from '@mantine/hooks';
+import { Indicator } from '@ui/basics';
+import LeftMenu from '@ui/LeftMenu/LeftMenu';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
   AlignRight,
   BellPlus,
@@ -16,20 +27,10 @@ import {
   Users,
   Vocabulary,
 } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { STICKY_SIZES } from '@constants/Sizes';
-import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useRequest } from '@hooks/useRequest';
-import { useInterval } from '@mantine/hooks';
+
 import ChatPage from './ChatPage/ChatPage';
-import { Indicator } from '@ui/basics';
-import { useChatHosts } from '@hooks/useChatHosts';
+import CreateNotification from './CreateNotification/CreateNotification';
+import TaskList from './TaskList/TaskList';
 
 const AssignmentDashboard: FC<{
   spec: string;

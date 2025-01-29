@@ -1,5 +1,14 @@
-import { FC, memo, useCallback, useState } from 'react';
+import DeleteModal from '@components/Organization/DeleteModal/DeleteModal';
+import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { IOrganization } from '@custom-types/data/IOrganization';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
+import { useForm } from '@mantine/form';
+import tableStyles from '@styles/ui/customTable.module.css';
+import modalStyles from '@styles/ui/modal.module.css';
 import {
   Button,
   Icon,
@@ -9,28 +18,18 @@ import {
   TextInput,
   Tip,
 } from '@ui/basics';
-import tableStyles from '@styles/ui/customTable.module.css';
-
-import { useForm } from '@mantine/form';
-import { requestWithError } from '@utils/requestWithError';
-import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
-import { useLocale } from '@hooks/useLocale';
+import OrganizationList from '@ui/OrganizationList/OrganizationList';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import { isJSON } from '@utils/isJSON';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import modalStyles from '@styles/ui/modal.module.css';
-import { isJSON } from '@utils/isJSON';
-import OrganizationList from '@ui/OrganizationList/OrganizationList';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { requestWithError } from '@utils/requestWithError';
+import { FC, memo, useCallback, useState } from 'react';
 import { Check, Pencil, Plus, X } from 'tabler-icons-react';
-import DeleteModal from '@components/Organization/DeleteModal/DeleteModal';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { IOrganization } from '@custom-types/data/IOrganization';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -118,7 +117,7 @@ const refactorOrganization = (organization: IOrganization): any => ({
   },
 });
 
-const Organizations: FC<{}> = ({}) => {
+const Organizations: FC<{}> = () => {
   const { locale } = useLocale();
 
   return (

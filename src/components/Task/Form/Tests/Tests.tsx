@@ -1,8 +1,9 @@
 import { useLocale } from '@hooks/useLocale';
-import { FC, memo } from 'react';
-import styles from './tests.module.css';
-import { AlertCircle } from 'tabler-icons-react';
 import { Icon } from '@ui/basics';
+import { FC, memo } from 'react';
+import { AlertCircle } from 'tabler-icons-react';
+
+import styles from './tests.module.css';
 
 const Tests: FC<{}> = () => {
   const { locale } = useLocale();

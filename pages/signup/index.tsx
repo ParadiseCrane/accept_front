@@ -1,24 +1,24 @@
-import { LoginLayout } from '@layouts/LoginLayout';
-import { ReactElement, useCallback, useMemo } from 'react';
+import { IOrganization } from '@custom-types/data/IOrganization';
+import { IRegUser } from '@custom-types/data/IUser';
+import { SelectItem } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import { useRouter } from 'next/router';
+import { useRequest } from '@hooks/useRequest';
+import { LoginLayout } from '@layouts/LoginLayout';
+import { rem } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { sendRequest } from '@requests/request';
 import styles from '@styles/auth/login.module.css';
-import Link from 'next/link';
+import { PasswordInput, Select, TextInput } from '@ui/basics';
+import Stepper from '@ui/Stepper/Stepper';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import { IRegUser } from '@custom-types/data/IUser';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { sendRequest } from '@requests/request';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ReactElement, useCallback, useMemo } from 'react';
 import { AlignJustified, LetterCase, ShieldLock } from 'tabler-icons-react';
-import { PasswordInput, Select, TextInput } from '@ui/basics';
-import Stepper from '@ui/Stepper/Stepper';
-import { rem } from '@mantine/core';
-import { useRequest } from '@hooks/useRequest';
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { SelectItem } from '@custom-types/ui/atomic';
 
 const stepFields = [
   ['login'],
@@ -44,7 +44,7 @@ function SignUp() {
           ({
             value: organization.spec,
             label: organization.name,
-          } as SelectItem)
+          }) as SelectItem
       )
   );
 
@@ -67,8 +67,8 @@ function SignUp() {
         value === ''
           ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
-          ? locale.auth.errors.organization.exists
-          : null,
+            ? locale.auth.errors.organization.exists
+            : null,
       login: (value) =>
         value.length < 5
           ? locale.auth.errors.login.len
@@ -78,7 +78,9 @@ function SignUp() {
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
-          : !value.match(/^[a-zA-Z\d\.]+$/)
+          : // TODO: Check
+            // eslint-disable-next-line no-useless-escape
+            !value.match(/^[a-zA-Z\d\.]+$/)
             ? locale.auth.errors.password.symbols
             : null,
       confirmPassword: (value, values) =>
@@ -180,7 +182,7 @@ function SignUp() {
               id="organization"
               label={locale.auth.labels.organization}
               data={organizations || []}
-              disabled={!!!organizations || organizations_loading}
+              disabled={!organizations || organizations_loading}
               placeholder={locale.auth.placeholders.organization}
               classNames={{
                 label: styles.label,

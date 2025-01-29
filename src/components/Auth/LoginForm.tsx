@@ -1,22 +1,22 @@
 'use client';
 
 import { IOrganization } from '@custom-types/data/IOrganization';
+import { SelectItem } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
-import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
-import Link from 'next/link';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import styles from '@styles/auth/login.module.css';
+import { organization } from '@locale/en/organization';
 import { useForm } from '@mantine/form';
+import styles from '@styles/auth/login.module.css';
+import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
+import { getOrganizationFromLS } from '@utils/manageLocalStorage';
 import {
   errorNotification,
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SelectItem } from '@custom-types/ui/atomic';
-import { getOrganizationFromLS } from '@utils/manageLocalStorage';
-import { organization } from '@locale/en/organization';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 const LoginForm: FC<{
   signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
@@ -40,7 +40,7 @@ const LoginForm: FC<{
           ({
             value: organization.spec,
             label: organization.name,
-          } as SelectItem)
+          }) as SelectItem
       )
   );
 
@@ -70,8 +70,8 @@ const LoginForm: FC<{
         value === ''
           ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
-          ? locale.auth.errors.organization.exists
-          : null,
+            ? locale.auth.errors.organization.exists
+            : null,
       login: (value) =>
         value.length == 0 ? locale.auth.errors.login.exists : null,
       password: (value) =>
@@ -137,7 +137,7 @@ const LoginForm: FC<{
           id="organization"
           label={locale.auth.labels.organization}
           data={organizations || []}
-          disabled={!!!organizations || organizations_loading}
+          disabled={!organizations || organizations_loading}
           placeholder={locale.auth.placeholders.chooseOrganization}
           classNames={{
             label: styles.label,

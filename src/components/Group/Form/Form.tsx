@@ -1,14 +1,14 @@
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import { FC, useCallback, useEffect, useMemo } from 'react';
-import styles from './form.module.css';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { Button, Helper, Switch, TextInput } from '@ui/basics';
-
-import { UserSelector } from '@ui/selectors';
 import { useUser } from '@hooks/useUser';
 import { UseFormReturnType, useForm } from '@mantine/form';
+import stepperStyles from '@styles/ui/stepper.module.css';
+import { Button, Helper, Switch, TextInput } from '@ui/basics';
+import { UserSelector } from '@ui/selectors';
+import { FC, useCallback, useEffect, useMemo } from 'react';
+
+import styles from './form.module.css';
 
 const Form: FC<{
   buttonText: string;

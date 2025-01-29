@@ -1,6 +1,7 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Tooltip } from '@mantine/core';
+import { FC } from 'react';
 import { Trash } from 'tabler-icons-react';
 
 interface IDeleteButtonProps {
@@ -10,7 +11,7 @@ interface IDeleteButtonProps {
   canDeleteTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => boolean;
 }
 
-export const DeleteButton: React.FC<IDeleteButtonProps> = ({
+export const DeleteButton: FC<IDeleteButtonProps> = ({
   styles,
   currentUnit,
   deleteTreeUnit,

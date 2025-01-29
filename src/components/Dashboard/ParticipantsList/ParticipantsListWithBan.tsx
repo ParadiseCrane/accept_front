@@ -1,15 +1,16 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { capitalize } from '@utils/capitalize';
-import UserList from '@ui/UserList/UserList';
 import { IParticipant } from '@custom-types/data/IUser';
-import styles from './participantsList.module.css';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import Link from 'next/link';
+import tableStyles from '@styles/ui/customTable.module.css';
 import { Helper } from '@ui/basics';
+import UserList from '@ui/UserList/UserList';
+import { capitalize } from '@utils/capitalize';
+import Link from 'next/link';
+import { FC, memo, useCallback, useState } from 'react';
+
 import BanButton from './BanButton/BanButton';
+import styles from './participantsList.module.css';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -20,8 +21,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.login.value > b.login.value
         ? 1
         : a.login.value == b.login.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -36,8 +37,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.shortName.value > b.shortName.value
         ? 1
         : a.shortName.value == b.shortName.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -53,8 +54,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.role.value.spec > b.role.value.spec
         ? 1
         : a.role.value.spec == b.role.value.spec
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -99,18 +100,14 @@ const refactorUser = (
     value: user.login,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link
-          href={`/profile/${user.login}`}
-          className={tableStyles.title}
-        >
+        <Link href={`/profile/${user.login}`} className={tableStyles.title}>
           {user.login}
         </Link>
         {user.groups.length > 0 && (
           <span className={tableStyles.tags}>
             {user.groups.map((group, idx) => (
               <div className={tableStyles.tag} key={idx}>
-                {group.name +
-                  (idx == user.groups.length - 1 ? '' : ', ')}
+                {group.name + (idx == user.groups.length - 1 ? '' : ', ')}
               </div>
             ))}
           </span>
@@ -127,8 +124,7 @@ const refactorUser = (
     display: (
       <div
         style={{
-          color:
-            user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
+          color: user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
         }}
       >
         {capitalize(user.role.name)}
@@ -137,9 +133,7 @@ const refactorUser = (
   },
   ban: {
     value: user.banned,
-    display: (
-      <BanButton user={user} spec={spec} onSuccess={handleBan} />
-    ),
+    display: <BanButton user={user} spec={spec} onSuccess={handleBan} />,
   },
   banReason: {
     value: 0,
@@ -154,10 +148,7 @@ const refactorUser = (
     display: (
       <>
         {user.team ? (
-          <Link
-            className={tableStyles.title}
-            href={`/team/${user.team?.spec}`}
-          >
+          <Link className={tableStyles.title} href={`/team/${user.team?.spec}`}>
             {user.team?.name}
           </Link>
         ) : (
@@ -208,7 +199,7 @@ const ParticipantsListWithBan: FC<{
         refactorUser={(user) =>
           refactorUser(locale, type, user, spec, handleBan)
         }
-        initialColumns={!!team ? columns : initialColumns}
+        initialColumns={team ? columns : initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}
         classNames={{

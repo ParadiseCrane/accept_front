@@ -9,6 +9,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback } from 'react';
+
 import styles from './profileEditModal.module.css';
 
 const ProfileEditModal: FC<{
@@ -32,8 +33,7 @@ const ProfileEditModal: FC<{
   const close = useCallback(() => setOpened(false), [setOpened]);
 
   const filterRoles = useCallback(
-    (data: IRole[]) =>
-      data.filter((item) => item.accessLevel <= accessLevel),
+    (data: IRole[]) => data.filter((item) => item.accessLevel <= accessLevel),
     [accessLevel]
   );
 
@@ -57,11 +57,7 @@ const ProfileEditModal: FC<{
   }, [locale, lang, form.values]);
 
   return (
-    <SimpleModal
-      opened={opened}
-      close={close}
-      title={locale.profile.editModal}
-    >
+    <SimpleModal opened={opened} close={close} title={locale.profile.editModal}>
       <div className={styles.wrapper}>
         <div className={styles.fields}>
           <TextInput

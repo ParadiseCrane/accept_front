@@ -1,15 +1,15 @@
 import { codeArea } from './codeArea';
+import { courseTree } from './courseTree';
+import { dropzone } from './dropzone';
+import { groupSelector } from './groupSelector';
+import { langSelector } from './langSelector';
+import { roleSelector } from './roleSelector';
+import { schemasSelector } from './schemasSelector';
 import { table } from './table';
 import { tagSelector } from './tagSelector';
-import { langSelector } from './langSelector';
-import { userSelector } from './userSelector';
-import { groupSelector } from './groupSelector';
-import { roleSelector } from './roleSelector';
 import { taskSelector } from './taskSelector';
-import { schemasSelector } from './schemasSelector';
-import { dropzone } from './dropzone';
 import { taskTest } from './taskTest';
-import { courseTree } from './courseTree';
+import { userSelector } from './userSelector';
 
 export const ui = {
   codeArea,

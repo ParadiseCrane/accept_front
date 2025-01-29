@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
-import { Button, Pin } from '@ui/basics';
-import { setter } from '@custom-types/ui/atomic';
 import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
+import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import { Button, Pin } from '@ui/basics';
+import { FC, memo } from 'react';
+
 import styles from './enterPinCode.module.css';
 
 const EnterPinCode: FC<{
@@ -26,10 +27,7 @@ const EnterPinCode: FC<{
         disabled={!form.isValid()}
         onClick={() =>
           handleRegistration({
-            pin:
-              form.values.pin.length > 0
-                ? form.values.pin
-                : undefined,
+            pin: form.values.pin.length > 0 ? form.values.pin : undefined,
             team_name:
               form.values.team_name.length > 0
                 ? form.values.team_name

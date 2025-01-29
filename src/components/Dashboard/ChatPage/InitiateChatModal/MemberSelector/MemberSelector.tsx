@@ -1,9 +1,9 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { IActivity } from '@custom-types/data/atomic';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import { UserSelect } from '@ui/selectors';
-import { useLocale } from '@hooks/useLocale';
-import { IActivity } from '@custom-types/data/atomic';
+import { FC, memo, useEffect, useState } from 'react';
 
 const MemberSelector: FC<{
   spec: string;

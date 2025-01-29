@@ -1,22 +1,22 @@
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import Title from '@ui/Title/Title';
-import { ReactElement, useCallback } from 'react';
-import styles from '@styles/feedback.module.css';
-import { useForm } from '@mantine/form';
 import {
   IFeedbackMessage,
   feedbackSubjects,
 } from '@custom-types/data/IFeedbackMessage';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { useForm } from '@mantine/form';
+import styles from '@styles/feedback.module.css';
 import { Button, CustomEditor, Select, TextInput } from '@ui/basics';
+import Contacts from '@ui/Contacts/Contacts';
+import Title from '@ui/Title/Title';
+import { timezoneDate } from '@utils/datetime';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import { useUser } from '@hooks/useUser';
-import { timezoneDate } from '@utils/datetime';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import Contacts from '@ui/Contacts/Contacts';
+import { ReactElement, useCallback } from 'react';
 
 export function Feedback() {
   const { locale, lang } = useLocale();
@@ -35,17 +35,11 @@ export function Feedback() {
     } as IFeedbackMessage,
     validate: {
       subject: (value) =>
-        value.length == 0
-          ? locale.feedback.form.validation.subject
-          : null,
+        value.length == 0 ? locale.feedback.form.validation.subject : null,
       message: (value) =>
-        value.length < 5
-          ? locale.feedback.form.validation.message
-          : null,
+        value.length < 5 ? locale.feedback.form.validation.message : null,
       title: (value) =>
-        value.length < 5
-          ? locale.feedback.form.validation.title
-          : null,
+        value.length < 5 ? locale.feedback.form.validation.title : null,
     },
     validateInputOnBlur: true,
   });
@@ -82,12 +76,8 @@ export function Feedback() {
       <Title title={locale.titles.feedback} />
       <div className={styles.wrapper}>
         <Contacts />
-        <div
-          className={`${styles.section} ${styles.feedbackWrapper}`}
-        >
-          <div className={styles.title}>
-            {locale.feedback.feedback.title}
-          </div>
+        <div className={`${styles.section} ${styles.feedbackWrapper}`}>
+          <div className={styles.title}>{locale.feedback.feedback.title}</div>
           <div className={styles.form}>
             <Select
               label={locale.feedback.form.subject}
@@ -108,10 +98,7 @@ export function Feedback() {
               name={'message'}
             />
             <div className={styles.buttonWrapper}>
-              <Button
-                disabled={!form.isValid()}
-                onClick={handleSubmit}
-              >
+              <Button disabled={!form.isValid()} onClick={handleSubmit}>
                 {locale.send}
               </Button>
             </div>

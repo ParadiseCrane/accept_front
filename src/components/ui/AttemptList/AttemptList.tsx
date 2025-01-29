@@ -1,3 +1,18 @@
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
+import { IAttemptDisplay } from '@custom-types/data/IAttempt';
+import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRefetch } from '@hooks/useRefetch';
+import { useUser } from '@hooks/useUser';
+import { sendRequest } from '@requests/request';
+import tableStyles from '@styles/ui/customTable.module.css';
+import Table from '@ui/Table/Table';
+import {
+  errorNotification,
+  newNotification,
+} from '@utils/notificationFunctions';
 import {
   FC,
   ReactNode,
@@ -7,21 +22,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useUser } from '@hooks/useUser';
-import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
-import { sendRequest } from '@requests/request';
-import { useRefetch } from '@hooks/useRefetch';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface PagerResponse {
   data: IAttemptDisplay[];
@@ -144,8 +144,6 @@ const AttemptList: FC<{
   useEffect(() => {
     fetch_data();
   }, [fetch_data]);
-
-  const {} = useRefetch(refetch, 2);
 
   return (
     <div>

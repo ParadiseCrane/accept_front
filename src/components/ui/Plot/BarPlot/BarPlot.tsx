@@ -1,10 +1,11 @@
+import { callback } from '@custom-types/ui/atomic';
 import { IPlotData } from '@custom-types/ui/IPlot';
+import { ColorSwatch } from '@ui/basics';
 import { FC, ReactNode, memo, useMemo, useState } from 'react';
+
 import PlotTooltip from '../PlotTooltip/PlotTooltip';
 import Bar from './Bar/Bar';
 import styles from './barPlot.module.css';
-import { ColorSwatch } from '@ui/basics';
-import { callback } from '@custom-types/ui/atomic';
 
 const PADDING = 0.1; // percent
 const ROW_LINES = 10;
@@ -26,9 +27,9 @@ const BarPlot: FC<{
   aspectRatio = 0.5,
   hoverLabel,
 }) => {
-  const [toolTipLabel, setToolTipLabel] = useState<
-    ReactNode | undefined
-  >(undefined);
+  const [toolTipLabel, setToolTipLabel] = useState<ReactNode | undefined>(
+    undefined
+  );
 
   const padding = (300 / (data.length + 1)) * PADDING;
   const width = (300 - padding * (data.length + 1)) / data.length;
@@ -37,8 +38,7 @@ const BarPlot: FC<{
   const upperBound = useMemo(
     () =>
       Math.round(
-        Math.max(...data.map((item) => item.amount)) / ROW_LINES +
-          0.75
+        Math.max(...data.map((item) => item.amount)) / ROW_LINES + 0.75
       ) * ROW_LINES,
     [data]
   );
@@ -97,8 +97,7 @@ const BarPlot: FC<{
                 y={index * ((height + 5) / ROW_LINES)}
                 textAnchor="end"
               >
-                {Math.round(upperBound / ROW_LINES) *
-                  (ROW_LINES - index)}
+                {Math.round(upperBound / ROW_LINES) * (ROW_LINES - index)}
               </text>
             ))}
         </g>

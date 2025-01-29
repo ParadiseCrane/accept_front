@@ -1,18 +1,18 @@
-import { ReactNode, useCallback } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
 import Form from '@components/Course/Form/Form';
+import { Wrapper } from '@components/Course/Wrapper/Wrapper';
+import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form/lib/types';
+import Title from '@ui/Title/Title';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
-import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
-import { Wrapper } from '@components/Course/Wrapper/Wrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback } from 'react';
 
 const getInitialValues = ({
   title,

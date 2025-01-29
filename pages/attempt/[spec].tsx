@@ -1,21 +1,21 @@
-import { ReactNode, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
-import { Tabs } from '@ui/basics';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import Info from '@components/Attempt/Info/Info';
-import Code from '@components/Attempt/Code/Code';
-import Title from '@ui/Title/Title';
-import { IAttempt } from '@custom-types/data/IAttempt';
-import styles from '@styles/attempt.module.css';
-import TextAnswer from '@components/Attempt/TextAnswer/TextAnswer';
 import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
-import { useRequest } from '@hooks/useRequest';
-import { getCookieValue } from '@utils/cookies';
+import Code from '@components/Attempt/Code/Code';
+import Info from '@components/Attempt/Info/Info';
+import TextAnswer from '@components/Attempt/TextAnswer/TextAnswer';
+import { IAttempt } from '@custom-types/data/IAttempt';
 import { IRightsPayload } from '@custom-types/data/rights';
+import { setter } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import styles from '@styles/attempt.module.css';
+import { Tabs } from '@ui/basics';
+import Title from '@ui/Title/Title';
+import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useMemo } from 'react';
 
 function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;

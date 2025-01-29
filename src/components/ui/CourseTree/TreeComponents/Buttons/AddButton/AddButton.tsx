@@ -1,9 +1,11 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ElementType } from '@hooks/useCourseTree';
-import { ActionIcon, Text, Tooltip } from '@mantine/core';
-import { Plus } from 'tabler-icons-react';
-import styles from './styles.module.css';
 import { useLocale } from '@hooks/useLocale';
+import { ActionIcon, Text, Tooltip } from '@mantine/core';
+import { FC } from 'react';
+import { Plus } from 'tabler-icons-react';
+
+import styles from './styles.module.css';
 
 interface IAddButtonProps {
   currentUnit: ITreeUnit;
@@ -18,7 +20,7 @@ interface IAddButtonProps {
   }) => void;
 }
 
-export const AddButtons: React.FC<IAddButtonProps> = ({
+export const AddButtons: FC<IAddButtonProps> = ({
   currentUnit,
   visible,
   canAddNewUnit,

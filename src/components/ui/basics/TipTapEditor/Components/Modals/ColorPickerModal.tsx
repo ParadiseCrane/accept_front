@@ -1,6 +1,7 @@
 import { ColorPicker as MantineColorPicker, Menu } from '@mantine/core';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
+
 import styles from './ColorPickerModal.module.css';
 
 export const ColorPickerModal = ({

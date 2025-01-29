@@ -1,5 +1,6 @@
 import { accessLevels } from '@constants/protectedRoutes';
 import { ReactNode } from 'react';
+
 import { ILocale } from './ILocale';
 
 export interface IHeaderLink {

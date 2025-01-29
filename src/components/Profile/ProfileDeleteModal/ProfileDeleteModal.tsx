@@ -1,12 +1,13 @@
-import { FC, memo, useCallback, useState } from 'react';
 import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
+import deleteModalStyles from '@styles/ui/deleteModal.module.css';
+import { Button } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
+
 import styles from './profileDeleteModal.module.css';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import { Button } from '@ui/basics';
 
 const ProfileDeleteModal: FC<{
   user: IUser;

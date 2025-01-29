@@ -1,10 +1,11 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useMemo } from 'react';
-import { TagSelector } from '@ui/selectors';
-import styles from './mainInfo.module.css';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { NumberInput, Radio, Switch, TextInput } from '@ui/basics';
 import { Item } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { NumberInput, Radio, Switch, TextInput } from '@ui/basics';
+import { TagSelector } from '@ui/selectors';
+import { FC, memo, useCallback, useMemo } from 'react';
+
+import styles from './mainInfo.module.css';
 
 const MainInfo: FC<{
   form: any;

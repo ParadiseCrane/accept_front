@@ -1,5 +1,5 @@
-import { validation } from './validation';
 import { steps } from './steps';
+import { validation } from './validation';
 
 export const form = {
   steps,
@@ -32,8 +32,7 @@ export const form = {
   },
   remark: 'Примечание',
   tests: 'Тесты',
-  emptyTests:
-    'Добавьте тесты с помощью кнопки ниже или перетащите сюда файлы',
+  emptyTests: 'Добавьте тесты с помощью кнопки ниже или перетащите сюда файлы',
   inputTest: 'Входные данные',
   outputTest: 'Выходные данные',
   test: 'Тест',

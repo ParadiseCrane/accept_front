@@ -1,9 +1,9 @@
-import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
 import { useLocale } from '@hooks/useLocale';
-
-import { FC } from 'react';
-import styles from './taskOrdering.module.css';
 import stepperStyles from '@styles/ui/stepper.module.css';
+import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
+import { FC } from 'react';
+
+import styles from './taskOrdering.module.css';
 
 export const TaskOrdering: FC<{
   form: any;

@@ -1,11 +1,11 @@
 import { useLocale } from '@hooks/useLocale';
 import { Center } from '@mantine/core';
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
-import stepperStyles from '@styles/ui/stepper.module.css';
 import { Stepper as MantineStepper } from '@mantine/core';
-import { AlertCircle } from 'tabler-icons-react';
-import { Button } from '@ui/basics';
 import { UseFormReturnType } from '@mantine/form';
+import stepperStyles from '@styles/ui/stepper.module.css';
+import { Button } from '@ui/basics';
+import { FC, ReactNode, memo, useCallback, useState } from 'react';
+import { AlertCircle } from 'tabler-icons-react';
 
 const Stepper: FC<{
   form: UseFormReturnType<any>;
@@ -101,8 +101,8 @@ const Stepper: FC<{
           customWrapper
             ? undefined
             : !noDefault
-            ? stepperStyles.stepper
-            : undefined
+              ? stepperStyles.stepper
+              : undefined
         }
         classNames={
           contentClass

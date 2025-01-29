@@ -1,14 +1,14 @@
-import { task } from './task';
+import { attempt } from './attempt';
 import { auth } from './auth';
 import { dropzone } from './dropzone';
-import { notification } from './notification';
-import { student } from './student';
 import { grade } from './grade';
 import { group } from './group';
-import { tournament } from './tournament';
-import { attempt } from './attempt';
-import { taskTest } from './taskTest';
+import { notification } from './notification';
 import { pin } from './pin';
+import { student } from './student';
+import { task } from './task';
+import { taskTest } from './taskTest';
+import { tournament } from './tournament';
 
 export const helpers = {
   task,

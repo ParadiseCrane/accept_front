@@ -1,23 +1,24 @@
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Avatar as MantineAvatar, Menu } from '@mantine/core';
+import { sendRequest } from '@requests/request';
 import { Icon, Tip, UserAvatar } from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
-import styles from './accountsMenu.module.css';
+import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
+import { clearCookie } from '@utils/cookies';
+import { putOrganizationToLS } from '@utils/manageLocalStorage';
 import {
   errorNotification,
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
-import { sendRequest } from '@requests/request';
-import { clearCookie } from '@utils/cookies';
-import { Logout, Plus, Trash } from 'tabler-icons-react';
 import Link from 'next/link';
-import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
-import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
-import { putOrganizationToLS } from '@utils/manageLocalStorage';
+import { FC, memo, useCallback, useState } from 'react';
+import { Logout, Plus, Trash } from 'tabler-icons-react';
 
-const AccountsMenu: FC<{}> = ({}) => {
+import styles from './accountsMenu.module.css';
+import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
+
+const AccountsMenu: FC<{}> = () => {
   const { locale } = useLocale();
   const { user, signOut, accessLevel, accounts, refreshAccess } = useUser();
 
@@ -238,7 +239,7 @@ const AccountsMenu: FC<{}> = ({}) => {
         <Menu.Item
           component={Link}
           href={'/add_account'}
-          icon={<Plus color="var(--secondary)" size={20} />}
+          leftSection={<Plus color="var(--secondary)" size={20} />}
         >
           {locale.accounts.addAccount}
         </Menu.Item>
@@ -246,7 +247,7 @@ const AccountsMenu: FC<{}> = ({}) => {
 
         <Menu.Item
           onClick={removeSession}
-          icon={<Logout color="var(--secondary)" size={20} />}
+          leftSection={<Logout color="var(--secondary)" size={20} />}
         >
           {locale.accounts.logOut}
         </Menu.Item>

@@ -1,19 +1,20 @@
-import { FC, memo, useCallback } from 'react';
+import DescriptionInfo from '@components/Notification/Form/DescriptionInfo';
+import MainInfo from '@components/Notification/Form/MainInfo';
 import { INotificationWithRefs } from '@custom-types/data/notification';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
 import { useForm } from '@mantine/form';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import Stepper from '@ui/Stepper/Stepper';
-import MainInfo from '@components/Notification/Form/MainInfo';
-import DescriptionInfo from '@components/Notification/Form/DescriptionInfo';
-import styles from './editModal.module.css';
 import { getLocalDate } from '@utils/datetime';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useUser } from '@hooks/useUser';
+import { FC, memo, useCallback } from 'react';
+
+import styles from './editModal.module.css';
 
 const stepFields = [
   ['title', 'author'],
@@ -37,9 +38,7 @@ const EditModal: FC<{
     },
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.notification.form.validate.title
-          : null,
+        value.length < 5 ? locale.notification.form.validate.title : null,
       shortDescription: () => null,
       description: (value) =>
         value.length < 20
@@ -62,9 +61,7 @@ const EditModal: FC<{
       ...notification,
       ...form.values,
       author:
-        form.values.author.length > 0
-          ? form.values.author
-          : user?.login || '',
+        form.values.author.length > 0 ? form.values.author : user?.login || '',
     };
     requestWithNotify<INotificationWithRefs, string>(
       'notification/dev/edit',

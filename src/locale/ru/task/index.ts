@@ -1,7 +1,7 @@
-import { modals } from './modals';
 import { description } from './description';
-import { list } from './list';
 import { form } from './form';
+import { list } from './list';
+import { modals } from './modals';
 import { tests } from './tests';
 
 export const task = {

@@ -1,11 +1,5 @@
-import {
-  FC,
-  ReactNode,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
+
 import styles from './plotTooltip.module.css';
 
 const PlotTooltip: FC<{ children?: ReactNode }> = ({ children }) => {

@@ -1,3 +1,13 @@
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
+import { IGradeChangeResponse } from '@custom-types/data/IStudent';
+import { BaseSearch } from '@custom-types/data/request';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import tableStyles from '@styles/ui/customTable.module.css';
+import Table from '@ui/Table/Table';
+import { customTableSort } from '@utils/customTableSort';
+import Fuse from 'fuse.js';
 import {
   FC,
   ReactNode,
@@ -7,25 +17,13 @@ import {
   useMemo,
   useState,
 } from 'react';
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { BaseSearch } from '@custom-types/data/request';
-
-import Fuse from 'fuse.js';
-import { customTableSort } from '@utils/customTableSort';
-import { IGradeChangeResponse } from '@custom-types/data/IStudent';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface Item {
   value: any;
   display: string | ReactNode;
 }
 
-export interface IGradeChangeResponseTable
-  extends IGradeChangeResponse {
+export interface IGradeChangeResponseTable extends IGradeChangeResponse {
   error: Item;
 }
 

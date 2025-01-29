@@ -1,8 +1,9 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { Radio, Switch } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { ISecurity } from '@custom-types/data/ITournament';
+import { useLocale } from '@hooks/useLocale';
+import { Radio, Switch } from '@ui/basics';
+import { FC, memo, useCallback, useMemo } from 'react';
+
 import styles from './additionalInfo.module.css';
 
 const AdditionalInfo: FC<{
@@ -30,9 +31,7 @@ const AdditionalInfo: FC<{
       assessmentTypes.map((assessmentType) => ({
         value: assessmentType.spec.toString(),
         label:
-          locale.tournament.form.assessmentType.variants[
-            assessmentType.spec
-          ],
+          locale.tournament.form.assessmentType.variants[assessmentType.spec],
       })),
     [locale, assessmentTypes]
   );
@@ -40,8 +39,7 @@ const AdditionalInfo: FC<{
     () =>
       securities.map((security) => ({
         value: security.spec.toString(),
-        label:
-          locale.tournament.form.security.variants[security.spec],
+        label: locale.tournament.form.security.variants[security.spec],
       })),
     [locale, securities]
   );

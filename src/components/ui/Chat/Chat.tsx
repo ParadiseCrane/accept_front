@@ -1,15 +1,16 @@
+import { IActivity } from '@custom-types/data/atomic';
+import { IChatMessage } from '@custom-types/data/IMessage';
+import { useLocale } from '@hooks/useLocale';
+import { useLongPooling } from '@hooks/useLongPooling';
+import { Textarea } from '@mantine/core';
+import { getHotkeyHandler } from '@mantine/hooks';
+import { sendRequest } from '@requests/request';
 import { Icon } from '@ui/basics';
+import { getLocalDate } from '@utils/datetime';
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Send } from 'tabler-icons-react';
+
 import styles from './chat.module.css';
-import { IChatMessage } from '@custom-types/data/IMessage';
-import { Textarea } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { getLocalDate } from '@utils/datetime';
-import { sendRequest } from '@requests/request';
-import { useLongPooling } from '@hooks/useLongPooling';
-import { getHotkeyHandler } from '@mantine/hooks';
-import { IActivity } from '@custom-types/data/atomic';
 
 const Chat: FC<{
   indicateNew?: () => void;

@@ -1,4 +1,13 @@
+import { MAX_CODE_LENGTH } from '@constants/Limits';
+import { ILanguage } from '@custom-types/data/atomic';
+import { setter } from '@custom-types/ui/atomic';
+import { MyHoverCardDropdownProps } from '@custom-types/ui/basics/button';
+import { useLocale } from '@hooks/useLocale';
+import { useLocalStorage } from '@mantine/hooks';
 import { Button, Select } from '@ui/basics';
+import CodeArea from '@ui/CodeArea/CodeArea';
+import { capitalize } from '@utils/capitalize';
+import { requestWithNotify } from '@utils/requestWithNotify';
 import {
   FC,
   ReactNode,
@@ -8,17 +17,9 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import CodeArea from '@ui/CodeArea/CodeArea';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { capitalize } from '@utils/capitalize';
-import { setter } from '@custom-types/ui/atomic';
-import styles from './send.module.css';
 import { Send as SendPlane } from 'tabler-icons-react';
-import { ILanguage } from '@custom-types/data/atomic';
-import { useLocalStorage } from '@mantine/hooks';
-import { MAX_CODE_LENGTH } from '@constants/Limits';
-import { MyHoverCardDropdownProps } from '@custom-types/ui/basics/button';
+
+import styles from './send.module.css';
 
 const Send: FC<{
   spec: string;

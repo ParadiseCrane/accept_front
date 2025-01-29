@@ -1,13 +1,13 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Icon } from '@ui/basics';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { Trash } from 'tabler-icons-react';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { IOrganization } from '@custom-types/data/IOrganization';
+import { useLocale } from '@hooks/useLocale';
+import modalStyles from '@styles/ui/modal.module.css';
+import { Icon } from '@ui/basics';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
+import { Trash } from 'tabler-icons-react';
 
 const DeleteModal: FC<{
   organization: IOrganization;

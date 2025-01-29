@@ -1,20 +1,18 @@
-import { FC, memo, useCallback, useState } from 'react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { MAX_ANSWER_LENGTH, MAX_TEST_LENGTH } from '@constants/Limits';
+import { ITaskTestData } from '@custom-types/data/atomic';
+import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { setter } from '@custom-types/ui/atomic';
-import TestArea from '@ui/TestArea/TestArea';
-import styles from './editTest.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
-import { ITaskTestData } from '@custom-types/data/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { Icon } from '@ui/basics';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import TestArea from '@ui/TestArea/TestArea';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
 import { Pencil } from 'tabler-icons-react';
-import {
-  MAX_ANSWER_LENGTH,
-  MAX_TEST_LENGTH,
-} from '@constants/Limits';
+
+import styles from './editTest.module.css';
 
 const EditTest: FC<{
   test: ITruncatedTaskTest;
@@ -35,20 +33,20 @@ const EditTest: FC<{
         hideInput
           ? null
           : value.length == 0
-          ? locale.task.form.validation.testField.empty
-          : value.length > MAX_TEST_LENGTH
-          ? locale.task.form.validation.testField.tooLong
-          : null,
+            ? locale.task.form.validation.testField.empty
+            : value.length > MAX_TEST_LENGTH
+              ? locale.task.form.validation.testField.tooLong
+              : null,
       outputData: (value) =>
         hideOutput
           ? null
           : value.length == 0
-          ? locale.task.form.validation.testField.empty
-          : value.length > MAX_TEST_LENGTH
-          ? locale.task.form.validation.testField.tooLong
-          : hideInput && value.length > MAX_ANSWER_LENGTH // Text task
-          ? locale.task.form.validation.testField.tooLong
-          : null,
+            ? locale.task.form.validation.testField.empty
+            : value.length > MAX_TEST_LENGTH
+              ? locale.task.form.validation.testField.tooLong
+              : hideInput && value.length > MAX_ANSWER_LENGTH // Text task
+                ? locale.task.form.validation.testField.tooLong
+                : null,
     },
     validateInputOnBlur: true,
   });

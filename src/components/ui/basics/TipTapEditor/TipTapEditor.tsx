@@ -1,5 +1,6 @@
 import { MathExtension } from '@aarkue/tiptap-math-extension';
-import { ImageResize } from 'tiptap-extension-resize-image';
+import { useLocale } from '@hooks/useLocale';
+import { Link, RichTextEditor } from '@mantine/tiptap';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
@@ -25,42 +26,42 @@ import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
-import { useEditor, Editor } from '@tiptap/react';
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { all, createLowlight } from 'lowlight';
+import { Editor, useEditor } from '@tiptap/react';
+import csharp from 'highlight.js/lib/languages/csharp';
 import css from 'highlight.js/lib/languages/css';
 import js from 'highlight.js/lib/languages/javascript';
-import ts from 'highlight.js/lib/languages/typescript';
 import python from 'highlight.js/lib/languages/python';
-import csharp from 'highlight.js/lib/languages/csharp';
+import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
-import styles from './TipTapEditor.module.css';
+import { all, createLowlight } from 'lowlight';
+import { useState } from 'react';
+import { Edit, FileExport } from 'tabler-icons-react';
+import { ImageResize } from 'tiptap-extension-resize-image';
+
+import { AlignGroupCollapsed, AlignGroupSeparate } from './Components/Align';
+import { ClearFormattingButton } from './Components/ClearFormattingButton';
+// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
+import { ColorPickerButton } from './Components/ColorPickerButton';
+import { HighLightColorButton } from './Components/HighlightColorButton';
+import { InsertGroupSeparate } from './Components/InsertGroup';
+import { LinkButton, UnlinkButton } from './Components/LinkButton';
+import { ToggleBlockquote } from './Components/ToggleBlockquote';
 import { ToggleBold } from './Components/ToggleBold';
+import {
+  HeadingsGroupCollapsed,
+  HeadingsGroupSeparate,
+} from './Components/ToggleHeadings';
 import { ToggleItalic } from './Components/ToggleItalic';
-import { ToggleUnderline } from './Components/ToggleUnderline';
-import { ToggleStrikethrough } from './Components/ToggleStrikethrough';
 import { ToggleBulletList, ToggleOrderedList } from './Components/ToggleList';
+import { ToggleStrikethrough } from './Components/ToggleStrikethrough';
 import {
   ToggleSubscript,
   ToggleSuperscript,
 } from './Components/ToggleSubSuper';
-import { ToggleBlockquote } from './Components/ToggleBlockquote';
-import { AlignGroupCollapsed, AlignGroupSeparate } from './Components/Align';
-import { RedoButton, UndoButton } from './Components/UndoRedo';
-import { useState } from 'react';
-import { Edit, FileExport } from 'tabler-icons-react';
-import { LinkButton, UnlinkButton } from './Components/LinkButton';
-// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
-import { ColorPickerButton } from './Components/ColorPickerButton';
-import { HighLightColorButton } from './Components/HighlightColorButton';
-import { ClearFormattingButton } from './Components/ClearFormattingButton';
+import { ToggleUnderline } from './Components/ToggleUnderline';
 import { ToolbarDivider } from './Components/ToolbarDivider';
-import {
-  HeadingsGroupSeparate,
-  HeadingsGroupCollapsed,
-} from './Components/ToggleHeadings';
-import { InsertGroupSeparate } from './Components/InsertGroup';
-import { useLocale } from '@hooks/useLocale';
+import { RedoButton, UndoButton } from './Components/UndoRedo';
+import styles from './TipTapEditor.module.css';
 
 export const imageInsertFunction = ({
   src,

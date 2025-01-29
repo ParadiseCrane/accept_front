@@ -1,9 +1,9 @@
-import { assignment } from './assignment';
-import { tournament } from './tournament';
 import { admin } from './admin';
+import { assignment } from './assignment';
+import { attemptsList } from './attemptsList';
 import { chat } from './chat';
 import { developer } from './developer';
-import { attemptsList } from './attemptsList';
+import { tournament } from './tournament';
 
 export const dashboard = {
   assignment,

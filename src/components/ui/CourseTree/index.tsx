@@ -1,10 +1,11 @@
-import { FC, memo } from 'react';
 import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
-import { InputWrapper } from '@ui/basics';
-import { UseFormReturnType } from '@mantine/form';
-import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 import { useCourseAddTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
+import { UseFormReturnType } from '@mantine/form';
+import { InputWrapper } from '@ui/basics';
+import { FC, memo } from 'react';
+
+import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 
 const CourseTree: FC<{
   titleProps: any;

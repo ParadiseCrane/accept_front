@@ -1,4 +1,5 @@
 import { FC, ReactNode, memo, useMemo } from 'react';
+
 import styles from './primitiveTable.module.css';
 
 const PrimitiveTable: FC<{
@@ -8,21 +9,13 @@ const PrimitiveTable: FC<{
   empty?: ReactNode;
   classNames?: any;
   columnSizes?: number[];
-}> = ({
-  columns,
-  rows,
-  rowComponent,
-  empty,
-  classNames,
-  columnSizes,
-}) => {
+}> = ({ columns, rows, rowComponent, empty, classNames, columnSizes }) => {
   const gridTemplate = useMemo(() => {
     let total = 0;
     if (!columnSizes || columnSizes.length < columns.length) {
       total = columns.length;
       return {
-        gridTemplateColumns:
-          columns.map((_) => 100 / total).join('% ') + '%',
+        gridTemplateColumns: columns.map((_) => 100 / total).join('% ') + '%',
       };
     }
     for (let i = 0; i < columns.length; i++) {
@@ -30,9 +23,8 @@ const PrimitiveTable: FC<{
     }
     return {
       gridTemplateColumns:
-        columns
-          .map((_, idx) => (columnSizes[idx] / total) * 100)
-          .join('% ') + '%',
+        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join('% ') +
+        '%',
     };
   }, [columnSizes, columns]);
 

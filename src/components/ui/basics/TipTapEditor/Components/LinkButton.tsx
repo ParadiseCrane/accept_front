@@ -1,10 +1,11 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
 import { Link as LinkIcon, Unlink as UnlinkIcon } from 'tabler-icons-react';
-import { LinkModal } from './Modals/LinkModal';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
+import { LinkModal } from './Modals/LinkModal';
 
 export const LinkButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('link') : false;

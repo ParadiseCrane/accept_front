@@ -1,8 +1,8 @@
-import { FC, ReactNode, memo, useCallback } from 'react';
-import { Notes } from 'tabler-icons-react';
+import { useLocale } from '@hooks/useLocale';
 import { Icon, Tip } from '@ui/basics';
 import { openText } from '@utils/openText';
-import { useLocale } from '@hooks/useLocale';
+import { FC, ReactNode, memo, useCallback } from 'react';
+import { Notes } from 'tabler-icons-react';
 
 const OpenTextInNewTab: FC<{ text: string; icon?: ReactNode }> = ({
   text,

@@ -1,16 +1,14 @@
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
 import { Switch, TextInput } from '@ui/basics';
 import { FC, memo, useState } from 'react';
-import { useUser } from '@hooks/useUser';
 
 const SYSTEM_AUTHOR = 'System';
 
 const MainInfo: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
 
-  const [asSystem, setAsSystem] = useState(
-    form.values.author == SYSTEM_AUTHOR
-  );
+  const [asSystem, setAsSystem] = useState(form.values.author == SYSTEM_AUTHOR);
   const { isAdmin } = useUser();
 
   return (

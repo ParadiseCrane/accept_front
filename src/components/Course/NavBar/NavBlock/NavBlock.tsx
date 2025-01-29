@@ -1,3 +1,4 @@
+import { tooltipOpenDelay } from '@constants/Duration';
 import { ITreeUnit, IUnit } from '@custom-types/data/ICourse';
 import {
   ICourseShowTreeActions,
@@ -5,9 +6,9 @@ import {
 } from '@hooks/useCourseTree';
 import { Anchor, Tooltip } from '@mantine/core';
 import { FC } from 'react';
+
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
-import { tooltipOpenDelay } from '@constants/Duration';
 
 export const NavBlock: FC<{
   hookUnit: IUnit;

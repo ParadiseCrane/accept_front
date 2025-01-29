@@ -1,5 +1,6 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { FC, memo } from 'react';
+
 import BarPlot from '../BarPlot/BarPlot';
 import PiePlot from '../PiePlot/PiePlot';
 import styles from './barPiePlot.module.css';

@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { AssignmentSchemaSelector } from '@ui/selectors';
 import { useLocale } from '@hooks/useLocale';
 import { CustomEditor, Helper, TextInput } from '@ui/basics';
+import { AssignmentSchemaSelector } from '@ui/selectors';
+import { FC, memo } from 'react';
+
 import styles from './origin.module.css';
 
 const Origin: FC<{
@@ -25,9 +26,7 @@ const Origin: FC<{
           <div className={styles.notificationLabel}>
             <div>{locale.notification.notification}</div>
             <Helper
-              dropdownContent={
-                locale.helpers.notification.assignmentCreation
-              }
+              dropdownContent={locale.helpers.notification.assignmentCreation}
             />
           </div>
           <TextInput
@@ -39,11 +38,9 @@ const Origin: FC<{
             label={locale.notification.form.shortDescription}
             helperContent={
               <div>
-                {locale.helpers.notification.shortDescription.map(
-                  (p, idx) => (
-                    <p key={idx}>{p}</p>
-                  )
-                )}
+                {locale.helpers.notification.shortDescription.map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
               </div>
             }
             {...form.getInputProps('notificationShortDescription')}
@@ -51,11 +48,9 @@ const Origin: FC<{
           <CustomEditor
             helperContent={
               <div>
-                {locale.helpers.notification.description.map(
-                  (p, idx) => (
-                    <p key={idx}>{p}</p>
-                  )
-                )}
+                {locale.helpers.notification.description.map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
               </div>
             }
             label={locale.notification.form.description}

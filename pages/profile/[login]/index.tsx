@@ -1,13 +1,13 @@
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { GetServerSideProps } from 'next';
-import { ReactNode } from 'react';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
-import styles from '@styles/profile/login.module.css';
-import { useUser } from '@hooks/useUser';
-import Title from '@ui/Title/Title';
 import ProfileSticky from '@components/Profile/ProfileSticky/ProfileSticky';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import styles from '@styles/profile/login.module.css';
+import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode } from 'react';
 
 function UserProfile(props: IFullProfileBundle) {
   const { isAdmin, accessLevel } = useUser();

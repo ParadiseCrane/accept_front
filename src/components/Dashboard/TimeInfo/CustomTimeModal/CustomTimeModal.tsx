@@ -1,9 +1,10 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import IncrementalInput from './IncrementalInput';
-import styles from './customTimeModal.module.css';
 import { useLocale } from '@hooks/useLocale';
+import { Button } from '@ui/basics';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
+
+import styles from './customTimeModal.module.css';
+import IncrementalInput from './IncrementalInput';
 
 const CustomTimeModal: FC<{ handleTime: (_: number) => void }> = ({
   handleTime,

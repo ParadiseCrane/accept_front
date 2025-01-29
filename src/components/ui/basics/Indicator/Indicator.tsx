@@ -1,5 +1,6 @@
-import { FC, memo, useMemo } from 'react';
 import { IndicatorProps, Indicator as MantineIndicator } from '@mantine/core';
+import { FC, memo, useMemo } from 'react';
+
 import styles from './indicator.module.css';
 
 const OVERFLOW_COUNT = 99;

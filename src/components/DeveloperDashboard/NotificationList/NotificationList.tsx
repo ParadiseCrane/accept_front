@@ -1,53 +1,46 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useRequest } from '@hooks/useRequest';
-import MessageList from '@ui/MessageList/MessageList';
-import {
-  IListAction,
-  IListMessage,
-} from '@custom-types/ui/IListMessage';
-import { shrinkText } from '@utils/shrinkText';
 import { INotificationWithRefs } from '@custom-types/data/notification';
-import { Badge } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { Pencil, Search, Trash } from 'tabler-icons-react';
 import { setter } from '@custom-types/ui/atomic';
-import { requestWithError } from '@utils/requestWithError';
-import EditModal from './EditModal/EditModal';
+import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { Badge } from '@mantine/core';
 import { TextInput } from '@ui/basics';
+import MessageList from '@ui/MessageList/MessageList';
+import { requestWithError } from '@utils/requestWithError';
+import { shrinkText } from '@utils/shrinkText';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Pencil, Search, Trash } from 'tabler-icons-react';
+
+import EditModal from './EditModal/EditModal';
 import styles from './notificationList.module.css';
 
-const NotificationList: FC<{}> = ({}) => {
+const NotificationList: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const [search, setSearch] = useState('');
-  const [displayedNotifications, setDisplayedNotifications] =
-    useState<INotificationWithRefs[]>([]);
+  const [displayedNotifications, setDisplayedNotifications] = useState<
+    INotificationWithRefs[]
+  >([]);
 
   const processNotifications = useCallback(
     (notifications: INotificationWithRefs[]) => {
       return notifications.sort(
-        (a, b) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     },
     []
   );
 
-  const { data, loading, refetch } = useRequest<
-    {},
-    INotificationWithRefs[]
-  >('notification/dev/all', 'GET', undefined, processNotifications);
+  const { data, loading, refetch } = useRequest<{}, INotificationWithRefs[]>(
+    'notification/dev/all',
+    'GET',
+    undefined,
+    processNotifications
+  );
 
   const handleSearch = useCallback(
     async (value: string) => {
       setSearch(value);
-      if (!!!data) return;
+      if (!data) return;
       var list = [...data];
       const Fuse = (await import('fuse.js')).default;
       const fuse = new Fuse(list, {
@@ -56,9 +49,7 @@ const NotificationList: FC<{}> = ({}) => {
       });
 
       const searched =
-        value == ''
-          ? list
-          : fuse.search(value).map((result) => result.item);
+        value == '' ? list : fuse.search(value).map((result) => result.item);
       setDisplayedNotifications(searched);
     },
     [data]
@@ -82,7 +73,7 @@ const NotificationList: FC<{}> = ({}) => {
             message: item.description,
             subject: item.shortDescription,
             title: item.title,
-          } as IListMessage)
+          }) as IListMessage
       ),
     [displayedNotifications]
   );
@@ -114,9 +105,7 @@ const NotificationList: FC<{}> = ({}) => {
   const handleEdit = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {
       setOpenedModal(true);
-      setEditIndex(
-        data?.findIndex((item) => item.spec == selected[0]) || 0
-      );
+      setEditIndex(data?.findIndex((item) => item.spec == selected[0]) || 0);
       setSelected([]);
     },
     [data]
