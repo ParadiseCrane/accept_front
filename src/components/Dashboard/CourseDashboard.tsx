@@ -104,21 +104,6 @@ const CourseDashboard: FC<{
       },
       {
         page: tournament && (
-          <Results
-            spec={spec}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-            type={'tournament'}
-            full
-            is_team={tournament.maxTeamSize != 1}
-          />
-        ),
-        icon: <Table color="var(--secondary)" />,
-        title: locale.dashboard.tournament.results,
-        section: 'results',
-      },
-      {
-        page: tournament && (
           <AttemptsList
             key={'all'}
             type={'tournament'}
@@ -145,23 +130,6 @@ const CourseDashboard: FC<{
         section: 'participants',
       },
       {
-        page: <TaskList type={'tournament'} spec={spec} />,
-        icon: <Puzzle color="var(--secondary)" />,
-        title: locale.dashboard.tournament.tasks,
-        section: 'tasks',
-      },
-      {
-        page: (
-          <RegistrationManagement
-            spec={spec}
-            maxTeamSize={tournament?.maxTeamSize || 1}
-          />
-        ),
-        icon: <AddressBook color="var(--secondary)" />,
-        title: locale.dashboard.tournament.registrationManagement,
-        section: 'registration',
-      },
-      {
         page: tournament && (
           <CreateNotification spec={tournament.spec} type="tournament" />
         ),
@@ -170,37 +138,12 @@ const CourseDashboard: FC<{
         section: 'create_notification',
       },
       {
-        page: tournament && (
-          <AttemptsList
-            key={'banned'}
-            type={'tournament'}
-            banned
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-          />
-        ),
-        icon: <Ban color="var(--secondary)" />,
-        title: locale.dashboard.tournament.bannedAttempts,
-        section: 'banned_attempts',
-      },
-      {
         page: tournament && <Settings tournament={tournament} />,
         icon: <SettingsIcon color="var(--secondary)" />,
         title: locale.dashboard.tournament.settings.self,
         section: 'settings',
       },
     ];
-
-    if (tournament?.maxTeamSize != 1) {
-      links.splice(4, 0, {
-        page: <TeamList spec={spec} />,
-        icon: <Users color="var(--secondary)" />,
-        title: locale.dashboard.tournament.teams,
-        section: 'teams',
-      });
-    }
 
     return links;
   }, [tournament, hasNewMessages, locale, refetch, spec]);

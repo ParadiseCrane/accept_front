@@ -62,8 +62,7 @@ const DeleteModal: FC<{
           ) : (
             <Button
               variant="outline"
-              // TODO заменить на список курсов
-              href="/course/add"
+              href="/course"
               targetWrapperClassName={deleteModalStyles.toListButton}
             >
               {locale.toList}
