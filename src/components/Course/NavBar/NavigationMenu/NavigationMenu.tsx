@@ -1,7 +1,8 @@
 import { tooltipOpenDelay } from '@constants/Duration';
 import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Group, Kbd, Tooltip } from '@mantine/core';
+import { ActionIcon, Group, Kbd } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
+import { Tip } from '@ui/basics';
 import { FC, memo } from 'react';
 import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
 
@@ -16,10 +17,9 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
   ]);
   return (
     <Group justify="space-between" p={'md'} w={'100%'}>
-      <Tooltip
+      <Tip
         label={
           <div>
-            {locale.course.prevShortcut}
             <Kbd>Ctrl</Kbd> + <Kbd>&lt;</Kbd>
           </div>
         }
@@ -28,11 +28,10 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         <ActionIcon onClick={() => prev()}>
           <ArrowLeft />
         </ActionIcon>
-      </Tooltip>
-      <Tooltip
+      </Tip>
+      <Tip
         label={
           <div>
-            {locale.course.nextShortcut}
             <Kbd>Ctrl</Kbd> + <Kbd>&gt;</Kbd>
           </div>
         }
@@ -41,7 +40,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         <ActionIcon onClick={() => next()}>
           <ArrowRight />
         </ActionIcon>
-      </Tooltip>
+      </Tip>
     </Group>
   );
 };

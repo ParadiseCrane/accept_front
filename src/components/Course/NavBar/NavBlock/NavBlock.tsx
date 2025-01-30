@@ -4,11 +4,12 @@ import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
-import { Anchor, Tooltip } from '@mantine/core';
+import { Anchor } from '@mantine/core';
 import { FC } from 'react';
 
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
+import { Tip } from '@ui/basics';
 
 export const NavBlock: FC<{
   hookUnit: IUnit;
@@ -28,10 +29,10 @@ export const NavBlock: FC<{
         }}
       >
         <div className={styles.box}>
-          <Tooltip
+          <Tip
             label={currentUnit.title}
             openDelay={tooltipOpenDelay}
-            position="bottom"
+            position="top"
           >
             <Anchor
               href={`#${currentUnit.spec}`}
@@ -41,7 +42,7 @@ export const NavBlock: FC<{
             >
               {currentUnit.title}
             </Anchor>
-          </Tooltip>
+          </Tip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
             canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
@@ -62,7 +63,7 @@ export const NavBlock: FC<{
         }}
       >
         <div className={styles.box}>
-          <Tooltip
+          <Tip
             label={currentUnit.title}
             openDelay={tooltipOpenDelay}
             position="top"
@@ -75,7 +76,7 @@ export const NavBlock: FC<{
             >
               {currentUnit.title}
             </Anchor>
-          </Tooltip>
+          </Tip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
             canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
@@ -95,7 +96,7 @@ export const NavBlock: FC<{
       }}
     >
       <div className={styles.box}>
-        <Tooltip
+        <Tip
           label={currentUnit.title}
           openDelay={tooltipOpenDelay}
           position="top"
@@ -108,7 +109,7 @@ export const NavBlock: FC<{
           >
             {currentUnit.title}
           </Anchor>
-        </Tooltip>
+        </Tip>
       </div>
     </div>
   );
