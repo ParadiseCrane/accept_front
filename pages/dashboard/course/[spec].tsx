@@ -1,3 +1,4 @@
+import CourseDashboard from '@components/Dashboard/CourseDashboard';
 import TournamentDashboard from '@components/Dashboard/TournamentDashboard';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ITournamentResponse } from '@custom-types/data/ITournament';
@@ -21,7 +22,7 @@ function CourseDashboardPage(props: { spec: string }) {
         entity={'tournament'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
-        <TournamentDashboard spec={props.spec} />
+        <CourseDashboard spec={props.spec} />
       </ChatHostsProvider>
     </>
   );

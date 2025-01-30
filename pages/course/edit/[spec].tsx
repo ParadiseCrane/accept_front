@@ -43,8 +43,6 @@ function CourseEdit(props: { course: ICourseModel }) {
     children: props.course.children,
   });
 
-  console.log('edit page courseProp', props.course);
-
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
       if (form.validate().hasErrors) {
@@ -72,7 +70,6 @@ function CourseEdit(props: { course: ICourseModel }) {
       }
 
       const courseToSend = { ...course, children: emptyChildren };
-      console.log('edit page courseToSend', courseToSend);
 
       requestWithNotify<ICourseAdd, string>(
         `course/put/${props.course.spec}`,
