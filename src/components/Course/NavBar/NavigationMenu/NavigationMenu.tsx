@@ -16,7 +16,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
     ['ctrl + .', () => next()],
   ]);
   return (
-    <Group justify="space-between" p={'md'} w={'100%'}>
+    <Group justify="space-between" p={'xs'} w={'100%'} display={'flex'}>
       <Tip
         label={
           <div>
@@ -25,7 +25,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         }
         openDelay={tooltipOpenDelay}
       >
-        <ActionIcon onClick={() => prev()}>
+        <ActionIcon onClick={() => prev()} size={'sm'}>
           <ArrowLeft />
         </ActionIcon>
       </Tip>
@@ -37,7 +37,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         }
         openDelay={tooltipOpenDelay}
       >
-        <ActionIcon onClick={() => next()}>
+        <ActionIcon onClick={() => next()} size={'sm'}>
           <ArrowRight />
         </ActionIcon>
       </Tip>
