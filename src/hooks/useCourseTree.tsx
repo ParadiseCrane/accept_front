@@ -1333,15 +1333,15 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
   ) {
     return true;
   }
-  if (
-    data.treeUnitList.filter(
-      (element) =>
-        element.index < data.currentUnit.index &&
-        element.depth + 1 === data.currentUnit.depth
-    ).length > 0
-  ) {
-    return true;
-  }
+  // if (
+  //   data.treeUnitList.filter(
+  //     (element) =>
+  //       element.index < data.currentUnit.index &&
+  //       element.depth + 1 === data.currentUnit.depth
+  //   ).length > 0
+  // ) {
+  //   return true;
+  // }
   return false;
 };
 
@@ -1357,15 +1357,15 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
   ) {
     return true;
   }
-  if (
-    data.treeUnitList.filter(
-      (element) =>
-        element.index > data.currentUnit.index &&
-        element.depth + 1 === data.currentUnit.depth
-    ).length > 0
-  ) {
-    return true;
-  }
+  // if (
+  //   data.treeUnitList.filter(
+  //     (element) =>
+  //       element.index > data.currentUnit.index &&
+  //       element.depth + 1 === data.currentUnit.depth
+  //   ).length > 0
+  // ) {
+  //   return true;
+  // }
   return false;
 };
 
@@ -1384,6 +1384,11 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
         treeUnitList: data.treeUnitList,
         upOrDown: 'UP',
       }).spec &&
+    findElementSibling({
+      currentElement: data.currentUnit,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'UP',
+    }).kind === 'unit' &&
     getMaxDepthFromList({
       listToCheck: findChildrenAllLevels({
         parent: data.currentUnit,
