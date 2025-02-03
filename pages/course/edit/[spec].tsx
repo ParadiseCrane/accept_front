@@ -32,8 +32,7 @@ const getInitialValuesCourse = ({
     title: title,
     description: description,
     kind: 'course',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
+    image: '768a33f5-e38c-4ac5-a61d-822c6f68f5dd',
     children: children,
   };
 };
@@ -51,8 +50,7 @@ const getInitialValuesUnit = ({
     title: title,
     description: description,
     kind: 'course',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
+    image: '768a33f5-e38c-4ac5-a61d-822c6f68f5dd',
     children: children,
   };
 };

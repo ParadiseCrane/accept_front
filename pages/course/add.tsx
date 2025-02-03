@@ -25,8 +25,7 @@ const getInitialValues = ({
     title: title,
     description: description,
     kind: 'course',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
+    image: '',
     children: [],
   };
 };

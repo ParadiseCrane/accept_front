@@ -1,55 +1,69 @@
+import { ICourseAddEdit } from '@custom-types/data/ICourse';
+import { IImagePreset } from '@custom-types/data/IImagePreset';
 import { useRequest } from '@hooks/useRequest';
-import { ActionIcon, Box, Image, SimpleGrid, Text, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Combobox,
+  Image,
+  SimpleGrid,
+  Text,
+  Title,
+} from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
 import { InputWrapper } from '@ui/basics';
-import { FC, memo } from 'react';
+import PresetSingleSelect from '@ui/selectors/PresetSingleSelect/PresetSingleSelect';
+import { getCookie } from '@utils/cookies';
+import { FC, memo, useEffect, useState } from 'react';
 import { Plus } from 'tabler-icons-react';
 
-const ImageSelector: FC<{}> = () => {
-  const kind = 'course';
-  const { data } = useRequest<any, any>(
-    `image_preset/${kind}`,
-    'GET',
-    undefined
-  );
-  console.log('image preset', data);
+// TODO заменить на реальные данные
+const allImages: string[] = [
+  '768a33f5-e38c-4ac5-a61d-822c6f68f5dd',
+  '84f9ab2c-cc1d-4038-bc04-9d6c7bb09624',
+  '66b55d00-257a-428a-a28c-a37ccc906f33',
+  '051f748e-80de-467f-a01b-9530c656e9ab',
+  '913529c7-72a7-4d9e-93d1-baca7cd73fff',
+  '210baf14-fc29-4ebd-8c4a-95881e5e8057',
+];
 
+const ImageSelector: FC<{
+  initialImage: string;
+  form: UseFormReturnType<
+    ICourseAddEdit,
+    (values: ICourseAddEdit) => ICourseAddEdit
+  >;
+}> = ({ initialImage, form }) => {
+  const [presets, setPresets] = useState<IImagePreset[]>([]);
+  const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+  const { data } = useRequest('images_preset', 'GET', undefined);
+  useEffect(() => {
+    if (data) {
+      setPresets((data as any[]).filter((item) => item.kind === 'course'));
+    }
+  }, [data]);
   return (
     <Box>
       <InputWrapper label="Изображение" />
       <SimpleGrid cols={3}>
-        <Image
-          alt="Image 1"
-          src={
-            'https://wallpapers.com/images/high/abstract-desktop-hu0vz1pplzhtdbdn.webp'
-          }
-        />
-        <Image
-          alt="Image 2"
-          src={
-            'https://wallpapers.com/images/hd/colorful-curve-lines-abstract-guo9npv8qhilke0n.webp'
-          }
-        />
-        <Image
-          alt="Image 3"
-          src={
-            'https://wallpapers.com/images/hd/black-space-abstract-50q74mhqk30j0dax.webp'
-          }
-        />
-        <Image
-          alt="Image 4"
-          src={
-            'https://wallpapers.com/images/hd/geometric-polygon-abstract-myybkpq9l5i2xeo6.webp'
-          }
-        />
-        <Image
-          alt="Image 5"
-          src={
-            'https://wallpapers.com/images/high/cerebral-cortex-connected-to-rainbow-colors-kxmdiym6mljra3do.webp'
-          }
-        />
-        <ActionIcon w={'100%'} h={'100%'} variant="outline" color="green">
-          <Plus />
-        </ActionIcon>
+        {initialImage && (
+          <Image alt="Current image" src={`/api/image/${initialImage}`} />
+        )}
+        {allImages.map((item, index) => (
+          <Image
+            alt={`Image ${index + 1}`}
+            src={`/api/image/${item}`}
+            key={item}
+          />
+        ))}
+        {presets && (
+          <PresetSingleSelect
+            label={'Выберите набор'}
+            presets={presets}
+            select={(item: IImagePreset) => setCurrentPreset(item)}
+          />
+        )}
       </SimpleGrid>
     </Box>
   );

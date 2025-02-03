@@ -27,7 +27,7 @@ const Form: FC<{
           initialUnits={form.values.children}
           form={form}
         />
-        <ImageSelector />
+        <ImageSelector initialImage={form.values.image} form={form} />
       </Group>
       {/* TODO: Add locale */}
       <CustomEditor
