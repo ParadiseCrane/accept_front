@@ -78,7 +78,10 @@ function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
       innerActions.push(
         {
           color: 'green',
-          href: `/course/edit/${course.spec}`,
+          href:
+            value.kind === 'course'
+              ? `/course/edit/${course.spec}`
+              : `/course/edit/${course.spec}?unit=${value.spec}`,
           icon: <Pencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit,
         },

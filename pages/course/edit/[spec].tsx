@@ -17,6 +17,7 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
+import { useSearchParams } from 'next/navigation';
 import { ReactNode, useCallback } from 'react';
 
 const getInitialValuesCourse = ({
@@ -49,8 +50,8 @@ const getInitialValuesUnit = ({
   return {
     title: title,
     description: description,
-    kind: 'course',
-    image: '768a33f5-e38c-4ac5-a61d-822c6f68f5dd',
+    kind: 'unit',
+    image: '',
     children: children,
   };
 };
@@ -64,6 +65,8 @@ function CourseEdit(props: { course: ICourseModel }) {
     children: props.course.children,
   });
   console.log('initialValues', initialValues);
+  const searchParams = useSearchParams();
+  console.log('searchParams has unit', searchParams.has('unit'));
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
