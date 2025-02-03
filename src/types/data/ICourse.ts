@@ -21,13 +21,15 @@ export interface ITreeUnit {
   childrenVisible: boolean;
 }
 
-export interface ICourseAdd {
+export interface ICourseAddEdit {
   title: string;
   description: string;
-  kind: 'course';
+  kind: 'course' | 'unit';
   image: string;
   children: IUnit[];
 }
+
+export interface IUnitEdit {}
 
 export interface ICourseModel {
   spec: string;

@@ -1,6 +1,6 @@
 import Form from '@components/Course/Form/Form';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -20,7 +20,7 @@ const getInitialValues = ({
 }: {
   title: string;
   description: string;
-}): ICourseAdd => {
+}): ICourseAddEdit => {
   return {
     title: title,
     description: description,
@@ -51,7 +51,7 @@ function CourseAdd() {
         return;
       }
 
-      const course: ICourseAdd = {
+      const course: ICourseAddEdit = {
         ...form.values,
       };
 
@@ -67,7 +67,7 @@ function CourseAdd() {
 
       const courseToSend = { ...course, children: emptyChildren };
 
-      requestWithNotify<ICourseAdd, string>(
+      requestWithNotify<ICourseAddEdit, string>(
         'course/add',
         'POST',
         locale.notify.course.create,

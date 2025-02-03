@@ -1,4 +1,4 @@
-import { ICourseAdd, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IUnit } from '@custom-types/data/ICourse';
 import { useCourseAddTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
@@ -10,7 +10,10 @@ import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 const CourseTree: FC<{
   titleProps: any;
   initialUnits: IUnit[];
-  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  form: UseFormReturnType<
+    ICourseAddEdit,
+    (values: ICourseAddEdit) => ICourseAddEdit
+  >;
 }> = ({ titleProps, initialUnits, form }) => {
   const { locale } = useLocale();
   const { treeUnitList, actions, checkers } = useCourseAddTree({

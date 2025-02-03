@@ -1,15 +1,10 @@
 import { ICourse } from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
-import { useRequest } from '@hooks/useRequest';
-import { AppShell, Center, Text, Title } from '@mantine/core';
+import { AppShell, Center, Title } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
-import { Editor } from '@tiptap/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { FC, memo, useEffect, useState } from 'react';
 
 const Main: FC = () => {

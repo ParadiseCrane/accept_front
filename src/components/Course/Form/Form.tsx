@@ -1,4 +1,4 @@
-import { ICourseAdd, ICourseResponse } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, ICourseResponse } from '@custom-types/data/ICourse';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Group, Stack } from '@mantine/core';
@@ -12,13 +12,13 @@ import styles from './styles.module.css';
 
 const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
-  initialValues: ICourseAdd;
+  initialValues: ICourseAddEdit;
   buttonLabel: string;
   shouldNotify: boolean;
   editMode: boolean;
 }> = ({ handleSubmit, initialValues, buttonLabel, shouldNotify, editMode }) => {
   const { locale } = useLocale();
-  const form = useForm<ICourseAdd>({ initialValues: initialValues });
+  const form = useForm<ICourseAddEdit>({ initialValues: initialValues });
   return (
     <Stack m={'xl'} className={styles.form}>
       <Group grow align="flex-start">

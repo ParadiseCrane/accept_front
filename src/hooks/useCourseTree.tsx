@@ -1,5 +1,5 @@
 import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
-import { ICourseAdd, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -127,7 +127,10 @@ const createTreeUnitList = ({
   editMode,
 }: {
   courseUnitList: IUnit[];
-  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  form: UseFormReturnType<
+    ICourseAddEdit,
+    (values: ICourseAddEdit) => ICourseAddEdit
+  >;
   editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
@@ -1334,8 +1337,7 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
     data.treeUnitList.filter(
       (element) =>
         element.index < data.currentUnit.index &&
-        element.depth + 1 === data.currentUnit.depth &&
-        element.spec !== data.currentUnit.parentSpec
+        element.depth + 1 === data.currentUnit.depth
     ).length > 0
   ) {
     return true;
@@ -1359,8 +1361,7 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
     data.treeUnitList.filter(
       (element) =>
         element.index > data.currentUnit.index &&
-        element.depth + 1 === data.currentUnit.depth &&
-        element.spec !== data.currentUnit.parentSpec
+        element.depth + 1 === data.currentUnit.depth
     ).length > 0
   ) {
     return true;
@@ -1388,8 +1389,7 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
         parent: data.currentUnit,
         treeUnitList: data.treeUnitList,
       }),
-    }) < COURSE_TREE_MAX_DEPTH &&
-    data.currentUnit.depth !== COURSE_TREE_MAX_DEPTH
+    }) < COURSE_TREE_MAX_DEPTH
   ) {
     return true;
   }
@@ -1445,7 +1445,10 @@ export interface ICourseAddTreeCheckers {
 
 interface IUseCourseAddTreeProps {
   courseUnitList: IUnit[];
-  form: UseFormReturnType<ICourseAdd, (values: ICourseAdd) => ICourseAdd>;
+  form: UseFormReturnType<
+    ICourseAddEdit,
+    (values: ICourseAddEdit) => ICourseAddEdit
+  >;
   newUnitTitleLocale: UnitLocale;
 }
 

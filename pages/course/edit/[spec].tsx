@@ -1,6 +1,10 @@
 import Form from '@components/Course/Form/Form';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import { ICourseAdd, ICourseModel, IUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseAddEdit,
+  ICourseModel,
+  IUnit,
+} from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -15,7 +19,7 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useCallback } from 'react';
 
-const getInitialValues = ({
+const getInitialValuesCourse = ({
   title,
   description,
   children,
@@ -23,7 +27,26 @@ const getInitialValues = ({
   title: string;
   description: string;
   children: IUnit[];
-}): ICourseAdd => {
+}): ICourseAddEdit => {
+  return {
+    title: title,
+    description: description,
+    kind: 'course',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Himalayas%2C_Ama_Dablam%2C_Nepal.jpg/1280px-Himalayas%2C_Ama_Dablam%2C_Nepal.jpg',
+    children: children,
+  };
+};
+
+const getInitialValuesUnit = ({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: IUnit[];
+}): ICourseAddEdit => {
   return {
     title: title,
     description: description,
@@ -37,11 +60,12 @@ const getInitialValues = ({
 function CourseEdit(props: { course: ICourseModel }) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
-  const initialValues = getInitialValues({
+  const initialValues = getInitialValuesCourse({
     title: props.course.title,
     description: props.course.description,
     children: props.course.children,
   });
+  console.log('initialValues', initialValues);
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -55,7 +79,7 @@ function CourseEdit(props: { course: ICourseModel }) {
         return;
       }
 
-      const course: ICourseAdd = {
+      const course: ICourseAddEdit = {
         ...form.values,
       };
 
@@ -69,9 +93,14 @@ function CourseEdit(props: { course: ICourseModel }) {
         }
       }
 
-      const courseToSend = { ...course, children: emptyChildren };
+      const courseToSend: ICourseAddEdit = {
+        ...course,
+        children: emptyChildren,
+        kind: 'course',
+      };
+      console.log('courseToSend', courseToSend);
 
-      requestWithNotify<ICourseAdd, string>(
+      requestWithNotify<ICourseAddEdit, string>(
         `course/put/${props.course.spec}`,
         'PUT',
         locale.notify.course.edit,

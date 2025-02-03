@@ -1,9 +1,18 @@
+import { useRequest } from '@hooks/useRequest';
 import { ActionIcon, Box, Image, SimpleGrid, Text, Title } from '@mantine/core';
 import { InputWrapper } from '@ui/basics';
 import { FC, memo } from 'react';
 import { Plus } from 'tabler-icons-react';
 
 const ImageSelector: FC<{}> = () => {
+  const kind = 'course';
+  const { data } = useRequest<any, any>(
+    `image_preset/${kind}`,
+    'GET',
+    undefined
+  );
+  console.log('image preset', data);
+
   return (
     <Box>
       <InputWrapper label="Изображение" />

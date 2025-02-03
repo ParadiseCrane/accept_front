@@ -35,11 +35,11 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: { course: ICourseModel }) {
+function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
   const course = props.course;
   // TODO добавить реальные данные
-  // const hasWriteRights = props.has_write_rights;
-  const hasWriteRights = true;
+  const hasWriteRights = props.has_write_rights;
+  // const hasWriteRights = true;
   const units: IUnit[] = flattenCourse({
     course: course,
     children: course.children,
@@ -62,35 +62,39 @@ function Course(props: { course: ICourseModel }) {
     if (!!value && value.spec !== hash.slice(1)) setHash(value.spec);
   }, [value]);
 
-  const actions: IStickyAction[] = useMemo(
-    () =>
-      hasWriteRights
-        ? [
-            {
-              color: 'grape',
-              icon: <Dashboard height={20} width={20} />,
-              href: `/dashboard/course/${course.spec}`,
-              description: locale.tip.sticky.course.dashboard,
-            },
-            {
-              color: 'green',
-              href: `/course/edit/${course.spec}`,
-              icon: <Pencil height={20} width={20} />,
-              description: locale.tip.sticky.course.edit,
-            },
-            {
-              color: 'red',
-              onClick: () => {
-                setOpenModal(true);
-              },
-              icon: <Trash height={20} width={20} />,
-              description: locale.tip.sticky.course.delete,
-            },
-          ]
-        : [],
+  const actions: IStickyAction[] = useMemo(() => {
+    const innerActions: IStickyAction[] = [];
 
-    [hasWriteRights]
-  );
+    if (value.spec === course.spec) {
+      innerActions.push({
+        color: 'grape',
+        icon: <Dashboard height={20} width={20} />,
+        href: `/dashboard/course/${course.spec}`,
+        description: locale.tip.sticky.course.dashboard,
+      });
+    }
+
+    if (hasWriteRights) {
+      innerActions.push(
+        {
+          color: 'green',
+          href: `/course/edit/${course.spec}`,
+          icon: <Pencil height={20} width={20} />,
+          description: locale.tip.sticky.course.edit,
+        },
+        {
+          color: 'red',
+          onClick: () => {
+            setOpenModal(true);
+          },
+          icon: <Trash height={20} width={20} />,
+          description: locale.tip.sticky.course.delete,
+        }
+      );
+    }
+
+    return innerActions;
+  }, [hasWriteRights, value]);
 
   return (
     <>
@@ -117,9 +121,8 @@ function Course(props: { course: ICourseModel }) {
           next={handlers.next}
         />
         <Main key={hash} />
-        {value.spec === course.spec && actions.length > 0 && (
-          <Sticky actions={actions} />
-        )}
+        {(value.kind == 'course' || value.kind == 'unit') &&
+          actions.length > 0 && <Sticky actions={actions} />}
         <DeleteModal
           active={openModal}
           setActive={setOpenModal}
@@ -160,6 +163,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         course,
+        has_write_rights: true,
       },
     };
   }
