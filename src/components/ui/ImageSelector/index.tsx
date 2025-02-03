@@ -57,14 +57,14 @@ const ImageSelector: FC<{
             key={item}
           />
         ))}
-        {presets && (
-          <PresetSingleSelect
-            label={'Выберите набор'}
-            presets={presets}
-            select={(item: IImagePreset) => setCurrentPreset(item)}
-          />
-        )}
       </SimpleGrid>
+      {presets && (
+        <PresetSingleSelect
+          label={'Выберите набор'}
+          presets={presets}
+          select={(item: IImagePreset) => setCurrentPreset(item)}
+        />
+      )}
     </Box>
   );
 };

@@ -1,4 +1,5 @@
 import { IImagePreset } from '@custom-types/data/IImagePreset';
+import { useLocale } from '@hooks/useLocale';
 import { ComboboxItem } from '@mantine/core';
 import { Select } from '@ui/basics';
 import React, { FC, memo } from 'react';
@@ -21,15 +22,16 @@ const PresetSingleSelect: FC<PresetSelectProps> = ({
         value: item.name,
       }) as ComboboxItem
   );
+  const { locale } = useLocale();
   return (
     <Select
       searchable
       data={data}
-      label={label}
-      placeholder={label}
+      label={locale.course.selectImagePreset}
+      placeholder={locale.course.presetName}
       clearable
       maxDropdownHeight={400}
-      nothingFoundMessage={'nothingFound'}
+      nothingFoundMessage={locale.course.presetNotFound}
       filter={({ options, search }) =>
         (options as ComboboxItem[]).filter(
           (item) =>
