@@ -1,21 +1,14 @@
 import { ICourseAddEdit } from '@custom-types/data/ICourse';
 import { IImagePreset } from '@custom-types/data/IImagePreset';
 import { useRequest } from '@hooks/useRequest';
-import {
-  ActionIcon,
-  Box,
-  Combobox,
-  Image,
-  SimpleGrid,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Box, Image, SimpleGrid } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { InputWrapper } from '@ui/basics';
 import PresetSingleSelect from '@ui/selectors/PresetSingleSelect/PresetSingleSelect';
 import { getCookie } from '@utils/cookies';
 import { FC, memo, useEffect, useState } from 'react';
 import { Plus } from 'tabler-icons-react';
+import { ImageComponent } from './ImageComponent/ImageComponent';
 
 // TODO заменить на реальные данные
 const allImages: string[] = [
@@ -47,13 +40,15 @@ const ImageSelector: FC<{
     <Box>
       <InputWrapper label="Изображение" />
       <SimpleGrid cols={3}>
-        {initialImage && (
+        {/* {initialImage && (
           <Image alt="Current image" src={`/api/image/${initialImage}`} />
-        )}
+        )} */}
         {allImages.map((item, index) => (
-          <Image
-            alt={`Image ${index + 1}`}
-            src={`/api/image/${item}`}
+          <ImageComponent
+            index={index}
+            item={item}
+            onClick={() => form.setFieldValue('image', item)}
+            active={form.values.image === item}
             key={item}
           />
         ))}
