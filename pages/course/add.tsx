@@ -40,7 +40,12 @@ function CourseAdd() {
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
-      if (form.validate().hasErrors) {
+      const errorCondition: boolean =
+        form.validate().hasErrors ||
+        form.values.description.length === 0 ||
+        form.values.image.length === 0 ||
+        form.values.title.length === 0;
+      if (errorCondition) {
         const id = newNotification({});
         errorNotification({
           id,

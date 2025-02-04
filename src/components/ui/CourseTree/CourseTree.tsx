@@ -26,7 +26,7 @@ const CourseTree: FC<{
   });
 
   return (
-    <InputWrapper label={'Название и структура'}>
+    <InputWrapper label={locale.course.nameAndStructure}>
       {treeUnitList
         .filter((element) => element.visible)
         .map((unit) => (

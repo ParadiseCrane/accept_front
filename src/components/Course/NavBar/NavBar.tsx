@@ -36,7 +36,7 @@ const NavBar: FC<{
       >
         <div style={{ overflow: 'scroll' }}>
           <Image
-            src={image}
+            src={`/api/image/${image}`}
             radius="md"
             h={100}
             fit="cover"

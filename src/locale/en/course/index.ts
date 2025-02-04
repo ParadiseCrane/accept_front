@@ -7,5 +7,7 @@ export const course = {
   selectImagePreset: 'Select image preset',
   presetName: 'Preset name',
   presetNotFound: 'No preset found',
+  nameAndStructure: 'Name and structure',
+  description: 'Description',
   modals,
 };

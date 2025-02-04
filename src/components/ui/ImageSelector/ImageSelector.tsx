@@ -9,6 +9,8 @@ import { getCookie } from '@utils/cookies';
 import { FC, memo, useEffect, useState } from 'react';
 import { Plus } from 'tabler-icons-react';
 import { ImageComponent } from './ImageComponent/ImageComponent';
+import { sendRequest } from '@requests/request';
+import { useLocale } from '@hooks/useLocale';
 
 // TODO заменить на реальные данные
 const allImages: string[] = [
@@ -27,37 +29,60 @@ const ImageSelector: FC<{
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
 }> = ({ initialImage, form }) => {
+  const initialImages: string[] = initialImage.length > 0 ? [initialImage] : [];
   const [presets, setPresets] = useState<IImagePreset[]>([]);
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
-  const [images, setImages] = useState<string[]>([]);
-  const { data } = useRequest('images_preset', 'GET', undefined);
+  const [images, setImages] = useState<string[]>(initialImages);
+  const { data: allPresets } = useRequest('images_preset', 'GET', undefined);
+
   useEffect(() => {
-    if (data) {
-      setPresets((data as any[]).filter((item) => item.kind === 'course'));
+    if (allPresets) {
+      setPresets(
+        (allPresets as IImagePreset[]).filter((item) => item.kind === 'course')
+      );
     }
-  }, [data]);
+  }, [allPresets]);
+
+  useEffect(() => {
+    if (currentPreset) {
+      const kind = 'course';
+      const name = currentPreset?.name;
+      sendRequest<any, any>(`images_preset/${kind}/${name}`, 'GET').then(
+        (res) => {
+          setImages(res.response);
+          form.setFieldValue('image', '');
+        }
+      );
+    }
+  }, [currentPreset]);
+
+  const { locale } = useLocale();
+
   return (
     <Box>
-      <InputWrapper label="Изображение" />
-      <SimpleGrid cols={3}>
-        {/* {initialImage && (
-          <Image alt="Current image" src={`/api/image/${initialImage}`} />
-        )} */}
-        {allImages.map((item, index) => (
-          <ImageComponent
-            index={index}
-            item={item}
-            onClick={() => form.setFieldValue('image', item)}
-            active={form.values.image === item}
-            key={item}
-          />
-        ))}
-      </SimpleGrid>
+      {images.length > 0 && (
+        <>
+          <InputWrapper label={locale.course.courseImage} />
+          <SimpleGrid cols={3}>
+            {images.map((item, index) => (
+              <ImageComponent
+                index={index}
+                item={item}
+                onClick={() => form.setFieldValue('image', item)}
+                active={form.values.image === item}
+                key={item}
+              />
+            ))}
+          </SimpleGrid>
+        </>
+      )}
       {presets && (
         <PresetSingleSelect
           label={'Выберите набор'}
           presets={presets}
-          select={(item: IImagePreset) => setCurrentPreset(item)}
+          select={(item: IImagePreset) => {
+            setCurrentPreset(item);
+          }}
         />
       )}
     </Box>

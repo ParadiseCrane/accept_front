@@ -24,17 +24,19 @@ const getInitialValuesCourse = ({
   title,
   description,
   children,
+  image,
 }: {
   title: string;
   description: string;
   children: IUnit[];
+  image: string;
 }): ICourseAddEdit => {
   return {
-    title: title,
-    description: description,
+    title,
+    description,
     kind: 'course',
-    image: '768a33f5-e38c-4ac5-a61d-822c6f68f5dd',
-    children: children,
+    image,
+    children,
   };
 };
 
@@ -63,14 +65,19 @@ function CourseEdit(props: { course: ICourseModel }) {
     title: props.course.title,
     description: props.course.description,
     children: props.course.children,
+    image: props.course.image,
   });
-  console.log('initialValues', initialValues);
   const searchParams = useSearchParams();
   console.log('searchParams has unit', searchParams.has('unit'));
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
-      if (form.validate().hasErrors) {
+      const errorCondition: boolean =
+        form.validate().hasErrors ||
+        form.values.description.length === 0 ||
+        form.values.image.length === 0 ||
+        form.values.title.length === 0;
+      if (errorCondition) {
         const id = newNotification({});
         errorNotification({
           id,

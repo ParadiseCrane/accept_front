@@ -1,10 +1,9 @@
 import { ICourse } from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
-import { AppShell, Center, Title } from '@mantine/core';
+import { AppShell, Center, Title, Image } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import Image from 'next/image';
 import { FC, memo, useEffect, useState } from 'react';
 
 const Main: FC = () => {
@@ -33,7 +32,7 @@ const Main: FC = () => {
     <AppShell.Main>
       {course.image.length > 0 && (
         <Image
-          src={course.image}
+          src={`/api/image/${course.image}`}
           alt="Picture of the course"
           width={600}
           height={200}
@@ -43,7 +42,6 @@ const Main: FC = () => {
             maxHeight: 200,
             objectFit: 'cover',
           }}
-          priority={true}
         />
       )}
       <Center>

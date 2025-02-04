@@ -1,7 +1,7 @@
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
-import Main from '@components/Course/Main';
-import NavBar from '@components/Course/NavBar';
+import Main from '@components/Course/Main/Main';
+import NavBar from '@components/Course/NavBar/NavBar';
 import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';

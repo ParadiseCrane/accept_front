@@ -7,5 +7,7 @@ export const course = {
   selectImagePreset: 'Выберите набор изображений',
   presetName: 'Название набора',
   presetNotFound: 'Набор не найден',
+  nameAndStructure: 'Название и структура',
+  description: 'Описание',
   modals,
 };

@@ -4,8 +4,8 @@ import { useLocale } from '@hooks/useLocale';
 import { Group, Stack } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
 import { Button, CustomEditor } from '@ui/basics';
-import { CourseTree } from '@ui/CourseTree';
-import ImageSelector from '@ui/ImageSelector';
+import { CourseTree } from '@ui/CourseTree/CourseTree';
+import ImageSelector from '@ui/ImageSelector/ImageSelector';
 import { FC, memo } from 'react';
 
 import styles from './styles.module.css';
@@ -29,9 +29,8 @@ const Form: FC<{
         />
         <ImageSelector initialImage={form.values.image} form={form} />
       </Group>
-      {/* TODO: Add locale */}
       <CustomEditor
-        label={locale.assignmentSchema.form.description}
+        label={locale.course.description}
         form={form}
         name="description"
       />
