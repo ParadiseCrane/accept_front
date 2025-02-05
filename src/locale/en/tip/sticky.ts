@@ -49,5 +49,6 @@ export const sticky = {
     edit: 'Edit course',
     delete: 'Delete course',
     dashboard: 'Course dashboard',
+    add: 'Create course',
   },
 };

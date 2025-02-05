@@ -38,6 +38,7 @@ export const titles = {
     add: 'Add course',
     edit: 'Edit course',
     spec: 'Course',
+    list: 'Courses',
   },
   assignment_schema: {
     add: 'Add assignment schema',

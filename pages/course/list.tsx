@@ -68,7 +68,7 @@ function CourseListPage() {
   const { locale } = useLocale();
   return (
     <div>
-      <Title title={locale.titles.group.list} />
+      <Title title={locale.titles.course.list} />
       <CourseList
         url={'/course'}
         refactorCourse={refactorCourse}
@@ -79,7 +79,7 @@ function CourseListPage() {
           color="var(--positive)"
           href={`/course/add`}
           icon={<Plus height={25} width={25} />}
-          description={locale.tip.sticky.group.add}
+          description={locale.tip.sticky.course.add}
         />
       )}
     </div>
