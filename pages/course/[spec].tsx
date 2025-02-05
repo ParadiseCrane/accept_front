@@ -26,7 +26,6 @@ const flattenCourse = ({
     order: '0',
     spec: course.spec,
     title: course.title,
-    origin: '',
   };
   let units: IUnit[] = [courseAsUnit];
   if (children.length === 0) return units;

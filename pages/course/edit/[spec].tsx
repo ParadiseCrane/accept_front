@@ -36,7 +36,6 @@ const getInitialValuesCourse = ({
     description,
     kind: 'course',
     image,
-    origin: '',
     children,
   };
 };
@@ -45,19 +44,16 @@ const getInitialValuesUnit = ({
   title,
   description,
   children,
-  origin,
 }: {
   title: string;
   description: string;
   children: IUnit[];
-  origin: string;
 }): ICourseAddEdit => {
   return {
     title: title,
     description: description,
     kind: 'unit',
     image: '',
-    origin,
     children: children,
   };
 };

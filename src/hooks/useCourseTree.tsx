@@ -185,7 +185,7 @@ const createTreeUnitListCourseShow = ({
     list.push(
       createTreeUnit({
         courseUnit: children[i],
-        courseUnitList: [{ ...courseElement, origin: '' }, ...children],
+        courseUnitList: [courseElement, ...children],
         index: i,
         editMode,
       })
@@ -212,7 +212,6 @@ const convertToCourseUnitList = ({
           //   ? ''
           //   : treeUnitList[i].spec,
           title: treeUnitList[i].title,
-          origin: '',
         });
       }
     }
