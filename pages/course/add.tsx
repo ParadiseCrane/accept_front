@@ -26,6 +26,7 @@ const getInitialValues = ({
     description: description,
     kind: 'course',
     image: '',
+    origin: '',
     children: [],
   };
 };
@@ -63,13 +64,14 @@ function CourseAdd() {
       const emptyChildren: IUnit[] = [];
       for (let i = 0; i < children.length; i++) {
         if (children[i].spec.includes('newElement')) {
-          emptyChildren.push({ ...children[i], spec: '' });
+          emptyChildren.push({ ...children[i], spec: '', origin: '' });
         } else {
           emptyChildren.push(children[i]);
         }
       }
 
       const courseToSend = { ...course, children: emptyChildren };
+      console.log('courseToSend', courseToSend);
 
       requestWithNotify<ICourseAddEdit, string>(
         'course/add',

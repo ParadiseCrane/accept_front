@@ -26,6 +26,7 @@ export interface ICourseAddEdit {
   description: string;
   kind: 'course' | 'unit';
   image: string;
+  origin: string;
   children: IUnit[];
 }
 
@@ -37,6 +38,7 @@ export interface ICourseModel {
   description: string;
   kind: 'course';
   image: string;
+  origin: string;
   children: IUnit[];
 }
 
@@ -55,4 +57,11 @@ export interface IUnit {
   kind: 'course' | 'lesson' | 'unit';
   title: string;
   order: string;
+  origin: string;
+}
+
+export interface ICourseDisplay {
+  spec: string;
+  title: string;
+  readonly: boolean;
 }

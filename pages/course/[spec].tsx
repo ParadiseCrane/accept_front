@@ -26,6 +26,7 @@ const flattenCourse = ({
     order: '0',
     spec: course.spec,
     title: course.title,
+    origin: '',
   };
   let units: IUnit[] = [courseAsUnit];
   if (children.length === 0) return units;
@@ -35,7 +36,11 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
+function Course(props: {
+  course: ICourseModel;
+  has_write_rights: boolean;
+  depth: number;
+}) {
   const course = props.course;
   // TODO добавить реальные данные
   const hasWriteRights = props.has_write_rights;
@@ -159,13 +164,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const json = await response.json();
     const course = {
-      ...json,
+      ...json.course,
       spec: query.spec,
     };
 
     return {
       props: {
         course,
+        depth: json.depth,
         has_write_rights: true,
       },
     };
