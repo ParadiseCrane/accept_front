@@ -64,11 +64,12 @@ function CourseEdit(props: { course: ICourseModel }) {
   const initialValues = getInitialValuesCourse({
     title: props.course.title,
     description: props.course.description,
-    children: props.course.children,
+    children: props.course.children ?? [],
     image: props.course.image,
   });
   const searchParams = useSearchParams();
   console.log('searchParams has unit', searchParams.has('unit'));
+  console.log('initialValues', initialValues);
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -162,7 +163,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const json = await response.json();
     const course = {
-      ...json,
+      ...json.course,
       spec: query.spec,
     };
 

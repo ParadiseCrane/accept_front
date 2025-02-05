@@ -14,6 +14,7 @@ import SingularSticky from '@ui/Sticky/SingularSticky';
 import Title from '@ui/Title/Title';
 import { ReactNode } from 'react';
 import { Check, Pencil, Plus, X } from 'tabler-icons-react';
+import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -35,7 +36,9 @@ const refactorCourse = (course: ICourseDisplay): any => ({
     value: course.title,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <div style={{ color: 'var(--primary)' }}>{course.title}</div>
+        <Link className={tableStyles.title} href={`/course/${course.spec}`}>
+          {course.title}
+        </Link>
         <div
           style={{
             display: 'flex',
