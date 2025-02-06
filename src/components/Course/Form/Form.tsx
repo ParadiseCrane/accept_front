@@ -16,7 +16,15 @@ const Form: FC<{
   buttonLabel: string;
   shouldNotify: boolean;
   editMode: boolean;
-}> = ({ handleSubmit, initialValues, buttonLabel, shouldNotify, editMode }) => {
+  depth: number;
+}> = ({
+  handleSubmit,
+  initialValues,
+  buttonLabel,
+  shouldNotify,
+  editMode,
+  depth,
+}) => {
   const { locale } = useLocale();
   const form = useForm<ICourseAddEdit>({ initialValues: initialValues });
   return (
@@ -26,8 +34,11 @@ const Form: FC<{
           titleProps={{ ...form.getInputProps('title') }}
           initialUnits={form.values.children}
           form={form}
+          depth={depth}
         />
-        <ImageSelector initialImage={form.values.image} form={form} />
+        {form.values.kind === 'course' && (
+          <ImageSelector initialImage={form.values.image} form={form} />
+        )}
       </Group>
       <CustomEditor
         label={locale.course.description}

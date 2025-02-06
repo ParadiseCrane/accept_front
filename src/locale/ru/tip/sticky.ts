@@ -47,6 +47,7 @@ export const sticky = {
   },
   course: {
     edit: 'Редактировать курс',
+    editUnit: 'Редактировать модуль',
     delete: 'Удалить курс',
     dashboard: 'Панель управления курсом',
     add: 'Создать курс',

@@ -93,6 +93,7 @@ function CourseAdd() {
         buttonLabel={locale.create}
         initialValues={initialValues}
         editMode={false}
+        depth={0}
       />
     </Wrapper>
   );

@@ -78,14 +78,11 @@ function Course(props: {
       });
     }
 
-    if (hasWriteRights) {
+    if (hasWriteRights && value.kind === 'course') {
       innerActions.push(
         {
           color: 'green',
-          href:
-            value.kind === 'course'
-              ? `/course/edit/${course.spec}`
-              : `/course/edit/${course.spec}?unit=${value.spec}`,
+          href: `/course/edit/${course.spec}`,
           icon: <Pencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit,
         },
@@ -98,6 +95,15 @@ function Course(props: {
           description: locale.tip.sticky.course.delete,
         }
       );
+    }
+
+    if (hasWriteRights && value.kind === 'unit') {
+      innerActions.push({
+        color: 'green',
+        href: `/course/edit/${course.spec}?unit=${value.spec}`,
+        icon: <Pencil height={20} width={20} />,
+        description: locale.tip.sticky.course.editUnit,
+      });
     }
 
     return innerActions;

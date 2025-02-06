@@ -25,40 +25,24 @@ const getInitialValuesCourse = ({
   description,
   children,
   image,
+  kind,
 }: {
   title: string;
   description: string;
   children: IUnit[];
   image: string;
+  kind: 'unit' | 'course';
 }): ICourseAddEdit => {
   return {
     title,
     description,
-    kind: 'course',
+    kind,
     image,
     children,
   };
 };
 
-const getInitialValuesUnit = ({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description: string;
-  children: IUnit[];
-}): ICourseAddEdit => {
-  return {
-    title: title,
-    description: description,
-    kind: 'unit',
-    image: '',
-    children: children,
-  };
-};
-
-function CourseEdit(props: { course: ICourseModel }) {
+function CourseEdit(props: { course: ICourseModel; depth: number }) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const initialValues = getInitialValuesCourse({
@@ -66,9 +50,10 @@ function CourseEdit(props: { course: ICourseModel }) {
     description: props.course.description,
     children: props.course.children ?? [],
     image: props.course.image,
+    kind: props.course.kind,
   });
   const searchParams = useSearchParams();
-  console.log('searchParams has unit', searchParams.has('unit'));
+  console.log('props.depth', props.depth);
   console.log('initialValues', initialValues);
 
   const handleSubmit = useCallback(
@@ -155,8 +140,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  const isUnitEdit = req.url?.includes('?unit=');
+  const url = isUnitEdit
+    ? req.url?.split('?unit=').pop()!.split('&spec')[0]
+    : query.spec;
+
   const response = await fetchWrapperStatic({
-    url: `course-edit/${query.spec}`,
+    url: `course-edit/${url}`,
     req,
   });
 
@@ -170,6 +160,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         course,
+        depth: json.depth,
       },
     };
   }

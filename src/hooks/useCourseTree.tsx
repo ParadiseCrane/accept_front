@@ -1,8 +1,10 @@
-import { COURSE_TREE_MAX_DEPTH } from '@constants/Limits';
+import { COURSE_TREE_MAX_DEPTH as depthConstant } from '@constants/Limits';
 import { ICourseAddEdit, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+let COURSE_TREE_MAX_DEPTH = depthConstant;
 
 type UpOrDown = 'UP' | 'DOWN';
 
@@ -1455,6 +1457,7 @@ interface IUseCourseAddTreeProps {
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
   newUnitTitleLocale: UnitLocale;
+  initialDepth: number;
 }
 
 interface IUseCourseShowTree {
@@ -1494,7 +1497,9 @@ export const useCourseAddTree = ({
   courseUnitList,
   form,
   newUnitTitleLocale,
+  initialDepth,
 }: IUseCourseAddTreeProps): IUseCourseAddTree => {
+  COURSE_TREE_MAX_DEPTH = depthConstant - initialDepth;
   const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
     createTreeUnitList({
       courseUnitList: courseUnitList,

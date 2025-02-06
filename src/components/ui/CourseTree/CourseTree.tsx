@@ -14,7 +14,8 @@ const CourseTree: FC<{
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
-}> = ({ titleProps, initialUnits, form }) => {
+  depth: number;
+}> = ({ titleProps, initialUnits, form, depth }) => {
   const { locale } = useLocale();
   const { treeUnitList, actions, checkers } = useCourseAddTree({
     courseUnitList: initialUnits,
@@ -23,6 +24,7 @@ const CourseTree: FC<{
       lesson: locale.ui.courseTree.newLesson,
       unit: locale.ui.courseTree.newUnit,
     },
+    initialDepth: depth,
   });
 
   return (
