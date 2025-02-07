@@ -65,8 +65,6 @@ const ImageSelector: FC<{
   }, [currentPreset]);
 
   const { locale } = useLocale();
-  console.log('images state', images);
-  console.log('currentPreset', currentPreset);
 
   return (
     <Box>
@@ -78,25 +76,21 @@ const ImageSelector: FC<{
           setCurrentPreset(item);
         }}
       />
-
-      <>
-        <InputWrapper label={locale.course.courseImage} />
-        <SimpleGrid cols={3}>
-          {images.map((item, index) => (
-            <ImageComponent
-              index={index}
-              item={item}
-              onClick={() => {
-                if (item.length > 0) {
-                  form.setFieldValue('image', item);
-                }
-              }}
-              active={form.values.image === item}
-              key={index}
-            />
-          ))}
-        </SimpleGrid>
-      </>
+      <SimpleGrid cols={3} pt={20}>
+        {images.map((item, index) => (
+          <ImageComponent
+            index={index}
+            item={item}
+            onClick={() => {
+              if (item.length > 0) {
+                form.setFieldValue('image', item);
+              }
+            }}
+            active={form.values.image === item}
+            key={index}
+          />
+        ))}
+      </SimpleGrid>
     </Box>
   );
 };

@@ -340,6 +340,34 @@ const findClosestSiblingSameDepth = ({
   }
 };
 
+const findClosestUnitSiblingSameDepth = ({
+  currentElement,
+  treeUnitList,
+  upOrDown,
+}: {
+  currentElement: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+  upOrDown: UpOrDown;
+}): ITreeUnit => {
+  if (upOrDown === 'UP') {
+    const allSiblings = treeUnitList.filter(
+      (element) =>
+        element.index < currentElement.index &&
+        element.depth === currentElement.depth &&
+        element.kind === 'unit'
+    );
+    return allSiblings.length > 0 ? allSiblings.pop()! : currentElement;
+  } else {
+    const allSiblings = treeUnitList.filter(
+      (element) =>
+        element.depth === currentElement.depth &&
+        element.index > currentElement.index &&
+        element.kind === 'unit'
+    );
+    return allSiblings.length > 0 ? allSiblings[0] : currentElement;
+  }
+};
+
 // исключить элементы из массива
 const excludeElementsFromList = ({
   list,
@@ -655,7 +683,7 @@ const getMovedElementsForUpDownParentChange = (
   parent: ITreeUnit,
   upOrDown: UpOrDown
 ): ITreeUnit[] => {
-  const parentSibling = findClosestSiblingSameDepth({
+  const parentSibling = findClosestUnitSiblingSameDepth({
     currentElement: parent,
     treeUnitList: data.treeUnitList,
     upOrDown: upOrDown,
@@ -1051,7 +1079,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   if (parentChanges) {
     // необходимо отобразить прямых потомков нового родителя
     const parentSibling: ITreeUnit = {
-      ...findClosestSiblingSameDepth({
+      ...findClosestUnitSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
         upOrDown: 'UP',
@@ -1158,7 +1186,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     );
     // мне нужны все children от parentSibling
     const parentSibling: ITreeUnit = {
-      ...findClosestSiblingSameDepth({
+      ...findClosestUnitSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
         upOrDown: 'DOWN',
@@ -1335,15 +1363,23 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
   ) {
     return true;
   }
-  // if (
-  //   data.treeUnitList.filter(
-  //     (element) =>
-  //       element.index < data.currentUnit.index &&
-  //       element.depth + 1 === data.currentUnit.depth
-  //   ).length > 0
-  // ) {
-  //   return true;
-  // }
+  const parent = data.treeUnitList.filter(
+    (element) => element.spec === data.currentUnit.parentSpec
+  )[0];
+  const directChildren = findChildrenDirect({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
+  const isFirstDirectChild = directChildren[0].spec === data.currentUnit.spec;
+  const parentHasUnitSibling =
+    findClosestUnitSiblingSameDepth({
+      currentElement: parent,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'UP',
+    }).spec !== parent.spec;
+  if (isFirstDirectChild && parentHasUnitSibling) {
+    return true;
+  }
   return false;
 };
 
@@ -1359,15 +1395,24 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
   ) {
     return true;
   }
-  // if (
-  //   data.treeUnitList.filter(
-  //     (element) =>
-  //       element.index > data.currentUnit.index &&
-  //       element.depth + 1 === data.currentUnit.depth
-  //   ).length > 0
-  // ) {
-  //   return true;
-  // }
+  const parent = data.treeUnitList.filter(
+    (element) => element.spec === data.currentUnit.parentSpec
+  )[0];
+  const directChildren = findChildrenDirect({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
+  const isLastDirectChild =
+    directChildren.pop()!.spec === data.currentUnit.spec;
+  const parentHasUnitSibling =
+    findClosestUnitSiblingSameDepth({
+      currentElement: parent,
+      treeUnitList: data.treeUnitList,
+      upOrDown: 'DOWN',
+    }).spec !== parent.spec;
+  if (isLastDirectChild && parentHasUnitSibling) {
+    return true;
+  }
   return false;
 };
 

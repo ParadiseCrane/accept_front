@@ -52,9 +52,6 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
     image: props.course.image,
     kind: props.course.kind,
   });
-  const searchParams = useSearchParams();
-  console.log('props.depth', props.depth);
-  console.log('initialValues', initialValues);
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
