@@ -69,14 +69,12 @@ function Course(props: {
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];
 
-    if (value.spec === course.spec) {
-      innerActions.push({
-        color: 'grape',
-        icon: <Dashboard height={20} width={20} />,
-        href: `/dashboard/course/${course.spec}`,
-        description: locale.tip.sticky.course.dashboard,
-      });
-    }
+    innerActions.push({
+      color: 'grape',
+      icon: <Dashboard height={20} width={20} />,
+      href: `/dashboard/course/${course.spec}`,
+      description: locale.tip.sticky.course.dashboard,
+    });
 
     if (hasWriteRights && value.kind === 'course') {
       innerActions.push(

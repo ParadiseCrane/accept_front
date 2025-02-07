@@ -23,16 +23,15 @@ const allImages: string[] = [
 ];
 
 const ImageSelector: FC<{
-  initialImage: string;
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
-}> = ({ initialImage, form }) => {
-  const initialImages: string[] = initialImage.length > 0 ? [initialImage] : [];
+}> = ({ form }) => {
+  const emptyImageList = ['', '', '', '', '', ''];
   const [presets, setPresets] = useState<IImagePreset[]>([]);
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
-  const [images, setImages] = useState<string[]>(initialImages);
+  const [images, setImages] = useState<string[]>(emptyImageList);
   const { data: allPresets } = useRequest('images_preset', 'GET', undefined);
 
   useEffect(() => {
@@ -40,6 +39,7 @@ const ImageSelector: FC<{
       setPresets(
         (allPresets as IImagePreset[]).filter((item) => item.kind === 'course')
       );
+      setCurrentPreset((allPresets as IImagePreset[])[0]);
     }
   }, [allPresets]);
 
@@ -49,42 +49,54 @@ const ImageSelector: FC<{
       const name = currentPreset?.name;
       sendRequest<any, any>(`images_preset/${kind}/${name}`, 'GET').then(
         (res) => {
-          setImages(res.response);
-          form.setFieldValue('image', '');
+          const responseImages: string[] = res.response;
+          let imagesLocal = [
+            form.values.image,
+            ...responseImages.filter((item) => item !== form.values.image),
+            ...emptyImageList,
+          ];
+          if (imagesLocal.length > 6) {
+            imagesLocal = imagesLocal.slice(0, 6);
+          }
+          setImages((prev) => imagesLocal);
         }
       );
     }
   }, [currentPreset]);
 
   const { locale } = useLocale();
+  console.log('images state', images);
+  console.log('currentPreset', currentPreset);
 
   return (
     <Box>
-      {images.length > 0 && (
-        <>
-          <InputWrapper label={locale.course.courseImage} />
-          <SimpleGrid cols={3}>
-            {images.map((item, index) => (
-              <ImageComponent
-                index={index}
-                item={item}
-                onClick={() => form.setFieldValue('image', item)}
-                active={form.values.image === item}
-                key={item}
-              />
-            ))}
-          </SimpleGrid>
-        </>
-      )}
-      {presets && (
-        <PresetSingleSelect
-          label={'Выберите набор'}
-          presets={presets}
-          select={(item: IImagePreset) => {
-            setCurrentPreset(item);
-          }}
-        />
-      )}
+      <PresetSingleSelect
+        label={'Выберите набор'}
+        presets={presets}
+        currentPreset={currentPreset}
+        select={(item: IImagePreset) => {
+          setCurrentPreset(item);
+        }}
+      />
+
+      <>
+        <InputWrapper label={locale.course.courseImage} />
+        <SimpleGrid cols={3}>
+          {images.map((item, index) => (
+            <ImageComponent
+              index={index}
+              item={item}
+              onClick={() => {
+                if (item.length > 0) {
+                  form.setFieldValue('image', item);
+                }
+              }}
+              active={form.values.image === item}
+              key={index}
+            />
+          ))}
+        </SimpleGrid>
+      </>
     </Box>
   );
 };

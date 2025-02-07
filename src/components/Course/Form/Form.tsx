@@ -36,9 +36,7 @@ const Form: FC<{
           form={form}
           depth={depth}
         />
-        {form.values.kind === 'course' && (
-          <ImageSelector initialImage={form.values.image} form={form} />
-        )}
+        {form.values.kind === 'course' && <ImageSelector form={form} />}
       </Group>
       <CustomEditor
         label={locale.course.description}

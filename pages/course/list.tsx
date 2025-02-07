@@ -39,22 +39,6 @@ const refactorCourse = (course: ICourseDisplay): any => ({
         <Link className={tableStyles.title} href={`/course/${course.spec}`}>
           {course.title}
         </Link>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 'var(--spacer-xs)',
-          }}
-        >
-          <Icon
-            color="var(--primary)"
-            size="xs"
-            href={`/course/edit/${course.spec}`}
-          >
-            <Pencil />
-          </Icon>
-          {/* <DeleteModal group={group} /> */}
-        </div>
       </div>
     ),
   },

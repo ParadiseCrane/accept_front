@@ -7,12 +7,14 @@ import React, { FC, memo } from 'react';
 export interface PresetSelectProps {
   label: string;
   presets: IImagePreset[];
+  currentPreset: IImagePreset | null;
   select: (_: IImagePreset) => void;
 }
 
 const PresetSingleSelect: FC<PresetSelectProps> = ({
   label,
   presets,
+  currentPreset,
   select,
 }) => {
   const data = presets.map(
@@ -25,8 +27,10 @@ const PresetSingleSelect: FC<PresetSelectProps> = ({
   const { locale } = useLocale();
   return (
     <Select
+      defaultValue={data.length > 0 ? data[0].value : ''}
       searchable
       data={data}
+      value={currentPreset ? currentPreset.name : null}
       label={locale.course.selectImagePreset}
       placeholder={locale.course.presetName}
       clearable
