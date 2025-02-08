@@ -50,11 +50,21 @@ const ImageSelector: FC<{
       sendRequest<any, any>(`images_preset/${kind}/${name}`, 'GET').then(
         (res) => {
           const responseImages: string[] = res.response;
-          let imagesLocal = [
-            form.values.image,
-            ...responseImages.filter((item) => item !== form.values.image),
-            ...emptyImageList,
-          ];
+          let imagesLocal =
+            form.values.image.length > 0
+              ? [
+                  form.values.image,
+                  ...responseImages.filter(
+                    (item) => item !== form.values.image
+                  ),
+                  ...emptyImageList,
+                ]
+              : [
+                  ...responseImages.filter(
+                    (item) => item !== form.values.image
+                  ),
+                  ...emptyImageList,
+                ];
           if (imagesLocal.length > 6) {
             imagesLocal = imagesLocal.slice(0, 6);
           }
