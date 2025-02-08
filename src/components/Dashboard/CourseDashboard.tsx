@@ -1,6 +1,6 @@
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
-import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
+import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import { STICKY_SIZES } from '@constants/Sizes';
 import {
   ITournament,
@@ -40,30 +40,30 @@ import Results from './Results/Results';
 import Settings from './Settings/Settings';
 import TaskList from './TaskList/TaskList';
 import TeamList from './TeamList/TeamList';
+import { ICourseModel, ICourseResponse } from '@custom-types/data/ICourse';
+import Moderators from './Moderators/Moderators';
 
 const CourseDashboard: FC<{
   spec: string;
 }> = ({ spec }) => {
-  // return <div>CourseDashboard</div>;
-
   const { locale } = useLocale();
 
-  const [tournament, setTournament] = useState<ITournament>();
+  const [course, setCourse] = useState<ICourseModel>();
 
-  const { data, refetch } = useRequest<undefined, ITournamentResponse>(
+  const { data, refetch } = useRequest<undefined, ICourseModel>(
     `course/${spec}`,
     'GET'
   );
 
-  const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
+  const refetchCourse = useInterval(() => refetch(false), 60 * 1000);
 
   useEffect(() => {
-    refetchTournament.start();
-    return refetchTournament.stop;
+    refetchCourse.start();
+    return refetchCourse.stop;
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if (data) setTournament(data.tournament);
+    if (data) setCourse(data);
   }, [data]);
 
   const { hasNewMessages } = useChatHosts();
@@ -71,82 +71,25 @@ const CourseDashboard: FC<{
   const links: IMenuLink[] = useMemo(() => {
     let links = [
       {
-        page: tournament && (
-          <TimeInfo
-            type={'tournament'}
-            entity={{
-              title: tournament.title,
-              spec: tournament.spec,
-              creator: tournament.author,
-            }}
-            timeInfo={{
-              start: tournament.start,
-              end: tournament.end,
-              froze: tournament.frozeResults,
-              status: tournament.status.spec as 0 | 1 | 2,
-            }}
-            refetch={() => refetch(false)}
-          />
-        ),
-        icon: <Vocabulary color="var(--secondary)" />,
-        title: locale.dashboard.tournament.mainInfo,
-        section: 'tournament',
-      },
-      {
-        page: <ChatPage spec={spec} entity="tournament" />,
+        page: <ChatPage spec={spec} entity="course" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />{' '}
           </Indicator>
         ),
-        title: locale.dashboard.tournament.chat,
+        title: locale.dashboard.course.chat,
         section: 'chat',
       },
       {
-        page: tournament && (
-          <AttemptsList
-            key={'all'}
-            type={'tournament'}
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-          />
-        ),
-        icon: <AlignRight color="var(--secondary)" />,
-        title: locale.dashboard.tournament.attempts,
-        section: 'attempts',
-      },
-      {
-        page: (
-          <ParticipantsListWithBan
-            type={'tournament'}
-            team={tournament?.maxTeamSize != 1}
-            spec={spec}
-          />
-        ),
+        page: <Moderators />,
         icon: <Users color="var(--secondary)" />,
-        title: locale.dashboard.tournament.participants,
-        section: 'participants',
-      },
-      {
-        page: tournament && (
-          <CreateNotification spec={tournament.spec} type="tournament" />
-        ),
-        icon: <BellPlus color="var(--secondary)" />,
-        title: locale.dashboard.tournament.createNotification,
-        section: 'create_notification',
-      },
-      {
-        page: tournament && <Settings tournament={tournament} />,
-        icon: <SettingsIcon color="var(--secondary)" />,
-        title: locale.dashboard.tournament.settings.self,
-        section: 'settings',
+        title: locale.dashboard.course.moderators,
+        section: 'moderators',
       },
     ];
 
     return links;
-  }, [tournament, hasNewMessages, locale, refetch, spec]);
+  }, [course, hasNewMessages, locale, refetch, spec]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -162,8 +105,8 @@ const CourseDashboard: FC<{
           height={STICKY_SIZES[width] / 3}
         />
       ),
-      href: `/tournament/edit/${spec}`,
-      description: locale.tip.sticky.tournament.edit,
+      href: `/course/edit/${spec}`,
+      description: locale.tip.sticky.course.edit,
     },
     {
       color: 'red',
@@ -174,7 +117,7 @@ const CourseDashboard: FC<{
         />
       ),
       onClick: () => setActiveModal(true),
-      description: locale.tip.sticky.tournament.delete,
+      description: locale.tip.sticky.course.delete,
     },
   ];
 
@@ -182,11 +125,11 @@ const CourseDashboard: FC<{
     <>
       {isTeacher && (
         <>
-          {tournament && (
+          {course && (
             <DeleteModal
               active={activeModal}
               setActive={setActiveModal}
-              tournament={tournament}
+              course={course}
             />
           )}
           <Sticky actions={actions} />

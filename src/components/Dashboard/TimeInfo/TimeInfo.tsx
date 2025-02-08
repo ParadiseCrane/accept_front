@@ -61,7 +61,7 @@ interface BaseEntity {
 }
 
 const TimeInfo: FC<{
-  type: 'tournament' | 'assignment';
+  type: 'tournament' | 'assignment' | 'course';
   timeInfo: BaseTimeInfo;
   refetch: () => void;
   entity: BaseEntity;

@@ -19,7 +19,7 @@ function CourseDashboardPage(props: { spec: string }) {
       <Title title={locale.titles.dashboard.course} />
       <ChatHostsProvider
         spec={props.spec}
-        entity={'tournament'}
+        entity={'course'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <CourseDashboard spec={props.spec} />
