@@ -6,11 +6,36 @@ import { Users, ChevronRight } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
-import { IImagePreset } from '@custom-types/data/IImagePreset';
+import { useRouter } from 'next/router';
+import { IGroupBaseInfo } from '@custom-types/data/IGroup';
+import { useSearchParams } from 'next/navigation';
+
+const initialGroups: IGroupBaseInfo[] = [
+  {
+    spec: '25',
+    name: 'Group 1',
+  },
+  {
+    spec: '34',
+    name: 'Group 2',
+  },
+  {
+    spec: '47',
+    name: 'Group 3',
+  },
+  {
+    spec: '59',
+    name: 'Group 4',
+  },
+];
 
 const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
   const [showSelector, setShowSelector] = useState(false);
+  const [groups, setGroups] = useState<IGroupBaseInfo[]>(initialGroups);
+  const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
   const { locale } = useLocale();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // const { data, loading, refetch } = useRequest<{}, BaseTimeInfo, TimeInfo>(
   //   url,
@@ -23,6 +48,36 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
   //     status: data.status,
   //   })
   // );
+
+  useEffect(() => {
+    setCurrentGroup(initialGroups[0]);
+    changeCurrentGroup(initialGroups[0]);
+  }, []);
+
+  const changeCurrentGroup = (item: IGroupBaseInfo) => {
+    setCurrentGroup(item);
+    if (searchParams.has('section')) {
+      changeParams(searchParams.get('section')!, item.spec);
+    }
+  };
+
+  const changeParams = (section: string, group: string) => {
+    const regExp = /\[.*?\]/g;
+    let pathName = router.pathname;
+    const list = pathName.match(regExp);
+    if (list) {
+      for (let i = 0; i < list.length; i++) {
+        const variableName = list[i].replace('[', '').replace(']', '');
+        const value = router.query[variableName];
+        pathName = pathName.replace(`[${variableName}]`, `${value}`);
+      }
+    }
+    const newPathObject = {
+      pathname: pathName,
+      query: { section: section, group: group },
+    };
+    router.push(newPathObject, undefined, { shallow: true });
+  };
 
   return (
     <>
@@ -49,9 +104,11 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
             <div className={styles.selector}>
               <CourseGroupSelector
                 label={''}
-                groups={[]}
-                currentGroup={null}
-                select={() => {}}
+                groups={groups}
+                currentGroup={currentGroup}
+                select={(item: IGroupBaseInfo) => {
+                  changeCurrentGroup(item);
+                }}
               />
             </div>
           </div>

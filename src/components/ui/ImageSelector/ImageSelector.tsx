@@ -58,13 +58,11 @@ const ImageSelector: FC<{
           if (imagesLocal.length > 6) {
             imagesLocal = imagesLocal.slice(0, 6);
           }
-          setImages((prev) => imagesLocal);
+          setImages(imagesLocal);
         }
       );
     }
   }, [currentPreset]);
-
-  const { locale } = useLocale();
 
   return (
     <Box>

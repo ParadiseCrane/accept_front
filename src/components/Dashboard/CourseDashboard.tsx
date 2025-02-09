@@ -1,11 +1,5 @@
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import { STICKY_SIZES } from '@constants/Sizes';
-import {
-  ITournament,
-  ITournamentResponse,
-} from '@custom-types/data/ITournament';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
@@ -17,30 +11,10 @@ import { Indicator } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
-import {
-  AddressBook,
-  AlignRight,
-  Ban,
-  BellPlus,
-  Messages,
-  Pencil,
-  Puzzle,
-  Settings as SettingsIcon,
-  Table,
-  Trash,
-  Users,
-  Vocabulary,
-} from 'tabler-icons-react';
+import { Messages, Pencil, Trash, Users } from 'tabler-icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
-import CreateNotification from './CreateNotification/CreateNotification';
-import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
-import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
-import Results from './Results/Results';
-import Settings from './Settings/Settings';
-import TaskList from './TaskList/TaskList';
-import TeamList from './TeamList/TeamList';
-import { ICourseModel, ICourseResponse } from '@custom-types/data/ICourse';
+import { ICourseModel } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 
