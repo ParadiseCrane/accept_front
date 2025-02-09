@@ -42,7 +42,7 @@ import TaskList from './TaskList/TaskList';
 import TeamList from './TeamList/TeamList';
 import { ICourseModel, ICourseResponse } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
-import GroupSelector from './GroupSelector/GroupSelector';
+import GroupSelectorMenu from './GroupSelector/GroupSelector';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -137,7 +137,7 @@ const CourseDashboard: FC<{
         </>
       )}
       <LeftMenu links={links} />
-      <GroupSelector url={''} />
+      <GroupSelectorMenu url={''} />
     </>
   );
 };

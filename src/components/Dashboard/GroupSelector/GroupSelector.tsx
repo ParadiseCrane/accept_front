@@ -1,20 +1,15 @@
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
-import { useInterval } from '@mantine/hooks';
-import { IResponse } from '@requests/request';
 import { Icon } from '@ui/basics';
-import { timerDate, timezoneDate } from '@utils/datetime';
-import {
-  infoNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Alarm } from 'tabler-icons-react';
+import { Users, ChevronRight } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
+import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
+import { IImagePreset } from '@custom-types/data/IImagePreset';
 
 const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
-  const [showTimer, setShowTimer] = useState(false);
+  const [showSelector, setShowSelector] = useState(false);
   const { locale } = useLocale();
 
   // const { data, loading, refetch } = useRequest<{}, BaseTimeInfo, TimeInfo>(
@@ -34,21 +29,31 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
       {/* {!loading && data && !data.infinite && ( */}
       {
         <div
-          className={styles.wrapper + ' ' + (showTimer ? styles.show : '')}
-          onClick={() => {
-            setShowTimer((value) => !value);
-          }}
+          className={styles.wrapper + ' ' + (showSelector ? styles.show : '')}
         >
           <Icon
             size={'sm'}
             className={styles.iconRoot}
             wrapperClassName={styles.iconWrapper}
+            onClick={() => {
+              setShowSelector((value) => !value);
+            }}
           >
-            <Alarm color={'var(--primary)'} />
+            {showSelector ? (
+              <ChevronRight color={'var(--primary)'} />
+            ) : (
+              <Users color={'var(--primary)'} />
+            )}
           </Icon>
-          <div className={styles.timerWrapper}>
-            <div className={styles.before}>{locale.timer.finished}</div>
-            <div className={styles.timer}>{'text'}</div>
+          <div className={styles.selectorWrapper}>
+            <div className={styles.selector}>
+              <CourseGroupSelector
+                label={''}
+                groups={[]}
+                currentGroup={null}
+                select={() => {}}
+              />
+            </div>
           </div>
         </div>
       }
