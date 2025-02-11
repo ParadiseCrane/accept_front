@@ -1,5 +1,5 @@
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ICourseDisplay } from '@custom-types/data/ICourse';
+import { ICourseDisplay, ICourseListItem } from '@custom-types/data/ICourse';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
@@ -25,8 +25,7 @@ interface Item {
   display: string | ReactNode;
 }
 
-interface ICourseDisplayList
-  extends Omit<ICourseDisplay, 'title' | 'readonly'> {
+interface ICourseItem extends Omit<ICourseListItem, 'title' | 'readonly'> {
   title: Item;
   readonly: Item;
 }
@@ -35,7 +34,7 @@ const CourseList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorCourse: (_: ICourseDisplay) => any;
+  refactorCourse: (_: ICourseListItem) => any;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -62,19 +61,20 @@ const CourseList: FC<{
     [initialColumns, locale]
   );
 
-  const [courses, setCourses] = useState<ICourseDisplayList[]>([]);
+  const [courses, setCourses] = useState<ICourseItem[]>([]);
 
   const processData = useCallback(
-    (response: ICourseDisplay[]): ICourseDisplayList[] =>
+    (response: ICourseListItem[]): ICourseItem[] =>
       response.map((item) => refactorCourse(item)),
     [refactorCourse]
   );
 
-  const { data, loading } = useRequest<
-    {},
-    ICourseDisplay[],
-    ICourseDisplayList[]
-  >(url, 'GET', undefined, processData);
+  const { data, loading } = useRequest<{}, ICourseListItem[], ICourseItem[]>(
+    url,
+    'GET',
+    undefined,
+    processData
+  );
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -89,7 +89,7 @@ const CourseList: FC<{
   });
 
   const applyFilters = useCallback(
-    (data: ICourseDisplayList[]) => {
+    (data: ICourseItem[]) => {
       var list = [...data];
       const fuse = new Fuse(list, {
         keys: searchParams.search_params.keys,

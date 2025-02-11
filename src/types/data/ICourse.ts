@@ -29,8 +29,6 @@ export interface ICourseAddEdit {
   children: IUnit[];
 }
 
-export interface IUnitEdit {}
-
 export interface ICourseModel {
   spec: string;
   title: string;
@@ -63,4 +61,10 @@ export interface ICourseDisplay {
   spec: string;
   title: string;
   readonly: boolean;
+}
+
+export interface ICourseListItem {
+  author: string;
+  spec: string;
+  title: string;
 }

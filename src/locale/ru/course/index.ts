@@ -1,4 +1,5 @@
 import { modals } from './modals';
+import { list } from './list';
 
 export const course = {
   courseImage: 'Обложка курса',
@@ -13,4 +14,5 @@ export const course = {
   nameAndStructure: 'Название и структура',
   description: 'Описание',
   modals,
+  list,
 };
