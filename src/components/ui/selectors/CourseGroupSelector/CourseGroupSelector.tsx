@@ -33,7 +33,7 @@ const CourseGroupSingleSelect: FC<CourseGroupSelectProps> = ({
       value={currentGroup ? currentGroup.name : null}
       label={locale.course.selectGroup}
       placeholder={locale.course.groupName}
-      clearable
+      clearable={false}
       maxDropdownHeight={400}
       nothingFoundMessage={locale.course.groupNotFound}
       filter={({ options, search }) =>

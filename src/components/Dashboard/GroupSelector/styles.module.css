@@ -1,15 +1,15 @@
 .wrapper {
   position: fixed;
-  right: 0;
+  left: 0;
   width: var(--spacer-xl);
   z-index: 950;
-  top: 10rem;
+  bottom: 10rem;
   display: inline-flex;
   transition: width 0.5s;
   border: 1px solid var(--primary);
-  border-radius: 10px 0 0 10px;
+  border-radius: 0 10px 10px 0;
   background-color: #ffffff;
-  padding: var(--spacer-xs) var(--spacer-s) var(--spacer-xs) 0;
+  padding: var(--spacer-xs) 0 var(--spacer-xs) 0;
   cursor: pointer;
 }
 
@@ -39,6 +39,7 @@
   justify-content: space-evenly;
   align-items: center;
   display: inline-block;
+  overflow: hidden;
 }
 
 .selector {
@@ -47,6 +48,7 @@
   align-items: center;
   justify-content: space-evenly;
   white-space: nowrap;
+  padding-left: var(--spacer-s);
 }
 
 @keyframes shake {

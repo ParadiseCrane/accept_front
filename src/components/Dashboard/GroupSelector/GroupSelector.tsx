@@ -2,7 +2,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Users, ChevronRight } from 'tabler-icons-react';
+import { Users, X } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
@@ -29,7 +29,7 @@ const initialGroups: IGroupBaseInfo[] = [
   },
 ];
 
-const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
+const GroupSelector: FC = () => {
   const [showSelector, setShowSelector] = useState(false);
   const [groups, setGroups] = useState<IGroupBaseInfo[]>(initialGroups);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
@@ -37,22 +37,18 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // const { data, loading, refetch } = useRequest<{}, BaseTimeInfo, TimeInfo>(
-  //   url,
-  //   'GET',
-  //   undefined,
-  //   (data) => ({
-  //     start: data.start,
-  //     end: data.end,
-  //     infinite: data.infinite || false,
-  //     status: data.status,
-  //   })
-  // );
+  // TODO поменять на реальный запрос
+  const { data, loading, refetch } = useRequest<{}, any, any>(
+    '/course',
+    'GET',
+    undefined
+  );
 
   useEffect(() => {
+    // TODO поменять на реальные данные
     setCurrentGroup(initialGroups[0]);
     changeCurrentGroup(initialGroups[0]);
-  }, []);
+  }, [data]);
 
   const changeCurrentGroup = (item: IGroupBaseInfo) => {
     setCurrentGroup(item);
@@ -86,20 +82,6 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
         <div
           className={styles.wrapper + ' ' + (showSelector ? styles.show : '')}
         >
-          <Icon
-            size={'sm'}
-            className={styles.iconRoot}
-            wrapperClassName={styles.iconWrapper}
-            onClick={() => {
-              setShowSelector((value) => !value);
-            }}
-          >
-            {showSelector ? (
-              <ChevronRight color={'var(--primary)'} />
-            ) : (
-              <Users color={'var(--primary)'} />
-            )}
-          </Icon>
           <div className={styles.selectorWrapper}>
             <div className={styles.selector}>
               <CourseGroupSelector
@@ -112,6 +94,20 @@ const GroupSelector: FC<{ url: string }> = ({ url }: { url: string }) => {
               />
             </div>
           </div>
+          <Icon
+            size={'sm'}
+            className={styles.iconRoot}
+            wrapperClassName={styles.iconWrapper}
+            onClick={() => {
+              setShowSelector((value) => !value);
+            }}
+          >
+            {showSelector ? (
+              <X color={'var(--primary)'} />
+            ) : (
+              <Users color={'var(--primary)'} />
+            )}
+          </Icon>
         </div>
       }
     </>

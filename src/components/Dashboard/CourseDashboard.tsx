@@ -61,6 +61,12 @@ const CourseDashboard: FC<{
         title: locale.dashboard.course.moderators,
         section: 'moderators',
       },
+      {
+        page: <Moderators />,
+        icon: <Users color="var(--secondary)" />,
+        title: locale.dashboard.course.allParticipants,
+        section: 'all_participants',
+      },
     ];
 
     return links;
@@ -111,7 +117,7 @@ const CourseDashboard: FC<{
         </>
       )}
       <LeftMenu links={links} />
-      <GroupSelectorMenu url={''} />
+      <GroupSelectorMenu />
     </>
   );
 };
