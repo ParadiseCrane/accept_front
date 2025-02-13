@@ -43,7 +43,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 4,
+    size: 2,
   },
 ];
 

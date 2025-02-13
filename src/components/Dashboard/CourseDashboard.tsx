@@ -17,6 +17,7 @@ import ChatPage from './ChatPage/ChatPage';
 import { ICourseModel } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
+import SimpleUserListWrapper from '@ui/SimpleUserList/SimpleUserListWrapper';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -62,7 +63,7 @@ const CourseDashboard: FC<{
         section: 'moderators',
       },
       {
-        page: <Moderators />,
+        page: <SimpleUserListWrapper type={'course'} spec={spec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: 'all_participants',

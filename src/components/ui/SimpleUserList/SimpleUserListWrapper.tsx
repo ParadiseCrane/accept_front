@@ -1,4 +1,4 @@
-import { IParticipant } from '@custom-types/data/IUser';
+import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { FC, memo } from 'react';
 
 import styles from './participantsList.module.css';
+import SimpleUserList from './SimpleUserList';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -62,7 +63,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const refactorUser = (user: IParticipant): any => ({
+const refactorUser = (user: IUserDisplay): any => ({
   ...user,
   login: {
     value: user.login,
@@ -71,15 +72,6 @@ const refactorUser = (user: IParticipant): any => ({
         <Link href={`/profile/${user.login}`} className={tableStyles.title}>
           {user.login}
         </Link>
-        {user.groups.length > 0 && (
-          <span className={tableStyles.tags}>
-            {user.groups.map((group, idx) => (
-              <div className={tableStyles.tag} key={idx}>
-                {group.name + (idx == user.groups.length - 1 ? '' : ', ')}
-              </div>
-            ))}
-          </span>
-        )}
       </div>
     ),
   },
@@ -101,16 +93,16 @@ const refactorUser = (user: IParticipant): any => ({
   },
 });
 
-const ParticipantsList: FC<{
-  type: 'assignment' | 'tournament' | 'course';
+const SimpleUserListWrapper: FC<{
+  type: 'course';
   spec: string;
 }> = ({ type, spec }) => {
   const { locale } = useLocale();
 
   return (
     <div className={styles.wrapper}>
-      <UserList
-        url={`${type}/bundle-participants/${spec}`}
+      <SimpleUserList
+        url={`${type}/course_participants/${spec}`}
         refactorUser={(user) => refactorUser(user)}
         initialColumns={initialColumns}
         noDefault
@@ -128,4 +120,4 @@ const ParticipantsList: FC<{
   );
 };
 
-export default memo(ParticipantsList);
+export default memo(SimpleUserListWrapper);

@@ -2,8 +2,8 @@
   position: fixed;
   left: 0;
   width: var(--spacer-xl);
-  z-index: 950;
-  bottom: 10rem;
+  z-index: 100;
+  bottom: 1rem;
   display: inline-flex;
   transition: width 0.5s;
   border: 1px solid var(--primary);
