@@ -28,69 +28,13 @@ import {
   useState,
 } from 'react';
 
-const initialUserList: IUserDisplay[] = [
-  {
-    role: {
-      spec: 12,
-      name: 'role 1',
-      accessLevel: 1,
-    },
-    login: 'login 1',
-    shortName: 'shortname 1',
-  },
-  {
-    role: {
-      spec: 12,
-      name: 'role 1',
-      accessLevel: 1,
-    },
-    login: 'login 2',
-    shortName: 'shortname 2',
-  },
-  {
-    role: {
-      spec: 12,
-      name: 'role 1',
-      accessLevel: 1,
-    },
-    login: 'login 3',
-    shortName: 'shortname 3',
-  },
-  {
-    role: {
-      spec: 121,
-      name: 'role 2',
-      accessLevel: 2,
-    },
-    login: 'login 11',
-    shortName: 'shortname 11',
-  },
-  {
-    role: {
-      spec: 121,
-      name: 'role 2',
-      accessLevel: 2,
-    },
-    login: 'login 21',
-    shortName: 'shortname 21',
-  },
-  {
-    role: {
-      spec: 121,
-      name: 'role 2',
-      accessLevel: 2,
-    },
-    login: 'login 31',
-    shortName: 'shortname 31',
-  },
-];
-
 interface Item<T = any> {
   value: T;
   display: string | ReactNode;
 }
 
-interface IUserDisplayItem extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+export interface IUserDisplayItem
+  extends Omit<IUser, 'login' | 'shortName' | 'role'> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;
@@ -100,7 +44,7 @@ const SimpleUserList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorUser: (_: any) => IUserDisplayItem;
+  refactorUser: (_: IUserDisplay) => any;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -128,17 +72,17 @@ const SimpleUserList: FC<{
   const [total, setTotal] = useState(0);
 
   const processData = useCallback(
-    (response: IUserDisplay[]) => response.map((user) => refactorUser(user)),
+    (response: IUserDisplay[]): IUserDisplayItem[] =>
+      response.map((user: IUserDisplay) => refactorUser(user)),
     [refactorUser]
   );
 
-  const initialData: IUserDisplay[] = initialUserList;
-  const data: IUserDisplayItem[] = [];
-  initialData.map((user) => {
-    data.push(refactorUser(user));
-  });
-  data.map((user) => refactorUser(user));
-  const loading = false;
+  const { data, loading } = useRequest<{}, IUserDisplay[], IUserDisplayItem[]>(
+    url,
+    'GET',
+    undefined,
+    processData
+  );
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -151,6 +95,8 @@ const SimpleUserList: FC<{
       keys: ['name.value'],
     },
   });
+
+  console.log('searchParams', searchParams);
 
   const applyFilters = useCallback(
     (data: IUserDisplayItem[]) => {
@@ -188,11 +134,12 @@ const SimpleUserList: FC<{
     if (data) {
       applyFilters(data);
     }
-  }, [applyFilters]);
+  }, [applyFilters, data]);
 
   return (
     <div>
       <Table
+        withSearch
         columns={columns}
         rows={users}
         classNames={
@@ -211,16 +158,15 @@ const SimpleUserList: FC<{
               }
         }
         noDefault={noDefault}
-        empty={empty || <>{locale.ui.table.emptyMessage}</>}
-        isEmpty={data?.length == 0}
-        nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
         defaultOnPage={defaultOnPage}
         onPage={[5, defaultOnPage]}
         total={total}
+        empty={empty || <>{locale.ui.table.emptyMessage}</>}
+        isEmpty={data?.length == 0}
+        nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
         loading={loading}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
-        withSearch
       />
     </div>
   );

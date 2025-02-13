@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { FC, memo } from 'react';
 
 import styles from './participantsList.module.css';
-import SimpleUserList from './SimpleUserList';
+import SimpleUserList, { IUserDisplayItem } from './SimpleUserList';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -102,8 +102,8 @@ const SimpleUserListWrapper: FC<{
   return (
     <div className={styles.wrapper}>
       <SimpleUserList
-        url={`${type}/course_participants/${spec}`}
-        refactorUser={(user) => refactorUser(user)}
+        url={`${type}/participant/${spec}`}
+        refactorUser={refactorUser}
         initialColumns={initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}
