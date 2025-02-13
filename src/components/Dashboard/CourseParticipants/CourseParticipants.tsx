@@ -1,15 +1,15 @@
-import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
-import UserList from '@ui/UserList/UserList';
 import { capitalize } from '@utils/capitalize';
 import Link from 'next/link';
 import { FC, memo } from 'react';
 
-import styles from './participantsList.module.css';
-import SimpleUserList, { IUserDisplayItem } from './SimpleUserList';
+import styles from './style.module.css';
+import SimpleUserList from '../../ui/SimpleUserList/SimpleUserList';
+import { useParams, useSearchParams } from 'next/navigation';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -93,16 +93,19 @@ const refactorUser = (user: IUserDisplay): any => ({
   },
 });
 
-const SimpleUserListWrapper: FC<{
+const CourseParticipants: FC<{
   type: 'course';
   spec: string;
-}> = ({ type, spec }) => {
+  allParticipants?: boolean;
+}> = ({ type, spec, allParticipants }) => {
   const { locale } = useLocale();
+  const params = useSearchParams();
+  const group = allParticipants ? 'all' : params.get('group');
 
   return (
     <div className={styles.wrapper}>
       <SimpleUserList
-        url={`${type}/participant/${spec}`}
+        url={`${type}/participant/${spec}/${group}`}
         refactorUser={refactorUser}
         initialColumns={initialColumns}
         noDefault
@@ -120,4 +123,4 @@ const SimpleUserListWrapper: FC<{
   );
 };
 
-export default memo(SimpleUserListWrapper);
+export default memo(CourseParticipants);

@@ -1,22 +1,14 @@
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
-import {
-  IParticipantListBundle,
-  IUser,
-  IUserDisplay,
-} from '@custom-types/data/IUser';
+import { IUser, IUserDisplay } from '@custom-types/data/IUser';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
 import Table from '@ui/Table/Table';
-import { capitalize } from '@utils/capitalize';
 import { customTableSort } from '@utils/customTableSort';
-import { hasSubarray } from '@utils/hasSubarray';
 import Fuse from 'fuse.js';
 import {
   FC,
@@ -92,11 +84,9 @@ const SimpleUserList: FC<{
     sort_by: [],
     search_params: {
       search: '',
-      keys: ['shortName.value'],
+      keys: ['shortName.value', 'login.value'],
     },
   });
-
-  console.log('searchParams', searchParams);
 
   const applyFilters = useCallback(
     (data: IUserDisplayItem[]) => {

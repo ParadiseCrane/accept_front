@@ -9,7 +9,7 @@ export default async function Course(
   // await fetchWrapper({
   //   req: req,
   //   res: res,
-  //   url: `api/course/participant/${req.query.spec}`,
+  //   url: `api/course/participant/${req.query.spec}/${req.query.group}`,
   // });
   res.status(200).json([
     {
