@@ -28,12 +28,69 @@ import {
   useState,
 } from 'react';
 
+const initialUserList: IUserDisplay[] = [
+  {
+    role: {
+      spec: 12,
+      name: 'role 1',
+      accessLevel: 1,
+    },
+    login: 'login 1',
+    shortName: 'shortname 1',
+  },
+  {
+    role: {
+      spec: 12,
+      name: 'role 1',
+      accessLevel: 1,
+    },
+    login: 'login 2',
+    shortName: 'shortname 2',
+  },
+  {
+    role: {
+      spec: 12,
+      name: 'role 1',
+      accessLevel: 1,
+    },
+    login: 'login 3',
+    shortName: 'shortname 3',
+  },
+  {
+    role: {
+      spec: 121,
+      name: 'role 2',
+      accessLevel: 2,
+    },
+    login: 'login 11',
+    shortName: 'shortname 11',
+  },
+  {
+    role: {
+      spec: 121,
+      name: 'role 2',
+      accessLevel: 2,
+    },
+    login: 'login 21',
+    shortName: 'shortname 21',
+  },
+  {
+    role: {
+      spec: 121,
+      name: 'role 2',
+      accessLevel: 2,
+    },
+    login: 'login 31',
+    shortName: 'shortname 31',
+  },
+];
+
 interface Item<T = any> {
   value: T;
   display: string | ReactNode;
 }
 
-interface IUserDisplayList extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+interface IUserDisplayItem extends Omit<IUser, 'login' | 'shortName' | 'role'> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;
@@ -43,7 +100,7 @@ const SimpleUserList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorUser: (_: any) => IUserDisplayList;
+  refactorUser: (_: any) => IUserDisplayItem;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -67,21 +124,21 @@ const SimpleUserList: FC<{
     [initialColumns, locale]
   );
 
-  const [users, setUsers] = useState<IUserDisplayList[]>([]);
+  const [users, setUsers] = useState<IUserDisplayItem[]>([]);
   const [total, setTotal] = useState(0);
 
   const processData = useCallback(
-    (response: IUserDisplayList[]) =>
-      response.map((user) => refactorUser(user)),
+    (response: IUserDisplay[]) => response.map((user) => refactorUser(user)),
     [refactorUser]
   );
 
-  const { data, loading } = useRequest<{}, IUserDisplayList[]>(
-    url,
-    'GET',
-    undefined,
-    processData
-  );
+  const initialData: IUserDisplay[] = initialUserList;
+  const data: IUserDisplayItem[] = [];
+  initialData.map((user) => {
+    data.push(refactorUser(user));
+  });
+  data.map((user) => refactorUser(user));
+  const loading = false;
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -91,91 +148,47 @@ const SimpleUserList: FC<{
     sort_by: [],
     search_params: {
       search: '',
-      keys: ['login.value', 'shortName.value', 'name'],
+      keys: ['name.value'],
     },
   });
 
-  // const searchGroups = useMemo(
-  //   () =>
-  //     groups.map((group) => ({
-  //       label: group.name,
-  //       value: group.spec,
-  //     })),
-  //   [groups]
-  // );
-  // const searchRoles = useMemo(
-  //   () =>
-  //     roles.map((role) => ({
-  //       label: capitalize(role.name),
-  //       value: role.spec.toString(),
-  //     })),
-  //   [roles]
-  // );
+  const applyFilters = useCallback(
+    (data: IUserDisplayItem[]) => {
+      var list = [...data];
+      const fuse = new Fuse(list, {
+        keys: searchParams.search_params.keys,
+        findAllMatches: true,
+      });
 
-  // const applyFilters = useCallback(
-  //   (data: IUserDisplayList[]) => {
-  //     var list = [...data];
-  //     const fuse = new Fuse(list, {
-  //       keys: searchParams.search_params.keys,
-  //       findAllMatches: true,
-  //     });
+      const searched =
+        searchParams.search_params.search == ''
+          ? list
+          : fuse
+              .search(searchParams.search_params.search)
+              .map((result) => result.item);
 
-  //     const searched =
-  //       searchParams.search_params.search == ''
-  //         ? list
-  //         : fuse
-  //             .search(searchParams.search_params.search)
-  //             .map((result) => result.item);
+      const sorted = searched.sort((a, b) =>
+        customTableSort(a, b, searchParams.sort_by, columns)
+      );
 
-  //     const grouped =
-  //       currentGroups.length > 0
-  //         ? searched.filter((user) =>
-  //             hasSubarray(
-  //               user.groups.map((group: IGroup) => group.spec),
-  //               currentGroups
-  //             )
-  //           )
-  //         : searched;
+      setTotal(sorted.length);
 
-  //     const withRole =
-  //       currentRoles.length > 0
-  //         ? grouped.filter((user) =>
-  //             currentRoles.includes(user.role.value.spec.toString())
-  //           )
-  //         : grouped;
+      const users = sorted.slice(
+        searchParams.pager.skip,
+        searchParams.pager.limit > 0
+          ? searchParams.pager.skip + searchParams.pager.limit
+          : undefined
+      );
+      setUsers(users);
+    },
+    [columns, searchParams]
+  );
 
-  //     const sorted = withRole.sort((a, b) =>
-  //       customTableSort(a, b, searchParams.sort_by, columns)
-  //     );
-
-  //     setTotal(sorted.length);
-
-  //     const paged = sorted.slice(
-  //       searchParams.pager.skip,
-  //       searchParams.pager.limit > 0
-  //         ? searchParams.pager.skip + searchParams.pager.limit
-  //         : undefined
-  //     );
-  //     setUsers(paged);
-  //   },
-  //   [columns, currentGroups, currentRoles, searchParams, setTotal]
-  // );
-
-  // useEffect(() => {
-  //   if (data) {
-  //     applyFilters(data);
-  //   }
-  // }, [data, applyFilters]);
-
-  const resetPage = useCallback(() => {
-    setSearchParams((searchParams: BaseSearch) => ({
-      ...searchParams,
-      pager: {
-        ...searchParams.pager,
-        skip: 0,
-      },
-    }));
-  }, []);
+  useEffect(() => {
+    if (data) {
+      applyFilters(data);
+    }
+  }, [applyFilters]);
 
   return (
     <div>

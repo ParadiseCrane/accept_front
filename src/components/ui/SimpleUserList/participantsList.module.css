@@ -1,0 +1,26 @@
+.headerCell,
+.cell {
+  padding: var(--spacer-s);
+  border-bottom: solid 1px var(--dark3);
+}
+
+.cell {
+  font-size: var(--font-size-s);
+}
+
+.headerCell {
+  font-size: var(--font-size-m);
+  user-select: none;
+  border-bottom: solid 2px var(--dark1);
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-xxs);
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.banReason {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
