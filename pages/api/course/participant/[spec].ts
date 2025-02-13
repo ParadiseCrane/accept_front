@@ -5,6 +5,7 @@ export default async function Course(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // TODO заменить на реальные данные
   // await fetchWrapper({
   //   req: req,
   //   res: res,

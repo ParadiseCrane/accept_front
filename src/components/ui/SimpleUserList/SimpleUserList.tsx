@@ -92,7 +92,7 @@ const SimpleUserList: FC<{
     sort_by: [],
     search_params: {
       search: '',
-      keys: ['name.value'],
+      keys: ['shortName.value'],
     },
   });
 
