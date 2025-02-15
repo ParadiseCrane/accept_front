@@ -44,18 +44,23 @@ const GroupSelector: FC = () => {
     undefined
   );
 
-  useEffect(() => {
-    // TODO поменять на реальные данные
-    setCurrentGroup(initialGroups[0]);
-    changeCurrentGroup(initialGroups[0]);
-  }, [data]);
-
   const changeCurrentGroup = (item: IGroupBaseInfo) => {
     setCurrentGroup(item);
     if (searchParams.has('section')) {
       changeParams(searchParams.get('section')!, item.spec);
     }
   };
+
+  useEffect(() => {
+    // TODO поменять на реальные данные
+    if (data) {
+      const groupToSet = searchParams.get('group')
+        ? groups.filter((item) => item.spec === searchParams.get('group'))[0]
+        : initialGroups[0];
+      setCurrentGroup(groupToSet);
+      changeCurrentGroup(groupToSet);
+    }
+  }, [data]);
 
   const changeParams = (section: string, group: string) => {
     const regExp = /\[.*?\]/g;
@@ -85,7 +90,6 @@ const GroupSelector: FC = () => {
           <div className={styles.selectorWrapper}>
             <div className={styles.selector}>
               <CourseGroupSelector
-                label={''}
                 groups={groups}
                 currentGroup={currentGroup}
                 select={(item: IGroupBaseInfo) => {

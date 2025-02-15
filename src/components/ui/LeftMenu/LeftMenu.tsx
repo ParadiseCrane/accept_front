@@ -42,17 +42,19 @@ const LeftMenu: FC<{
   const changeParams = (section: string) => {
     const regExp = /\[.*?\]/g;
     let pathName = router.pathname;
+    let query = { ...router.query };
     const list = pathName.match(regExp);
     if (list) {
       for (let i = 0; i < list.length; i++) {
         const variableName = list[i].replace('[', '').replace(']', '');
         const value = router.query[variableName];
+        delete query[variableName];
         pathName = pathName.replace(`[${variableName}]`, `${value}`);
       }
     }
     const newPathObject = {
       pathname: pathName,
-      query: { section: section },
+      query: { ...query, section: section },
     };
     router.push(newPathObject, undefined, { shallow: true });
   };

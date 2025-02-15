@@ -12,6 +12,7 @@ import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import { Messages, Pencil, Trash, Users } from 'tabler-icons-react';
+import { IconUsersGroup, IconUserCog } from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
 import { ICourseModel } from '@custom-types/data/ICourse';
@@ -58,7 +59,7 @@ const CourseDashboard: FC<{
       },
       {
         page: <Moderators />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
       },
@@ -66,7 +67,7 @@ const CourseDashboard: FC<{
         page: (
           <CourseParticipants type={'course'} spec={spec} allParticipants />
         ),
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsersGroup color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: 'all_participants',
       },

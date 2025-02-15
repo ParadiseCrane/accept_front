@@ -5,14 +5,12 @@ import { Select } from '@ui/basics';
 import React, { FC, memo } from 'react';
 
 export interface CourseGroupSelectProps {
-  label: string;
   groups: IGroupBaseInfo[];
   currentGroup: IGroupBaseInfo | null;
   select: (_: IGroupBaseInfo) => void;
 }
 
 const CourseGroupSingleSelect: FC<CourseGroupSelectProps> = ({
-  label,
   groups,
   currentGroup,
   select,
