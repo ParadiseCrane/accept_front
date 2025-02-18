@@ -58,7 +58,6 @@
   gap: var(--spacer-s);
 }
 
-.emptyMessage,
 .nothingFoundMessage {
   margin: var(--spacer-huge) auto;
   width: fit-content;

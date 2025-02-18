@@ -11,6 +11,7 @@ export default async function CourseParticipants(
   //   res: res,
   //   url: `api/course/participant/${req.query.spec}/${req.query.group}`,
   // });
+  // res.status(200).json([]);
   res.status(200).json([
     {
       role: {

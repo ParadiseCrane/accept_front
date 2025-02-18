@@ -18,6 +18,7 @@ import { Search } from 'tabler-icons-react';
 import InnerTable from './InnerTable/InnerTable';
 import PageNavigation from './PageNavigation';
 import styles from './table.module.css';
+import EmptyTablePlaceholder from '@ui/basics/EmptyTablePlaceholder/EmptyTablePlaceholder';
 
 const Table: FC<{
   columns: ITableColumn[];
@@ -212,10 +213,8 @@ const Table: FC<{
       }
     >
       {!loading && empty && isEmpty ? (
-        <div
-          className={`${styles.emptyMessage} ${classNames?.emptyMessage || ''}`}
-        >
-          {empty}
+        <div>
+          <EmptyTablePlaceholder />
         </div>
       ) : (
         <div className={styles.main}>
