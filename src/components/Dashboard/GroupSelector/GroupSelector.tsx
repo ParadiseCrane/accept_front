@@ -9,56 +9,77 @@ import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSe
 import { useRouter } from 'next/router';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
 import { useSearchParams } from 'next/navigation';
+import { useLocalStorage } from '@mantine/hooks';
+import { ICourseGroupPair } from '@custom-types/data/ICourse';
 
-const initialGroups: IGroupBaseInfo[] = [
-  {
-    spec: '25',
-    name: 'Group 1',
-  },
-  {
-    spec: '34',
-    name: 'Group 2',
-  },
-  {
-    spec: '47',
-    name: 'Group 3',
-  },
-  {
-    spec: '59',
-    name: 'Group 4',
-  },
-];
-
-const GroupSelector: FC = () => {
+const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   const [showSelector, setShowSelector] = useState(false);
-  const [groups, setGroups] = useState<IGroupBaseInfo[]>(initialGroups);
+  const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
   const { locale } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [courseGroupPairLS, setCourseGroupPairLS] = useLocalStorage<
+    ICourseGroupPair[]
+  >({
+    key: 'color-group-list',
+    defaultValue: [],
+  });
 
   // TODO поменять на реальный запрос
-  const { data, loading, refetch } = useRequest<{}, any, any>(
-    '/course',
+  const { data, loading, refetch } = useRequest<{}, any, IGroupBaseInfo[]>(
+    `/course/group/${courseSpec}`,
     'GET',
     undefined
   );
 
-  const changeCurrentGroup = (item: IGroupBaseInfo) => {
-    setCurrentGroup(item);
+  const changeUrl = (groupSpec: string) => {
     if (searchParams.has('section')) {
-      changeParams(searchParams.get('section')!, item.spec);
+      changeParams(searchParams.get('section')!, groupSpec);
     }
+  };
+
+  const setGroup = (group: IGroupBaseInfo) => {
+    setCurrentGroup(group);
+    changeUrl(group.spec);
+    setCourseGroupPairLS((prev) => [
+      ...prev,
+      { courseSpec, groupSpec: group.spec },
+    ]);
   };
 
   useEffect(() => {
     // TODO поменять на реальные данные
     if (data) {
-      const groupToSet = searchParams.get('group')
-        ? groups.filter((item) => item.spec === searchParams.get('group'))[0]
-        : initialGroups[0];
-      setCurrentGroup(groupToSet);
-      changeCurrentGroup(groupToSet);
+      setGroups(data);
+      if (data.length > 0) {
+        const hasGroupUrl =
+          searchParams.has('group') && searchParams.get('group') !== 'all';
+        if (hasGroupUrl) {
+          const group = data.filter(
+            (item) => item.spec === searchParams.get('group')
+          )[0];
+          setGroup(group);
+        } else {
+          const courseGroupPair = courseGroupPairLS
+            .filter((item) => item.courseSpec == courseSpec)
+            .pop();
+          if (courseGroupPair) {
+            const groups = data.filter(
+              (item) => item.spec === courseGroupPair.groupSpec
+            );
+            if (groups.length > 0) {
+              setGroup(groups[0]);
+            } else {
+              setGroup(data[0]);
+            }
+          } else {
+            setGroup(data[0]);
+          }
+        }
+      } else {
+        changeUrl('all');
+      }
     }
   }, [data]);
 
@@ -93,7 +114,7 @@ const GroupSelector: FC = () => {
                 groups={groups}
                 currentGroup={currentGroup}
                 select={(item: IGroupBaseInfo) => {
-                  changeCurrentGroup(item);
+                  setGroup(item);
                 }}
               />
             </div>

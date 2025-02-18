@@ -1,7 +1,7 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function Course(
+export default async function CourseParticipants(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

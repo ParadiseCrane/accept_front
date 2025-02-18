@@ -68,3 +68,8 @@ export interface ICourseListItem {
   spec: string;
   title: string;
 }
+
+export interface ICourseGroupPair {
+  courseSpec: string;
+  groupSpec: string;
+}

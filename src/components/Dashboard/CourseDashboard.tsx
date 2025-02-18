@@ -135,7 +135,7 @@ const CourseDashboard: FC<{
         </>
       )}
       <LeftMenu links={links} />
-      <GroupSelectorMenu />
+      <GroupSelectorMenu courseSpec={spec} />
     </>
   );
 };
