@@ -6,10 +6,12 @@ import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
+import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
 import Fuse from 'fuse.js';
+import { useSearchParams } from 'next/navigation';
 import {
   FC,
   ReactNode,
@@ -69,12 +71,17 @@ const SimpleUserList: FC<{
     [refactorUser]
   );
 
-  const { data, loading } = useRequest<{}, IUserDisplay[], IUserDisplayItem[]>(
-    url,
-    'GET',
-    undefined,
-    processData
-  );
+  // const { data, loading } = useRequest<{}, IUserDisplay[], IUserDisplayItem[]>(
+  //   url,
+  //   'GET',
+  //   undefined,
+  //   processData
+  // );
+
+  const [data, setData] = useState<IUserDisplayItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const params = useSearchParams();
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -125,6 +132,17 @@ const SimpleUserList: FC<{
       applyFilters(data);
     }
   }, [applyFilters, data]);
+
+  useEffect(() => {
+    setLoading(true);
+    sendRequest<{}, IUserDisplay[]>(url, 'GET', undefined).then((res) => {
+      const userDisplayList = res.response;
+      const userDisplayItemList: IUserDisplayItem[] =
+        processData(userDisplayList);
+      setData(userDisplayItemList);
+      setLoading(false);
+    });
+  }, [params]);
 
   return (
     <div>

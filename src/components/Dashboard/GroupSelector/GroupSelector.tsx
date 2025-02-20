@@ -28,7 +28,7 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
 
   // TODO поменять на реальный запрос
   const { data, loading, refetch } = useRequest<{}, any, IGroupBaseInfo[]>(
-    `/course/group/${courseSpec}`,
+    `/course/groups/${courseSpec}`,
     'GET',
     undefined
   );
@@ -58,8 +58,10 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
         if (hasGroupUrl) {
           const group = data.filter(
             (item) => item.spec === searchParams.get('group')
-          )[0];
-          setGroup(group);
+          );
+          if (group.length > 0) {
+            setGroup(group[0]);
+          }
         } else {
           const courseGroupPair = courseGroupPairLS
             .filter((item) => item.courseSpec == courseSpec)
