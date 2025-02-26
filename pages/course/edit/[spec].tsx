@@ -89,7 +89,6 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
         children: emptyChildren,
         kind: 'course',
       };
-      console.log('courseToSend', courseToSend);
 
       requestWithNotify<ICourseAddEdit, string>(
         `course/put/${props.course.spec}`,

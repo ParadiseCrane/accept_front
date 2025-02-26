@@ -42,9 +42,7 @@ function Course(props: {
   depth: number;
 }) {
   const course = props.course;
-  // TODO добавить реальные данные
   const hasWriteRights = props.has_write_rights;
-  // const hasWriteRights = true;
   const units: IUnit[] = flattenCourse({
     course: course,
     children: course.children,

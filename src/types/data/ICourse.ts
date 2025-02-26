@@ -73,3 +73,10 @@ export interface ICourseGroupPair {
   courseSpec: string;
   groupSpec: string;
 }
+
+export interface ICourseMain {
+  title: string;
+  description: string;
+  image: string;
+  invite: string;
+}
