@@ -3,6 +3,7 @@ import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
 import NavBar from '@components/Course/NavBar/NavBar';
 import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
+import { IRightsPayload } from '@custom-types/data/rights';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { AppShell } from '@mantine/core';
@@ -69,12 +70,14 @@ function Course(props: {
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];
 
-    innerActions.push({
-      color: 'grape',
-      icon: <Dashboard height={20} width={20} />,
-      href: `/dashboard/course/${course.spec}`,
-      description: locale.tip.sticky.course.dashboard,
-    });
+    if (hasWriteRights) {
+      innerActions.push({
+        color: 'grape',
+        icon: <Dashboard height={20} width={20} />,
+        href: `/dashboard/course/${course.spec}`,
+        description: locale.tip.sticky.course.dashboard,
+      });
+    }
 
     if (hasWriteRights && value.kind === 'course') {
       innerActions.push(
@@ -164,8 +167,22 @@ export const getServerSideProps: GetServerSideProps = async ({
     req,
   });
 
+  const rightsBody: IRightsPayload = {
+    action: 'write',
+    entity_spec: query.spec,
+    entity: 'course',
+  };
+
+  const hasRightsResponse = await fetchWrapperStatic({
+    url: 'rights',
+    req,
+    method: 'POST',
+    body: rightsBody,
+  });
+
   if (response.status === 200) {
     const json = await response.json();
+    const hasRightsJson = await hasRightsResponse.json();
     const course = {
       ...json.course,
       spec: query.spec,
@@ -175,6 +192,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         course,
         depth: json.depth,
+        // has_write_rights: hasRightsJson,
         has_write_rights: true,
       },
     };

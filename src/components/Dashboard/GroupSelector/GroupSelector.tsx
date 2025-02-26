@@ -49,10 +49,11 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   };
 
   useEffect(() => {
-    // TODO поменять на реальные данные
     if (data) {
       setGroups(data);
-      if (data.length > 0) {
+      if (data.length === 0) {
+        changeUrl('all');
+      } else {
         const hasGroupUrl =
           searchParams.has('group') && searchParams.get('group') !== 'all';
         if (hasGroupUrl) {
@@ -79,8 +80,6 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
             setGroup(data[0]);
           }
         }
-      } else {
-        changeUrl('all');
       }
     }
   }, [data]);

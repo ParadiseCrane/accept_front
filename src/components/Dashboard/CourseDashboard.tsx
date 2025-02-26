@@ -19,7 +19,6 @@ import { ICourseModel } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
-import EmptyTablePlaceholder from '@ui/basics/EmptyTablePlaceholder/EmptyTablePlaceholder';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -77,13 +76,6 @@ const CourseDashboard: FC<{
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
-      },
-      // TODO убрать тестовый объект
-      {
-        page: <EmptyTablePlaceholder />,
-        icon: <Users color="var(--secondary)" />,
-        title: 'Тест',
-        section: 'test',
       },
     ];
 
