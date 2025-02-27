@@ -14,6 +14,6 @@ export default async function CourseMain(
     title: 'Новое название нового курса',
     description: '<p>Новое описание нового курса</p>',
     image: '66b55d00-257a-428a-a28c-a37ccc906f33',
-    invite: 'invite link',
+    invite: 'хттпс://invite_link',
   });
 }

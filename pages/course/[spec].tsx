@@ -36,11 +36,7 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: {
-  course: ICourseModel;
-  has_write_rights: boolean;
-  depth: number;
-}) {
+function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
   const course = props.course;
   const hasWriteRights = props.has_write_rights;
   const units: IUnit[] = flattenCourse({
@@ -161,36 +157,35 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const response = await fetchWrapperStatic({
-    url: `course-edit/${query.spec}`,
+    url: `course/course_navigation_tree/${query.spec}`,
     req,
   });
 
-  const rightsBody: IRightsPayload = {
+  const writeRightsBody: IRightsPayload = {
     action: 'write',
     entity_spec: query.spec,
     entity: 'course',
   };
 
-  const hasRightsResponse = await fetchWrapperStatic({
+  const hasWriteRightsResponse = await fetchWrapperStatic({
     url: 'rights',
     req,
     method: 'POST',
-    body: rightsBody,
+    body: writeRightsBody,
   });
 
   if (response.status === 200) {
     const json = await response.json();
-    const hasRightsJson = await hasRightsResponse.json();
+    const hasWriteRights = await hasWriteRightsResponse.json();
     const course = {
-      ...json.course,
+      ...json,
       spec: query.spec,
     };
 
     return {
       props: {
         course,
-        depth: json.depth,
-        // has_write_rights: hasRightsJson,
+        // has_write_rights: hasWriteRights,
         has_write_rights: true,
       },
     };

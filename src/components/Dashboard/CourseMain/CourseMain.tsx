@@ -18,7 +18,7 @@ const CourseMain: FC<{ spec: string }> = ({ spec }) => {
   );
 
   if (!data || loading) {
-    return <div>Loading</div>;
+    return <div></div>;
   }
 
   return (
@@ -40,6 +40,7 @@ const CourseMain: FC<{ spec: string }> = ({ spec }) => {
       <Center>
         <Title order={1}>{data.title}</Title>
       </Center>
+      <a href={data.invite}>{data.invite}</a>
       <TipTapEditor
         editorMode={false}
         content={data.description}
