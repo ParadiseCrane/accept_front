@@ -37,9 +37,7 @@ export const fetchWrapperStatic = async ({
     // eslint-disable-next-line no-undef
     credentials: 'include' as RequestCredentials,
     body:
-      !['GET', 'DELETE'].includes(method) && !body
-        ? JSON.stringify(body)
-        : null,
+      !['GET', 'DELETE'].includes(method) && body ? JSON.stringify(body) : null,
     headers: {
       'content-type': 'application/json',
       // cookie: req.headers.cookie,

@@ -20,6 +20,7 @@ import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CourseMain from './CourseMain/CourseMain';
+import { page } from '@locale/en/team/page';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -69,7 +70,8 @@ const CourseDashboard: FC<{
         section: 'chat',
       },
       {
-        page: <Moderators />,
+        // page: <Moderators />,
+        page: <></>,
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',

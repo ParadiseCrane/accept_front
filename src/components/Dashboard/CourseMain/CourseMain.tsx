@@ -1,11 +1,5 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useForm, UseFormReturnType } from '@mantine/form';
-import { Button } from '@ui/basics';
-import { UserSelector } from '@ui/selectors';
-import { FC, memo, useCallback, useMemo } from 'react';
-import styles from './courseMain.module.css';
-import { AppShell, Center, Title, Image } from '@mantine/core';
+import { FC, memo } from 'react';
+import { Center, Title, Image } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import { useRequest } from '@hooks/useRequest';
 import { ICourseMain } from '@custom-types/data/ICourse';

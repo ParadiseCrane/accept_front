@@ -6,6 +6,7 @@ import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
 import { IRightsPayload } from '@custom-types/data/rights';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
+import { useUser } from '@hooks/useUser';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash } from '@mantine/hooks';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
@@ -36,9 +37,11 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
+function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
+  const { user } = useUser();
   const course = props.course;
-  const hasWriteRights = props.has_write_rights;
+  const isModerator = props.has_moderate_rights;
+  const [isAuthor, setIsAuthor] = useState<boolean>(false);
   const units: IUnit[] = flattenCourse({
     course: course,
     children: course.children,
@@ -61,10 +64,18 @@ function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
     if (!!value && value.spec !== hash.slice(1)) setHash(value.spec);
   }, [value]);
 
+  useEffect(() => {
+    if (user && user.login === course.author) {
+      setIsAuthor(true);
+    }
+    console.log('user login', user?.login);
+    console.log('author login', course.author);
+  }, [user]);
+
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];
 
-    if (hasWriteRights) {
+    if (isModerator || isAuthor) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
@@ -73,7 +84,7 @@ function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
       });
     }
 
-    if (hasWriteRights && value.kind === 'course') {
+    if (isAuthor && value.kind === 'course') {
       innerActions.push(
         {
           color: 'green',
@@ -92,7 +103,7 @@ function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
       );
     }
 
-    if (hasWriteRights && value.kind === 'unit') {
+    if (isAuthor && value.kind === 'unit') {
       innerActions.push({
         color: 'green',
         href: `/course/edit/${course.spec}?unit=${value.spec}`,
@@ -102,7 +113,7 @@ function Course(props: { course: ICourseModel; has_write_rights: boolean }) {
     }
 
     return innerActions;
-  }, [hasWriteRights, value]);
+  }, [isModerator, value, isAuthor]);
 
   return (
     <>
@@ -161,32 +172,38 @@ export const getServerSideProps: GetServerSideProps = async ({
     req,
   });
 
-  const writeRightsBody: IRightsPayload = {
-    action: 'write',
+  const courseResponse = await fetchWrapperStatic({
+    url: `course/${query.spec}`,
+    req,
+  });
+
+  const moderateRightsBody: IRightsPayload = {
+    action: 'moderate',
     entity_spec: query.spec,
     entity: 'course',
   };
 
-  const hasWriteRightsResponse = await fetchWrapperStatic({
+  const hasModerateRightsResponse = await fetchWrapperStatic({
     url: 'rights',
     req,
     method: 'POST',
-    body: writeRightsBody,
+    body: moderateRightsBody,
   });
 
   if (response.status === 200) {
     const json = await response.json();
-    const hasWriteRights = await hasWriteRightsResponse.json();
+    const hasModerateRights = await hasModerateRightsResponse.json();
+    const author = (await courseResponse.json()).author;
     const course = {
       ...json,
+      author: author,
       spec: query.spec,
     };
 
     return {
       props: {
         course,
-        // has_write_rights: hasWriteRights,
-        has_write_rights: true,
+        has_moderate_rights: hasModerateRights,
       },
     };
   }

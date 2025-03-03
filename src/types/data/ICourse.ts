@@ -35,8 +35,7 @@ export interface ICourseModel {
   description: string;
   kind: 'course';
   image: string;
-  // TODO убрать начальное значение
-  author: 'Иван Иванов';
+  author: string;
   children: IUnit[];
 }
 
