@@ -1,13 +1,11 @@
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IRole } from '@custom-types/data/atomic';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { IGroup } from '@custom-types/data/IGroup';
-import { IUser, IUserBaseInfo, IUserDisplay } from '@custom-types/data/IUser';
+import { IUserBaseInfo } from '@custom-types/data/IUser';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
 import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Table from '@ui/Table/Table';

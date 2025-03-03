@@ -1,12 +1,9 @@
 import CourseDashboard from '@components/Dashboard/CourseDashboard';
-import TournamentDashboard from '@components/Dashboard/TournamentDashboard';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
-import { ITournamentResponse } from '@custom-types/data/ITournament';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Title from '@ui/Title/Title';
-import { getApiUrl } from '@utils/getServerUrl';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ReactNode } from 'react';
 

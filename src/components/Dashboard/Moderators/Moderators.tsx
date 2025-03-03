@@ -1,14 +1,12 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
-import { capitalize } from '@utils/capitalize';
 import Link from 'next/link';
 import { FC, memo } from 'react';
 
 import styles from './style.module.css';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import GroupModeratorList, {
   ICourseModeratorGroupItem,
 } from '@ui/GroupModeratorList/GroupModeratorList';

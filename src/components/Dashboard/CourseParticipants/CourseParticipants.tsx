@@ -9,7 +9,7 @@ import { FC, memo } from 'react';
 
 import styles from './style.module.css';
 import SimpleUserList from '../../ui/SimpleUserList/SimpleUserList';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {

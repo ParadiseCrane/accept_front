@@ -1,7 +1,6 @@
-import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { Users, X } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
@@ -16,7 +15,6 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   const [showSelector, setShowSelector] = useState(false);
   const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
-  const { locale } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [courseGroupPairLS, setCourseGroupPairLS] = useLocalStorage<

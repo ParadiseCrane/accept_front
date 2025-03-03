@@ -17,7 +17,6 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
-import { useSearchParams } from 'next/navigation';
 import { ReactNode, useCallback } from 'react';
 
 const getInitialValuesCourse = ({
