@@ -9,85 +9,78 @@ import { FC, memo } from 'react';
 
 import styles from './style.module.css';
 import { useParams, useSearchParams } from 'next/navigation';
-import GroupModeratorList from '@ui/GroupModeratorList/GroupModeratorList';
+import GroupModeratorList, {
+  ICourseModeratorGroupItem,
+} from '@ui/GroupModeratorList/GroupModeratorList';
+import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { Trash } from 'tabler-icons-react';
+import { Icon } from '@ui/basics';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
-    label: locale.users.list.login,
-    key: 'login',
+    label: locale.dashboard.course.group,
+    key: 'group',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.login.value > b.login.value
+      a.group.value.name > b.group.value.name
         ? 1
-        : a.login.value == b.login.value
+        : a.group.value.name == b.group.value.name
           ? 0
           : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 8,
+    size: 1,
   },
   {
-    label: locale.users.list.shortName,
-    key: 'shortName',
+    label: locale.dashboard.course.moderator,
+    key: 'moderator',
     sortable: true,
     sortFunction: (a: any, b: any) => {
-      return a.shortName.value > b.shortName.value
+      return a.moderator.value.shortName > b.moderator.value.shortName
         ? 1
-        : a.shortName.value == b.shortName.value
+        : a.moderator.value.shortName == b.moderator.value.shortName
           ? 0
           : -1;
     },
     sorted: 0,
     allowMiddleState: true,
-    hidable: true,
+    hidable: false,
     hidden: false,
-    size: 3,
-  },
-  {
-    label: locale.users.list.role,
-    key: 'role',
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.role.value.spec > b.role.value.spec
-        ? 1
-        : a.role.value.spec == b.role.value.spec
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 2,
+    size: 1,
   },
 ];
 
-const refactorUser = (user: IUserDisplay): any => ({
-  ...user,
-  login: {
-    value: user.login,
+const refactorPair = (
+  pair: ICourseModeratorGroup,
+  isAuthor: boolean
+): ICourseModeratorGroupItem => ({
+  ...pair,
+  group: {
+    value: pair.group,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link href={`/profile/${user.login}`} className={tableStyles.title}>
-          {user.login}
+        {/* TODO добавить реальную ссылку на группу */}
+        <Link href={``} className={tableStyles.title}>
+          {pair.group.name}
         </Link>
       </div>
     ),
   },
-  shortName: {
-    value: user.shortName,
-    display: user.shortName,
-  },
-  role: {
-    value: user.role,
+  moderator: {
+    value: pair.moderator,
     display: (
-      <div
-        style={{
-          color: user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
-        }}
-      >
-        {capitalize(user.role.name)}
+      <div className={tableStyles.titleWrapper}>
+        {/* TODO добавить реальную ссылку на модератора */}
+        <Link href={``} className={tableStyles.title}>
+          {pair.moderator.shortName}
+        </Link>
+        {isAuthor && (
+          <Icon onClick={() => {}} color="red" variant="transparent" size="xs">
+            <Trash />
+          </Icon>
+        )}
       </div>
     ),
   },
@@ -96,17 +89,18 @@ const refactorUser = (user: IUserDisplay): any => ({
 const Moderators: FC<{
   type: 'course';
   spec: string;
-  allParticipants?: boolean;
-}> = ({ type, spec, allParticipants }) => {
+  isAuthor: boolean;
+}> = ({ spec, isAuthor }) => {
   const { locale } = useLocale();
   const params = useSearchParams();
-  const group = allParticipants ? 'all' : params.get('group');
 
   return (
     <div className={styles.wrapper}>
       <GroupModeratorList
-        url={`${type}/participant/${spec}/${group}`}
-        refactorUser={refactorUser}
+        url={`course/moderator_group/${spec}`}
+        refactorPair={(pair: ICourseModeratorGroup) =>
+          refactorPair(pair, isAuthor)
+        }
         initialColumns={initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}

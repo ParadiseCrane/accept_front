@@ -1,4 +1,6 @@
+import { IGroup } from './IGroup';
 import { ITask } from './ITask';
+import { IUserBaseInfo } from './IUser';
 
 export interface ICourseResponse {
   title: string;
@@ -78,4 +80,9 @@ export interface ICourseMain {
   description: string;
   image: string;
   invite: string;
+}
+
+export interface ICourseModeratorGroup {
+  moderator: IUserBaseInfo;
+  group: IGroup;
 }

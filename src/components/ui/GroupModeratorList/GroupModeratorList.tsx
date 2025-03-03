@@ -1,6 +1,8 @@
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IRole } from '@custom-types/data/atomic';
-import { IUser, IUserDisplay } from '@custom-types/data/IUser';
+import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { IGroup } from '@custom-types/data/IGroup';
+import { IUser, IUserBaseInfo, IUserDisplay } from '@custom-types/data/IUser';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -27,18 +29,17 @@ interface Item<T = any> {
   display: string | ReactNode;
 }
 
-export interface IUserDisplayItem
-  extends Omit<IUser, 'login' | 'shortName' | 'role'> {
-  login: Item<string>;
-  shortName: Item<string>;
-  role: Item<IRole>;
+export interface ICourseModeratorGroupItem
+  extends Omit<ICourseModeratorGroup, 'moderator' | 'group'> {
+  moderator: Item<IUserBaseInfo>;
+  group: Item<IGroup>;
 }
 
 const GroupModeratorList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorUser: (_: IUserDisplay) => any;
+  refactorPair: (_: ICourseModeratorGroup) => ICourseModeratorGroupItem;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -46,7 +47,7 @@ const GroupModeratorList: FC<{
   url,
   classNames,
   initialColumns,
-  refactorUser,
+  refactorPair,
   noDefault,
   empty,
   defaultRowsOnPage,
@@ -62,23 +63,16 @@ const GroupModeratorList: FC<{
     [initialColumns, locale]
   );
 
-  const [users, setUsers] = useState<IUserDisplayItem[]>([]);
+  const [pairs, setPairs] = useState<ICourseModeratorGroupItem[]>([]);
   const [total, setTotal] = useState(0);
 
   const processData = useCallback(
-    (response: IUserDisplay[]): IUserDisplayItem[] =>
-      response.map((user: IUserDisplay) => refactorUser(user)),
-    [refactorUser]
+    (response: ICourseModeratorGroup[]): ICourseModeratorGroupItem[] =>
+      response.map((pair: ICourseModeratorGroup) => refactorPair(pair)),
+    [refactorPair]
   );
 
-  // const { data, loading } = useRequest<{}, IUserDisplay[], IUserDisplayItem[]>(
-  //   url,
-  //   'GET',
-  //   undefined,
-  //   processData
-  // );
-
-  const [data, setData] = useState<IUserDisplayItem[]>([]);
+  const [data, setData] = useState<ICourseModeratorGroupItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const params = useSearchParams();
@@ -91,12 +85,12 @@ const GroupModeratorList: FC<{
     sort_by: [],
     search_params: {
       search: '',
-      keys: ['shortName.value', 'login.value'],
+      keys: ['group.value', 'moderator.value'],
     },
   });
 
   const applyFilters = useCallback(
-    (data: IUserDisplayItem[]) => {
+    (data: ICourseModeratorGroupItem[]) => {
       var list = [...data];
       const fuse = new Fuse(list, {
         keys: searchParams.search_params.keys,
@@ -116,13 +110,13 @@ const GroupModeratorList: FC<{
 
       setTotal(sorted.length);
 
-      const users = sorted.slice(
+      const pairs = sorted.slice(
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
           : undefined
       );
-      setUsers(users);
+      setPairs(pairs);
     },
     [columns, searchParams]
   );
@@ -135,13 +129,14 @@ const GroupModeratorList: FC<{
 
   useEffect(() => {
     setLoading(true);
-    sendRequest<{}, IUserDisplay[]>(url, 'GET', undefined).then((res) => {
-      const userDisplayList = res.response;
-      const userDisplayItemList: IUserDisplayItem[] =
-        processData(userDisplayList);
-      setData(userDisplayItemList);
-      setLoading(false);
-    });
+    sendRequest<{}, ICourseModeratorGroup[]>(url, 'GET', undefined).then(
+      (res) => {
+        const pairList = res.response;
+        const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
+        setData(pairItemList);
+        setLoading(false);
+      }
+    );
   }, [params]);
 
   return (
@@ -149,7 +144,7 @@ const GroupModeratorList: FC<{
       <Table
         withSearch
         columns={columns}
-        rows={users}
+        rows={pairs}
         classNames={
           classNames
             ? classNames

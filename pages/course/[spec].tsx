@@ -68,8 +68,6 @@ function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
     if (user && user.login === course.author) {
       setIsAuthor(true);
     }
-    console.log('user login', user?.login);
-    console.log('author login', course.author);
   }, [user]);
 
   const actions: IStickyAction[] = useMemo(() => {

@@ -26,6 +26,8 @@ const CourseDashboard: FC<{
   spec: string;
 }> = ({ spec }) => {
   const { locale } = useLocale();
+  const { user } = useUser();
+  const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
   const [course, setCourse] = useState<ICourseModel>();
 
@@ -44,6 +46,12 @@ const CourseDashboard: FC<{
   useEffect(() => {
     if (data) setCourse(data);
   }, [data]);
+
+  useEffect(() => {
+    if (user && course && user.login === course.author) {
+      setIsAuthor(true);
+    }
+  }, [user, course]);
 
   const { hasNewMessages } = useChatHosts();
 
@@ -70,8 +78,7 @@ const CourseDashboard: FC<{
         section: 'chat',
       },
       {
-        // page: <Moderators />,
-        page: <></>,
+        page: <Moderators type={'course'} spec={spec} isAuthor={isAuthor} />,
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
@@ -93,7 +100,7 @@ const CourseDashboard: FC<{
     ];
 
     return links;
-  }, [course, hasNewMessages, locale, refetch, spec]);
+  }, [course, hasNewMessages, locale, refetch, spec, isAuthor]);
 
   const [activeModal, setActiveModal] = useState(false);
 
