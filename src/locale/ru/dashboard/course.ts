@@ -6,4 +6,5 @@ export const course = {
   group: 'Группа',
   allParticipants: 'Все участники',
   groupParticipants: 'Участники',
+  groups: 'Группы',
 };

@@ -22,3 +22,8 @@ export interface IGroupDisplay {
   readonly: boolean;
   participants: number;
 }
+
+export interface IGroupInvite {
+  invite: string;
+  group: IGroup;
+}

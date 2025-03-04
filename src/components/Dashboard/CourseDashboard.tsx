@@ -12,7 +12,12 @@ import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import { Messages, Pencil, Trash, Users } from 'tabler-icons-react';
-import { IconUsersGroup, IconUserCog, IconArticle } from '@tabler/icons-react';
+import {
+  IconUsersGroup,
+  IconUserCog,
+  IconArticle,
+  IconList,
+} from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
 import { ICourseModel } from '@custom-types/data/ICourse';
@@ -20,13 +25,16 @@ import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CourseMain from './CourseMain/CourseMain';
+import Groups from './Groups/Groups';
+import { useSearchParams } from 'next/navigation';
 
 const CourseDashboard: FC<{
   spec: string;
 }> = ({ spec }) => {
   const { locale } = useLocale();
   const { user } = useUser();
-  const [isAuthor, setIsAuthor] = useState<boolean>(false);
+  const [isAuthor, setIsAuthor] = useState<boolean | null>(null);
+  const params = useSearchParams();
 
   const [course, setCourse] = useState<ICourseModel>();
 
@@ -47,6 +55,9 @@ const CourseDashboard: FC<{
   }, [data]);
 
   useEffect(() => {
+    if (user && course && user.login !== course.author) {
+      setIsAuthor(false);
+    }
     if (user && course && user.login === course.author) {
       setIsAuthor(true);
     }
@@ -77,7 +88,7 @@ const CourseDashboard: FC<{
         section: 'chat',
       },
       {
-        page: <Moderators type={'course'} spec={spec} isAuthor={isAuthor} />,
+        page: <Moderators type={'course'} spec={spec} isAuthor={isAuthor!} />,
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
@@ -86,7 +97,7 @@ const CourseDashboard: FC<{
         page: (
           <CourseParticipants type={'course'} spec={spec} allParticipants />
         ),
-        icon: <IconUsersGroup color="var(--secondary)" />,
+        icon: <IconList color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: 'all_participants',
       },
@@ -97,6 +108,18 @@ const CourseDashboard: FC<{
         section: 'participants',
       },
     ];
+
+    if (isAuthor) {
+      links = [
+        ...links,
+        {
+          page: <Groups spec={spec} />,
+          icon: <IconUsersGroup color="var(--secondary)" />,
+          title: locale.dashboard.course.groups,
+          section: 'groups',
+        },
+      ];
+    }
 
     return links;
   }, [course, hasNewMessages, locale, refetch, spec, isAuthor]);
@@ -145,7 +168,7 @@ const CourseDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} />
+      {isAuthor !== null && <LeftMenu links={links} />}
       <GroupSelectorMenu courseSpec={spec} />
     </>
   );
