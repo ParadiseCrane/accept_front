@@ -1,7 +1,6 @@
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
 import { FC, memo, useEffect, useState } from 'react';
-import { Users, X } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
@@ -10,6 +9,7 @@ import { IGroupBaseInfo } from '@custom-types/data/IGroup';
 import { useSearchParams } from 'next/navigation';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
+import { IconUsersGroup, IconX } from '@tabler/icons-react';
 
 const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   const [showSelector, setShowSelector] = useState(false);
@@ -127,9 +127,9 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
             }}
           >
             {showSelector ? (
-              <X color={'var(--primary)'} />
+              <IconX color={'var(--primary)'} />
             ) : (
-              <Users color={'var(--primary)'} />
+              <IconUsersGroup color={'var(--primary)'} />
             )}
           </Icon>
         </div>

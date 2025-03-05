@@ -1,25 +1,52 @@
-import { FC, memo } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { Center, Title, Image } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { useRequest } from '@hooks/useRequest';
-import { ICourseMain } from '@custom-types/data/ICourse';
+import { ICourse, ICourseMain } from '@custom-types/data/ICourse';
+import { useSearchParams } from 'next/navigation';
+import { sendRequest } from '@requests/request';
+import tableStyles from '@styles/ui/customTable.module.css';
+import Link from 'next/link';
 
 const CourseMain: FC<{ spec: string }> = ({ spec }) => {
-  const { data, loading } = useRequest<{}, ICourseMain>(
-    `course/main/${spec}`,
-    'GET',
-    undefined
-  );
+  const [course, setCourse] = useState<ICourseMain | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const params = useSearchParams();
 
-  if (!data || loading) {
+  useEffect(() => {
+    if (params.get('group')) {
+      setLoading(true);
+      sendRequest<{}, ICourse>(`course/${spec}`, 'GET', undefined).then(
+        (courseRes) => {
+          if (!courseRes.error) {
+            sendRequest<{}, string>(
+              `invite/${spec}/${params.get('group')}`,
+              'POST'
+            ).then((inviteRes) => {
+              if (!inviteRes.error) {
+                setCourse({
+                  title: courseRes.response.title,
+                  description: courseRes.response.description,
+                  image: courseRes.response.image,
+                  invite: inviteRes.response,
+                });
+                setLoading(false);
+              }
+            });
+          }
+        }
+      );
+    }
+  }, [params]);
+
+  if (!course || loading) {
     return <div></div>;
   }
 
   return (
     <>
-      {data.image.length > 0 && (
+      {course.image.length > 0 && (
         <Image
-          src={`/api/image/${data.image}`}
+          src={`/api/image/${course.image}`}
           alt="Picture of the course"
           width={600}
           height={200}
@@ -32,12 +59,17 @@ const CourseMain: FC<{ spec: string }> = ({ spec }) => {
         />
       )}
       <Center>
-        <Title order={1}>{data.title}</Title>
+        <Title order={1}>{course.title}</Title>
       </Center>
-      <a href={data.invite}>{data.invite}</a>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+        className={tableStyles.title}
+      >
+        {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+      </Link>
       <TipTapEditor
         editorMode={false}
-        content={data.description}
+        content={course.description}
         onUpdate={() => {}}
       />
     </>

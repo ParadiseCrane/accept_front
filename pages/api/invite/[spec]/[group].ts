@@ -37,6 +37,14 @@ const data: IGroupInvite[] = [
   },
 ];
 
+const getData = (group: string) => {
+  if (group === 'all') {
+    return data;
+  } else {
+    return '123444';
+  }
+};
+
 export default async function InviteCourseGroup(
   req: NextApiRequest,
   res: NextApiResponse
@@ -48,5 +56,5 @@ export default async function InviteCourseGroup(
   //   url: `api/invite/${req.query.spec}/${req.query.group}`,
   // });
   // res.status(200).json([]);
-  res.status(200).json(data);
+  res.status(200).json(getData(req.query.group!.toString()));
 }

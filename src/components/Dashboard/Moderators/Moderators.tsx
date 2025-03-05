@@ -75,6 +75,7 @@ const refactorPair = (
           {pair.moderator.shortName}
         </Link>
         {isAuthor && (
+          // TODO add action for button
           <Icon onClick={() => {}} color="red" variant="transparent" size="xs">
             <Trash />
           </Icon>
