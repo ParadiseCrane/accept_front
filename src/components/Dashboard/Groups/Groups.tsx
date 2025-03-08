@@ -7,7 +7,7 @@ import Link from 'next/link';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { Icon } from '@ui/basics';
 import { Pencil, Plus, Trash } from 'tabler-icons-react';
-import { ActionIcon, Divider } from '@mantine/core';
+import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
 
 const Groups: FC<{
   spec: string;
@@ -29,8 +29,11 @@ const Groups: FC<{
   }, [data]);
 
   if (!data || loading) {
-    // TODO добавить loader
-    return <></>;
+    return (
+      <div style={{ position: 'relative', height: '100%' }}>
+        <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
+      </div>
+    );
   }
 
   return (
