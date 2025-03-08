@@ -37,14 +37,14 @@ const Groups: FC<{
     <div className={styles.list}>
       {groups.map((group, index) => {
         return (
-          <div key={group.invite}>
+          <div key={group.invite_spec}>
             <div className={styles.grid}>
               <div className={tableStyles.titleWrapper}>
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite}`}
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
                   className={tableStyles.title}
                 >
-                  {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite}`}
+                  {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
                 </Link>
               </div>
               <div>{group.group.name}</div>

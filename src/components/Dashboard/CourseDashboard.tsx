@@ -68,7 +68,7 @@ const CourseDashboard: FC<{
   const links: IMenuLink[] = useMemo(() => {
     let links = [
       {
-        page: <CourseMain spec={spec} />,
+        page: <CourseMain courseProps={course} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <IconArticle color="var(--secondary)" />{' '}

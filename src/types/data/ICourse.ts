@@ -79,7 +79,7 @@ export interface ICourseMain {
   title: string;
   description: string;
   image: string;
-  invite: string;
+  invite?: string;
 }
 
 export interface ICourseModeratorGroup {

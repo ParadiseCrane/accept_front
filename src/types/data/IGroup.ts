@@ -24,6 +24,6 @@ export interface IGroupDisplay {
 }
 
 export interface IGroupInvite {
-  invite: string;
+  invite_spec: string;
   group: IGroup;
 }

@@ -1,45 +1,51 @@
 import { FC, memo, useEffect, useState } from 'react';
-import { Center, Title, Image } from '@mantine/core';
+import { Center, Title, Image, Skeleton } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { ICourse, ICourseMain } from '@custom-types/data/ICourse';
+import { ICourseMain, ICourseModel } from '@custom-types/data/ICourse';
 import { useSearchParams } from 'next/navigation';
 import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
+import { IGroupInvite } from '@custom-types/data/IGroup';
 
-const CourseMain: FC<{ spec: string }> = ({ spec }) => {
-  const [course, setCourse] = useState<ICourseMain | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+const CourseMain: FC<{
+  courseProps: ICourseModel | undefined;
+}> = ({ courseProps }) => {
+  const [course, setCourse] = useState<ICourseMain | undefined>();
+  const [linkLoading, setLinkLoading] = useState<boolean>(true);
   const params = useSearchParams();
 
-  useEffect(() => {
-    if (params.get('group')) {
-      setLoading(true);
-      sendRequest<{}, ICourse>(`course/${spec}`, 'GET', undefined).then(
-        (courseRes) => {
-          if (!courseRes.error) {
-            sendRequest<{}, string>(
-              `invite/${spec}/${params.get('group')}`,
-              'POST'
-            ).then((inviteRes) => {
-              if (!inviteRes.error) {
-                setCourse({
-                  title: courseRes.response.title,
-                  description: courseRes.response.description,
-                  image: courseRes.response.image,
-                  invite: inviteRes.response,
-                });
-                setLoading(false);
-              }
-            });
-          }
+  const fetchData = async () => {
+    if (courseProps) {
+      setCourse({
+        title: courseProps.title,
+        description: courseProps.description,
+        image: courseProps.image,
+      });
+      if (params.get('group') && params.get('group') !== 'all') {
+        const inviteRes = await sendRequest<{}, IGroupInvite[]>(
+          `invite/${courseProps.spec}/${params.get('group')}`,
+          'GET'
+        );
+        if (!inviteRes.error) {
+          setCourse({
+            title: courseProps.title,
+            description: courseProps.description,
+            image: courseProps.image,
+            invite: inviteRes.response[0].invite_spec,
+          });
         }
-      );
+      }
+      setLinkLoading(false);
     }
-  }, [params]);
+  };
 
-  if (!course || loading) {
-    return <div></div>;
+  useEffect(() => {
+    fetchData();
+  }, [courseProps, params]);
+
+  if (!course) {
+    return <></>;
   }
 
   return (
@@ -61,12 +67,19 @@ const CourseMain: FC<{ spec: string }> = ({ spec }) => {
       <Center>
         <Title order={1}>{course.title}</Title>
       </Center>
-      <Link
-        href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-        className={tableStyles.title}
-      >
-        {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-      </Link>
+
+      <Skeleton visible={linkLoading}>
+        {course.invite ? (
+          <Link
+            href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+            className={tableStyles.title}
+          >
+            {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+          </Link>
+        ) : (
+          <div>Нет ссылки-приглашения</div>
+        )}
+      </Skeleton>
       <TipTapEditor
         editorMode={false}
         content={course.description}
