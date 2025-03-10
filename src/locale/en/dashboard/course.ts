@@ -7,4 +7,7 @@ export const course = {
   allParticipants: 'All participants',
   groupParticipants: 'Participants',
   groups: 'Groups',
+  deleteGroup: 'Delete group',
+  editGroup: 'Edit group',
+  deleteModerator: 'Delete moderator',
 };

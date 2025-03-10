@@ -7,4 +7,7 @@ export const course = {
   allParticipants: 'Все участники',
   groupParticipants: 'Участники',
   groups: 'Группы',
+  deleteGroup: 'Удалить группу',
+  editGroup: 'Редактировать группу',
+  deleteModerator: 'Удалить модератора',
 };

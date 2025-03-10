@@ -3,7 +3,7 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 import styles from './style.module.css';
 import { useSearchParams } from 'next/navigation';
@@ -12,7 +12,9 @@ import GroupModeratorList, {
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
-import { Icon } from '@ui/basics';
+import { Icon, Tip } from '@ui/basics';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { IUserBaseInfo } from '@custom-types/data/IUser';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -52,7 +54,9 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
 
 const refactorPair = (
   pair: ICourseModeratorGroup,
-  isAuthor: boolean
+  isAuthor: boolean,
+  locale: ILocale,
+  handleDelete: any
 ): ICourseModeratorGroupItem => ({
   ...pair,
   group: {
@@ -71,14 +75,24 @@ const refactorPair = (
     display: (
       <div className={tableStyles.titleWrapper}>
         {/* TODO добавить реальную ссылку на модератора */}
-        <Link href={``} className={tableStyles.title}>
+        <Link
+          href={`/profile/${pair.moderator.login}`}
+          className={tableStyles.title}
+        >
           {pair.moderator.shortName}
         </Link>
         {isAuthor && (
           // TODO add action for button
-          <Icon onClick={() => {}} color="red" variant="transparent" size="xs">
-            <Trash />
-          </Icon>
+          <Tip label={locale.dashboard.course.deleteModerator}>
+            <Icon
+              onClick={handleDelete}
+              color="red"
+              variant="transparent"
+              size="xs"
+            >
+              <Trash />
+            </Icon>
+          </Tip>
         )}
       </div>
     ),
@@ -90,15 +104,34 @@ const Moderators: FC<{
   spec: string;
   isAuthor: boolean;
 }> = ({ spec, isAuthor }) => {
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
   const params = useSearchParams();
+
+  const handleDelete = useCallback(
+    (moderator: IUserBaseInfo) => {
+      const body = {
+        moderator: moderator.login,
+      };
+      requestWithNotify(
+        `course_moderator/${spec}`,
+        'DELETE',
+        locale.notify.moderator.delete,
+        lang,
+        (_: any) => '',
+        body,
+        () => {},
+        { autoClose: 8000 }
+      );
+    },
+    [spec, locale, lang]
+  );
 
   return (
     <div className={styles.wrapper}>
       <GroupModeratorList
         url={`course/moderator_group/${spec}`}
         refactorPair={(pair: ICourseModeratorGroup) =>
-          refactorPair(pair, isAuthor)
+          refactorPair(pair, isAuthor, locale, handleDelete)
         }
         initialColumns={initialColumns}
         noDefault

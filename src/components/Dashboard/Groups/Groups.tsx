@@ -8,6 +8,7 @@ import tableStyles from '@styles/ui/customTable.module.css';
 import { Icon } from '@ui/basics';
 import { Pencil, Plus, Trash } from 'tabler-icons-react';
 import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
+import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 
 const Groups: FC<{
   spec: string;
@@ -45,30 +46,29 @@ const Groups: FC<{
               <div className={tableStyles.titleWrapper}>
                 <Link
                   href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
-                  className={tableStyles.title}
+                  className={tableStyles.link}
                 >
                   {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
                 </Link>
               </div>
               <div>{group.group.name}</div>
               <div className={styles.buttons}>
-                {/* // TODO add action for buttons */}
                 <Icon
-                  onClick={() => {}}
                   variant="transparent"
                   size="xs"
-                  tooltipLabel={locale.ui.taskTest.edit}
+                  tooltipLabel={locale.dashboard.course.editGroup}
+                  href={`/group/edit/${group.group.spec}`}
                 >
                   <Pencil color="var(--primary)" />
                 </Icon>
-                <Icon
-                  onClick={() => {}}
-                  color="red"
-                  variant="transparent"
-                  size="xs"
-                >
-                  <Trash />
-                </Icon>
+                <DeleteModal
+                  group={{
+                    name: group.group.name,
+                    participants: 0,
+                    readonly: group.group.readonly,
+                    spec: group.group.spec,
+                  }}
+                />
               </div>
             </div>
             {index === groups.length - 1 ? (
@@ -79,15 +79,10 @@ const Groups: FC<{
           </div>
         );
       })}
-      {/* TODO add real action to the button */}
-      <ActionIcon
-        w={'100%'}
-        h={'50px'}
-        variant="outline"
-        color="green"
-        onClick={() => {}}
-      >
-        <Plus />
+      <ActionIcon w={'100%'} h={'50px'} variant="outline" color="green">
+        <Icon href={`/group/add`} color="green" size="sm">
+          <Plus />
+        </Icon>
       </ActionIcon>
     </div>
   );

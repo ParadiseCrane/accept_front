@@ -7,6 +7,7 @@ import { course } from './course';
 import { executor } from './executor';
 import { feedback } from './feedback';
 import { group } from './group';
+import { moderator } from './moderator';
 import { notification } from './notification';
 import { profile } from './profile';
 import { students } from './students';
@@ -41,4 +42,5 @@ export const notify = {
   team,
   course,
   analytics,
+  moderator,
 };

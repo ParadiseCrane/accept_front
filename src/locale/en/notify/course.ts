@@ -6,7 +6,7 @@ export const course = {
   },
   create: {
     loading: 'Loading...',
-    success: 'Course was successfully create',
+    success: 'Course was successfully created',
     error: 'Error while creating course',
   },
   edit: {
