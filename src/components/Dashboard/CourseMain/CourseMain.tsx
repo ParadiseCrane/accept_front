@@ -7,6 +7,7 @@ import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
 import { IGroupInvite } from '@custom-types/data/IGroup';
+import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
 
 const CourseMain: FC<{
   courseProps: ICourseModel | undefined;
@@ -70,13 +71,14 @@ const CourseMain: FC<{
 
       <Skeleton visible={linkLoading}>
         {course.invite ? (
-          <Link
-            href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-            className={tableStyles.title}
-          >
-            {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-          </Link>
+          <LinkCopy inviteSpec={course.invite} />
         ) : (
+          // <Link
+          //   href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+          //   className={tableStyles.title}
+          // >
+          //   {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
+          // </Link>
           <div>Нет ссылки-приглашения</div>
         )}
       </Skeleton>

@@ -15,7 +15,3 @@
   align-items: center;
   justify-content: space-evenly;
 }
-
-.link_wrapper:hover {
-  cursor: pointer;
-}

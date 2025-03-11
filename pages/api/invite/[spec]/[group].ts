@@ -2,13 +2,60 @@ import { IGroupInvite } from '@custom-types/data/IGroup';
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+const data: IGroupInvite[] = [
+  {
+    invite_spec: '123',
+    group: {
+      spec: '111',
+      name: 'Group 1',
+      readonly: false,
+    },
+  },
+  {
+    invite_spec: '1234',
+    group: {
+      spec: '222',
+      name: 'Group 2',
+      readonly: false,
+    },
+  },
+  {
+    invite_spec: '12345',
+    group: {
+      spec: '333',
+      name: 'Group 3',
+      readonly: false,
+    },
+  },
+  {
+    invite_spec: '123456',
+    group: {
+      spec: '444',
+      name: 'Group 4',
+      readonly: false,
+    },
+  },
+];
+
+const getData = (group: string) => {
+  if (group === 'all') {
+    return data;
+  } else {
+    return '123444';
+  }
+};
+
 export default async function InviteCourseGroup(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await fetchWrapper({
-    req: req,
-    res: res,
-    url: `api/invite/${req.query.spec}/${req.query.group}`,
-  });
+  // TODO заменить на реальные данные
+  // await fetchWrapper({
+  //   req: req,
+  //   res: res,
+  //   url: `api/invite/${req.query.spec}/${req.query.group}`,
+  // });
+  // res.status(200).json([]);
+  res.status(200).json(data);
+  res.status(200).json(getData(req.query.group!.toString()));
 }
