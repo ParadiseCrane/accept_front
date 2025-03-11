@@ -1,3 +1,25 @@
+.link_with_refresh {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.refresh {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 300ms;
+  transition-delay: 0s;
+}
+
+.link_with_refresh:hover .refresh {
+  opacity: 1;
+}
+
 .link_wrapper:hover {
   cursor: pointer;
+
+  .refresh {
+    display: block;
+  }
 }

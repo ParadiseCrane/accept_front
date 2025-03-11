@@ -34,6 +34,7 @@ import { tournament } from './tournament';
 import { ui } from './ui';
 import { user } from './user';
 import { users } from './users';
+import { link } from './link';
 
 const ru = {
   accept: 'Accept',
@@ -110,6 +111,7 @@ const ru = {
   organization,
   tiptap,
   course,
+  link,
 };
 
 export default ru;

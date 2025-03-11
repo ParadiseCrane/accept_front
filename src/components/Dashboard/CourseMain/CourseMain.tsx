@@ -24,26 +24,41 @@ const CourseMain: FC<{
         image: courseProps.image,
       });
       if (params.get('group') && params.get('group') !== 'all') {
-        const inviteRes = await sendRequest<{}, IGroupInvite[]>(
+        const inviteRes = await sendRequest<{}, string>(
           `invite/${courseProps.spec}/${params.get('group')}`,
           'GET'
         );
+        console.log('inviteRes', inviteRes);
         if (!inviteRes.error) {
           setCourse({
             title: courseProps.title,
             description: courseProps.description,
             image: courseProps.image,
-            invite: inviteRes.response[0].invite_spec,
+            invite: inviteRes.response,
           });
         }
       }
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setLinkLoading(false);
     }
+  };
+
+  const regenerateLink = async () => {
+    const response = await sendRequest<{}, string>(
+      `invite/${courseProps?.spec}/${params.get('group')}`,
+      'GET'
+    );
+    if (!response.error) {
+      return response.response;
+    }
+    return '';
   };
 
   useEffect(() => {
     fetchData();
   }, [courseProps, params]);
+
+  console.log('course main', course);
 
   if (!course) {
     return <></>;
@@ -71,7 +86,10 @@ const CourseMain: FC<{
 
       <Skeleton visible={linkLoading}>
         {course.invite ? (
-          <LinkCopy inviteSpec={course.invite} />
+          <LinkCopy
+            inviteSpec={course.invite}
+            regenerateLink={() => regenerateLink()}
+          />
         ) : (
           // <Link
           //   href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}

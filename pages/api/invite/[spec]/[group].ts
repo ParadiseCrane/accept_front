@@ -1,6 +1,7 @@
 import { IGroupInvite } from '@custom-types/data/IGroup';
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { v4 } from 'uuid';
 
 const data: IGroupInvite[] = [
   {
@@ -41,7 +42,7 @@ const getData = (group: string) => {
   if (group === 'all') {
     return data;
   } else {
-    return '123444';
+    return v4().toString();
   }
 };
 
@@ -56,6 +57,5 @@ export default async function InviteCourseGroup(
   //   url: `api/invite/${req.query.spec}/${req.query.group}`,
   // });
   // res.status(200).json([]);
-  res.status(200).json(data);
   res.status(200).json(getData(req.query.group!.toString()));
 }

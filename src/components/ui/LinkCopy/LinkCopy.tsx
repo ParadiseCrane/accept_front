@@ -6,36 +6,58 @@ import {
   successNotification,
 } from '@utils/notificationFunctions';
 import { useLocale } from '@hooks/useLocale';
-import { FC } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { sendRequest } from '@requests/request';
+import { Icon, Tip } from '@ui/basics';
+import { IconRefresh } from '@tabler/icons-react';
 
-export const LinkCopy: FC<{ inviteSpec: string }> = ({ inviteSpec }) => {
+export const LinkCopy: FC<{
+  inviteSpec: string;
+  regenerateLink: () => Promise<string>;
+}> = ({ inviteSpec, regenerateLink }) => {
+  const [invite, setInvite] = useState(inviteSpec);
   const clipboard = useClipboard({ timeout: 300 });
   const { locale } = useLocale();
 
-  const onLinkClick = (toCopy: string) => {
-    const id = newNotification({
-      title: locale.loading,
-      autoClose: false,
-    });
-    clipboard.copy(toCopy);
-    successNotification({
-      id,
-      title: locale.notify.course.linkCopied,
-      autoClose: 5000,
-    });
+  const regenerateInvite = async () => {
+    const response = await regenerateLink();
+    if (response.length !== 0) {
+      setInvite(response);
+    }
   };
 
+  const onLinkClick = useCallback(
+    (toCopy: string) => {
+      const id = newNotification({
+        title: locale.loading,
+        autoClose: false,
+      });
+      clipboard.copy(toCopy);
+      successNotification({
+        id,
+        title: locale.notify.course.linkCopied,
+        autoClose: 5000,
+      });
+    },
+    [invite]
+  );
+
   return (
-    <div className={tableStyles.titleWrapper}>
+    <div className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}>
       <div
         className={`${tableStyles.link} ${styles.link_wrapper}`}
         onClick={() => {
-          onLinkClick(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/invite/${inviteSpec}`
-          );
+          onLinkClick(`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`);
         }}
       >
-        {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${inviteSpec}`}
+        {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`}
+      </div>
+      <div className={styles.refresh}>
+        <Tip label={locale.link.refreshLink}>
+          <Icon size="xs" onClick={regenerateInvite}>
+            <IconRefresh />
+          </Icon>
+        </Tip>
       </div>
     </div>
   );

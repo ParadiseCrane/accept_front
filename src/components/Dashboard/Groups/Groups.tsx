@@ -9,6 +9,7 @@ import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 import CopyButton from '@ui/CopyButton/CopyButton';
 import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
+import { sendRequest } from '@requests/request';
 
 const Groups: FC<{
   spec: string;
@@ -29,6 +30,17 @@ const Groups: FC<{
     }
   }, [data]);
 
+  const regenerateLink = async (groupSpec: string) => {
+    const response = await sendRequest<{}, string>(
+      `invite/${spec}/${groupSpec}`,
+      'GET'
+    );
+    if (!response.error) {
+      return response.response;
+    }
+    return '';
+  };
+
   if (!data || loading) {
     return (
       <div style={{ position: 'relative', height: '100%' }}>
@@ -43,7 +55,10 @@ const Groups: FC<{
         return (
           <div key={group.invite_spec}>
             <div className={styles.grid}>
-              <LinkCopy inviteSpec={group.invite_spec} />
+              <LinkCopy
+                inviteSpec={group.invite_spec}
+                regenerateLink={() => regenerateLink(group.invite_spec)}
+              />
               <div>{group.group.name}</div>
               <div className={styles.buttons}>
                 <CopyButton
