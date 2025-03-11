@@ -118,20 +118,20 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
               />
             </div>
           </div>
-          <Icon
-            size={'sm'}
-            className={styles.iconRoot}
-            wrapperClassName={styles.iconWrapper}
+          <div
+            className={styles.iconWrapper}
             onClick={() => {
               setShowSelector((value) => !value);
             }}
           >
-            {showSelector ? (
-              <IconX color={'var(--primary)'} />
-            ) : (
-              <IconUsersGroup color={'var(--primary)'} />
-            )}
-          </Icon>
+            <Icon size={'sm'} className={styles.iconRoot}>
+              {showSelector ? (
+                <IconX color={'var(--primary)'} />
+              ) : (
+                <IconUsersGroup color={'var(--primary)'} />
+              )}
+            </Icon>
+          </div>
         </div>
       }
     </>

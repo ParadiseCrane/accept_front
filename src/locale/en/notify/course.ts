@@ -14,4 +14,5 @@ export const course = {
     success: 'Course successfully edited',
     error: 'Error while editing course',
   },
+  linkCopied: 'Link copied to clipboard',
 };

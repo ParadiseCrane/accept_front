@@ -9,6 +9,12 @@ import { Icon } from '@ui/basics';
 import { Pencil, Plus, Trash } from 'tabler-icons-react';
 import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
+import CopyButton from '@ui/CopyButton/CopyButton';
+import {
+  newNotification,
+  successNotification,
+} from '@utils/notificationFunctions';
+import { useClipboard } from '@mantine/hooks';
 
 const Groups: FC<{
   spec: string;
@@ -20,6 +26,20 @@ const Groups: FC<{
     'GET',
     undefined
   );
+  const clipboard = useClipboard({ timeout: 300 });
+
+  const onLinkClick = (toCopy: string) => {
+    const id = newNotification({
+      title: locale.loading,
+      autoClose: false,
+    });
+    clipboard.copy(toCopy);
+    successNotification({
+      id,
+      title: locale.notify.course.linkCopied,
+      autoClose: 5000,
+    });
+  };
 
   console.log('data', data);
 
@@ -44,15 +64,22 @@ const Groups: FC<{
           <div key={group.invite_spec}>
             <div className={styles.grid}>
               <div className={tableStyles.titleWrapper}>
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
-                  className={tableStyles.link}
+                <div
+                  className={`${tableStyles.link} ${styles.link_wrapper}`}
+                  onClick={() => {
+                    onLinkClick(
+                      `${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`
+                    );
+                  }}
                 >
                   {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
-                </Link>
+                </div>
               </div>
               <div>{group.group.name}</div>
               <div className={styles.buttons}>
+                <CopyButton
+                  toCopy={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${group.invite_spec}`}
+                />
                 <Icon
                   variant="transparent"
                   size="xs"
