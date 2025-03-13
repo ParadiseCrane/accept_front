@@ -12,17 +12,15 @@ import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
 import { sendRequest } from '@requests/request';
 
 const Groups: FC<{
-  spec: string;
-}> = ({ spec }) => {
+  course_spec: string;
+}> = ({ course_spec }) => {
   const { locale } = useLocale();
   const [groups, setGroups] = useState<IGroupInvite[]>([]);
   const { data, loading } = useRequest<{}, IGroupInvite[]>(
-    `invite/${spec}/all`,
+    `invite/${course_spec}/all`,
     'GET',
     undefined
   );
-
-  console.log('data', data);
 
   useEffect(() => {
     if (data) {
@@ -32,7 +30,7 @@ const Groups: FC<{
 
   const regenerateLink = async (groupSpec: string) => {
     const response = await sendRequest<{}, string>(
-      `invite/${spec}/${groupSpec}`,
+      `invite/${course_spec}/${groupSpec}`,
       'GET'
     );
     if (!response.error) {
@@ -90,11 +88,16 @@ const Groups: FC<{
           </div>
         );
       })}
-      <ActionIcon w={'100%'} h={'50px'} variant="outline" color="green">
-        <Icon href={`/group/add`} color="green" size="sm">
-          <Plus />
-        </Icon>
-      </ActionIcon>
+      <Icon
+        href={`/group/add?course=${course_spec}`}
+        w={'100%'}
+        h={'50px'}
+        variant="outline"
+        color="green"
+        size="sm"
+      >
+        <Plus />
+      </Icon>
     </div>
   );
 };

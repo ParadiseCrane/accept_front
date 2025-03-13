@@ -28,7 +28,6 @@ const CourseMain: FC<{
           `invite/${courseProps.spec}/${params.get('group')}`,
           'GET'
         );
-        console.log('inviteRes', inviteRes);
         if (!inviteRes.error) {
           setCourse({
             title: courseProps.title,
@@ -57,8 +56,6 @@ const CourseMain: FC<{
   useEffect(() => {
     fetchData();
   }, [courseProps, params]);
-
-  console.log('course main', course);
 
   if (!course) {
     return <></>;
