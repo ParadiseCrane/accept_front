@@ -5,7 +5,6 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-COPY ckeditor5-custom ./ckeditor5-custom
 RUN yarn install --frozen-lockfile
 
 # If using npm with a `package-lock.json` comment out above and use below instead
@@ -22,6 +21,7 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV API_ENDPOINT=$API_ENDPOINT
 
 RUN yarn build --no-lint
 
