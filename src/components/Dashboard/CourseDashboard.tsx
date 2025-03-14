@@ -17,6 +17,7 @@ import {
   IconUserCog,
   IconArticle,
   IconList,
+  IconBellPlus,
 } from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
@@ -27,6 +28,7 @@ import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseP
 import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';
 import { useSearchParams } from 'next/navigation';
+import CreateNotification from './CreateNotification/CreateNotification';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -106,6 +108,12 @@ const CourseDashboard: FC<{
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
+      },
+      {
+        page: <CreateNotification spec={spec} type="course" />,
+        icon: <IconBellPlus color="var(--secondary)" />,
+        title: locale.dashboard.course.createNotification,
+        section: 'create_notification',
       },
     ];
 

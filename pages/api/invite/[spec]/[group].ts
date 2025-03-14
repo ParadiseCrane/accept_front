@@ -5,33 +5,33 @@ import { v4 } from 'uuid';
 
 const data: IGroupInvite[] = [
   {
-    invite_spec: '123',
+    invite_spec: v4(),
     group: {
-      spec: '111',
+      spec: v4(),
       name: 'Group 1',
       readonly: false,
     },
   },
   {
-    invite_spec: '1234',
+    invite_spec: v4(),
     group: {
-      spec: '222',
+      spec: v4(),
       name: 'Group 2',
       readonly: false,
     },
   },
   {
-    invite_spec: '12345',
+    invite_spec: v4(),
     group: {
-      spec: '333',
+      spec: v4(),
       name: 'Group 3',
       readonly: false,
     },
   },
   {
-    invite_spec: '123456',
+    invite_spec: v4(),
     group: {
-      spec: '444',
+      spec: v4(),
       name: 'Group 4',
       readonly: false,
     },

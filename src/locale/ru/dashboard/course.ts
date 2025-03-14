@@ -10,4 +10,5 @@ export const course = {
   deleteGroup: 'Удалить группу',
   editGroup: 'Редактировать группу',
   deleteModerator: 'Удалить модератора',
+  createNotification: 'Создать уведомление',
 };

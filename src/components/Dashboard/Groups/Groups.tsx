@@ -22,8 +22,6 @@ const Groups: FC<{
     undefined
   );
 
-  console.log('data', data);
-
   useEffect(() => {
     if (data) {
       setGroups(data);
