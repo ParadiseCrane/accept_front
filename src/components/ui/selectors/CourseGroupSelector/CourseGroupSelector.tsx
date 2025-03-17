@@ -26,6 +26,7 @@ const CourseGroupSingleSelect: FC<CourseGroupSelectProps> = ({
   return (
     <Select
       defaultValue={data.length > 0 ? data[0].value : ''}
+      allowDeselect={false}
       searchable
       data={data}
       value={currentGroup ? currentGroup.name : null}

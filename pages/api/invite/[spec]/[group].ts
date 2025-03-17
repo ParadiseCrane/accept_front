@@ -50,20 +50,20 @@ export default async function InviteCourseGroup(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  res.status(200).json(getData(req.query.group!.toString()));
-  // if (req.method == 'GET') {
-  //   await fetchWrapper({
-  //     req: req,
-  //     res: res,
-  //     url: `api/invite/${req.query.spec}/${req.query.group}`,
-  //     method: 'GET',
-  //   });
-  // } else {
-  //   await fetchWrapper({
-  //     req: req,
-  //     res: res,
-  //     url: `api/invite/${req.query.spec}/${req.query.group}`,
-  //     method: 'POST',
-  //   });
-  // }
+  // res.status(200).json(getData(req.query.group!.toString()));
+  if (req.method == 'GET') {
+    await fetchWrapper({
+      req: req,
+      res: res,
+      url: `api/invite/${req.query.spec}/${req.query.group}`,
+      method: 'GET',
+    });
+  } else {
+    await fetchWrapper({
+      req: req,
+      res: res,
+      url: `api/invite/${req.query.spec}/${req.query.group}`,
+      method: 'POST',
+    });
+  }
 }

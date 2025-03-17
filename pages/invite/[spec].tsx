@@ -1,6 +1,7 @@
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { Button } from '@ui/basics';
 import { getCookieValue } from '@utils/cookies';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import { ReactNode } from 'react';
@@ -33,8 +34,6 @@ InvitePage.getLayout = (page: ReactNode) => {
 
 export default InvitePage;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
@@ -48,15 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
-  const response = await fetch(`${API_URL}/api/invite/${spec}`, {
-    method: 'GET',
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-      'content-type': 'application/json',
-    } as { [key: string]: string },
-  });
+  const response = await fetchWrapperStatic({ url: `invite/${spec}`, req });
   switch (response.status) {
     case 200: {
       const response_json = await response.json();

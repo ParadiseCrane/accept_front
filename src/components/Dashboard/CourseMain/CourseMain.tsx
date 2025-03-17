@@ -17,6 +17,7 @@ const CourseMain: FC<{
   const params = useSearchParams();
 
   const fetchData = async () => {
+    setLinkLoading(true);
     if (courseProps) {
       setCourse({
         title: courseProps.title,
@@ -24,7 +25,7 @@ const CourseMain: FC<{
         image: courseProps.image,
       });
       if (params.get('group') && params.get('group') !== 'all') {
-        const inviteRes = await sendRequest<{}, string>(
+        const inviteRes = await sendRequest<{}, IGroupInvite[]>(
           `invite/${courseProps.spec}/${params.get('group')}`,
           'GET'
         );
@@ -33,7 +34,7 @@ const CourseMain: FC<{
             title: courseProps.title,
             description: courseProps.description,
             image: courseProps.image,
-            invite: inviteRes.response,
+            invite: inviteRes.response[0].invite_spec,
           });
         }
       }
