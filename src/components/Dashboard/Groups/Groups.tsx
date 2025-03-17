@@ -3,7 +3,7 @@ import styles from './style.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import { IGroupInvite } from '@custom-types/data/IGroup';
-import { Icon } from '@ui/basics';
+import { Icon, Tip } from '@ui/basics';
 import { Pencil, Plus, Trash } from 'tabler-icons-react';
 import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
@@ -88,16 +88,18 @@ const Groups: FC<{
           </div>
         );
       })}
-      <Icon
-        href={`/group/add?course=${course_spec}`}
-        w={'100%'}
-        h={'50px'}
-        variant="outline"
-        color="green"
-        size="sm"
-      >
-        <Plus />
-      </Icon>
+      <Tip label={locale.group.add}>
+        <Icon
+          href={`/group/add?course=${course_spec}`}
+          w={'100%'}
+          h={'50px'}
+          variant="outline"
+          color="green"
+          size="sm"
+        >
+          <Plus />
+        </Icon>
+      </Tip>
     </div>
   );
 };
