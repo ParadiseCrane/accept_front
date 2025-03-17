@@ -70,7 +70,6 @@ function CourseAdd() {
       }
 
       const courseToSend = { ...course, children: emptyChildren };
-      console.log('courseToSend', courseToSend);
 
       requestWithNotify<ICourseAddEdit, string>(
         'course/add',

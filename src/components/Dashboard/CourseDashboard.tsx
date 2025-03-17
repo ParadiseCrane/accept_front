@@ -121,7 +121,7 @@ const CourseDashboard: FC<{
       links = [
         ...links,
         {
-          page: <Groups spec={spec} />,
+          page: <Groups course_spec={spec} />,
           icon: <IconUsersGroup color="var(--secondary)" />,
           title: locale.dashboard.course.groups,
           section: 'groups',

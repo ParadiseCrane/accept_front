@@ -63,12 +63,14 @@ const Form: FC<{
           <Helper dropdownContent={locale.helpers.group.readOnly} />
         </div>
       )}
-      <UserSelector
-        setFieldValue={setFieldValue}
-        inputProps={initialProps}
-        users={users}
-        initialUsers={form.values.members}
-      />
+      {users.length > 0 && (
+        <UserSelector
+          setFieldValue={setFieldValue}
+          inputProps={initialProps}
+          users={users}
+          initialUsers={form.values.members}
+        />
+      )}
       <div className={styles.buttonWrapper}>
         <Button
           color="var(--primary)"
