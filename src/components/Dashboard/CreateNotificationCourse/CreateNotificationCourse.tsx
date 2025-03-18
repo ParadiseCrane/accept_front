@@ -12,6 +12,7 @@ import { UserSelector } from '@ui/selectors';
 import { useSearchParams } from 'next/navigation';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { sendRequest } from '@requests/request';
+import { ILocale } from '@custom-types/ui/ILocale';
 
 const CreateNotificationCourse: FC<{
   spec: string;
@@ -55,7 +56,7 @@ const CreateNotificationCourse: FC<{
       title: form.values.notificationTitle,
       shortDescription: form.values.notificationShortDescription,
       description: form.values.notificationDescription,
-      logins: [],
+      logins: form.values.selectedUsers,
       groups: [],
       roles: [],
       author: user?.login || '',
@@ -72,7 +73,7 @@ const CreateNotificationCourse: FC<{
     );
   }, [type, spec, form.values, user?.login, locale, lang]);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     if (params.has('group')) {
       const response = await sendRequest<{}, IUserDisplay[]>(
@@ -85,15 +86,22 @@ const CreateNotificationCourse: FC<{
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
     setLoading(false);
-  };
+  }, [params, spec]);
 
   useEffect(() => {
     fetchUsers();
+    form.setFieldValue('selectedUsers', []);
   }, [params]);
 
   return (
     <>
       <div className={styles.notificationWrapper}>
+        <div className={styles.notificationLabel}>
+          <div>{locale.notification.notification}</div>
+          <Helper
+            dropdownContent={locale.helpers.notification.assignmentCreation}
+          />
+        </div>
         {loading ? (
           <>Loading</>
         ) : users && users.length > 0 ? (
@@ -101,16 +109,14 @@ const CreateNotificationCourse: FC<{
             setFieldValue={setFieldValue}
             inputProps={initialProps}
             users={users}
+            titles={(locale: ILocale) => [
+              locale.ui.userSelector.unselectedGroupMembers,
+              locale.ui.userSelector.selectedGroupMembers,
+            ]}
           />
         ) : (
           <>Нет пользователей</>
         )}
-        <div className={styles.notificationLabel}>
-          <div>{locale.notification.notification}</div>
-          <Helper
-            dropdownContent={locale.helpers.notification.assignmentCreation}
-          />
-        </div>
         <TextInput
           label={locale.notification.form.title}
           required
