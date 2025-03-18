@@ -28,7 +28,7 @@ import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseP
 import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';
 import { useSearchParams } from 'next/navigation';
-import CreateNotification from './CreateNotification/CreateNotification';
+import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -110,7 +110,7 @@ const CourseDashboard: FC<{
         section: 'participants',
       },
       {
-        page: <CreateNotification spec={spec} type="course" />,
+        page: <CreateNotificationCourse spec={spec} type="course" />,
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',

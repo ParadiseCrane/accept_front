@@ -1,0 +1,14 @@
+.notificationLabel {
+  font-size: var(--font-size-l);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-xxs);
+}
+.notificationWrapper {
+  margin-top: var(--spacer-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
+  margin-bottom: var(--spacer-l);
+}

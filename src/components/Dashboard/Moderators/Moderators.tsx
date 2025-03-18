@@ -64,7 +64,10 @@ const refactorPair = (
     display: (
       <div className={tableStyles.titleWrapper}>
         {/* TODO добавить реальную ссылку на группу */}
-        <Link href={``} className={tableStyles.title}>
+        <Link
+          href={`/group/edit/${pair.group.spec}`}
+          className={tableStyles.title}
+        >
           {pair.group.name}
         </Link>
       </div>
