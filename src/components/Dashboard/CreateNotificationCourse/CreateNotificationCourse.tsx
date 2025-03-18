@@ -7,7 +7,7 @@ import { Button, CustomEditor, Helper, TextInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import styles from './createNotification.module.css';
+import styles from './createNotificationCourse.module.css';
 import { UserSelector } from '@ui/selectors';
 import { useSearchParams } from 'next/navigation';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -21,12 +21,14 @@ const CreateNotificationCourse: FC<{
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const [users, setUsers] = useState<IUserDisplay[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const form = useForm({
     initialValues: {
       notificationTitle: '',
       notificationShortDescription: '',
       notificationDescription: '',
+      selectedUsers: [] as string[],
     },
     validate: {
       notificationTitle: (value) =>
@@ -39,12 +41,12 @@ const CreateNotificationCourse: FC<{
   });
 
   const setFieldValue = useCallback(
-    (users: string[]) => form.setFieldValue('members', users),
+    (users: string[]) => form.setFieldValue('selectedUsers', users),
     [] // eslint-disable-line
   );
 
   const initialProps = useMemo(() => {
-    form.getInputProps('members');
+    form.getInputProps('selectedUsers');
   }, []); // eslint-disable-line
 
   const handleSubmit = useCallback(() => {
@@ -70,18 +72,39 @@ const CreateNotificationCourse: FC<{
     );
   }, [type, spec, form.values, user?.login, locale, lang]);
 
+  const fetchUsers = async () => {
+    setLoading(true);
+    if (params.has('group')) {
+      const response = await sendRequest<{}, IUserDisplay[]>(
+        `course/participant/${spec}/${params.get('group')}`,
+        'GET'
+      );
+      if (!response.error) {
+        setUsers(response.response);
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setLoading(false);
+  };
+
   useEffect(() => {
-    // const { } = sendRequest<{}, IUserDisplay[]>()
+    fetchUsers();
   }, [params]);
 
   return (
     <>
       <div className={styles.notificationWrapper}>
-        <UserSelector
-          setFieldValue={setFieldValue}
-          inputProps={initialProps}
-          users={[]}
-        />
+        {loading ? (
+          <>Loading</>
+        ) : users && users.length > 0 ? (
+          <UserSelector
+            setFieldValue={setFieldValue}
+            inputProps={initialProps}
+            users={users}
+          />
+        ) : (
+          <>Нет пользователей</>
+        )}
         <div className={styles.notificationLabel}>
           <div>{locale.notification.notification}</div>
           <Helper
