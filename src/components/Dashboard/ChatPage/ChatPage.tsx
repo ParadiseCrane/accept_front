@@ -20,7 +20,8 @@ import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
 const ChatPage: FC<{
   spec: string;
   entity: IActivity;
-}> = ({ entity, spec }) => {
+  customRequest?: string;
+}> = ({ entity, spec, customRequest }) => {
   const { locale } = useLocale();
   const [currentHost, setCurrentHost] = useState<string | undefined>(undefined);
 
@@ -92,6 +93,7 @@ const ChatPage: FC<{
                   entity={entity}
                   exclude={hostLogins}
                   onSuccess={fetchInitialHosts}
+                  customRequest={customRequest}
                   small
                 />
               </div>
@@ -160,6 +162,7 @@ const ChatPage: FC<{
                 entity={entity}
                 exclude={hostLogins}
                 onSuccess={fetchInitialHosts}
+                customRequest={customRequest}
               />
             </div>
           )}

@@ -11,4 +11,6 @@ export const course = {
   editGroup: 'Edit group',
   deleteModerator: 'Delete moderator',
   createNotification: 'Create notification',
+  noUsersNotification:
+    'No users found for the selected group. Cannot create a notification',
 };

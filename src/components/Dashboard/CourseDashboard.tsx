@@ -80,7 +80,13 @@ const CourseDashboard: FC<{
         section: 'main',
       },
       {
-        page: <ChatPage spec={spec} entity="course" />,
+        page: (
+          <ChatPage
+            spec={spec}
+            entity="course"
+            customRequest={`course/participant/${spec}/${params.get('group')}`}
+          />
+        ),
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />{' '}
@@ -130,7 +136,7 @@ const CourseDashboard: FC<{
     }
 
     return links;
-  }, [course, hasNewMessages, locale, refetch, spec, isAuthor]);
+  }, [course, hasNewMessages, locale, refetch, spec, isAuthor, params]);
 
   const [activeModal, setActiveModal] = useState(false);
 

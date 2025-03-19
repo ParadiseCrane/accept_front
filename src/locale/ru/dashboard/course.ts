@@ -11,4 +11,6 @@ export const course = {
   editGroup: 'Редактировать группу',
   deleteModerator: 'Удалить модератора',
   createNotification: 'Создать уведомление',
+  noUsersNotification:
+    'Пользователи для выбранной группы не найдены. Невозможно создать уведомление',
 };

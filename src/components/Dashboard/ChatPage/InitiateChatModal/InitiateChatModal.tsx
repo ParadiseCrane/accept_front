@@ -21,7 +21,8 @@ const InitiateChatModal: FC<{
   entity: IActivity;
   onSuccess: callback<string>;
   small?: boolean;
-}> = ({ exclude, spec, entity, onSuccess, small }) => {
+  customRequest?: string;
+}> = ({ exclude, spec, entity, onSuccess, small, customRequest }) => {
   const { locale } = useLocale();
   const [startChatModal, setStartChatModal] = useState(false);
   const close = useCallback(() => setStartChatModal(false), []);
@@ -96,6 +97,7 @@ const InitiateChatModal: FC<{
             exclude={exclude}
             form={form}
             field={'user'}
+            customRequest={customRequest}
           />
           <TextArea
             label={locale.dashboard.chat.userModal.message.label}

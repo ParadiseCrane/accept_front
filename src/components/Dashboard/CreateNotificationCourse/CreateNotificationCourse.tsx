@@ -3,7 +3,13 @@ import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Button, CustomEditor, Helper, TextInput } from '@ui/basics';
+import {
+  Button,
+  CustomEditor,
+  Helper,
+  LoadingOverlay,
+  TextInput,
+} from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -82,6 +88,8 @@ const CreateNotificationCourse: FC<{
       );
       if (!response.error) {
         setUsers(response.response);
+      } else {
+        setUsers([]);
       }
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -93,6 +101,26 @@ const CreateNotificationCourse: FC<{
     form.setFieldValue('selectedUsers', []);
   }, [params]);
 
+  if (!users || loading) {
+    return (
+      <div style={{ position: 'relative', height: '100%' }}>
+        <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
+      </div>
+    );
+  }
+
+  if (!loading && !users.length) {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.emptyMessageWrapper}>
+          <div className={styles.emptyMessage}>
+            <div>{locale.dashboard.course.noUsersNotification}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={styles.notificationWrapper}>
@@ -102,9 +130,7 @@ const CreateNotificationCourse: FC<{
             dropdownContent={locale.helpers.notification.assignmentCreation}
           />
         </div>
-        {loading ? (
-          <>Loading</>
-        ) : users && users.length > 0 ? (
+        {users.length > 0 ? (
           <UserSelector
             setFieldValue={setFieldValue}
             inputProps={initialProps}
