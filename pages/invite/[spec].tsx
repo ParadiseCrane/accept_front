@@ -21,7 +21,14 @@ function InvitePage(props: InvitePageProps) {
       </div>
     );
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: '150px',
+      }}
+    >
       <h1>Вы успешно добавлены в эту группу.</h1>
       <Button href={`/course/${props.entity_spec}`}>Перейти к курсу</Button>
     </div>

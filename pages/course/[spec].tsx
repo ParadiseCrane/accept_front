@@ -9,6 +9,7 @@ import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { useUser } from '@hooks/useUser';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash } from '@mantine/hooks';
+import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
@@ -145,6 +146,9 @@ function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
           setActive={setOpenModal}
           course={course}
         />
+        {user && (
+          <ChatSticky entity={'course'} spec={course.spec} host={user.login} />
+        )}
       </AppShell>
     </>
   );
