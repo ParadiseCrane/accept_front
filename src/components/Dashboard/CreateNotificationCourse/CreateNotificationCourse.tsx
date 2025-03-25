@@ -130,19 +130,7 @@ const CreateNotificationCourse: FC<{
             dropdownContent={locale.helpers.notification.assignmentCreation}
           />
         </div>
-        {users.length > 0 ? (
-          <UserSelector
-            setFieldValue={setFieldValue}
-            inputProps={initialProps}
-            users={users}
-            titles={(locale: ILocale) => [
-              locale.ui.userSelector.unselectedGroupMembers,
-              locale.ui.userSelector.selectedGroupMembers,
-            ]}
-          />
-        ) : (
-          <>Нет пользователей</>
-        )}
+
         <TextInput
           label={locale.notification.form.title}
           required
@@ -172,7 +160,19 @@ const CreateNotificationCourse: FC<{
           name={'notificationDescription'}
         />
       </div>
-      <Group align="center">
+      <UserSelector
+        setFieldValue={setFieldValue}
+        inputProps={initialProps}
+        users={users}
+        titles={(locale: ILocale) => [
+          locale.ui.userSelector.unselectedGroupMembers,
+          locale.ui.userSelector.selectedGroupMembers,
+        ]}
+      />
+      <Group
+        align="center"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <Button
           disabled={Object.keys(form.errors).length > 0}
           onClick={handleSubmit}

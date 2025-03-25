@@ -29,12 +29,12 @@ const Groups: FC<{
   }, [data]);
 
   const regenerateLink = async (groupSpec: string) => {
-    const response = await sendRequest<{}, string>(
+    const response = await sendRequest<{}, IGroupInvite[]>(
       `invite/${course_spec}/${groupSpec}`,
       'GET'
     );
     if (!response.error) {
-      return response.response;
+      return response.response[0].invite_spec;
     }
     return '';
   };
@@ -55,7 +55,7 @@ const Groups: FC<{
             <div className={styles.grid}>
               <LinkCopy
                 inviteSpec={group.invite_spec}
-                regenerateLink={() => regenerateLink(group.invite_spec)}
+                regenerateLink={() => regenerateLink(group.group.spec)}
               />
               <div>{group.group.name}</div>
               <div className={styles.buttons}>

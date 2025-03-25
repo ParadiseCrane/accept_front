@@ -21,6 +21,7 @@ export const LinkCopy: FC<{
 
   const regenerateInvite = async () => {
     const response = await regenerateLink();
+    console.log('response', response);
     if (response.length !== 0) {
       setInvite(response);
     }
@@ -44,14 +45,16 @@ export const LinkCopy: FC<{
 
   return (
     <div className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}>
-      <div
-        className={`${tableStyles.link} ${styles.link_wrapper}`}
-        onClick={() => {
-          onLinkClick(`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`);
-        }}
-      >
-        {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`}
-      </div>
+      <Tip label={locale.link.copyLink}>
+        <div
+          className={`${tableStyles.link} ${styles.link_wrapper}`}
+          onClick={() => {
+            onLinkClick(`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`);
+          }}
+        >
+          {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`}
+        </div>
+      </Tip>
       <div className={styles.refresh}>
         <Tip label={locale.link.refreshLink}>
           <Icon size="xs" onClick={regenerateInvite}>

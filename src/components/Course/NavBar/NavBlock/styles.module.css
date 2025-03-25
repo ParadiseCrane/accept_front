@@ -5,6 +5,7 @@
 }
 
 .box {
+  flex-grow: 1;
   padding: 0px 10px;
   height: 100%;
   width: 100%;
@@ -12,6 +13,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.box span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .box a {

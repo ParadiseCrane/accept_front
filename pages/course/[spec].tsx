@@ -147,6 +147,7 @@ function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
           course={course}
         />
         {user && (
+          // TODO проверить, что это всегда spec курса, а не его элемента
           <ChatSticky entity={'course'} spec={course.spec} host={user.login} />
         )}
       </AppShell>

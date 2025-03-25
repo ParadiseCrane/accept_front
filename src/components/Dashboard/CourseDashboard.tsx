@@ -84,6 +84,7 @@ const CourseDashboard: FC<{
           <ChatPage
             spec={spec}
             entity="course"
+            // TODO сделать проверку
             customRequest={`course/participant/${spec}/${params.get('group')}`}
           />
         ),

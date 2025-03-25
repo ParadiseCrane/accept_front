@@ -36,6 +36,7 @@ const Main: FC = () => {
           alt="Picture of the course"
           width={600}
           height={200}
+          radius={'md'}
           style={{
             width: '100%',
             height: 'auto',
@@ -44,8 +45,10 @@ const Main: FC = () => {
           }}
         />
       )}
-      <Center>
-        <Title order={1}>{course.title}</Title>
+      <Center mt={'md'} mb={'md'}>
+        <Title order={1} ta={'center'}>
+          {course.title}
+        </Title>
       </Center>
       <TipTapEditor
         editorMode={false}

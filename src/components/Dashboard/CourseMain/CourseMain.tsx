@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useState } from 'react';
-import { Center, Title, Image, Skeleton } from '@mantine/core';
+import { Center, Title, Image, Skeleton, Box, Divider } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import { ICourseMain, ICourseModel } from '@custom-types/data/ICourse';
 import { useSearchParams } from 'next/navigation';
@@ -8,6 +8,7 @@ import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
 import { IGroupInvite } from '@custom-types/data/IGroup';
 import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
+import { useLocale } from '@hooks/useLocale';
 
 const CourseMain: FC<{
   courseProps: ICourseModel | undefined;
@@ -15,6 +16,7 @@ const CourseMain: FC<{
   const [course, setCourse] = useState<ICourseMain | undefined>();
   const [linkLoading, setLinkLoading] = useState<boolean>(true);
   const params = useSearchParams();
+  const { locale } = useLocale();
 
   const fetchData = async () => {
     setLinkLoading(true);
@@ -44,12 +46,12 @@ const CourseMain: FC<{
   };
 
   const regenerateLink = async () => {
-    const response = await sendRequest<{}, string>(
+    const response = await sendRequest<{}, IGroupInvite[]>(
       `invite/${courseProps?.spec}/${params.get('group')}`,
       'GET'
     );
     if (!response.error) {
-      return response.response;
+      return response.response[0].invite_spec;
     }
     return '';
   };
@@ -78,24 +80,20 @@ const CourseMain: FC<{
           }}
         />
       )}
-      <Center>
-        <Title order={1}>{course.title}</Title>
+      <Center mt={'md'} mb={'md'}>
+        <Title order={1} ta={'center'}>
+          {course.title}
+        </Title>
       </Center>
-
-      <Skeleton visible={linkLoading}>
+      {locale.link.inviteLinkSelectedGroup}:
+      <Skeleton visible={linkLoading} mb={'md'}>
         {course.invite ? (
           <LinkCopy
             inviteSpec={course.invite}
             regenerateLink={() => regenerateLink()}
           />
         ) : (
-          // <Link
-          //   href={`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-          //   className={tableStyles.title}
-          // >
-          //   {`${process.env.NEXT_PUBLIC_BASE_URL}/invite/${course.invite}`}
-          // </Link>
-          <div>Нет ссылки-приглашения</div>
+          <div>{locale.link.inviteLinkGenerationError}</div>
         )}
       </Skeleton>
       <TipTapEditor

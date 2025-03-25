@@ -9,5 +9,6 @@ export default async function CourseAddNotification(
     req: req,
     res: res,
     url: `api/course/add-notification/course/${req.query.spec}`,
+    method: 'POST',
   });
 }
