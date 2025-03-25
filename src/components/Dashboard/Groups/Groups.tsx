@@ -49,6 +49,11 @@ const Groups: FC<{
 
   return (
     <div className={styles.list}>
+      <div className={`${styles.grid} ${styles.info_row}`}>
+        <div>{locale.dashboard.course.inviteLink}</div>
+        <div>{locale.dashboard.course.groupName}</div>
+        <div>{locale.dashboard.course.actions}</div>
+      </div>
       {groups.map((group, index) => {
         return (
           <div key={group.invite_spec}>

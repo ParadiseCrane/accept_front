@@ -1,6 +1,6 @@
 import { ICourse } from '@custom-types/data/ICourse';
 import { ITask } from '@custom-types/data/ITask';
-import { AppShell, Center, Title, Image } from '@mantine/core';
+import { AppShell, Center, Title, Image, Box } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
@@ -50,11 +50,13 @@ const Main: FC = () => {
           {course.title}
         </Title>
       </Center>
-      <TipTapEditor
-        editorMode={false}
-        content={course.description}
-        onUpdate={() => {}}
-      />
+      <Box ml={'xl'} mr={'xl'}>
+        <TipTapEditor
+          editorMode={false}
+          content={course.description}
+          onUpdate={() => {}}
+        />
+      </Box>
     </AppShell.Main>
   );
 };

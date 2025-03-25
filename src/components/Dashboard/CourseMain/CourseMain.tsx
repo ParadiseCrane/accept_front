@@ -1,5 +1,13 @@
 import { FC, memo, useEffect, useState } from 'react';
-import { Center, Title, Image, Skeleton, Box, Divider } from '@mantine/core';
+import {
+  Center,
+  Title,
+  Image,
+  Skeleton,
+  Box,
+  Divider,
+  Paper,
+} from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import { ICourseMain, ICourseModel } from '@custom-types/data/ICourse';
 import { useSearchParams } from 'next/navigation';
@@ -85,22 +93,26 @@ const CourseMain: FC<{
           {course.title}
         </Title>
       </Center>
-      {locale.link.inviteLinkSelectedGroup}:
-      <Skeleton visible={linkLoading} mb={'md'}>
-        {course.invite ? (
-          <LinkCopy
-            inviteSpec={course.invite}
-            regenerateLink={() => regenerateLink()}
-          />
-        ) : (
-          <div>{locale.link.inviteLinkGenerationError}</div>
-        )}
-      </Skeleton>
-      <TipTapEditor
-        editorMode={false}
-        content={course.description}
-        onUpdate={() => {}}
-      />
+      <Paper ml={'xl'} mr={'xl'} mb={'md'} shadow={'md'} p={'md'}>
+        {locale.link.inviteLinkSelectedGroup}:
+        <Skeleton visible={linkLoading}>
+          {course.invite ? (
+            <LinkCopy
+              inviteSpec={course.invite}
+              regenerateLink={() => regenerateLink()}
+            />
+          ) : (
+            <div>{locale.link.inviteLinkGenerationError}</div>
+          )}
+        </Skeleton>
+      </Paper>
+      <Box ml={'xl'} mr={'xl'}>
+        <TipTapEditor
+          editorMode={false}
+          content={course.description}
+          onUpdate={() => {}}
+        />
+      </Box>
     </>
   );
 };

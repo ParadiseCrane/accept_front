@@ -13,4 +13,7 @@ export const course = {
   createNotification: 'Создать уведомление',
   noUsersNotification:
     'Пользователи для выбранной группы не найдены. Невозможно создать уведомление',
+  inviteLink: 'Ссылка-приглашение для группы',
+  groupName: 'Название группы',
+  actions: 'Действия',
 };

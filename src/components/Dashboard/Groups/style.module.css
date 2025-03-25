@@ -10,6 +10,11 @@
   align-items: center;
 }
 
+.info_row {
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;

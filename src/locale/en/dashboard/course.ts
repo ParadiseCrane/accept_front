@@ -13,4 +13,7 @@ export const course = {
   createNotification: 'Create notification',
   noUsersNotification:
     'No users found for the selected group. Cannot create a notification',
+  inviteLink: 'Invite link for the group',
+  groupName: 'Group name',
+  actions: 'Actions',
 };
