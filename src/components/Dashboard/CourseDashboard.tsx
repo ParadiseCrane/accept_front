@@ -29,6 +29,7 @@ import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';
 import { useSearchParams } from 'next/navigation';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
+import CourseChatPage from './CourseChatPage/CourseChatPage';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -68,7 +69,8 @@ const CourseDashboard: FC<{
   const { hasNewMessages } = useChatHosts();
 
   const links: IMenuLink[] = useMemo(() => {
-    let links = [
+    let links: IMenuLink[] = [];
+    links = [
       {
         page: <CourseMain courseProps={course} />,
         icon: (
@@ -80,14 +82,7 @@ const CourseDashboard: FC<{
         section: 'main',
       },
       {
-        page: (
-          <ChatPage
-            spec={spec}
-            entity="course"
-            // TODO сделать проверку
-            customRequest={`course/participant/${spec}/${params.get('group')}`}
-          />
-        ),
+        page: <CourseChatPage spec={spec} groupSpec={params.get('group')} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />{' '}

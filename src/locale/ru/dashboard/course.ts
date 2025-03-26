@@ -16,4 +16,5 @@ export const course = {
   inviteLink: 'Ссылка-приглашение для группы',
   groupName: 'Название группы',
   actions: 'Действия',
+  chatNoGroupSelected: 'Выберите группу для просмотра чата',
 };

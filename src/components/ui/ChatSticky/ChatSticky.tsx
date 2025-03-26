@@ -10,11 +10,12 @@ import { MessageCircle2 } from 'tabler-icons-react';
 
 import styles from './chatSticky.module.css';
 
-const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
-  spec,
-  entity,
-  host,
-}) => {
+const ChatSticky: FC<{
+  spec: string;
+  entity: IActivity;
+  host: string;
+  additional_info?: string;
+}> = ({ spec, entity, host, additional_info }) => {
   const [showChat, setShowChat] = useState(false);
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
@@ -40,6 +41,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
                 !!user && message.author == user?.login
               }
               wrapperStyles={styles.chatWrapper}
+              additional_info={additional_info}
             />
           )}
         </div>

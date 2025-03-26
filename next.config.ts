@@ -19,28 +19,6 @@ const nextConfig: NextConfig = {
     staticGenerationMinPagesPerWorker: 25,
     // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'wallpapers.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-  },
   async rewrites() {
     return [
       {

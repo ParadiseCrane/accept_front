@@ -22,7 +22,16 @@ const InitiateChatModal: FC<{
   onSuccess: callback<string>;
   small?: boolean;
   customRequest?: string;
-}> = ({ exclude, spec, entity, onSuccess, small, customRequest }) => {
+  additional_info?: string;
+}> = ({
+  exclude,
+  spec,
+  entity,
+  onSuccess,
+  small,
+  customRequest,
+  additional_info,
+}) => {
   const { locale } = useLocale();
   const [startChatModal, setStartChatModal] = useState(false);
   const close = useCallback(() => setStartChatModal(false), []);
@@ -59,6 +68,7 @@ const InitiateChatModal: FC<{
       host: form.values.user,
       moderator: true,
       content: form.values.message,
+      additional_info,
     }).then((response) => {
       if (!response.error) {
         onSuccess(form.values.user);

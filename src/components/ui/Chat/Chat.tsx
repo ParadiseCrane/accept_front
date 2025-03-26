@@ -21,6 +21,7 @@ const Chat: FC<{
   host: string;
   wrapperStyles: any;
   moderator?: boolean;
+  additional_info?: string;
 }> = ({
   indicateNew,
   opened,
@@ -30,6 +31,7 @@ const Chat: FC<{
   isMessageMine,
   wrapperStyles,
   moderator,
+  additional_info,
 }) => {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<IChatMessage[]>([]);
@@ -68,6 +70,7 @@ const Chat: FC<{
         spec,
         host,
         moderator: !!moderator,
+        additional_info,
       }).then((res) => {
         if (!res.error) {
           appendMessages(res.response);
@@ -75,7 +78,15 @@ const Chat: FC<{
         }
       });
     },
-    [entity, spec, host, moderator, appendMessages, indicateNew]
+    [
+      entity,
+      spec,
+      host,
+      moderator,
+      appendMessages,
+      indicateNew,
+      additional_info,
+    ]
   );
 
   const handleSend = useCallback(() => {
@@ -88,12 +99,13 @@ const Chat: FC<{
       host,
       moderator: !!moderator,
       content: localMessage,
+      additional_info,
     }).then((res) => {
       if (!res.error) {
         appendMessages([res.response]);
       }
     });
-  }, [entity, spec, host, moderator, message, appendMessages]);
+  }, [entity, spec, host, moderator, message, appendMessages, additional_info]);
 
   useEffect(() => {
     if (opened && newMessages.length > 0)
@@ -102,8 +114,9 @@ const Chat: FC<{
         entity,
         spec,
         moderator: !!moderator,
+        additional_info,
       }).then(() => setNewMessages([]));
-  }, [opened, newMessages, entity, moderator, spec]);
+  }, [opened, newMessages, entity, moderator, spec, additional_info]);
 
   useEffect(() => {
     if (firstFetchDone || !opened) return;
@@ -113,6 +126,7 @@ const Chat: FC<{
       spec,
       host,
       moderator: !!moderator,
+      additional_info,
     }).then((res) => {
       if (!res.error) {
         setMessages(res.response);
@@ -125,7 +139,7 @@ const Chat: FC<{
         }, 100);
       }
     });
-  }, [entity, host, moderator, opened, firstFetchDone, spec]);
+  }, [entity, host, moderator, opened, firstFetchDone, spec, additional_info]);
 
   useLongPooling(fetchMessages, refetchIntervalSeconds);
 

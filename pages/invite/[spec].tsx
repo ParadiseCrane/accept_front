@@ -1,10 +1,14 @@
+import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { Button } from '@ui/basics';
 import { getCookieValue } from '@utils/cookies';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { ReactNode } from 'react';
+import styles from '@styles/error.module.css';
+import Link from 'next/link';
 
 interface InvitePageProps {
   success: boolean;
@@ -13,11 +17,19 @@ interface InvitePageProps {
 }
 
 function InvitePage(props: InvitePageProps) {
+  const { locale } = useLocale();
   if (!props.success)
     return (
       <div>
-        <h1>Вы уже добавлены в эту группу.</h1>
-        <Button href="/">На главную</Button>
+        <Head>
+          <title>{locale.link.invitePage}</title>
+        </Head>
+        <div className={styles.description}>
+          {locale.link.alreadyGroupMember}
+        </div>
+        <Link href="/" className={styles.returnReversed}>
+          {locale.link.goToMain}
+        </Link>
       </div>
     );
   return (
@@ -29,8 +41,16 @@ function InvitePage(props: InvitePageProps) {
         paddingTop: '150px',
       }}
     >
-      <h1>Вы успешно добавлены в эту группу.</h1>
-      <Button href={`/course/${props.entity_spec}`}>Перейти к курсу</Button>
+      <Head>
+        <title>{locale.link.invitePage}</title>
+      </Head>
+      <div className={styles.description}>{locale.link.groupJoinSuccess}</div>
+      <Link
+        href={`/course/${props.entity_spec}`}
+        className={styles.returnReversed}
+      >
+        {locale.link.goToCourse}
+      </Link>
     </div>
   );
 }
