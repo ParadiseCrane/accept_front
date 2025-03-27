@@ -55,4 +55,5 @@ export const titles = {
   },
   courses: 'Курсы',
   feedback: 'Обратная связь',
+  soon: 'Скоро',
 };

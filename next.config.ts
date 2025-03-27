@@ -1,11 +1,11 @@
 import { NextConfig } from 'next';
 
+const prod = process.env.PRODUCTION && +process.env.PRODUCTION;
+
 const nextConfig: NextConfig = {
-  // uncomment for docker deployment
-  // output: "standalone",
+  output: prod ? 'standalone' : undefined,
   typescript: {
-    // uncomment for docker deployment
-    // ignoreBuildErrors: true
+    ignoreBuildErrors: !!prod,
   },
   modularizeImports: {
     '@tabler/icons': {
@@ -17,7 +17,22 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+  },
+  async redirects() {
+    return prod
+      ? [
+          {
+            source: '/course/:slug*',
+            destination: '/soon',
+            permanent: false,
+          },
+          {
+            source: '/courses',
+            destination: '/soon',
+            permanent: false,
+          },
+        ]
+      : [];
   },
   async rewrites() {
     return [
