@@ -43,6 +43,7 @@ const loadImageAsFile = async ({
       ]);
       const json = await response.json();
       const src: string = json['url'];
+
       editor
         .chain()
         .insertContent(
@@ -54,8 +55,8 @@ const loadImageAsFile = async ({
         )
         .run();
     } catch (error) {
-      // TODO: Add placeholder
-      const src = '';
+      // TODO: Create error notification
+      const src = '/media/placeholder.jpg';
       editor
         .chain()
         .insertContent(

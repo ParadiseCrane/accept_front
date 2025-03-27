@@ -127,7 +127,7 @@ const AccountsMenu: FC<{}> = () => {
     >
       <Menu.Target>
         <div>
-          <div className={styles.accounts} id="accounts_menu_id">
+          <div className={styles.accounts}>
             {accounts.length > 0 &&
               filteredAccounts
                 .slice(
