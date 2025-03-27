@@ -167,7 +167,7 @@ function Task(props: {
     }
 
     return inner_actions;
-  }, [showHint, hasReadTestsRights, hasWriteRights, task, width]);
+  }, [showHint, hasReadTestsRights, hasWriteRights, task, width, locale]);
 
   return (
     <>

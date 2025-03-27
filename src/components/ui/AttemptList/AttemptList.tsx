@@ -136,19 +136,14 @@ const AttemptList: FC<{
 
   const refetch = useCallback(() => {
     if (activeTab && !shouldNotRefetch && needRefetch) return fetch_data();
-    return new Promise<void>((res) => {
-      res();
-    });
+    return new Promise<void>(() => {});
   }, [activeTab, fetch_data, needRefetch, shouldNotRefetch]);
 
   useEffect(() => {
     fetch_data();
   }, [fetch_data]);
 
-  useEffect(() => {
-    const timer = setInterval(() => refetch(), 2000);
-    return () => clearInterval(timer);
-  }, [refetch]);
+  const { loading: _, updatesCounter } = useRefetch(refetch, 2);
 
   return (
     <div>

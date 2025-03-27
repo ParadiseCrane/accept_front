@@ -13,6 +13,7 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   result: {
     display: (
       <VerdictWrapper
+        key={attempt.spec}
         status={attempt.status}
         verdict={attempt.verdict?.verdict}
         test={attempt.verdict?.test}
@@ -66,7 +67,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.result,
-    key: 'results',
+    key: 'result',
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
