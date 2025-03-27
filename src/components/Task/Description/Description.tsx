@@ -152,12 +152,11 @@ const Description: FC<{
         <div className={styles.remarkWrapper}>
           <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
           <div className={styles.remark}>
-            {' '}
             <TipTapEditor
               editorMode={false}
               content={task.remark}
               onUpdate={() => {}}
-            />{' '}
+            />
           </div>
         </div>
       )}

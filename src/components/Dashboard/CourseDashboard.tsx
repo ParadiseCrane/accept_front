@@ -75,7 +75,7 @@ const CourseDashboard: FC<{
         page: <CourseMain courseProps={course} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <IconArticle color="var(--secondary)" />{' '}
+            <IconArticle color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.main,
@@ -85,7 +85,7 @@ const CourseDashboard: FC<{
         page: <CourseChatPage spec={spec} groupSpec={params.get('group')} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />{' '}
+            <Messages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.chat,

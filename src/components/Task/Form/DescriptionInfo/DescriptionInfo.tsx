@@ -23,22 +23,26 @@ const DescriptionInfo: FC<{
   return (
     <>
       <CustomEditor
+        key={0}
         label={locale.task.form.description}
         form={form}
         name={'description'}
       />
       <CustomEditor
+        key={1}
         label={locale.task.form.inputFormat}
         form={form}
         name={'inputFormat'}
       />
       <CustomEditor
+        key={2}
         label={locale.task.form.outputFormat}
         form={form}
         name={'outputFormat'}
       />
 
       <CustomEditor
+        key={3}
         label={locale.task.form.remark}
         form={form}
         name={'remark'}
@@ -47,6 +51,7 @@ const DescriptionInfo: FC<{
       {!form.values.isTournament && form.values['hasHint'] && (
         <div className={styles.hintWrapper}>
           <CustomEditor
+            key={4}
             label={locale.task.form.hint.text}
             form={form}
             name={'hintContent'}

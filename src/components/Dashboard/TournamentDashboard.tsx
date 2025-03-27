@@ -94,7 +94,7 @@ const TournamentDashboard: FC<{
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />{' '}
+            <Messages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,

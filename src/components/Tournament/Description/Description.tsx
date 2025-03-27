@@ -93,12 +93,11 @@ const Description: FC<{
             title={<div className={styles.title}>{tournament.title}</div>}
             description={
               <div className={styles.description}>
-                {' '}
                 <TipTapEditor
                   editorMode={false}
                   content={tournament.description}
                   onUpdate={() => {}}
-                />{' '}
+                />
               </div>
             }
             tasks={showTasks ? tasks.map((task) => task.spec) : []}

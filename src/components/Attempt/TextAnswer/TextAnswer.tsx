@@ -12,7 +12,6 @@ const TextAnswer: FC<{ attempt: IAttempt }> = ({ attempt }) => {
       {attempt.textAnswers.map((answer, index) => (
         <div className={styles.itemWrapper} key={index}>
           <div className={styles.itemTitle}>
-            {' '}
             {`${locale.task.answer} #${index + 1}`}
           </div>
           <TextArea

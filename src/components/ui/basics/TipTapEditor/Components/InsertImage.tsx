@@ -2,43 +2,13 @@ import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { getCookie } from '@utils/cookies';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
 
 import { imageInsertFunction } from '../TipTapEditor';
 import styles from '../TipTapEditor.module.css';
 import { IconWrapper } from './IconWrapper';
 import { ImageUrlModal } from './Modals/ImageUrlModal';
-
-// const loadImageAsFile = ({
-//   files,
-//   editor,
-//   timeout,
-// }: {
-//   files: FileList | null;
-//   editor: Editor;
-//   timeout: number;
-// }) => {
-//   const reader = new FileReader();
-//   const { locale } = useLocale();
-//   reader.onload = function () {
-//     if (typeof reader.result === 'string') {
-//       editor
-//         ?.chain()
-//         .focus()
-//         .setImage({
-//           src: reader.result,
-//           alt: locale.tiptap.imageAltTitle,
-//           title: locale.tiptap.imageAltTitle,
-//         })
-//         .run();
-//     }
-//     return '';
-//   };
-//   if (files !== null) {
-//     reader.readAsDataURL(files[0]);
-//   }
-// };
 
 const loadImageAsFile = async ({
   files,
@@ -84,7 +54,8 @@ const loadImageAsFile = async ({
         )
         .run();
     } catch (error) {
-      const src = 'https://cdn-icons-png.flaticon.com/512/4154/4154393.png';
+      // TODO: Add placeholder
+      const src = '';
       editor
         .chain()
         .insertContent(
@@ -101,11 +72,19 @@ const loadImageAsFile = async ({
 
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
   const { locale } = useLocale();
+  const id = useId();
   return (
     <RichTextEditor.Control
       aria-label={locale.tiptap.imageFile}
       title={locale.tiptap.imageFile}
     >
+      <label
+        htmlFor={id}
+        style={{ display: 'flex', flexDirection: 'column' }}
+        className={styles.upload_image}
+      >
+        <IconWrapper isActive={false} IconChild={PhotoUp} />
+      </label>
       <input
         type="file"
         accept={'image/*'}
@@ -120,15 +99,8 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
           });
         }}
         style={{ display: 'none' }}
-        id="upload-image-as-file"
+        id={id}
       />
-      <label
-        htmlFor="upload-image-as-file"
-        style={{ display: 'flex', flexDirection: 'column' }}
-        className={styles.upload_image}
-      >
-        <IconWrapper isActive={false} IconChild={PhotoUp} />
-      </label>
     </RichTextEditor.Control>
   );
 };

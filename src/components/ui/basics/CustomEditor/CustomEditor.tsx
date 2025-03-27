@@ -1,7 +1,6 @@
-import { useLocale } from '@hooks/useLocale';
 import { Editor as EditorType } from '@tiptap/react';
 import { InputWrapper } from '@ui/basics';
-import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react';
+import { FC, ReactNode, memo } from 'react';
 
 import { TipTapEditor } from '../TipTapEditor/TipTapEditor';
 
@@ -13,8 +12,6 @@ const CustomEditor: FC<{
   helperContent?: string | ReactNode;
   shrink?: boolean;
 }> = ({ name, label, form, helperContent, shrink }) => {
-  const { locale } = useLocale();
-
   return (
     <div>
       <InputWrapper
