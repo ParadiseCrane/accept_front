@@ -145,6 +145,11 @@ const AttemptList: FC<{
     fetch_data();
   }, [fetch_data]);
 
+  useEffect(() => {
+    const timer = setInterval(() => refetch(), 2000);
+    return () => clearInterval(timer);
+  }, [refetch]);
+
   return (
     <div>
       <Table

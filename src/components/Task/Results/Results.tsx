@@ -66,7 +66,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.result,
-    key: 'result',
+    key: 'results',
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
