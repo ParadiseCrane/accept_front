@@ -126,6 +126,7 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
+                    style={{ whiteSpace: 'pre-line' }}
                   >
                     {example.inputData}
                     <CopyButton toCopy={example.inputData} />
@@ -136,6 +137,7 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
+                    style={{ whiteSpace: 'pre-line' }}
                   >
                     {example.outputData}
                     <CopyButton toCopy={example.outputData} />
