@@ -57,7 +57,7 @@ function TournamentEdit(props: ITournamentEditBundle) {
       end: timezoneDate(tournament.end),
       frozeResults: timezoneDate(tournament.frozeResults),
     }),
-    [tournament]
+    [tournament, props.tags]
   );
 
   const handleSubmit = useCallback(
@@ -79,7 +79,7 @@ function TournamentEdit(props: ITournamentEditBundle) {
         author: form.values.author,
         title: form.values.title,
         description: form.values.description,
-        tasks: form.values.tasks,
+        tasks: form.values.tasks.map((task) => task.spec),
         // @ts-ignore-line
         tags: form.values.tags.map((tag) => tag.value),
         status: form.values.status,

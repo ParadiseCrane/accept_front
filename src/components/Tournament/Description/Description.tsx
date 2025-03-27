@@ -57,7 +57,7 @@ const Description: FC<{
       special ||
       (registered && tournament.status.spec != 0) ||
       tournament.status.spec == 2,
-    [registered, special, tournament.status.spec]
+    [registered, special, tournament.status?.spec]
   );
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const Description: FC<{
               {locale.tournament.banned}!
             </div>
           ) : (
-            !(tournament.status.spec === 2 || isPreview || special) && (
+            !(isPreview || tournament.status.spec === 2 || special) && (
               <RegistrationButton
                 spec={tournament.spec}
                 withPin={tournament.security == 1}

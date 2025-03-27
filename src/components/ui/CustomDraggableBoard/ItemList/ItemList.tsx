@@ -23,6 +23,7 @@ const ItemList: FC<ItemListProps> = ({ id, items, classNames, ...props }) => {
           // isDraggingOver={dropSnapshot.isDraggingOver}
           // isDropDisabled={props.isDropDisabled}
           // isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+          ref={dropProvided.innerRef}
           {...dropProvided.droppableProps}
         >
           <div
