@@ -14,8 +14,8 @@ const ChatSticky: FC<{
   spec: string;
   entity: IActivity;
   host: string;
-  additional_info?: string;
-}> = ({ spec, entity, host, additional_info }) => {
+  group_spec?: string;
+}> = ({ spec, entity, host, group_spec }) => {
   const [showChat, setShowChat] = useState(false);
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
@@ -41,7 +41,7 @@ const ChatSticky: FC<{
                 !!user && message.author == user?.login
               }
               wrapperStyles={styles.chatWrapper}
-              additional_info={additional_info}
+              group_spec={group_spec}
             />
           )}
         </div>

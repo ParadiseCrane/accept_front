@@ -29,7 +29,7 @@ const CourseChatPage: FC<{ spec: string; groupSpec: string | null }> = ({
       spec={spec}
       entity={'course'}
       customRequest={`course/participant/${spec}/${groupSpec}`}
-      additional_info={groupSpec}
+      group_spec={groupSpec}
     />
   );
 };

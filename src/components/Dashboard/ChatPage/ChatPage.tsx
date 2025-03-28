@@ -21,8 +21,8 @@ const ChatPage: FC<{
   spec: string;
   entity: IActivity;
   customRequest?: string;
-  additional_info?: string;
-}> = ({ entity, spec, customRequest, additional_info }) => {
+  group_spec?: string;
+}> = ({ entity, spec, customRequest, group_spec }) => {
   const { locale } = useLocale();
   const [currentHost, setCurrentHost] = useState<string | undefined>(undefined);
 
@@ -95,7 +95,7 @@ const ChatPage: FC<{
                   exclude={hostLogins}
                   onSuccess={fetchInitialHosts}
                   customRequest={customRequest}
-                  additional_info={additional_info}
+                  group_spec={group_spec}
                   small
                 />
               </div>
@@ -165,7 +165,7 @@ const ChatPage: FC<{
                 exclude={hostLogins}
                 onSuccess={fetchInitialHosts}
                 customRequest={customRequest}
-                additional_info={additional_info}
+                group_spec={group_spec}
               />
             </div>
           )}
@@ -182,7 +182,7 @@ const ChatPage: FC<{
                 }}
                 wrapperStyles={styles.chatWrapper}
                 moderator={true}
-                additional_info={additional_info}
+                group_spec={group_spec}
               />
             </div>
           )}

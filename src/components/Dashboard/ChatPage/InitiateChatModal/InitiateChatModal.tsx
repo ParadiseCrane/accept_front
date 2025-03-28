@@ -22,7 +22,7 @@ const InitiateChatModal: FC<{
   onSuccess: callback<string>;
   small?: boolean;
   customRequest?: string;
-  additional_info?: string;
+  group_spec?: string;
 }> = ({
   exclude,
   spec,
@@ -30,7 +30,7 @@ const InitiateChatModal: FC<{
   onSuccess,
   small,
   customRequest,
-  additional_info,
+  group_spec,
 }) => {
   const { locale } = useLocale();
   const [startChatModal, setStartChatModal] = useState(false);
@@ -68,7 +68,7 @@ const InitiateChatModal: FC<{
       host: form.values.user,
       moderator: true,
       content: form.values.message,
-      additional_info,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((response) => {
       if (!response.error) {
         onSuccess(form.values.user);

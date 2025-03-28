@@ -54,12 +54,12 @@ const CourseMain: FC<{
   };
 
   const regenerateLink = async () => {
-    const response = await sendRequest<{}, IGroupInvite[]>(
+    const response = await sendRequest<{}, string>(
       `invite/${courseProps?.spec}/${params.get('group')}`,
-      'GET'
+      'POST'
     );
     if (!response.error) {
-      return response.response[0].invite_spec;
+      return response.response;
     }
     return '';
   };

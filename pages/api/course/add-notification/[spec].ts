@@ -8,7 +8,7 @@ export default async function CourseAddNotification(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/course/add-notification/course/${req.query.spec}`,
+    url: `api/course/add-notification/${req.query.spec}`,
     method: 'POST',
   });
 }

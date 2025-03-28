@@ -29,12 +29,12 @@ const Groups: FC<{
   }, [data]);
 
   const regenerateLink = async (groupSpec: string) => {
-    const response = await sendRequest<{}, IGroupInvite[]>(
+    const response = await sendRequest<{}, string>(
       `invite/${course_spec}/${groupSpec}`,
-      'GET'
+      'POST'
     );
     if (!response.error) {
-      return response.response[0].invite_spec;
+      return response.response;
     }
     return '';
   };

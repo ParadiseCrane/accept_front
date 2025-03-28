@@ -21,7 +21,7 @@ const Chat: FC<{
   host: string;
   wrapperStyles: any;
   moderator?: boolean;
-  additional_info?: string;
+  group_spec?: any;
 }> = ({
   indicateNew,
   opened,
@@ -31,7 +31,7 @@ const Chat: FC<{
   isMessageMine,
   wrapperStyles,
   moderator,
-  additional_info,
+  group_spec,
 }) => {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<IChatMessage[]>([]);
@@ -70,7 +70,7 @@ const Chat: FC<{
         spec,
         host,
         moderator: !!moderator,
-        additional_info,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then((res) => {
         if (!res.error) {
           appendMessages(res.response);
@@ -78,15 +78,7 @@ const Chat: FC<{
         }
       });
     },
-    [
-      entity,
-      spec,
-      host,
-      moderator,
-      appendMessages,
-      indicateNew,
-      additional_info,
-    ]
+    [entity, spec, host, moderator, appendMessages, indicateNew, group_spec]
   );
 
   const handleSend = useCallback(() => {
@@ -99,13 +91,13 @@ const Chat: FC<{
       host,
       moderator: !!moderator,
       content: localMessage,
-      additional_info,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         appendMessages([res.response]);
       }
     });
-  }, [entity, spec, host, moderator, message, appendMessages, additional_info]);
+  }, [entity, spec, host, moderator, message, appendMessages, group_spec]);
 
   useEffect(() => {
     if (opened && newMessages.length > 0)
@@ -114,9 +106,9 @@ const Chat: FC<{
         entity,
         spec,
         moderator: !!moderator,
-        additional_info,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then(() => setNewMessages([]));
-  }, [opened, newMessages, entity, moderator, spec, additional_info]);
+  }, [opened, newMessages, entity, moderator, spec, group_spec]);
 
   useEffect(() => {
     if (firstFetchDone || !opened) return;
@@ -126,7 +118,7 @@ const Chat: FC<{
       spec,
       host,
       moderator: !!moderator,
-      additional_info,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         setMessages(res.response);
@@ -139,7 +131,7 @@ const Chat: FC<{
         }, 100);
       }
     });
-  }, [entity, host, moderator, opened, firstFetchDone, spec, additional_info]);
+  }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
   useLongPooling(fetchMessages, refetchIntervalSeconds);
 
