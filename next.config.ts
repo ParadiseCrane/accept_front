@@ -1,6 +1,6 @@
 import { NextConfig } from 'next';
 
-const prod = process.env.PRODUCTION && +process.env.PRODUCTION;
+const prod = process.env.NODE_ENV === 'production';
 
 const nextConfig: NextConfig = {
   output: prod ? 'standalone' : undefined,

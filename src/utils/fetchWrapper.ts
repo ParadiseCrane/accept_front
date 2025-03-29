@@ -69,7 +69,23 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
       Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   };
-  let response = await fetch(fetch_url, fetch_data);
+
+  let response = await fetch(fetch_url, fetch_data).catch((reason) => {
+    if (process.env.NODE_ENV == 'production') {
+      return new Response(
+        JSON.stringify({
+          error: 'Service temporarily unavailable',
+        }),
+        {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+    throw reason;
+  });
 
   if (response.status == 401 || response.status == 403) {
     const cookie_user = getCookieValue(req.headers.cookie || '', 'user');
