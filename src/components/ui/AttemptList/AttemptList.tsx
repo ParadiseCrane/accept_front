@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
@@ -143,7 +144,15 @@ const AttemptList: FC<{
     fetch_data();
   }, [fetch_data]);
 
-  const { loading: _, updatesCounter } = useRefetch(refetch, 2);
+  useEffect(() => {
+    if (activeTab && !shouldNotRefetch) {
+      const intervalId = setInterval(() => {
+        refetch();
+      }, 2000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [activeTab, refetch, shouldNotRefetch]);
 
   return (
     <div>

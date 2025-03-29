@@ -16,6 +16,21 @@ const requestRights = async <T>(
       'content-type': 'application/json',
       Authorization: headers?.Authorization || '',
     },
+  }).catch((reason) => {
+    if (process.env.NODE_ENV == 'production') {
+      return new Response(
+        JSON.stringify({
+          error: 'Service temporarily unavailable',
+        }),
+        {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+    throw reason;
   });
 
   if (response.status === 401) {
@@ -24,7 +39,7 @@ const requestRights = async <T>(
   if (response.status === 403) {
     return '/403';
   }
-  if (response.status !== 200) return `/500`;
+  if (response.status !== 200) return '/500';
 
   return await response.json();
 };
