@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  height: 70vh;
+  position: relative;
+}
+
+.emptyMessageWrapper {
+  margin: var(--spacer-huge) auto;
+  width: fit-content;
+  font-size: var(--font-size-m);
+}
+
+.emptyMessage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-xs);
+}
+
+.notificationLabel {
+  font-size: var(--font-size-l);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-xxs);
+}
+
+.notificationWrapper {
+  margin-top: var(--spacer-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
+  margin-bottom: var(--spacer-l);
+}

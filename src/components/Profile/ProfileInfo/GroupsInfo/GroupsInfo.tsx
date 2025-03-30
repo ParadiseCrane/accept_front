@@ -2,6 +2,7 @@ import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
 import { Badge } from '@mantine/core';
 import { FC, memo } from 'react';
+
 import styles from './groupsInfo.module.css';
 
 const GroupsInfo: FC<{ user: IUser }> = ({ user }) => {

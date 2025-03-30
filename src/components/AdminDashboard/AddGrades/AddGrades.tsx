@@ -4,12 +4,13 @@ import { Button, Icon, MultiSelect, NumberInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
 import { Trash } from 'tabler-icons-react';
+
 import styles from './addGrades.module.css';
 
 const allowedLetters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З'];
 const initialLetters = allowedLetters.slice(0, 5);
 
-const AddGrades: FC<{}> = ({}) => {
+const AddGrades: FC<{}> = () => {
   const { locale, lang } = useLocale();
 
   const [grades, setGrades] = useState<{ number: number; letters: string[] }[]>(

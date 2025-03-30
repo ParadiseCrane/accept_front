@@ -8,6 +8,7 @@ import {
   Cheese,
   CodePlus,
 } from 'tabler-icons-react';
+
 import styles from './projectHistory.module.css';
 
 const iconSize = 30;
@@ -25,7 +26,7 @@ const typeBullets: { [key: string]: ReactNode } = {
   soon: <Cheese size={iconSize} />,
 };
 
-const ProjectHistory: FC<{}> = ({}) => {
+const ProjectHistory: FC<{}> = () => {
   const history = useMemo(() => projectHistory.slice().reverse(), []);
 
   return (
@@ -42,13 +43,10 @@ const ProjectHistory: FC<{}> = ({}) => {
       active={history.length}
       items={history.map((item, index) => ({
         ...item,
-        lineVariant:
-          history[index].type == 'soon' ? 'dotted' : 'solid',
+        lineVariant: history[index].type == 'soon' ? 'dotted' : 'solid',
         bullet: typeBullets[item.type],
         color:
-          history[index].type == 'soon'
-            ? 'future.0'
-            : colors[item.version],
+          history[index].type == 'soon' ? 'future.0' : colors[item.version],
       }))}
     />
   );

@@ -1,0 +1,9 @@
+.form {
+  width: 80%;
+}
+
+@media only screen and (max-width: 1080px) {
+  .form {
+    width: 100%;
+  }
+}

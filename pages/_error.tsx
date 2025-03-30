@@ -1,9 +1,8 @@
-import { NextPage, NextPageContext } from 'next';
-import styles from '@styles/error.module.css';
 import { useLocale } from '@hooks/useLocale';
-
-import Link from 'next/link';
+import styles from '@styles/error.module.css';
 import Title from '@ui/Title/Title';
+import { NextPage, NextPageContext } from 'next';
+import Link from 'next/link';
 
 const Error: NextPage<{ statusCode?: number }> = ({ statusCode }) => {
   const { locale } = useLocale();
@@ -12,9 +11,7 @@ const Error: NextPage<{ statusCode?: number }> = ({ statusCode }) => {
     <div className={styles.wrapper}>
       <Title title={statusCode?.toString() || locale.error} />
       <div className={styles.statusCode}>{statusCode}</div>
-      <div className={styles.description}>
-        {locale.errorPage.description}
-      </div>
+      <div className={styles.description}>{locale.errorPage.description}</div>
       <Link href="/" className={styles.return}>
         {locale.errorPage.returnToMain}
       </Link>
@@ -23,11 +20,7 @@ const Error: NextPage<{ statusCode?: number }> = ({ statusCode }) => {
 };
 
 Error.getInitialProps = ({ res, err }: NextPageContext) => {
-  const statusCode = res
-    ? res.statusCode
-    : err
-    ? err.statusCode
-    : 404;
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };
 };
 

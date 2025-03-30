@@ -1,12 +1,12 @@
-import { FC, memo, useState } from 'react';
 import Description from '@components/Task/Description/Description';
-import { Eye } from 'tabler-icons-react';
-import SingularSticky from '@ui/Sticky/SingularSticky';
 import { STICKY_SIZES } from '@constants/Sizes';
-import { useWidth } from '@hooks/useWidth';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useLocale } from '@hooks/useLocale';
+import { useWidth } from '@hooks/useWidth';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import { FC, memo, useState } from 'react';
+import { Eye } from 'tabler-icons-react';
 
 const Preview: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -20,15 +20,13 @@ const Preview: FC<{ form: any }> = ({ form }) => {
           opened={openedHint}
           close={() => setOpenedHint(false)}
         >
-          <div
-            children={
-              <TipTapEditor
-                editorMode={false}
-                content={form.values.hintContent}
-                onUpdate={() => {}}
-              />
-            }
-          />
+          <div>
+            <TipTapEditor
+              editorMode={false}
+              content={form.values.hintContent}
+              onUpdate={() => {}}
+            />
+          </div>
         </SimpleModal>
       )}
       <Description

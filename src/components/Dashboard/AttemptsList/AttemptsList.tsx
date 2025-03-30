@@ -1,20 +1,21 @@
-import { FC, memo, useCallback, useState } from 'react';
-import styles from './attemptsList.module.css';
-import tableStyles from '@styles/ui/customTable.module.css';
+import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { default as AttemptListUI } from '@ui/AttemptList/AttemptList';
+import { ITaskBaseInfo } from '@custom-types/data/ITask';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import tableStyles from '@styles/ui/customTable.module.css';
+import { default as AttemptListUI } from '@ui/AttemptList/AttemptList';
+import { SegmentedControl } from '@ui/basics';
+import { TaskSelect, UserSelect } from '@ui/selectors';
+import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
-import { useLocale } from '@hooks/useLocale';
-import { SegmentedControl } from '@ui/basics';
-import { useRequest } from '@hooks/useRequest';
-import { ITasksUsersBundle } from '@custom-types/data/bundle';
-import { TaskSelect, UserSelect } from '@ui/selectors';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+import { FC, memo, useCallback, useState } from 'react';
+
+import styles from './attemptsList.module.css';
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -34,8 +35,8 @@ const refactorAttempt = (
       attempt.status.spec == 2
         ? attempt.verdict?.verdict.spec
         : attempt.status.spec == 3
-        ? attempt.status.spec - 20
-        : attempt.status.spec - 10,
+          ? attempt.status.spec - 20
+          : attempt.status.spec - 10,
   },
   date: {
     display: (
@@ -205,8 +206,8 @@ const AttemptList: FC<{
           type == 'current'
             ? 'attempt/current-list'
             : type == 'all'
-            ? 'attempt/all'
-            : `${type}/attempts${banned ? '-banned' : ''}/${spec}`
+              ? 'attempt/all'
+              : `${type}/attempts${banned ? '-banned' : ''}/${spec}`
         }
         activeTab
         initialColumns={initialColumns}

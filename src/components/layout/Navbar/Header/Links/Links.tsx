@@ -1,8 +1,8 @@
-import { FC, memo } from 'react';
+import SignIn from '@components/layout/Navbar/SignIn/SignIn';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { Group } from '@mantine/core';
+import { FC, memo } from 'react';
 
-import SignIn from '@components/layout/Navbar/SignIn/SignIn';
 import { HeaderLink } from './HeaderLink';
 
 const Links: FC<{

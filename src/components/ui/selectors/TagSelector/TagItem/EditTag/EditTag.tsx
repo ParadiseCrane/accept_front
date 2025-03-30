@@ -1,16 +1,14 @@
+import { ITag } from '@custom-types/data/ITag';
+import { Item } from '@custom-types/ui/atomic';
+import { pureCallback } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import modalStyles from '@styles/ui/modal.module.css';
+import { Icon, TextInput } from '@ui/basics';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
 import { Pencil } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-
-import { Item } from '@custom-types/ui/atomic';
-
-import { pureCallback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ITag } from '@custom-types/data/ITag';
-import { Icon, TextInput } from '@ui/basics';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 
 const EditTag: FC<{
   item: Item;

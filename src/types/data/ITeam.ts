@@ -1,5 +1,5 @@
-import { IUserDisplay } from './IUser';
 import { ITournamentBaseInfo } from './ITournament';
+import { IUserDisplay } from './IUser';
 
 export interface ITeamBaseInfo {
   spec: string;

@@ -1,13 +1,14 @@
-import { FC, memo, useCallback } from 'react';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { default as TaskListUI } from '@ui/TaskList/TaskList';
-import styles from './taskList.module.css';
 import { ITaskDisplay } from '@custom-types/data/ITask';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
+import tableStyles from '@styles/ui/customTable.module.css';
+import { default as TaskListUI } from '@ui/TaskList/TaskList';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
+import { FC, memo, useCallback } from 'react';
+
+import styles from './taskList.module.css';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -18,8 +19,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -34,8 +35,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -50,8 +51,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.complexity.value > b.complexity.value
         ? 1
         : a.complexity.value == b.complexity.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -67,9 +68,9 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       (b.verdict.value ? b.verdict.value.spec : 100)
         ? 1
         : (a.verdict.value ? a.verdict.value.spec : 100) ==
-          (b.verdict.value ? b.verdict.value.spec : 100)
-        ? 0
-        : -1,
+            (b.verdict.value ? b.verdict.value.spec : 100)
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -104,8 +105,8 @@ const TaskList: FC<{
                 task.complexity < 20
                   ? 'var(--positive)'
                   : task.complexity > 80
-                  ? 'var(--negative)'
-                  : 'var(--neutral)',
+                    ? 'var(--negative)'
+                    : 'var(--neutral)',
             }}
           >
             {task.complexity.toString() + '%'}
@@ -126,8 +127,7 @@ const TaskList: FC<{
               <span className={tableStyles.tags}>
                 {task.tags.map((tag, idx) => (
                   <div className={tableStyles.tag} key={idx}>
-                    {tag.title +
-                      (idx == task.tags.length - 1 ? '' : ', ')}
+                    {tag.title + (idx == task.tags.length - 1 ? '' : ', ')}
                   </div>
                 ))}
               </span>

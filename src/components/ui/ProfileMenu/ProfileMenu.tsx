@@ -1,17 +1,18 @@
-import { FC, memo, useState } from 'react';
-import { Menu } from '@mantine/core';
-import { useUser } from '@hooks/useUser';
-import { useLocale } from '@hooks/useLocale';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator, UserAvatar } from '@ui/basics';
-import styles from './profileMenu.module.css';
-import { Logout, Plus } from 'tabler-icons-react';
-import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
-import Link from 'next/link';
-import AccountsMenu from './AccountsMenu/AccountsMenu';
+import { accessLevels } from '@constants/protectedRoutes';
+import { useBackNotifications } from '@hooks/useBackNotifications';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { Menu } from '@mantine/core';
+import { Indicator, UserAvatar } from '@ui/basics';
 import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 import { putOrganizationToLS } from '@utils/manageLocalStorage';
+import Link from 'next/link';
+import { FC, memo, useState } from 'react';
+import { Logout, Plus } from 'tabler-icons-react';
+
+import AccountsMenu from './AccountsMenu/AccountsMenu';
+import styles from './profileMenu.module.css';
 
 const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
   const { locale } = useLocale();
@@ -85,7 +86,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
             }}
             confirm={() => {
               signOut();
-              putOrganizationToLS({value: user?.organization});
+              putOrganizationToLS({ value: user?.organization });
             }}
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}

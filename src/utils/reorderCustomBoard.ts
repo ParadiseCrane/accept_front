@@ -1,6 +1,7 @@
-import { IDraggableBoardColumn } from '@custom-types/ui/IDraggableBoard';
 import { callback } from '@custom-types/ui/atomic';
+import { IDraggableBoardColumn } from '@custom-types/ui/IDraggableBoard';
 import { DraggableLocation } from 'react-beautiful-dnd';
+
 import { reorderList } from './reorderList';
 
 export const reorderColumns: callback<
@@ -13,14 +14,10 @@ export const reorderColumns: callback<
 > = ({ columns, source, destination }) => {
   const currentId = source.droppableId;
   const currentColumn = columns.find((item) => item.id == currentId);
-  let currentColumnIndex = columns.findIndex(
-    (item) => item.id == currentId
-  );
+  let currentColumnIndex = columns.findIndex((item) => item.id == currentId);
 
   const destinationId = destination.droppableId;
-  const destinationColumn = columns.find(
-    (item) => item.id == destinationId
-  );
+  const destinationColumn = columns.find((item) => item.id == destinationId);
   let destinationColumnIndex = columns.findIndex(
     (item) => item.id == destinationId
   );

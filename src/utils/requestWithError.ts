@@ -1,14 +1,9 @@
+import { IAvailableLang } from '@custom-types/ui/ILocale';
+import { availableMethods, IResponse, sendRequest } from '@requests/request';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-
-import {
-  IResponse,
-  availableMethods,
-  sendRequest,
-} from '@requests/request';
-import { IAvailableLang } from '@custom-types/ui/ILocale';
 
 const defaultAutoClose = 5000;
 

@@ -1,8 +1,9 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { ArrowForwardUp, ArrowBackUp, Eraser } from 'tabler-icons-react';
+import { ArrowBackUp, ArrowForwardUp, Eraser } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
 
 export const UndoButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.can().undo() : false;

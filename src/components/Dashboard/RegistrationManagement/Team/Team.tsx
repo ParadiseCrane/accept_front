@@ -1,14 +1,15 @@
-import { FC, memo, useCallback, useEffect, useMemo } from 'react';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { Button, LoadingOverlay, TextInput } from '@ui/basics';
-import { UserSelect, UserSelector } from '@ui/selectors';
-import styles from '../registrationManagement.module.css';
+import { ITeamAdd } from '@custom-types/data/ITeam';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { setter } from '@custom-types/ui/atomic';
+import { ILocale } from '@custom-types/ui/ILocale';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
-import { setter } from '@custom-types/ui/atomic';
+import { Button, LoadingOverlay, TextInput } from '@ui/basics';
+import { UserSelect, UserSelector } from '@ui/selectors';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { ITeamAdd } from '@custom-types/data/ITeam';
+import { FC, memo, useCallback, useEffect, useMemo } from 'react';
+
+import styles from '../registrationManagement.module.css';
 
 const Team: FC<{
   spec: string;
@@ -17,14 +18,7 @@ const Team: FC<{
   users: IUserDisplay[];
   participants: string[];
   loading: boolean;
-}> = ({
-  spec,
-  refetch,
-  users,
-  participants,
-  loading,
-  maxTeamSize,
-}) => {
+}> = ({ spec, refetch, users, participants, loading, maxTeamSize }) => {
   const { locale, lang } = useLocale();
 
   const localUsers = useMemo(
@@ -42,30 +36,28 @@ const Team: FC<{
       teamName: (value) => {
         value = value.trim().replace(/\s+/, ' ');
         return value.length == 0
-          ? locale.tournament.registration.form.validation.teamName
-              .empty
+          ? locale.tournament.registration.form.validation.teamName.empty
           : value.length < 4
-          ? locale.tournament.registration.form.validation.teamName.minLength(
-              4
-            )
-          : value.length > 20
-          ? locale.tournament.registration.form.validation.teamName.maxLength(
-              20
-            )
-          : !value.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
-          ? locale.tournament.registration.form.validation.teamName
-              .invalid
-          : null;
+            ? locale.tournament.registration.form.validation.teamName.minLength(
+                4
+              )
+            : value.length > 20
+              ? locale.tournament.registration.form.validation.teamName.maxLength(
+                  20
+                )
+              : !value.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
+                ? locale.tournament.registration.form.validation.teamName
+                    .invalid
+                : null;
       },
       participants: (value) =>
         value.length == 0
-          ? locale.tournament.registration.form.validation
-              .participants.empty
+          ? locale.tournament.registration.form.validation.participants.empty
           : value.length > maxTeamSize
-          ? locale.tournament.registration.form.validation.participants.max(
-              maxTeamSize
-            )
-          : null,
+            ? locale.tournament.registration.form.validation.participants.max(
+                maxTeamSize
+              )
+            : null,
       capitan: (value, values) =>
         !values.participants.includes(value)
           ? locale.tournament.registration.form.validation.capitan
@@ -103,9 +95,7 @@ const Team: FC<{
     <div className={styles.wrapper}>
       <LoadingOverlay visible={loading} />
       <TextInput
-        label={
-          locale.tournament.registration.createTeam.teamNameLabel
-        }
+        label={locale.tournament.registration.createTeam.teamNameLabel}
         {...form.getInputProps('teamName')}
       />
       <UserSelector
@@ -115,8 +105,7 @@ const Team: FC<{
           form.setFieldValue('participants', participants)
         }
         titles={(locale: ILocale) => [
-          locale.dashboard.tournament.registrationManagementSelector
-            .users,
+          locale.dashboard.tournament.registrationManagementSelector.users,
           locale.dashboard.tournament.registrationManagementSelector
             .participants,
         ]}
@@ -130,9 +119,7 @@ const Team: FC<{
         users={localUsers.filter((item) =>
           form.values.participants.includes(item.login)
         )}
-        select={(item) =>
-          item && form.setFieldValue('capitan', item[0].login)
-        }
+        select={(item) => item && form.setFieldValue('capitan', item[0].login)}
         additionalProps={form.getInputProps('capitan')}
       />
 

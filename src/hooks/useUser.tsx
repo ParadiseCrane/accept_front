@@ -19,9 +19,7 @@ import {
 
 const UserContext = createContext<IUserContext>(null!);
 
-export const UserProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const whoAmI = useCallback(async () => {
     const cookie_user = getCookie('user');
     const cookie_accounts = getCookie('accounts');
@@ -33,9 +31,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     ) {
       try {
         const user = JSON.parse(cookie_user) as IUserOrgDisplay;
-        const accounts = JSON.parse(
-          cookie_accounts
-        ) as IUserOrganization[];
+        const accounts = JSON.parse(cookie_accounts) as IUserOrganization[];
 
         setValue((prev) => ({
           ...prev,
@@ -47,8 +43,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
           isStudent: user.role.accessLevel >= accessLevels.student,
           isTeacher: user.role.accessLevel >= accessLevels.teacher,
           isAdmin: user.role.accessLevel >= accessLevels.admin,
-          isDeveloper:
-            user.role.accessLevel >= accessLevels.developer,
+          isDeveloper: user.role.accessLevel >= accessLevels.developer,
         }));
       } catch (error) {
         setCookie('user', '', { 'max-age': 0 });
@@ -57,10 +52,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
       return;
     }
     // fetch whoami
-    const res = await sendRequest<{}, IWhoAmIResponse>(
-      'auth/whoami',
-      'GET'
-    );
+    const res = await sendRequest<{}, IWhoAmIResponse>('auth/whoami', 'GET');
     // if error empty current data
     if (res.error) {
       setValue((prev) => ({
@@ -154,11 +146,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (!!getCookie('access_token')) {
+    if (getCookie('access_token')) {
       whoAmI();
       return 0;
     }
-    if (!!getCookie('refresh_token')) {
+    if (getCookie('refresh_token')) {
       refresh();
       return 1;
     }
@@ -178,11 +170,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [refresh, whoAmI]);
 
   const checkTokensExpiration = useCallback(async () => {
-    if (!!!getCookie('refresh_token')) {
+    if (!getCookie('refresh_token')) {
       await whoAmI();
       return;
     }
-    if (!!!getCookie('access_token')) {
+    if (!getCookie('access_token')) {
       await refresh();
       return;
     }
@@ -215,11 +207,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     refreshAccess();
   }, [refreshAccess]);
 
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export function useUser() {

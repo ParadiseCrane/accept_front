@@ -1,12 +1,12 @@
 import Form from '@components/Notification/Form/Form';
-import { FC, memo, useMemo } from 'react';
-import { useRequest } from '@hooks/useRequest';
 import { IRole } from '@custom-types/data/atomic';
 import { IGroup } from '@custom-types/data/IGroup';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { useRequest } from '@hooks/useRequest';
 import { LoadingOverlay } from '@ui/basics';
+import { FC, memo, useMemo } from 'react';
 
-const CrateNotification: FC<{}> = ({}) => {
+const CrateNotification: FC<{}> = () => {
   const { data, loading } = useRequest<
     {},
     any,

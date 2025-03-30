@@ -1,11 +1,12 @@
 import { STICKY_SIZES } from '@constants/Sizes';
 import { useWidth } from '@hooks/useWidth';
 import { ActionIcon } from '@mantine/core';
-import { FC, memo } from 'react';
-import { IStickyAction } from '../Sticky';
 import { Tip } from '@ui/basics';
-import stickyStyles from '../sticky.module.css';
 import Link from 'next/link';
+import { FC, memo } from 'react';
+
+import { IStickyAction } from '../Sticky';
+import stickyStyles from '../sticky.module.css';
 
 const ActionButton: FC<{
   action: IStickyAction;

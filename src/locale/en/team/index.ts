@@ -1,5 +1,5 @@
-import { page } from './page';
 import { modals } from './modals';
+import { page } from './page';
 
 export const team = {
   self: 'Team',

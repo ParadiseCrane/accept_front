@@ -1,15 +1,15 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { IUser } from '@custom-types/data/IUser';
-import { capitalize } from '@utils/capitalize';
-import UserList from '@ui/UserList/UserList';
 import { accessLevels } from '@constants/protectedRoutes';
-import Title from '@ui/Title/Title';
+import { IUser } from '@custom-types/data/IUser';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import tableStyles from '@styles/ui/customTable.module.css';
+import Title from '@ui/Title/Title';
+import UserList from '@ui/UserList/UserList';
+import { capitalize } from '@utils/capitalize';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -20,8 +20,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.login.value > b.login.value
         ? 1
         : a.login.value == b.login.value
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -36,8 +36,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.shortName.value > b.shortName.value
         ? 1
         : a.shortName.value == b.shortName.value
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -53,8 +53,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       a.role.value.spec > b.role.value.spec
         ? 1
         : a.role.value.spec == b.role.value.spec
-        ? 0
-        : -1,
+          ? 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -69,18 +69,14 @@ const refactorUser = (user: IUser): any => ({
     value: user.login,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link
-          className={tableStyles.title}
-          href={`/profile/${user.login}`}
-        >
+        <Link className={tableStyles.title} href={`/profile/${user.login}`}>
           {user.login}
         </Link>
         {user.groups.length > 0 && (
           <span className={tableStyles.tags}>
             {user.groups.map((group, idx) => (
               <div className={tableStyles.tag} key={idx}>
-                {group.name +
-                  (idx == user.groups.length - 1 ? '' : ', ')}
+                {group.name + (idx == user.groups.length - 1 ? '' : ', ')}
               </div>
             ))}
           </span>

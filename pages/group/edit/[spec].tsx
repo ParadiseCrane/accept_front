@@ -1,19 +1,19 @@
 import Form from '@components/Group/Form/Form';
-import { useLocale } from '@hooks/useLocale';
-import { ReactNode, useCallback, useMemo } from 'react';
-import { UseFormReturnType } from '@mantine/form';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { GetServerSideProps } from 'next';
 import { IGroup } from '@custom-types/data/IGroup';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form';
+import Title from '@ui/Title/Title';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { useRequest } from '@hooks/useRequest';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo } from 'react';
 
 function EditGroup(props: { group: IGroup; members: string[] }) {
   const { data: users } = useRequest<{}, IUserDisplay[]>(

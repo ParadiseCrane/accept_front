@@ -1,16 +1,16 @@
-import { FC, ReactNode, memo } from 'react';
-import styles from './radio.module.css';
+import { Item } from '@custom-types/ui/atomic';
+import { setter } from '@custom-types/ui/atomic';
+import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import {
   Radio as MantineRadio,
   RadioGroupProps,
   RadioProps,
 } from '@mantine/core';
-import { Item } from '@custom-types/ui/atomic';
-
-import { setter } from '@custom-types/ui/atomic';
-import { InputLabel } from '@ui/basics';
 import inputStyles from '@styles/ui/input.module.css';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
+import { InputLabel } from '@ui/basics';
+import { FC, ReactNode, memo } from 'react';
+
+import styles from './radio.module.css';
 
 const Radio: FC<{
   label: ReactNode;
@@ -38,11 +38,7 @@ const Radio: FC<{
   shrink,
 }) => {
   return (
-    <div
-      className={`${styles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
-    >
+    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ''}`}>
       <InputLabel
         label={label}
         helperContent={helperContent}

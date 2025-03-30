@@ -1,11 +1,11 @@
 import { NextConfig } from 'next';
 
+const prod = process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
-  // uncomment for docker deployment
-  // output: "standalone",
+  output: prod ? 'standalone' : undefined,
   typescript: {
-    // uncomment for docker deployment
-    // ignoreBuildErrors: true
+    ignoreBuildErrors: !!prod,
   },
   modularizeImports: {
     '@tabler/icons': {
@@ -17,23 +17,22 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'wallpapers.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+  async redirects() {
+    return prod
+      ? [
+          {
+            source: '/course/:slug*',
+            destination: '/soon',
+            permanent: false,
+          },
+          {
+            source: '/courses',
+            destination: '/soon',
+            permanent: false,
+          },
+        ]
+      : [];
   },
   async rewrites() {
     return [
@@ -44,6 +43,10 @@ const nextConfig: NextConfig = {
       {
         source: '/edu',
         destination: `/task/list`,
+      },
+      {
+        source: '/courses',
+        destination: `/course/list`,
       },
       {
         source: '/api/image/:slug*', // No credentials!

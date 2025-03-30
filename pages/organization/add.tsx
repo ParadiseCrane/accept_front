@@ -1,18 +1,18 @@
+import Form from '@components/Organization/Form/Form';
+import { IGroup } from '@custom-types/data/IGroup';
+import { IOrganization } from '@custom-types/data/IOrganization';
+import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form';
-import { ReactNode, useCallback } from 'react';
-import { IGroup } from '@custom-types/data/IGroup';
-import Form from '@components/Organization/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { IUserDisplay } from '@custom-types/data/IUser';
+import Title from '@ui/Title/Title';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { useRequest } from '@hooks/useRequest';
-import { IOrganization } from '@custom-types/data/IOrganization';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { ReactNode, useCallback } from 'react';
 
 const initialValues = {
   spec: '',

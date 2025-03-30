@@ -1,16 +1,11 @@
+import { Item } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { Box } from '@mantine/core';
+import { NumberInput, Overlay, SegmentedControl, Switch } from '@ui/basics';
 import LanguageSelector from '@ui/selectors/LanguageSelector/LanguageSelector';
 import { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Item } from '@custom-types/ui/atomic';
 
 import styles from './constraintsInfo.module.css';
-import { Box } from '@mantine/core';
-import {
-  NumberInput,
-  Overlay,
-  SegmentedControl,
-  Switch,
-} from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
 
 const ConstraintsInfo: FC<{ form: any }> = ({ form }) => {
   const initialAllowedLanguages = useMemo(
@@ -45,16 +40,10 @@ const ConstraintsInfo: FC<{ form: any }> = ({ form }) => {
     (value: string) => {
       setOption(value);
       if (value == 'allowed') {
-        form.setFieldValue(
-          'allowedLanguages',
-          form.values.forbiddenLanguages
-        );
+        form.setFieldValue('allowedLanguages', form.values.forbiddenLanguages);
         form.setFieldValue('forbiddenLanguages', []);
       } else {
-        form.setFieldValue(
-          'forbiddenLanguages',
-          form.values.allowedLanguages
-        );
+        form.setFieldValue('forbiddenLanguages', form.values.allowedLanguages);
         form.setFieldValue('allowedLanguages', []);
       }
     },

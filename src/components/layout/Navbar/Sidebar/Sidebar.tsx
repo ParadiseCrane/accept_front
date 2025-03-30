@@ -1,11 +1,11 @@
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { FC, useState } from 'react';
-import { Links } from './Links';
-import Logo from '../Logo/Logo';
-import styles from './sideBar.module.css';
-import { Burger, Drawer } from '@mantine/core';
-
 import { useLocale } from '@hooks/useLocale';
+import { Burger, Drawer } from '@mantine/core';
+import { FC, useState } from 'react';
+
+import Logo from '../Logo/Logo';
+import { Links } from './Links';
+import styles from './sideBar.module.css';
 
 export const Sidebar: FC<{
   links: IHeaderLink[];

@@ -1,8 +1,9 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { List, ListNumbers } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
 
 export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('bulletList') : false;

@@ -1,11 +1,12 @@
-import { FC, memo, useEffect, useState } from 'react';
-import styles from './icon.module.css';
-import { ActionIcon } from '@mantine/core';
-import { useWidth } from '@hooks/useWidth';
+import { ICON_SIZES } from '@constants/Sizes';
 import { IWidth } from '@custom-types/ui/atomic';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
-import { ICON_SIZES } from '@constants/Sizes';
+import { useWidth } from '@hooks/useWidth';
+import { ActionIcon } from '@mantine/core';
+import { FC, memo, useEffect, useState } from 'react';
+
 import Tip from '../Tip/Tip';
+import styles from './icon.module.css';
 
 const Icon: FC<MyIconProps> = ({
   children,
@@ -24,7 +25,7 @@ const Icon: FC<MyIconProps> = ({
   return (
     <div className={`${styles.wrapper} ${wrapperClassName || ''}`}>
       {mounted && (
-        <Tip label={tooltipLabel} disabled={!!!tooltipLabel} {...tooltipProps}>
+        <Tip label={tooltipLabel} disabled={!tooltipLabel} {...tooltipProps}>
           <ActionIcon
             component={props.onClick ? 'button' : 'a'}
             {...props}

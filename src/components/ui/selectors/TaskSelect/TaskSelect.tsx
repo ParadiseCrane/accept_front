@@ -1,9 +1,10 @@
-import React, { FC, memo } from 'react';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
+import React, { ComponentPropsWithoutRef, FC, memo } from 'react';
+
 import TaskMultiSelect from './TaskMultiSelect';
 import TaskSingleSelect from './TaskSingleSelect';
 
-export interface TaskItemProps extends React.ComponentPropsWithoutRef<'div'> {
+export interface TaskItemProps extends ComponentPropsWithoutRef<'div'> {
   image: string;
   label: string;
   role: string;

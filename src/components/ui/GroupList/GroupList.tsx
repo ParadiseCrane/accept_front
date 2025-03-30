@@ -1,5 +1,14 @@
-import Table from '@ui/Table/Table';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { BaseSearch } from '@custom-types/data/request';
+import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import tableStyles from '@styles/ui/customTable.module.css';
+import Table from '@ui/Table/Table';
+import { customTableSort } from '@utils/customTableSort';
+import Fuse from 'fuse.js';
 import {
   FC,
   ReactNode,
@@ -9,15 +18,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { BaseSearch } from '@custom-types/data/request';
-import Fuse from 'fuse.js';
-import { customTableSort } from '@utils/customTableSort';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 interface Item {
   value: any;

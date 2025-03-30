@@ -1,9 +1,10 @@
-import { getApiUrl } from '@utils/getServerUrl';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { createTokenCookie } from '@utils/createTokenCookie';
-import { getCookieValue } from './cookies';
+import { getApiUrl } from '@utils/getServerUrl';
 import { IncomingMessage } from 'http';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+
+import { getCookieValue } from './cookies';
 
 interface FetchWrapperProps {
   req: NextApiRequest;
@@ -33,11 +34,10 @@ export const fetchWrapperStatic = async ({
 
   const fetch_data = {
     method: method,
+    // eslint-disable-next-line no-undef
     credentials: 'include' as RequestCredentials,
     body:
-      !['GET', 'DELETE'].includes(method) && !!!body
-        ? JSON.stringify(body)
-        : null,
+      !['GET', 'DELETE'].includes(method) && body ? JSON.stringify(body) : null,
     headers: {
       'content-type': 'application/json',
       // cookie: req.headers.cookie,
@@ -55,20 +55,37 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
   const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
   const fetch_data = {
     method: fetchMethod,
+    // eslint-disable-next-line no-undef
     credentials: 'include' as RequestCredentials,
     body:
       fetchMethod == 'GET'
         ? null
         : customBody
-        ? JSON.stringify(customBody)
-        : JSON.stringify(req.body),
+          ? JSON.stringify(customBody)
+          : JSON.stringify(req.body),
     headers: {
       'content-type': 'application/json',
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   };
-  let response = await fetch(fetch_url, fetch_data);
+
+  let response = await fetch(fetch_url, fetch_data).catch((reason) => {
+    if (process.env.NODE_ENV == 'production') {
+      return new Response(
+        JSON.stringify({
+          error: 'Service temporarily unavailable',
+        }),
+        {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+    throw reason;
+  });
 
   if (response.status == 401 || response.status == 403) {
     const cookie_user = getCookieValue(req.headers.cookie || '', 'user');

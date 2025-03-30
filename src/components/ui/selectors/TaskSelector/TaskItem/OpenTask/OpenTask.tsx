@@ -1,7 +1,7 @@
 import { ActionIcon } from '@mantine/core';
-import { Eye } from 'tabler-icons-react';
-import { FC, memo } from 'react';
 import Link from 'next/link';
+import { FC, memo } from 'react';
+import { Eye } from 'tabler-icons-react';
 
 const OpenTask: FC<{ spec: string }> = ({ spec }) => {
   return (

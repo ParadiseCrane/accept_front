@@ -1,25 +1,88 @@
+import { IGroup } from './IGroup';
 import { ITask } from './ITask';
+import { IUserBaseInfo } from './IUser';
 
-export interface ICourse {
-  kind: "course" | "unit" | "lesson";
-  spec: string;
+export interface ICourseResponse {
   title: string;
   description: string;
-  image: string;
-  children: ICourse[] | ITask[];
-}
-
-export interface ICourseAdd {
-  spec: string;
-  title: string;
-  description: string;
+  kind: 'course' | 'unit' | 'lesson';
   image: string;
   children: IUnit[];
 }
 
-export interface IUnit {
-  kind: 'lesson' | 'unit';
-  id: string;
+export interface ITreeUnit {
+  spec: string;
+  kind: 'course' | 'unit' | 'lesson';
   title: string;
-  units: IUnit[];
+  order: string;
+  orderAsNumber: number;
+  depth: number;
+  index: number;
+  parentSpec: string;
+  visible: boolean;
+  childrenVisible: boolean;
+}
+
+export interface ICourseAddEdit {
+  title: string;
+  description: string;
+  kind: 'course' | 'unit';
+  image: string;
+  children: IUnit[];
+}
+
+export interface ICourseModel {
+  spec: string;
+  title: string;
+  description: string;
+  kind: 'course';
+  image: string;
+  author: string;
+  children: IUnit[];
+}
+
+export interface ICourse {
+  spec: string;
+  kind: 'course' | 'unit' | 'lesson';
+  title: string;
+  description: string;
+  // image только для course
+  image: string;
+  children: ICourse[] | ITask[];
+}
+
+export interface IUnit {
+  spec: string;
+  kind: 'course' | 'lesson' | 'unit';
+  title: string;
+  order: string;
+}
+
+export interface ICourseDisplay {
+  spec: string;
+  title: string;
+  readonly: boolean;
+}
+
+export interface ICourseListItem {
+  author: string;
+  spec: string;
+  title: string;
+}
+
+export interface ICourseGroupPair {
+  courseSpec: string;
+  groupSpec: string;
+}
+
+export interface ICourseMain {
+  title: string;
+  description: string;
+  image: string;
+  invite?: string;
+}
+
+export interface ICourseModeratorGroup {
+  moderator: IUserBaseInfo;
+  group: IGroup;
 }

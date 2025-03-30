@@ -1,9 +1,9 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { useLocale } from '@hooks/useLocale';
 import { ITeamDisplayWithBanned } from '@custom-types/data/ITeam';
 import { pureCallback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
+import { useLocale } from '@hooks/useLocale';
 import { BanModal } from '@ui/modals';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useMemo } from 'react';
 // import styles from './BunButton.module.css'
 
 const BunButton: FC<{

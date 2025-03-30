@@ -45,4 +45,11 @@ export const sticky = {
   team: {
     delete: 'Delete the team',
   },
+  course: {
+    edit: 'Edit course',
+    editUnit: 'Edit unit',
+    delete: 'Delete course',
+    dashboard: 'Course dashboard',
+    add: 'Create course',
+  },
 };

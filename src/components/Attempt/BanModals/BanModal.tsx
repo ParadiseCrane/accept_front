@@ -1,14 +1,14 @@
-import { FC, memo, useCallback, useState } from 'react';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { HeartBroken } from 'tabler-icons-react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
-import { TextInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import { useForm } from '@mantine/form';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import modalStyles from '@styles/ui/modal.module.css';
+import { TextInput } from '@ui/basics';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
+import { HeartBroken } from 'tabler-icons-react';
 
 const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, setOpened] = useState(false);
@@ -20,9 +20,7 @@ const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     },
     validate: {
       reason: (value) =>
-        value.length < 5
-          ? locale.attempt.ban.validation.reason.tooShort
-          : null,
+        value.length < 5 ? locale.attempt.ban.validation.reason.tooShort : null,
     },
     validateInputOnChange: true,
   });

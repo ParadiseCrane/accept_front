@@ -1,4 +1,5 @@
 import { Divider } from '@mantine/core';
+
 import styles from '../TipTapEditor.module.css';
 
 export const ToolbarDivider = () => {

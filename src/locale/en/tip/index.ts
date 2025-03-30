@@ -1,5 +1,5 @@
-import { sticky } from './sticky';
 import { status } from './status';
+import { sticky } from './sticky';
 
 export const tip = {
   sticky,
@@ -8,7 +8,6 @@ export const tip = {
     kickParticipant: 'Kick',
   },
   tournament: {
-    createAssignmentSchema:
-      'Create assignment schema based of this tournament',
+    createAssignmentSchema: 'Create assignment schema based of this tournament',
   },
 };

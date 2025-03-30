@@ -1,18 +1,19 @@
 import { MathExtension } from '@aarkue/tiptap-math-extension';
+import { useLocale } from '@hooks/useLocale';
+import { RichTextEditor } from '@mantine/tiptap';
 import { Document } from '@tiptap/extension-document';
 import { History } from '@tiptap/extension-history';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import { useEffect, useState } from 'react';
-import styles from './LatexModal.module.css';
 import { Editor, useEditor } from '@tiptap/react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { RichTextEditor } from '@mantine/tiptap';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { Checkbox } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { useEffect, useState } from 'react';
+
+import styles from './LatexModal.module.css';
 
 const insertLatexFunction = ({
   editor,

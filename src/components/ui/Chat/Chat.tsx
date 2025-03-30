@@ -1,15 +1,16 @@
+import { IActivity } from '@custom-types/data/atomic';
+import { IChatMessage } from '@custom-types/data/IMessage';
+import { useLocale } from '@hooks/useLocale';
+import { useLongPooling } from '@hooks/useLongPooling';
+import { Textarea } from '@mantine/core';
+import { getHotkeyHandler } from '@mantine/hooks';
+import { sendRequest } from '@requests/request';
 import { Icon } from '@ui/basics';
+import { getLocalDate } from '@utils/datetime';
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Send } from 'tabler-icons-react';
+
 import styles from './chat.module.css';
-import { IChatMessage } from '@custom-types/data/IMessage';
-import { Textarea } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { getLocalDate } from '@utils/datetime';
-import { sendRequest } from '@requests/request';
-import { useLongPooling } from '@hooks/useLongPooling';
-import { getHotkeyHandler } from '@mantine/hooks';
-import { IActivity } from '@custom-types/data/atomic';
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -20,6 +21,7 @@ const Chat: FC<{
   host: string;
   wrapperStyles: any;
   moderator?: boolean;
+  group_spec?: any;
 }> = ({
   indicateNew,
   opened,
@@ -29,6 +31,7 @@ const Chat: FC<{
   isMessageMine,
   wrapperStyles,
   moderator,
+  group_spec,
 }) => {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<IChatMessage[]>([]);
@@ -67,6 +70,7 @@ const Chat: FC<{
         spec,
         host,
         moderator: !!moderator,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then((res) => {
         if (!res.error) {
           appendMessages(res.response);
@@ -74,7 +78,7 @@ const Chat: FC<{
         }
       });
     },
-    [entity, spec, host, moderator, appendMessages, indicateNew]
+    [entity, spec, host, moderator, appendMessages, indicateNew, group_spec]
   );
 
   const handleSend = useCallback(() => {
@@ -87,12 +91,13 @@ const Chat: FC<{
       host,
       moderator: !!moderator,
       content: localMessage,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         appendMessages([res.response]);
       }
     });
-  }, [entity, spec, host, moderator, message, appendMessages]);
+  }, [entity, spec, host, moderator, message, appendMessages, group_spec]);
 
   useEffect(() => {
     if (opened && newMessages.length > 0)
@@ -101,8 +106,9 @@ const Chat: FC<{
         entity,
         spec,
         moderator: !!moderator,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then(() => setNewMessages([]));
-  }, [opened, newMessages, entity, moderator, spec]);
+  }, [opened, newMessages, entity, moderator, spec, group_spec]);
 
   useEffect(() => {
     if (firstFetchDone || !opened) return;
@@ -112,6 +118,7 @@ const Chat: FC<{
       spec,
       host,
       moderator: !!moderator,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         setMessages(res.response);
@@ -124,7 +131,7 @@ const Chat: FC<{
         }, 100);
       }
     });
-  }, [entity, host, moderator, opened, firstFetchDone, spec]);
+  }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
   useLongPooling(fetchMessages, refetchIntervalSeconds);
 

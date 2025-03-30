@@ -1,3 +1,4 @@
+import { MAX_ANSWER_LENGTH } from '@constants/Limits';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
@@ -5,8 +6,8 @@ import { Button, InputWrapper, TextArea } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback } from 'react';
 import { Send as SendPlane } from 'tabler-icons-react';
+
 import styles from './sendText.module.css';
-import { MAX_ANSWER_LENGTH } from '@constants/Limits';
 
 const SendText: FC<{
   spec: string;
@@ -83,9 +84,7 @@ const SendText: FC<{
             ) : undefined
           }
           leftSection={
-            <SendPlane
-              color={!form.isValid() ? 'black' : 'var(--primary)'}
-            />
+            <SendPlane color={!form.isValid() ? 'black' : 'var(--primary)'} />
           }
         >
           {locale.task.submit}

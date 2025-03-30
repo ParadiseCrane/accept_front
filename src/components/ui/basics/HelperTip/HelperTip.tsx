@@ -1,7 +1,7 @@
-import { Help } from 'tabler-icons-react';
-import { FC, memo } from 'react';
-import { Icon, Tip } from '@ui/basics';
 import { MyHelperTipProps } from '@custom-types/ui/basics/helper';
+import { Icon, Tip } from '@ui/basics';
+import { FC, memo } from 'react';
+import { Help } from 'tabler-icons-react';
 
 const HelperTip: FC<MyHelperTipProps> = ({
   customIcon,

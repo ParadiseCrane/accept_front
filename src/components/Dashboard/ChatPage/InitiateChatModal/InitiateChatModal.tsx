@@ -1,18 +1,19 @@
+import { IActivity } from '@custom-types/data/atomic';
+import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { FC, memo, useCallback, useState } from 'react';
-import MemberSelector from './MemberSelector/MemberSelector';
-import styles from './initiateChatModal.module.css';
-import { Button, TextArea } from '@ui/basics';
 import { useForm } from '@mantine/form';
+import { sendRequest } from '@requests/request';
+import { Button, TextArea } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import { sendRequest } from '@requests/request';
-import { callback } from '@custom-types/ui/atomic';
-import { IActivity } from '@custom-types/data/atomic';
+import { FC, memo, useCallback, useState } from 'react';
+
+import styles from './initiateChatModal.module.css';
+import MemberSelector from './MemberSelector/MemberSelector';
 
 const InitiateChatModal: FC<{
   exclude: string[];
@@ -20,7 +21,17 @@ const InitiateChatModal: FC<{
   entity: IActivity;
   onSuccess: callback<string>;
   small?: boolean;
-}> = ({ exclude, spec, entity, onSuccess, small }) => {
+  customRequest?: string;
+  group_spec?: string;
+}> = ({
+  exclude,
+  spec,
+  entity,
+  onSuccess,
+  small,
+  customRequest,
+  group_spec,
+}) => {
   const { locale } = useLocale();
   const [startChatModal, setStartChatModal] = useState(false);
   const close = useCallback(() => setStartChatModal(false), []);
@@ -57,6 +68,7 @@ const InitiateChatModal: FC<{
       host: form.values.user,
       moderator: true,
       content: form.values.message,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((response) => {
       if (!response.error) {
         onSuccess(form.values.user);
@@ -95,6 +107,7 @@ const InitiateChatModal: FC<{
             exclude={exclude}
             form={form}
             field={'user'}
+            customRequest={customRequest}
           />
           <TextArea
             label={locale.dashboard.chat.userModal.message.label}

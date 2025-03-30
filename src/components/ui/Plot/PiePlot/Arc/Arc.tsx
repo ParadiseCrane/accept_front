@@ -1,5 +1,6 @@
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { FC, memo, useCallback, useMemo, useState } from 'react';
+
 import styles from './arc.module.css';
 
 const Arc: FC<{
@@ -25,18 +26,12 @@ const Arc: FC<{
 }) => {
   const [outerRadius, setOuterRadius] = useState(outer_radius);
 
-  const offset = useMemo(
-    () => (2 * Math.PI * prev) / total,
-    [prev, total]
-  );
+  const offset = useMemo(() => (2 * Math.PI * prev) / total, [prev, total]);
   const angle = useMemo(
     () => (2 * Math.PI * amount) / total - 0.01,
     [amount, total]
   );
-  const largeAngleFlag = useMemo(
-    () => (angle >= Math.PI ? 1 : 0),
-    [angle]
-  );
+  const largeAngleFlag = useMemo(() => (angle >= Math.PI ? 1 : 0), [angle]);
   const sn = useMemo(() => +Math.sin(angle).toFixed(5), [angle]);
   const cs = useMemo(() => +Math.cos(angle).toFixed(5), [angle]);
   const coords = useMemo(
@@ -56,14 +51,7 @@ const Arc: FC<{
   const onEnter = useCallback(() => {
     setCenterText({ label, amount, color });
     setOuterRadius(outer_radius * increase_ratio);
-  }, [
-    amount,
-    color,
-    increase_ratio,
-    label,
-    outer_radius,
-    setCenterText,
-  ]);
+  }, [amount, color, increase_ratio, label, outer_radius, setCenterText]);
   const onLeave = useCallback(() => {
     setCenterText(undefined);
     setOuterRadius(outer_radius);

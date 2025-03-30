@@ -1,8 +1,8 @@
+import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useMemo } from 'react';
 import { CustomEditor, NumberInput, Switch, TextInput } from '@ui/basics';
 import { TagSelector } from '@ui/selectors';
-import { Item } from '@custom-types/ui/atomic';
+import { FC, memo, useCallback, useMemo } from 'react';
 
 const MainInfo: FC<{
   form: any;

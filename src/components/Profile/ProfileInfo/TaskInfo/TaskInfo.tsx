@@ -3,8 +3,9 @@ import { ITaskInfo } from '@custom-types/data/IProfileInfo';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { useLocale } from '@hooks/useLocale';
 import { BarPiePlot } from '@ui/Plot';
-import { FC, memo, useMemo } from 'react';
 import DefaultCentralText from '@ui/Plot/PiePlot/DefaultCentralText/DefaultCentralText';
+import { FC, memo, useMemo } from 'react';
+
 import styles from './taskInfo.module.css';
 
 const TaskInfo: FC<ITaskInfo> = ({
@@ -23,7 +24,7 @@ const TaskInfo: FC<ITaskInfo> = ({
             label: `${item.start}-${item.end}%`,
             amount: item.amount,
             color: getColor(index, 0), // 'var(--secondary)',
-          } as IPlotData)
+          }) as IPlotData
       ),
     [complexity_distribution]
   );
@@ -36,7 +37,7 @@ const TaskInfo: FC<ITaskInfo> = ({
             label: item.name,
             amount: item.amount,
             color: item.name === 'OK' ? '#37B24D' : '#FA5252',
-          } as IPlotData)
+          }) as IPlotData
       ),
     [verdict_distribution]
   );

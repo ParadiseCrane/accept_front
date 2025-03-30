@@ -1,37 +1,24 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
 import { INotification } from '@custom-types/data/notification';
-import { Badge } from '@mantine/core';
-import { requestWithError } from '@utils/requestWithError';
+import { setter } from '@custom-types/ui/atomic';
+import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
+import { useBackNotifications } from '@hooks/useBackNotifications';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
-import { useBackNotifications } from '@hooks/useBackNotifications';
+import { Badge } from '@mantine/core';
+import MessageList from '@ui/MessageList/MessageList';
+import { requestWithError } from '@utils/requestWithError';
 import { shrinkText } from '@utils/shrinkText';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { MailOpened, Trash } from 'tabler-icons-react';
 
 import styles from './notificationList.module.css';
-import { MailOpened, Trash } from 'tabler-icons-react';
-import { setter } from '@custom-types/ui/atomic';
-import {
-  IListAction,
-  IListMessage,
-} from '@custom-types/ui/IListMessage';
-import MessageList from '@ui/MessageList/MessageList';
 
-const NotificationList: FC<{}> = ({}) => {
+const NotificationList: FC<{}> = (s) => {
   const { locale, lang } = useLocale();
 
-  const { sendViewed, refetchNewNotifications } =
-    useBackNotifications();
+  const { sendViewed, refetchNewNotifications } = useBackNotifications();
 
-  const [notifications, setNotifications] = useState<INotification[]>(
-    []
-  );
+  const [notifications, setNotifications] = useState<INotification[]>([]);
   const processNotifications = useCallback(
     (res: INotification[]) => {
       const notifications = res
@@ -68,24 +55,16 @@ const NotificationList: FC<{}> = ({}) => {
 
   const handleView = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {
-      sendViewed(
-        selected,
-        locale.notification.list.requestViewed,
-        () => {
-          setSelected([]);
-        }
-      );
+      sendViewed(selected, locale.notification.list.requestViewed, () => {
+        setSelected([]);
+      });
     },
     [locale, sendViewed]
   );
 
   const handleViewed = useCallback(
     (selected: string[]) => {
-      sendViewed(
-        selected,
-        locale.notification.list.requestViewed,
-        () => {}
-      );
+      sendViewed(selected, locale.notification.list.requestViewed, () => {});
     },
     [locale.notification.list.requestViewed, sendViewed]
   );
@@ -126,7 +105,7 @@ const NotificationList: FC<{}> = ({}) => {
             ...item,
             subject: item.shortDescription,
             message: item.description,
-          } as IListMessage)
+          }) as IListMessage
       ),
     [notifications]
   );
@@ -141,9 +120,7 @@ const NotificationList: FC<{}> = ({}) => {
             {shrinkText(notification.title, 48)}
             {
               //@ts-ignore
-              !notification.viewed && (
-                <Badge color="green">{locale.new}</Badge>
-              )
+              !notification.viewed && <Badge color="green">{locale.new}</Badge>
             }
           </>
         );

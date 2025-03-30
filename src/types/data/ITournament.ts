@@ -1,6 +1,6 @@
 import { IAssessmentType, ITournamentStatus } from './atomic';
 import { ITag } from './ITag';
-import { ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
+import { ITaskBaseInfo, ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
 
 export interface ISecurity {
   spec: number;
@@ -76,12 +76,8 @@ export interface ITournamentAdd
   shouldPenalizeAttempt: boolean;
 }
 
-export interface ITournamentEdit
-  extends Omit<ITournamentAdd, 'tasks' | 'assessmentType' | 'tags' | 'status'> {
+export interface ITournamentEdit extends Omit<ITournamentAdd, 'tasks'> {
   tasks: ITaskDisplay[];
-  assessmentType: IAssessmentType;
-  tags: ITag[];
-  status: ITournamentStatus;
 }
 
 export interface ITournamentResponse {

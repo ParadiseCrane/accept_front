@@ -1,0 +1,20 @@
+export const course = {
+  main: 'Главная',
+  chat: 'Чат',
+  moderators: 'Модераторы',
+  moderator: 'Модератор',
+  group: 'Группа',
+  allParticipants: 'Все участники',
+  groupParticipants: 'Участники',
+  groups: 'Группы',
+  deleteGroup: 'Удалить группу',
+  editGroup: 'Редактировать группу',
+  deleteModerator: 'Удалить модератора',
+  createNotification: 'Создать уведомление',
+  noUsersNotification:
+    'Пользователи для выбранной группы не найдены. Невозможно создать уведомление',
+  inviteLink: 'Ссылка-приглашение для группы',
+  groupName: 'Название группы',
+  actions: 'Действия',
+  chatNoGroupSelected: 'Выберите группу для просмотра чата',
+};

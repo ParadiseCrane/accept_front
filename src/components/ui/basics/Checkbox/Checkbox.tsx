@@ -1,8 +1,5 @@
+import { CheckboxProps, Checkbox as MantineCheckbox } from '@mantine/core';
 import { FC, memo } from 'react';
-import {
-  CheckboxProps,
-  Checkbox as MantineCheckbox,
-} from '@mantine/core';
 interface Props extends CheckboxProps {
   shrink?: boolean;
 }

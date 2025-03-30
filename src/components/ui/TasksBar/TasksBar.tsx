@@ -1,10 +1,11 @@
 import { IBarTask } from '@custom-types/data/ITask';
 import { ActionIcon } from '@mantine/core';
+import { letterFromIndex } from '@utils/letterFromIndex';
 import Link from 'next/link';
 import { FC, memo } from 'react';
 import { Home } from 'tabler-icons-react';
+
 import styles from './tasksBar.module.css';
-import { letterFromIndex } from '@utils/letterFromIndex';
 
 const TasksBar: FC<{
   tasks: IBarTask[];
@@ -34,10 +35,10 @@ const TasksBar: FC<{
                 task.status && task.status.spec < 2
                   ? styles.testing
                   : !task.verdict
-                  ? styles.null
-                  : task.verdict.shortText == 'OK'
-                  ? styles.ok
-                  : styles.err
+                    ? styles.null
+                    : task.verdict.shortText == 'OK'
+                      ? styles.ok
+                      : styles.err
               } ${currentTask == task.spec ? styles.current : ''}`}
             >
               {letterFromIndex(index)}

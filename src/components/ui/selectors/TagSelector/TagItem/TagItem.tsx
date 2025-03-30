@@ -1,11 +1,11 @@
 import { pureCallback } from '@custom-types/ui/atomic';
 import { Item } from '@custom-types/ui/atomic';
-
+import inputStyles from '@styles/ui/input.module.css';
 import { FC } from 'react';
+
 import DeleteTag from './DeleteTag/DeleteTag';
 import EditTag from './EditTag/EditTag';
 import styles from './tagItem.module.css';
-import inputStyles from '@styles/ui/input.module.css';
 
 export const TagItem: FC<{
   item: Item;

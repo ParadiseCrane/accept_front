@@ -1,10 +1,11 @@
+import { useLocale } from '@hooks/useLocale';
 import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
-import { ColorPickerModal } from './Modals/ColorPickerModal';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
+import { ColorPickerModal } from './Modals/ColorPickerModal';
 
 export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
   const initialColor = editor.getAttributes('textStyle')['color'] ?? '#000000';

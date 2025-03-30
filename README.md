@@ -5,7 +5,7 @@
 Do not forget to fill up .env files.
 
 - API_ENDPOINT for server-side communication with backend
-- WEBSOCKET_API for client-side communication with backend sockets
+- NEXT_PUBLIC_BASE_URL
 
 Check .templates files for more information.
 

@@ -1,7 +1,7 @@
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import { FC, memo } from 'react';
 
-const AllAttempts: FC<{}> = ({}) => {
+const AllAttempts: FC<{}> = () => {
   return (
     <>
       <AttemptsList

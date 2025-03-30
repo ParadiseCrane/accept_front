@@ -1,9 +1,9 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { IActivity } from '@custom-types/data/atomic';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import { UserSelect } from '@ui/selectors';
-import { useLocale } from '@hooks/useLocale';
-import { IActivity } from '@custom-types/data/atomic';
+import { FC, memo, useEffect, useState } from 'react';
 
 const MemberSelector: FC<{
   spec: string;
@@ -12,16 +12,17 @@ const MemberSelector: FC<{
   exclude: string[];
   form: any;
   field: string;
+  customRequest?: string;
   // select: (_: IUserDisplay) => void;
   // onChange: () => any;
-}> = ({ entity, spec, opened, exclude, form, field }) => {
+}> = ({ entity, spec, opened, exclude, form, field, customRequest }) => {
   const { locale } = useLocale();
   const [users, setUsers] = useState<IUserDisplay[]>([]);
 
   useEffect(() => {
     if (!opened) return;
     sendRequest<{ exclude: string[] }, IUserDisplay[]>(
-      `${entity}/participants/${spec}`,
+      customRequest ?? `${entity}/participants/${spec}`,
       'POST',
       { exclude }
     ).then((res) => {

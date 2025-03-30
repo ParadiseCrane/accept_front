@@ -1,7 +1,7 @@
+import { getCookieValue } from '@utils/cookies';
+import { createTokenCookie } from '@utils/createTokenCookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { env } from 'process';
-import { createTokenCookie } from '@utils/createTokenCookie';
-import { getCookieValue } from '@utils/cookies';
 
 const url = env.API_ENDPOINT + '/api/login';
 
@@ -24,10 +24,7 @@ export default async function signIn(
       cookie: req.headers.cookie || '',
     };
 
-    const session_id = getCookieValue(
-      req.headers.cookie || '',
-      'session_id'
-    );
+    const session_id = getCookieValue(req.headers.cookie || '', 'session_id');
 
     let data = new FormData();
 
@@ -54,11 +51,7 @@ export default async function signIn(
           data['refresh_token'],
           new Date(data['refresh_token_expires'])
         ),
-        createTokenCookie(
-          'session_id',
-          data['session_id'],
-          undefined
-        ),
+        createTokenCookie('session_id', data['session_id'], undefined),
       ]);
       return res.status(200).send('Success');
     }

@@ -1,10 +1,11 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Code } from 'tabler-icons-react';
-import { CodeBlockModal } from './Modals/CodeBlockModal';
 import { useState } from 'react';
+import { Code } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
+import { CodeBlockModal } from './Modals/CodeBlockModal';
 
 export const ToggleCodeBlock = ({
   editor,

@@ -1,10 +1,11 @@
-import { FC, memo, useCallback, useState } from 'react';
-import styles from './titleInput.module.css';
-import { Icon, TextInput } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
-import { Check, Pencil, X } from 'tabler-icons-react';
-import { useRouter } from 'next/router';
+import { Icon, TextInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { useRouter } from 'next/router';
+import { FC, memo, useCallback, useState } from 'react';
+import { Check, Pencil, X } from 'tabler-icons-react';
+
+import styles from './titleInput.module.css';
 
 const TitleInput: FC<{
   spec: string;
@@ -23,22 +24,19 @@ const TitleInput: FC<{
       let new_team_name = new_title.trim().replace(/\s+/, ' ');
       let error =
         new_team_name.length == 0
-          ? locale.tournament.registration.form.validation.teamName
-              .empty
+          ? locale.tournament.registration.form.validation.teamName.empty
           : new_team_name.length < 4
-          ? locale.tournament.registration.form.validation.teamName.minLength(
-              4
-            )
-          : new_team_name.length > 20
-          ? locale.tournament.registration.form.validation.teamName.maxLength(
-              20
-            )
-          : !new_team_name.match(
-              /^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/
-            )
-          ? locale.tournament.registration.form.validation.teamName
-              .invalid
-          : null;
+            ? locale.tournament.registration.form.validation.teamName.minLength(
+                4
+              )
+            : new_team_name.length > 20
+              ? locale.tournament.registration.form.validation.teamName.maxLength(
+                  20
+                )
+              : !new_team_name.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
+                ? locale.tournament.registration.form.validation.teamName
+                    .invalid
+                : null;
       if (error !== null) {
         setError(error);
         return false;
@@ -124,11 +122,7 @@ const TitleInput: FC<{
                 </Icon>
               </>
             ) : (
-              <Icon
-                size="sm"
-                color="var(--primary)"
-                onClick={openEdit}
-              >
+              <Icon size="sm" color="var(--primary)" onClick={openEdit}>
                 <Pencil />
               </Icon>
             )}

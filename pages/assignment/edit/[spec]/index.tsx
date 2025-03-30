@@ -1,21 +1,21 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+import Form from '@components/Assignment/Form/Form';
 import {
   IAssignmentAdd,
   IAssignmentEditBundle,
 } from '@custom-types/data/IAssignment';
-import Form from '@components/Assignment/Form/Form';
-import { UseFormReturnType } from '@mantine/form';
 import { useLocale } from '@hooks/useLocale';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form';
+import Title from '@ui/Title/Title';
+import { timezoneDate } from '@utils/datetime';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { timezoneDate } from '@utils/datetime';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo } from 'react';
 
 function AssignmentEdit(props: IAssignmentEditBundle) {
   const { locale, lang } = useLocale();

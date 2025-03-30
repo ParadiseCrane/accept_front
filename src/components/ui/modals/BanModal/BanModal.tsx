@@ -1,9 +1,10 @@
-import { useForm } from '@mantine/form';
-import { FC, memo, useCallback } from 'react';
-import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import { useLocale } from '@hooks/useLocale';
-import { TextInput } from '@ui/basics';
 import { callback } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { useForm } from '@mantine/form';
+import { TextInput } from '@ui/basics';
+import { FC, memo, useCallback } from 'react';
+
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 // import styles from './banModal.module.css'
 
 const BanModal: FC<{ onAction: callback<string>; ban: boolean }> = ({
@@ -18,9 +19,7 @@ const BanModal: FC<{ onAction: callback<string>; ban: boolean }> = ({
     },
     validate: {
       banReason: (value) =>
-        value.length < 4 && ban
-          ? locale.user.ban.form.validate.reason
-          : null,
+        value.length < 4 && ban ? locale.user.ban.form.validate.reason : null,
     },
     validateInputOnBlur: true,
   });

@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
-import styles from './dates.module.css';
-import { DateTimePicker } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
+import { DateTimePicker } from '@ui/basics';
+import { FC, memo } from 'react';
+
+import styles from './dates.module.css';
 
 const Dates: FC<{ form: UseFormReturnType<any> }> = ({ form }) => {
   const { locale } = useLocale();

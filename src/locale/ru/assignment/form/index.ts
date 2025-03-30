@@ -1,5 +1,5 @@
-import { validation } from './validation';
 import { steps } from './steps';
+import { validation } from './validation';
 
 export const form = {
   steps,

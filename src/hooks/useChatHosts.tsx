@@ -1,4 +1,6 @@
+import { IActivity } from '@custom-types/data/atomic';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { pureCallback, setter } from '@custom-types/ui/atomic';
 import { sendRequest } from '@requests/request';
 import {
   FC,
@@ -10,9 +12,8 @@ import {
   useMemo,
   useState,
 } from 'react';
+
 import { useRefetch } from './useRefetch';
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { IActivity } from '@custom-types/data/atomic';
 
 export interface IHostData {
   user: IUserDisplay;

@@ -1,23 +1,23 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { IChecker } from '@custom-types/data/ITask';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
-import SingularSticky from '@ui/Sticky/SingularSticky';
 import Tests from '@components/Task/Tests/Tests';
+import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
+import { ITaskTestData } from '@custom-types/data/atomic';
+import { IChecker } from '@custom-types/data/ITask';
 import {
   ITaskTestsPayload,
   ITruncatedTaskTest,
 } from '@custom-types/data/ITaskTest';
-import { ITaskTestData } from '@custom-types/data/atomic';
-import { requestWithError } from '@utils/requestWithError';
-import { Loader } from '@mantine/core';
-import { Download } from 'tabler-icons-react';
-import { getApiUrl } from '@utils/getServerUrl';
+import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { Loader } from '@mantine/core';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import Title from '@ui/Title/Title';
 import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
+import { requestWithError } from '@utils/requestWithError';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { Download } from 'tabler-icons-react';
 function TestsPage(props: { spec: string; has_write_rights: boolean }) {
   const task_spec = props.spec;
   const hasWriteRights = props.has_write_rights;

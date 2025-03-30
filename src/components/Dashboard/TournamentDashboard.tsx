@@ -1,3 +1,21 @@
+import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
+import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
+import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
+import { STICKY_SIZES } from '@constants/Sizes';
+import {
+  ITournament,
+  ITournamentResponse,
+} from '@custom-types/data/ITournament';
+import { IMenuLink } from '@custom-types/ui/IMenuLink';
+import { useChatHosts } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { useUser } from '@hooks/useUser';
+import { useWidth } from '@hooks/useWidth';
+import { useInterval } from '@mantine/hooks';
+import { Indicator } from '@ui/basics';
+import LeftMenu from '@ui/LeftMenu/LeftMenu';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
   AddressBook,
@@ -13,31 +31,14 @@ import {
   Users,
   Vocabulary,
 } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import {
-  ITournament,
-  ITournamentResponse,
-} from '@custom-types/data/ITournament';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { STICKY_SIZES } from '@constants/Sizes';
-import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useRequest } from '@hooks/useRequest';
-import { useInterval } from '@mantine/hooks';
-import { Indicator } from '@ui/basics';
-import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
-import TaskList from './TaskList/TaskList';
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import CreateNotification from './CreateNotification/CreateNotification';
-import Results from './Results/Results';
-import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
+
 import ChatPage from './ChatPage/ChatPage';
+import CreateNotification from './CreateNotification/CreateNotification';
+import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
 import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
+import Results from './Results/Results';
 import Settings from './Settings/Settings';
-import { useChatHosts } from '@hooks/useChatHosts';
+import TaskList from './TaskList/TaskList';
 import TeamList from './TeamList/TeamList';
 
 const TournamentDashboard: FC<{
@@ -93,7 +94,7 @@ const TournamentDashboard: FC<{
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />{' '}
+            <Messages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,

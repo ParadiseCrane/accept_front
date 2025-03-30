@@ -1,7 +1,7 @@
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import styles from './chatPage.module.css';
-import Chat from '@ui/Chat/Chat';
+import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
+import { IHostData, useChatHosts } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
 import {
   Icon,
   Indicator,
@@ -9,17 +9,20 @@ import {
   TextInput,
   UserAvatar,
 } from '@ui/basics';
-import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
-import { useLocale } from '@hooks/useLocale';
+import Chat from '@ui/Chat/Chat';
 import Fuse from 'fuse.js';
-import { IHostData, useChatHosts } from '@hooks/useChatHosts';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Eye, Search } from 'tabler-icons-react';
-import { IActivity } from '@custom-types/data/atomic';
+
+import styles from './chatPage.module.css';
+import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
 
 const ChatPage: FC<{
   spec: string;
   entity: IActivity;
-}> = ({ entity, spec }) => {
+  customRequest?: string;
+  group_spec?: string;
+}> = ({ entity, spec, customRequest, group_spec }) => {
   const { locale } = useLocale();
   const [currentHost, setCurrentHost] = useState<string | undefined>(undefined);
 
@@ -91,6 +94,8 @@ const ChatPage: FC<{
                   entity={entity}
                   exclude={hostLogins}
                   onSuccess={fetchInitialHosts}
+                  customRequest={customRequest}
+                  group_spec={group_spec}
                   small
                 />
               </div>
@@ -159,6 +164,8 @@ const ChatPage: FC<{
                 entity={entity}
                 exclude={hostLogins}
                 onSuccess={fetchInitialHosts}
+                customRequest={customRequest}
+                group_spec={group_spec}
               />
             </div>
           )}
@@ -175,6 +182,7 @@ const ChatPage: FC<{
                 }}
                 wrapperStyles={styles.chatWrapper}
                 moderator={true}
+                group_spec={group_spec}
               />
             </div>
           )}

@@ -1,9 +1,10 @@
-import { FC, memo, useEffect, useRef, useState } from 'react';
-import { HoverCard, Button as MantineButton } from '@mantine/core';
-import styles from './button.module.css';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
+import { HoverCard, Button as MantineButton } from '@mantine/core';
 import { concatClassNames } from '@utils/concatClassNames';
 import Link from 'next/link';
+import { FC, memo, useEffect, useRef, useState } from 'react';
+
+import styles from './button.module.css';
 
 const Button: FC<MyButtonProps> = ({
   hoverCardProps,

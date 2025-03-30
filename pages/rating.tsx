@@ -1,17 +1,17 @@
-import { GetServerSideProps } from 'next';
-import Title from '@ui/Title/Title';
-import { useLocale } from '@hooks/useLocale';
-import { getApiUrl } from '@utils/getServerUrl';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { IRatingInfo } from '@custom-types/data/IRatingInfo';
-import { ReactElement, useCallback } from 'react';
+import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
-import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
-import tableStyles from '@styles/ui/primitiveTable.module.css';
 import styles from '@styles/rating.module.css';
-import Link from 'next/link';
-import { Crown, Trophy } from 'tabler-icons-react';
+import tableStyles from '@styles/ui/primitiveTable.module.css';
+import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
+import Title from '@ui/Title/Title';
 import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { ReactElement, useCallback } from 'react';
+import { Crown, Trophy } from 'tabler-icons-react';
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -21,7 +21,7 @@ interface IndexedRatingInfo extends IRatingInfo {
 function Rating(props: { users: IRatingInfo[] }) {
   const { locale } = useLocale();
   const users = props.users.map(
-    (item, index) => ({ ...item, index } as IndexedRatingInfo)
+    (item, index) => ({ ...item, index }) as IndexedRatingInfo
   );
   const best_score = users.length > 0 ? users[0].score : 0;
 

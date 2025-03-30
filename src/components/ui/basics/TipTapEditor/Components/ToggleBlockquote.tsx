@@ -1,8 +1,9 @@
+import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { Blockquote } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { useLocale } from '@hooks/useLocale';
 
 export const ToggleBlockquote = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused ? editor.isActive('blockquote') : false;

@@ -1,5 +1,6 @@
 import en from '@locale/en';
 import ru from '@locale/ru';
+
 import { setter } from './atomic';
 
 export const locales = {

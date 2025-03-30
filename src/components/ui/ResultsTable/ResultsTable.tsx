@@ -1,9 +1,10 @@
-import { FC, ReactNode, memo } from 'react';
-import styles from './resultsTable.module.css';
-import DropdownList from './DropdownList/DropdownList';
 import { setter } from '@custom-types/ui/atomic';
 import { Icon } from '@ui/basics';
+import { FC, ReactNode, memo } from 'react';
 import { RefreshDot } from 'tabler-icons-react';
+
+import DropdownList from './DropdownList/DropdownList';
+import styles from './resultsTable.module.css';
 
 export type ILabel = ReactNode;
 

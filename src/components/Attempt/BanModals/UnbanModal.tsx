@@ -1,14 +1,15 @@
-import { FC, memo, useCallback, useState } from 'react';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { HeartPlus } from 'tabler-icons-react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { getLocalDate } from '@utils/datetime';
-import styles from './banModal.module.css';
 import modalStyles from '@styles/ui/modal.module.css';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import SingularSticky from '@ui/Sticky/SingularSticky';
+import { getLocalDate } from '@utils/datetime';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
+import { HeartPlus } from 'tabler-icons-react';
+
+import styles from './banModal.module.css';
 
 const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, setOpened] = useState(false);

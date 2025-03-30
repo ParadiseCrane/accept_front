@@ -1,6 +1,6 @@
 import { pureCallback } from '@custom-types/ui/atomic';
 import { Icon } from '@ui/basics';
-import { FC, ReactNode, memo, useCallback, RefObject, useRef } from 'react';
+import { FC, ReactNode, RefObject, memo, useCallback, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Printer } from 'tabler-icons-react';
 

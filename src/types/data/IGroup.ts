@@ -6,6 +6,11 @@ export interface IGroup {
   readonly: boolean;
 }
 
+export interface IGroupBaseInfo {
+  spec: string;
+  name: string;
+}
+
 export interface IGroupEditBundle {
   group: IGroup;
   users: IUser[];
@@ -16,4 +21,9 @@ export interface IGroupDisplay {
   name: string;
   readonly: boolean;
   participants: number;
+}
+
+export interface IGroupInvite {
+  invite_spec: string;
+  group: IGroup;
 }

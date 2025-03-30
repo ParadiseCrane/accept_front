@@ -26,6 +26,7 @@ export const titles = {
     admin: 'Панель администратора',
     assignment: 'Управление уроком',
     tournament: 'Управление турниром',
+    course: 'Управление курсом',
   },
   attempt: 'Попытка',
   assignment: {
@@ -37,6 +38,7 @@ export const titles = {
     add: 'Добавление курса',
     edit: 'Изменение курса',
     spec: 'Курс',
+    list: 'Курсы',
   },
   assignment_schema: {
     add: 'Добавление схемы урока',
@@ -53,4 +55,5 @@ export const titles = {
   },
   courses: 'Курсы',
   feedback: 'Обратная связь',
+  soon: 'Скоро',
 };

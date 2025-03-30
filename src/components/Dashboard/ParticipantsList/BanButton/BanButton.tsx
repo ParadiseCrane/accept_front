@@ -1,8 +1,8 @@
-import { FC, memo, useCallback } from 'react';
 import { IParticipant } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import { BanModal } from '@ui/modals';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback } from 'react';
 
 const BanButton: FC<{
   user: IParticipant;
@@ -11,7 +11,7 @@ const BanButton: FC<{
 }> = ({ user, spec, onSuccess }) => {
   const { locale, lang } = useLocale();
 
-  let ban = !!!user.banned;
+  let ban = !user.banned;
 
   const handleBan = useCallback(
     (banReason: string) => {

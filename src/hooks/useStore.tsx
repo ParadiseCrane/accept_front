@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  ReactNode,
   useCallback,
   useContext,
   useRef,
@@ -39,7 +40,7 @@ export default function createFastContext<Store>(initialState: Store) {
 
   const StoreContext = createContext<UseStoreDataReturnType | null>(null);
 
-  function Provider({ children }: { children: React.ReactNode }) {
+  function Provider({ children }: { children: ReactNode }) {
     return (
       <StoreContext.Provider value={useStoreData()}>
         {children}

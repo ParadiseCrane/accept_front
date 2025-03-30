@@ -1,13 +1,14 @@
-import { FC, useEffect, useState } from 'react';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import styles from './description.module.css';
-import { useLocale } from '@hooks/useLocale';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
+import { ITaskDisplay } from '@custom-types/data/ITask';
+import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
-import TagList from '@ui/TagList/TagList';
 import { LoadingOverlay } from '@ui/basics';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
+import TagList from '@ui/TagList/TagList';
+import { FC, useEffect, useState } from 'react';
+
+import styles from './description.module.css';
 
 const Description: FC<{
   assignment: IAssignmentSchema;
@@ -54,16 +55,13 @@ const Description: FC<{
       <div className={styles.tags}>
         <TagList tags={assignment.tags} />
       </div>
-      <div
-        className={styles.description}
-        children={
-          <TipTapEditor
-            editorMode={false}
-            content={assignment.description}
-            onUpdate={() => {}}
-          />
-        }
-      ></div>
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={assignment.description}
+          onUpdate={() => {}}
+        />
+      </div>
       <div
         style={{
           position: 'relative',

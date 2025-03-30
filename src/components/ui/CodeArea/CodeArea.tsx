@@ -1,17 +1,18 @@
-import { FC, ReactNode, memo, useCallback, useRef } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import styles from './codeArea.module.css';
+import { ILanguage } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
+import { MyButtonProps } from '@custom-types/ui/basics/button';
+import { useLocale } from '@hooks/useLocale';
+import { getHotkeyHandler } from '@mantine/hooks';
+import { Dropzone, TextArea } from '@ui/basics';
+import { extensionValidator } from '@utils/extensionValidator';
 import {
   errorNotification,
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
-import { ILanguage } from '@custom-types/data/atomic';
-import { extensionValidator } from '@utils/extensionValidator';
-import { Dropzone, TextArea } from '@ui/basics';
-import { MyButtonProps } from '@custom-types/ui/basics/button';
-import { getHotkeyHandler } from '@mantine/hooks';
+import { FC, ReactNode, memo, useCallback, useRef } from 'react';
+
+import styles from './codeArea.module.css';
 
 const get_selection = (ref: HTMLTextAreaElement) => {
   let start = ref.selectionStart;

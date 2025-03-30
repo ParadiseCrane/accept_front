@@ -1,22 +1,15 @@
-import { useLocale } from '@hooks/useLocale';
-
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import styles from './languageSelector.module.css';
-import { sendRequest } from '@requests/request';
 import { ILanguage } from '@custom-types/data/atomic';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { Item, setter } from '@custom-types/ui/atomic';
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { useLocale } from '@hooks/useLocale';
+import { sendRequest } from '@requests/request';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+
+import styles from './languageSelector.module.css';
 
 const LanguageSelector: FC<{
   initialLangs: Item[];
@@ -27,13 +20,12 @@ const LanguageSelector: FC<{
 }> = ({ setUsed, shrink, initialLangs, fetchURL, width }) => {
   const { locale } = useLocale();
   const [allLangs, setAllLangs] = useState<ILanguage[]>([]);
-  const [langs, setLangs] =
-    useState<ICustomTransferListData>(undefined);
+  const [langs, setLangs] = useState<ICustomTransferListData>(undefined);
   const initialLangsInner = useMemo(() => initialLangs, []); //eslint-disable-line
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
-      if (!!!data) return;
+      if (!data) return;
       setUsed(data[1]);
       setLangs(data);
     },
@@ -64,16 +56,13 @@ const LanguageSelector: FC<{
 
   const refetch = useCallback(async () => {
     setLoading(true);
-    sendRequest<{}, ILanguage[]>(
-      fetchURL,
-      'GET',
-      undefined,
-      600000
-    ).then((res) => {
-      if (res.error) return;
-      setAllLangs(res.response);
-      setLoading(false);
-    });
+    sendRequest<{}, ILanguage[]>(fetchURL, 'GET', undefined, 600000).then(
+      (res) => {
+        if (res.error) return;
+        setAllLangs(res.response);
+        setLoading(false);
+      }
+    );
   }, [fetchURL]);
 
   useEffect(() => {
@@ -83,11 +72,7 @@ const LanguageSelector: FC<{
   const itemComponent: ICustomTransferListItemComponent = useCallback(
     ({ item, onClick, index }) => {
       return (
-        <div
-          key={index}
-          className={`${styles.itemWrapper}`}
-          onClick={onClick}
-        >
+        <div key={index} className={`${styles.itemWrapper}`} onClick={onClick}>
           {item.label}
         </div>
       );

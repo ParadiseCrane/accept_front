@@ -1,10 +1,11 @@
 import { ITask } from '@custom-types/data/ITask';
 import { sendRequest } from '@requests/request';
 import ComponentToPDF from '@ui/ComponentToPDF/ComponentToPDF';
+import { letterFromIndex } from '@utils/letterFromIndex';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
+
 import Description from '../Description/Description';
 import styles from './printTasks.module.css';
-import { letterFromIndex } from '@utils/letterFromIndex';
 
 const PrintTasks: FC<{
   tasks: string[];

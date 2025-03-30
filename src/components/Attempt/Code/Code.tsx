@@ -1,11 +1,11 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
-import { FC, memo } from 'react';
-
 import { ILanguage } from '@custom-types/data/atomic';
-import styles from './code.module.css';
+import { IAttempt } from '@custom-types/data/IAttempt';
 // @ts-ignore
 import { useLocale } from '@hooks/useLocale';
 import { CodeHighlight } from '@mantine/code-highlight';
+import { FC, memo } from 'react';
+
+import styles from './code.module.css';
 
 const getLang = (language: ILanguage): any => {
   switch (language.shortName) {

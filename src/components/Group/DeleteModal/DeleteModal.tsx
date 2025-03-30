@@ -1,12 +1,12 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Icon } from '@ui/basics';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { Trash } from 'tabler-icons-react';
+import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';
+import { Icon } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useState } from 'react';
+import { Trash } from 'tabler-icons-react';
 
 const DeleteModal: FC<{
   group: IGroupDisplay;
@@ -39,9 +39,7 @@ const DeleteModal: FC<{
         title={locale.group.modals.deletion}
       >
         <div className={modalStyles.verticalContent}>
-          <div>
-            {locale.group.modals.delete + ` '${group.name}' ?`}
-          </div>
+          <div>{locale.group.modals.delete + ` '${group.name}' ?`}</div>
           <SimpleButtonGroup
             reversePositive
             actionButton={{

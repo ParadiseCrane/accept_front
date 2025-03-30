@@ -2,6 +2,7 @@ import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import { TextArea } from '@ui/basics';
 import { FC, memo } from 'react';
+
 import styles from './textAnswer.module.css';
 
 const TextAnswer: FC<{ attempt: IAttempt }> = ({ attempt }) => {
@@ -11,7 +12,6 @@ const TextAnswer: FC<{ attempt: IAttempt }> = ({ attempt }) => {
       {attempt.textAnswers.map((answer, index) => (
         <div className={styles.itemWrapper} key={index}>
           <div className={styles.itemTitle}>
-            {' '}
             {`${locale.task.answer} #${index + 1}`}
           </div>
           <TextArea

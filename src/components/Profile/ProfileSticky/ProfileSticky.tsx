@@ -1,12 +1,13 @@
 import { STICKY_SIZES } from '@constants/Sizes';
 import { IUser } from '@custom-types/data/IUser';
+import { useLocale } from '@hooks/useLocale';
 import { useWidth } from '@hooks/useWidth';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useState } from 'react';
 import { Pencil, Trash } from 'tabler-icons-react';
+
 import ProfileDeleteModal from '../ProfileDeleteModal/ProfileDeleteModal';
 import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
-import { useLocale } from '@hooks/useLocale';
 
 const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
   const { width } = useWidth();

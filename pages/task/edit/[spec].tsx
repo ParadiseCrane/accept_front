@@ -1,26 +1,24 @@
 import Form from '@components/Task/Form/Form';
-import { useLocale } from '@hooks/useLocale';
-import { ReactNode, useCallback, useMemo } from 'react';
-import { ITaskEdit } from '@custom-types/data/ITask';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskType,
 } from '@custom-types/data/atomic';
+import { ITaskEdit } from '@custom-types/data/ITask';
+import { Item } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form';
+import Title from '@ui/Title/Title';
+import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import { UseFormReturnType } from '@mantine/form';
-import { Item } from '@custom-types/ui/atomic';
-
-import Title from '@ui/Title/Title';
-import { getCookieValue } from '@utils/cookies';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo } from 'react';
 
 function EditTask(props: {
   task: ITaskEdit;
@@ -67,7 +65,7 @@ function EditTask(props: {
 
       remark: task.remark || '',
     }),
-    [task] //eslint-disable-line
+    [task]
   );
 
   const handleSubmit = useCallback(

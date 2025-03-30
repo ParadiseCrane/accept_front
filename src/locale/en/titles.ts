@@ -26,6 +26,7 @@ export const titles = {
     admin: 'Admin dashboard',
     assignment: 'Assignment dashboard',
     tournament: 'Tournament dashboard',
+    course: 'Course dashboard',
   },
   attempt: 'Attempt',
   assignment: {
@@ -37,6 +38,7 @@ export const titles = {
     add: 'Add course',
     edit: 'Edit course',
     spec: 'Course',
+    list: 'Courses',
   },
   assignment_schema: {
     add: 'Add assignment schema',
@@ -53,4 +55,5 @@ export const titles = {
   },
   courses: 'Courses',
   feedback: 'Feedback',
+  soon: 'Soon',
 };

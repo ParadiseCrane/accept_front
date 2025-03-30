@@ -2,6 +2,7 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { Icon } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';
 import { Triangle, TriangleInverted } from 'tabler-icons-react';
+
 import styles from './column.module.css';
 
 const getCurrentOrder = (

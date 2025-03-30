@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
+import { accessLevels } from '@constants/protectedRoutes';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { useLocale } from '@hooks/useLocale';
-import Dropdown from './Dropdown';
-import { accessLevels } from '@constants/protectedRoutes';
 import { useUser } from '@hooks/useUser';
-import Link from 'next/link';
-import { Button } from '@ui/basics';
 import linkStyles from '@styles/ui/link.module.css';
+import { Button } from '@ui/basics';
+import Link from 'next/link';
+import React, { FC } from 'react';
+
+import Dropdown from './Dropdown';
 
 export const HeaderLink: FC<{
   link: IHeaderLink;

@@ -1,11 +1,11 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, ReactNode, memo } from 'react';
-import tableStyles from '@styles/ui/primitiveTable.module.css';
-import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
 import { ITag } from '@custom-types/data/ITag';
 import { ITaskDisplay } from '@custom-types/data/ITask';
+import { useLocale } from '@hooks/useLocale';
+import tableStyles from '@styles/ui/primitiveTable.module.css';
+import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
+import { FC, ReactNode, memo } from 'react';
 
 const PrimitiveTaskTable: FC<{
   tasks: ITaskDisplay[];
@@ -29,9 +29,7 @@ const PrimitiveTaskTable: FC<{
           <>
             <td className={tableStyles.titleWrapper}>
               <Link
-                href={`/task/${row.spec}${
-                  linkQuery ? '?' + linkQuery : ''
-                }`}
+                href={`/task/${row.spec}${linkQuery ? '?' + linkQuery : ''}`}
                 className={tableStyles.title}
               >
                 {row.title}
@@ -40,8 +38,7 @@ const PrimitiveTaskTable: FC<{
                 <span className={tableStyles.tags}>
                   {row.tags.map((tag: ITag, idx: number) => (
                     <div className={tableStyles.tag} key={idx}>
-                      {tag.title +
-                        (idx == row.tags.length - 1 ? '' : ', ')}
+                      {tag.title + (idx == row.tags.length - 1 ? '' : ', ')}
                     </div>
                   ))}
                 </span>

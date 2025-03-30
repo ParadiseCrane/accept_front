@@ -1,11 +1,12 @@
-import { FC, memo } from 'react';
+import { MyIconProps } from '@custom-types/ui/basics/icon';
 import {
   CopyButton as MantineCopyButton,
   CopyButtonProps as MantineCopyButtonProps,
 } from '@mantine/core';
-import Icon from '../Icon/Icon';
-import { MyIconProps } from '@custom-types/ui/basics/icon';
+import { FC, memo } from 'react';
 import { Check, Copy } from 'tabler-icons-react';
+
+import Icon from '../Icon/Icon';
 
 interface Props extends Omit<MantineCopyButtonProps, 'children'> {
   iconProps?: MyIconProps;

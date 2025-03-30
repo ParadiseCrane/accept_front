@@ -1,12 +1,12 @@
-import { ReactNode } from 'react';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
 import AssignmentDashboard from '@components/Dashboard/AssignmentDashboard';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
-import { ChatHostsProvider } from '@hooks/useChatHosts';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+import { ChatHostsProvider } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import Title from '@ui/Title/Title';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { ReactNode } from 'react';
 
 function AssignmentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();

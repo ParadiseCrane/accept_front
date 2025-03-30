@@ -1,21 +1,22 @@
-import { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import {
   ITournament,
   ITournamentSettingsBundle,
 } from '@custom-types/data/ITournament';
-import PinCode from '@ui/PinCode/PinCode';
-import { sendRequest } from '@requests/request';
-import { Button, Helper, Switch } from '@ui/basics';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useLocale } from '@hooks/useLocale';
-import styles from './settings.module.css';
-import { TaskItem } from '@ui/selectors/TaskSelector/TaskItem/TaskItem';
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { useLocale } from '@hooks/useLocale';
+import { sendRequest } from '@requests/request';
+import { Button, Helper, Switch } from '@ui/basics';
+import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
+import PinCode from '@ui/PinCode/PinCode';
+import { TaskItem } from '@ui/selectors/TaskSelector/TaskItem/TaskItem';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+
 import CreateAssignment from './CreateAssignment/CreateAssignment';
+import styles from './settings.module.css';
 
 const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
   const { locale, lang } = useLocale();
@@ -28,7 +29,7 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
 
   useEffect(() => {
     let cleanUp = false;
-    if (!!tournament.spec) {
+    if (tournament.spec) {
       sendRequest<undefined, ITournamentSettingsBundle>(
         `tournament/settings/${tournament.spec}`,
         'GET'
@@ -60,7 +61,7 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
   }, [tournament.spec]);
 
   const updateTasksPublic = useCallback(() => {
-    if (!!!tasks) return;
+    if (!tasks) return;
     requestWithNotify<string[], boolean>(
       `tournament/settings/changePublic/${tournament.spec}`,
       'POST',

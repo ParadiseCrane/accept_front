@@ -1,13 +1,14 @@
-import { FC, forwardRef, memo, useMemo } from 'react';
-import styles from './assignmentSchemaSelector.module.css';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { Select } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
-import { Eye } from 'tabler-icons-react';
 import { ActionIcon } from '@mantine/core';
+import { Select } from '@ui/basics';
 import Link from 'next/link';
+import { ComponentPropsWithoutRef, FC, forwardRef, memo, useMemo } from 'react';
+import { Eye } from 'tabler-icons-react';
 
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+import styles from './assignmentSchemaSelector.module.css';
+
+interface ItemProps extends ComponentPropsWithoutRef<'div'> {
   value: string;
   label: string;
 }

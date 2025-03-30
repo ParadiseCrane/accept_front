@@ -1,31 +1,27 @@
 import {
-  Button,
-  Dropzone,
-  Helper,
-  SegmentedControl,
-} from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
-import { getAddUserData } from '@utils/readExcel';
-import { ITableColumn } from '@custom-types/ui/ITable';
+  IGradeChange,
+  IGradeChangeResponse,
+} from '@custom-types/data/IStudent';
 import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import styles from './changeGrades.module.css';
 import { sendRequest } from '@requests/request';
+import { Button, Dropzone, Helper, SegmentedControl } from '@ui/basics';
+import ChangeGradeErrorList, {
+  IGradeChangeResponseTable,
+} from '@ui/ChangeGradeErrorList/ChangeGradeErrorList';
+import ChangeGradeList from '@ui/ChangeGradeList/ChangeGradeList';
 import {
   errorNotification,
   newNotification,
   successNotification,
   warningNotification,
 } from '@utils/notificationFunctions';
+import { getAddUserData } from '@utils/readExcel';
+import { FC, memo, useCallback, useState } from 'react';
 import { AlertCircle } from 'tabler-icons-react';
-import {
-  IGradeChange,
-  IGradeChangeResponse,
-} from '@custom-types/data/IStudent';
-import ChangeGradeList from '@ui/ChangeGradeList/ChangeGradeList';
-import ChangeGradeErrorList, {
-  IGradeChangeResponseTable,
-} from '@ui/ChangeGradeErrorList/ChangeGradeErrorList';
+
+import styles from './changeGrades.module.css';
 
 const USERS_AT_ONCE = 50;
 
@@ -50,10 +46,10 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-        ? a.grade[-1] > b.grade[-1]
-          ? 1
-          : 0
-        : -1,
+          ? a.grade[-1] > b.grade[-1]
+            ? 1
+            : 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -66,8 +62,8 @@ const compKind = (a: any, b: any) =>
   a.error.value === 'error' && b.error.value !== 'error'
     ? 1
     : a.error.value !== 'error' && b.error.value === 'error'
-    ? -1
-    : 0;
+      ? -1
+      : 0;
 
 const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -90,10 +86,10 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-        ? a.grade[-1] > b.grade[-1]
-          ? 1
-          : 0
-        : -1,
+          ? a.grade[-1] > b.grade[-1]
+            ? 1
+            : 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -118,12 +114,10 @@ const ACCEPTED = [
   'application/vnd.ms-excel',
 ];
 
-const ChangeGrades: FC<{}> = ({}) => {
+const ChangeGrades: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IGradeChange[]>([]);
-  const [errors, setErrors] = useState<IGradeChangeResponseTable[]>(
-    []
-  );
+  const [errors, setErrors] = useState<IGradeChangeResponseTable[]>([]);
   const [table, setTable] = useState<'users' | 'errors'>('users');
 
   const onDrop = useCallback(async (files: any[]) => {
@@ -240,9 +234,7 @@ const ChangeGrades: FC<{}> = ({}) => {
                 {locale.edit}
               </Button>
             )}
-            <Helper
-              dropdownContent={locale.helpers.grade.tableFormat}
-            />
+            <Helper dropdownContent={locale.helpers.grade.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.grade.attention}
               customIcon={<AlertCircle color={'var(--negative)'} />}
@@ -255,9 +247,7 @@ const ChangeGrades: FC<{}> = ({}) => {
             <div className={styles.segmentControl}>
               <SegmentedControl
                 value={table}
-                onChange={(value) =>
-                  setTable(value as 'users' | 'errors')
-                }
+                onChange={(value) => setTable(value as 'users' | 'errors')}
                 data={[
                   {
                     label: locale.student.segments.users,

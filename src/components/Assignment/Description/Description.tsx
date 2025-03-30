@@ -1,13 +1,14 @@
-import { FC, memo, useEffect, useState } from 'react';
-import styles from './description.module.css';
 import { IAssignment } from '@custom-types/data/IAssignment';
-import { getLocalDate } from '@utils/datetime';
-import { useLocale } from '@hooks/useLocale';
 import { ITaskDisplay } from '@custom-types/data/ITask';
+import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { letterFromIndex } from '@utils/letterFromIndex';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
+import { getLocalDate } from '@utils/datetime';
+import { letterFromIndex } from '@utils/letterFromIndex';
+import { FC, memo, useEffect, useState } from 'react';
+
+import styles from './description.module.css';
 
 const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
   const { locale } = useLocale();
@@ -74,16 +75,14 @@ const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
           )}
         </div>
       </div>
-      <div
-        className={styles.description}
-        children={
-          <TipTapEditor
-            editorMode={false}
-            content={assignment.description}
-            onUpdate={() => {}}
-          />
-        }
-      />
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={assignment.description}
+          onUpdate={() => {}}
+        />
+      </div>
+
       <div className={styles.tasksWrapper}>
         <PrimitiveTaskTable
           tasks={tasks}

@@ -1,18 +1,19 @@
-import { FC, memo, useEffect } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { callback } from '@custom-types/ui/atomic';
-import Stepper from '@ui/Stepper/Stepper';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import MainInfo from './MainInfo/MainInfo';
 import { IAssessmentType } from '@custom-types/data/atomic';
+import { ISecurity } from '@custom-types/data/ITournament';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { callback } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { UseFormReturnType, useForm } from '@mantine/form';
+import Stepper from '@ui/Stepper/Stepper';
+import { UTCDate } from '@utils/datetime';
+import { FC, memo, useEffect } from 'react';
+
+import AdditionalInfo from './AdditionalInfo/AdditionalInfo';
 import Dates from './Dates/Dates';
-import TaskOrdering from './TaskOrdering/TaskOrdering';
+import MainInfo from './MainInfo/MainInfo';
 import Moderators from './Moderators/Moderators';
 import Preview from './Preview/Preview';
-import { ISecurity } from '@custom-types/data/ITournament';
-import AdditionalInfo from './AdditionalInfo/AdditionalInfo';
-import { UTCDate } from '@utils/datetime';
+import TaskOrdering from './TaskOrdering/TaskOrdering';
 
 const stepFields: string[][] = [
   ['title', 'description', 'tags', 'public'],
@@ -64,14 +65,14 @@ const Form: FC<{
         !value
           ? locale.tournament.form.validation.endDate
           : !!values.start && values.start >= value
-          ? locale.tournament.form.validation.date
-          : null,
+            ? locale.tournament.form.validation.date
+            : null,
       frozeResults: (value, values) =>
         !!values.start && value < values.start
           ? locale.tournament.form.validation.frozeDateStart
           : !!values.end && value > values.end
-          ? locale.tournament.form.validation.frozeDateEnd
-          : null,
+            ? locale.tournament.form.validation.frozeDateEnd
+            : null,
     },
     validateInputOnBlur: true,
   });

@@ -1,6 +1,7 @@
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import { FC, ReactNode, memo } from 'react';
 import inputStyles from '@styles/ui/input.module.css';
+import { FC, ReactNode, memo } from 'react';
+
 import Helper from '../Helper/Helper';
 
 const InputLabel: FC<{
@@ -14,13 +15,9 @@ const InputLabel: FC<{
         <div className={inputStyles.labelWrapper}>
           <div className={inputStyles.label}>
             {label}
-            {required && (
-              <div className={inputStyles.labelRequired}>*</div>
-            )}
+            {required && <div className={inputStyles.labelRequired}>*</div>}
           </div>
-          {helperContent && (
-            <Helper dropdownContent={helperContent} />
-          )}
+          {helperContent && <Helper dropdownContent={helperContent} />}
         </div>
       )}
     </>

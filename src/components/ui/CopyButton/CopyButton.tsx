@@ -1,6 +1,6 @@
-import { FC, memo } from 'react';
 import { ActionIcon } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
+import { FC, memo } from 'react';
 import { Checks, Copy } from 'tabler-icons-react';
 
 const CopyButton: FC<{ toCopy: string }> = ({ toCopy }) => {

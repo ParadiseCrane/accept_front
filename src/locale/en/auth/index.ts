@@ -1,8 +1,8 @@
-import { placeholders } from './placeholders';
-import { labels } from './labels';
 import { errors } from './errors';
-import { steps } from './steps';
 import { footer } from './footer';
+import { labels } from './labels';
+import { placeholders } from './placeholders';
+import { steps } from './steps';
 
 export const auth = {
   submit: 'Sign in',

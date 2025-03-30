@@ -1,19 +1,21 @@
-import { FC, memo, useCallback, useState } from 'react';
-import styles from './chatSticky.module.css';
-import { Affix } from '@mantine/core';
-import { Icon, Indicator } from '@ui/basics';
-import Chat from '@ui/Chat/Chat';
-import { MessageCircle2 } from 'tabler-icons-react';
-import { useClickOutside } from '@mantine/hooks';
+import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { useUser } from '@hooks/useUser';
-import { IActivity } from '@custom-types/data/atomic';
+import { Affix } from '@mantine/core';
+import { useClickOutside } from '@mantine/hooks';
+import { Icon, Indicator } from '@ui/basics';
+import Chat from '@ui/Chat/Chat';
+import { FC, memo, useCallback, useState } from 'react';
+import { MessageCircle2 } from 'tabler-icons-react';
 
-const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
-  spec,
-  entity,
-  host,
-}) => {
+import styles from './chatSticky.module.css';
+
+const ChatSticky: FC<{
+  spec: string;
+  entity: IActivity;
+  host: string;
+  group_spec?: string;
+}> = ({ spec, entity, host, group_spec }) => {
   const [showChat, setShowChat] = useState(false);
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
@@ -39,6 +41,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
                 !!user && message.author == user?.login
               }
               wrapperStyles={styles.chatWrapper}
+              group_spec={group_spec}
             />
           )}
         </div>

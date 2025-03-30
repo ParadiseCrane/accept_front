@@ -1,22 +1,16 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import styles from './addUser.module.css';
+import { IRole } from '@custom-types/data/atomic';
+import { IGroup } from '@custom-types/data/IGroup';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 import { useForm } from '@mantine/form';
 import { Button, TextInput } from '@ui/basics';
 import { GroupSelector, SingleRoleSelector } from '@ui/selectors';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IRole } from '@custom-types/data/atomic';
-import { useRequest } from '@hooks/useRequest';
-import { useLocale } from '@hooks/useLocale';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-const AddUser: FC<{}> = ({}) => {
+import styles from './addUser.module.css';
+
+const AddUser: FC<{}> = () => {
   const form = useForm({
     initialValues: {
       login: '',
@@ -33,6 +27,8 @@ const AddUser: FC<{}> = ({}) => {
           ? locale.auth.errors.login.symbols
           : null,
       password: (value) =>
+        // TODO: Check
+        // eslint-disable-next-line no-useless-escape
         !value.match(/^[a-zA-Z\d\.]+$/)
           ? locale.auth.errors.password.symbols
           : null,
@@ -48,8 +44,7 @@ const AddUser: FC<{}> = ({}) => {
         !value.match(/^[a-zA-Zа-яА-ЯЁё -]*$/)
           ? locale.auth.errors.patronymic.invalid
           : null,
-      role: (value) =>
-        value.length == 0 ? locale.auth.errors.role : null,
+      role: (value) => (value.length == 0 ? locale.auth.errors.role : null),
     },
     validateInputOnBlur: true,
   });

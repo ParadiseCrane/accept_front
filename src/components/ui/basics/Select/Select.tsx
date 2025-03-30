@@ -1,8 +1,8 @@
-import { FC, memo } from 'react';
-import { Select as MantineSelect, SelectProps } from '@mantine/core';
-import { InputLabel } from '@ui/basics';
-import inputStyles from '@styles/ui/input.module.css';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
+import { Select as MantineSelect, SelectProps } from '@mantine/core';
+import inputStyles from '@styles/ui/input.module.css';
+import { InputLabel } from '@ui/basics';
+import { FC, memo } from 'react';
 
 interface Props extends SelectProps {
   helperContent?: IDropdownContent;

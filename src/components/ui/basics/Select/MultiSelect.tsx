@@ -1,12 +1,13 @@
-import { FC, memo, useEffect } from 'react';
+import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import {
   MultiSelect as MantineMultiSelect,
   MultiSelectProps,
 } from '@mantine/core';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import dynamic from 'next/dynamic';
-import { concatClassNames } from '@utils/concatClassNames';
 import inputStyles from '@styles/ui/input.module.css';
+import { concatClassNames } from '@utils/concatClassNames';
+import dynamic from 'next/dynamic';
+import { FC, memo, useEffect } from 'react';
+
 import InputLabel from '../InputLabel/InputLabel';
 
 interface Props extends MultiSelectProps {

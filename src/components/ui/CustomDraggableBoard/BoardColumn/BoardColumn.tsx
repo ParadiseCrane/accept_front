@@ -1,12 +1,13 @@
-import React, { FC, ReactNode, memo } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
 } from '@custom-types/ui/IDraggableBoard';
+import { concatClassNames } from '@utils/concatClassNames';
+import React, { FC, ReactNode, memo } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+
 import ItemList from '../ItemList/ItemList';
 import styles from './boardColumn.module.css';
-import { concatClassNames } from '@utils/concatClassNames';
 
 const BoardColumn: FC<{
   label: ReactNode;

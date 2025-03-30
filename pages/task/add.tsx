@@ -1,31 +1,24 @@
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useUser } from '@hooks/useUser';
 import Form from '@components/Task/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRequest } from '@hooks/useRequest';
-import { ITaskAddBundle } from '@custom-types/data/bundle';
-
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskType,
 } from '@custom-types/data/atomic';
+import { ITaskAddBundle } from '@custom-types/data/bundle';
 import { Item } from '@custom-types/ui/atomic';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form';
+import Title from '@ui/Title/Title';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
+import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRouter } from 'next/router';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 const initialValues = {
   spec: '',
@@ -61,9 +54,7 @@ function AddTask() {
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const [taskTypes, setTaskTypes] = useState<ITaskType[]>([]);
-  const [taskCheckTypes, setTaskCheckTypes] = useState<
-    ITaskCheckType[]
-  >([]);
+  const [taskCheckTypes, setTaskCheckTypes] = useState<ITaskCheckType[]>([]);
 
   const router = useRouter();
 
@@ -72,13 +63,9 @@ function AddTask() {
     [router.query.tournament]
   );
 
-  const [hintAlarmTypes, setHintAlarmTypes] = useState<
-    IHintAlarmType[]
-  >([]);
+  const [hintAlarmTypes, setHintAlarmTypes] = useState<IHintAlarmType[]>([]);
 
-  const { data, loading } = useRequest<{}, ITaskAddBundle>(
-    'bundle/task_add'
-  );
+  const { data, loading } = useRequest<{}, ITaskAddBundle>('bundle/task_add');
 
   useEffect(() => {
     if (data) {
@@ -121,12 +108,8 @@ function AddTask() {
           time: constraintsTime,
           memory: constraintsMemory,
         },
-        allowedLanguages: allowedLanguages.map(
-          (lang: Item) => lang.value
-        ),
-        forbiddenLanguages: forbiddenLanguages.map(
-          (lang: Item) => lang.value
-        ),
+        allowedLanguages: allowedLanguages.map((lang: Item) => lang.value),
+        forbiddenLanguages: forbiddenLanguages.map((lang: Item) => lang.value),
         tags: tags.map((tag: Item) => tag.value),
         hidden: !!tournament,
       };

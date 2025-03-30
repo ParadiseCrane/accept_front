@@ -1,10 +1,11 @@
-import { FC, memo } from 'react';
-import styles from './footer.module.css';
 import { useLocale } from '@hooks/useLocale';
-import LocaleSelector from '@ui/LocaleSelector/LocaleSelector';
-import { BrandGithub } from 'tabler-icons-react';
 import { ActionIcon } from '@mantine/core';
+import LocaleSelector from '@ui/LocaleSelector/LocaleSelector';
 import Link from 'next/link';
+import { FC, memo } from 'react';
+import { BrandGithub } from 'tabler-icons-react';
+
+import styles from './footer.module.css';
 
 const Footer: FC = () => {
   const { locale } = useLocale();

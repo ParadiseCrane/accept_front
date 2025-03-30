@@ -1,6 +1,24 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
+import NotificationList from '@components/Notification/List/NotificationList';
+import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
+import CreateNotification from '@components/Profile/CreateNotification/CreateNotification';
+import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
+import Settings from '@components/Profile/Settings/Settings';
+import {
+  IAttemptInfo,
+  IFullProfileBundle,
+  IRatingInfo,
+  ITaskInfo,
+} from '@custom-types/data/IProfileInfo';
+import { IUser } from '@custom-types/data/IUser';
+import { IMenuLink } from '@custom-types/ui/IMenuLink';
+import { useBackNotifications } from '@hooks/useBackNotifications';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { Indicator, UserAvatar } from '@ui/basics';
+import LeftMenu from '@ui/LeftMenu/LeftMenu';
+import { useRouter } from 'next/router';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
   AlignRight,
   BellPlus,
@@ -9,25 +27,8 @@ import {
   Robot,
   Settings as SettingsIcon,
 } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import NotificationList from '@components/Notification/List/NotificationList';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator, UserAvatar } from '@ui/basics';
+
 import styles from './profile.module.css';
-import Settings from '@components/Profile/Settings/Settings';
-import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
-import CreateNotification from '@components/Profile/CreateNotification/CreateNotification';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useUser } from '@hooks/useUser';
-import { useRouter } from 'next/router';
-import {
-  IAttemptInfo,
-  IFullProfileBundle,
-  IRatingInfo,
-  ITaskInfo,
-} from '@custom-types/data/IProfileInfo';
-import { IUser } from '@custom-types/data/IUser';
 
 const getLinks = ({
   user,

@@ -1,7 +1,7 @@
+import { getCookieValue } from '@utils/cookies';
+import { createTokenCookie } from '@utils/createTokenCookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { env } from 'process';
-import { createTokenCookie } from '@utils/createTokenCookie';
-import { getCookieValue } from '@utils/cookies';
 
 const url = env.API_ENDPOINT + '/api/change_account';
 

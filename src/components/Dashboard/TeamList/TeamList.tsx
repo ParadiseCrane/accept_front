@@ -1,20 +1,21 @@
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { useRequest } from '@hooks/useRequest';
-import { useLocale } from '@hooks/useLocale';
+import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ITeamDisplay, ITeamDisplayWithBanned } from '@custom-types/data/ITeam';
 import { BaseSearch } from '@custom-types/data/request';
+import { setter } from '@custom-types/ui/atomic';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
-import Table from '@ui/Table/Table';
-import { Tip } from '@ui/basics';
+import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
 // import styles from './teamList.module.css'
 import tableStyles from '@styles/ui/customTable.module.css';
-import Fuse from 'fuse.js';
+import { Tip } from '@ui/basics';
+import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
+import Fuse from 'fuse.js';
+import Link from 'next/link';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+
 import BanButton from './BanButton/BanButton';
-import { setter } from '@custom-types/ui/atomic';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -37,8 +38,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
       return a.capitan.value.login > b.capitan.value.login
         ? 1
         : a.capitan.value.login == b.capitan.value.login
-        ? 0
-        : -1;
+          ? 0
+          : -1;
     },
     sorted: 0,
     allowMiddleState: true,

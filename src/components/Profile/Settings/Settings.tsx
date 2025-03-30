@@ -2,13 +2,14 @@ import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
 import { Button, PasswordInput, TextInput } from '@ui/basics';
-import { FC, memo, useCallback } from 'react';
-import styles from './settings.module.css';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback } from 'react';
+
+import styles from './settings.module.css';
 
 const Settings: FC<{ user: IUser }> = ({ user }) => {
   const { locale, lang } = useLocale();
@@ -32,14 +33,14 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
         value.length < 2
           ? locale.auth.errors.name.short
           : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-          ? locale.auth.errors.name.invalid
-          : null,
+            ? locale.auth.errors.name.invalid
+            : null,
       surname: (value) =>
         value.length < 2
           ? locale.auth.errors.surname.short
           : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-          ? locale.auth.errors.surname.invalid
-          : null,
+            ? locale.auth.errors.surname.invalid
+            : null,
       patronymic: (value) =>
         !value.match(/^[a-zA-Zа-яА-ЯЁё -]*$/)
           ? locale.auth.errors.patronymic.invalid
@@ -57,9 +58,11 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
-          : !value.match(/^[a-zA-Z\d\.]+$/)
-          ? locale.auth.errors.password.symbols
-          : null,
+          : //TODO: Check
+            // eslint-disable-next-line no-useless-escape
+            !value.match(/^[a-zA-Z\d\.]+$/)
+            ? locale.auth.errors.password.symbols
+            : null,
       confirmPassword: (value, values) =>
         value !== values.password ? locale.auth.errors.confirm : null,
     },

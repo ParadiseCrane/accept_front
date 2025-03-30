@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import styles from './LatexModal.module.css';
-import { Editor } from '@tiptap/react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { Select } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
+import { Editor } from '@tiptap/react';
+import { Select } from '@ui/basics';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { useState } from 'react';
+
+import styles from './LatexModal.module.css';
 
 const insertCodeBlock = ({
   editor,

@@ -36,7 +36,8 @@ export type IRulesEntity =
   | 'organization'
   | 'developer'
   | 'developer_dashboard'
-  | 'admin_dashboard';
+  | 'admin_dashboard'
+  | 'course';
 
 export interface IRightsPayload {
   action: IRulesAction;

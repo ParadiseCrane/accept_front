@@ -1,13 +1,13 @@
-import { ReactNode } from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
 import TournamentDashboard from '@components/Dashboard/TournamentDashboard';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
-import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { ITournamentResponse } from '@custom-types/data/ITournament';
+import { ChatHostsProvider } from '@hooks/useChatHosts';
+import { useLocale } from '@hooks/useLocale';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import Title from '@ui/Title/Title';
+import { getApiUrl } from '@utils/getServerUrl';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { ReactNode } from 'react';
 
 function TournamentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();

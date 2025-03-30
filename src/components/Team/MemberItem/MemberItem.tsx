@@ -1,13 +1,14 @@
 import { ITeam } from '@custom-types/data/ITeam';
 import { IUserDisplay } from '@custom-types/data/IUser';
-import { FC, memo, useCallback } from 'react';
-import Link from 'next/link';
-import styles from './memberItem.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { Icon, UserAvatar } from '@ui/basics';
-import { CircleMinus } from 'tabler-icons-react';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { FC, memo, useCallback } from 'react';
+import { CircleMinus } from 'tabler-icons-react';
+
+import styles from './memberItem.module.css';
 
 const MemberItem: FC<{
   team: ITeam;
@@ -34,10 +35,7 @@ const MemberItem: FC<{
 
   return (
     <div className={styles.wrapper}>
-      <Link
-        href={`/profile/${participant.login}`}
-        className={styles.link}
-      >
+      <Link href={`/profile/${participant.login}`} className={styles.link}>
         <UserAvatar login={participant.login} />
         <div>{participant.shortName}</div>
       </Link>

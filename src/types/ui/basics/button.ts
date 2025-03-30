@@ -1,19 +1,16 @@
-import { CSSProperties, ReactNode } from 'react';
 import {
   ButtonProps,
   HoverCardDropdownProps,
   HoverCardProps,
   HoverCardTargetProps,
 } from '@mantine/core';
+import { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 
-export type MyHoverCardDropdownProps = Omit<
-  HoverCardDropdownProps,
-  'children'
->;
+export type MyHoverCardDropdownProps = Omit<HoverCardDropdownProps, 'children'>;
 
 export type MyButtonProps = ButtonProps &
-  React.ComponentPropsWithoutRef<'button'> &
-  React.ComponentPropsWithoutRef<'a'> & {
+  ComponentPropsWithoutRef<'button'> &
+  ComponentPropsWithoutRef<'a'> & {
     hoverCardProps?: HoverCardProps;
     hoverCardDropdownProps?: MyHoverCardDropdownProps;
     hoverCardTargetProps?: HoverCardTargetProps;

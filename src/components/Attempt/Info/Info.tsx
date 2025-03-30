@@ -1,12 +1,12 @@
 import { IAttempt } from '@custom-types/data/IAttempt';
+import { useLocale } from '@hooks/useLocale';
+import tableStyles from '@styles/ui/customTable.module.css';
+import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
 
 import styles from './info.module.css';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();

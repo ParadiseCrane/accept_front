@@ -1,21 +1,21 @@
-import TaskSelector from './TaskSelector/TaskSelector';
-import TaskSelect from './TaskSelect/TaskSelect';
-import UserSelector from './UserSelector/UserSelector';
-import UserSelect from './UserSelect/UserSelect';
-import TagSelector from './TagSelector/TagSelector';
+import AssignmentSchemaSelector from './AssignmentSchemaSelector/AssignmentSchemaSelector';
 import GroupSelector from './GroupSelector/GroupSelector';
 import RoleSelector from './RoleSelector/RoleSelector';
 import SingleRoleSelector from './SingleRoleSelector/SingleRoleSelector';
-import AssignmentSchemaSelector from './AssignmentSchemaSelector/AssignmentSchemaSelector';
+import TagSelector from './TagSelector/TagSelector';
+import TaskSelect from './TaskSelect/TaskSelect';
+import TaskSelector from './TaskSelector/TaskSelector';
+import UserSelect from './UserSelect/UserSelect';
+import UserSelector from './UserSelector/UserSelector';
 
 export {
-  TaskSelector,
-  TaskSelect,
-  UserSelector,
-  UserSelect,
-  TagSelector,
+  AssignmentSchemaSelector,
   GroupSelector,
   RoleSelector,
   SingleRoleSelector,
-  AssignmentSchemaSelector,
+  TagSelector,
+  TaskSelect,
+  TaskSelector,
+  UserSelect,
+  UserSelector,
 };

@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import styles from './LinkModal.module.css';
-import { Editor } from '@tiptap/react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { useLocale } from '@hooks/useLocale';
+import { Editor } from '@tiptap/react';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { useState } from 'react';
+
+import styles from './LinkModal.module.css';
 
 export const LinkModal = ({
   isOpened,

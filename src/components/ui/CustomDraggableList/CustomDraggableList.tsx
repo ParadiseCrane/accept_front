@@ -1,14 +1,10 @@
 import { Item } from '@custom-types/ui/atomic';
-
+import { callback } from '@custom-types/ui/atomic';
 import { reorderList } from '@utils/reorderList';
 import { FC, useEffect, useState } from 'react';
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-} from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { GridDots } from 'tabler-icons-react';
-import { callback } from '@custom-types/ui/atomic';
+
 import styles from './customDraggableList.module.css';
 
 export const CustomDraggableList: FC<{
@@ -28,17 +24,12 @@ export const CustomDraggableList: FC<{
         <DragDropContext
           onDragEnd={({ destination, source }) => {
             if (!destination) return;
-            setValues(
-              reorderList(values, source.index, destination.index)
-            );
+            setValues(reorderList(values, source.index, destination.index));
           }}
         >
           <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
+              <div {...provided.droppableProps} ref={provided.innerRef}>
                 {values.map((task: Item, index: number) => (
                   <Draggable
                     key={index}
@@ -58,9 +49,7 @@ export const CustomDraggableList: FC<{
                         >
                           <GridDots width={20} height={20} />
                         </div>
-                        <div className={classNames?.label}>
-                          {task.label}
-                        </div>
+                        <div className={classNames?.label}>{task.label}</div>
                       </div>
                     )}
                   </Draggable>

@@ -1,12 +1,13 @@
-import { FC, memo, useMemo } from 'react';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { IChecker } from '@custom-types/data/ITask';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { setter } from '@custom-types/ui/atomic';
-import OrderTests from './OrderTests/OrderTests';
-import MainPage from './MainPage/MainPage';
 import { useLocale } from '@hooks/useLocale';
 import { Tabs } from '@ui/basics';
+import { FC, memo, useMemo } from 'react';
+
+import MainPage from './MainPage/MainPage';
+import OrderTests from './OrderTests/OrderTests';
 
 const Tests: FC<{
   task_spec: string;

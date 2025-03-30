@@ -1,8 +1,9 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
-import { FC, ReactNode, memo, useEffect, useState } from 'react';
-import styles from './leftMenu.module.css';
 import { useRouter } from 'next/router';
+import { FC, ReactNode, memo, useEffect, useState } from 'react';
+
+import styles from './leftMenu.module.css';
 
 const LeftMenu: FC<{
   links: IMenuLink[];
@@ -41,17 +42,19 @@ const LeftMenu: FC<{
   const changeParams = (section: string) => {
     const regExp = /\[.*?\]/g;
     let pathName = router.pathname;
+    let query = { ...router.query };
     const list = pathName.match(regExp);
     if (list) {
       for (let i = 0; i < list.length; i++) {
         const variableName = list[i].replace('[', '').replace(']', '');
         const value = router.query[variableName];
+        delete query[variableName];
         pathName = pathName.replace(`[${variableName}]`, `${value}`);
       }
     }
     const newPathObject = {
       pathname: pathName,
-      query: { section: section },
+      query: { ...query, section: section },
     };
     router.push(newPathObject, undefined, { shallow: true });
   };

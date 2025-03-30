@@ -1,10 +1,10 @@
-import React, { FC, memo } from 'react';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import React, { ComponentPropsWithoutRef, FC, memo } from 'react';
+
 import UserMultiSelect from './UserMultiSelect';
 import UserSingleSelect from './UserSingleSelect';
 
-export interface UserItemProps
-  extends React.ComponentPropsWithoutRef<'div'> {
+export interface UserItemProps extends ComponentPropsWithoutRef<'div'> {
   login: string;
   label: string;
   role: string;

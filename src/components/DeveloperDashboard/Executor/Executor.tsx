@@ -1,5 +1,8 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
+import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
+import { useForm } from '@mantine/form';
+import modalStyles from '@styles/ui/modal.module.css';
 import {
   Button,
   LoadingOverlay,
@@ -7,24 +10,19 @@ import {
   TextArea,
   TextInput,
 } from '@ui/basics';
-import { useForm } from '@mantine/form';
-import styles from './executor.module.css';
-import { requestWithError } from '@utils/requestWithError';
-import {
-  ExecutorBundle,
-  IExecutor,
-} from '@custom-types/data/IExecutor';
-import { useLocale } from '@hooks/useLocale';
+import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import SimpleModal from '@ui/SimpleModal/SimpleModal';
+import { isJSON } from '@utils/isJSON';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import modalStyles from '@styles/ui/modal.module.css';
-import { isJSON } from '@utils/isJSON';
+import { requestWithError } from '@utils/requestWithError';
+import { FC, memo, useCallback, useState } from 'react';
 
-const Executor: FC<{}> = ({}) => {
+import styles from './executor.module.css';
+
+const Executor: FC<{}> = () => {
   const [response, setResponse] = useState('');
   const [openedConfirmModal, setOpenedConfirmModal] = useState(false);
 
@@ -46,33 +44,29 @@ const Executor: FC<{}> = ({}) => {
     },
     validate: {
       collection: (value) =>
-        value == undefined
-          ? locale.executor.form.validation.collection
-          : null,
+        value == undefined ? locale.executor.form.validation.collection : null,
       action: (value) =>
-        value == undefined
-          ? locale.executor.form.validation.action
-          : null,
+        value == undefined ? locale.executor.form.validation.action : null,
       query: (value) =>
         value.length < 2
           ? locale.executor.form.validation.query
           : !isJSON(value)
-          ? locale.jsonValidationError
-          : null,
+            ? locale.jsonValidationError
+            : null,
       body: (value) =>
         value.length < 4
           ? locale.executor.form.validation.body.len
           : value[0] != '[' || value[value.length - 1] != ']'
-          ? locale.executor.form.validation.body.array
-          : !isJSON(value)
-          ? locale.jsonValidationError
-          : null,
+            ? locale.executor.form.validation.body.array
+            : !isJSON(value)
+              ? locale.jsonValidationError
+              : null,
       params: (value) =>
         value.length < 2
           ? locale.executor.form.validation.params
           : !isJSON(value)
-          ? locale.jsonValidationError
-          : null,
+            ? locale.jsonValidationError
+            : null,
     },
     validateInputOnBlur: true,
   });

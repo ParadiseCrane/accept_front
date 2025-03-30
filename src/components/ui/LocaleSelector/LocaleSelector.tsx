@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
-import styles from './localeSelector.module.css';
 import { useLocale } from '@hooks/useLocale';
-import { Language } from 'tabler-icons-react';
 import { UnstyledButton } from '@mantine/core';
+import { FC, memo } from 'react';
+import { Language } from 'tabler-icons-react';
+
+import styles from './localeSelector.module.css';
 
 const LocaleSelector: FC = () => {
   const { lang, set } = useLocale();

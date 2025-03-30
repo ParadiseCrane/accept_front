@@ -1,9 +1,10 @@
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import { Button } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
+
 import styles from './confirmModal.module.css';
 
 const ConfirmModal: FC<{

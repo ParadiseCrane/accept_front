@@ -1,11 +1,12 @@
-import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
+import { SelectItem } from '@custom-types/ui/atomic';
 import { ComboboxItem, Text } from '@mantine/core';
 import { Select, UserAvatar } from '@ui/basics';
-import { Eye } from 'tabler-icons-react';
-import styles from './userSelect.module.css';
 import Link from 'next/link';
+import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
+import { Eye } from 'tabler-icons-react';
+
 import { UserItemProps, UserSelectProps } from './UserSelect';
-import { SelectItem } from '@custom-types/ui/atomic';
+import styles from './userSelect.module.css';
 
 const UserSingleSelect: FC<UserSelectProps> = ({
   label,
@@ -13,7 +14,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
   users,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple,
   additionalProps,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
@@ -56,7 +57,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
-          } as UserItemProps)
+          }) as UserItemProps
       ),
     [users]
   );

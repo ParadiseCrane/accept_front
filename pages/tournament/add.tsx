@@ -1,26 +1,25 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+import Form from '@components/Tournament/Form/Form';
+import {
+  ITournamentAdd,
+  ITournamentAddBundle,
+} from '@custom-types/data/ITournament';
+import { IUserDisplay } from '@custom-types/data/IUser';
+import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import { useRequest } from '@hooks/useRequest';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form/lib/types';
+import Title from '@ui/Title/Title';
+import { getCookieValue } from '@utils/cookies';
+import { getApiUrl } from '@utils/getServerUrl';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
-import {
-  ITournamentAdd,
-  ITournamentAddBundle,
-} from '@custom-types/data/ITournament';
-import Form from '@components/Tournament/Form/Form';
-import { useRequest } from '@hooks/useRequest';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { Item } from '@custom-types/ui/atomic';
-
-import { getCookieValue } from '@utils/cookies';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback, useMemo } from 'react';
 
 function TournamentAdd(props: ITournamentAddBundle) {
   const { locale, lang } = useLocale();
@@ -36,7 +35,6 @@ function TournamentAdd(props: ITournamentAddBundle) {
     20000
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialValues = useMemo(
     () => ({
       spec: '',

@@ -1,27 +1,28 @@
+import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useLocale } from '@hooks/useLocale';
+import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { FC, memo, useMemo } from 'react';
 import {
+  Atom,
   BellRinging,
   DeviceAnalytics,
+  ListDetails,
   Terminal,
   TestPipe,
   TestPipe2,
   UserExclamation,
-  Atom,
-  ListDetails,
 } from 'tabler-icons-react';
-import FeedbackList from './FeedbackList/FeedbackList';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import NotificationList from './NotificationList/NotificationList';
-import Executor from './Executor/Executor';
-import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
-import Analytics from './Analytics/Analytics';
+
 import AllAttempts from './AllAttempts/AllAttempts';
+import Analytics from './Analytics/Analytics';
+import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
+import Executor from './Executor/Executor';
+import FeedbackList from './FeedbackList/FeedbackList';
+import NotificationList from './NotificationList/NotificationList';
 import Organizations from './Organizations/Organizations';
 // import styles from './developerDashboard.module.css'
 
-const DeveloperDashboard: FC<{}> = ({}) => {
+const DeveloperDashboard: FC<{}> = () => {
   const { locale } = useLocale();
 
   const links: IMenuLink[] = useMemo(

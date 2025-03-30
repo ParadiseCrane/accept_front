@@ -1,3 +1,4 @@
+import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useLocale } from '@hooks/useLocale';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
@@ -10,14 +11,14 @@ import {
   UserPlus,
   Users,
 } from 'tabler-icons-react';
-import AddUsers from './AddUsers/AddUsers';
-import AddUser from './AddUser/AddUser';
-import AddGrade from './AddGrade/AddGrade';
-import ChangeGrades from './ChangeGrades/ChangeGrades';
-import AddGrades from './AddGrades/AddGrades';
-import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 
-const AdminDashboard: FC<{}> = ({}) => {
+import AddGrade from './AddGrade/AddGrade';
+import AddGrades from './AddGrades/AddGrades';
+import AddUser from './AddUser/AddUser';
+import AddUsers from './AddUsers/AddUsers';
+import ChangeGrades from './ChangeGrades/ChangeGrades';
+
+const AdminDashboard: FC<{}> = () => {
   const { locale } = useLocale();
 
   const links: IMenuLink[] = useMemo(

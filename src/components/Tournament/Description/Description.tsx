@@ -1,17 +1,18 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import styles from './description.module.css';
-import { ITournament } from '@custom-types/data/ITournament';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { getLocalDate } from '@utils/datetime';
-import { useLocale } from '@hooks/useLocale';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { useUser } from '@hooks/useUser';
-import { Overlay } from '@ui/basics';
-import { sendRequest } from '@requests/request';
-import { letterFromIndex } from '@utils/letterFromIndex';
 import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
-import RegistrationButton from './RegistrationButton/RegistrationButton';
+import { ITaskDisplay } from '@custom-types/data/ITask';
+import { ITournament } from '@custom-types/data/ITournament';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { sendRequest } from '@requests/request';
+import { Overlay } from '@ui/basics';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
+import { getLocalDate } from '@utils/datetime';
+import { letterFromIndex } from '@utils/letterFromIndex';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
+
+import styles from './description.module.css';
+import RegistrationButton from './RegistrationButton/RegistrationButton';
 
 const Description: FC<{
   tournament: ITournament;
@@ -56,7 +57,7 @@ const Description: FC<{
       special ||
       (registered && tournament.status.spec != 0) ||
       tournament.status.spec == 2,
-    [registered, special, tournament.status.spec]
+    [registered, special, tournament.status?.spec]
   );
 
   useEffect(() => {
@@ -91,16 +92,13 @@ const Description: FC<{
           <PrintTasks
             title={<div className={styles.title}>{tournament.title}</div>}
             description={
-              <div
-                className={styles.description}
-                children={
-                  <TipTapEditor
-                    editorMode={false}
-                    content={tournament.description}
-                    onUpdate={() => {}}
-                  />
-                }
-              />
+              <div className={styles.description}>
+                <TipTapEditor
+                  editorMode={false}
+                  content={tournament.description}
+                  onUpdate={() => {}}
+                />
+              </div>
             }
             tasks={showTasks ? tasks.map((task) => task.spec) : []}
             // tasks={tasks.map((task) => task.spec)}
@@ -124,16 +122,14 @@ const Description: FC<{
           </div>
         </div>
       </div>
-      <div
-        className={styles.description}
-        children={
-          <TipTapEditor
-            editorMode={false}
-            content={tournament.description}
-            onUpdate={() => {}}
-          />
-        }
-      />
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={tournament.description}
+          onUpdate={() => {}}
+        />
+      </div>
+
       {!loading && (
         <>
           {banned ? (
@@ -141,7 +137,7 @@ const Description: FC<{
               {locale.tournament.banned}!
             </div>
           ) : (
-            !(tournament.status.spec === 2 || isPreview || special) && (
+            !(isPreview || tournament.status.spec === 2 || special) && (
               <RegistrationButton
                 spec={tournament.spec}
                 withPin={tournament.security == 1}
@@ -166,8 +162,8 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                  ? locale.tournament.emptyTasks
-                  : locale.tournament.needRegistration
+                    ? locale.tournament.emptyTasks
+                    : locale.tournament.needRegistration
               }
             />
           </div>

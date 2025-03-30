@@ -1,3 +1,5 @@
+import { useLocale } from '@hooks/useLocale';
+import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import {
@@ -8,9 +10,8 @@ import {
   H4,
   Heading as HeadingIcon,
 } from 'tabler-icons-react';
+
 import { IconWrapper } from './IconWrapper';
-import { HoverCard } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
 
 export const HeadingsGroupSeparate = ({
   editor,

@@ -1,20 +1,21 @@
-import { FC, memo, useCallback } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { useForm } from '@mantine/form';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import { IRole } from '@custom-types/data/atomic';
 import { IGroup } from '@custom-types/data/IGroup';
-import MainInfo from './MainInfo';
-import DescriptionInfo from './DescriptionInfo';
-import Users from './Users';
-import GroupsRoles from './GroupsRoles';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { INewNotification } from '@custom-types/data/notification';
+import { useLocale } from '@hooks/useLocale';
+import { useForm } from '@mantine/form';
+import Stepper from '@ui/Stepper/Stepper';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
-import Stepper from '@ui/Stepper/Stepper';
-import { INewNotification } from '@custom-types/data/notification';
+import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback } from 'react';
+
+import DescriptionInfo from './DescriptionInfo';
+import GroupsRoles from './GroupsRoles';
+import MainInfo from './MainInfo';
+import Users from './Users';
 
 const stepFields = [
   ['title', 'author'],
@@ -45,9 +46,7 @@ const Form: FC<{
     },
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.notification.form.validate.title
-          : null,
+        value.length < 5 ? locale.notification.form.validate.title : null,
 
       shortDescription: () => null,
       description: (value) =>
@@ -114,12 +113,7 @@ const Form: FC<{
         pages={[
           <MainInfo key="1" form={form} />,
           <DescriptionInfo key="2" form={form} />,
-          <GroupsRoles
-            key="3"
-            form={form}
-            groups={groups}
-            roles={roles}
-          />,
+          <GroupsRoles key="3" form={form} groups={groups} roles={roles} />,
           <Users key="4" form={form} users={users} />,
         ]}
         labels={locale.notification.form.steps.labels}

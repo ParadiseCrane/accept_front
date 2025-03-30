@@ -1,6 +1,7 @@
+import { pureCallback } from '@custom-types/ui/atomic';
 import { Affix } from '@mantine/core';
 import { FC, ReactNode, memo } from 'react';
-import { pureCallback } from '@custom-types/ui/atomic';
+
 import ActionButton from './ActionButton/ActionButton';
 
 type positions = {

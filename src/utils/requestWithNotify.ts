@@ -1,12 +1,11 @@
+import { callback, setter } from '@custom-types/ui/atomic';
+import { IAvailableLang } from '@custom-types/ui/ILocale';
+import { IResponse, availableMethods, sendRequest } from '@requests/request';
 import {
   errorNotification,
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
-
-import { IResponse, availableMethods, sendRequest } from '@requests/request';
-import { IAvailableLang } from '@custom-types/ui/ILocale';
-import { callback, setter } from '@custom-types/ui/atomic';
 
 const defaultAutoClose = 5000;
 

@@ -1,13 +1,13 @@
-import { useLocale } from '@hooks/useLocale';
-import { useForm } from '@mantine/form';
-import { Button, CustomEditor, Helper, TextInput } from '@ui/basics';
-import { FC, memo, useCallback } from 'react';
-import styles from './createNotification.module.css';
 import { INewNotification } from '@custom-types/data/notification';
-
+import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Group } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { Button, CustomEditor, Helper, TextInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { FC, memo, useCallback } from 'react';
+
+import styles from './createNotification.module.css';
 
 const CreateNotification: FC<{
   spec: string;

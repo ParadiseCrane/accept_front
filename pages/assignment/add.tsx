@@ -1,23 +1,23 @@
-import { ReactNode, useCallback } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+import Form from '@components/Assignment/Form/Form';
 import {
   IAssignmentAdd,
   IAssignmentAddBundle,
 } from '@custom-types/data/IAssignment';
-import Form from '@components/Assignment/Form/Form';
+import { INewNotification } from '@custom-types/data/notification';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import { DefaultLayout } from '@layouts/DefaultLayout';
+import { UseFormReturnType } from '@mantine/form/lib/types';
+import { sendRequest } from '@requests/request';
+import Title from '@ui/Title/Title';
+import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import { INewNotification } from '@custom-types/data/notification';
-import { sendRequest } from '@requests/request';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+import { GetServerSideProps } from 'next';
+import { ReactNode, useCallback } from 'react';
 
 const initialValues = {
   origin: '',

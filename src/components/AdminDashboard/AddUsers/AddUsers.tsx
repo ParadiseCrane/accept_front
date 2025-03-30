@@ -1,31 +1,24 @@
-import {
-  Button,
-  Dropzone,
-  Helper,
-  SegmentedControl,
-} from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
-import { getAddUserData } from '@utils/readExcel';
-import NewUsersList from '@ui/NewUsersList/NewUsersList';
-import { ITableColumn } from '@custom-types/ui/ITable';
+import { IStudentAdd, IStudentAddResponse } from '@custom-types/data/IStudent';
 import { ILocale } from '@custom-types/ui/ILocale';
+import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import {
-  IStudentAdd,
-  IStudentAddResponse,
-} from '@custom-types/data/IStudent';
+import { sendRequest } from '@requests/request';
+import { Button, Dropzone, Helper, SegmentedControl } from '@ui/basics';
+import NewUsersList from '@ui/NewUsersList/NewUsersList';
 import StudentErrorList, {
   IStudentAddResponseTable,
 } from '@ui/StudentErrorList/StudentErrorList';
-import styles from './addUsers.module.css';
-import { sendRequest } from '@requests/request';
 import {
   errorNotification,
   newNotification,
   successNotification,
   warningNotification,
 } from '@utils/notificationFunctions';
+import { getAddUserData } from '@utils/readExcel';
+import { FC, memo, useCallback, useState } from 'react';
 import { AlertCircle } from 'tabler-icons-react';
+
+import styles from './addUsers.module.css';
 
 const USERS_AT_ONCE = 50;
 const ERRORS_AT_ONCE = 8;
@@ -63,10 +56,10 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-        ? a.grade[-1] > b.grade[-1]
-          ? 1
-          : 0
-        : -1,
+          ? a.grade[-1] > b.grade[-1]
+            ? 1
+            : 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -90,8 +83,8 @@ const compKind = (a: any, b: any) =>
   a.error.value === 'error' && b.error.value !== 'error'
     ? 1
     : a.error.value !== 'error' && b.error.value === 'error'
-    ? -1
-    : 0;
+      ? -1
+      : 0;
 
 const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -126,10 +119,10 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-        ? a.grade[-1] > b.grade[-1]
-          ? 1
-          : 0
-        : -1,
+          ? a.grade[-1] > b.grade[-1]
+            ? 1
+            : 0
+          : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -154,12 +147,10 @@ const ACCEPTED = [
   'application/vnd.ms-excel',
 ];
 
-const AddUsers: FC<{}> = ({}) => {
+const AddUsers: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IStudentAdd[]>([]);
-  const [errors, setErrors] = useState<IStudentAddResponseTable[]>(
-    []
-  );
+  const [errors, setErrors] = useState<IStudentAddResponseTable[]>([]);
   const [table, setTable] = useState<'users' | 'errors'>('users');
 
   const onDrop = useCallback(async (files: any[]) => {
@@ -313,9 +304,7 @@ const AddUsers: FC<{}> = ({}) => {
                 {locale.add}
               </Button>
             )}
-            <Helper
-              dropdownContent={locale.helpers.student.tableFormat}
-            />
+            <Helper dropdownContent={locale.helpers.student.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.student.attention}
               customIcon={<AlertCircle color={'var(--negative)'} />}
@@ -328,9 +317,7 @@ const AddUsers: FC<{}> = ({}) => {
             <div className={styles.segmentControl}>
               <SegmentedControl
                 value={table}
-                onChange={(value) =>
-                  setTable(value as 'users' | 'errors')
-                }
+                onChange={(value) => setTable(value as 'users' | 'errors')}
                 data={[
                   {
                     label: locale.student.segments.users,

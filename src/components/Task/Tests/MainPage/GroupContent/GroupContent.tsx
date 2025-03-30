@@ -1,27 +1,28 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import ListItem from '@ui/ListItem/ListItem';
+import { MAX_TEST_LENGTH } from '@constants/Limits';
 import {
   ITaskCheckType,
   ITaskTestData,
   ITaskType,
 } from '@custom-types/data/atomic';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { IChecker } from '@custom-types/data/ITask';
-import { Dropzone, Helper, HelperTip } from '@ui/basics';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
-import AddModal from './AddModal/AddModal';
-import EditTest from './EditTest/EditTest';
-import DeleteTest from './DeleteTest/DeleteTest';
+import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
+import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
+import stepperStyles from '@styles/ui/stepper.module.css';
+import { Dropzone, Helper, HelperTip } from '@ui/basics';
+import ListItem from '@ui/ListItem/ListItem';
+import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
 import {
   errorNotification,
   newNotification,
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { setter } from '@custom-types/ui/atomic';
+import { FC, memo, useCallback, useMemo } from 'react';
+
+import AddModal from './AddModal/AddModal';
+import DeleteTest from './DeleteTest/DeleteTest';
+import EditTest from './EditTest/EditTest';
 import styles from './groupContent.module.css';
-import { MAX_TEST_LENGTH } from '@constants/Limits';
 
 const filterNonDigits = (s: string) => s.match(/\d/g)?.join('') || '0';
 
@@ -82,8 +83,8 @@ const GroupContent: FC<{
         const name = file.name.startsWith('i')
           ? 'input'
           : file.name.startsWith('o')
-          ? 'output'
-          : '';
+            ? 'output'
+            : '';
         switch (name) {
           case 'input':
             inputs.push({

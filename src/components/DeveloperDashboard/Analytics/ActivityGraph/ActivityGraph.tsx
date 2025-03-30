@@ -6,9 +6,7 @@ import { FC, memo, useEffect, useState } from 'react';
 
 const HOUR = 60 * 60 * 1000;
 
-const mapActivityToPlotData = (
-  activity: IActivityData[]
-): IPlotData[] => {
+const mapActivityToPlotData = (activity: IActivityData[]): IPlotData[] => {
   if (activity.length == 0) return [];
   const sorted_activity = activity
     .map((item) => ({
@@ -43,7 +41,7 @@ const mapActivityToPlotData = (
   }));
 };
 
-const ActivityGraph: FC<{}> = ({}) => {
+const ActivityGraph: FC<{}> = () => {
   const [data, setData] = useState<IPlotData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,12 +61,7 @@ const ActivityGraph: FC<{}> = ({}) => {
 
   return (
     <div>
-      <BarPlot
-        hideColorSwatch
-        hideRowLabels
-        data={data}
-        aspectRatio={0.1}
-      />
+      <BarPlot hideColorSwatch hideRowLabels data={data} aspectRatio={0.1} />
     </div>
   );
 };

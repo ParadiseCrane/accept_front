@@ -1,11 +1,12 @@
+import { ITaskTestData } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
-import { Trash } from 'tabler-icons-react';
-import { ChangeEvent, FC, ReactNode, memo } from 'react';
-import styles from './listItem.module.css';
 import inputStyles from '@styles/ui/input.module.css';
 import { Icon } from '@ui/basics';
 import TestArea from '@ui/TestArea/TestArea';
-import { ITaskTestData } from '@custom-types/data/atomic';
+import { ChangeEvent, FC, ReactNode, memo } from 'react';
+import { Trash } from 'tabler-icons-react';
+
+import styles from './listItem.module.css';
 
 const ListItem: FC<{
   label: string;
@@ -47,11 +48,7 @@ const ListItem: FC<{
   values,
 }) => {
   return (
-    <div
-      className={`${styles.wrapper} ${
-        shrink ? inputStyles.shrink : ''
-      }`}
-    >
+    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ''}`}>
       <div className={`${styles.label} ${inputStyles.label}`}>
         {label}
         <div className={styles.actions}>
@@ -90,8 +87,7 @@ const ListItem: FC<{
             }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               if (!readonly) {
-                form.values[field][index]['inputData'] =
-                  e.target.value;
+                form.values[field][index]['inputData'] = e.target.value;
                 form.setFieldValue(field, form.values[field]);
               }
             }}
@@ -120,8 +116,7 @@ const ListItem: FC<{
             }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               if (!readonly) {
-                form.values[field][index]['outputData'] =
-                  e.target.value;
+                form.values[field][index]['outputData'] = e.target.value;
                 form.setFieldValue(field, form.values[field]);
               }
             }}

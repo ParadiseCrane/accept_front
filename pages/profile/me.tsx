@@ -1,11 +1,11 @@
+import Profile from '@components/Profile/Profile';
+import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
+import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
+import Title from '@ui/Title/Title';
 import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import { ReactNode } from 'react';
-import Profile from '@components/Profile/Profile';
-import Title from '@ui/Title/Title';
-import { useLocale } from '@hooks/useLocale';
-import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
 
 function MyProfile(props: IFullProfileBundle) {
   const { locale } = useLocale();
