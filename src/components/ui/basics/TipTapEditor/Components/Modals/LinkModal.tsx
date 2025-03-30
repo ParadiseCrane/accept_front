@@ -5,6 +5,7 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useState } from 'react';
 
 import styles from './LinkModal.module.css';
+import { Modal, TextInput } from '@ui/basics';
 
 export const LinkModal = ({
   isOpened,
@@ -24,17 +25,14 @@ export const LinkModal = ({
   };
 
   return (
-    <SimpleModal opened={isOpened} close={onClose}>
+    <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
       <div className={styles.link_modal_body}>
         <span className={styles.title}>{locale.tiptap.setLink}</span>
-        <div className={styles.input}>
-          <input
-            className={styles.link_modal_input}
-            onChange={(e) => {
-              setSrc(e.target.value);
-            }}
-          />
-        </div>
+        <TextInput
+          onChange={(e) => {
+            setSrc(e.target.value);
+          }}
+        />
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
@@ -47,6 +45,6 @@ export const LinkModal = ({
           cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
-    </SimpleModal>
+    </Modal>
   );
 };

@@ -1,6 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
 import { Editor } from '@tiptap/react';
-import { Select } from '@ui/basics';
+import { Modal, Select } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useState } from 'react';
@@ -60,7 +60,7 @@ export const CodeBlockModal = ({
   ]);
 
   return (
-    <SimpleModal opened={isOpened} close={onClose}>
+    <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
       <div className={styles.latex_modal_body}>
         <span className={styles.title}>
           {locale.tiptap.chooseProgrammingLanguage}
@@ -94,6 +94,6 @@ export const CodeBlockModal = ({
           cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
-    </SimpleModal>
+    </Modal>
   );
 };

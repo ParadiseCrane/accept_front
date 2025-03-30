@@ -8,7 +8,7 @@ import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Editor, useEditor } from '@tiptap/react';
-import { Checkbox } from '@ui/basics';
+import { Checkbox, Modal, TextInput } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useEffect, useState } from 'react';
@@ -89,13 +89,12 @@ export const LatexModal = ({
   };
 
   return (
-    <SimpleModal opened={isOpened} close={onClose}>
+    <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
       <div className={styles.latex_modal_body}>
         <span className={styles.title}>{locale.tiptap.latex}</span>
         {editor && (
           <div className={styles.input_with_editor}>
-            <input
-              className={styles.latex_modal_input}
+            <TextInput
               onChange={(e) => {
                 setInput(e.target.value);
                 insertLatexFunction({
@@ -152,6 +151,6 @@ export const LatexModal = ({
           cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
-    </SimpleModal>
+    </Modal>
   );
 };
