@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: new URL(process.env.API_ENDPOINT || '').hostname,
+      },
+    ],
+  },
   async redirects() {
     return prod
       ? [

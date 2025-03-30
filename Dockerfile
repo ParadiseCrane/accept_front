@@ -21,7 +21,8 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV API_ENDPOINT=$API_ENDPOINT
+ARG API_ENDPOINT
+ENV API_ENDPOINT=${API_ENDPOINT}
 
 RUN yarn build --no-lint
 
