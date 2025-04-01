@@ -9,11 +9,9 @@ import { CodeBlockModal } from './Modals/CodeBlockModal';
 
 export const ToggleCodeBlock = ({
   editor,
-  lowlight,
   languages,
 }: {
   editor: Editor;
-  lowlight: any;
   languages: any[];
 }) => {
   const isActive = editor.isFocused ? editor.isActive('codeBlock') : false;
@@ -37,7 +35,6 @@ export const ToggleCodeBlock = ({
       <CodeBlockModal
         isOpened={show}
         close={() => setShow(false)}
-        lowlight={lowlight}
         languages={languages}
         editor={editor}
       />

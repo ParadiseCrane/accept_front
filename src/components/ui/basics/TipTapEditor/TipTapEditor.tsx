@@ -126,7 +126,7 @@ export const TipTapEditor = ({
       Bold,
       BulletList,
       Code,
-      CodeBlock,
+      // CodeBlock,
       CodeBlockLowlight.configure({
         lowlight: lowlight,
       }),
@@ -137,7 +137,7 @@ export const TipTapEditor = ({
       Heading,
       Highlight.configure({ multicolor: true }),
       History,
-      Image,
+      // Image,
       Italic,
       ListItem,
       OrderedList,
@@ -189,7 +189,6 @@ export const TipTapEditor = ({
             <InsertGroupSeparate
               editor={editor}
               className={styles.insert_group_separate}
-              lowlight={lowlight}
               languages={languages}
             />
           </RichTextEditor.ControlsGroup>

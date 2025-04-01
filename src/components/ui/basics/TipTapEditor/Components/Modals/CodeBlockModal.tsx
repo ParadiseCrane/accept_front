@@ -6,6 +6,7 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { useState } from 'react';
 
 import styles from './LatexModal.module.css';
+import { ComboboxItem } from '@mantine/core';
 
 const insertCodeBlock = ({
   editor,
@@ -13,51 +14,51 @@ const insertCodeBlock = ({
   defaultLanguage,
 }: {
   editor: Editor;
-  language: any | null;
+  language: ComboboxItem | null;
   defaultLanguage: string;
 }) => {
-  if (language === null || language.nameAsString === defaultLanguage) {
+  if (language === null || language.label === defaultLanguage) {
     editor?.chain().setCodeBlock().run();
   } else {
-    editor?.chain().setCodeBlock({ language: language.name }).run();
+    editor?.chain().setCodeBlock({ language: language.value }).run();
   }
 };
 
 export const CodeBlockModal = ({
   isOpened,
   close,
-  lowlight,
   languages,
   editor,
 }: {
   isOpened: boolean;
   close: any;
-  lowlight: any;
   languages: any[];
   editor: Editor;
 }) => {
-  const [input, setInput] = useState<any | null>(null);
+  const [input, setInput] = useState<ComboboxItem | null>(null);
 
   const onClose = () => {
     close();
   };
 
-  const setInputByString = (nameAsString: string | null) => {
+  const languagesForSelect: ComboboxItem[] = languages.flatMap(
+    (language: any) => [
+      {
+        label: language.nameAsString,
+        value: language.name,
+      },
+    ]
+  );
+
+  const setInputByString = (value: string | null) => {
     for (let i = 0; i < languages.length; i++) {
-      if (languages[i].nameAsString === nameAsString) {
-        setInput(languages[i]);
+      if (languagesForSelect[i].value === value) {
+        setInput(languagesForSelect[i]);
       }
     }
   };
 
   const { locale } = useLocale();
-
-  const languagesForSelect = languages.flatMap((language: any) => [
-    {
-      value: language.nameAsString,
-      additionalValue: language.name,
-    },
-  ]);
 
   return (
     <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
@@ -72,11 +73,17 @@ export const CodeBlockModal = ({
           classNames={{
             label: styles.label,
           }}
+          clearable={false}
+          allowDeselect={false}
           size="lg"
           data={languagesForSelect}
-          onChange={(nameAsString: string) => setInputByString(nameAsString)}
-          defaultValue={locale.tiptap.defaultLanguage}
-          {...lowlight}
+          onChange={(value: string | null) => setInputByString(value)}
+          defaultValue={
+            languagesForSelect.filter(
+              (language) => language.label === locale.tiptap.defaultLanguage
+            )[0].value
+          }
+          // {...lowlight.listLanguages()}
         />
         <SimpleButtonGroup
           reversePositive={false}
