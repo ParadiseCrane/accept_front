@@ -85,6 +85,11 @@
   font-weight: 400;
 }
 
+.labelColor {
+  color: var(--main-color);
+  font-weight: 400;
+}
+
 .root {
   background-color: var(--bg-color);
   padding: var(--spacer-xs) var(--spacer-s);

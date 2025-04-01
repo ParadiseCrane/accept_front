@@ -99,7 +99,7 @@ const refactorUser = (
   login: {
     value: user.login,
     display: (
-      <div className={tableStyles.titleWrapper}>
+      <div className={tableStyles.titleWrapperCenter}>
         <Link href={`/profile/${user.login}`} className={tableStyles.title}>
           {user.login}
         </Link>
@@ -133,7 +133,14 @@ const refactorUser = (
   },
   ban: {
     value: user.banned,
-    display: <BanButton user={user} spec={spec} onSuccess={handleBan} />,
+    display: (
+      <BanButton
+        user={user}
+        spec={spec}
+        onSuccess={handleBan}
+        customStyle={styles.smallButton}
+      />
+    ),
   },
   banReason: {
     value: 0,

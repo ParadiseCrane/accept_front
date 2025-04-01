@@ -8,7 +8,8 @@ const BanButton: FC<{
   user: IParticipant;
   spec: string;
   onSuccess: () => void;
-}> = ({ user, spec, onSuccess }) => {
+  customStyle?: string;
+}> = ({ user, spec, onSuccess, customStyle }) => {
   const { locale, lang } = useLocale();
 
   let ban = !user.banned;
@@ -35,7 +36,7 @@ const BanButton: FC<{
 
   return (
     <>
-      <BanModal ban={ban} onAction={handleBan} />
+      <BanModal ban={ban} onAction={handleBan} customStyle={customStyle} />
     </>
   );
 };

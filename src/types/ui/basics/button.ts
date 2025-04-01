@@ -20,4 +20,5 @@ export type MyButtonProps = ButtonProps &
     buttonWrapperStyle?: CSSProperties;
     kind?: 'positive' | 'negative' | 'header';
     shrink?: boolean;
+    customStyle?: string;
   };

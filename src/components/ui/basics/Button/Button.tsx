@@ -17,6 +17,8 @@ const Button: FC<MyButtonProps> = ({
   kind,
   variant,
   shrink,
+  size,
+  customStyle,
   ...props
 }) => {
   const button = useRef<HTMLDivElement>(null);
@@ -60,11 +62,12 @@ const Button: FC<MyButtonProps> = ({
                   classNames={{
                     ...props.classNames,
                     label: concatClassNames(
-                      styles.label,
+                      `${customStyle} ${styles.label}`,
                       propsClassName?.label
                     ),
                     root: concatClassNames(styles.root, propsClassName?.root),
                   }}
+                  size={size}
                 />
               </div>
             </HoverCard.Target>

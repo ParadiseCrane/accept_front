@@ -14,6 +14,7 @@ const ConfirmModal: FC<{
   onClose?: pureCallback<void>;
   disabled?: boolean;
   children?: ReactNode;
+  customStyle?: string;
 }> = ({
   buttonText,
   confirm,
@@ -21,6 +22,7 @@ const ConfirmModal: FC<{
   children,
   disabled,
   kind,
+  customStyle,
 }) => {
   const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
@@ -38,7 +40,13 @@ const ConfirmModal: FC<{
 
   return (
     <>
-      <Button kind={kind} variant="outline" onClick={openModal}>
+      <Button
+        kind={kind}
+        variant="outline"
+        onClick={openModal}
+        size="xs"
+        customStyle={customStyle}
+      >
         {buttonText}
       </Button>
       <SimpleModal

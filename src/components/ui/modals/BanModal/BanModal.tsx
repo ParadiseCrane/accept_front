@@ -7,10 +7,11 @@ import { FC, memo, useCallback } from 'react';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 // import styles from './banModal.module.css'
 
-const BanModal: FC<{ onAction: callback<string>; ban: boolean }> = ({
-  onAction,
-  ban,
-}) => {
+const BanModal: FC<{
+  onAction: callback<string>;
+  ban: boolean;
+  customStyle?: string;
+}> = ({ onAction, ban, customStyle }) => {
   const { locale } = useLocale();
 
   const form = useForm({
@@ -35,6 +36,7 @@ const BanModal: FC<{ onAction: callback<string>; ban: boolean }> = ({
       kind={ban ? 'negative' : 'positive'}
       confirm={confirm}
       onClose={form.reset}
+      customStyle={customStyle}
     >
       {ban && (
         <TextInput

@@ -58,6 +58,19 @@
   overflow-wrap: anywhere;
 }
 
+.titleWrapperCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 2em;
+  row-gap: var(--spacer-xs);
+  padding-right: 5%;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+  width: 100%;
+}
+
 .title {
   text-decoration: none;
   text-align: left;
