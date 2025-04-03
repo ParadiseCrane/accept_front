@@ -54,7 +54,7 @@ const MainInfo: FC<{
       />
 
       <Switch
-        label={'public'} // Add locale
+        label={locale.tournament.form.public}
         {...form.getInputProps('public', {
           type: 'checkbox',
         })}

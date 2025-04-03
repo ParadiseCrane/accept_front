@@ -14,6 +14,7 @@ export const form = {
     variants: ['Per test', 'Per task'],
   },
   maxTeamSize: 'Maximal number of participants in team',
+  public: 'Public',
 
   calendar: 'Select start and end dates',
   startDate: 'Start date',

@@ -38,7 +38,7 @@ const Send: FC<{
 
   const [language, setLanguage] = useLocalStorage<string>({
     key: 'previous_program_lang',
-    defaultValue: languages.length > 0 ? languages[0].spec.toString() : '1',
+    defaultValue: '1',
   });
 
   useEffect(() => {
