@@ -67,7 +67,6 @@ export const CodeBlockModal = ({
           {locale.tiptap.chooseProgrammingLanguage}
         </span>
         <Select
-          label={locale.tiptap.language}
           disabled={false}
           placeholder={locale.tiptap.chooseProgrammingLanguage}
           classNames={{
@@ -83,7 +82,6 @@ export const CodeBlockModal = ({
               (language) => language.label === locale.tiptap.defaultLanguage
             )[0].value
           }
-          // {...lowlight.listLanguages()}
         />
         <SimpleButtonGroup
           reversePositive={false}

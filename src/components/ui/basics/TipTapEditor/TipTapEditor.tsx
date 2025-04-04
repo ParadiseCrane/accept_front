@@ -126,7 +126,6 @@ export const TipTapEditor = ({
       Bold,
       BulletList,
       Code,
-      // CodeBlock,
       CodeBlockLowlight.configure({
         lowlight: lowlight,
       }),
@@ -137,7 +136,6 @@ export const TipTapEditor = ({
       Heading,
       Highlight.configure({ multicolor: true }),
       History,
-      // Image,
       Italic,
       ListItem,
       OrderedList,
@@ -156,13 +154,6 @@ export const TipTapEditor = ({
       onUpdate(editor!);
     },
     onBlur: onBlur,
-    // onUpdate: () => {
-    //   const data = editor?.getHTML();
-    //   form.setFieldValue(name, data);
-    // },
-    // onBlur: () => {
-    //   form.validateField(name);
-    // },
   });
 
   const outlineClass = editorMode ? 'outline-tiptap' : '';
