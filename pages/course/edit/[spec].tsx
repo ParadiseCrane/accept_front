@@ -17,6 +17,7 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { ReactNode, useCallback } from 'react';
 
 const getInitialValuesCourse = ({
@@ -51,6 +52,7 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
     image: props.course.image,
     kind: props.course.kind,
   });
+  const router = useRouter();
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -96,7 +98,11 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
         lang,
         (response) => response,
         courseToSend
-      );
+      ).then((res) => {
+        if (!res.error) {
+          router.push('/courses');
+        }
+      });
     },
     [lang, locale, user?.login]
   );

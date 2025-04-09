@@ -1,5 +1,10 @@
 import { COURSE_TREE_MAX_DEPTH as depthConstant } from '@constants/Limits';
-import { ICourseAddEdit, ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseAddEdit,
+  IGroupOpenness,
+  ITreeUnit,
+  IUnit,
+} from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -188,6 +193,47 @@ const createTreeUnitListCourseShow = ({
       createTreeUnit({
         courseUnit: children[i],
         courseUnitList: [courseElement, ...children],
+        index: i,
+        editMode,
+      })
+    );
+  }
+  return setNewIndexValues({ treeUnitList: list });
+};
+
+const createTreeUnitListGroupOpenness = ({
+  course,
+  allChildren,
+  groupOpennessList,
+  editMode,
+}: {
+  course: IUnit;
+  allChildren: IUnit[];
+  groupOpennessList: IGroupOpenness[];
+  editMode: boolean;
+}): ITreeUnit[] => {
+  const specList: string[] = groupOpennessList
+    .filter((element) => element.opened)
+    .map((element) => element.spec);
+  const courseElement: ITreeUnit = {
+    spec: course.spec,
+    kind: 'course',
+    childrenVisible: allChildren.length !== 0,
+    depth: 0,
+    index: 0,
+    order: '0',
+    orderAsNumber: 0,
+    parentSpec: 'none',
+    title: course.title,
+    visible: true,
+    isOpen: specList.includes(course.spec),
+  };
+  const list: ITreeUnit[] = [courseElement];
+  for (let i = 1; i < allChildren.length; i++) {
+    list.push(
+      createTreeUnit({
+        courseUnit: allChildren[i],
+        courseUnitList: [courseElement, ...allChildren],
         index: i,
         editMode,
       })
@@ -1532,6 +1578,12 @@ interface IUseCourseShowTreeProps {
   children: IUnit[];
 }
 
+interface IUseCourseGroupOpennessTreeProps {
+  course: IUnit;
+  allChildren: IUnit[];
+  groupOpennessList: IGroupOpenness[];
+}
+
 // интерфейс входных данных для локальных методов
 interface ILocalMethodInput {
   currentUnit: ITreeUnit;
@@ -1755,6 +1807,49 @@ export const useCourseShowTree = ({
     createTreeUnitListCourseShow({
       course,
       children,
+      editMode: false,
+    })
+  );
+
+  const toggleChildrenVisibility = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => {
+    const newList = localToggleChildrenVisibility({
+      currentUnit,
+      treeUnitList,
+    });
+    setTreeUnitList(newList);
+  };
+
+  const canToggleChildrenVisibility = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }): boolean => {
+    return localCanToggleChildrenVisibility({ currentUnit, treeUnitList });
+  };
+
+  return {
+    treeUnitList,
+    actions: { toggleChildrenVisibility },
+    checkers: {
+      canToggleChildrenVisibility,
+    },
+  };
+};
+
+export const useCourseGroupOpennessTree = ({
+  course,
+  allChildren,
+  groupOpennessList,
+}: IUseCourseGroupOpennessTreeProps) => {
+  const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
+    createTreeUnitListGroupOpenness({
+      course,
+      allChildren,
+      groupOpennessList,
       editMode: false,
     })
   );

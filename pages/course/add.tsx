@@ -12,6 +12,7 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { ReactNode, useCallback } from 'react';
 
 const getInitialValues = ({
@@ -37,6 +38,7 @@ function CourseAdd() {
     title: locale.ui.courseTree.title,
     description: locale.ui.courseTree.description,
   });
+  const router = useRouter();
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -78,7 +80,11 @@ function CourseAdd() {
         lang,
         (response) => response,
         courseToSend
-      );
+      ).then((res) => {
+        if (!res.error) {
+          router.push('/courses');
+        }
+      });
     },
     [lang, locale, user?.login]
   );

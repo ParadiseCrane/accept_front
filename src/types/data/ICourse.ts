@@ -21,6 +21,7 @@ export interface ITreeUnit {
   parentSpec: string;
   visible: boolean;
   childrenVisible: boolean;
+  isOpen?: boolean;
 }
 
 export interface ICourseAddEdit {
@@ -85,4 +86,10 @@ export interface ICourseMain {
 export interface ICourseModeratorGroup {
   moderator: IUserBaseInfo;
   group: IGroup;
+}
+
+export interface IGroupOpenness {
+  group: string;
+  spec: string;
+  opened: true;
 }

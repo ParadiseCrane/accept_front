@@ -18,6 +18,7 @@ import {
   IconArticle,
   IconList,
   IconBellPlus,
+  IconLockCog,
 } from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
@@ -30,6 +31,7 @@ import Groups from './Groups/Groups';
 import { useSearchParams } from 'next/navigation';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
+import GroupOpenness from './GroupOpenness/GroupOpenness';
 
 const CourseDashboard: FC<{
   spec: string;
@@ -116,6 +118,12 @@ const CourseDashboard: FC<{
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',
+      },
+      {
+        page: <GroupOpenness spec={spec} />,
+        icon: <IconLockCog color="var(--secondary)" />,
+        title: locale.dashboard.course.groupOpenness,
+        section: 'group_openness',
       },
     ];
 

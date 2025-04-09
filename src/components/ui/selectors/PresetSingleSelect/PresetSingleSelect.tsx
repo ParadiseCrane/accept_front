@@ -33,8 +33,9 @@ const PresetSingleSelect: FC<PresetSelectProps> = ({
       value={currentPreset ? currentPreset.name : null}
       label={locale.course.selectImagePreset}
       placeholder={locale.course.presetName}
-      clearable
+      clearable={false}
       maxDropdownHeight={400}
+      allowDeselect={false}
       nothingFoundMessage={locale.course.presetNotFound}
       filter={({ options, search }) =>
         (options as ComboboxItem[]).filter(

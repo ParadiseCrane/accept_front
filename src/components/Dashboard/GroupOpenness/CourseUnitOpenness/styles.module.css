@@ -1,0 +1,19 @@
+.box {
+  position: relative;
+}
+
+.input {
+  background-color: #0c9af213;
+}
+
+.delete {
+  display: none;
+}
+
+.delete:hover svg {
+  stroke: red;
+}
+
+.box:hover .delete {
+  display: block;
+}
