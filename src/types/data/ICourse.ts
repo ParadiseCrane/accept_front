@@ -21,7 +21,7 @@ export interface ITreeUnit {
   parentSpec: string;
   visible: boolean;
   childrenVisible: boolean;
-  isOpen?: boolean;
+  isOpen: boolean;
 }
 
 export interface ICourseAddEdit {

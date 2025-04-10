@@ -79,11 +79,17 @@ const createTreeUnit = ({
   courseUnitList,
   index,
   editMode,
+  isOpen,
+  visible,
+  childrenVisible,
 }: {
   courseUnit: IUnit;
   courseUnitList: IUnit[];
   index: number;
   editMode: boolean;
+  isOpen: boolean;
+  visible?: boolean;
+  childrenVisible?: boolean;
 }): ITreeUnit => {
   let parentSpec = '';
   if (courseUnit.order === '0') {
@@ -109,8 +115,11 @@ const createTreeUnit = ({
           courseUnit: courseUnit,
           courseUnitList: courseUnitList,
         }),
-    visible: courseUnit.order.split('|').length === 1 ? true : false,
-    childrenVisible: courseUnit.order === '0' ? true : false,
+    visible:
+      (visible ?? courseUnit.order.split('|').length === 1) ? true : false,
+    childrenVisible:
+      (childrenVisible ?? courseUnit.order === '0') ? true : false,
+    isOpen,
   };
 };
 
@@ -151,6 +160,7 @@ const createTreeUnitList = ({
     parentSpec: 'none',
     title: form.values.title,
     visible: true,
+    isOpen: false,
   };
   const list: ITreeUnit[] = [courseElement];
   for (let i = 0; i < courseUnitList.length; i++) {
@@ -160,6 +170,7 @@ const createTreeUnitList = ({
         courseUnitList: courseUnitList,
         index: i,
         editMode,
+        isOpen: false,
       })
     );
   }
@@ -186,6 +197,7 @@ const createTreeUnitListCourseShow = ({
     parentSpec: 'none',
     title: course.title,
     visible: true,
+    isOpen: false,
   };
   const list: ITreeUnit[] = [courseElement];
   for (let i = 0; i < children.length; i++) {
@@ -195,6 +207,7 @@ const createTreeUnitListCourseShow = ({
         courseUnitList: [courseElement, ...children],
         index: i,
         editMode,
+        isOpen: false,
       })
     );
   }
@@ -236,6 +249,9 @@ const createTreeUnitListGroupOpenness = ({
         courseUnitList: [courseElement, ...allChildren],
         index: i,
         editMode,
+        isOpen: specList.includes(allChildren[i].spec),
+        visible: true,
+        childrenVisible: true,
       })
     );
   }
@@ -987,6 +1003,7 @@ const localAddTreeUnitFirstLevel = (
     parentSpec: parent.spec,
     visible: true,
     childrenVisible: false,
+    isOpen: false,
   };
   const list: ITreeUnit[] = [...data.treeUnitList, newElement];
   for (let i = 0; i < list.length; i++) {
@@ -1041,6 +1058,7 @@ const localAddTreeUnit = (
     parentSpec: parent.spec,
     visible: true,
     childrenVisible: false,
+    isOpen: false,
   };
   // новый массив с новым элементом
   const list: ITreeUnit[] = [...data.treeUnitList, newElement];

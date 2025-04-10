@@ -1,14 +1,14 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import { IconLock, IconLockOpen } from '@tabler/icons-react';
+import { Tip } from '@ui/basics';
 import { FC } from 'react';
-import { Trash } from 'tabler-icons-react';
 
 interface IToggleOpennessButtonProps {
   styles: any;
   currentUnit: ITreeUnit;
-  toggleOpennessTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
+  toggleOpennessTreeUnit: (spec: string) => void;
   canToggleOpennessTreeUnit: boolean;
 }
 
@@ -19,16 +19,22 @@ export const ToggleOpennessButton: FC<IToggleOpennessButtonProps> = ({
 }) => {
   const { locale } = useLocale();
   return (
-    <Tooltip label={locale.ui.courseTree.deleteElement}>
+    <Tip
+      label={
+        currentUnit.isOpen
+          ? locale.ui.courseTree.closeElementAndChildren
+          : locale.ui.courseTree.openElementAndChildren
+      }
+    >
       <ActionIcon
         variant="transparent"
         onClick={() => {
-          toggleOpennessTreeUnit({ currentUnit });
+          toggleOpennessTreeUnit(currentUnit.spec);
         }}
         disabled={!canToggleOpennessTreeUnit}
       >
         {currentUnit.isOpen ? <IconLockOpen /> : <IconLock />}
       </ActionIcon>
-    </Tooltip>
+    </Tip>
   );
 };

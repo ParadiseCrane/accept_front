@@ -24,7 +24,6 @@ export const LinkCopy: FC<{
   const regenerateInvite = async () => {
     setLoading(true);
     const response = await regenerateLink();
-    console.log('response', response);
     if (response.length !== 0) {
       setInvite(response);
     }

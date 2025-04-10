@@ -12,6 +12,7 @@ export const course = {
   presetNotFound: 'Набор не найден',
   groupNotFound: 'Группа не найдена',
   nameAndStructure: 'Название и структура',
+  courseStructure: 'Структура курса',
   description: 'Описание',
   modals,
   list,

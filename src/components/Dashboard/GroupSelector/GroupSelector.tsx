@@ -24,9 +24,8 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
     defaultValue: [],
   });
 
-  // TODO поменять на реальный запрос
   const { data, loading, refetch } = useRequest<{}, any, IGroupBaseInfo[]>(
-    `/course/groups/${courseSpec}`,
+    `course/groups/${courseSpec}`,
     'GET',
     undefined
   );

@@ -33,7 +33,7 @@ const flattenCourse = ({
 const GroupOpennessTree: FC<{
   course: ICourseModel;
   groupOpennessList: IGroupOpenness[];
-  toggleGroupOpennessList: () => Promise<void>;
+  toggleGroupOpennessList: (spec: string) => Promise<void>;
 }> = ({ course, groupOpennessList, toggleGroupOpennessList }) => {
   const units = flattenCourse({ course, children: course.children });
   const { locale } = useLocale();
@@ -42,9 +42,9 @@ const GroupOpennessTree: FC<{
     allChildren: units,
     groupOpennessList,
   });
-  console.log(treeUnitList);
+
   return (
-    <InputWrapper label={locale.course.nameAndStructure}>
+    <InputWrapper label={locale.course.courseStructure}>
       {treeUnitList
         .filter((element) => element.visible)
         .map((unit) => (

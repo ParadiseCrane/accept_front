@@ -1,11 +1,12 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ElementType } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Text } from '@mantine/core';
 import { FC } from 'react';
 import { Plus } from 'tabler-icons-react';
 
 import styles from './styles.module.css';
+import { Tip } from '@ui/basics';
 
 interface IAddButtonProps {
   currentUnit: ITreeUnit;
@@ -34,7 +35,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
     >
       <div className={styles.add_menu_wrapper}>
         {canAddNewUnit({ currentUnit }) && (
-          <Tooltip label={locale.ui.courseTree.addUnit}>
+          <Tip label={locale.ui.courseTree.addUnit}>
             <div
               className={styles.icon_pair}
               onClick={() => {
@@ -46,9 +47,9 @@ export const AddButtons: FC<IAddButtonProps> = ({
               </ActionIcon>
               <Text>{locale.ui.courseTree.unit}</Text>
             </div>
-          </Tooltip>
+          </Tip>
         )}
-        <Tooltip label={locale.ui.courseTree.addLesson}>
+        <Tip label={locale.ui.courseTree.addLesson}>
           <div
             className={styles.icon_pair}
             onClick={() => {
@@ -60,7 +61,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
             </ActionIcon>
             <Text>{locale.ui.courseTree.lesson}</Text>
           </div>
-        </Tooltip>
+        </Tip>
       </div>
     </div>
   );

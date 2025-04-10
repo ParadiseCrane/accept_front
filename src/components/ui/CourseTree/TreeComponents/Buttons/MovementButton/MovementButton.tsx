@@ -4,8 +4,9 @@ import {
   ICourseAddTreeCheckers,
 } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Popover, Tooltip } from '@mantine/core';
-import { FC, ReactNode, useState } from 'react';
+import { ActionIcon, Popover } from '@mantine/core';
+import { Tip } from '@ui/basics';
+import { FC } from 'react';
 import {
   ArrowBigDownLine,
   ArrowBigLeftLine,
@@ -29,11 +30,11 @@ export const MovementButton: FC<IMovementButtonProps> = ({
   return (
     <Popover position="bottom-start" withArrow shadow="md">
       <Popover.Target>
-        <Tooltip label={locale.ui.courseTree.moveElement}>
+        <Tip label={locale.ui.courseTree.moveElement}>
           <ActionIcon variant="transparent" size={'md'}>
             <ArrowsMove />
           </ActionIcon>
-        </Tooltip>
+        </Tip>
       </Popover.Target>
       <Popover.Dropdown>
         <>

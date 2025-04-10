@@ -1,6 +1,7 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
+import { Tip } from '@ui/basics';
 import { FC } from 'react';
 import { CaretDown, CaretRight } from 'tabler-icons-react';
 
@@ -26,7 +27,7 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
   const { locale } = useLocale();
   if (canToggleChildrenVisibility({ currentUnit })) {
     return (
-      <Tooltip
+      <Tip
         label={
           currentUnit.childrenVisible
             ? locale.ui.courseTree.hideChildren
@@ -45,7 +46,7 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
         >
           {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
         </ActionIcon>
-      </Tooltip>
+      </Tip>
     );
   }
 

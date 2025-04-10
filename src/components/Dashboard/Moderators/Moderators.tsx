@@ -3,7 +3,7 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
-import { FC, memo, useCallback } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 
 import styles from './style.module.css';
 import { useSearchParams } from 'next/navigation';
@@ -12,9 +12,10 @@ import GroupModeratorList, {
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
-import { Icon, Tip } from '@ui/basics';
+import { Button, Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
+import { AddModeratorModal } from './AddModeratorModal/AddModeratorModal';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -109,6 +110,7 @@ const Moderators: FC<{
 }> = ({ spec, isAuthor }) => {
   const { locale, lang } = useLocale();
   const params = useSearchParams();
+  const [showModal, setShowModal] = useState(false);
 
   const handleDelete = useCallback(
     (moderator: IUserBaseInfo) => {
@@ -116,7 +118,7 @@ const Moderators: FC<{
         moderator: moderator.login,
       };
       requestWithNotify(
-        `course_moderator/${spec}`,
+        `course_moderator/delete/${spec}`,
         'DELETE',
         locale.notify.moderator.delete,
         lang,
@@ -147,6 +149,11 @@ const Moderators: FC<{
           even: tableStyles.even,
           odd: tableStyles.odd,
         }}
+      />
+      <Button onClick={() => setShowModal(true)}>Open</Button>
+      <AddModeratorModal
+        isOpened={showModal}
+        close={() => setShowModal(false)}
       />
     </div>
   );

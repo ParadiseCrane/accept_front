@@ -3,10 +3,9 @@ import {
   ICourseAddTreeActions,
   ICourseAddTreeCheckers,
 } from '@hooks/useCourseTree';
-import { ActionIcon, Box, Group, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 import React, { useState } from 'react';
-import { CaretDown, CaretRight, Trash } from 'tabler-icons-react';
 
 import { AddButtons } from '../Buttons/AddButton/AddButton';
 import { DeleteButton } from '../Buttons/DeleteButton/DeleteButton';

@@ -3,13 +3,11 @@ import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
-import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
-import { useDebouncedCallback } from '@mantine/hooks';
-import React, { useState } from 'react';
-
+import { Box, Group, TextInput } from '@mantine/core';
 import styles from './styles.module.css';
 import { ToggleVisibilityButton } from './ToggleVisibilityButton/ToggleVisibilityButton';
 import { ToggleOpennessButton } from './ToggleOpennessButton/ToggleOpennessButton';
+import { Title } from './Title/Title';
 
 export const CourseUnitOpenness = ({
   currentUnit,
@@ -20,7 +18,7 @@ export const CourseUnitOpenness = ({
   currentUnit: ITreeUnit;
   actions: ICourseShowTreeActions;
   checkers: ICourseShowTreeCheckers;
-  toggleGroupOpennessList: () => Promise<void>;
+  toggleGroupOpennessList: (spec: string) => Promise<void>;
 }) => {
   if (currentUnit.kind === 'course') {
     return (
@@ -39,7 +37,11 @@ export const CourseUnitOpenness = ({
             toggleChildrenVisibility={actions.toggleChildrenVisibility}
           />
 
-          <TextInput value={currentUnit.title} contentEditable={false} />
+          <TextInput
+            defaultValue={currentUnit.title}
+            classNames={{ input: styles.input }}
+            onMouseDown={(e) => e.preventDefault()}
+          />
 
           <ToggleOpennessButton
             styles={undefined}
@@ -69,7 +71,12 @@ export const CourseUnitOpenness = ({
             toggleChildrenVisibility={actions.toggleChildrenVisibility}
           />
 
-          <TextInput value={currentUnit.title} />
+          <TextInput
+            defaultValue={currentUnit.title}
+            classNames={{ input: styles.input }}
+            onMouseDown={(e) => e.preventDefault()}
+          />
+          {/* <Title title={currentUnit.title} /> */}
           <ToggleOpennessButton
             styles={undefined}
             currentUnit={currentUnit}
@@ -92,7 +99,11 @@ export const CourseUnitOpenness = ({
     >
       <Group gap={0}>
         <div style={{ width: '1.375rem' }} />
-        <TextInput value={currentUnit.title} />
+        <TextInput
+          defaultValue={currentUnit.title}
+          classNames={{ input: styles.input }}
+          onMouseDown={(e) => e.preventDefault()}
+        />
       </Group>
     </Box>
   );

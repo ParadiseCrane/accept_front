@@ -12,6 +12,9 @@ export const course = {
   deleteModerator: 'Delete moderator',
   createNotification: 'Create notification',
   groupOpenness: 'Course openness',
+  addModerator: 'Add moderator',
+  chooseGroup: 'Choose group',
+  chooseModerator: 'Choose moderator',
   noUsersNotification:
     'No users found for the selected group. Cannot create a notification',
   inviteLink: 'Invite link for the group',

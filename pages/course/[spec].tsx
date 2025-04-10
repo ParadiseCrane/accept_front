@@ -41,13 +41,14 @@ const flattenCourse = ({
 function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
   const { user } = useUser();
   const course = props.course;
-  const isModerator = props.has_moderate_rights;
+  const isModerator = props.has_moderate_rights === true;
   const [isAuthor, setIsAuthor] = useState<boolean>(false);
   const units: IUnit[] = flattenCourse({
     course: course,
     children: course.children,
   });
   const [openModal, setOpenModal] = useState(false);
+  console.log('isModerator', isModerator);
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers, array] = useMoveThroughArray(
@@ -140,14 +141,15 @@ function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
         />
         <Main key={hash} />
         {(value.kind == 'course' || value.kind == 'unit') &&
-          actions.length > 0 && <Sticky actions={actions} />}
+          actions.length > 0 &&
+          isModerator &&
+          isAuthor && <Sticky actions={actions} />}
         <DeleteModal
           active={openModal}
           setActive={setOpenModal}
           course={course}
         />
-        {user && (
-          // TODO проверить, что это всегда spec курса, а не его элемента
+        {user && !isModerator && !isAuthor && (
           <ChatSticky entity={'course'} spec={course.spec} host={user.login} />
         )}
       </AppShell>

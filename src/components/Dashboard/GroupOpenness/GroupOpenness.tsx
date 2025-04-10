@@ -42,7 +42,7 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
     setLoading(false);
   }, [spec, params]);
 
-  const toggleGroupOpennessList = useCallback(async () => {
+  const toggleGroupOpennessList = useCallback(async (spec: string) => {
     setLoading(true);
     const response = await sendRequest<{}, IGroupOpenness[]>(
       `course/toggle_group_openness/${spec}/${params.get('group')}`,
@@ -58,11 +58,11 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
     fetchData();
   }, [spec, params]);
 
-  if (!course || !groupOpennessList)
+  if (!course || !groupOpennessList || loading)
     return (
       <div style={{ position: 'relative', height: '100%' }}>
         <LoadingOverlay
-          visible={!course || !groupOpennessList}
+          visible={!course || !groupOpennessList || loading}
           loaderProps={{ radius: 'lg' }}
         />
       </div>

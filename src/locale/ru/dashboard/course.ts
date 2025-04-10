@@ -12,6 +12,9 @@ export const course = {
   deleteModerator: 'Удалить модератора',
   createNotification: 'Создать уведомление',
   groupOpenness: 'Открытость курса',
+  addModerator: 'Добавление модератора',
+  chooseGroup: 'Выберите группу',
+  chooseModerator: 'Выберите модератора',
   noUsersNotification:
     'Пользователи для выбранной группы не найдены. Невозможно создать уведомление',
   inviteLink: 'Ссылка-приглашение для группы',
