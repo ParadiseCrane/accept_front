@@ -61,13 +61,9 @@ export async function middleware(request: NextRequest) {
       //@ts-ignore
     )?.value;
 
-    const headers = access_token
-      ? { Authorization: `Bearer ${access_token}` }
-      : undefined;
-
     const accepted = await access(
       spec,
-      headers,
+      access_token,
       pathname,
       request.nextUrl.searchParams
     );
