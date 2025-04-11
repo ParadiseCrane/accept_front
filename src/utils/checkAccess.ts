@@ -61,7 +61,12 @@ const get_access_level = async (
 };
 
 export const checkWrapper =
-  (action: IRulesAction, entity: IRulesEntity, access_requirements: number) =>
+  (
+    action: IRulesAction,
+    entity: IRulesEntity,
+    access_requirements: number,
+    strict: boolean = false
+  ) =>
   async (
     entity_spec: string | undefined,
     access_token: string | undefined,
@@ -73,6 +78,9 @@ export const checkWrapper =
       let access_level = data || 0;
       if (access_requirements <= access_level) {
         return true;
+      }
+      if (strict) {
+        return false;
       }
     }
     return requestRights<boolean>(

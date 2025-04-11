@@ -20,7 +20,12 @@ export const protectedRoutesInfo: {
 } = {
   // TODO: Check rights
   '/tournament': checkWrapper('read', 'tournament', accessLevels['anyone']),
-  '/tournament/add': checkWrapper('add', 'tournament', accessLevels['teacher']),
+  '/tournament/add': checkWrapper(
+    'add',
+    'tournament',
+    accessLevels['teacher'],
+    true
+  ),
   '/tournament/edit': checkWrapper(
     'write',
     'tournament',
@@ -29,7 +34,8 @@ export const protectedRoutesInfo: {
   '/assignment_schema/add': checkWrapper(
     'add',
     'assignment_schema',
-    accessLevels['teacher']
+    accessLevels['teacher'],
+    true
   ),
   '/assignment_schema/edit': checkWrapper(
     'write',
@@ -39,15 +45,22 @@ export const protectedRoutesInfo: {
   '/assignment_schema/list': checkWrapper(
     'read_list',
     'assignment_schema',
-    accessLevels['teacher']
+    accessLevels['teacher'],
+    true
   ),
   '/assignment_schema': checkWrapper(
     'read',
     'assignment_schema',
-    accessLevels['teacher']
+    accessLevels['teacher'],
+    true
   ),
   '/assignment': checkWrapper('read', 'assignment', accessLevels['teacher']),
-  '/assignment/add': checkWrapper('add', 'assignment', accessLevels['teacher']),
+  '/assignment/add': checkWrapper(
+    'add',
+    'assignment',
+    accessLevels['teacher'],
+    true
+  ),
   '/assignment/edit': checkWrapper(
     'write',
     'assignment',
@@ -56,16 +69,28 @@ export const protectedRoutesInfo: {
   '/organization/add': checkWrapper(
     'moderate',
     'organization',
-    accessLevels['developer']
+    accessLevels['developer'],
+    true
   ),
   '/organization/edit': checkWrapper(
     'moderate',
     'organization',
-    accessLevels['developer']
+    accessLevels['admin'],
+    true
   ),
-  '/group/add': checkWrapper('add', 'group', accessLevels['teacher']),
-  '/group/edit': checkWrapper('write', 'assignment', accessLevels['teacher']),
-  '/group/list': checkWrapper('read_list', 'group', accessLevels['teacher']),
+  '/group/add': checkWrapper('add', 'group', accessLevels['teacher'], true),
+  '/group/edit': checkWrapper(
+    'write',
+    'assignment',
+    accessLevels['teacher'],
+    true
+  ),
+  '/group/list': checkWrapper(
+    'read_list',
+    'group',
+    accessLevels['teacher'],
+    true
+  ),
   '/notification/add': checkWrapper(
     'add',
     'notification',
@@ -74,7 +99,7 @@ export const protectedRoutesInfo: {
   '/task/add': (_, access_token, pathname, searchParams) => {
     const tournament_spec = searchParams?.get('tournament');
     if (!tournament_spec)
-      return checkWrapper('add', 'task', accessLevels['teacher'])(
+      return checkWrapper('add', 'task', accessLevels['teacher'], true)(
         undefined,
         access_token,
         pathname,
@@ -87,10 +112,15 @@ export const protectedRoutesInfo: {
       searchParams
     );
   },
-  '/user/list': checkWrapper('read_list', 'user', accessLevels['teacher']),
-  '/task': checkWrapper('read', 'task', accessLevels['teacher']),
-  '/task/edit': checkWrapper('write', 'task', accessLevels['teacher']),
-  '/task/tests': checkWrapper('read_tests', 'task', accessLevels['teacher']),
+  '/user/list': checkWrapper(
+    'read_list',
+    'user',
+    accessLevels['teacher'],
+    true
+  ),
+  '/task': checkWrapper('read', 'task', accessLevels['admin']),
+  '/task/edit': checkWrapper('write', 'task', accessLevels['admin']),
+  '/task/tests': checkWrapper('read_tests', 'task', accessLevels['admin']),
   '/dashboard/admin': checkWrapper(
     'read',
     'admin_dashboard',
@@ -99,12 +129,14 @@ export const protectedRoutesInfo: {
   '/dashboard/assignment': checkWrapper(
     'moderate',
     'assignment',
-    accessLevels['teacher']
+    accessLevels['teacher'],
+    true
   ),
   '/dashboard/developer': checkWrapper(
     'read',
     'developer_dashboard',
-    accessLevels['developer']
+    accessLevels['developer'],
+    true
   ),
   '/dashboard/tournament': checkWrapper(
     'moderate',
