@@ -9,7 +9,6 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
-import { Button } from '@ui/basics';
 import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
 import Fuse from 'fuse.js';
@@ -96,8 +95,6 @@ const GroupModeratorList: FC<{
       ),
     [refactorPair]
   );
-
-  const [showModal, setShowModal] = useState(false);
 
   const params = useSearchParams();
 
@@ -186,21 +183,8 @@ const GroupModeratorList: FC<{
         loading={loading}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
-        additionalSearch={
-          <Button onClick={() => setShowModal(true)}>
-            {locale.dashboard.course.addModerator}
-          </Button>
-        }
-        emptyTableButton={
-          <Button onClick={() => setShowModal(true)}>
-            {locale.dashboard.course.addModerator}
-          </Button>
-        }
-      />
-      <AddModeratorModal
-        isOpened={showModal}
-        close={() => setShowModal(false)}
-        refetchData={fetchData}
+        additionalSearch={<AddModeratorModal refetchData={fetchData} />}
+        emptyTableButton={<AddModeratorModal refetchData={fetchData} />}
       />
     </div>
   );

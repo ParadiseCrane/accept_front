@@ -10,7 +10,8 @@ import { Trash } from 'tabler-icons-react';
 
 const DeleteModal: FC<{
   group: IGroupDisplay;
-}> = ({ group }) => {
+  refetchData?: () => Promise<void>;
+}> = ({ group, refetchData }) => {
   const { locale, lang } = useLocale();
 
   const [active, setActive] = useState(false);
@@ -24,8 +25,8 @@ const DeleteModal: FC<{
       (_: any) => '',
       undefined,
       () => setActive(false)
-    );
-  }, [group.spec, locale, lang]);
+    ).then(refetchData);
+  }, [group.spec, locale, lang, refetchData]);
 
   return (
     <>

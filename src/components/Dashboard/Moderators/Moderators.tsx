@@ -12,10 +12,11 @@ import GroupModeratorList, {
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
-import { Icon, Tip } from '@ui/basics';
+import { Button, Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
 import { sendRequest } from '@requests/request';
+import { AddModeratorModal } from './AddModeratorModal/AddModeratorModal';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -120,9 +121,6 @@ const Moderators: FC<{
   isAuthor: boolean;
 }> = ({ spec, isAuthor }) => {
   const { locale, lang } = useLocale();
-  const params = useSearchParams();
-
-  // TODO перенести получение данных в этот компонент (поднять на уровень выше)
 
   const handleDelete = useCallback(
     (moderator: IUserBaseInfo, fetchData: () => Promise<void>) => {

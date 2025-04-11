@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
@@ -15,18 +15,24 @@ const Groups: FC<{
   course_spec: string;
 }> = ({ course_spec }) => {
   const { locale } = useLocale();
+  const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState<IGroupInvite[]>([]);
-  const { data, loading } = useRequest<{}, IGroupInvite[]>(
-    `invite/${course_spec}/all`,
-    'GET',
-    undefined
-  );
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    const response = await sendRequest<{}, IGroupInvite[]>(
+      `invite/${course_spec}/all`,
+      'GET'
+    );
+    if (!response.error) {
+      setGroups(response.response);
+    }
+    setLoading(false);
+  }, [course_spec]);
 
   useEffect(() => {
-    if (data) {
-      setGroups(data);
-    }
-  }, [data]);
+    fetchData();
+  }, [course_spec, fetchData]);
 
   const regenerateLink = async (groupSpec: string) => {
     const response = await sendRequest<{}, string>(
@@ -39,7 +45,7 @@ const Groups: FC<{
     return '';
   };
 
-  if (!data || loading) {
+  if (!groups.length || loading) {
     return (
       <div style={{ position: 'relative', height: '100%' }}>
         <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
@@ -82,6 +88,7 @@ const Groups: FC<{
                     readonly: group.group.readonly,
                     spec: group.group.spec,
                   }}
+                  refetchData={fetchData}
                 />
               </div>
             </div>

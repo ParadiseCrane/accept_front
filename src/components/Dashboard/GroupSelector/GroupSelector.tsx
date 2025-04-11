@@ -1,22 +1,26 @@
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
 import { useRouter } from 'next/router';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
 import { IconUsersGroup, IconX } from '@tabler/icons-react';
 
-const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
+const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
+  courseSpec,
+  user,
+}) => {
   const [showSelector, setShowSelector] = useState(false);
   const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
   const [courseGroupPairLS, setCourseGroupPairLS] = useLocalStorage<
     ICourseGroupPair[]
   >({
@@ -101,7 +105,6 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
 
   return (
     <>
-      {/* {!loading && data && !data.infinite && ( */}
       {
         <div
           className={styles.wrapper + ' ' + (showSelector ? styles.show : '')}
@@ -137,4 +140,4 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   );
 };
 
-export default memo(GroupSelector);
+export default GroupSelector;

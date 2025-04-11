@@ -187,7 +187,7 @@ const CourseDashboard: FC<{
         </>
       )}
       {isAuthor !== null && <LeftMenu links={links} />}
-      <GroupSelectorMenu courseSpec={spec} />
+      {user && <GroupSelectorMenu courseSpec={spec} user={user.login} />}
     </>
   );
 };
