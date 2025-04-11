@@ -12,10 +12,10 @@ import GroupModeratorList, {
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
-import { Button, Icon, Tip } from '@ui/basics';
+import { Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
-import { AddModeratorModal } from './AddModeratorModal/AddModeratorModal';
+import { sendRequest } from '@requests/request';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -53,12 +53,22 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const refactorPair = (
-  pair: ICourseModeratorGroup,
-  isAuthor: boolean,
-  locale: ILocale,
-  handleDelete: any
-): ICourseModeratorGroupItem => ({
+const refactorPair = ({
+  pair,
+  fetchData,
+  handleDelete,
+  isAuthor,
+  locale,
+}: {
+  pair: ICourseModeratorGroup;
+  fetchData: () => Promise<void>;
+  isAuthor: boolean;
+  locale: ILocale;
+  handleDelete: (
+    moderator: IUserBaseInfo,
+    fetchData: () => Promise<void>
+  ) => void;
+}): ICourseModeratorGroupItem => ({
   ...pair,
   group: {
     value: pair.group,
@@ -78,7 +88,6 @@ const refactorPair = (
     value: pair.moderator,
     display: (
       <div className={tableStyles.titleWrapper}>
-        {/* TODO добавить реальную ссылку на модератора */}
         <Link
           href={`/profile/${pair.moderator.login}`}
           className={tableStyles.title}
@@ -89,7 +98,9 @@ const refactorPair = (
           // TODO add action for button
           <Tip label={locale.dashboard.course.deleteModerator}>
             <Icon
-              onClick={handleDelete}
+              onClick={() => {
+                handleDelete(pair.moderator, fetchData);
+              }}
               color="red"
               variant="transparent"
               size="xs"
@@ -110,23 +121,21 @@ const Moderators: FC<{
 }> = ({ spec, isAuthor }) => {
   const { locale, lang } = useLocale();
   const params = useSearchParams();
-  const [showModal, setShowModal] = useState(false);
+
+  // TODO перенести получение данных в этот компонент (поднять на уровень выше)
 
   const handleDelete = useCallback(
-    (moderator: IUserBaseInfo) => {
-      const body = {
-        moderator: moderator.login,
-      };
+    (moderator: IUserBaseInfo, fetchData: () => Promise<void>) => {
       requestWithNotify(
-        `course_moderator/delete/${spec}`,
+        `course_moderator/${spec}/${moderator.login}`,
         'DELETE',
         locale.notify.moderator.delete,
         lang,
         (_: any) => '',
-        body,
+        {},
         () => {},
         { autoClose: 8000 }
-      );
+      ).then(fetchData);
     },
     [spec, locale, lang]
   );
@@ -135,9 +144,13 @@ const Moderators: FC<{
     <div className={styles.wrapper}>
       <GroupModeratorList
         url={`course/moderator_group/${spec}`}
-        refactorPair={(pair: ICourseModeratorGroup) =>
-          refactorPair(pair, isAuthor, locale, handleDelete)
-        }
+        refactorPair={({
+          pair,
+          fetchData,
+        }: {
+          pair: ICourseModeratorGroup;
+          fetchData: () => Promise<void>;
+        }) => refactorPair({ pair, fetchData, isAuthor, locale, handleDelete })}
         initialColumns={initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}
@@ -149,11 +162,6 @@ const Moderators: FC<{
           even: tableStyles.even,
           odd: tableStyles.odd,
         }}
-      />
-      <Button onClick={() => setShowModal(true)}>Open</Button>
-      <AddModeratorModal
-        isOpened={showModal}
-        close={() => setShowModal(false)}
       />
     </div>
   );

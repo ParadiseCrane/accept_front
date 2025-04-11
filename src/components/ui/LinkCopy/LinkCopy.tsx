@@ -47,7 +47,10 @@ export const LinkCopy: FC<{
   );
 
   return (
-    <div className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}>
+    <div
+      className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}
+      style={{ flexWrap: 'nowrap' }}
+    >
       <Tip label={locale.link.copyLink}>
         <Skeleton visible={loading}>
           <div

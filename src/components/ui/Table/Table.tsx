@@ -2,7 +2,6 @@ import { BaseSearch } from '@custom-types/data/request';
 import { setter } from '@custom-types/ui/atomic';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
-import { Loader } from '@mantine/core';
 import { LoadingOverlay, MultiSelect, TextInput } from '@ui/basics';
 import {
   FC,
@@ -36,6 +35,7 @@ const Table: FC<{
   empty?: ReactNode;
   isEmpty?: boolean;
   nothingFound?: ReactNode;
+  emptyTableButton?: ReactNode;
 }> = ({
   columns,
   classNames,
@@ -52,6 +52,7 @@ const Table: FC<{
   empty,
   isEmpty,
   nothingFound,
+  emptyTableButton,
 }) => {
   const { locale } = useLocale();
 
@@ -214,7 +215,7 @@ const Table: FC<{
     >
       {!loading && empty && isEmpty ? (
         <div>
-          <EmptyTablePlaceholder />
+          <EmptyTablePlaceholder button={emptyTableButton} />
         </div>
       ) : (
         <div className={styles.main}>

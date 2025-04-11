@@ -16,9 +16,11 @@ import { IUserDisplay } from '@custom-types/data/IUser';
 export const AddModeratorModal = ({
   isOpened,
   close,
+  refetchData,
 }: {
   isOpened: boolean;
   close: any;
+  refetchData: () => Promise<void>;
 }) => {
   const [user, setUser] = useState<ComboboxItem | null>(null);
   const [group, setGroup] = useState<ComboboxItem | null>(null);
@@ -28,6 +30,17 @@ export const AddModeratorModal = ({
   >([]);
   const pathParams = useParams<{ spec: string }>();
   const { locale } = useLocale();
+
+  // TODO поправить внешний вид модального окна и вызывать ререндер
+  // после назначения модератора группы
+
+  const onClose = () => {
+    setUser(null);
+    setGroup(null);
+    setAllUsers([]);
+    setGroupsWithoutModerator([]);
+    close();
+  };
 
   const fetchAllGroupsData = useCallback(async () => {
     if (pathParams && pathParams.spec) {
@@ -131,11 +144,12 @@ export const AddModeratorModal = ({
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              addModerator().then(close);
+              addModerator().then(onClose);
+              refetchData();
             },
             label: locale.add,
           }}
-          cancelButton={{ onClick: close, label: locale.close }}
+          cancelButton={{ onClick: onClose, label: locale.close }}
         />
       </div>
     </Modal>

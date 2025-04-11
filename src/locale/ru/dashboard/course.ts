@@ -12,7 +12,7 @@ export const course = {
   deleteModerator: 'Удалить модератора',
   createNotification: 'Создать уведомление',
   groupOpenness: 'Открытость курса',
-  addModerator: 'Добавление модератора',
+  addModerator: 'Добавить модератора',
   chooseGroup: 'Выберите группу',
   chooseModerator: 'Выберите модератора',
   noUsersNotification:

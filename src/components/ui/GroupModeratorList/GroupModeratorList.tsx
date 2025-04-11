@@ -1,3 +1,4 @@
+import { AddModeratorModal } from '@components/Dashboard/Moderators/AddModeratorModal/AddModeratorModal';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
 import { IGroup } from '@custom-types/data/IGroup';
@@ -8,6 +9,7 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import tableStyles from '@styles/ui/customTable.module.css';
+import { Button } from '@ui/basics';
 import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
 import Fuse from 'fuse.js';
@@ -37,7 +39,13 @@ const GroupModeratorList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorPair: (_: ICourseModeratorGroup) => ICourseModeratorGroupItem;
+  refactorPair: ({
+    pair,
+    fetchData,
+  }: {
+    pair: ICourseModeratorGroup;
+    fetchData: () => Promise<void>;
+  }) => ICourseModeratorGroupItem;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -63,15 +71,33 @@ const GroupModeratorList: FC<{
 
   const [pairs, setPairs] = useState<ICourseModeratorGroupItem[]>([]);
   const [total, setTotal] = useState(0);
+  const [data, setData] = useState<ICourseModeratorGroupItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    const response = await sendRequest<{}, ICourseModeratorGroup[]>(
+      url,
+      'GET',
+      undefined
+    );
+    if (!response.error) {
+      const pairList = response.response;
+      const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
+      setData(pairItemList);
+    }
+    setLoading(false);
+  }, []);
 
   const processData = useCallback(
     (response: ICourseModeratorGroup[]): ICourseModeratorGroupItem[] =>
-      response.map((pair: ICourseModeratorGroup) => refactorPair(pair)),
+      response.map((pair: ICourseModeratorGroup) =>
+        refactorPair({ pair, fetchData })
+      ),
     [refactorPair]
   );
 
-  const [data, setData] = useState<ICourseModeratorGroupItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
 
   const params = useSearchParams();
 
@@ -126,15 +152,7 @@ const GroupModeratorList: FC<{
   }, [applyFilters, data]);
 
   useEffect(() => {
-    setLoading(true);
-    sendRequest<{}, ICourseModeratorGroup[]>(url, 'GET', undefined).then(
-      (res) => {
-        const pairList = res.response;
-        const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
-        setData(pairItemList);
-        setLoading(false);
-      }
-    );
+    fetchData();
   }, [params]);
 
   return (
@@ -168,6 +186,21 @@ const GroupModeratorList: FC<{
         loading={loading}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
+        additionalSearch={
+          <Button onClick={() => setShowModal(true)}>
+            {locale.dashboard.course.addModerator}
+          </Button>
+        }
+        emptyTableButton={
+          <Button onClick={() => setShowModal(true)}>
+            {locale.dashboard.course.addModerator}
+          </Button>
+        }
+      />
+      <AddModeratorModal
+        isOpened={showModal}
+        close={() => setShowModal(false)}
+        refetchData={fetchData}
       />
     </div>
   );
