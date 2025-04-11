@@ -57,10 +57,14 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
       const errorCondition: boolean =
-        form.validate().hasErrors ||
-        form.values.description.length === 0 ||
-        form.values.image.length === 0 ||
-        form.values.title.length === 0;
+        props.course.kind === 'course'
+          ? form.validate().hasErrors ||
+            form.values.description.length === 0 ||
+            form.values.image.length === 0 ||
+            form.values.title.length === 0
+          : form.validate().hasErrors ||
+            form.values.description.length === 0 ||
+            form.values.title.length === 0;
       if (errorCondition) {
         const id = newNotification({});
         errorNotification({
@@ -88,8 +92,10 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
       const courseToSend: ICourseAddEdit = {
         ...course,
         children: emptyChildren,
-        kind: 'course',
+        kind: props.course.kind,
       };
+
+      console.log('courseToSend', courseToSend);
 
       requestWithNotify<ICourseAddEdit, string>(
         `course/put/${props.course.spec}`,
@@ -155,7 +161,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     const json = await response.json();
     const course = {
       ...json.course,
-      spec: query.spec,
+      spec: isUnitEdit
+        ? req.url?.split('?unit=').pop()!.split('&spec')[0]
+        : query.spec,
     };
 
     return {
