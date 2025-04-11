@@ -3,6 +3,7 @@ import {
   IRulesAction,
   IRulesEntity,
 } from '@custom-types/data/rights';
+import { jwtVerify, type JWTPayload } from 'jose';
 
 const requestRights = async <T>(
   payload: IRightsPayload,
@@ -44,20 +45,43 @@ const requestRights = async <T>(
   return await response.json();
 };
 
+const get_access_level = async (
+  access_token: string
+): Promise<number | undefined> => {
+  let { payload } = await jwtVerify(
+    access_token,
+    new TextEncoder().encode(
+      '$2b$12$FHcPTliMVqLcujuHbCDbXORht.yKxOBo4fZ8FqlJSs6levQ3oeJ5G'
+    )
+  );
+  if (typeof payload['access_level'] === 'number') {
+    return payload['access_level'];
+  }
+  return undefined;
+};
+
 export const checkWrapper =
-  (action: IRulesAction, entity?: IRulesEntity) =>
-  (
+  (action: IRulesAction, entity: IRulesEntity, access_requirements: number) =>
+  async (
     entity_spec: string | undefined,
-    headers: { Authorization: string } | undefined,
+    access_token: string | undefined,
     pathname: string,
     _searchParams?: any
-  ) =>
-    requestRights<boolean>(
+  ) => {
+    if (access_token !== undefined) {
+      let data = await get_access_level(access_token);
+      let access_level = data || 0;
+      if (access_requirements <= access_level) {
+        return true;
+      }
+    }
+    return requestRights<boolean>(
       {
         action,
         entity_spec,
         entity: entity,
       },
-      headers,
+      access_token ? { Authorization: `Bearer ${access_token}` } : undefined,
       pathname
     );
+  };
