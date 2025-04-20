@@ -131,9 +131,9 @@ const Moderators: FC<{
         lang,
         (_: any) => '',
         {},
-        () => {},
+        fetchData,
         { autoClose: 8000 }
-      ).then(fetchData);
+      );
     },
     [spec, locale, lang]
   );

@@ -6,8 +6,15 @@ import {
   IUnit,
 } from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
-import { useState } from 'react';
+import {
+  errorNotification,
+  newNotification,
+} from '@utils/notificationFunctions';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useLocale } from './useLocale';
+import { ILocale } from '@custom-types/ui/ILocale';
+import { sendRequest } from '@requests/request';
 
 let COURSE_TREE_MAX_DEPTH = depthConstant;
 
@@ -70,6 +77,24 @@ const getParentSpec = ({
       (element) =>
         element.order === courseUnit.order.split('|').slice(0, -1).join('|')
     )[0].spec;
+  }
+};
+
+// получаем родителя элемента
+const getParent = ({
+  courseUnit,
+  courseUnitList,
+}: {
+  courseUnit: ITreeUnit;
+  courseUnitList: ITreeUnit[];
+}): ITreeUnit => {
+  if (courseUnit.order.split('|').length === 1) {
+    return [...courseUnitList][0];
+  } else {
+    return courseUnitList.filter(
+      (element) =>
+        element.order === courseUnit.order.split('|').slice(0, -1).join('|')
+    )[0];
   }
 };
 
@@ -1512,6 +1537,133 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
   return false;
 };
 
+const localToggleRoot = ({
+  currentUnit,
+  groupSpec,
+  locale,
+  setTreeUnitList,
+  treeUnitList,
+}: ILocalOpennessMethodInput): void => {
+  setTreeUnitList(
+    treeUnitList.map((unit) => {
+      if (unit.spec === currentUnit.spec) {
+        return {
+          ...unit,
+          isOpen: !unit.isOpen,
+        };
+      } else {
+        return unit;
+      }
+    })
+  );
+  sendRequest<{}, IGroupOpenness[]>(
+    `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
+    'PUT'
+  ).catch(() => {
+    // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
+    // и отображаем сообщение об ошибке
+    setTreeUnitList(treeUnitList);
+    const id = newNotification({});
+    errorNotification({
+      id,
+      title: locale.dashboard.course.groupOpennessRequestFail,
+      autoClose: 5000,
+    });
+  });
+};
+
+const localCloseElementAndChildren = ({
+  currentUnit,
+  groupSpec,
+  treeUnitList,
+  setTreeUnitList,
+  locale,
+}: ILocalOpennessMethodInput): void => {
+  // текущий элемент и всего его дочерние компоненты - нам нужны только spec
+  const specList: string[] = [
+    currentUnit,
+    ...findChildrenAllLevels({
+      parent: currentUnit,
+      treeUnitList,
+    }),
+  ].map((element) => element.spec);
+  // делаем у всех из спика isOpen: false и сетаем стейт (оптимистичное обновление)
+  setTreeUnitList(
+    treeUnitList.map((unit) => {
+      if (specList.includes(unit.spec)) {
+        return { ...unit, isOpen: false };
+      } else {
+        return unit;
+      }
+    })
+  );
+  // в параллель делаем запрос на бэк с изменением видимости элемента для группы
+  sendRequest<{}, IGroupOpenness[]>(
+    `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
+    'PUT'
+  ).catch(() => {
+    // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
+    // и отображаем сообщение об ошибке
+    setTreeUnitList(treeUnitList);
+    const id = newNotification({});
+    errorNotification({
+      id,
+      title: locale.dashboard.course.groupOpennessRequestFail,
+      autoClose: 5000,
+    });
+  });
+};
+
+const localOpenElementAndParents = ({
+  currentUnit,
+  groupSpec,
+  locale,
+  setTreeUnitList,
+  treeUnitList,
+}: ILocalOpennessMethodInput): void => {
+  const parentSpecList: string[] = [currentUnit.spec];
+  let parent = getParent({
+    courseUnit: currentUnit,
+    courseUnitList: treeUnitList,
+  });
+  // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
+  while (parent.depth > 0) {
+    parentSpecList.push(parent.spec);
+    parent = getParent({
+      courseUnit: parent,
+      courseUnitList: treeUnitList,
+    });
+  }
+  // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
+  setTreeUnitList(
+    treeUnitList.map((unit) => {
+      if (parentSpecList.includes(unit.spec)) {
+        return {
+          ...unit,
+          isOpen: true,
+        };
+      } else {
+        return unit;
+      }
+    })
+  );
+  // в параллель делаем запрос на бэк с изменением видимости элемента для группы
+  sendRequest<{}, IGroupOpenness[]>(
+    `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
+    'PUT'
+  ).catch(() => {
+    // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
+    // и отображаем сообщение об ошибке
+    setTreeUnitList(treeUnitList);
+    const id = newNotification({});
+    errorNotification({
+      id,
+      title: locale.dashboard.course.groupOpennessRequestFail,
+      autoClose: 5000,
+    });
+  });
+};
+
 interface IUseCourseAddTree {
   treeUnitList: ITreeUnit[];
   actions: ICourseAddTreeActions;
@@ -1600,12 +1752,21 @@ interface IUseCourseGroupOpennessTreeProps {
   course: IUnit;
   allChildren: IUnit[];
   groupOpennessList: IGroupOpenness[];
+  groupSpec: string;
 }
 
 // интерфейс входных данных для локальных методов
 interface ILocalMethodInput {
   currentUnit: ITreeUnit;
   treeUnitList: ITreeUnit[];
+}
+
+interface ILocalOpennessMethodInput {
+  currentUnit: ITreeUnit;
+  treeUnitList: ITreeUnit[];
+  locale: ILocale;
+  setTreeUnitList: Dispatch<SetStateAction<ITreeUnit[]>>;
+  groupSpec: string;
 }
 
 export const useCourseAddTree = ({
@@ -1862,7 +2023,9 @@ export const useCourseGroupOpennessTree = ({
   course,
   allChildren,
   groupOpennessList,
+  groupSpec,
 }: IUseCourseGroupOpennessTreeProps) => {
+  const { locale } = useLocale();
   const [treeUnitList, setTreeUnitList] = useState<ITreeUnit[]>(
     createTreeUnitListGroupOpenness({
       course,
@@ -1884,6 +2047,38 @@ export const useCourseGroupOpennessTree = ({
     setTreeUnitList(newList);
   };
 
+  const toggleElementOpenness = ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => {
+    if (currentUnit.depth === 0) {
+      localToggleRoot({
+        currentUnit,
+        groupSpec,
+        locale,
+        setTreeUnitList,
+        treeUnitList,
+      });
+    } else {
+      currentUnit.isOpen
+        ? localCloseElementAndChildren({
+            currentUnit,
+            groupSpec,
+            treeUnitList,
+            locale,
+            setTreeUnitList,
+          })
+        : localOpenElementAndParents({
+            currentUnit,
+            groupSpec,
+            treeUnitList,
+            locale,
+            setTreeUnitList,
+          });
+    }
+  };
+
   const canToggleChildrenVisibility = ({
     currentUnit,
   }: {
@@ -1894,7 +2089,7 @@ export const useCourseGroupOpennessTree = ({
 
   return {
     treeUnitList,
-    actions: { toggleChildrenVisibility },
+    actions: { toggleChildrenVisibility, toggleElementOpenness },
     checkers: {
       canToggleChildrenVisibility,
     },

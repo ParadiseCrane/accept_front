@@ -21,7 +21,6 @@ import {
   IconLockCog,
 } from '@tabler/icons-react';
 
-import ChatPage from './ChatPage/ChatPage';
 import { ICourseModel } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';

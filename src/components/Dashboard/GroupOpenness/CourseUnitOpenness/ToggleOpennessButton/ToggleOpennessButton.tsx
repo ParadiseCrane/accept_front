@@ -8,7 +8,7 @@ import { FC } from 'react';
 interface IToggleOpennessButtonProps {
   styles: any;
   currentUnit: ITreeUnit;
-  toggleOpennessTreeUnit: (spec: string) => void;
+  toggleOpennessTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
   canToggleOpennessTreeUnit: boolean;
 }
 
@@ -29,7 +29,7 @@ export const ToggleOpennessButton: FC<IToggleOpennessButtonProps> = ({
       <ActionIcon
         variant="transparent"
         onClick={() => {
-          toggleOpennessTreeUnit(currentUnit.spec);
+          toggleOpennessTreeUnit({ currentUnit });
         }}
         disabled={!canToggleOpennessTreeUnit}
       >

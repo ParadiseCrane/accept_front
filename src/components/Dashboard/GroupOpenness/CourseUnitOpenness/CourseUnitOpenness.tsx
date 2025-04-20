@@ -13,12 +13,12 @@ export const CourseUnitOpenness = ({
   currentUnit,
   actions,
   checkers,
-  toggleGroupOpennessList,
+  toggleOpennessTreeUnit,
 }: {
   currentUnit: ITreeUnit;
   actions: ICourseShowTreeActions;
   checkers: ICourseShowTreeCheckers;
-  toggleGroupOpennessList: (spec: string) => Promise<void>;
+  toggleOpennessTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
 }) => {
   if (currentUnit.kind === 'course') {
     return (
@@ -46,7 +46,7 @@ export const CourseUnitOpenness = ({
           <ToggleOpennessButton
             styles={undefined}
             currentUnit={currentUnit}
-            toggleOpennessTreeUnit={toggleGroupOpennessList}
+            toggleOpennessTreeUnit={toggleOpennessTreeUnit}
             canToggleOpennessTreeUnit={true}
           />
         </Group>
@@ -80,7 +80,7 @@ export const CourseUnitOpenness = ({
           <ToggleOpennessButton
             styles={undefined}
             currentUnit={currentUnit}
-            toggleOpennessTreeUnit={toggleGroupOpennessList}
+            toggleOpennessTreeUnit={toggleOpennessTreeUnit}
             canToggleOpennessTreeUnit={true}
           />
         </Group>

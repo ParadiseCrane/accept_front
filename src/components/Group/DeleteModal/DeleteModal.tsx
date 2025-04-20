@@ -24,8 +24,12 @@ const DeleteModal: FC<{
       lang,
       (_: any) => '',
       undefined,
-      () => setActive(false)
-    ).then(refetchData);
+      () => {
+        setActive(false);
+        // TODO протестировать refetchData
+        refetchData && refetchData();
+      }
+    );
   }, [group.spec, locale, lang, refetchData]);
 
   return (

@@ -8,6 +8,7 @@ import { useLocale } from '@hooks/useLocale';
 import { InputWrapper } from '@ui/basics';
 import { FC, memo } from 'react';
 import { CourseUnitOpenness } from '../CourseUnitOpenness/CourseUnitOpenness';
+import { useSearchParams } from 'next/navigation';
 
 const flattenCourse = ({
   course,
@@ -35,12 +36,14 @@ const GroupOpennessTree: FC<{
   groupOpennessList: IGroupOpenness[];
   toggleGroupOpennessList: (spec: string) => Promise<void>;
 }> = ({ course, groupOpennessList, toggleGroupOpennessList }) => {
+  const params = useSearchParams();
   const units = flattenCourse({ course, children: course.children });
   const { locale } = useLocale();
   const { treeUnitList, actions, checkers } = useCourseGroupOpennessTree({
     course: units[0],
     allChildren: units,
     groupOpennessList,
+    groupSpec: params.get('group')!,
   });
 
   return (
@@ -53,7 +56,7 @@ const GroupOpennessTree: FC<{
             actions={actions}
             checkers={checkers}
             key={unit.spec}
-            toggleGroupOpennessList={toggleGroupOpennessList}
+            toggleOpennessTreeUnit={actions.toggleElementOpenness}
           />
         ))}
     </InputWrapper>

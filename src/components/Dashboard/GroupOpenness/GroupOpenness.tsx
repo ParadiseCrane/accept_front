@@ -68,6 +68,11 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
       </div>
     );
 
+  if (params && params.get('group') && params.get('group') === 'all') {
+    // TODO добавить надпись, что группа не выбрана
+    return null;
+  }
+
   return (
     <GroupOpennessTree
       course={course}

@@ -21,4 +21,5 @@ export const course = {
   groupName: 'Название группы',
   actions: 'Действия',
   chatNoGroupSelected: 'Выберите группу для просмотра чата',
+  groupOpennessRequestFail: 'Не удалось изменить открытость элемента',
 };
