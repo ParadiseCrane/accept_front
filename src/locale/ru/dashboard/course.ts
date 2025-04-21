@@ -15,6 +15,7 @@ export const course = {
   addModerator: 'Добавить модератора',
   chooseGroup: 'Выберите группу',
   chooseModerator: 'Выберите модератора',
+  noModeratorFound: 'Пользователь не найден',
   noUsersNotification:
     'Пользователи для выбранной группы не найдены. Невозможно создать уведомление',
   inviteLink: 'Ссылка-приглашение для группы',

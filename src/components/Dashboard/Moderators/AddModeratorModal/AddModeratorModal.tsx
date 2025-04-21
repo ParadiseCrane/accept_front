@@ -4,7 +4,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import { useCallback, useEffect, useState } from 'react';
 
 import styles from './styles.module.css';
-import { ComboboxItem, Modal as MantineModal } from '@mantine/core';
+import { ComboboxItem } from '@mantine/core';
 import { useParams } from 'next/navigation';
 import { sendRequest } from '@requests/request';
 import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
@@ -30,17 +30,16 @@ export const AddModeratorModal = ({
     setShowModal(false);
     setUser(null);
     setGroup(null);
-    setAllUsers([]);
-    setGroupsWithoutModerator([]);
-    close();
   };
 
   const fetchAllGroupsData = useCallback(async () => {
     if (pathParams && pathParams.spec) {
+      // получаем все группы
       const allGroupsResponse = await sendRequest<{}, IGroupBaseInfo[]>(
         `course/groups/${pathParams.spec}`,
         'GET'
       );
+      // получаем группы, где есть модератор
       const moderatorGroupsResponse = await sendRequest<
         {},
         ICourseModeratorGroup[]
@@ -49,36 +48,35 @@ export const AddModeratorModal = ({
         const specs = moderatorGroupsResponse.response.map(
           (group) => group.group.spec
         );
+        // фильтруем группы, оставляя только группы без модератора
         const filter = allGroupsResponse.response
           .map<ComboboxItem>((group) => {
             return { label: group.name, value: group.spec };
           })
           .filter((group) => !specs.includes(group.value));
+        // сетаем группы без модератора
         setGroupsWithoutModerator(filter);
       }
     }
   }, [pathParams]);
 
   const fetchUsersForGroup = useCallback(async () => {
-    if (group && pathParams) {
-      const allUsersForGroupResponse = await sendRequest<{}, IUserDisplay[]>(
-        `course/participant/${pathParams.spec}/${group.value}`,
-        'GET'
+    const allUsersForGroupResponse = await sendRequest<{}, IUserDisplay[]>(
+      'user/list-display',
+      'GET'
+    );
+    if (!allUsersForGroupResponse.error) {
+      setAllUsers(
+        allUsersForGroupResponse.response.map<ComboboxItem>((user) => {
+          return { label: user.shortName, value: user.login };
+        })
       );
-      if (!allUsersForGroupResponse.error) {
-        setAllUsers(
-          allUsersForGroupResponse.response.map<ComboboxItem>((user) => {
-            return { label: user.shortName, value: user.login };
-          })
-        );
-        setUser(null);
-      }
+      setUser(null);
     }
-  }, [group]);
+  }, []);
 
   const addModerator = useCallback(async () => {
     if (user && group) {
-      console.log('I will send', { user: user, group: group });
       await sendRequest<{}, {}>(
         `course_moderator/${pathParams.spec}/${user.value}/${group.value}`,
         'POST'
@@ -87,14 +85,11 @@ export const AddModeratorModal = ({
   }, [user, group]);
 
   useEffect(() => {
-    fetchAllGroupsData();
+    if (showModal) {
+      fetchAllGroupsData();
+      fetchUsersForGroup();
+    }
   }, [pathParams, showModal]);
-
-  useEffect(() => {
-    fetchUsersForGroup();
-  }, [group]);
-
-  // if (groupsWithoutModerator.length === 0) return null;
 
   return (
     <>
@@ -121,14 +116,15 @@ export const AddModeratorModal = ({
             clearable={false}
             allowDeselect={false}
             size="lg"
-            data={groupsWithoutModerator}
-            onChange={(value: string | null, option: ComboboxItem) => {
+            data={
+              groupsWithoutModerator.length ? groupsWithoutModerator : undefined
+            }
+            onChange={(_: string | null, option: ComboboxItem) => {
               setGroup(option);
-              setAllUsers([]);
-              setUser(null);
             }}
           />
           <Select
+            searchable={true}
             disabled={false}
             value={user ? user.value : null}
             placeholder={locale.dashboard.course.chooseModerator}
@@ -138,8 +134,8 @@ export const AddModeratorModal = ({
             clearable={false}
             allowDeselect={true}
             size="lg"
-            data={allUsers.length > 0 ? allUsers : undefined}
-            onChange={(value: string | null, option: ComboboxItem) =>
+            data={allUsers.length ? allUsers : undefined}
+            onChange={(_: string | null, option: ComboboxItem) =>
               setUser(option)
             }
           />

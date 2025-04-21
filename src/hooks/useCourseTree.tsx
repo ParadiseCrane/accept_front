@@ -140,10 +140,8 @@ const createTreeUnit = ({
           courseUnit: courseUnit,
           courseUnitList: courseUnitList,
         }),
-    visible:
-      (visible ?? courseUnit.order.split('|').length === 1) ? true : false,
-    childrenVisible:
-      (childrenVisible ?? courseUnit.order === '0') ? true : false,
+    visible: visible ?? courseUnit.order.split('|').length === 1 ? true : false,
+    childrenVisible: childrenVisible ?? courseUnit.order === '0' ? true : false,
     isOpen,
   };
 };
@@ -1544,18 +1542,28 @@ const localToggleRoot = ({
   setTreeUnitList,
   treeUnitList,
 }: ILocalOpennessMethodInput): void => {
-  setTreeUnitList(
-    treeUnitList.map((unit) => {
-      if (unit.spec === currentUnit.spec) {
-        return {
-          ...unit,
-          isOpen: !unit.isOpen,
-        };
-      } else {
-        return unit;
-      }
-    })
-  );
+  // если мы закрываем корень, то закрываем все элементы, иначе открываем только корень
+  if (currentUnit.isOpen) {
+    setTreeUnitList(
+      treeUnitList.map((unit) => ({
+        ...unit,
+        isOpen: false,
+      }))
+    );
+  } else {
+    setTreeUnitList(
+      treeUnitList.map((unit) => {
+        if (unit.spec === currentUnit.spec) {
+          return {
+            ...unit,
+            isOpen: true,
+          };
+        } else {
+          return unit;
+        }
+      })
+    );
+  }
   sendRequest<{}, IGroupOpenness[]>(
     `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
     'PUT'
@@ -1627,7 +1635,7 @@ const localOpenElementAndParents = ({
     courseUnitList: treeUnitList,
   });
   // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
-  while (parent.depth > 0) {
+  while (parent.depth >= 0) {
     parentSpecList.push(parent.spec);
     parent = getParent({
       courseUnit: parent,

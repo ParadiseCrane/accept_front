@@ -15,6 +15,7 @@ export const course = {
   addModerator: 'Add moderator',
   chooseGroup: 'Choose group',
   chooseModerator: 'Choose moderator',
+  noModeratorFound: 'No user found',
   noUsersNotification:
     'No users found for the selected group. Cannot create a notification',
   inviteLink: 'Invite link for the group',
