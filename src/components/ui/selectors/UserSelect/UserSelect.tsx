@@ -1,4 +1,4 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
+import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
 import React, { ComponentPropsWithoutRef, FC, memo } from 'react';
 
 import UserMultiSelect from './UserMultiSelect';
@@ -9,14 +9,15 @@ export interface UserItemProps extends ComponentPropsWithoutRef<'div'> {
   label: string;
   role: string;
   value: string;
+  disabled?: boolean;
 }
 
 export interface UserSelectProps {
   label: string;
   placeholder: string;
   nothingFound: string;
-  users: IUserDisplay[];
-  select: (_: IUserDisplay[] | undefined) => void;
+  users: IParticipant[] | IUserDisplay[];
+  select: (_: IParticipant[] | IUserDisplay[] | undefined) => void;
   additionalProps?: any;
   multiple?: boolean;
 }

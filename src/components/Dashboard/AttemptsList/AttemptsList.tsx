@@ -1,7 +1,7 @@
 import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
-import { IUserDisplay } from '@custom-types/data/IUser';
+import { IParticipantListBundle, IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
@@ -158,6 +158,12 @@ const AttemptList: FC<{
     undefined
   );
 
+  const { data: userData } = useRequest<{}, IParticipantListBundle>(
+    `${type}/bundle-participants/${spec}`,
+    'GET',
+    undefined
+  );
+
   return (
     <div className={styles.wrapper}>
       {isFinished && (
@@ -181,7 +187,7 @@ const AttemptList: FC<{
           label={locale.dashboard.attemptsList.user.label}
           placeholder={locale.dashboard.attemptsList.user.placeholder}
           nothingFound={locale.dashboard.attemptsList.user.nothingFound}
-          users={data?.users || []}
+          users={userData?.users || []}
           select={(users: IUserDisplay[] | undefined) => {
             if (users) setUserSearch(users.map((user) => user.login));
             else setUserSearch([]);

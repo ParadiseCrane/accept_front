@@ -21,40 +21,80 @@ export const NavBlock: FC<{
 
   if (currentUnit.kind === 'course') {
     return (
-      <div
-        className={styles.box_wrapper}
-        style={{
-          paddingLeft: `${currentUnit.depth}rem`,
-          backgroundColor: active ? 'var(--dark7)' : '',
-        }}
+      <Anchor
+        href={`#${currentUnit.spec}`}
+        onClick={() =>
+          checkers.canToggleChildrenVisibility({ currentUnit }) &&
+          actions.toggleChildrenVisibility({ currentUnit })
+        }
+        underline="never"
+        c="dark"
       >
-        <div className={styles.box}>
-          <Tip
-            label={currentUnit.title}
-            openDelay={tooltipOpenDelay}
-            position="top"
-          >
-            <Anchor
-              href={`#${currentUnit.spec}`}
-              underline="never"
-              c={'dark'}
-              className={styles.title}
+        <div
+          className={styles.box_wrapper}
+          style={{
+            paddingLeft: `${currentUnit.depth}rem`,
+            backgroundColor: active ? 'var(--dark7)' : '',
+          }}
+        >
+          <div className={styles.box}>
+            <Tip
+              label={currentUnit.title}
+              openDelay={tooltipOpenDelay}
+              position="top"
             >
-              {currentUnit.title}
-            </Anchor>
-          </Tip>
-          <ToggleVisibilityButton
-            currentUnit={currentUnit}
-            canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
-            toggleChildrenVisibility={actions.toggleChildrenVisibility}
-          />
+              <div className={styles.title}>{currentUnit.title}</div>
+            </Tip>
+            <ToggleVisibilityButton
+              currentUnit={currentUnit}
+              canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
+              toggleChildrenVisibility={actions.toggleChildrenVisibility}
+            />
+          </div>
         </div>
-      </div>
+      </Anchor>
     );
   }
 
   if (currentUnit.kind === 'unit') {
     return (
+      <Anchor
+        href={`#${currentUnit.spec}`}
+        onClick={() =>
+          checkers.canToggleChildrenVisibility({ currentUnit }) &&
+          actions.toggleChildrenVisibility({ currentUnit })
+        }
+        underline="never"
+        c="dark"
+      >
+        <div
+          className={styles.box_wrapper}
+          style={{
+            paddingLeft: `${1.375 * currentUnit.depth}rem`,
+            backgroundColor: active ? 'var(--dark7)' : '',
+          }}
+        >
+          <div className={styles.box}>
+            <Tip
+              label={currentUnit.title}
+              openDelay={tooltipOpenDelay}
+              position="top"
+            >
+              <div className={styles.title}>{currentUnit.title}</div>
+            </Tip>
+            <ToggleVisibilityButton
+              currentUnit={currentUnit}
+              canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
+              toggleChildrenVisibility={actions.toggleChildrenVisibility}
+            />
+          </div>
+        </div>
+      </Anchor>
+    );
+  }
+
+  return (
+    <Anchor href={`#${currentUnit.spec}`} underline="never" c="dark">
       <div
         className={styles.box_wrapper}
         style={{
@@ -68,49 +108,10 @@ export const NavBlock: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
           >
-            <Anchor
-              href={`#${currentUnit.spec}`}
-              underline="never"
-              c={'dark'}
-              className={styles.title}
-            >
-              {currentUnit.title}
-            </Anchor>
+            <div className={styles.title}>{currentUnit.title}</div>
           </Tip>
-          <ToggleVisibilityButton
-            currentUnit={currentUnit}
-            canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
-            toggleChildrenVisibility={actions.toggleChildrenVisibility}
-          />
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div
-      className={styles.box_wrapper}
-      style={{
-        paddingLeft: `${1.375 * currentUnit.depth}rem`,
-        backgroundColor: active ? 'var(--dark7)' : '',
-      }}
-    >
-      <div className={styles.box}>
-        <Tip
-          label={currentUnit.title}
-          openDelay={tooltipOpenDelay}
-          position="top"
-        >
-          <Anchor
-            href={`#${currentUnit.spec}`}
-            underline="never"
-            c={'dark'}
-            className={styles.title}
-          >
-            {currentUnit.title}
-          </Anchor>
-        </Tip>
-      </div>
-    </div>
+    </Anchor>
   );
 };

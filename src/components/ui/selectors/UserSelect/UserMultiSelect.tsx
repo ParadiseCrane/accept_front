@@ -1,4 +1,4 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
+import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
 import { SelectItem } from '@custom-types/ui/atomic';
 import { ComboboxItem, Text } from '@mantine/core';
 import { MultiSelect, UserAvatar } from '@ui/basics';
@@ -58,6 +58,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
+            disabled: 'banned' in item ? item.banned : undefined,
           }) as UserItemProps
       ),
     [users]
@@ -71,7 +72,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
       }
       const map = new Map(users.map((item) => [item.login, item]));
 
-      select(logins.map((item) => map.get(item) as IUserDisplay));
+      select(logins.map((item) => map.get(item) as IParticipant));
     },
     [select, users]
   );

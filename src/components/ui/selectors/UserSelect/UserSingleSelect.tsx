@@ -57,6 +57,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
+            disabled: 'banned' in item ? item.banned : undefined,
           }) as UserItemProps
       ),
     [users]
