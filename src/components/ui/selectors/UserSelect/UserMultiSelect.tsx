@@ -1,6 +1,6 @@
 import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
 import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem, Text } from '@mantine/core';
+import { ComboboxItem, Group, SelectProps, Text } from '@mantine/core';
 import { MultiSelect, UserAvatar } from '@ui/basics';
 import Link from 'next/link';
 import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
@@ -8,6 +8,7 @@ import { Eye } from 'tabler-icons-react';
 
 import { UserItemProps, UserSelectProps } from './UserSelect';
 import styles from './userSelect.module.css';
+import { IconCheck } from '@tabler/icons-react';
 
 const UserMultiSelect: FC<UserSelectProps> = ({
   label,
@@ -17,6 +18,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
   select,
   multiple,
   additionalProps,
+  renderOption,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
     ({ login, label, value, ...others }: UserItemProps, ref) => (
@@ -58,7 +60,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
-            disabled: 'banned' in item ? item.banned : undefined,
+            // disabled: 'banned' in item ? item.banned : undefined,
           }) as UserItemProps
       ),
     [users]
@@ -100,6 +102,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
           onSelect(logins);
           additionalProps?.onChange(logins);
         }}
+        renderOption={renderOption}
       />
     </>
   );

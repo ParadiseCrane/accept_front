@@ -16,6 +16,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
   select,
   multiple,
   additionalProps,
+  renderOption,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
     ({ login, label, value, ...others }: UserItemProps, ref) => (
@@ -57,7 +58,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
-            disabled: 'banned' in item ? item.banned : undefined,
+            // disabled: 'banned' in item ? item.banned : undefined,
           }) as UserItemProps
       ),
     [users]
@@ -100,6 +101,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
           onSelect(login);
           additionalProps?.onChange(login);
         }}
+        renderOption={renderOption}
       />
     </>
   );

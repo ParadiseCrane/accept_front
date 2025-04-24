@@ -1,7 +1,11 @@
 import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
-import { IParticipantListBundle, IUserDisplay } from '@custom-types/data/IUser';
+import {
+  IParticipant,
+  IParticipantListBundle,
+  IUserDisplay,
+} from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
@@ -16,6 +20,8 @@ import Link from 'next/link';
 import { FC, memo, useCallback, useState } from 'react';
 
 import styles from './attemptsList.module.css';
+import { Group, SelectProps } from '@mantine/core';
+import { IconCheck } from '@tabler/icons-react';
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -164,6 +170,33 @@ const AttemptList: FC<{
     undefined
   );
 
+  const iconProps = {
+    stroke: 1.5,
+    color: 'currentColor',
+    opacity: 0.6,
+    size: 18,
+  };
+
+  const renderSelectOption: SelectProps['renderOption'] = ({
+    option,
+    checked,
+  }) => {
+    return (
+      <Group flex="1" gap="xs">
+        <span
+          style={{
+            color: option.value.includes('banned') ? 'grey' : undefined,
+          }}
+        >
+          {option.label}
+        </span>
+        {checked && (
+          <IconCheck style={{ marginInlineStart: 'auto' }} {...iconProps} />
+        )}
+      </Group>
+    );
+  };
+
   return (
     <div className={styles.wrapper}>
       {isFinished && (
@@ -187,12 +220,29 @@ const AttemptList: FC<{
           label={locale.dashboard.attemptsList.user.label}
           placeholder={locale.dashboard.attemptsList.user.placeholder}
           nothingFound={locale.dashboard.attemptsList.user.nothingFound}
-          users={userData?.users || []}
+          users={
+            userData?.users
+              ? userData.users.map((user) => {
+                  if (user.banned) {
+                    return {
+                      ...user,
+                      login: `${user.login}banned`,
+                    } as IParticipant;
+                  } else {
+                    return user;
+                  }
+                })
+              : []
+          }
           select={(users: IUserDisplay[] | undefined) => {
-            if (users) setUserSearch(users.map((user) => user.login));
+            if (users)
+              setUserSearch(
+                users.map((user) => user.login.replace('banned', ''))
+              );
             else setUserSearch([]);
           }}
           multiple
+          renderOption={renderSelectOption}
         />
         <TaskSelect
           label={locale.dashboard.attemptsList.task.label}

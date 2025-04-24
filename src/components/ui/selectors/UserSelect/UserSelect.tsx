@@ -1,15 +1,15 @@
 import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
-import React, { ComponentPropsWithoutRef, FC, memo } from 'react';
+import React, { ComponentPropsWithoutRef, FC, memo, ReactNode } from 'react';
 
 import UserMultiSelect from './UserMultiSelect';
 import UserSingleSelect from './UserSingleSelect';
+import { ComboboxItem, ComboboxLikeRenderOptionInput } from '@mantine/core';
 
 export interface UserItemProps extends ComponentPropsWithoutRef<'div'> {
   login: string;
   label: string;
   role: string;
   value: string;
-  disabled?: boolean;
 }
 
 export interface UserSelectProps {
@@ -20,6 +20,9 @@ export interface UserSelectProps {
   select: (_: IParticipant[] | IUserDisplay[] | undefined) => void;
   additionalProps?: any;
   multiple?: boolean;
+  renderOption?:
+    | ((item: ComboboxLikeRenderOptionInput<ComboboxItem>) => ReactNode)
+    | undefined;
 }
 
 const UserSelect: FC<UserSelectProps> = ({ multiple, ...props }) => {
