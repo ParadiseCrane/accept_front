@@ -3,4 +3,6 @@ export const list = {
   author: 'Автор',
   complexity: 'Сложность',
   verdict: 'Вердикт',
+  public: 'Публичная',
+  publicTag: 'Публичный',
 };

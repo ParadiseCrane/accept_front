@@ -1,7 +1,11 @@
 import { Tooltip, TooltipProps } from '@mantine/core';
 import { FC, memo } from 'react';
 
-const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
+interface ITipProps extends TooltipProps {
+  spanStyle?: string;
+}
+
+const Tip: FC<ITipProps> = ({ children, spanStyle, ...tipProps }) => {
   return (
     <Tooltip
       withArrow
@@ -19,7 +23,7 @@ const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
       }}
       {...tipProps}
     >
-      <span>{children}</span>
+      <span className={spanStyle}>{children}</span>
     </Tooltip>
   );
 };

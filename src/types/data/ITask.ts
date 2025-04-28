@@ -53,6 +53,7 @@ export interface ITaskDisplay {
   insertedDate: Date;
   complexity: number;
   status?: IAttemptStatus;
+  organization?: string;
 }
 
 export interface ITaskDisplayWithPublic extends ITaskDisplay {

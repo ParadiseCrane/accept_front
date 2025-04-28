@@ -5,6 +5,8 @@ import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import tableStyles from '@styles/ui/customTable.module.css';
+import { IconUsersGroup } from '@tabler/icons-react';
+import { Tip } from '@ui/basics';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import TaskList from '@ui/TaskList/TaskList';
 import Title from '@ui/Title/Title';
@@ -14,6 +16,22 @@ import { ReactNode } from 'react';
 import { Plus } from 'tabler-icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
+  {
+    label: '',
+    key: 'public',
+    sortable: true,
+    sortFunction: (a: any, b: any) =>
+      a.public.value > b.public.value
+        ? 1
+        : a.public.value == b.public.value
+          ? 0
+          : -1,
+    sorted: 0,
+    allowMiddleState: true,
+    hidable: false,
+    hidden: false,
+    size: 1.2,
+  },
   {
     label: locale.task.list.title,
     key: 'title',
@@ -81,8 +99,17 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     size: 2,
   },
 ];
-const refactorTask = (task: ITaskDisplay): any => ({
+
+const refactorTask = (task: ITaskDisplay, locale: ILocale): any => ({
   ...task,
+  public: {
+    value: task.organization === 'public' ? true : false,
+    display: task.organization === 'public' && (
+      <Tip label={locale.task.list.public} spanStyle={tableStyles.spanStyle}>
+        <IconUsersGroup className={tableStyles.icon} />
+      </Tip>
+    ),
+  },
   author: {
     value: task.author,
     display: task.author,
@@ -117,11 +144,22 @@ const refactorTask = (task: ITaskDisplay): any => ({
         </Link>
         {task.tags.length > 0 && (
           <span className={tableStyles.tags}>
-            {task.tags.map((tag, idx) => (
-              <div className={tableStyles.tag} key={idx}>
-                {tag.title + (idx == task.tags.length - 1 ? '' : ', ')}
-              </div>
-            ))}
+            {task.tags.map((tag, idx) =>
+              task.organization === 'public' ? (
+                <div
+                  className={`${tableStyles.tag} ${tableStyles.bold}`}
+                  key={idx}
+                >
+                  <Tip label={locale.task.list.publicTag}>
+                    {tag.title + (idx == task.tags.length - 1 ? '' : ', ')}
+                  </Tip>
+                </div>
+              ) : (
+                <div className={tableStyles.tag} key={idx}>
+                  {tag.title + (idx == task.tags.length - 1 ? '' : ', ')}
+                </div>
+              )
+            )}
           </span>
         )}
       </div>
@@ -137,7 +175,7 @@ function TaskListPage() {
       <Title title={locale.titles.task.list} />
       <TaskList
         url={'bundle/task_list'}
-        refactorTask={refactorTask}
+        refactorTask={(_) => refactorTask(_, locale)}
         initialColumns={initialColumns}
       />
       {isTeacher && (

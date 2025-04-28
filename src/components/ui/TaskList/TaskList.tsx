@@ -90,7 +90,7 @@ const TaskList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [],
+    sort_by: [{ field: 'public', order: -1 }],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value', 'verdict.value.shortText'],

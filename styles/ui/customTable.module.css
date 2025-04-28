@@ -72,10 +72,22 @@
 }
 
 .title {
+  display: flex;
   text-decoration: none;
   text-align: left;
   font-size: 1.15em;
   color: var(--primary);
+}
+
+.spanStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.icon {
+  /* height: 2em; */
 }
 
 .title:hover {
@@ -90,6 +102,10 @@
   flex-wrap: wrap;
   text-align: right;
   color: grey;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .groups {

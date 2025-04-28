@@ -48,7 +48,6 @@ function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
     children: course.children,
   });
   const [openModal, setOpenModal] = useState(false);
-  console.log('isModerator', isModerator);
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers, array] = useMoveThroughArray(
