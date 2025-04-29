@@ -43,6 +43,7 @@ const TaskList: FC<{
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
+  sortByPublic?: boolean;
 }> = ({
   url,
   classNames,
@@ -51,6 +52,7 @@ const TaskList: FC<{
   noDefault,
   empty,
   defaultRowsOnPage,
+  sortByPublic,
 }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(
@@ -90,7 +92,7 @@ const TaskList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'public', order: -1 }],
+    sort_by: sortByPublic ? [{ field: 'public', order: -1 }] : [],
     search_params: {
       search: '',
       keys: ['title.value', 'author.value', 'verdict.value.shortText'],

@@ -53,7 +53,7 @@ const Description: FC<{
         </div>
       </div>
       <div className={styles.tags}>
-        <TagList tags={assignment.tags} />
+        <TagList tags={assignment.tags} locale={locale} />
       </div>
       <div className={styles.description}>
         <TipTapEditor

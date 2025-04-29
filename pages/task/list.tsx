@@ -145,7 +145,7 @@ const refactorTask = (task: ITaskDisplay, locale: ILocale): any => ({
         {task.tags.length > 0 && (
           <span className={tableStyles.tags}>
             {task.tags.map((tag, idx) =>
-              task.organization === 'public' ? (
+              tag.organization === 'public' ? (
                 <div
                   className={`${tableStyles.tag} ${tableStyles.bold}`}
                   key={idx}
@@ -177,6 +177,7 @@ function TaskListPage() {
         url={'bundle/task_list'}
         refactorTask={(_) => refactorTask(_, locale)}
         initialColumns={initialColumns}
+        sortByPublic={true}
       />
       {isTeacher && (
         <SingularSticky

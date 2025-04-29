@@ -10,6 +10,8 @@ import { FC, memo, useEffect } from 'react';
 import { AlertCircle } from 'tabler-icons-react';
 
 import styles from './description.module.css';
+import { IconUsersGroup } from '@tabler/icons-react';
+import { Tip } from '@ui/basics';
 
 const Description: FC<{
   task: ITask;
@@ -35,6 +37,11 @@ const Description: FC<{
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
         <div className={styles.title}>{task.title}</div>
+        {task.organization === 'public' && (
+          <Tip label={locale.task.list.public}>
+            <IconUsersGroup style={{ marginRight: '10px' }} />
+          </Tip>
+        )}
         <div
           className={styles.complexity}
         >{`${locale.task.complexity} ${task.complexity}%`}</div>
@@ -48,7 +55,7 @@ const Description: FC<{
         >{`${locale.task.constraints.time}: ${task.constraints.time}s`}</div>
       </div>
       <div className={styles.tags}>
-        <TagList tags={task.tags} />
+        <TagList tags={task.tags} locale={locale} />
       </div>
       <div className={styles.description}>
         <TipTapEditor

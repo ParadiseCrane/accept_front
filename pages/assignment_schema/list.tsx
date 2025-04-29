@@ -10,7 +10,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
+import { MultiSelect, Tip } from '@ui/basics';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Table from '@ui/Table/Table';
 import Title from '@ui/Title/Title';
@@ -85,12 +85,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const processData = (
-  data: IAssignmentSchemaListBundle
-): {
-  assignment_schemas: IAssignmentSchemaDisplayList[];
-  tags: ITag[];
-} => {
+const processData = (data: IAssignmentSchemaListBundle, locale: ILocale) => {
   const assignment_schemas = data.assignment_schemas.map(
     (assignment_schema: IAssignmentSchemaDisplay): any => ({
       ...assignment_schema,
@@ -110,12 +105,33 @@ const processData = (
             </Link>
             {assignment_schema.tags.length > 0 && (
               <span className={tableStyles.tags}>
-                {assignment_schema.tags.map((tag, idx) => (
-                  <div className={tableStyles.tag} key={idx}>
-                    {tag.title +
-                      (idx == assignment_schema.tags.length - 1 ? '' : ', ')}
-                  </div>
-                ))}
+                {assignment_schema.tags.map(
+                  (tag, idx) =>
+                    tag.organization === 'public' ? (
+                      <div
+                        className={`${tableStyles.tag} ${tableStyles.bold}`}
+                        key={idx}
+                      >
+                        <Tip label={locale.task.list.publicTag}>
+                          {tag.title +
+                            (idx == assignment_schema.tags.length - 1
+                              ? ''
+                              : ', ')}
+                        </Tip>
+                      </div>
+                    ) : (
+                      <div className={tableStyles.tag} key={idx}>
+                        {tag.title +
+                          (idx == assignment_schema.tags.length - 1
+                            ? ''
+                            : ', ')}
+                      </div>
+                    )
+                  // <div className={tableStyles.tag} key={idx}>
+                  //   {tag.title +
+                  //     (idx == assignment_schema.tags.length - 1 ? '' : ', ')}
+                  // </div>
+                )}
               </span>
             )}
           </div>
@@ -175,7 +191,14 @@ function AssignmentList() {
       assignment_schemas: IAssignmentSchemaDisplayList[];
       tags: ITag[];
     }
-  >('assignment_schema/list', 'GET', undefined, processData);
+  >(
+    'assignment_schema/list',
+    'GET',
+    undefined,
+    (data: IAssignmentSchemaListBundle) => {
+      return processData(data, locale);
+    }
+  );
 
   const applyFilters = useCallback(
     (data: IAssignmentSchemaDisplayList[]) => {
