@@ -8,6 +8,7 @@ export const auth = {
   submit: 'Войти',
   login: 'Вход',
   registration: 'Регистрация',
+  joinOrganization: 'Вступить в организацию',
   placeholders,
   labels,
   errors,

@@ -31,6 +31,8 @@ import {
 import ChatPage from './ChatPage/ChatPage';
 import CreateNotification from './CreateNotification/CreateNotification';
 import TaskList from './TaskList/TaskList';
+import AIProbabilityList from './AIProbabilityList/AIProbabilityList';
+import { IconRobot } from '@tabler/icons-react';
 
 const AssignmentDashboard: FC<{
   spec: string;
@@ -119,6 +121,20 @@ const AssignmentDashboard: FC<{
         icon: <AlignRight color="var(--secondary)" />,
         title: locale.dashboard.assignment.attempts,
         section: 'attempts',
+      },
+      {
+        page: assignment && (
+          <AIProbabilityList
+            type={'assignment'}
+            spec={assignment.spec}
+            shouldNotRefetch={assignment.status.spec != 1}
+            isFinished={assignment.status.spec == 2}
+            endDate={assignment.end}
+          />
+        ),
+        icon: <IconRobot color="var(--secondary)" />,
+        title: locale.dashboard.assignment.aiProbability,
+        section: 'ai_probability',
       },
       {
         page: <ParticipantsList type={'assignment'} spec={spec} />,

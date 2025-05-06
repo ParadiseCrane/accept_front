@@ -37,4 +37,5 @@ export interface IAttempt {
   task: ITaskBaseInfo;
   author: IUserDisplay;
   banInfo?: IBanInfo;
+  ai_generated?: number;
 }

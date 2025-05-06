@@ -4,10 +4,9 @@ import { IOrganization } from '@custom-types/data/IOrganization';
 import { SelectItem } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
-import { organization } from '@locale/en/organization';
 import { useForm } from '@mantine/form';
 import styles from '@styles/auth/login.module.css';
-import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
+import { Button, PasswordInput, Select, TextInput, Tip } from '@ui/basics';
 import { getOrganizationFromLS } from '@utils/manageLocalStorage';
 import {
   errorNotification,
@@ -167,14 +166,26 @@ const LoginForm: FC<{
           size="lg"
           {...form.getInputProps('password')}
         />
-        <Button
-          type="button"
-          onClick={(_) => handleSignIn(form.values)}
-          disabled={Object.keys(form.errors).length > 0 || loading}
-          className={styles.enterButton}
-        >
-          {locale.auth.submit}
-        </Button>
+        <div className={styles.row}>
+          <Button
+            type="button"
+            onClick={(_) => handleSignIn(form.values)}
+            disabled={Object.keys(form.errors).length > 0 || loading}
+            className={styles.enterButton}
+          >
+            {locale.auth.submit}
+          </Button>
+          <Tip label={locale.todo.title} spanStyle={styles.spanStyle}>
+            <Button
+              type="button"
+              // TODO добавить реальный запрос
+              disabled={true}
+              className={styles.enterButton}
+            >
+              {locale.auth.joinOrganization}
+            </Button>
+          </Tip>
+        </div>
       </form>
       <div className={styles.footer}>
         <div className={styles.footerLine}>

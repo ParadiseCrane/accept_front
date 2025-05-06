@@ -2,6 +2,7 @@ export const tournament = {
   mainInfo: 'Главная',
   results: 'Таблица результатов',
   attempts: 'Попытки',
+  aiProbability: 'Вероятность AI',
   bannedAttempts: 'Забаненные попытки',
   teams: 'Команды',
   settings: {

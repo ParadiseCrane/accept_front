@@ -40,6 +40,8 @@ import Results from './Results/Results';
 import Settings from './Settings/Settings';
 import TaskList from './TaskList/TaskList';
 import TeamList from './TeamList/TeamList';
+import AIProbabilityList from './AIProbabilityList/AIProbabilityList';
+import { IconRobot } from '@tabler/icons-react';
 
 const TournamentDashboard: FC<{
   spec: string;
@@ -129,6 +131,21 @@ const TournamentDashboard: FC<{
         icon: <AlignRight color="var(--secondary)" />,
         title: locale.dashboard.tournament.attempts,
         section: 'attempts',
+      },
+      {
+        page: tournament && (
+          <AIProbabilityList
+            key={'all'}
+            type={'tournament'}
+            spec={tournament.spec}
+            shouldNotRefetch={tournament.status.spec != 1}
+            isFinished={tournament.status.spec == 2}
+            endDate={tournament.end}
+          />
+        ),
+        icon: <IconRobot color="var(--secondary)" />,
+        title: locale.dashboard.tournament.aiProbability,
+        section: 'ai_probability',
       },
       {
         page: (
