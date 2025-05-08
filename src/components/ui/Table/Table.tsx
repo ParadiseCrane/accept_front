@@ -36,6 +36,7 @@ const Table: FC<{
   isEmpty?: boolean;
   nothingFound?: ReactNode;
   emptyTableButton?: ReactNode;
+  customSort?: (key: string, order: -1 | 0 | 1) => void;
 }> = ({
   columns,
   classNames,
@@ -53,6 +54,7 @@ const Table: FC<{
   isEmpty,
   nothingFound,
   emptyTableButton,
+  customSort,
 }) => {
   const { locale } = useLocale();
 
@@ -264,7 +266,7 @@ const Table: FC<{
                   columns={localColumns}
                   classNames={classNames}
                   rows={localRows}
-                  sort={sort}
+                  sort={customSort ?? sort}
                 />
               </div>
               <PageNavigation

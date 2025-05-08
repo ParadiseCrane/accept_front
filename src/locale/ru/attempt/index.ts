@@ -3,6 +3,7 @@ export const attempt = {
   task: 'Задача',
   language: 'Язык',
   result: 'Результат',
+  aiProbability: 'Вероятность AI',
   verdict: 'Вердикт',
   status: 'Статус',
   banReason: 'Причина бана',
@@ -15,12 +16,7 @@ export const attempt = {
   time: 'Время',
   memory: 'Память',
   test: 'Тест',
-  statuses: [
-    'В очереди',
-    'Тестируется',
-    'Протестирована',
-    'Забанена',
-  ],
+  statuses: ['В очереди', 'Тестируется', 'Протестирована', 'Забанена'],
   pages: {
     info: 'Информация',
     code: 'Посылка',

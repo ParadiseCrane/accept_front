@@ -16,6 +16,7 @@ export interface IAttemptDisplay {
   verdict?: ITestResultDisplay;
   task: ITaskBaseInfo;
   author: string;
+  ai_generated?: number;
 }
 
 export interface IBanInfo {

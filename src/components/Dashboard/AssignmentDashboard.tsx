@@ -128,8 +128,6 @@ const AssignmentDashboard: FC<{
             type={'assignment'}
             spec={assignment.spec}
             shouldNotRefetch={assignment.status.spec != 1}
-            isFinished={assignment.status.spec == 2}
-            endDate={assignment.end}
           />
         ),
         icon: <IconRobot color="var(--secondary)" />,

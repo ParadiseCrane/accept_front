@@ -1,7 +1,13 @@
 'use client';
+import { TogglerValue } from '@components/Dashboard/AIProbabilityList/AIProbabilityList';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
+import {
+  AIGenSearch,
+  AIGenUserTaskSearch,
+  BaseSearch,
+  UserTaskSearch,
+} from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
@@ -37,30 +43,34 @@ interface TableData {
 const AIProbabilityList: FC<{
   url: string;
   activeTab: boolean;
+  aiPercentage: string;
   classNames?: any;
-  initialColumns: (_: ILocale) => ITableColumn[];
+  initialColumns: (_: ILocale, toggler: TogglerValue) => ITableColumn[];
   refactorAttempt: (_: IAttemptDisplay) => any;
   userSearch?: string[];
   taskSearch?: string[];
-  toDate?: Date;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
   shouldNotRefetch?: boolean;
   attemptQuery?: string;
+  toggler: TogglerValue;
+  setToggler: (value: TogglerValue) => void;
 }> = ({
   url,
   activeTab,
+  aiPercentage,
   classNames,
   initialColumns,
   refactorAttempt,
   userSearch,
   taskSearch,
-  toDate,
   noDefault,
   empty,
   defaultRowsOnPage,
   shouldNotRefetch,
+  toggler,
+  setToggler,
 }) => {
   const { locale } = useLocale();
   const { refreshAccess } = useUser();
@@ -69,10 +79,9 @@ const AIProbabilityList: FC<{
     [defaultRowsOnPage]
   );
 
-  const columns: ITableColumn[] = useMemo(
-    () => initialColumns(locale),
-    [locale, initialColumns]
-  );
+  const columns: ITableColumn[] = useMemo(() => {
+    return initialColumns(locale, toggler);
+  }, [locale, initialColumns, toggler]);
 
   const [loading, setLoading] = useState(true);
   const [needRefetch, setNeedRefetch] = useState(true);
@@ -81,17 +90,19 @@ const AIProbabilityList: FC<{
     total: 0,
   });
 
-  const [searchParams, setSearchParams] = useState<BaseSearch>({
+  const [searchParams, setSearchParams] = useState<AIGenSearch>({
     pager: {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'date', order: -1 }],
+    sort_by: [{ field: 'ai_generated', order: 1 }],
     search_params: {
       search: '',
       keys: [],
     },
   });
+
+  console.log('searchParams', searchParams);
 
   const processData = useCallback(
     (response: PagerResponse): TableData => ({
@@ -120,11 +131,11 @@ const AIProbabilityList: FC<{
     [locale.notify.errors.unauthorized, refreshAccess]
   );
   const fetch_data = useCallback(() => {
-    return sendRequest<UserTaskSearch, PagerResponse>(url, 'POST', {
+    return sendRequest<AIGenUserTaskSearch, PagerResponse>(url, 'POST', {
       ...searchParams,
-      toDate,
       users: userSearch,
       tasks: taskSearch,
+      ai_generated: aiPercentage,
     })
       .then((res) => {
         if (!res.error) {
@@ -133,12 +144,48 @@ const AIProbabilityList: FC<{
         setLoading(false);
       })
       .catch(onError);
-  }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
+  }, [
+    onError,
+    processData,
+    searchParams,
+    taskSearch,
+    url,
+    userSearch,
+    aiPercentage,
+  ]);
 
   const refetch = useCallback(() => {
     if (activeTab && !shouldNotRefetch && needRefetch) return fetch_data();
     return new Promise<void>(() => {});
   }, [activeTab, fetch_data, needRefetch, shouldNotRefetch]);
+
+  const customSort = useCallback(
+    (keyValue: string, order: -1 | 0 | 1) => {
+      const key = keyValue as TogglerValue;
+      if (order === 1 || order === -1) {
+        setSearchParams((searchParamsValue: BaseSearch) => {
+          const searchParams: BaseSearch = {
+            ...searchParamsValue,
+            sort_by: [{ field: key, order: order }],
+          };
+          setToggler(key);
+
+          return { ...searchParams };
+        });
+      } else if (order === 0) {
+        setSearchParams((searchParamsValue: BaseSearch) => {
+          const searchParams: BaseSearch = {
+            ...searchParamsValue,
+            sort_by: [{ field: key, order: -1 }],
+          };
+          setToggler(key);
+
+          return { ...searchParams };
+        });
+      }
+    },
+    [setSearchParams, toggler]
+  );
 
   useEffect(() => {
     fetch_data();
@@ -183,6 +230,7 @@ const AIProbabilityList: FC<{
         }
         defaultOnPage={defaultOnPage}
         onPage={[5, defaultOnPage]}
+        customSort={customSort}
       />
     </div>
   );

@@ -3,6 +3,7 @@ import { FC, memo, useMemo } from 'react';
 
 import Column from '../Column/Column';
 import Row from '../Row/Row';
+import { v4 } from 'uuid';
 
 const InnerTable: FC<{
   columns: ITableColumn[];
@@ -29,7 +30,7 @@ const InnerTable: FC<{
         <tr style={gridTemplate}>
           {columns.map((column, index) => (
             <Column
-              key={index}
+              key={`${index}${v4()}`}
               column={column}
               onSort={sort}
               classNames={classNames}

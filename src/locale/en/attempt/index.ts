@@ -3,6 +3,7 @@ export const attempt = {
   task: 'Task',
   language: 'Language',
   result: 'Result',
+  aiProbability: 'AI probability',
   verdict: 'Verdict',
   status: 'Status',
   banReason: 'Ban reason',

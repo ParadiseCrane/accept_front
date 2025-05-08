@@ -23,7 +23,16 @@ export interface DateSearch extends BaseSearch {
   toDate?: Date;
 }
 
+export interface AIGenSearch extends BaseSearch {
+  ai_generated?: string;
+}
+
 export interface UserTaskSearch extends DateSearch {
+  users?: string[];
+  tasks?: string[];
+}
+
+export interface AIGenUserTaskSearch extends AIGenSearch {
   users?: string[];
   tasks?: string[];
 }

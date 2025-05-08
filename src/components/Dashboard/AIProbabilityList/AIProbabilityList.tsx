@@ -23,27 +23,14 @@ import styles from './aiProbabilityList.module.css';
 import { Group, SelectProps } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 
+export type TogglerValue = 'date' | 'ai_generated';
+
 const refactorAttempt = (
   attempt: IAttemptDisplay,
   type: string,
   spec: string
 ): any => ({
   ...attempt,
-  result: {
-    display: (
-      <VerdictWrapper
-        status={attempt.status}
-        verdict={attempt.verdict?.verdict}
-        test={attempt.verdict?.test}
-      />
-    ),
-    value:
-      attempt.status.spec == 2
-        ? attempt.verdict?.verdict.spec
-        : attempt.status.spec == 3
-          ? attempt.status.spec - 20
-          : attempt.status.spec - 10,
-  },
   date: {
     display: (
       <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
@@ -77,17 +64,24 @@ const refactorAttempt = (
     ),
     value: attempt.author,
   },
+  ai_generated: {
+    display: <>{attempt.ai_generated}</>,
+    value: attempt.ai_generated,
+  },
 });
 
-const initialColumns = (locale: ILocale): ITableColumn[] => [
+const initialColumns = (
+  locale: ILocale,
+  toggler: TogglerValue
+): ITableColumn[] => [
   {
     label: locale.attempt.date,
     key: 'date',
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
-    sorted: -1,
-    allowMiddleState: false,
+    sorted: toggler !== 'date' ? 0 : 1,
+    allowMiddleState: toggler !== 'date',
     hidable: false,
     hidden: false,
     size: 3,
@@ -115,6 +109,22 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     size: 6,
   },
   {
+    label: locale.attempt.aiProbability,
+    key: 'ai_generated',
+    sortable: true,
+    sortFunction: (a: any, b: any) =>
+      a.ai_generated.value > b.ai_generated.value
+        ? 1
+        : a.ai_generated.value == b.ai_generated.value
+          ? 0
+          : -1,
+    sorted: toggler !== 'ai_generated' ? 0 : 1,
+    allowMiddleState: toggler !== 'ai_generated',
+    hidable: false,
+    hidden: false,
+    size: 3,
+  },
+  {
     label: locale.attempt.language,
     key: 'language',
     sortable: false,
@@ -125,34 +135,18 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     hidden: false,
     size: 3,
   },
-  {
-    label: locale.attempt.result,
-    key: 'result',
-    sortable: false,
-    sortFunction: (_: any, __: any) => 0,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 2,
-  },
 ];
 
 const AIProbabilityList: FC<{
   spec: string;
   shouldNotRefetch: boolean;
-  isFinished: boolean;
-  endDate: Date;
-  type: 'assignment' | 'tournament' | 'current' | 'all';
-  banned?: boolean;
-}> = ({ spec, shouldNotRefetch, isFinished, endDate, type, banned }) => {
+  type: 'assignment' | 'tournament';
+}> = ({ spec, shouldNotRefetch, type }) => {
   const { locale } = useLocale();
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
-
-  const [fetchDate, setFetchDate] = useState<'70' | '90'>(
-    isFinished ? '70' : '90'
-  );
+  const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
+  const [aiPercentage, setAIPercentage] = useState<'70' | '90'>('70');
   const refactor = useCallback(
     (attempt: IAttemptDisplay) => refactorAttempt(attempt, type, spec),
     [type, spec]
@@ -210,8 +204,10 @@ const AIProbabilityList: FC<{
             value: '90',
           },
         ]}
-        value={fetchDate}
-        onChange={(value) => setFetchDate(value as '70' | '90')}
+        value={aiPercentage}
+        onChange={(value) => {
+          setAIPercentage(value as '70' | '90');
+        }}
       />
       <div className={styles.selectors}>
         <UserSelect
@@ -256,17 +252,10 @@ const AIProbabilityList: FC<{
       </div>
       <AIProbabilityListUI
         key={userSearch.toString() + taskSearch.toString()}
-        url={
-          type == 'current'
-            ? 'attempt/current-list'
-            : type == 'all'
-              ? 'attempt/all'
-              : `${type}/attempts${banned ? '-banned' : ''}/${spec}`
-        }
+        url={`${type}/attempts/ai_generated/${spec}`}
         activeTab
         initialColumns={initialColumns}
         refactorAttempt={refactor}
-        toDate={undefined}
         empty={<>{locale.dashboard.attemptsList.empty}</>}
         noDefault
         shouldNotRefetch={shouldNotRefetch}
@@ -280,6 +269,9 @@ const AIProbabilityList: FC<{
         }}
         userSearch={userSearch}
         taskSearch={taskSearch}
+        aiPercentage={aiPercentage}
+        toggler={toggler}
+        setToggler={setToggler}
       />
     </div>
   );

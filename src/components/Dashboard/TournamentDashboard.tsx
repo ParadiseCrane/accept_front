@@ -139,8 +139,6 @@ const TournamentDashboard: FC<{
             type={'tournament'}
             spec={tournament.spec}
             shouldNotRefetch={tournament.status.spec != 1}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
           />
         ),
         icon: <IconRobot color="var(--secondary)" />,
