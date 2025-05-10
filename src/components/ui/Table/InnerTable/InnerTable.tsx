@@ -9,8 +9,9 @@ const InnerTable: FC<{
   columns: ITableColumn[];
   rows: any[];
   sort: (_: string, __: -1 | 0 | 1) => void;
+  customSort?: (_: string, __: -1 | 0 | 1) => void;
   classNames?: any;
-}> = ({ columns, classNames, rows, sort }) => {
+}> = ({ columns, classNames, rows, sort, customSort }) => {
   const keys = useMemo(() => columns.map((column) => column.key), [columns]);
 
   const gridTemplate = useMemo(() => {
@@ -30,9 +31,9 @@ const InnerTable: FC<{
         <tr style={gridTemplate}>
           {columns.map((column, index) => (
             <Column
-              key={`${index}${v4()}`}
+              key={customSort ? `${index}${v4()}` : index}
               column={column}
-              onSort={sort}
+              onSort={customSort ?? sort}
               classNames={classNames}
             />
           ))}

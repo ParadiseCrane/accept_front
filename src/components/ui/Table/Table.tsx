@@ -266,7 +266,8 @@ const Table: FC<{
                   columns={localColumns}
                   classNames={classNames}
                   rows={localRows}
-                  sort={customSort ?? sort}
+                  sort={sort}
+                  customSort={customSort}
                 />
               </div>
               <PageNavigation

@@ -109,10 +109,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   if (response.status === 200) {
-    const res = await response.json();
+    const res: IAttempt = await response.json();
     return {
       props: {
-        attempt: res,
+        attempt: {
+          ...res,
+          // TODO убрать после привязки бэка
+          ai_generated: Math.round(Math.random() * (99 - 60) + 60),
+        } as IAttempt,
       },
     };
   }

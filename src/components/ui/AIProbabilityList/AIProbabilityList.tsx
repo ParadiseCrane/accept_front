@@ -95,7 +95,7 @@ const AIProbabilityList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'ai_generated', order: 1 }],
+    sort_by: [{ field: 'ai_generated', order: -1 }],
     search_params: {
       search: '',
       keys: [],

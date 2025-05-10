@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 
 import styles from './info.module.css';
+import { Divider } from '@mantine/core';
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();
@@ -104,6 +105,19 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
             {'MB'}
           </span>
         </div>
+        {attempt.ai_generated && (
+          <>
+            <Divider size={'sm'} />
+            <div>
+              {locale.attempt.aiProbability}
+              {': '}
+              <span>
+                {attempt.ai_generated}
+                {'%'}
+              </span>
+            </div>
+          </>
+        )}
       </div>
       <div className={styles.right}>
         <div className={styles.tableWrapper}>

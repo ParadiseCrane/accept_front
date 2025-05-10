@@ -25,10 +25,18 @@ import { IconCheck } from '@tabler/icons-react';
 
 export type TogglerValue = 'date' | 'ai_generated';
 
+export type PercentageValue = '70' | '90';
+
+const shouldPaint = (value: number, aiPercentage: string): boolean => {
+  const percentileValue = 100 - (100 - parseInt(aiPercentage)) / 4;
+  return value >= percentileValue;
+};
+
 const refactorAttempt = (
   attempt: IAttemptDisplay,
   type: string,
-  spec: string
+  spec: string,
+  aiPercentage: PercentageValue
 ): any => ({
   ...attempt,
   date: {
@@ -65,7 +73,15 @@ const refactorAttempt = (
     value: attempt.author,
   },
   ai_generated: {
-    display: <>{attempt.ai_generated}</>,
+    display: (
+      <div
+        className={`${tableStyles.titleWrapper} ${
+          shouldPaint(attempt.ai_generated!, aiPercentage) && styles.red
+        }`}
+      >
+        {attempt.ai_generated}%
+      </div>
+    ),
     value: attempt.ai_generated,
   },
 });
@@ -146,10 +162,11 @@ const AIProbabilityList: FC<{
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
   const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
-  const [aiPercentage, setAIPercentage] = useState<'70' | '90'>('70');
+  const [aiPercentage, setAIPercentage] = useState<PercentageValue>('70');
   const refactor = useCallback(
-    (attempt: IAttemptDisplay) => refactorAttempt(attempt, type, spec),
-    [type, spec]
+    (attempt: IAttemptDisplay) =>
+      refactorAttempt(attempt, type, spec, aiPercentage),
+    [type, spec, aiPercentage]
   );
 
   const { data } = useRequest<{}, ITasksUsersBundle>(
@@ -206,7 +223,7 @@ const AIProbabilityList: FC<{
         ]}
         value={aiPercentage}
         onChange={(value) => {
-          setAIPercentage(value as '70' | '90');
+          setAIPercentage(value as PercentageValue);
         }}
       />
       <div className={styles.selectors}>
