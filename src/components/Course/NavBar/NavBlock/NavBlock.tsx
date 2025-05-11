@@ -10,6 +10,7 @@ import { FC } from 'react';
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
 import { Tip } from '@ui/basics';
+import { v4 } from 'uuid';
 
 export const NavBlock: FC<{
   hookUnit: IUnit;
@@ -18,17 +19,20 @@ export const NavBlock: FC<{
   checkers: ICourseShowTreeCheckers;
 }> = ({ hookUnit, currentUnit, actions, checkers }) => {
   const active = hookUnit.spec === currentUnit.spec;
+  const id = v4();
 
   if (currentUnit.kind === 'course') {
     return (
       <Anchor
         href={`#${currentUnit.spec}`}
-        onClick={() =>
-          checkers.canToggleChildrenVisibility({ currentUnit }) &&
-          actions.toggleChildrenVisibility({ currentUnit })
-        }
+        onClick={() => {
+          !currentUnit.childrenVisible &&
+            checkers.canToggleChildrenVisibility({ currentUnit }) &&
+            actions.toggleChildrenVisibility({ currentUnit });
+        }}
         underline="never"
         c="dark"
+        id={id}
       >
         <div
           className={styles.box_wrapper}
@@ -46,6 +50,7 @@ export const NavBlock: FC<{
               <div className={styles.title}>{currentUnit.title}</div>
             </Tip>
             <ToggleVisibilityButton
+              id={id}
               currentUnit={currentUnit}
               canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
               toggleChildrenVisibility={actions.toggleChildrenVisibility}
@@ -61,6 +66,7 @@ export const NavBlock: FC<{
       <Anchor
         href={`#${currentUnit.spec}`}
         onClick={() =>
+          !currentUnit.childrenVisible &&
           checkers.canToggleChildrenVisibility({ currentUnit }) &&
           actions.toggleChildrenVisibility({ currentUnit })
         }
@@ -83,6 +89,7 @@ export const NavBlock: FC<{
               <div className={styles.title}>{currentUnit.title}</div>
             </Tip>
             <ToggleVisibilityButton
+              id={id}
               currentUnit={currentUnit}
               canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
               toggleChildrenVisibility={actions.toggleChildrenVisibility}

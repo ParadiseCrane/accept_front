@@ -140,8 +140,10 @@ const createTreeUnit = ({
           courseUnit: courseUnit,
           courseUnitList: courseUnitList,
         }),
-    visible: visible ?? courseUnit.order.split('|').length === 1 ? true : false,
-    childrenVisible: childrenVisible ?? courseUnit.order === '0' ? true : false,
+    visible:
+      (visible ?? courseUnit.order.split('|').length === 1) ? true : false,
+    childrenVisible:
+      (childrenVisible ?? courseUnit.order === '0') ? true : false,
     isOpen,
   };
 };
@@ -957,6 +959,42 @@ const localChangeTitleValue = (
 
 // метод по изменению видимости дочерних элементов
 const localToggleChildrenVisibility = (
+  data: ILocalMethodInput
+): ITreeUnit[] => {
+  // родительский элемент (для удобства)
+  const parent = data.currentUnit;
+  const children: ITreeUnit[] = findChildrenAllLevels({
+    parent,
+    treeUnitList: data.treeUnitList,
+  });
+  // если у него видны дочерние элементы, то скрываем всех потомков всех уровней
+  if (parent.childrenVisible) {
+    for (let i = 0; i < children.length; i++) {
+      children[i] = { ...children[i], visible: false, childrenVisible: false };
+    }
+  }
+  // если скрыты, то показываем только прямых потомков
+  else {
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].parentSpec === parent.spec) {
+        children[i] = { ...children[i], visible: true };
+      }
+    }
+  }
+  return setNewIndexValues({
+    treeUnitList: [
+      ...beforeParentPart({ parent, treeUnitList: data.treeUnitList }),
+      { ...parent, childrenVisible: !parent.childrenVisible },
+      ...children,
+      ...afterLastChildPart({
+        lastChildIndex: children.pop()!.index,
+        treeUnitList: data.treeUnitList,
+      }),
+    ],
+  });
+};
+
+const localToggleChildrenVisibilityDisplay = (
   data: ILocalMethodInput
 ): ITreeUnit[] => {
   // родительский элемент (для удобства)
@@ -2003,7 +2041,7 @@ export const useCourseShowTree = ({
   }: {
     currentUnit: ITreeUnit;
   }) => {
-    const newList = localToggleChildrenVisibility({
+    const newList = localToggleChildrenVisibilityDisplay({
       currentUnit,
       treeUnitList,
     });

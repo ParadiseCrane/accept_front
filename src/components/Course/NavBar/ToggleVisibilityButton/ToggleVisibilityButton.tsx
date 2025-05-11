@@ -5,6 +5,7 @@ import { CaretDown, CaretRight } from 'tabler-icons-react';
 
 interface IToggleVisibilityButtonProps {
   currentUnit: ITreeUnit;
+  id: string;
   canToggleChildrenVisibility: ({
     currentUnit,
   }: {
@@ -18,6 +19,7 @@ interface IToggleVisibilityButtonProps {
 }
 
 export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
+  id,
   currentUnit,
   canToggleChildrenVisibility,
   toggleChildrenVisibility,
@@ -27,7 +29,12 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
       <ActionIcon
         variant="transparent"
         size={'sm'}
-        onClick={() => {
+        onClick={(e) => {
+          document
+            .getElementById(id)
+            ?.addEventListener('click', (e) => e.preventDefault());
+          e.preventDefault();
+          e.stopPropagation();
           toggleChildrenVisibility({ currentUnit });
         }}
         style={{

@@ -196,7 +196,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const json = await response.json();
     const hasModerateRights = await hasModerateRightsResponse.json();
-    console.log('typeof hasModerateRights', typeof hasModerateRights);
     const author = (await courseResponse.json()).author;
     const course = {
       ...json,

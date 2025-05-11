@@ -1,0 +1,20 @@
+.navbar {
+  height: 100%;
+}
+
+.navbarWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.imageWithUnits {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.navMenu {
+  flex: 0 0 auto;
+}

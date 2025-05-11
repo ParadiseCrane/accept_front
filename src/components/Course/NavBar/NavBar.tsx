@@ -6,6 +6,7 @@ import { FC, memo } from 'react';
 
 import { NavBlock } from './NavBlock/NavBlock';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
+import styles from './navbar.module.css';
 
 const NavBar: FC<{
   units: IUnit[];
@@ -25,16 +26,9 @@ const NavBar: FC<{
   });
 
   return (
-    <AppShell.Navbar p="md">
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%',
-        }}
-      >
-        <div>
+    <AppShell.Navbar className={styles.navbar}>
+      <div className={styles.navbarWrapper}>
+        <div className={styles.imageWithUnits}>
           <Image
             src={`/api/image/${image}`}
             radius="md"
@@ -42,6 +36,7 @@ const NavBar: FC<{
             fit="cover"
             mb={20}
             alt={locale.course.courseImage}
+            p="md"
           />
           {treeUnitList
             .filter((element) => element.visible)
@@ -55,7 +50,9 @@ const NavBar: FC<{
               />
             ))}
         </div>
-        <NavigationMenu prev={prev} next={next} />
+        <div className={styles.navMenu}>
+          <NavigationMenu prev={prev} next={next} />
+        </div>
       </div>
     </AppShell.Navbar>
   );
