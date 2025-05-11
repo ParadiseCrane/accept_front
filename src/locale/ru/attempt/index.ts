@@ -48,4 +48,13 @@ export const attempt = {
       error: 'Ошибка при разбане попытки',
     },
   },
+  aiGenerated: {
+    markAsAIGenerated: 'Отметить как плагиат',
+    markAsNotAIGenerated: 'Отметить как не плагиат',
+    modalConfirmAction: 'Подтвердите действие',
+    banConfirmation: 'Вы уверены, что хотите отметить как плагиат?',
+    unbanConfirmation: 'Вы уверены, что хотите отметить как не плагиат?',
+    confirm: 'Подтвердить',
+    cancel: 'Отменить',
+  },
 };

@@ -17,6 +17,7 @@ export interface IAttemptDisplay {
   task: ITaskBaseInfo;
   author: string;
   ai_generated?: number;
+  is_ai_generated?: boolean;
 }
 
 export interface IBanInfo {
@@ -39,4 +40,5 @@ export interface IAttempt {
   author: IUserDisplay;
   banInfo?: IBanInfo;
   ai_generated?: number;
+  is_ai_generated?: boolean;
 }

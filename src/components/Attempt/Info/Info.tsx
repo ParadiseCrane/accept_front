@@ -8,6 +8,7 @@ import { FC, memo, useEffect, useMemo, useState } from 'react';
 
 import styles from './info.module.css';
 import { Divider } from '@mantine/core';
+import PlagiarismButton from '../PlagiarismButton/PlagiarismButton';
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();
@@ -116,6 +117,10 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
                 {'%'}
               </span>
             </div>
+            <PlagiarismButton
+              attempt={attempt}
+              customStyle={styles.smallButton}
+            />
           </>
         )}
       </div>

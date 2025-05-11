@@ -1,6 +1,5 @@
 .infoWrapper {
-  margin: var(--spacer-l) var(--spacer-huge) var(--spacer-huge)
-    var(--spacer-xl);
+  margin: var(--spacer-l) var(--spacer-huge) var(--spacer-huge) var(--spacer-xl);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -55,4 +54,8 @@
 
 .tableWrapper::-webkit-scrollbar {
   width: 2px;
+}
+
+.smallButton {
+  --font-size: var(--font-size-btn-s);
 }
