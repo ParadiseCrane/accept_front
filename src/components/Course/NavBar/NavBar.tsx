@@ -7,6 +7,11 @@ import { FC, memo } from 'react';
 import { NavBlock } from './NavBlock/NavBlock';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 import styles from './navbar.module.css';
+import { Tip } from '@ui/basics';
+import { tooltipOpenDelay } from '@constants/Duration';
+import { IconArrowLeft } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
+import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 
 const NavBar: FC<{
   units: IUnit[];
@@ -19,6 +24,7 @@ const NavBar: FC<{
   const children: IUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
   const { locale } = useLocale();
+  const router = useRouter();
 
   const { treeUnitList, actions, checkers } = useCourseShowTree({
     course,
@@ -27,17 +33,28 @@ const NavBar: FC<{
 
   return (
     <AppShell.Navbar className={styles.navbar}>
+      <Tip
+        label={locale.course.backToCoursesTip}
+        openDelay={tooltipOpenDelay}
+        position="top"
+        spanStyle={styles.backToCoursesWrapper}
+        onClick={() => router.push('/courses')}
+      >
+        <IconArrowLeft color={'var(--primary)'} />
+        <div className={styles.title}>{locale.course.backToCoursesButton}</div>
+      </Tip>
       <div className={styles.navbarWrapper}>
         <div className={styles.imageWithUnits}>
-          <Image
-            src={`/api/image/${image}`}
-            radius="md"
-            h={100}
-            fit="cover"
-            mb={20}
-            alt={locale.course.courseImage}
-            p="md"
-          />
+          <div className={styles.imageWrapper}>
+            <ImageComponent
+              index={0}
+              item={image}
+              active={false}
+              animate
+              height={100}
+              radius="md"
+            />
+          </div>
           {treeUnitList
             .filter((element) => element.visible)
             .map((unit) => (

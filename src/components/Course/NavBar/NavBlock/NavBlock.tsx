@@ -19,7 +19,6 @@ export const NavBlock: FC<{
   checkers: ICourseShowTreeCheckers;
 }> = ({ hookUnit, currentUnit, actions, checkers }) => {
   const active = hookUnit.spec === currentUnit.spec;
-  const id = v4();
 
   if (currentUnit.kind === 'course') {
     return (
@@ -32,7 +31,6 @@ export const NavBlock: FC<{
         }}
         underline="never"
         c="dark"
-        id={id}
       >
         <div
           className={styles.box_wrapper}
@@ -47,10 +45,9 @@ export const NavBlock: FC<{
               openDelay={tooltipOpenDelay}
               position="top"
             >
-              <div className={styles.title}>{currentUnit.title}</div>
+              <div>{currentUnit.title}</div>
             </Tip>
             <ToggleVisibilityButton
-              id={id}
               currentUnit={currentUnit}
               canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
               toggleChildrenVisibility={actions.toggleChildrenVisibility}
@@ -89,7 +86,6 @@ export const NavBlock: FC<{
               <div className={styles.title}>{currentUnit.title}</div>
             </Tip>
             <ToggleVisibilityButton
-              id={id}
               currentUnit={currentUnit}
               canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
               toggleChildrenVisibility={actions.toggleChildrenVisibility}

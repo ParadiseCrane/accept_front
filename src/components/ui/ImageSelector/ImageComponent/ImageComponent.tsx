@@ -1,14 +1,17 @@
 import { FC, useEffect, useState } from 'react';
-import { Image, Skeleton } from '@mantine/core';
+import { Image, MantineStyleProp, Skeleton } from '@mantine/core';
 import styles from './styles.module.css';
-import { useRequest } from '@hooks/useRequest';
-import { sendRequest } from '@requests/request';
 
 interface ImageComponentProps {
   index: number;
   item: string;
-  onClick: () => void;
+  onClick?: () => void;
   active: boolean;
+  height?: number;
+  width?: number;
+  radius?: string;
+  animate?: boolean;
+  imageStyle?: MantineStyleProp;
 }
 
 export const ImageComponent: FC<ImageComponentProps> = ({
@@ -16,6 +19,11 @@ export const ImageComponent: FC<ImageComponentProps> = ({
   item,
   onClick,
   active,
+  height = 100,
+  width,
+  radius = 'md',
+  animate = false,
+  imageStyle,
 }) => {
   const [data, setData] = useState<string | null>(null);
 
@@ -30,18 +38,26 @@ export const ImageComponent: FC<ImageComponentProps> = ({
   }, [item]);
 
   if (!data || item === '') {
-    return <Skeleton animate={false} height={100} radius="md" />;
+    return (
+      <Skeleton
+        animate={animate}
+        height={height}
+        radius={radius}
+        width={width}
+      />
+    );
   }
 
   return (
     <Image
       alt={`Image ${index + 1}`}
       src={data}
-      radius={'md'}
-      h={100}
+      radius={radius}
+      h={height}
       fit="cover"
       onClick={onClick}
       className={active ? styles.image_component : ''}
+      style={imageStyle}
     />
   );
 };

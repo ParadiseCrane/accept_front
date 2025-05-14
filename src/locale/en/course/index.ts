@@ -14,6 +14,8 @@ export const course = {
   nameAndStructure: 'Name and structure',
   courseStructure: 'Course structure',
   description: 'Description',
+  backToCoursesTip: 'Go back to list of courses',
+  backToCoursesButton: 'Back to courses',
   modals,
   list,
 };

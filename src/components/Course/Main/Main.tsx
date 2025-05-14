@@ -4,6 +4,7 @@ import { AppShell, Center, Title, Image, Box } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 import { FC, memo, useEffect, useState } from 'react';
 
 const Main: FC = () => {
@@ -31,19 +32,34 @@ const Main: FC = () => {
   return (
     <AppShell.Main>
       {course.image.length > 0 && (
-        <Image
-          src={`/api/image/${course.image}`}
-          alt="Picture of the course"
-          width={600}
-          height={200}
-          radius={'md'}
-          style={{
+        <ImageComponent
+          index={0}
+          item={course.image}
+          active={false}
+          animate
+          height={240}
+          // width={600}
+          radius="md"
+          imageStyle={{
             width: '100%',
             height: 'auto',
-            maxHeight: 200,
+            maxHeight: 240,
             objectFit: 'cover',
           }}
         />
+        // <Image
+        //   src={`/api/image/${course.image}`}
+        //   alt="Picture of the course"
+        //   width={600}
+        //   height={200}
+        //   radius={'md'}
+        //   style={{
+        //     width: '100%',
+        //     height: 'auto',
+        //     maxHeight: 200,
+        //     objectFit: 'cover',
+        //   }}
+        // />
       )}
       <Center mt={'md'} mb={'md'}>
         <Title order={1} ta={'center'}>

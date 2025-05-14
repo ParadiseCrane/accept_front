@@ -14,6 +14,8 @@ export const course = {
   nameAndStructure: 'Название и структура',
   courseStructure: 'Структура курса',
   description: 'Описание',
+  backToCoursesTip: 'Вернуться к списку курсов',
+  backToCoursesButton: 'Назад к курсам',
   modals,
   list,
 };
