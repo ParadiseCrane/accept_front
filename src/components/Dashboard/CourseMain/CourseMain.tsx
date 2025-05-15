@@ -80,6 +80,7 @@ const CourseMain: FC<{
           alt="Picture of the course"
           width={600}
           height={200}
+          radius={'md'}
           style={{
             width: '100%',
             height: 'auto',
@@ -102,7 +103,11 @@ const CourseMain: FC<{
               regenerateLink={() => regenerateLink()}
             />
           ) : (
-            <div>{locale.link.inviteLinkGenerationError}</div>
+            <div>
+              {params.get('group') === 'all'
+                ? locale.link.inviteLinkChooseGroup
+                : locale.link.inviteLinkGenerationError}
+            </div>
           )}
         </Skeleton>
       </Paper>

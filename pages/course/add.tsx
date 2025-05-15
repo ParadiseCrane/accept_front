@@ -15,16 +15,10 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback } from 'react';
 
-const getInitialValues = ({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}): ICourseAddEdit => {
+const getInitialValues = ({ title }: { title: string }): ICourseAddEdit => {
   return {
     title: title,
-    description: description,
+    description: '',
     kind: 'course',
     image: '',
     children: [],
@@ -36,7 +30,6 @@ function CourseAdd() {
   const { user } = useUser();
   const initialValues = getInitialValues({
     title: locale.ui.courseTree.title,
-    description: locale.ui.courseTree.description,
   });
   const router = useRouter();
 

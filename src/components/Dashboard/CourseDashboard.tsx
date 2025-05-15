@@ -7,7 +7,7 @@ import { useRequest } from '@hooks/useRequest';
 import { useUser } from '@hooks/useUser';
 import { useWidth } from '@hooks/useWidth';
 import { useInterval } from '@mantine/hooks';
-import { Indicator } from '@ui/basics';
+import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
@@ -19,6 +19,7 @@ import {
   IconList,
   IconBellPlus,
   IconLockCog,
+  IconArrowLeft,
 } from '@tabler/icons-react';
 
 import { ICourseModel } from '@custom-types/data/ICourse';
@@ -31,10 +32,14 @@ import { useSearchParams } from 'next/navigation';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
+import { tooltipOpenDelay } from '@constants/Duration';
+import styles from './dashboard.module.css';
+import { useRouter } from 'next/router';
 
 const CourseDashboard: FC<{
   spec: string;
 }> = ({ spec }) => {
+  const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
   const [isAuthor, setIsAuthor] = useState<boolean | null>(null);
@@ -121,8 +126,8 @@ const CourseDashboard: FC<{
       {
         page: <GroupOpenness spec={spec} />,
         icon: <IconLockCog color="var(--secondary)" />,
-        title: locale.dashboard.course.groupOpenness,
-        section: 'group_openness',
+        title: locale.dashboard.course.courseAccess,
+        section: 'access',
       },
     ];
 
@@ -185,7 +190,25 @@ const CourseDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      {isAuthor !== null && <LeftMenu links={links} />}
+      {isAuthor !== null && (
+        <LeftMenu
+          links={links}
+          topContent={
+            <Tip
+              label={locale.course.backToCoursesTip}
+              openDelay={tooltipOpenDelay}
+              position="top"
+              spanStyle={styles.backToCoursesWrapper}
+              onClick={() => router.push('/courses')}
+            >
+              <IconArrowLeft color={'var(--primary)'} />
+              <div className={styles.title}>
+                {locale.course.backToCoursesButton}
+              </div>
+            </Tip>
+          }
+        />
+      )}
       {user && <GroupSelectorMenu courseSpec={spec} user={user.login} />}
     </>
   );

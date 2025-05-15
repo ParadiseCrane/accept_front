@@ -42,6 +42,7 @@ const Form: FC<{
         label={locale.course.description}
         form={form}
         name="description"
+        editorMinHeight="60px"
       />
       <Button
         onClick={() => {

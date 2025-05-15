@@ -38,7 +38,6 @@ const Main: FC = () => {
           active={false}
           animate
           height={240}
-          // width={600}
           radius="md"
           imageStyle={{
             width: '100%',

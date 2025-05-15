@@ -5,77 +5,87 @@ import {
 } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Popover } from '@mantine/core';
+import {
+  IconArrowsMove,
+  IconArrowBigDownLine,
+  IconArrowBigLeftLine,
+  IconArrowBigRightLine,
+  IconArrowBigUpLine,
+} from '@tabler/icons-react';
 import { Tip } from '@ui/basics';
 import { FC } from 'react';
-import {
-  ArrowBigDownLine,
-  ArrowBigLeftLine,
-  ArrowBigRightLine,
-  ArrowBigUpLine,
-  ArrowsMove,
-} from 'tabler-icons-react';
 
 interface IMovementButtonProps {
   currentUnit: ITreeUnit;
   actions: ICourseAddTreeActions;
   checkers: ICourseAddTreeCheckers;
+  styles: any;
 }
 
 export const MovementButton: FC<IMovementButtonProps> = ({
   currentUnit,
   actions,
   checkers,
+  styles,
 }) => {
   const { locale } = useLocale();
   return (
-    <Popover position="bottom-start" withArrow shadow="md">
+    <Popover
+      position="bottom-start"
+      withArrow
+      shadow="md"
+      classNames={{ dropdown: styles.dropdown }}
+    >
       <Popover.Target>
-        <Tip label={locale.ui.courseTree.moveElement}>
-          <ActionIcon variant="transparent" size={'md'}>
-            <ArrowsMove />
+        <Tip
+          label={locale.ui.courseTree.moveElement}
+          spanStyle={styles.iconWrapper}
+        >
+          <ActionIcon variant="transparent" size={'sm'}>
+            <IconArrowsMove stroke={1.5} />
           </ActionIcon>
         </Tip>
       </Popover.Target>
       <Popover.Dropdown>
         <>
           <ActionIcon
-            size={'md'}
+            size={'sm'}
             onClick={() => {
               actions.moveUp({ currentUnit });
             }}
             disabled={!checkers.canMoveUp({ currentUnit })}
           >
-            <ArrowBigUpLine />
+            <IconArrowBigUpLine stroke={1.5} />
           </ActionIcon>
 
           <ActionIcon
-            size={'md'}
+            size={'sm'}
             onClick={() => {
               actions.moveDown({ currentUnit });
             }}
             disabled={!checkers.canMoveDown({ currentUnit })}
           >
-            <ArrowBigDownLine />
+            <IconArrowBigDownLine stroke={1.5} />
           </ActionIcon>
 
           <ActionIcon
-            size={'md'}
+            size={'sm'}
             onClick={() => {
               actions.moveDepthUp({ currentUnit });
             }}
             disabled={!checkers.canMoveDepthUp({ currentUnit })}
           >
-            <ArrowBigLeftLine />
+            <IconArrowBigLeftLine stroke={1.5} />
           </ActionIcon>
 
           <ActionIcon
-            size={'md'}
+            size={'sm'}
             onClick={() => {
               actions.moveDepthDown({ currentUnit });
             }}
             disabled={!checkers.canMoveDepthDown({ currentUnit })}
           >
-            <ArrowBigRightLine />
+            <IconArrowBigRightLine stroke={1.5} />
           </ActionIcon>
         </>
       </Popover.Dropdown>

@@ -75,7 +75,6 @@ const refactorPair = ({
     value: pair.group,
     display: (
       <div className={tableStyles.titleWrapper}>
-        {/* TODO добавить реальную ссылку на группу */}
         <Link
           href={`/group/edit/${pair.group.spec}`}
           className={tableStyles.title}
@@ -96,7 +95,6 @@ const refactorPair = ({
           {pair.moderator.shortName}
         </Link>
         {isAuthor && (
-          // TODO add action for button
           <Tip label={locale.dashboard.course.deleteModerator}>
             <Icon
               onClick={() => {

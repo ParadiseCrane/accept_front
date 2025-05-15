@@ -29,11 +29,6 @@
   cursor: pointer;
 }
 
-.arrow {
-  color: var(--primary);
-  fill: var(--primary);
-}
-
 .imageWrapper {
   padding: 15px;
 }

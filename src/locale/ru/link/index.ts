@@ -3,6 +3,7 @@ export const link = {
   copyLink: 'Скопировать ссылку',
   inviteLinkSelectedGroup: 'Ссылка-приглашение для выбранной группы',
   inviteLinkGenerationError: 'Ошибка генерации ссылки-приглашения',
+  inviteLinkChooseGroup: 'Выберите группу, чтобы получить ссылку-приглашение',
   invitePage: 'Страница приглашения',
   alreadyGroupMember: 'Вы уже участник этой группы',
   groupJoinSuccess: 'Вы успешно добавлены в группу',

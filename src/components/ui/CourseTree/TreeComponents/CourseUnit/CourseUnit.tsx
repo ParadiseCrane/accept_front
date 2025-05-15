@@ -100,11 +100,12 @@ export const CourseUnitDisplay = ({
             onBlur={() => delay(100).then(() => setAddMenuVisible(false))}
           />
 
-          <ActionIcon.Group>
+          <ActionIcon.Group classNames={{ group: styles.group }}>
             <MovementButton
               currentUnit={currentUnit}
               actions={actions}
               checkers={checkers}
+              styles={styles}
             />
             <DeleteButton
               styles={styles}
@@ -136,11 +137,12 @@ export const CourseUnitDisplay = ({
           }}
         />
 
-        <ActionIcon.Group>
+        <ActionIcon.Group classNames={{ group: styles.group }}>
           <MovementButton
             currentUnit={currentUnit}
             actions={actions}
             checkers={checkers}
+            styles={styles}
           />
           <DeleteButton
             styles={styles}

@@ -8,6 +8,8 @@ import { LoadingOverlay } from '@ui/basics';
 import { useSearchParams } from 'next/navigation';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import GroupOpennessTree from './GroupOpennessTree/GroupOpennessTree';
+import { useLocale } from '@hooks/useLocale';
+import styles from './styles.module.css';
 
 const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
   const [course, setCourse] = useState<ICourseModel | null>(null);
@@ -16,6 +18,7 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
   >(null);
   const [loading, setLoading] = useState(false);
   const params = useSearchParams();
+  const { locale } = useLocale();
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -38,6 +41,17 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
         });
         setGroupOpennessList(groupOpennessListResponse.response);
       }
+    } else if (params.get('group') && params.get('group') === 'all') {
+      setGroupOpennessList([]);
+      setCourse({
+        author: '',
+        children: [],
+        description: '',
+        image: '',
+        kind: 'course',
+        spec,
+        title: '',
+      });
     }
     setLoading(false);
   }, [spec, params]);
@@ -70,7 +84,15 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
 
   if (params && params.get('group') && params.get('group') === 'all') {
     // TODO добавить надпись, что группа не выбрана
-    return null;
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.emptyMessageWrapper}>
+          <div className={styles.emptyMessage}>
+            <div>{locale.dashboard.course.courseAccessChoseGroup}</div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

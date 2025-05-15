@@ -45,7 +45,7 @@ const Groups: FC<{
     return '';
   };
 
-  if (!groups.length || loading) {
+  if (loading) {
     return (
       <div style={{ position: 'relative', height: '100%' }}>
         <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
@@ -55,11 +55,13 @@ const Groups: FC<{
 
   return (
     <div className={styles.list}>
-      <div className={`${styles.grid} ${styles.info_row}`}>
-        <div>{locale.dashboard.course.inviteLink}</div>
-        <div>{locale.dashboard.course.groupName}</div>
-        <div>{locale.dashboard.course.actions}</div>
-      </div>
+      {groups.length > 0 && (
+        <div className={`${styles.grid} ${styles.info_row}`}>
+          <div>{locale.dashboard.course.inviteLink}</div>
+          <div>{locale.dashboard.course.groupName}</div>
+          <div>{locale.dashboard.course.actions}</div>
+        </div>
+      )}
       {groups.map((group, index) => {
         return (
           <div key={group.invite_spec}>

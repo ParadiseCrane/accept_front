@@ -45,7 +45,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
               <ActionIcon size={'xs'}>
                 <Plus />
               </ActionIcon>
-              <Text>{locale.ui.courseTree.unit}</Text>
+              <Text size="sm">{locale.ui.courseTree.unit}</Text>
             </div>
           </Tip>
         )}
@@ -59,7 +59,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
             <ActionIcon size={'xs'}>
               <Plus />
             </ActionIcon>
-            <Text>{locale.ui.courseTree.lesson}</Text>
+            <Text size="sm">{locale.ui.courseTree.lesson}</Text>
           </div>
         </Tip>
       </div>

@@ -1,9 +1,9 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon } from '@mantine/core';
+import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
 import { Tip } from '@ui/basics';
 import { FC } from 'react';
-import { CaretDown, CaretRight } from 'tabler-icons-react';
 
 interface IToggleVisibilityButtonProps {
   currentUnit: ITreeUnit;
@@ -44,7 +44,11 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
             display: canToggleChildrenVisibility({ currentUnit }) ? '' : 'none',
           }}
         >
-          {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+          {currentUnit.childrenVisible ? (
+            <IconCaretDown stroke={1.5} />
+          ) : (
+            <IconCaretRight stroke={1.5} />
+          )}
         </ActionIcon>
       </Tip>
     );
@@ -52,7 +56,7 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
 
   return (
     <ActionIcon variant="transparent" size={'sm'} disabled>
-      <CaretRight />
+      <IconCaretRight stroke={1.5} />
     </ActionIcon>
   );
 };

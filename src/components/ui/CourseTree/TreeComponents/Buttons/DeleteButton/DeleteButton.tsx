@@ -1,9 +1,9 @@
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon } from '@mantine/core';
+import { IconTrash } from '@tabler/icons-react';
 import { Tip } from '@ui/basics';
 import { FC } from 'react';
-import { Trash } from 'tabler-icons-react';
 
 interface IDeleteButtonProps {
   styles: any;
@@ -20,16 +20,20 @@ export const DeleteButton: FC<IDeleteButtonProps> = ({
 }) => {
   const { locale } = useLocale();
   return (
-    <Tip label={locale.ui.courseTree.deleteElement}>
+    <Tip
+      label={locale.ui.courseTree.deleteElement}
+      spanStyle={styles.iconWrapper}
+    >
       <ActionIcon
         className={styles.delete}
         variant="transparent"
+        size="sm"
         onClick={() => {
           deleteTreeUnit({ currentUnit });
         }}
         disabled={!canDeleteTreeUnit({ currentUnit })}
       >
-        <Trash />
+        <IconTrash stroke={1.5} />
       </ActionIcon>
     </Tip>
   );

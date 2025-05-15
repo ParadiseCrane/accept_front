@@ -78,6 +78,7 @@ export const imageInsertFunction = ({
 export const TipTapEditor = ({
   editorMode,
   content,
+  minHeight,
   form,
   name,
   onUpdate,
@@ -85,6 +86,7 @@ export const TipTapEditor = ({
 }: {
   editorMode: boolean;
   content: string;
+  minHeight?: string;
   form?: any;
   name?: any;
   onUpdate: (editor: Editor) => void;
@@ -225,7 +227,10 @@ export const TipTapEditor = ({
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
-      <RichTextEditor.Content className={`${styles.content} ${outlineClass}`} />
+      <RichTextEditor.Content
+        className={`${styles.content} ${outlineClass}`}
+        style={{ minHeight: minHeight }}
+      />
     </RichTextEditor>
   );
 };

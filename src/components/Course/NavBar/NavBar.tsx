@@ -41,7 +41,7 @@ const NavBar: FC<{
         onClick={() => router.push('/courses')}
       >
         <IconArrowLeft color={'var(--primary)'} />
-        <div className={styles.title}>{locale.course.backToCoursesButton}</div>
+        <div>{locale.course.backToCoursesButton}</div>
       </Tip>
       <div className={styles.navbarWrapper}>
         <div className={styles.imageWithUnits}>

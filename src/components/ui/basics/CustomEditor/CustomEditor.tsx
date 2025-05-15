@@ -8,10 +8,10 @@ const CustomEditor: FC<{
   name: string;
   label: string;
   form?: any;
-
+  editorMinHeight?: string;
   helperContent?: string | ReactNode;
   shrink?: boolean;
-}> = ({ name, label, form, helperContent, shrink }) => {
+}> = ({ name, label, form, editorMinHeight, helperContent, shrink }) => {
   return (
     <div>
       <InputWrapper
@@ -31,6 +31,7 @@ const CustomEditor: FC<{
           onBlur={() => {
             form.validateField(name);
           }}
+          minHeight={editorMinHeight}
         />
       </InputWrapper>
     </div>
