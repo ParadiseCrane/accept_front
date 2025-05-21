@@ -15,9 +15,11 @@ const AIHintModal: FC<{
   spec: string;
 }> = ({ aiHint, onClose, opened, spec }) => {
   const { locale, lang } = useLocale();
+  const [sending, setSending] = useState(false);
 
   const onClick = useCallback(
     async (helpful: boolean) => {
+      setSending(true);
       await requestWithNotify<{ helpful: boolean }, boolean>(
         `helpful/attempt-hint/${spec}`,
         'POST',
@@ -28,6 +30,7 @@ const AIHintModal: FC<{
           helpful: helpful,
         }
       );
+      setSending(false);
       onClose();
     },
     [lang, locale.notify.attempt.feedback, onClose, spec]
@@ -45,11 +48,11 @@ const AIHintModal: FC<{
         <SimpleButtonGroup
           actionButton={{
             label: locale.attempt.aiHint.helpful,
-            onClick: () => onClick(true),
+            onClick: sending ? () => {} : () => onClick(true),
           }}
           cancelButton={{
             label: locale.attempt.aiHint.notHelpful,
-            onClick: () => onClick(false),
+            onClick: sending ? () => {} : () => onClick(false),
           }}
         />
       </div>
