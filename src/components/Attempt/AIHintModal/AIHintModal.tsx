@@ -1,12 +1,10 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { Modal } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { Modal, Tip } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';
 
 import styles from './aiHint.module.css';
 import { requestWithNotify } from '@utils/requestWithNotify';
+import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 
 const AIHintModal: FC<{
   opened: boolean;
@@ -45,16 +43,20 @@ const AIHintModal: FC<{
     >
       <div className={styles.body}>
         <span>{aiHint}</span>
-        <SimpleButtonGroup
-          actionButton={{
-            label: locale.attempt.aiHint.helpful,
-            onClick: sending ? () => {} : () => onClick(true),
-          }}
-          cancelButton={{
-            label: locale.attempt.aiHint.notHelpful,
-            onClick: sending ? () => {} : () => onClick(false),
-          }}
-        />
+        <div className={styles.icons}>
+          <Tip label={locale.attempt.aiHint.helpful}>
+            <IconThumbUp
+              onClick={sending ? () => {} : () => onClick(true)}
+              color={'var(--primary)'}
+            />
+          </Tip>
+          <Tip label={locale.attempt.aiHint.notHelpful}>
+            <IconThumbDown
+              onClick={sending ? () => {} : () => onClick(false)}
+              color={'var(--primary)'}
+            />
+          </Tip>
+        </div>
       </div>
     </Modal>
   );
