@@ -57,4 +57,13 @@ export const attempt = {
     confirm: 'Подтвердить',
     cancel: 'Отменить',
   },
+  aiHint: {
+    title: 'ИИ подсказка',
+    requestHint: 'Запросить ИИ подсказку',
+    generatingHint: 'ИИ подсказка  генерируется...',
+    openHint: 'Открыть ИИ подсказку',
+    helpful: 'Было полезно',
+    notHelpful: 'Не было полезно',
+    notifyMessage: 'Спасибо за отзыв!',
+  },
 };

@@ -29,6 +29,7 @@ export const form = {
     text: 'Hint text',
     showAfter: 'Show hint after',
   },
+  training: 'Training',
   remark: 'Remark',
   tests: 'Tests',
   emptyTests: 'Add tests using button below or frug files here',

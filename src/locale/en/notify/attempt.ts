@@ -9,4 +9,9 @@ export const attempt = {
     success: 'The attempt was send successfully',
     error: 'Error when sending the attempt',
   },
+  feedback: {
+    loading: 'Sending feedback',
+    success: 'Feedback was sent successfully',
+    error: 'Error when sending feedback',
+  },
 };

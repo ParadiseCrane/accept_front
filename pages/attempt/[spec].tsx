@@ -116,6 +116,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           ...res,
           // TODO убрать после привязки бэка
           ai_generated: Math.round(Math.random() * (99 - 60) + 60),
+          training: true,
         } as IAttempt,
       },
     };

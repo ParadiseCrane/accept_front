@@ -41,4 +41,5 @@ export interface IAttempt {
   banInfo?: IBanInfo;
   ai_generated?: number;
   is_ai_generated?: boolean;
+  training: boolean;
 }

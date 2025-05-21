@@ -136,9 +136,9 @@ function SignUp() {
     const user: IRegUser = {
       organization: form.values.organization,
 
-      login: form.values.login,
-      password: form.values.password,
-      email: form.values.email || '',
+      login: form.values.login.trim(),
+      password: form.values.password.trim(),
+      email: form.values.email.trim() || '',
       name: name[1],
       surname: name[0],
       patronymic: name.length > 2 ? name[2] : '',

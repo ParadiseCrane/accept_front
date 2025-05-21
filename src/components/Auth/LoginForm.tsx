@@ -87,7 +87,11 @@ const LoginForm: FC<{
         message: locale.loading + '...',
       });
       setLoading(true);
-      signIn(values.organization, values.login, values.password).then((res) => {
+      signIn(
+        values.organization,
+        values.login.trim(),
+        values.password.trim()
+      ).then((res) => {
         if (res) {
           successNotification({
             id,

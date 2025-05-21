@@ -9,6 +9,7 @@ import { FC, memo, useEffect, useMemo, useState } from 'react';
 import styles from './info.module.css';
 import { Divider } from '@mantine/core';
 import PlagiarismButton from '../PlagiarismButton/PlagiarismButton';
+import AIHintButton from '../AIHintModal/AIHintButton';
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();
@@ -121,6 +122,7 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
               attempt={attempt}
               customStyle={styles.smallButton}
             />
+            <AIHintButton attempt={attempt} customStyle={styles.smallButton} />
           </>
         )}
       </div>

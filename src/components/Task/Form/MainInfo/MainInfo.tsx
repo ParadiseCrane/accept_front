@@ -106,10 +106,16 @@ const MainInfo: FC<{
           />
         )}
         {!form.values.isTournament && (
-          <Switch
-            label={locale.task.form.hint.title}
-            {...form.getInputProps('hasHint', { type: 'checkbox' })}
-          />
+          <>
+            <Switch
+              label={locale.task.form.hint.title}
+              {...form.getInputProps('hasHint', { type: 'checkbox' })}
+            />
+            <Switch
+              label={locale.task.form.training}
+              {...form.getInputProps('training', { type: 'checkbox' })}
+            />
+          </>
         )}
       </div>
     </>

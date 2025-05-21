@@ -58,6 +58,7 @@ export interface ITaskDisplay {
 
 export interface ITaskDisplayWithPublic extends ITaskDisplay {
   public: boolean;
+  training: boolean;
 }
 
 export interface ITask extends ITaskDisplay {
@@ -77,6 +78,7 @@ export interface ITask extends ITaskDisplay {
   testsNumber: number;
   taskType: ITaskType;
   predefined: boolean;
+  training: boolean;
 }
 
 export interface ITaskEdit extends ITask {

@@ -59,4 +59,13 @@ export const attempt = {
     confirm: 'Confirm',
     cancel: 'Cancel',
   },
+  aiHint: {
+    title: 'AI hint',
+    requestHint: 'Request AI hint',
+    generatingHint: 'Generating AI hint...',
+    openHint: 'Open AI hint',
+    helpful: 'Was helpful',
+    notHelpful: 'Was not helpful',
+    notifyMessage: 'Thank you for the feedback!',
+  },
 };

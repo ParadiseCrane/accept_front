@@ -18,7 +18,15 @@ import Stepper from '@ui/Stepper/Stepper';
 import { FC, memo, useEffect } from 'react';
 
 const stepFields = [
-  ['title', 'tags', 'complexity', 'taskType', 'checkType', 'hasHint'],
+  [
+    'title',
+    'tags',
+    'complexity',
+    'taskType',
+    'checkType',
+    'hasHint',
+    'training',
+  ],
   [
     'shouldRestrictLanguages',
     'allowedLanguages',
