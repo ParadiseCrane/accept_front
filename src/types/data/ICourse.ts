@@ -69,6 +69,8 @@ export interface ICourseListItem {
   author: string;
   spec: string;
   title: string;
+  date: Date;
+  numOfModules: number;
 }
 
 export interface ICourseGroupPair {

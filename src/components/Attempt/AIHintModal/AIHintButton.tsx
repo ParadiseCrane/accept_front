@@ -1,12 +1,9 @@
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
-import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import PlagiarismModal from '../PlagiarismModal/PlagiarismModal';
 import { Button } from '@ui/basics';
 import AIHintModal from './AIHintModal';
 
-import styles from './aiHint.module.css';
 import { sendRequest } from '@requests/request';
 
 const AIHintButton: FC<{
@@ -26,7 +23,7 @@ const AIHintButton: FC<{
     );
     if (!response.error) setAIHint(response.response);
     setLoading(false);
-  }, [attempt.spec]);
+  }, [attempt]);
 
   const onClick = useCallback(async () => {
     if (!aiHint.length) {

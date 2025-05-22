@@ -7,6 +7,7 @@ export default async function GetAIHint(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // TODO поменять на нормальный запрос
   // await fetchWrapper({
   //   req: req,
   //   res: res,

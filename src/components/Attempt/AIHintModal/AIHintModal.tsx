@@ -17,6 +17,7 @@ const AIHintModal: FC<{
 
   const onClick = useCallback(
     async (helpful: boolean) => {
+      if (sending) return;
       setSending(true);
       await requestWithNotify<{ helpful: boolean }, boolean>(
         `helpful/attempt-hint/${spec}`,
@@ -31,7 +32,7 @@ const AIHintModal: FC<{
       setSending(false);
       onClose();
     },
-    [lang, locale.notify.attempt.feedback, onClose, spec]
+    [lang, locale, onClose, spec, sending]
   );
 
   return (
@@ -46,13 +47,13 @@ const AIHintModal: FC<{
         <div className={styles.icons}>
           <Tip label={locale.attempt.aiHint.helpful}>
             <IconThumbUp
-              onClick={sending ? () => {} : () => onClick(true)}
+              onClick={() => onClick(true)}
               color={'var(--primary)'}
             />
           </Tip>
           <Tip label={locale.attempt.aiHint.notHelpful}>
             <IconThumbDown
-              onClick={sending ? () => {} : () => onClick(false)}
+              onClick={() => onClick(false)}
               color={'var(--primary)'}
             />
           </Tip>
@@ -60,37 +61,6 @@ const AIHintModal: FC<{
       </div>
     </Modal>
   );
-
-  // return (
-  //   <>
-  //     <SimpleModal
-  //       title={locale.attempt.ban.title}
-  //       helperContent={
-  //         <div>
-  //           {locale.helpers.attempt.ban.map((p, idx) => (
-  //             <p key={idx}>{p}</p>
-  //           ))}
-  //         </div>
-  //       }
-  //       opened={opened}
-  //       close={() => setOpened(false)}
-  //       withCloseButton={true}
-  //     >
-  //       <div className={modalStyles.verticalContent}>
-  //         <SimpleButtonGroup
-  //           actionButton={{
-  //             label: buttonText,
-  //             onClick: onClick,
-  //           }}
-  //           cancelButton={{
-  //             label: locale.close,
-  //             onClick: () => setOpened(false),
-  //           }}
-  //         />
-  //       </div>
-  //     </SimpleModal>
-  //   </>
-  // );
 };
 
 export default memo(AIHintModal);

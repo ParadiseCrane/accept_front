@@ -7,11 +7,12 @@ export default async function SentAIHintFeedback(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // TODO поменять на нормальный запрос
   // await fetchWrapper({
   //   req: req,
   //   res: res,
   //   url: `api/helpful/attempt-hint/${req.query.spec}`,
-  //   method: 'GET',
+  //   method: 'POST',
   // });
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
