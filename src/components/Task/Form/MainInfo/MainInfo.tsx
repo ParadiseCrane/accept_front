@@ -6,6 +6,7 @@ import { TagSelector } from '@ui/selectors';
 import { FC, memo, useCallback, useMemo } from 'react';
 
 import styles from './mainInfo.module.css';
+import { useSearchParams } from 'next/navigation';
 
 const MainInfo: FC<{
   form: any;
@@ -13,6 +14,7 @@ const MainInfo: FC<{
   taskCheckTypes: ITaskCheckType[];
 }> = ({ form, taskTypes, taskCheckTypes }) => {
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
   const initialTags = useMemo(
     () => {
       return form.values.tags;
@@ -111,10 +113,12 @@ const MainInfo: FC<{
               label={locale.task.form.hint.title}
               {...form.getInputProps('hasHint', { type: 'checkbox' })}
             />
-            <Switch
-              label={locale.task.form.training}
-              {...form.getInputProps('training', { type: 'checkbox' })}
-            />
+            {!searchParams.get('tournament') && (
+              <Switch
+                label={locale.task.form.training}
+                {...form.getInputProps('training', { type: 'checkbox' })}
+              />
+            )}
           </>
         )}
       </div>

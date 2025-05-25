@@ -37,6 +37,21 @@ export const ImageComponent: FC<ImageComponentProps> = ({
     }
   }, [item]);
 
+  if (item === '') {
+    return (
+      <Image
+        alt={`Image ${index + 1}`}
+        src={'/media/cover_placeholder.png'}
+        radius={radius}
+        h={height}
+        fit="cover"
+        onClick={onClick}
+        className={active ? styles.image_component : ''}
+        style={imageStyle}
+      />
+    );
+  }
+
   if (!data || item === '') {
     return (
       <Skeleton

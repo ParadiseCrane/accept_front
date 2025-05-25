@@ -31,9 +31,9 @@
 }
 
 .cell {
-  font-size: var(--font-size-s);
-  min-width: var(--spacer-huge);
-  padding: var(--spacer-xs) var(--spacer-s);
+  font-size: var(--font-size-s) !important;
+  min-width: var(--spacer-huge) !important;
+  padding: var(--spacer-xs) var(--spacer-s) !important;
 }
 
 .tableWrapper {

@@ -1,6 +1,3 @@
-import { getCookieValue } from '@utils/cookies';
-import { fetchWrapper } from '@utils/fetchWrapper';
-import { getApiUrl } from '@utils/getServerUrl';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function SentAIHintFeedback(

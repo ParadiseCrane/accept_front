@@ -11,6 +11,9 @@ import { Divider } from '@mantine/core';
 import PlagiarismButton from '../PlagiarismButton/PlagiarismButton';
 import AIHintButton from '../AIHintModal/AIHintButton';
 
+const maxRowsInTable = 10;
+const maxTables = 3;
+
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();
   const [isBrowser, setIsBrowser] = useState(false);

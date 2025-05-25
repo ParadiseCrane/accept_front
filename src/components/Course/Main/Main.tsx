@@ -31,7 +31,7 @@ const Main: FC = () => {
   if (!('children' in course)) return <div>task</div>;
   return (
     <AppShell.Main>
-      {course.image.length > 0 && (
+      {course.kind === 'course' && (
         <ImageComponent
           index={0}
           item={course.image}
@@ -46,19 +46,6 @@ const Main: FC = () => {
             objectFit: 'cover',
           }}
         />
-        // <Image
-        //   src={`/api/image/${course.image}`}
-        //   alt="Picture of the course"
-        //   width={600}
-        //   height={200}
-        //   radius={'md'}
-        //   style={{
-        //     width: '100%',
-        //     height: 'auto',
-        //     maxHeight: 200,
-        //     objectFit: 'cover',
-        //   }}
-        // />
       )}
       <Center mt={'md'} mb={'md'}>
         <Title order={1} ta={'center'}>
