@@ -10,9 +10,43 @@ import styles from './info.module.css';
 import { Divider } from '@mantine/core';
 import PlagiarismButton from '../PlagiarismButton/PlagiarismButton';
 import AIHintButton from '../AIHintModal/AIHintButton';
+import { ITestResult } from '@custom-types/data/atomic';
 
 const maxRowsInTable = 10;
 const maxTables = 3;
+
+const distributeRows = (rows: IRowItem[]): Array<Array<IRowItem>> => {
+  const length = rows.length;
+  const threshold = maxTables * maxRowsInTable;
+  let counts: number[] = [];
+
+  if (length <= threshold) {
+    for (let i = 0; i < maxTables; i++) {
+      const alreadyAllocated = maxRowsInTable * i;
+      const remaining = Math.max(length - alreadyAllocated, 0);
+      counts[i] = Math.min(remaining, maxRowsInTable);
+    }
+  } else {
+    const base = Math.floor(length / maxTables);
+    const remaining = length % maxTables;
+    for (let i = 0; i < maxTables; i++) {
+      counts[i] = base + (i < remaining ? 1 : 0);
+    }
+  }
+
+  const result: Array<Array<IRowItem>> = [];
+  let offset = 0;
+  for (let count of counts) {
+    result.push(rows.slice(offset, offset + count));
+    offset += count;
+  }
+
+  return result;
+};
+
+interface IRowItem extends ITestResult {
+  index: number;
+}
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();
@@ -22,14 +56,18 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     setIsBrowser(true);
   }, []);
 
-  const rows = useMemo(
+  const rows: IRowItem[] = useMemo(
     () =>
-      attempt.results.map((row, index) => ({
+      [...attempt.results].map((row, index) => ({
         ...row,
         index: index + 1, // row.test + 1
       })),
     [attempt.results]
   );
+
+  const tables: Array<Array<IRowItem>> = distributeRows(rows);
+  console.log('tables', tables);
+  console.log('rows', rows);
 
   const columnSizes = useMemo(() => [1, 2], []);
   const columns = useMemo(
@@ -130,41 +168,44 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         )}
       </div>
       <div className={styles.right}>
-        <div className={styles.tableWrapper}>
-          {rows.length > 0 && (
-            <table className={tableStyles.table}>
-              <thead>
-                <tr className={tableStyles.row} style={gridTemplate}>
-                  {columns.map((column, index) => (
-                    <th key={index} className={styles.column}>
-                      {column}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, index) => (
-                  <tr
-                    key={index}
-                    className={
-                      tableStyles.row +
-                      ' ' +
-                      (index % 2 === 0 ? tableStyles.even : '')
-                    }
-                    style={gridTemplate}
-                  >
-                    <td className={`${tableStyles.cell} ${styles.cell}`}>
-                      {row.index}
-                    </td>
-                    <td className={`${tableStyles.cell} ${styles.cell}`}>
-                      <VerdictWrapper verdict={row.verdict} full />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+        {tables.length > 0 &&
+          tables.map((table, index) => (
+            <div className={styles.tableWrapper} key={index}>
+              {table.length > 0 && (
+                <table className={tableStyles.table}>
+                  <thead>
+                    <tr className={tableStyles.row} style={gridTemplate}>
+                      {columns.map((column, index) => (
+                        <th key={index} className={styles.column}>
+                          {column}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {table.map((row, index) => (
+                      <tr
+                        key={`${row.verdict.spec} ${index}`}
+                        className={
+                          tableStyles.row +
+                          ' ' +
+                          (index % 2 === 0 ? tableStyles.even : '')
+                        }
+                        style={gridTemplate}
+                      >
+                        <td className={`${tableStyles.cell} ${styles.cell}`}>
+                          {row.index}
+                        </td>
+                        <td className={`${tableStyles.cell} ${styles.cell}`}>
+                          <VerdictWrapper verdict={row.verdict} full />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

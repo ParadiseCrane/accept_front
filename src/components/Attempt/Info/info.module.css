@@ -23,6 +23,9 @@
 .right {
   min-width: 200px;
   font-size: var(--font-size-s);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .column {
