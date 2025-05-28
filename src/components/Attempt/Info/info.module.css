@@ -1,5 +1,5 @@
 .infoWrapper {
-  margin: var(--spacer-l) var(--spacer-huge) var(--spacer-huge) var(--spacer-xl);
+  margin: var(--spacer-l) var(--spacer-l) var(--spacer-huge) var(--spacer-l);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -12,12 +12,18 @@
   color: var(--primary);
 }
 
+.leftWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .left {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   gap: var(--spacer-s);
-  max-width: 50%;
   word-break: break-all;
+  width: max-content;
 }
 
 .right {
@@ -25,7 +31,7 @@
   font-size: var(--font-size-s);
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: var(--spacer-s);
 }
 
 .column {

@@ -2,15 +2,17 @@ import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useState } from 'react';
 import { Button } from '@ui/basics';
-import AIHintModal from './AIHintModal';
 
 import { sendRequest } from '@requests/request';
+import { useDisclosure } from '@mantine/hooks';
 
 const AIHintButton: FC<{
   attempt: IAttempt;
   customStyle?: string;
-}> = ({ attempt, customStyle }) => {
-  const [opened, setOpened] = useState(false);
+  onClick?: () => void;
+}> = ({ attempt, customStyle, onClick }) => {
+  // const [opened, setOpened] = useState(false);
+  const [opened, { toggle }] = useDisclosure(false);
   const { locale, lang } = useLocale();
   const [aiHint, setAIHint] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,13 +27,13 @@ const AIHintButton: FC<{
     setLoading(false);
   }, [attempt]);
 
-  const onClick = useCallback(async () => {
-    if (!aiHint.length) {
-      requestAIHint();
-    } else {
-      setOpened(true);
-    }
-  }, [aiHint.length, requestAIHint]);
+  // const onClick = useCallback(async () => {
+  //   if (!aiHint.length) {
+  //     requestAIHint();
+  //   } else {
+  //     toggle();
+  //   }
+  // }, [aiHint.length, requestAIHint, toggle]);
 
   const buttonText = loading
     ? locale.attempt.aiHint.generatingHint
@@ -51,12 +53,12 @@ const AIHintButton: FC<{
       >
         {buttonText}
       </Button>
-      <AIHintModal
+      {/* <AIHintCollapse
         opened={opened}
-        onClose={() => setOpened(false)}
+        onClose={() => toggle()}
         aiHint={aiHint}
         spec={attempt.spec}
-      />
+      /> */}
     </>
   );
 };
