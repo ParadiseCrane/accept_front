@@ -1,10 +1,6 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo } from 'react';
 import { Button } from '@ui/basics';
-
-import { sendRequest } from '@requests/request';
-import { useDisclosure } from '@mantine/hooks';
 
 const AIHintButton: FC<{
   customStyle?: string;
@@ -13,7 +9,7 @@ const AIHintButton: FC<{
   hintText: string;
   onClick?: () => void;
 }> = ({ loading, hintText, isOpen, customStyle, onClick }) => {
-  const { locale, lang } = useLocale();
+  const { locale } = useLocale();
 
   const buttonText = loading
     ? locale.attempt.aiHint.generatingHint

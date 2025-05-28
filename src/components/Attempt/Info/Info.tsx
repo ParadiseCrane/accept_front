@@ -71,12 +71,10 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
 
   const rows: IRowItem[] = useMemo(
     () =>
-      [...attempt.results, ...attempt.results, ...attempt.results].map(
-        (row, index) => ({
-          ...row,
-          index: index + 1, // row.test + 1
-        })
-      ),
+      attempt.results.map((row, index) => ({
+        ...row,
+        index: index + 1, // row.test + 1
+      })),
     [attempt.results]
   );
   const columnSizes = useMemo(() => [1, 2], []);
@@ -147,13 +145,10 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     tableRefs.current = tableRefs.current.slice(0, tables.length);
   }, [tables]);
 
-  console.log('tables', tables);
-  console.log('rows', rows);
-
   return (
     <div className={styles.infoWrapper} id="attempt_info_section">
       <div className={styles.leftWrapper}>
-        <div className={styles.left} id="attempt_left_section">
+        <div className={styles.left}>
           <div>{isBrowser && getLocalDate(attempt.date)}</div>
           <div>
             {locale.attempt.task}{' '}
@@ -235,9 +230,7 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         <AIHintCollapse
           opened={opened}
           onClose={toggle}
-          aiHint={
-            'text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text'
-          }
+          aiHint={hintText}
           spec={attempt.spec}
         />
       </div>

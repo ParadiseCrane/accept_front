@@ -1,5 +1,5 @@
 import { useLocale } from '@hooks/useLocale';
-import { Modal, Tip } from '@ui/basics';
+import { Tip } from '@ui/basics';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import styles from './aiHint.module.css';
@@ -7,7 +7,6 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import { Collapse } from '@mantine/core';
 import useElementSize from '@hooks/useElementSize';
-import { useWindowWidth } from '@hooks/useWindowResize';
 
 const AIHintCollapse: FC<{
   opened: boolean;
@@ -20,7 +19,7 @@ const AIHintCollapse: FC<{
   const [collapseWidth, setCollapseWidth] = useState<number | undefined>(
     undefined
   );
-  const windowWidth = useWindowWidth();
+  const selfSize = useElementSize();
 
   const onClick = useCallback(
     async (helpful: boolean) => {
@@ -54,7 +53,7 @@ const AIHintCollapse: FC<{
 
   useEffect(() => {
     setCollapseWidth(calculateCollapseWidth());
-  }, [windowWidth]);
+  }, [selfSize]);
 
   return (
     <Collapse in={opened} w={`${collapseWidth}px`}>
