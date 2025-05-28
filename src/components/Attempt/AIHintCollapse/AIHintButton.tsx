@@ -7,38 +7,20 @@ import { sendRequest } from '@requests/request';
 import { useDisclosure } from '@mantine/hooks';
 
 const AIHintButton: FC<{
-  attempt: IAttempt;
   customStyle?: string;
+  loading: boolean;
+  isOpen: boolean;
+  hintText: string;
   onClick?: () => void;
-}> = ({ attempt, customStyle, onClick }) => {
-  // const [opened, setOpened] = useState(false);
-  const [opened, { toggle }] = useDisclosure(false);
+}> = ({ loading, hintText, isOpen, customStyle, onClick }) => {
   const { locale, lang } = useLocale();
-  const [aiHint, setAIHint] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const requestAIHint = useCallback(async () => {
-    setLoading(true);
-    const response = await sendRequest<{}, string>(
-      `attempt-hint/${attempt.spec}`,
-      'GET'
-    );
-    if (!response.error) setAIHint(response.response);
-    setLoading(false);
-  }, [attempt]);
-
-  // const onClick = useCallback(async () => {
-  //   if (!aiHint.length) {
-  //     requestAIHint();
-  //   } else {
-  //     toggle();
-  //   }
-  // }, [aiHint.length, requestAIHint, toggle]);
 
   const buttonText = loading
     ? locale.attempt.aiHint.generatingHint
-    : aiHint.length
-      ? locale.attempt.aiHint.openHint
+    : hintText.length
+      ? isOpen
+        ? locale.attempt.aiHint.hideHint
+        : locale.attempt.aiHint.showHint
       : locale.attempt.aiHint.requestHint;
 
   return (
@@ -53,12 +35,6 @@ const AIHintButton: FC<{
       >
         {buttonText}
       </Button>
-      {/* <AIHintCollapse
-        opened={opened}
-        onClose={() => toggle()}
-        aiHint={aiHint}
-        spec={attempt.spec}
-      /> */}
     </>
   );
 };

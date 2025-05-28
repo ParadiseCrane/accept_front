@@ -21,6 +21,7 @@ import AIHintButton from '../AIHintCollapse/AIHintButton';
 import { ITestResult } from '@custom-types/data/atomic';
 import AIHintCollapse from '../AIHintCollapse/AIHintCollapse';
 import { useDisclosure } from '@mantine/hooks';
+import { sendRequest } from '@requests/request';
 
 const maxRowsInTable = 10;
 const maxTables = 3;
@@ -62,6 +63,8 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, { toggle }] = useDisclosure(false);
   const { locale } = useLocale();
   const [isBrowser, setIsBrowser] = useState(false);
+  const [hintLoading, setHintLoading] = useState(false);
+  const [hintText, setHintText] = useState('');
 
   const tableRefs = useRef<(HTMLDivElement | null)[]>([]);
   const isSyncingScroll = useRef(false);
@@ -123,6 +126,16 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const setRef = useCallback((el: HTMLDivElement | null, index: number) => {
     if (el) tableRefs.current[index] = el;
   }, []);
+
+  const requestAIHint = useCallback(async () => {
+    setHintLoading(true);
+    const response = await sendRequest<{}, string>(
+      `attempt-hint/${attempt.spec}`,
+      'GET'
+    );
+    if (!response.error) setHintText(response.response);
+    setHintLoading(false);
+  }, [attempt]);
 
   const tables: Array<Array<IRowItem>> = distributeRows(rows);
 
@@ -210,9 +223,11 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
                 customStyle={styles.smallButton}
               />
               <AIHintButton
-                attempt={attempt}
                 customStyle={styles.smallButton}
-                onClick={toggle}
+                onClick={hintText ? toggle : requestAIHint}
+                isOpen={opened}
+                loading={hintLoading}
+                hintText={hintText}
               />
             </>
           )}
