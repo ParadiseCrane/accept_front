@@ -23,6 +23,7 @@ const ImageSelector: FC<{
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
   const [images, setImages] = useState<string[]>(emptyImageList);
   const { data: allPresets } = useRequest('images_preset', 'GET', undefined);
+  const { locale } = useLocale();
 
   useEffect(() => {
     if (allPresets) {
@@ -39,7 +40,7 @@ const ImageSelector: FC<{
       const name = currentPreset?.name;
       sendRequest<any, any>(`images_preset/${kind}/${name}`, 'GET').then(
         (res) => {
-          const responseImages: string[] = res.response;
+          const responseImages: string[] = res.response ?? [];
           let imagesLocal =
             form.values.image.length > 0
               ? [
@@ -67,7 +68,7 @@ const ImageSelector: FC<{
   return (
     <Box>
       <PresetSingleSelect
-        label={'Выберите набор'}
+        label={locale.course.selectImagePreset}
         presets={presets}
         currentPreset={currentPreset}
         select={(item: IImagePreset) => {

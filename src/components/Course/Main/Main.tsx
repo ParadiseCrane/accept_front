@@ -45,6 +45,7 @@ const Main: FC = () => {
             maxHeight: 240,
             objectFit: 'cover',
           }}
+          cover
         />
       )}
       <Center mt={'md'} mb={'md'}>

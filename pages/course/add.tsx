@@ -25,6 +25,15 @@ const getInitialValues = ({ title }: { title: string }): ICourseAddEdit => {
   };
 };
 
+const checkChildrenInvalidInput = (children: IUnit[]): boolean => {
+  for (let i = 0; i < children.length; i++) {
+    if (children[i].title.trim().length === 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
 function CourseAdd() {
   const { locale, lang } = useLocale();
   const { user } = useUser();
@@ -39,7 +48,8 @@ function CourseAdd() {
         form.validate().hasErrors ||
         form.values.description.length === 0 ||
         form.values.image.length === 0 ||
-        form.values.title.length === 0;
+        form.values.title.trim().length === 0 ||
+        checkChildrenInvalidInput(form.values.children);
       if (errorCondition) {
         const id = newNotification({});
         errorNotification({

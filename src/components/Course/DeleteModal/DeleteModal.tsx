@@ -43,7 +43,11 @@ const DeleteModal: FC<{
         title={locale.course.modals.deletion}
       >
         <div className={modalStyles.verticalContent}>
-          <div>{locale.course.modals.delete + ` '${course.title}'?`}</div>
+          {!toList ? (
+            <div>{locale.course.modals.delete + ` '${course.title}'?`}</div>
+          ) : (
+            <div>{locale.course.modals.deletionComplete(course.title)}</div>
+          )}
 
           {!toList ? (
             <>

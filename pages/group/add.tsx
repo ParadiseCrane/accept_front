@@ -60,11 +60,7 @@ function AddGroup() {
   return (
     <>
       <Title title={locale.titles.group.add} />
-      {typeof course === 'string' ? (
-        <FormWithoutUsers handleSubmit={handleSubmit} />
-      ) : (
-        <FormWithUsers handleSubmit={handleSubmit} />
-      )}
+      <FormWithUsers handleSubmit={handleSubmit} />
     </>
   );
 }
@@ -89,21 +85,6 @@ const FormWithUsers: FC<{ handleSubmit: callback<UseFormReturnType<any>> }> = ({
       buttonText={locale.create}
       initialValues={initialValues}
       users={users || []}
-    />
-  );
-};
-
-const FormWithoutUsers: FC<{
-  handleSubmit: callback<UseFormReturnType<any>>;
-}> = ({ handleSubmit }) => {
-  const { locale } = useLocale();
-  return (
-    <Form
-      handleSubmit={handleSubmit}
-      buttonText={locale.create}
-      initialValues={initialValues}
-      users={[]}
-      hideReadonly
     />
   );
 };

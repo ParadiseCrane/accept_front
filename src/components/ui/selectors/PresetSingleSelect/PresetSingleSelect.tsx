@@ -17,14 +17,15 @@ const PresetSingleSelect: FC<PresetSelectProps> = ({
   currentPreset,
   select,
 }) => {
+  const { locale } = useLocale();
   const data = presets.map(
     (item) =>
       ({
-        label: item.name,
+        label: locale.course.presentNameToLocale(item.name),
         value: item.name,
       }) as ComboboxItem
   );
-  const { locale } = useLocale();
+
   return (
     <Select
       defaultValue={data.length > 0 ? data[0].value : ''}

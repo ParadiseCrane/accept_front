@@ -71,7 +71,14 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
 
   const rows: IRowItem[] = useMemo(
     () =>
-      attempt.results.map((row, index) => ({
+      [
+        ...attempt.results,
+        ...attempt.results,
+        ...attempt.results,
+        ...attempt.results,
+        ...attempt.results,
+        ...attempt.results,
+      ].map((row, index) => ({
         ...row,
         index: index + 1, // row.test + 1
       })),

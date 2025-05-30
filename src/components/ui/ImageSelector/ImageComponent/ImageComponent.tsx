@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 interface ImageComponentProps {
   index: number;
   item: string;
+  cover?: boolean;
   onClick?: () => void;
   active: boolean;
   height?: number;
@@ -17,6 +18,7 @@ interface ImageComponentProps {
 export const ImageComponent: FC<ImageComponentProps> = ({
   index,
   item,
+  cover = false,
   onClick,
   active,
   height = 100,
@@ -37,7 +39,7 @@ export const ImageComponent: FC<ImageComponentProps> = ({
     }
   }, [item]);
 
-  if (item === '') {
+  if (item === '' && cover) {
     return (
       <Image
         alt={`Image ${index + 1}`}

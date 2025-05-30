@@ -53,6 +53,7 @@ const NavBar: FC<{
               animate
               height={100}
               radius="md"
+              cover
             />
           </div>
           {treeUnitList

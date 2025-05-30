@@ -16,6 +16,19 @@ export const course = {
   description: 'Description',
   backToCoursesTip: 'Go back to list of courses',
   backToCoursesButton: 'Back to courses',
+  presentNameToLocale: (key: string) => {
+    return (
+      new Map<string, string>(
+        Object.entries({
+          math: 'Math',
+          networks: 'Networks',
+          robotics: 'Robotics',
+          coworking: 'Coworking',
+          abstract: 'Abstract',
+        })
+      ).get(key.toLowerCase()) ?? key
+    );
+  },
   modals,
   list,
 };

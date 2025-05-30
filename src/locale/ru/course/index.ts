@@ -16,6 +16,19 @@ export const course = {
   description: 'Описание',
   backToCoursesTip: 'Вернуться к списку курсов',
   backToCoursesButton: 'Назад к курсам',
+  presentNameToLocale: (key: string) => {
+    return (
+      new Map<string, string>(
+        Object.entries({
+          math: 'Математика',
+          networks: 'Сети',
+          robotics: 'Робототехника',
+          coworking: 'Командная работа',
+          abstract: 'Абстрактные',
+        })
+      ).get(key.toLowerCase()) ?? key
+    );
+  },
   modals,
   list,
 };
