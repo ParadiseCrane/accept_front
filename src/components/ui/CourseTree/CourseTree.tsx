@@ -8,14 +8,13 @@ import { FC, memo } from 'react';
 import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 
 const CourseTree: FC<{
-  titleProps: any;
   initialUnits: IUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
   depth: number;
-}> = ({ titleProps, initialUnits, form, depth }) => {
+}> = ({ initialUnits, form, depth }) => {
   const { locale } = useLocale();
   const { treeUnitList, actions, checkers } = useCourseAddTree({
     courseUnitList: initialUnits,

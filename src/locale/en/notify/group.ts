@@ -17,4 +17,10 @@ export const group = {
   validation: {
     error: 'Validation error',
   },
+  courseConstructorValidation: {
+    title: 'Enter course name',
+    description: 'Enter course description',
+    image: 'Choose course image',
+    children: 'Enter modules and lessons names',
+  },
 };

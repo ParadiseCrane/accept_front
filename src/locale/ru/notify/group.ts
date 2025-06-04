@@ -17,4 +17,10 @@ export const group = {
   validation: {
     error: 'Ошибка валидации',
   },
+  courseConstructorValidation: {
+    title: 'Введите название курса',
+    description: 'Введите описание курса',
+    image: 'Выберите обложку курса',
+    children: 'Заполните названия модулей и уроков',
+  },
 };

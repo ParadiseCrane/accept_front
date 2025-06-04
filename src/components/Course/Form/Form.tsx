@@ -13,25 +13,15 @@ import styles from './styles.module.css';
 const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
   initialValues: ICourseAddEdit;
-  buttonLabel: string;
-  shouldNotify: boolean;
   editMode: boolean;
   depth: number;
-}> = ({
-  handleSubmit,
-  initialValues,
-  buttonLabel,
-  shouldNotify,
-  editMode,
-  depth,
-}) => {
+}> = ({ handleSubmit, initialValues, editMode, depth }) => {
   const { locale } = useLocale();
   const form = useForm<ICourseAddEdit>({ initialValues: initialValues });
   return (
     <Stack m={'xl'} className={styles.form}>
       <Group grow align="flex-start">
         <CourseTree
-          titleProps={{ ...form.getInputProps('title') }}
           initialUnits={form.values.children}
           form={form}
           depth={depth}

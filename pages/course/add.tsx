@@ -6,57 +6,63 @@ import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
+import { courseFromUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback } from 'react';
-
-const getInitialValues = ({ title }: { title: string }): ICourseAddEdit => {
-  return {
-    title: title,
-    description: '',
-    kind: 'course',
-    image: '',
-    children: [],
-  };
-};
-
-const checkChildrenInvalidInput = (children: IUnit[]): boolean => {
-  for (let i = 0; i < children.length; i++) {
-    if (children[i].title.trim().length === 0) {
-      return true;
-    }
-  }
-  return false;
-};
 
 function CourseAdd() {
   const { locale, lang } = useLocale();
   const { user } = useUser();
-  const initialValues = getInitialValues({
+  const initialValues = courseFromUtils.getInitialValues({
     title: locale.ui.courseTree.title,
   });
   const router = useRouter();
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
-      const errorCondition: boolean =
-        form.validate().hasErrors ||
-        form.values.description.length === 0 ||
-        form.values.image.length === 0 ||
-        form.values.title.trim().length === 0 ||
-        checkChildrenInvalidInput(form.values.children);
-      if (errorCondition) {
-        const id = newNotification({});
-        errorNotification({
-          id,
-          title: locale.notify.group.validation.error,
-          autoClose: 500,
-        });
+      if (
+        courseFromUtils.checkCourseImageInvalidInput({
+          image: form.values.image,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkCourseTitleInvalidInput({
+          title: form.values.title.trim(),
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkCourseDescriptionInvalidInput({
+          description: form.values.description,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkChildrenInvalidInput({
+          children: form.values.children,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkFormValidation({
+          value: form.validate().hasErrors,
+          locale,
+        })
+      ) {
         return;
       }
 
@@ -89,16 +95,14 @@ function CourseAdd() {
         }
       });
     },
-    [lang, locale, user?.login]
+    [lang, locale, router, user?.login]
   );
 
   return (
     <Wrapper>
       <Title title={locale.titles.course.add} />
       <Form
-        shouldNotify={true}
         handleSubmit={handleSubmit}
-        buttonLabel={locale.create}
         initialValues={initialValues}
         editMode={false}
         depth={0}

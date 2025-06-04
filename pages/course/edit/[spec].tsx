@@ -10,11 +10,8 @@ import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
+import { courseFromUtils } from '@utils/courseFormUtils';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -56,22 +53,48 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
-      const errorCondition: boolean =
-        props.course.kind === 'course'
-          ? form.validate().hasErrors ||
-            form.values.description.length === 0 ||
-            form.values.image.length === 0 ||
-            form.values.title.length === 0
-          : form.validate().hasErrors ||
-            form.values.description.length === 0 ||
-            form.values.title.length === 0;
-      if (errorCondition) {
-        const id = newNotification({});
-        errorNotification({
-          id,
-          title: locale.notify.group.validation.error,
-          autoClose: 500,
-        });
+      if (
+        courseFromUtils.checkCourseImageInvalidInput({
+          image: form.values.image,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkCourseTitleInvalidInput({
+          title: form.values.title.trim(),
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkCourseDescriptionInvalidInput({
+          description: form.values.description,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkChildrenInvalidInput({
+          children: form.values.children,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
+        courseFromUtils.checkFormValidation({
+          value: form.validate().hasErrors,
+          locale,
+        })
+      ) {
         return;
       }
 
@@ -95,8 +118,6 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
         kind: props.course.kind,
       };
 
-      console.log('courseToSend', courseToSend);
-
       requestWithNotify<ICourseAddEdit, string>(
         `course/put/${props.course.spec}`,
         'PUT',
@@ -110,16 +131,14 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
         }
       });
     },
-    [lang, locale, user?.login]
+    [lang, locale, router, user?.login]
   );
 
   return (
     <Wrapper>
       <Title title={locale.titles.course.edit} />
       <Form
-        shouldNotify={true}
         handleSubmit={handleSubmit}
-        buttonLabel={locale.create}
         initialValues={initialValues}
         editMode={true}
         {...props}
