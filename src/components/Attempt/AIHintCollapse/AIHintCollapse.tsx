@@ -25,13 +25,18 @@ const AIHintCollapse: FC<{
     async (helpful: boolean) => {
       if (sending) return;
       setSending(true);
-      await requestWithNotify<{ helpful: boolean }, boolean>(
-        `helpful/attempt-hint/${spec}`,
+      await requestWithNotify<
+        { spec: string; endpoint: string; helpful: boolean },
+        boolean
+      >(
+        `helpful`,
         'POST',
         locale.notify.attempt.feedback,
         lang,
         (_: boolean) => '',
         {
+          spec,
+          endpoint: 'attempt-hint',
           helpful: helpful,
         }
       );
