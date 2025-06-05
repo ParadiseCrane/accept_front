@@ -34,10 +34,7 @@ export default CourseDashboardPage;
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params || !params.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   return {

@@ -36,10 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.login)
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
 
   const response = await fetchWrapperStatic({
@@ -68,9 +65,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

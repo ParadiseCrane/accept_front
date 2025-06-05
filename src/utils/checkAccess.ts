@@ -38,9 +38,9 @@ const requestRights = async <T>(
     return `/signin?referrer=${pathname}`;
   }
   if (response.status === 403) {
-    return '/403';
+    return `/403?from=${pathname}`;
   }
-  if (response.status !== 200) return '/500';
+  if (response.status !== 200) return `/500?from=${pathname}`;
 
   return await response.json();
 };

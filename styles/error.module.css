@@ -38,3 +38,19 @@
   padding: var(--spacer-s) var(--spacer-m);
   border-radius: 5px;
 }
+
+.goBack {
+  text-decoration: unset;
+  font-size: var(--font-size-xxl);
+  color: white;
+  background-color: var(--primary);
+  padding: var(--spacer-s) var(--spacer-m);
+  border-radius: 5px;
+  position: absolute;
+  top: var(--spacer-m);
+  left: var(--spacer-m);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacer-xs);
+}

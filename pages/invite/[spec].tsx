@@ -67,10 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
@@ -94,10 +91,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       };
     default:
       return {
-        redirect: {
-          permanent: false,
-          destination: '/404',
-        },
+        notFound: true,
       };
   }
 };
