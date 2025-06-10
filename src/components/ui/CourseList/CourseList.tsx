@@ -1,8 +1,7 @@
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ICourseDisplay, ICourseListItem } from '@custom-types/data/ICourse';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { ICourseListItem } from '@custom-types/data/ICourse';
 import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
+import { IAvailableLang, ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
@@ -30,6 +29,17 @@ interface ICourseItem extends Omit<ICourseListItem, 'title' | 'readonly'> {
   readonly: Item;
 }
 
+const refactorData = (
+  course: ICourseListItem,
+  lang: IAvailableLang
+): string => {
+  const dayMonth = new Intl.DateTimeFormat(lang === 'ru' ? 'ru-RU' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+  }).format(new Date(course.date));
+  return `${dayMonth} ${new Date(course.date).getFullYear()}`;
+};
+
 const CourseList: FC<{
   url: string;
   classNames?: any;
@@ -47,7 +57,7 @@ const CourseList: FC<{
   empty,
   defaultRowsOnPage,
 }) => {
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
 
   const [total, setTotal] = useState(0);
 
@@ -64,8 +74,17 @@ const CourseList: FC<{
   const [courses, setCourses] = useState<ICourseItem[]>([]);
 
   const processData = useCallback(
-    (response: ICourseListItem[]): ICourseItem[] =>
-      response.map((item) => refactorCourse(item)),
+    (response: ICourseListItem[]): ICourseItem[] => {
+      return response
+        .map(
+          (item) =>
+            ({
+              ...item,
+              dateFormatted: refactorData(item, lang),
+            }) as ICourseListItem
+        )
+        .map((item) => refactorCourse(item));
+    },
     [refactorCourse]
   );
 

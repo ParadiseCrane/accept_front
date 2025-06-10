@@ -99,7 +99,7 @@ export const AddModeratorModal = ({
       <Modal
         padding={'xl'}
         opened={showModal}
-        onClose={close}
+        onClose={onClose}
         withCloseButton={false}
       >
         <div className={styles.modal_body}>
@@ -142,11 +142,14 @@ export const AddModeratorModal = ({
           <SimpleButtonGroup
             reversePositive={false}
             actionButton={{
-              onClick: async () => {
-                await addModerator();
-                onClose();
-                refetchData();
-              },
+              onClick:
+                user && group
+                  ? async () => {
+                      await addModerator();
+                      onClose();
+                      refetchData();
+                    }
+                  : () => {},
               label: locale.add,
             }}
             cancelButton={{ onClick: onClose, label: locale.close }}

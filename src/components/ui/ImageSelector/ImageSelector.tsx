@@ -56,6 +56,9 @@ const ImageSelector: FC<{
                   ),
                   ...emptyImageList,
                 ];
+          if (responseImages.length < 3) {
+            imagesLocal = imagesLocal.slice(0, 3);
+          }
           if (imagesLocal.length > 6) {
             imagesLocal = imagesLocal.slice(0, 6);
           }

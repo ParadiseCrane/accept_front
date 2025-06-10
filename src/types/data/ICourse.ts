@@ -70,6 +70,7 @@ export interface ICourseListItem {
   spec: string;
   title: string;
   date: Date;
+  dateFormatted: string;
   numOfModules: number;
 }
 

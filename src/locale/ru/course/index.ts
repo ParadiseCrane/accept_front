@@ -15,7 +15,9 @@ export const course = {
   courseStructure: 'Структура курса',
   description: 'Описание',
   backToCoursesTip: 'Вернуться к списку курсов',
+  backToCourseTip: 'Вернуться к курсу',
   backToCoursesButton: 'Назад к курсам',
+  backToCourseButton: 'Назад к курсу',
   presentNameToLocale: (key: string) => {
     return (
       new Map<string, string>(

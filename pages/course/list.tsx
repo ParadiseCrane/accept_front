@@ -79,10 +79,7 @@ const refactorCourse = (course: ICourseListItem): any => ({
   lastChange: {
     value: course.date,
     display: (
-      <div className={tableStyles.titleWrapper}>
-        {new Date(course.date).getDate()}.{new Date(course.date).getMonth()}.
-        {new Date(course.date).getFullYear()}
-      </div>
+      <div className={tableStyles.titleWrapper}>{course.dateFormatted}</div>
     ),
   },
   name: {

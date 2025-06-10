@@ -195,15 +195,15 @@ const CourseDashboard: FC<{
           links={links}
           topContent={
             <Tip
-              label={locale.course.backToCoursesTip}
+              label={locale.course.backToCourseTip}
               openDelay={tooltipOpenDelay}
               position="top"
               spanStyle={styles.backToCoursesWrapper}
-              onClick={() => router.push('/courses')}
+              onClick={() => router.push(`/course/${spec}`)}
             >
               <IconArrowLeft color={'var(--primary)'} />
               <div className={styles.title}>
-                {locale.course.backToCoursesButton}
+                {locale.course.backToCourseButton}
               </div>
             </Tip>
           }
