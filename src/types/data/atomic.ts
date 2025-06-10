@@ -103,3 +103,8 @@ export interface IActivityData {
 }
 
 export type IActivity = 'assignment' | 'tournament' | 'course';
+
+export interface IResponseErrorObject {
+  hasError: boolean;
+  errorCode: number;
+}

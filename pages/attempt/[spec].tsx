@@ -118,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-  if (response.status) {
+  if (response.status && response.status !== 404) {
     return {
       redirect: {
         permanent: false,

@@ -67,11 +67,15 @@ export async function middleware(request: NextRequest) {
       pathname,
       request.nextUrl.searchParams
     );
-    if (typeof accepted != 'boolean') {
-      return NextResponse.redirect(request.nextUrl.origin + accepted);
+    if (typeof accepted == 'object') {
+      return NextResponse.rewrite(
+        new URL(`/${accepted.errorCode}`, request.url)
+      );
+    } else if (typeof accepted != 'boolean') {
+      return NextResponse.rewrite(new URL('/503', request.url));
+    } else if (!accepted) {
+      return NextResponse.rewrite(new URL('/403', request.url));
     }
-    if (!accepted)
-      return NextResponse.redirect(request.nextUrl.origin + '/403');
   }
   return NextResponse.next();
 }

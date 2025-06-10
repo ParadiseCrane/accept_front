@@ -1,3 +1,4 @@
+import { IResponseErrorObject } from '@custom-types/data/atomic';
 import {
   IRightsPayload,
   IRulesAction,
@@ -35,12 +36,12 @@ const requestRights = async <T>(
   });
 
   if (response.status === 401) {
-    return `/signin?referrer=${pathname}`;
+    return { hasError: true, errorCode: 401 } as T;
   }
   if (response.status === 403) {
-    return `/403?from=${pathname}`;
+    return { hasError: true, errorCode: 403 } as T;
   }
-  if (response.status !== 200) return `/500?from=${pathname}`;
+  if (response.status !== 200) return { hasError: true, errorCode: 500 } as T;
 
   return await response.json();
 };
@@ -83,7 +84,7 @@ export const checkWrapper =
         return false;
       }
     }
-    return requestRights<boolean>(
+    return requestRights<IResponseErrorObject>(
       {
         action,
         entity_spec,

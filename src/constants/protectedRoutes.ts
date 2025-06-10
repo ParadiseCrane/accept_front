@@ -1,3 +1,4 @@
+import { IResponseErrorObject } from '@custom-types/data/atomic';
 import { checkWrapper } from '@utils/checkAccess';
 
 // TODO: Somehow remove
@@ -16,7 +17,7 @@ export const protectedRoutesInfo: {
     _access_token: string | undefined,
     _pathname: string,
     _searchParams?: URLSearchParams
-  ) => Promise<string | boolean>;
+  ) => Promise<string | boolean | IResponseErrorObject>;
 } = {
   // TODO: Check rights
   '/tournament': checkWrapper('read', 'tournament', accessLevels['anyone']),
