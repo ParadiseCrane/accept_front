@@ -1,4 +1,4 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
+import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import styles from './styles.module.css';
@@ -11,16 +11,16 @@ import { RightComponent } from './Right';
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, { toggle }] = useDisclosure(false);
   const [hintLoading, setHintLoading] = useState(false);
-  const [hintText, setHintText] = useState('');
+  const [hint, setHint] = useState<IAIHint | undefined>(undefined);
 
   const requestAIHint = useCallback(async () => {
     setHintLoading(true);
-    const response = await sendRequest<{}, string>(
+    const response = await sendRequest<{}, IAIHint>(
       `attempt-hint/${attempt.spec}`,
       'GET'
     );
     if (!response.error) {
-      setHintText(response.response);
+      setHint(response.response);
       toggle();
     }
     setHintLoading(false);
@@ -33,16 +33,11 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
           attempt={attempt}
           requestAIHint={requestAIHint}
           hintLoading={hintLoading}
-          hintText={hintText}
+          hint={hint}
           opened={opened}
           toggle={toggle}
         />
-        <AIHintCollapse
-          opened={opened}
-          onClose={toggle}
-          aiHint={hintText}
-          spec={attempt.spec}
-        />
+        <AIHintCollapse opened={opened} hint={hint} spec={attempt.spec} />
       </div>
       <RightComponent attempt={attempt} syncScroll={false} />
     </div>

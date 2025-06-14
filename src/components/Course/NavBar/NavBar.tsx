@@ -1,4 +1,4 @@
-import { IUnit } from '@custom-types/data/ICourse';
+import { IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useCourseShowTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { AppShell, Image, ScrollArea } from '@mantine/core';
@@ -14,14 +14,14 @@ import { useRouter } from 'next/router';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 
 const NavBar: FC<{
-  units: IUnit[];
-  hookUnit: IUnit;
+  units: IBaseTreeUnit[];
+  hookUnit: IBaseTreeUnit;
   image: string;
   prev: () => void;
   next: () => void;
 }> = ({ units, hookUnit, image, prev, next }) => {
-  const course: IUnit = units[0];
-  const children: IUnit[] =
+  const course: IBaseTreeUnit = units[0];
+  const children: IBaseTreeUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
   const { locale } = useLocale();
   const router = useRouter();

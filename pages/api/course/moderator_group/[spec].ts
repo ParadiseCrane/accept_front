@@ -1,4 +1,4 @@
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { IModeratorGroupPair } from '@custom-types/data/ICourse';
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 

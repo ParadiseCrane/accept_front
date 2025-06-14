@@ -1,7 +1,7 @@
 import {
-  ICourseModel,
+  ICourse,
   IGroupOpenness,
-  IUnit,
+  IBaseTreeUnit,
 } from '@custom-types/data/ICourse';
 import { useCourseGroupOpennessTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
@@ -14,16 +14,16 @@ const flattenCourse = ({
   course,
   children,
 }: {
-  course: ICourseModel;
-  children: IUnit[];
-}): IUnit[] => {
-  const courseAsUnit: IUnit = {
+  course: ICourse;
+  children: IBaseTreeUnit[];
+}): IBaseTreeUnit[] => {
+  const courseAsUnit: IBaseTreeUnit = {
     kind: course.kind,
     order: '0',
     spec: course.spec,
     title: course.title,
   };
-  let units: IUnit[] = [courseAsUnit];
+  let units: IBaseTreeUnit[] = [courseAsUnit];
   if (children.length === 0) return units;
   for (var i = 0; i < children.length; i++) {
     units = [...units, children[i]];
@@ -32,7 +32,7 @@ const flattenCourse = ({
 };
 
 const GroupOpennessTree: FC<{
-  course: ICourseModel;
+  course: ICourse;
   groupOpennessList: IGroupOpenness[];
   toggleGroupOpennessList: (spec: string) => Promise<void>;
 }> = ({ course, groupOpennessList, toggleGroupOpennessList }) => {

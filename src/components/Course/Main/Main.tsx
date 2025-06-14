@@ -1,14 +1,14 @@
-import { ICourse } from '@custom-types/data/ICourse';
-import { ITask } from '@custom-types/data/ITask';
-import { AppShell, Center, Title, Image, Box } from '@mantine/core';
+import { IUnit, ILesson, ICourse } from '@custom-types/data/ICourse';
+import { AppShell, Box, Center, Title } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 import { FC, memo, useEffect, useState } from 'react';
+import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
+import Lesson from '../Lesson/Lesson';
 
 const Main: FC = () => {
-  const [course, setCourse] = useState<ICourse | ITask | null>(null);
+  const [course, setCourse] = useState<ICourse | IUnit | ILesson | null>(null);
   const [hash] = useHash();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Main: FC = () => {
     const spec = hash.split('#').pop()!;
     sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
       (res) => {
-        setCourse(res.response as ICourse | ITask);
+        setCourse(res.response as ICourse | IUnit | ILesson);
       }
     );
   }, [hash]);
@@ -28,7 +28,8 @@ const Main: FC = () => {
     return <div>Loading</div>;
   }
 
-  if (!('children' in course)) return <div>task</div>;
+  if (!('children' in course)) return <Lesson lesson={course} />;
+
   return (
     <AppShell.Main>
       {course.kind === 'course' && (

@@ -7,13 +7,13 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import { Collapse } from '@mantine/core';
 import useElementSize from '@hooks/useElementSize';
+import { IAIHint } from '@custom-types/data/IAttempt';
 
 const AIHintCollapse: FC<{
   opened: boolean;
-  onClose: () => void;
-  aiHint: string;
+  hint?: IAIHint;
   spec: string;
-}> = ({ aiHint, opened, onClose, spec }) => {
+}> = ({ hint, opened, spec }) => {
   const { locale, lang } = useLocale();
   const [sending, setSending] = useState(false);
   const [collapseWidth, setCollapseWidth] = useState<number | undefined>(
@@ -23,10 +23,14 @@ const AIHintCollapse: FC<{
 
   const onClick = useCallback(
     async (helpful: boolean) => {
-      if (sending) return;
+      if (sending || !hint) return;
       setSending(true);
+      const value =
+        (hint.is_useful && helpful) || (!hint.is_useful && !helpful)
+          ? undefined
+          : helpful;
       await requestWithNotify<
-        { spec: string; endpoint: string; helpful: boolean },
+        { spec: string; endpoint: string; helpful: boolean | undefined },
         boolean
       >(
         `helpful`,
@@ -37,13 +41,12 @@ const AIHintCollapse: FC<{
         {
           spec,
           endpoint: 'attempt-hint',
-          helpful: helpful,
+          helpful: value,
         }
       );
       setSending(false);
-      onClose();
     },
-    [lang, locale, spec, sending, onClose]
+    [lang, locale, spec, sending]
   );
 
   const calculateCollapseWidth = () => {
@@ -60,21 +63,23 @@ const AIHintCollapse: FC<{
     setCollapseWidth(calculateCollapseWidth());
   }, [selfSize]);
 
+  if (!hint) return null;
+
   return (
     <Collapse in={opened} w={`${collapseWidth}px`}>
       <div className={styles.body}>
-        <span>{aiHint}</span>
+        <span>{hint?.content}</span>
         <div className={styles.icons}>
           <Tip label={locale.attempt.aiHint.helpful}>
             <IconThumbUp
               onClick={() => onClick(true)}
-              color={'var(--primary)'}
+              color={hint.is_useful ? 'red' : 'var(--primary)'}
             />
           </Tip>
           <Tip label={locale.attempt.aiHint.notHelpful}>
             <IconThumbDown
               onClick={() => onClick(false)}
-              color={'var(--primary)'}
+              color={!hint.is_useful ? 'red' : 'var(--primary)'}
             />
           </Tip>
         </div>

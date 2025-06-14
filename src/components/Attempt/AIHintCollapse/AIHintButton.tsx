@@ -1,19 +1,20 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo } from 'react';
 import { Button } from '@ui/basics';
+import { IAIHint } from '@custom-types/data/IAttempt';
 
 const AIHintButton: FC<{
   customStyle?: string;
   loading: boolean;
   isOpen: boolean;
-  hintText: string;
+  hint: IAIHint;
   onClick?: () => void;
-}> = ({ loading, hintText, isOpen, customStyle, onClick }) => {
+}> = ({ loading, hint, isOpen, customStyle, onClick }) => {
   const { locale } = useLocale();
 
   const buttonText = loading
     ? locale.attempt.aiHint.generatingHint
-    : hintText.length
+    : hint.content.length
       ? isOpen
         ? locale.attempt.aiHint.hideHint
         : locale.attempt.aiHint.showHint

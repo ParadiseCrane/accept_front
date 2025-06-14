@@ -1,4 +1,4 @@
-import { ICourseAddEdit, ICourseResponse } from '@custom-types/data/ICourse';
+import { ICourseAddEdit } from '@custom-types/data/ICourse';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Group, Stack } from '@mantine/core';

@@ -1,4 +1,4 @@
-import { ICourseAddEdit, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useCourseAddTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
@@ -8,7 +8,7 @@ import { FC, memo } from 'react';
 import { CourseUnitDisplay } from './TreeComponents/CourseUnit/CourseUnit';
 
 const CourseTree: FC<{
-  initialUnits: IUnit[];
+  initialUnits: IBaseTreeUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit

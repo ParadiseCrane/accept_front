@@ -10,7 +10,7 @@ import { useSearchParams } from 'next/navigation';
 import GroupModeratorList, {
   ICourseModeratorGroupItem,
 } from '@ui/GroupModeratorList/GroupModeratorList';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { IModeratorGroupPair } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
 import { Button, Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
@@ -61,7 +61,7 @@ const refactorPair = ({
   isAuthor,
   locale,
 }: {
-  pair: ICourseModeratorGroup;
+  pair: IModeratorGroupPair;
   fetchData: () => Promise<void>;
   isAuthor: boolean;
   locale: ILocale;
@@ -144,7 +144,7 @@ const Moderators: FC<{
           pair,
           fetchData,
         }: {
-          pair: ICourseModeratorGroup;
+          pair: IModeratorGroupPair;
           fetchData: () => Promise<void>;
         }) => refactorPair({ pair, fetchData, isAuthor, locale, handleDelete })}
         initialColumns={initialColumns}

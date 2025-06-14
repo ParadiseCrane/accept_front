@@ -3,7 +3,7 @@ import {
   ICourseAddEdit,
   IGroupOpenness,
   ITreeUnit,
-  IUnit,
+  IBaseTreeUnit,
 } from '@custom-types/data/ICourse';
 import { UseFormReturnType } from '@mantine/form';
 import {
@@ -26,7 +26,7 @@ interface UnitLocale {
 }
 
 interface ConversionOutput {
-  elementList: IUnit[];
+  elementList: IBaseTreeUnit[];
   title: string;
 }
 
@@ -67,8 +67,8 @@ const getParentSpec = ({
   courseUnit,
   courseUnitList,
 }: {
-  courseUnit: IUnit;
-  courseUnitList: IUnit[];
+  courseUnit: IBaseTreeUnit;
+  courseUnitList: IBaseTreeUnit[];
 }): string => {
   if (courseUnit.order.split('|').length === 1) {
     return [...courseUnitList][0].spec;
@@ -98,7 +98,7 @@ const getParent = ({
   }
 };
 
-// создаем объект типа ITreeUnit из IUnit
+// создаем объект типа ITreeUnit из IBaseTreeUnit
 const createTreeUnit = ({
   courseUnit,
   courseUnitList,
@@ -108,8 +108,8 @@ const createTreeUnit = ({
   visible,
   childrenVisible,
 }: {
-  courseUnit: IUnit;
-  courseUnitList: IUnit[];
+  courseUnit: IBaseTreeUnit;
+  courseUnitList: IBaseTreeUnit[];
   index: number;
   editMode: boolean;
   isOpen: boolean;
@@ -167,7 +167,7 @@ const createTreeUnitList = ({
   form,
   editMode,
 }: {
-  courseUnitList: IUnit[];
+  courseUnitList: IBaseTreeUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
@@ -207,8 +207,8 @@ const createTreeUnitListCourseShow = ({
   children,
   editMode,
 }: {
-  course: IUnit;
-  children: IUnit[];
+  course: IBaseTreeUnit;
+  children: IBaseTreeUnit[];
   editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
@@ -245,8 +245,8 @@ const createTreeUnitListGroupOpenness = ({
   groupOpennessList,
   editMode,
 }: {
-  course: IUnit;
-  allChildren: IUnit[];
+  course: IBaseTreeUnit;
+  allChildren: IBaseTreeUnit[];
   groupOpennessList: IGroupOpenness[];
   editMode: boolean;
 }): ITreeUnit[] => {
@@ -288,7 +288,7 @@ const convertToCourseUnitList = ({
 }: {
   treeUnitList: ITreeUnit[];
 }): ConversionOutput => {
-  const list: IUnit[] = [];
+  const list: IBaseTreeUnit[] = [];
   const courseElement = treeUnitList[0];
   if (treeUnitList.length > 1) {
     for (let i = 0; i < treeUnitList.length; i++) {
@@ -1758,7 +1758,7 @@ export interface ICourseAddTreeCheckers {
 }
 
 interface IUseCourseAddTreeProps {
-  courseUnitList: IUnit[];
+  courseUnitList: IBaseTreeUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
@@ -1790,13 +1790,13 @@ export interface ICourseShowTreeCheckers {
 }
 
 interface IUseCourseShowTreeProps {
-  course: IUnit;
-  children: IUnit[];
+  course: IBaseTreeUnit;
+  children: IBaseTreeUnit[];
 }
 
 interface IUseCourseGroupOpennessTreeProps {
-  course: IUnit;
-  allChildren: IUnit[];
+  course: IBaseTreeUnit;
+  allChildren: IBaseTreeUnit[];
   groupOpennessList: IGroupOpenness[];
   groupSpec: string;
 }

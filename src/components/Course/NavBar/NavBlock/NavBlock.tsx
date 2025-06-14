@@ -1,5 +1,5 @@
 import { tooltipOpenDelay } from '@constants/Duration';
-import { ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+import { ITreeUnit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
@@ -13,7 +13,7 @@ import { Tip } from '@ui/basics';
 import { v4 } from 'uuid';
 
 export const NavBlock: FC<{
-  hookUnit: IUnit;
+  hookUnit: IBaseTreeUnit;
   currentUnit: ITreeUnit;
   actions: ICourseShowTreeActions;
   checkers: ICourseShowTreeCheckers;

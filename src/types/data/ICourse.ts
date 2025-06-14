@@ -1,20 +1,15 @@
 import { IGroup } from './IGroup';
-import { ITask } from './ITask';
+import { ITaskDisplay } from './ITask';
 import { IUserBaseInfo } from './IUser';
 
-export interface ICourseResponse {
-  title: string;
-  description: string;
-  kind: 'course' | 'unit' | 'lesson';
-  image: string;
-  children: IUnit[];
-}
-
-export interface ITreeUnit {
+export interface IBaseTreeUnit {
   spec: string;
-  kind: 'course' | 'unit' | 'lesson';
+  kind: 'course' | 'lesson' | 'unit';
   title: string;
   order: string;
+}
+
+export interface ITreeUnit extends IBaseTreeUnit {
   orderAsNumber: number;
   depth: number;
   index: number;
@@ -29,40 +24,31 @@ export interface ICourseAddEdit {
   description: string;
   kind: 'course' | 'unit';
   image: string;
-  children: IUnit[];
+  children: IBaseTreeUnit[];
 }
 
-export interface ICourseModel {
+export interface ICourse {
   spec: string;
   title: string;
   description: string;
   kind: 'course';
   image: string;
   author: string;
-  children: IUnit[];
-}
-
-export interface ICourse {
-  spec: string;
-  kind: 'course' | 'unit' | 'lesson';
-  title: string;
-  description: string;
-  // image только для course
-  image: string;
-  children: ICourse[] | ITask[];
+  children: IBaseTreeUnit[];
 }
 
 export interface IUnit {
   spec: string;
-  kind: 'course' | 'lesson' | 'unit';
+  kind: 'unit';
   title: string;
-  order: string;
+  description: string;
+  children: IBaseTreeUnit[];
 }
 
-export interface ICourseDisplay {
-  spec: string;
-  title: string;
-  readonly: boolean;
+export interface ILesson extends Omit<IUnit, 'kind'> {
+  kind: 'lesson';
+  children: IBaseTreeUnit[];
+  tasks: ITaskDisplay[];
 }
 
 export interface ICourseListItem {
@@ -79,16 +65,16 @@ export interface ICourseGroupPair {
   groupSpec: string;
 }
 
-export interface ICourseMain {
+export interface IModeratorGroupPair {
+  moderator: IUserBaseInfo;
+  group: IGroup;
+}
+
+export interface ICourseDashboardMain {
   title: string;
   description: string;
   image: string;
   invite?: string;
-}
-
-export interface ICourseModeratorGroup {
-  moderator: IUserBaseInfo;
-  group: IGroup;
 }
 
 export interface IGroupOpenness {

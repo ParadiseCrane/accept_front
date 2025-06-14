@@ -2,8 +2,8 @@ import Form from '@components/Course/Form/Form';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 import {
   ICourseAddEdit,
-  ICourseModel,
-  IUnit,
+  ICourse,
+  IBaseTreeUnit,
 } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
@@ -26,7 +26,7 @@ const getInitialValuesCourse = ({
 }: {
   title: string;
   description: string;
-  children: IUnit[];
+  children: IBaseTreeUnit[];
   image: string;
   kind: 'unit' | 'course';
 }): ICourseAddEdit => {
@@ -39,7 +39,7 @@ const getInitialValuesCourse = ({
   };
 };
 
-function CourseEdit(props: { course: ICourseModel; depth: number }) {
+function CourseEdit(props: { course: ICourse; depth: number }) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const initialValues = getInitialValuesCourse({
@@ -102,8 +102,8 @@ function CourseEdit(props: { course: ICourseModel; depth: number }) {
         ...form.values,
       };
 
-      const children: IUnit[] = [...course.children];
-      const emptyChildren: IUnit[] = [];
+      const children: IBaseTreeUnit[] = [...course.children];
+      const emptyChildren: IBaseTreeUnit[] = [];
       for (let i = 0; i < children.length; i++) {
         if (children[i].spec.includes('newElement')) {
           emptyChildren.push({ ...children[i], spec: '' });

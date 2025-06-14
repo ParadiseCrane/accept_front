@@ -1,5 +1,5 @@
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import { ICourseModel } from '@custom-types/data/ICourse';
+import { ICourse } from '@custom-types/data/ICourse';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import deleteModalStyles from '@styles/ui/deleteModal.module.css';
@@ -13,7 +13,7 @@ import { FC, memo, useCallback, useState } from 'react';
 const DeleteModal: FC<{
   active: boolean;
   setActive: setter<boolean>;
-  course: ICourseModel;
+  course: ICourse;
 }> = ({ active, setActive, course }) => {
   const { locale, lang } = useLocale();
 

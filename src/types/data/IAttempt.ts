@@ -43,3 +43,8 @@ export interface IAttempt {
   is_ai_generated?: boolean;
   training: boolean;
 }
+
+export interface IAIHint {
+  content: string;
+  is_useful?: boolean;
+}

@@ -102,8 +102,6 @@ const AIProbabilityList: FC<{
     },
   });
 
-  console.log('searchParams', searchParams);
-
   const processData = useCallback(
     (response: PagerResponse): TableData => ({
       data: response.data.map((item) => refactorAttempt(item)),

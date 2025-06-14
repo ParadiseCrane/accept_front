@@ -1,4 +1,4 @@
-import { ICourseAddEdit, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { errorNotification, newNotification } from './notificationFunctions';
 
@@ -73,7 +73,7 @@ const checkChildrenInvalidInput = ({
   children,
   locale,
 }: {
-  children: IUnit[];
+  children: IBaseTreeUnit[];
   locale: ILocale;
 }): boolean => {
   for (let i = 0; i < children.length; i++) {

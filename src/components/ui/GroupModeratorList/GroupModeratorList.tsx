@@ -1,6 +1,6 @@
 import { AddModeratorModal } from '@components/Dashboard/Moderators/AddModeratorModal/AddModeratorModal';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { IModeratorGroupPair } from '@custom-types/data/ICourse';
 import { IGroup } from '@custom-types/data/IGroup';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
 import { BaseSearch } from '@custom-types/data/request';
@@ -29,7 +29,7 @@ interface Item<T = any> {
 }
 
 export interface ICourseModeratorGroupItem
-  extends Omit<ICourseModeratorGroup, 'moderator' | 'group'> {
+  extends Omit<IModeratorGroupPair, 'moderator' | 'group'> {
   moderator: Item<IUserBaseInfo>;
   group: Item<IGroup>;
 }
@@ -42,7 +42,7 @@ const GroupModeratorList: FC<{
     pair,
     fetchData,
   }: {
-    pair: ICourseModeratorGroup;
+    pair: IModeratorGroupPair;
     fetchData: () => Promise<void>;
   }) => ICourseModeratorGroupItem;
   noDefault?: boolean;
@@ -75,7 +75,7 @@ const GroupModeratorList: FC<{
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const response = await sendRequest<{}, ICourseModeratorGroup[]>(
+    const response = await sendRequest<{}, IModeratorGroupPair[]>(
       url,
       'GET',
       undefined
@@ -89,8 +89,8 @@ const GroupModeratorList: FC<{
   }, []);
 
   const processData = useCallback(
-    (response: ICourseModeratorGroup[]): ICourseModeratorGroupItem[] =>
-      response.map((pair: ICourseModeratorGroup) =>
+    (response: IModeratorGroupPair[]): ICourseModeratorGroupItem[] =>
+      response.map((pair: IModeratorGroupPair) =>
         refactorPair({ pair, fetchData })
       ),
     [refactorPair]

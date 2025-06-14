@@ -1,27 +1,17 @@
 import { FC, memo, useEffect, useState } from 'react';
-import {
-  Center,
-  Title,
-  Image,
-  Skeleton,
-  Box,
-  Divider,
-  Paper,
-} from '@mantine/core';
+import { Center, Title, Image, Skeleton, Box, Paper } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { ICourseMain, ICourseModel } from '@custom-types/data/ICourse';
+import { ICourseDashboardMain, ICourse } from '@custom-types/data/ICourse';
 import { useSearchParams } from 'next/navigation';
 import { sendRequest } from '@requests/request';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Link from 'next/link';
 import { IGroupInvite } from '@custom-types/data/IGroup';
 import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
 import { useLocale } from '@hooks/useLocale';
 
 const CourseMain: FC<{
-  courseProps: ICourseModel | undefined;
+  courseProps: ICourse | undefined;
 }> = ({ courseProps }) => {
-  const [course, setCourse] = useState<ICourseMain | undefined>();
+  const [course, setCourse] = useState<ICourseDashboardMain | undefined>();
   const [linkLoading, setLinkLoading] = useState<boolean>(true);
   const params = useSearchParams();
   const { locale } = useLocale();

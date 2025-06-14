@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 import { ComboboxItem } from '@mantine/core';
 import { useParams } from 'next/navigation';
 import { sendRequest } from '@requests/request';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
+import { IModeratorGroupPair } from '@custom-types/data/ICourse';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
 import { IUserDisplay } from '@custom-types/data/IUser';
 
@@ -42,7 +42,7 @@ export const AddModeratorModal = ({
       // получаем группы, где есть модератор
       const moderatorGroupsResponse = await sendRequest<
         {},
-        ICourseModeratorGroup[]
+        IModeratorGroupPair[]
       >(`course/moderator_group/${pathParams.spec}`, 'GET');
       if (!allGroupsResponse.error && !moderatorGroupsResponse.error) {
         const specs = moderatorGroupsResponse.response.map(

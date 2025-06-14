@@ -2,7 +2,7 @@ import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
 import NavBar from '@components/Course/NavBar/NavBar';
-import { ICourseModel, IUnit } from '@custom-types/data/ICourse';
+import { ICourse, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { IRightsPayload } from '@custom-types/data/rights';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
@@ -21,16 +21,16 @@ const flattenCourse = ({
   course,
   children,
 }: {
-  course: ICourseModel;
-  children: IUnit[];
-}): IUnit[] => {
-  const courseAsUnit: IUnit = {
+  course: ICourse;
+  children: IBaseTreeUnit[];
+}): IBaseTreeUnit[] => {
+  const courseAsUnit: IBaseTreeUnit = {
     kind: course.kind,
     order: '0',
     spec: course.spec,
     title: course.title,
   };
-  let units: IUnit[] = [courseAsUnit];
+  let units: IBaseTreeUnit[] = [courseAsUnit];
   if (children.length === 0) return units;
   for (var i = 0; i < children.length; i++) {
     units = [...units, children[i]];
@@ -38,12 +38,12 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: { course: ICourseModel; has_moderate_rights: boolean }) {
+function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
   const { user } = useUser();
   const course = props.course;
   const isModerator = props.has_moderate_rights === true;
   const [isAuthor, setIsAuthor] = useState<boolean>(false);
-  const units: IUnit[] = flattenCourse({
+  const units: IBaseTreeUnit[] = flattenCourse({
     course: course,
     children: course.children,
   });

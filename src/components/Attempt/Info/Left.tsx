@@ -1,6 +1,6 @@
 import { FC, memo, useEffect, useState } from 'react';
 import styles from './styles.module.css';
-import { IAttempt } from '@custom-types/data/IAttempt';
+import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import AIHintButton from '../AIHintCollapse/AIHintButton';
 
 interface Props {
   attempt: IAttempt;
-  hintText: string;
+  hint?: IAIHint;
   hintLoading: boolean;
   opened: boolean;
   toggle: () => void;
@@ -20,7 +20,7 @@ interface Props {
 const Left: FC<Props> = ({
   attempt,
   hintLoading,
-  hintText,
+  hint,
   opened,
   requestAIHint,
   toggle,
@@ -99,13 +99,15 @@ const Left: FC<Props> = ({
             attempt={attempt}
             customStyle={styles.smallButton}
           />
-          <AIHintButton
-            customStyle={styles.smallButton}
-            onClick={hintText ? toggle : requestAIHint}
-            isOpen={opened}
-            loading={hintLoading}
-            hintText={hintText}
-          />
+          {hint && (
+            <AIHintButton
+              customStyle={styles.smallButton}
+              onClick={hint ? toggle : requestAIHint}
+              isOpen={opened}
+              loading={hintLoading}
+              hint={hint}
+            />
+          )}
         </>
       )}
     </div>

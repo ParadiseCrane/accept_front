@@ -1,6 +1,6 @@
 import Form from '@components/Course/Form/Form';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import { ICourseAddEdit, IUnit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -70,8 +70,8 @@ function CourseAdd() {
         ...form.values,
       };
 
-      const children: IUnit[] = [...course.children];
-      const emptyChildren: IUnit[] = [];
+      const children: IBaseTreeUnit[] = [...course.children];
+      const emptyChildren: IBaseTreeUnit[] = [];
       for (let i = 0; i < children.length; i++) {
         if (children[i].spec.includes('newElement')) {
           emptyChildren.push({ ...children[i], spec: '' });

@@ -22,7 +22,7 @@ import {
   IconArrowLeft,
 } from '@tabler/icons-react';
 
-import { ICourseModel } from '@custom-types/data/ICourse';
+import { ICourse } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
@@ -45,9 +45,9 @@ const CourseDashboard: FC<{
   const [isAuthor, setIsAuthor] = useState<boolean | null>(null);
   const params = useSearchParams();
 
-  const [course, setCourse] = useState<ICourseModel>();
+  const [course, setCourse] = useState<ICourse>();
 
-  const { data, refetch } = useRequest<undefined, ICourseModel>(
+  const { data, refetch } = useRequest<undefined, ICourse>(
     `course/${spec}`,
     'GET'
   );

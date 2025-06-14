@@ -1,7 +1,7 @@
 import {
-  ICourseModel,
+  ICourse,
   IGroupOpenness,
-  IUnit,
+  IBaseTreeUnit,
 } from '@custom-types/data/ICourse';
 import { sendRequest } from '@requests/request';
 import { LoadingOverlay } from '@ui/basics';
@@ -12,7 +12,7 @@ import { useLocale } from '@hooks/useLocale';
 import styles from './styles.module.css';
 
 const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
-  const [course, setCourse] = useState<ICourseModel | null>(null);
+  const [course, setCourse] = useState<ICourse | null>(null);
   const [groupOpennessList, setGroupOpennessList] = useState<
     IGroupOpenness[] | null
   >(null);
@@ -27,7 +27,7 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
         `course/course_openness_list/${spec}/${params.get('group')}`,
         'GET'
       );
-      const courseNavigationTreeResponse = await sendRequest<{}, ICourseModel>(
+      const courseNavigationTreeResponse = await sendRequest<{}, ICourse>(
         `course/course_navigation_tree/${spec}`,
         'GET'
       );
