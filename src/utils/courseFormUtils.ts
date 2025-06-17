@@ -109,7 +109,7 @@ const checkFormValidation = ({
   return false;
 };
 
-export const courseFromUtils = {
+export const courseFormUtils = {
   getInitialValues,
   checkChildrenInvalidInput,
   checkCourseDescriptionInvalidInput,

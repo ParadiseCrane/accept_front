@@ -6,7 +6,7 @@ import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import { courseFromUtils } from '@utils/courseFormUtils';
+import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback } from 'react';
@@ -14,7 +14,7 @@ import { ReactNode, useCallback } from 'react';
 function CourseAdd() {
   const { locale, lang } = useLocale();
   const { user } = useUser();
-  const initialValues = courseFromUtils.getInitialValues({
+  const initialValues = courseFormUtils.getInitialValues({
     title: locale.ui.courseTree.title,
   });
   const router = useRouter();
@@ -22,7 +22,7 @@ function CourseAdd() {
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
       if (
-        courseFromUtils.checkCourseImageInvalidInput({
+        courseFormUtils.checkCourseImageInvalidInput({
           image: form.values.image,
           locale,
         })
@@ -31,7 +31,7 @@ function CourseAdd() {
       }
 
       if (
-        courseFromUtils.checkCourseTitleInvalidInput({
+        courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
         })
@@ -40,7 +40,7 @@ function CourseAdd() {
       }
 
       if (
-        courseFromUtils.checkCourseDescriptionInvalidInput({
+        courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
         })
@@ -49,7 +49,7 @@ function CourseAdd() {
       }
 
       if (
-        courseFromUtils.checkChildrenInvalidInput({
+        courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
         })
@@ -58,7 +58,7 @@ function CourseAdd() {
       }
 
       if (
-        courseFromUtils.checkFormValidation({
+        courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })

@@ -5,6 +5,7 @@ import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ICourse, ILesson, IUnit } from '@custom-types/data/ICourse';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
@@ -14,17 +15,22 @@ import { ReactNode } from 'react';
 function CourseDashboardPage(props: {
   entity: ICourse | IUnit | ILesson;
   courseSpec: string;
+  courseAuthor: string;
 }) {
   const { locale } = useLocale();
   const refetchIntervalSeconds = 8;
+  const { user } = useUser();
+
+  if (!user) return;
 
   if (props.entity.kind === 'lesson') {
     return (
       <>
         <Title title={locale.titles.dashboard.lesson} />
         <LessonDashboard
-          spec={props.entity.spec}
+          lesson={props.entity}
           courseSpec={props.courseSpec}
+          isAuthor={user && user.login === props.courseAuthor}
         />
       </>
     );
@@ -34,7 +40,11 @@ function CourseDashboardPage(props: {
     return (
       <>
         <Title title={locale.titles.dashboard.unit} />
-        <UnitDashboard spec={props.entity.spec} courseSpec={props.courseSpec} />
+        <UnitDashboard
+          unit={props.entity}
+          courseSpec={props.courseSpec}
+          isAuthor={user && user.login === props.courseAuthor}
+        />
       </>
     );
   }
@@ -48,8 +58,9 @@ function CourseDashboardPage(props: {
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <CourseDashboard
-          spec={props.entity.spec}
+          course={props.entity}
           courseSpec={props.courseSpec}
+          isAuthor={user && user.login === props.courseAuthor}
         />
       </ChatHostsProvider>
     </>
@@ -72,20 +83,28 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  // course.author
+
+  const courseResponse = await fetchWrapperStatic({
+    url: `course/${query.spec}`,
+    req,
+  });
+
   const response = await fetchWrapperStatic({
     url: `course/${req.url?.split('?item=').pop()!.split('&spec')[0]}`,
     req,
   });
 
-  if (response.status === 200) {
+  if (response.status === 200 && courseResponse.status === 200) {
     const json: ICourse | IUnit | ILesson = await response.json();
+    const courseAuthor = ((await courseResponse.json()) as ICourse).author;
     const entity = {
       ...json,
       spec: req.url?.split('?item=').pop()!.split('&spec')[0],
     };
 
     return {
-      props: { entity: entity, courseSpec: query.spec },
+      props: { entity: entity, courseSpec: query.spec, courseAuthor },
     };
   }
 

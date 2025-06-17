@@ -79,17 +79,17 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
         href: `/dashboard/course/${course.spec}?item=${value.spec}`,
-        description: locale.tip.sticky.course.dashboard,
+        description: locale.tip.sticky.course.dashboard(value.kind),
       });
     }
 
-    if (isAuthor && value.kind === 'course') {
+    if (isAuthor) {
       innerActions.push(
         {
           color: 'green',
-          href: `/course/edit/${course.spec}`,
+          href: `/course/edit/${course.spec}?item=${value.spec}`,
           icon: <Pencil height={20} width={20} />,
-          description: locale.tip.sticky.course.edit,
+          description: locale.tip.sticky.course.edit(value.kind),
         },
         {
           color: 'red',
@@ -100,15 +100,6 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
           description: locale.tip.sticky.course.delete,
         }
       );
-    }
-
-    if (isAuthor && value.kind === 'unit') {
-      innerActions.push({
-        color: 'green',
-        href: `/course/edit/${course.spec}?unit=${value.spec}`,
-        icon: <Pencil height={20} width={20} />,
-        description: locale.tip.sticky.course.editUnit,
-      });
     }
 
     return innerActions;

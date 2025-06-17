@@ -22,7 +22,7 @@ import {
   IconArrowLeft,
 } from '@tabler/icons-react';
 
-import { ICourse } from '@custom-types/data/ICourse';
+import { ICourse, ILesson } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
@@ -37,95 +37,76 @@ import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 
 const LessonDashboard: FC<{
-  spec: string;
+  lesson: ILesson;
   courseSpec: string;
-}> = ({ spec, courseSpec }) => {
+  isAuthor: boolean;
+}> = ({ lesson, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
-  const [isAuthor, setIsAuthor] = useState<boolean | null>(null);
   const params = useSearchParams();
-
-  const [course, setCourse] = useState<ICourse>();
-
-  const { data, refetch } = useRequest<undefined, ICourse>(
-    `course/${spec}`,
-    'GET'
-  );
-
-  const refetchCourse = useInterval(() => refetch(false), 60 * 1000);
-
-  useEffect(() => {
-    refetchCourse.start();
-    return refetchCourse.stop;
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (data) setCourse(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (user && course && user.login !== course.author) {
-      setIsAuthor(false);
-    }
-    if (user && course && user.login === course.author) {
-      setIsAuthor(true);
-    }
-  }, [user, course]);
 
   // const { hasNewMessages } = useChatHosts();
 
   const links: IMenuLink[] = useMemo(() => {
     let links: IMenuLink[] = [];
     links = [
+      // {
+      //   page: <CourseMain courseProps={lesson} />,
+      //   icon: (
+      //     <Indicator size={10} disabled blink>
+      //       <IconArticle color="var(--secondary)" />
+      //     </Indicator>
+      //   ),
+      //   title: locale.dashboard.course.main,
+      //   section: 'main',
+      // },
+      // {
+      //   page: (
+      //     <CourseChatPage spec={lesson.spec} groupSpec={params.get('group')} />
+      //   ),
+      //   icon: (
+      //     <Indicator size={10} disabled blink>
+      //       <Messages color="var(--secondary)" />
+      //     </Indicator>
+      //   ),
+      //   title: locale.dashboard.course.chat,
+      //   section: 'chat',
+      // },
       {
-        page: <CourseMain courseProps={course} />,
-        icon: (
-          <Indicator size={10} disabled blink>
-            <IconArticle color="var(--secondary)" />
-          </Indicator>
+        page: (
+          <Moderators type={'course'} spec={lesson.spec} isAuthor={isAuthor!} />
         ),
-        title: locale.dashboard.course.main,
-        section: 'main',
-      },
-      {
-        page: <CourseChatPage spec={spec} groupSpec={params.get('group')} />,
-        icon: (
-          <Indicator size={10} disabled blink>
-            <Messages color="var(--secondary)" />
-          </Indicator>
-        ),
-        title: locale.dashboard.course.chat,
-        section: 'chat',
-      },
-      {
-        page: <Moderators type={'course'} spec={spec} isAuthor={isAuthor!} />,
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
       },
       {
         page: (
-          <CourseParticipants type={'course'} spec={spec} allParticipants />
+          <CourseParticipants
+            type={'course'}
+            spec={lesson.spec}
+            allParticipants
+          />
         ),
         icon: <IconList color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: 'all_participants',
       },
       {
-        page: <CourseParticipants type={'course'} spec={spec} />,
+        page: <CourseParticipants type={'course'} spec={lesson.spec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },
       {
-        page: <CreateNotificationCourse spec={spec} type="course" />,
+        page: <CreateNotificationCourse spec={lesson.spec} type="course" />,
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',
       },
       {
-        page: <GroupOpenness spec={spec} />,
+        page: <GroupOpenness spec={lesson.spec} />,
         icon: <IconLockCog color="var(--secondary)" />,
         title: locale.dashboard.course.courseAccess,
         section: 'access',
@@ -136,7 +117,7 @@ const LessonDashboard: FC<{
       links = [
         ...links,
         {
-          page: <Groups course_spec={spec} />,
+          page: <Groups course_spec={lesson.spec} />,
           icon: <IconUsersGroup color="var(--secondary)" />,
           title: locale.dashboard.course.groups,
           section: 'groups',
@@ -145,50 +126,50 @@ const LessonDashboard: FC<{
     }
 
     return links;
-  }, [course, locale, refetch, spec, isAuthor, params]);
+  }, [lesson, locale, isAuthor, params]);
 
   const [activeModal, setActiveModal] = useState(false);
 
   const { isTeacher } = useUser();
   const { width } = useWidth();
 
-  const actions: IStickyAction[] = [
-    {
-      color: 'green',
-      icon: (
-        <Pencil
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      href: `/course/edit/${spec}`,
-      description: locale.tip.sticky.course.edit,
-    },
-    {
-      color: 'red',
-      icon: (
-        <Trash
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      onClick: () => setActiveModal(true),
-      description: locale.tip.sticky.course.delete,
-    },
-  ];
+  // const actions: IStickyAction[] = [
+  //   {
+  //     color: 'green',
+  //     icon: (
+  //       <Pencil
+  //         width={STICKY_SIZES[width] / 3}
+  //         height={STICKY_SIZES[width] / 3}
+  //       />
+  //     ),
+  //     href: `/course/edit/${spec}`,
+  //     description: locale.tip.sticky.course.edit,
+  //   },
+  //   {
+  //     color: 'red',
+  //     icon: (
+  //       <Trash
+  //         width={STICKY_SIZES[width] / 3}
+  //         height={STICKY_SIZES[width] / 3}
+  //       />
+  //     ),
+  //     onClick: () => setActiveModal(true),
+  //     description: locale.tip.sticky.course.delete,
+  //   },
+  // ];
 
   return (
     <>
       {isTeacher && (
         <>
-          {course && (
+          {/* {course && (
             <DeleteModal
               active={activeModal}
               setActive={setActiveModal}
               course={course}
             />
           )}
-          <Sticky actions={actions} />
+          <Sticky actions={actions} /> */}
         </>
       )}
       {isAuthor !== null && (
@@ -211,7 +192,7 @@ const LessonDashboard: FC<{
           }
         />
       )}
-      {user && <GroupSelectorMenu courseSpec={spec} user={user.login} />}
+      {user && <GroupSelectorMenu courseSpec={lesson.spec} user={user.login} />}
     </>
   );
 };

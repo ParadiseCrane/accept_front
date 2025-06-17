@@ -37,41 +37,14 @@ import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 
 const CourseDashboard: FC<{
-  spec: string;
+  course: ICourse;
   courseSpec: string;
-}> = ({ spec, courseSpec }) => {
+  isAuthor: boolean;
+}> = ({ course, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
-  const [isAuthor, setIsAuthor] = useState<boolean | null>(null);
   const params = useSearchParams();
-
-  const [course, setCourse] = useState<ICourse>();
-
-  const { data, refetch } = useRequest<undefined, ICourse>(
-    `course/${spec}`,
-    'GET'
-  );
-
-  const refetchCourse = useInterval(() => refetch(false), 60 * 1000);
-
-  useEffect(() => {
-    refetchCourse.start();
-    return refetchCourse.stop;
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (data) setCourse(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (user && course && user.login !== course.author) {
-      setIsAuthor(false);
-    }
-    if (user && course && user.login === course.author) {
-      setIsAuthor(true);
-    }
-  }, [user, course]);
 
   const { hasNewMessages } = useChatHosts();
 
@@ -89,7 +62,9 @@ const CourseDashboard: FC<{
         section: 'main',
       },
       {
-        page: <CourseChatPage spec={spec} groupSpec={params.get('group')} />,
+        page: (
+          <CourseChatPage spec={course.spec} groupSpec={params.get('group')} />
+        ),
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />
@@ -99,33 +74,39 @@ const CourseDashboard: FC<{
         section: 'chat',
       },
       {
-        page: <Moderators type={'course'} spec={spec} isAuthor={isAuthor!} />,
+        page: (
+          <Moderators type={'course'} spec={course.spec} isAuthor={isAuthor!} />
+        ),
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
       },
       {
         page: (
-          <CourseParticipants type={'course'} spec={spec} allParticipants />
+          <CourseParticipants
+            type={'course'}
+            spec={course.spec}
+            allParticipants
+          />
         ),
         icon: <IconList color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: 'all_participants',
       },
       {
-        page: <CourseParticipants type={'course'} spec={spec} />,
+        page: <CourseParticipants type={'course'} spec={course.spec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },
       {
-        page: <CreateNotificationCourse spec={spec} type="course" />,
+        page: <CreateNotificationCourse spec={course.spec} type="course" />,
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',
       },
       {
-        page: <GroupOpenness spec={spec} />,
+        page: <GroupOpenness spec={course.spec} />,
         icon: <IconLockCog color="var(--secondary)" />,
         title: locale.dashboard.course.courseAccess,
         section: 'access',
@@ -136,7 +117,7 @@ const CourseDashboard: FC<{
       links = [
         ...links,
         {
-          page: <Groups course_spec={spec} />,
+          page: <Groups course_spec={course.spec} />,
           icon: <IconUsersGroup color="var(--secondary)" />,
           title: locale.dashboard.course.groups,
           section: 'groups',
@@ -145,7 +126,7 @@ const CourseDashboard: FC<{
     }
 
     return links;
-  }, [course, hasNewMessages, locale, refetch, spec, isAuthor, params]);
+  }, [hasNewMessages, locale, course, isAuthor, params]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -161,8 +142,8 @@ const CourseDashboard: FC<{
           height={STICKY_SIZES[width] / 3}
         />
       ),
-      href: `/course/edit/${spec}`,
-      description: locale.tip.sticky.course.edit,
+      href: `/course/edit/${course.spec}`,
+      description: locale.tip.sticky.course.edit(course.kind),
     },
     {
       color: 'red',
@@ -211,7 +192,7 @@ const CourseDashboard: FC<{
           }
         />
       )}
-      {user && <GroupSelectorMenu courseSpec={spec} user={user.login} />}
+      {user && <GroupSelectorMenu courseSpec={course.spec} user={user.login} />}
     </>
   );
 };

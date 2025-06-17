@@ -46,10 +46,17 @@ export const sticky = {
     delete: 'Delete the team',
   },
   course: {
-    edit: 'Edit course',
-    editUnit: 'Edit unit',
+    edit: (kind: 'course' | 'unit' | 'lesson'): string => {
+      if (kind === 'lesson') return 'Edit lesson';
+      if (kind === 'unit') return 'Edit unit';
+      return 'Edit course';
+    },
     delete: 'Delete course',
-    dashboard: 'Course dashboard',
+    dashboard: (kind: 'course' | 'unit' | 'lesson'): string => {
+      if (kind === 'lesson') return 'Lesson  dashboard';
+      if (kind === 'unit') return 'Unit dashboard';
+      return 'Course dashboard';
+    },
     add: 'Create course',
   },
 };

@@ -46,10 +46,17 @@ export const sticky = {
     delete: 'Удалить команду',
   },
   course: {
-    edit: 'Редактировать курс',
-    editUnit: 'Редактировать модуль',
+    edit: (kind: 'course' | 'unit' | 'lesson'): string => {
+      if (kind === 'lesson') return 'Редактировать урок';
+      if (kind === 'unit') return 'Редактировать модуль';
+      return 'Редактировать курс';
+    },
     delete: 'Удалить курс',
-    dashboard: 'Панель управления курсом',
+    dashboard: (kind: 'course' | 'unit' | 'lesson'): string => {
+      if (kind === 'lesson') return 'Панель управления уроком';
+      if (kind === 'unit') return 'Панель управления модулем';
+      return 'Панель управления курсом';
+    },
     add: 'Создать курс',
   },
 };

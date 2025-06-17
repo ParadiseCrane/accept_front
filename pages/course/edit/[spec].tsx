@@ -4,13 +4,15 @@ import {
   ICourseAddEdit,
   ICourse,
   IBaseTreeUnit,
+  IUnit,
+  ILesson,
 } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import { courseFromUtils } from '@utils/courseFormUtils';
+import { courseFormUtils } from '@utils/courseFormUtils';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { GetServerSideProps } from 'next';
@@ -53,83 +55,106 @@ function CourseEdit(props: { course: ICourse; depth: number }) {
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
+      // if (
+      //   courseFormUtils.checkCourseImageInvalidInput({
+      //     image: form.values.image,
+      //     locale,
+      //   })
+      // ) {
+      //   return;
+      // }
+
+      // if (
+      //   courseFormUtils.checkCourseTitleInvalidInput({
+      //     title: form.values.title.trim(),
+      //     locale,
+      //   })
+      // ) {
+      //   return;
+      // }
+
+      // if (
+      //   courseFormUtils.checkCourseDescriptionInvalidInput({
+      //     description: form.values.description,
+      //     locale,
+      //   })
+      // ) {
+      //   return;
+      // }
+
+      // if (
+      //   courseFormUtils.checkChildrenInvalidInput({
+      //     children: form.values.children,
+      //     locale,
+      //   })
+      // ) {
+      //   return;
+      // }
+
+      // if (
+      //   courseFormUtils.checkFormValidation({
+      //     value: form.validate().hasErrors,
+      //     locale,
+      //   })
+      // ) {
+      //   return;
+      // }
+
       if (
-        courseFromUtils.checkCourseImageInvalidInput({
+        courseFormUtils.checkCourseImageInvalidInput({
           image: form.values.image,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
-        courseFromUtils.checkCourseTitleInvalidInput({
+        }) &&
+        courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
-        courseFromUtils.checkCourseDescriptionInvalidInput({
+        }) &&
+        courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
-        courseFromUtils.checkChildrenInvalidInput({
+        }) &&
+        courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
-        courseFromUtils.checkFormValidation({
+        }) &&
+        courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })
       ) {
-        return;
-      }
+        const course: ICourseAddEdit = {
+          ...form.values,
+        };
 
-      const course: ICourseAddEdit = {
-        ...form.values,
-      };
-
-      const children: IBaseTreeUnit[] = [...course.children];
-      const emptyChildren: IBaseTreeUnit[] = [];
-      for (let i = 0; i < children.length; i++) {
-        if (children[i].spec.includes('newElement')) {
-          emptyChildren.push({ ...children[i], spec: '' });
-        } else {
-          emptyChildren.push(children[i]);
+        const children: IBaseTreeUnit[] = [...course.children];
+        const emptyChildren: IBaseTreeUnit[] = [];
+        for (let i = 0; i < children.length; i++) {
+          if (children[i].spec.includes('newElement')) {
+            emptyChildren.push({ ...children[i], spec: '' });
+          } else {
+            emptyChildren.push(children[i]);
+          }
         }
+
+        const courseToSend: ICourseAddEdit = {
+          ...course,
+          children: emptyChildren,
+          kind: props.course.kind,
+        };
+
+        requestWithNotify<ICourseAddEdit, string>(
+          `course/put/${props.course.spec}`,
+          'PUT',
+          locale.notify.course.edit,
+          lang,
+          (response) => response,
+          courseToSend
+        ).then((res) => {
+          if (!res.error) {
+            router.push('/courses');
+          }
+        });
       }
-
-      const courseToSend: ICourseAddEdit = {
-        ...course,
-        children: emptyChildren,
-        kind: props.course.kind,
-      };
-
-      requestWithNotify<ICourseAddEdit, string>(
-        `course/put/${props.course.spec}`,
-        'PUT',
-        locale.notify.course.edit,
-        lang,
-        (response) => response,
-        courseToSend
-      ).then((res) => {
-        if (!res.error) {
-          router.push('/courses');
-        }
-      });
     },
     [lang, locale, router, user?.login]
   );
@@ -163,30 +188,17 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const isUnitEdit = req.url?.includes('?unit=');
-  const url = isUnitEdit
-    ? req.url?.split('?unit=').pop()!.split('&spec')[0]
-    : query.spec;
-
   const response = await fetchWrapperStatic({
-    url: `course-edit/${url}`,
+    url: `course-edit/${req.url?.split('?item=').pop()!.split('&spec')[0]}`,
     req,
   });
 
   if (response.status === 200) {
-    const json = await response.json();
-    const course = {
-      ...json.course,
-      spec: isUnitEdit
-        ? req.url?.split('?unit=').pop()!.split('&spec')[0]
-        : query.spec,
-    };
+    const entity: { course: ICourse | IUnit | ILesson; depth: number } =
+      await response.json();
 
     return {
-      props: {
-        course,
-        depth: json.depth,
-      },
+      props: entity,
     };
   }
   return {
