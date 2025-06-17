@@ -36,7 +36,7 @@ import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 
-const CourseDashboard: FC<{
+const LessonDashboard: FC<{
   spec: string;
   courseSpec: string;
 }> = ({ spec, courseSpec }) => {
@@ -73,7 +73,7 @@ const CourseDashboard: FC<{
     }
   }, [user, course]);
 
-  const { hasNewMessages } = useChatHosts();
+  // const { hasNewMessages } = useChatHosts();
 
   const links: IMenuLink[] = useMemo(() => {
     let links: IMenuLink[] = [];
@@ -81,7 +81,7 @@ const CourseDashboard: FC<{
       {
         page: <CourseMain courseProps={course} />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator size={10} disabled blink>
             <IconArticle color="var(--secondary)" />
           </Indicator>
         ),
@@ -91,7 +91,7 @@ const CourseDashboard: FC<{
       {
         page: <CourseChatPage spec={spec} groupSpec={params.get('group')} />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator size={10} disabled blink>
             <Messages color="var(--secondary)" />
           </Indicator>
         ),
@@ -145,7 +145,7 @@ const CourseDashboard: FC<{
     }
 
     return links;
-  }, [course, hasNewMessages, locale, refetch, spec, isAuthor, params]);
+  }, [course, locale, refetch, spec, isAuthor, params]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -216,4 +216,4 @@ const CourseDashboard: FC<{
   );
 };
 
-export default memo(CourseDashboard);
+export default memo(LessonDashboard);

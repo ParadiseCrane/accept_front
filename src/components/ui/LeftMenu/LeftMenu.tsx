@@ -1,7 +1,7 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { FC, ReactNode, memo, useEffect, useState } from 'react';
+import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
 
 import styles from './leftMenu.module.css';
 
@@ -12,18 +12,8 @@ const LeftMenu: FC<{
 }> = ({ links, topContent }) => {
   const router = useRouter();
   const [initialLoad, setInitialLoad] = useState(true);
-  useEffect(() => {
-    if (initialLoad) {
-      let section = router.query.section as string;
-      changeParams!(section!);
-      setInitialLoad(false);
-    }
-    if (!router.query.section) {
-      changeParams!(links[0].section!);
-    }
-  });
 
-  const displayPage = () => {
+  const displayPage = useCallback(() => {
     if (router.query.section) {
       if (
         links.filter((element) => element.section == router.query.section)[0]
@@ -37,27 +27,44 @@ const LeftMenu: FC<{
     } else {
       return links[0].page;
     }
-  };
+  }, [links, router]);
 
-  const changeParams = (section: string) => {
-    const regExp = /\[.*?\]/g;
-    let pathName = router.pathname;
-    let query = { ...router.query };
-    const list = pathName.match(regExp);
-    if (list) {
-      for (let i = 0; i < list.length; i++) {
-        const variableName = list[i].replace('[', '').replace(']', '');
-        const value = router.query[variableName];
-        delete query[variableName];
-        pathName = pathName.replace(`[${variableName}]`, `${value}`);
+  const changeParams = useCallback(
+    (section: string) => {
+      const regExp = /\[.*?\]/g;
+      let pathName = router.pathname;
+      let query = { ...router.query };
+      const list = pathName.match(regExp);
+      if (list) {
+        for (let i = 0; i < list.length; i++) {
+          const variableName = list[i].replace('[', '').replace(']', '');
+          const value = router.query[variableName];
+          delete query[variableName];
+          pathName = pathName.replace(`[${variableName}]`, `${value}`);
+        }
       }
+      // if (query.item) {
+      //   pathName = `${pathName}${query.item}`;
+      // }
+      const newPathObject = {
+        pathname: pathName,
+        query: { ...query, section: section },
+      };
+      router.push(newPathObject, undefined, { shallow: true });
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    if (initialLoad) {
+      let section = router.query.section as string;
+      changeParams!(section!);
+      setInitialLoad(false);
     }
-    const newPathObject = {
-      pathname: pathName,
-      query: { ...query, section: section },
-    };
-    router.push(newPathObject, undefined, { shallow: true });
-  };
+    if (!router.query.section) {
+      changeParams!(links[0].section!);
+    }
+  }, [changeParams, initialLoad, links, router]);
 
   return (
     <div className={styles.wrapper}>

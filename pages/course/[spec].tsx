@@ -50,7 +50,7 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
   const [openModal, setOpenModal] = useState(false);
 
   const [opened, { toggle }] = useDisclosure();
-  const [value, handlers, array] = useMoveThroughArray(
+  const [value, handlers] = useMoveThroughArray(
     units,
     (item, hash) => item.spec == hash
   );
@@ -78,7 +78,7 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
-        href: `/dashboard/course/${course.spec}`,
+        href: `/dashboard/course/${course.spec}?item=${value.spec}`,
         description: locale.tip.sticky.course.dashboard,
       });
     }
@@ -139,9 +139,9 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
           next={handlers.next}
         />
         <Main key={hash} />
-        {(value.kind == 'course' || value.kind == 'unit') &&
-          actions.length > 0 &&
-          (isModerator || isAuthor) && <Sticky actions={actions} />}
+        {actions.length > 0 && (isModerator || isAuthor) && (
+          <Sticky actions={actions} />
+        )}
         <DeleteModal
           active={openModal}
           setActive={setOpenModal}

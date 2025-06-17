@@ -27,6 +27,8 @@ export const titles = {
     assignment: 'Управление уроком',
     tournament: 'Управление турниром',
     course: 'Управление курсом',
+    unit: 'Управление модулем',
+    lesson: 'Управление уроком',
   },
   attempt: 'Попытка',
   assignment: {

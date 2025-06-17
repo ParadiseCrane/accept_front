@@ -13,26 +13,6 @@ const PlagiarismButton: FC<{
 
   const [isOpen, toggleOpen] = useState(false);
 
-  // const handleBan = useCallback(
-  //   (banReason: string) => {
-  //     requestWithNotify(
-  //       `tournament/participants/${ban ? 'ban' : 'unban'}/${spec}`,
-  //       'POST',
-  //       ban
-  //         ? locale.notify.tournament.banUser
-  //         : locale.notify.tournament.unbanUser,
-  //       lang,
-  //       () => '',
-  //       {
-  //         login: user.login,
-  //         banReason,
-  //       },
-  //       onSuccess
-  //     );
-  //   },
-  //   [ban, spec, locale, lang, user.login, onSuccess]
-  // );
-
   const handleBan = () => {};
 
   const handleUnban = () => {};

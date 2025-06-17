@@ -88,17 +88,19 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
   const changeParams = (section: string, group: string) => {
     const regExp = /\[.*?\]/g;
     let pathName = router.pathname;
+    let query = { ...router.query };
     const list = pathName.match(regExp);
     if (list) {
       for (let i = 0; i < list.length; i++) {
         const variableName = list[i].replace('[', '').replace(']', '');
         const value = router.query[variableName];
+        delete query[variableName];
         pathName = pathName.replace(`[${variableName}]`, `${value}`);
       }
     }
     const newPathObject = {
       pathname: pathName,
-      query: { section: section, group: group },
+      query: { ...query, section: section, group: group },
     };
     router.push(newPathObject, undefined, { shallow: true });
   };
