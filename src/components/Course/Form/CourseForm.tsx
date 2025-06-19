@@ -1,4 +1,4 @@
-import { ICourseAddEdit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IUnitAddEdit } from '@custom-types/data/ICourse';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Group, Stack } from '@mantine/core';
@@ -10,23 +10,39 @@ import { FC, memo } from 'react';
 
 import styles from './styles.module.css';
 
-const Form: FC<{
+const CourseForm: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
-  initialValues: ICourseAddEdit;
+  initialValues: ICourseAddEdit | IUnitAddEdit;
   editMode: boolean;
   depth: number;
 }> = ({ handleSubmit, initialValues, editMode, depth }) => {
   const { locale } = useLocale();
-  const form = useForm<ICourseAddEdit>({ initialValues: initialValues });
+  const form = useForm<ICourseAddEdit | IUnitAddEdit>({
+    initialValues: initialValues,
+  });
   return (
     <Stack m={'xl'} className={styles.form}>
       <Group grow align="flex-start">
         <CourseTree
           initialUnits={form.values.children}
-          form={form}
+          form={
+            form as UseFormReturnType<
+              ICourseAddEdit,
+              (values: ICourseAddEdit) => ICourseAddEdit
+            >
+          }
           depth={depth}
         />
-        {form.values.kind === 'course' && <ImageSelector form={form} />}
+        {form.values.kind === 'course' && (
+          <ImageSelector
+            form={
+              form as UseFormReturnType<
+                ICourseAddEdit,
+                (values: ICourseAddEdit) => ICourseAddEdit
+              >
+            }
+          />
+        )}
       </Group>
       <CustomEditor
         label={locale.course.description}
@@ -45,4 +61,4 @@ const Form: FC<{
   );
 };
 
-export default memo(Form);
+export default memo(CourseForm);

@@ -1,13 +1,10 @@
 import { ICourseAddEdit } from '@custom-types/data/ICourse';
 import { IImagePreset } from '@custom-types/data/IImagePreset';
 import { useRequest } from '@hooks/useRequest';
-import { Box, Image, SimpleGrid } from '@mantine/core';
+import { Box, SimpleGrid } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { InputWrapper } from '@ui/basics';
 import PresetSingleSelect from '@ui/selectors/PresetSingleSelect/PresetSingleSelect';
-import { getCookie } from '@utils/cookies';
 import { FC, memo, useEffect, useState } from 'react';
-import { Plus } from 'tabler-icons-react';
 import { ImageComponent } from './ImageComponent/ImageComponent';
 import { sendRequest } from '@requests/request';
 import { useLocale } from '@hooks/useLocale';

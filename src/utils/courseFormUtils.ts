@@ -1,14 +1,63 @@
-import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseAddEdit,
+  IBaseTreeUnit,
+  IUnitAddEdit,
+} from '@custom-types/data/ICourse';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { errorNotification, newNotification } from './notificationFunctions';
 
-const getInitialValues = ({ title }: { title: string }): ICourseAddEdit => {
+const getInitialValuesAddCourse = ({
+  title,
+}: {
+  title: string;
+}): ICourseAddEdit => {
   return {
     title: title,
     description: '',
     kind: 'course',
     image: '',
     children: [],
+  };
+};
+
+const getInitialValuesEditCourse = ({
+  title,
+  description,
+  children,
+  image,
+  kind,
+}: {
+  title: string;
+  description: string;
+  children: IBaseTreeUnit[];
+  image: string;
+  kind: 'course';
+}): ICourseAddEdit => {
+  return {
+    title,
+    description,
+    kind,
+    image,
+    children,
+  };
+};
+
+const getInitialValuesEditUnit = ({
+  title,
+  description,
+  children,
+  kind,
+}: {
+  title: string;
+  description: string;
+  children: IBaseTreeUnit[];
+  kind: 'unit';
+}): IUnitAddEdit => {
+  return {
+    title,
+    description,
+    kind,
+    children,
   };
 };
 
@@ -110,7 +159,9 @@ const checkFormValidation = ({
 };
 
 export const courseFormUtils = {
-  getInitialValues,
+  getInitialValuesAddCourse,
+  getInitialValuesEditCourse,
+  getInitialValuesEditUnit,
   checkChildrenInvalidInput,
   checkCourseDescriptionInvalidInput,
   checkCourseImageInvalidInput,

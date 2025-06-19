@@ -22,8 +22,15 @@ export interface ITreeUnit extends IBaseTreeUnit {
 export interface ICourseAddEdit {
   title: string;
   description: string;
-  kind: 'course' | 'unit';
+  kind: 'course';
   image: string;
+  children: IBaseTreeUnit[];
+}
+
+export interface IUnitAddEdit {
+  title: string;
+  description: string;
+  kind: 'unit';
   children: IBaseTreeUnit[];
 }
 

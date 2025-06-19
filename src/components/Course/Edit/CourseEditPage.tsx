@@ -1,22 +1,30 @@
 import CourseForm from '@components/Course/Form/CourseForm';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
+import {
+  ICourseAddEdit,
+  ICourse,
+  IBaseTreeUnit,
+} from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRouter } from 'next/router';
-import { ReactNode, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 
-function CourseAdd() {
+function CourseEditPage(props: { course: ICourse; depth: number }) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
-  const initialValues = courseFormUtils.getInitialValuesAddCourse({
-    title: locale.ui.courseTree.title,
+  const initialValues = courseFormUtils.getInitialValuesEditCourse({
+    title: props.course.title,
+    description: props.course.description,
+    children: props.course.children ?? [],
+    image: props.course.image,
+    kind: props.course.kind,
   });
+
   const router = useRouter();
 
   const handleSubmit = useCallback(
@@ -25,46 +33,25 @@ function CourseAdd() {
         courseFormUtils.checkCourseImageInvalidInput({
           image: form.values.image,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })
-      ) {
+      )
         return;
-      }
 
       const course: ICourseAddEdit = {
         ...form.values,
@@ -80,12 +67,16 @@ function CourseAdd() {
         }
       }
 
-      const courseToSend = { ...course, children: emptyChildren };
+      const courseToSend: ICourseAddEdit = {
+        ...course,
+        children: emptyChildren,
+        kind: props.course.kind,
+      };
 
       requestWithNotify<ICourseAddEdit, string>(
-        'course/add',
-        'POST',
-        locale.notify.course.create,
+        `course/put/${props.course.spec}`,
+        'PUT',
+        locale.notify.course.edit,
         lang,
         (response) => response,
         courseToSend
@@ -100,19 +91,15 @@ function CourseAdd() {
 
   return (
     <Wrapper>
-      <Title title={locale.titles.course.add} />
+      <Title title={locale.titles.course.edit} />
       <CourseForm
         handleSubmit={handleSubmit}
         initialValues={initialValues}
-        editMode={false}
-        depth={0}
+        editMode={true}
+        {...props}
       />
     </Wrapper>
   );
 }
 
-CourseAdd.getLayout = (page: ReactNode) => {
-  return <DefaultLayout>{page}</DefaultLayout>;
-};
-
-export default CourseAdd;
+export default memo(CourseEditPage);
