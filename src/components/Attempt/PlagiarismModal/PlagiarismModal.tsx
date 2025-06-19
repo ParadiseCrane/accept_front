@@ -2,19 +2,39 @@ import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';
 import { Modal, TextInput } from '@ui/basics';
-import { FC, memo, useCallback } from 'react';
+import {
+  Dispatch,
+  FC,
+  memo,
+  SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
 
 import styles from './styles.module.css';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+import { sendRequest } from '@requests/request';
 
 const PlagiarismModal: FC<{
-  action: () => void;
+  setIsAIGen: Dispatch<SetStateAction<boolean>>;
   isAIGenerated: boolean;
   isOpen: boolean;
   onClose: () => void;
   customStyle?: string;
-}> = ({ isOpen, onClose, isAIGenerated, action }) => {
+  attemptSpec: string;
+}> = ({ isOpen, onClose, isAIGenerated, attemptSpec, setIsAIGen }) => {
   const { locale } = useLocale();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = useCallback(async () => {
+    if (!isLoading) {
+      setIsLoading(true);
+      await sendRequest<{}, string>(`attempt/toggle_ai/${attemptSpec}`, 'GET');
+      setIsAIGen((state) => !state);
+      onClose();
+      setIsLoading(false);
+    }
+  }, [attemptSpec, setIsAIGen, isLoading, onClose]);
 
   return (
     <Modal
@@ -31,11 +51,10 @@ const PlagiarismModal: FC<{
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
-            onClick: () => {
-              action();
-              onClose();
-            },
-            label: locale.attempt.aiGenerated.confirm,
+            onClick: handleClick,
+            label: isLoading
+              ? locale.loading
+              : locale.attempt.aiGenerated.confirm,
           }}
           cancelButton={{
             onClick: onClose,

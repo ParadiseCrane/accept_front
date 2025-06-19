@@ -269,7 +269,7 @@ const AIProbabilityList: FC<{
       </div>
       <AIProbabilityListUI
         key={userSearch.toString() + taskSearch.toString()}
-        url={`${type}/attempts/ai_generated/${spec}`}
+        url={`${type}/attempts/ai/${spec}`}
         activeTab
         initialColumns={initialColumns}
         refactorAttempt={refactor}
