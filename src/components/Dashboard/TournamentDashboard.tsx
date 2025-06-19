@@ -55,6 +55,11 @@ const TournamentDashboard: FC<{
     'GET'
   );
 
+  const { data: aiCount } = useRequest<undefined, number>(
+    `tournament/attempts/ai/count/${spec}`,
+    'GET'
+  );
+
   const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
 
   useEffect(() => {
@@ -134,12 +139,18 @@ const TournamentDashboard: FC<{
       },
       {
         page: tournament && (
-          <AIProbabilityList
-            key={'all'}
-            type={'tournament'}
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-          />
+          <Indicator
+            size={10}
+            disabled={!aiCount || aiCount === 0}
+            label={aiCount}
+          >
+            <AIProbabilityList
+              key={'all'}
+              type={'tournament'}
+              spec={tournament.spec}
+              shouldNotRefetch={tournament.status.spec != 1}
+            />
+          </Indicator>
         ),
         icon: <IconRobot color="var(--secondary)" />,
         title: locale.dashboard.tournament.aiProbability,
@@ -216,7 +227,7 @@ const TournamentDashboard: FC<{
     }
 
     return links;
-  }, [tournament, hasNewMessages, locale, refetch, spec]);
+  }, [tournament, hasNewMessages, locale, refetch, spec, aiCount]);
 
   const [activeModal, setActiveModal] = useState(false);
 

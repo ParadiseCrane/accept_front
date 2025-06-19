@@ -46,6 +46,11 @@ const AssignmentDashboard: FC<{
     'GET'
   );
 
+  const { data: aiCount } = useRequest<undefined, number>(
+    `assignment/attempts/ai/count/${spec}`,
+    'GET'
+  );
+
   const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
 
   const { hasNewMessages } = useChatHosts();
@@ -124,11 +129,17 @@ const AssignmentDashboard: FC<{
       },
       {
         page: assignment && (
-          <AIProbabilityList
-            type={'assignment'}
-            spec={assignment.spec}
-            shouldNotRefetch={assignment.status.spec != 1}
-          />
+          <Indicator
+            size={10}
+            disabled={!aiCount || aiCount === 0}
+            label={aiCount}
+          >
+            <AIProbabilityList
+              type={'assignment'}
+              spec={assignment.spec}
+              shouldNotRefetch={assignment.status.spec != 1}
+            />
+          </Indicator>
         ),
         icon: <IconRobot color="var(--secondary)" />,
         title: locale.dashboard.assignment.aiProbability,
@@ -155,7 +166,7 @@ const AssignmentDashboard: FC<{
         section: 'create_notifications',
       },
     ],
-    [assignment, hasNewMessages, locale, refetch, spec]
+    [assignment, hasNewMessages, locale, refetch, spec, aiCount]
   );
 
   const [activeModal, setActiveModal] = useState(false);
