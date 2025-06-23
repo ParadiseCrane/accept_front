@@ -55,10 +55,12 @@ const TournamentDashboard: FC<{
     'GET'
   );
 
-  const { data: aiCount } = useRequest<undefined, number>(
-    `tournament/attempts/ai/count/${spec}`,
-    'GET'
-  );
+  // const { data: aiCount } = useRequest<undefined, number>(
+  //   `tournament/attempts/ai/count/${spec}`,
+  //   'GET'
+  // );
+
+  const aiCount = 5;
 
   const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
 
@@ -141,7 +143,7 @@ const TournamentDashboard: FC<{
         page: tournament && (
           <Indicator
             size={10}
-            disabled={!aiCount || aiCount === 0}
+            // disabled={!aiCount || aiCount === 0}
             label={aiCount}
           >
             <AIProbabilityList

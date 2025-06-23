@@ -12,42 +12,12 @@ import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps, GetStaticPaths } from 'next';
 import { ReactNode } from 'react';
 
-function CourseDashboardPage(props: {
-  entity: ICourse | IUnit | ILesson;
-  courseSpec: string;
-  courseAuthor: string;
-}) {
+function CourseDashboardPage(props: { entity: ICourse; courseAuthor: string }) {
   const { locale } = useLocale();
   const refetchIntervalSeconds = 8;
   const { user } = useUser();
 
   if (!user) return;
-
-  if (props.entity.kind === 'lesson') {
-    return (
-      <>
-        <Title title={locale.titles.dashboard.lesson} />
-        <LessonDashboard
-          lesson={props.entity}
-          courseSpec={props.courseSpec}
-          isAuthor={user && user.login === props.courseAuthor}
-        />
-      </>
-    );
-  }
-
-  if (props.entity.kind === 'unit') {
-    return (
-      <>
-        <Title title={locale.titles.dashboard.unit} />
-        <UnitDashboard
-          unit={props.entity}
-          courseSpec={props.courseSpec}
-          isAuthor={user && user.login === props.courseAuthor}
-        />
-      </>
-    );
-  }
 
   return (
     <>
@@ -59,7 +29,7 @@ function CourseDashboardPage(props: {
       >
         <CourseDashboard
           course={props.entity}
-          courseSpec={props.courseSpec}
+          courseSpec={props.entity.spec}
           isAuthor={user && user.login === props.courseAuthor}
         />
       </ChatHostsProvider>
@@ -83,28 +53,17 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  // course.author
-
   const courseResponse = await fetchWrapperStatic({
     url: `course/${query.spec}`,
     req,
   });
 
-  const response = await fetchWrapperStatic({
-    url: `course/${req.url?.split('?item=').pop()!.split('&spec')[0]}`,
-    req,
-  });
-
-  if (response.status === 200 && courseResponse.status === 200) {
-    const json: ICourse | IUnit | ILesson = await response.json();
-    const courseAuthor = ((await courseResponse.json()) as ICourse).author;
-    const entity = {
-      ...json,
-      spec: req.url?.split('?item=').pop()!.split('&spec')[0],
-    };
+  if (courseResponse.status === 200) {
+    const entity: ICourse = await courseResponse.json();
+    const courseAuthor = entity.author;
 
     return {
-      props: { entity: entity, courseSpec: query.spec, courseAuthor },
+      props: { entity: entity, courseAuthor },
     };
   }
 

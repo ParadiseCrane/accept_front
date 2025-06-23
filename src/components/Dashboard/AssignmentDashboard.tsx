@@ -46,10 +46,12 @@ const AssignmentDashboard: FC<{
     'GET'
   );
 
-  const { data: aiCount } = useRequest<undefined, number>(
-    `assignment/attempts/ai/count/${spec}`,
-    'GET'
-  );
+  // const { data: aiCount } = useRequest<undefined, number>(
+  //   `assignment/attempts/ai/count/${spec}`,
+  //   'GET'
+  // );
+
+  const aiCount = 5;
 
   const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
 
@@ -131,7 +133,7 @@ const AssignmentDashboard: FC<{
         page: assignment && (
           <Indicator
             size={10}
-            disabled={!aiCount || aiCount === 0}
+            // disabled={!aiCount || aiCount === 0}
             label={aiCount}
           >
             <AIProbabilityList

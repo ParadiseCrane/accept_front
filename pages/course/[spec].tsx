@@ -78,7 +78,10 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
-        href: `/dashboard/course/${course.spec}?item=${value.spec}`,
+        href:
+          value.kind === 'course'
+            ? `/dashboard/${value.kind}/${value.spec}`
+            : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`,
         description: locale.tip.sticky.course.dashboard(value.kind),
       });
     }
