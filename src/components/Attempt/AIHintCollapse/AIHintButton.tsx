@@ -7,14 +7,14 @@ const AIHintButton: FC<{
   customStyle?: string;
   loading: boolean;
   isOpen: boolean;
-  hint: IAIHint;
+  hint: IAIHint | undefined;
   onClick?: () => void;
 }> = ({ loading, hint, isOpen, customStyle, onClick }) => {
   const { locale } = useLocale();
 
   const buttonText = loading
     ? locale.attempt.aiHint.generatingHint
-    : hint.content.length
+    : hint && hint.content.length
       ? isOpen
         ? locale.attempt.aiHint.hideHint
         : locale.attempt.aiHint.showHint

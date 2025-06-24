@@ -46,12 +46,10 @@ const AssignmentDashboard: FC<{
     'GET'
   );
 
-  // const { data: aiCount } = useRequest<undefined, number>(
-  //   `assignment/attempts/ai/count/${spec}`,
-  //   'GET'
-  // );
-
-  const aiCount = 5;
+  const { data: aiCount } = useRequest<undefined, number>(
+    `assignment/attempts/ai/count/${spec}`,
+    'GET'
+  );
 
   const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
 
@@ -131,19 +129,23 @@ const AssignmentDashboard: FC<{
       },
       {
         page: assignment && (
+          <AIProbabilityList
+            type={'assignment'}
+            spec={assignment.spec}
+            shouldNotRefetch={assignment.status.spec != 1}
+          />
+        ),
+        icon: (
           <Indicator
-            size={10}
-            // disabled={!aiCount || aiCount === 0}
+            size={'lg'}
             label={aiCount}
+            disabled={!aiCount}
+            inline
+            position="top-start"
           >
-            <AIProbabilityList
-              type={'assignment'}
-              spec={assignment.spec}
-              shouldNotRefetch={assignment.status.spec != 1}
-            />
+            <IconRobot color="var(--secondary)" />
           </Indicator>
         ),
-        icon: <IconRobot color="var(--secondary)" />,
         title: locale.dashboard.assignment.aiProbability,
         section: 'ai_probability',
       },

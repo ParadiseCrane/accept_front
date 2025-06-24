@@ -55,12 +55,10 @@ const TournamentDashboard: FC<{
     'GET'
   );
 
-  // const { data: aiCount } = useRequest<undefined, number>(
-  //   `tournament/attempts/ai/count/${spec}`,
-  //   'GET'
-  // );
-
-  const aiCount = 5;
+  const { data: aiCount } = useRequest<undefined, number>(
+    `tournament/attempts/ai/count/${spec}`,
+    'GET'
+  );
 
   const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
 
@@ -141,20 +139,24 @@ const TournamentDashboard: FC<{
       },
       {
         page: tournament && (
+          <AIProbabilityList
+            key={'all'}
+            type={'tournament'}
+            spec={tournament.spec}
+            shouldNotRefetch={tournament.status.spec != 1}
+          />
+        ),
+        icon: (
           <Indicator
-            size={10}
-            // disabled={!aiCount || aiCount === 0}
+            size={'lg'}
             label={aiCount}
+            disabled={!aiCount}
+            inline
+            position="top-start"
           >
-            <AIProbabilityList
-              key={'all'}
-              type={'tournament'}
-              spec={tournament.spec}
-              shouldNotRefetch={tournament.status.spec != 1}
-            />
+            <IconRobot color="var(--secondary)" />
           </Indicator>
         ),
-        icon: <IconRobot color="var(--secondary)" />,
         title: locale.dashboard.tournament.aiProbability,
         section: 'ai_probability',
       },

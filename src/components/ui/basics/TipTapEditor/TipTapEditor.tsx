@@ -5,7 +5,6 @@ import { Blockquote } from '@tiptap/extension-blockquote';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { Code } from '@tiptap/extension-code';
-import { CodeBlock } from '@tiptap/extension-code-block';
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
 import { Color } from '@tiptap/extension-color';
 import { Document } from '@tiptap/extension-document';
@@ -14,7 +13,6 @@ import { FloatingMenu } from '@tiptap/extension-floating-menu';
 import { Heading } from '@tiptap/extension-heading';
 import { Highlight } from '@tiptap/extension-highlight';
 import { History } from '@tiptap/extension-history';
-import { Image } from '@tiptap/extension-image';
 import { Italic } from '@tiptap/extension-italic';
 import { ListItem } from '@tiptap/extension-list-item';
 import { OrderedList } from '@tiptap/extension-ordered-list';
@@ -34,8 +32,6 @@ import python from 'highlight.js/lib/languages/python';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { all, createLowlight } from 'lowlight';
-import { useState } from 'react';
-import { Edit, FileExport } from 'tabler-icons-react';
 import { ImageResize } from 'tiptap-extension-resize-image';
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from './Components/Align';
@@ -92,7 +88,14 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
-  const lowlight = createLowlight(all);
+  const lowlight = createLowlight();
+
+  lowlight.register('html', html);
+  lowlight.register('css', css);
+  lowlight.register('js', js);
+  lowlight.register('ts', ts);
+  lowlight.register('python', python);
+  lowlight.register('csharp', csharp);
 
   const { locale } = useLocale();
 

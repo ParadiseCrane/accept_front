@@ -99,15 +99,13 @@ const Left: FC<Props> = ({
             attempt={attempt}
             customStyle={styles.smallButton}
           />
-          {hint && (
-            <AIHintButton
-              customStyle={styles.smallButton}
-              onClick={hint ? toggle : requestAIHint}
-              isOpen={opened}
-              loading={hintLoading}
-              hint={hint}
-            />
-          )}
+          <AIHintButton
+            customStyle={styles.smallButton}
+            onClick={hint ? toggle : requestAIHint}
+            isOpen={opened}
+            loading={hintLoading}
+            hint={hint}
+          />
         </>
       )}
     </div>
