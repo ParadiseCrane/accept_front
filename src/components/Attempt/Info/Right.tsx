@@ -126,48 +126,46 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
     <div className={styles.right} id="attempt_right_section">
       {tables.length > 0 &&
         tables.map((table, index) => (
-          <>
-            <div
-              className={styles.tableWrapper}
-              ref={(el) => setRef(el, index)}
-              key={index}
-              onScroll={syncScroll ? handleScroll(index) : undefined}
-            >
-              {table.length > 0 && (
-                <table className={tableStyles.table}>
-                  <thead>
-                    <tr className={tableStyles.row} style={gridTemplate}>
-                      {columns.map((column, index) => (
-                        <th key={index} className={styles.column}>
-                          {column}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {table.map((row, index) => (
-                      <tr
-                        key={`${row.verdict.spec} ${index}`}
-                        className={
-                          tableStyles.row +
-                          ' ' +
-                          (index % 2 === 0 ? tableStyles.even : '')
-                        }
-                        style={gridTemplate}
-                      >
-                        <td className={`${tableStyles.cell} ${styles.cell}`}>
-                          {row.index}
-                        </td>
-                        <td className={`${tableStyles.cell} ${styles.cell}`}>
-                          <VerdictWrapper verdict={row.verdict} full />
-                        </td>
-                      </tr>
+          <div
+            className={styles.tableWrapper}
+            ref={(el) => setRef(el, index)}
+            key={index}
+            onScroll={syncScroll ? handleScroll(index) : undefined}
+          >
+            {table.length > 0 && (
+              <table className={tableStyles.table}>
+                <thead>
+                  <tr className={tableStyles.row} style={gridTemplate}>
+                    {columns.map((column, index) => (
+                      <th key={index} className={styles.column}>
+                        {column}
+                      </th>
                     ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </>
+                  </tr>
+                </thead>
+                <tbody>
+                  {table.map((row, index) => (
+                    <tr
+                      key={`${row.verdict.spec} ${index}`}
+                      className={
+                        tableStyles.row +
+                        ' ' +
+                        (index % 2 === 0 ? tableStyles.even : '')
+                      }
+                      style={gridTemplate}
+                    >
+                      <td className={`${tableStyles.cell} ${styles.cell}`}>
+                        {row.index}
+                      </td>
+                      <td className={`${tableStyles.cell} ${styles.cell}`}>
+                        <VerdictWrapper verdict={row.verdict} full />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         ))}
     </div>
   );

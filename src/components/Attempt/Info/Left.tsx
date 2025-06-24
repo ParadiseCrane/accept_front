@@ -10,11 +10,11 @@ import AIHintButton from '../AIHintCollapse/AIHintButton';
 
 interface Props {
   attempt: IAttempt;
-  hint?: IAIHint;
+  hint: string;
   hintLoading: boolean;
   opened: boolean;
   toggle: () => void;
-  requestAIHint: () => Promise<void>;
+  requestAIHint: () => void;
 }
 
 const Left: FC<Props> = ({
