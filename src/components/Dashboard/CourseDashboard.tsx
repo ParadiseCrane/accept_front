@@ -62,9 +62,7 @@ const CourseDashboard: FC<{
         section: 'main',
       },
       {
-        page: (
-          <CourseChatPage spec={course.spec} groupSpec={params.get('group')} />
-        ),
+        page: <CourseChatPage spec={course.spec} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <Messages color="var(--secondary)" />
@@ -126,7 +124,7 @@ const CourseDashboard: FC<{
     }
 
     return links;
-  }, [hasNewMessages, locale, course, isAuthor, params]);
+  }, [hasNewMessages, locale, course, isAuthor]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -172,26 +170,23 @@ const CourseDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      {isAuthor !== null && (
-        // <></>
-        <LeftMenu
-          links={links}
-          topContent={
-            <Tip
-              label={locale.course.backToCourseTip}
-              openDelay={tooltipOpenDelay}
-              position="top"
-              spanStyle={styles.backToCoursesWrapper}
-              onClick={() => router.push(`/course/${courseSpec}`)}
-            >
-              <IconArrowLeft color={'var(--primary)'} />
-              <div className={styles.title}>
-                {locale.course.backToCourseButton}
-              </div>
-            </Tip>
-          }
-        />
-      )}
+      <LeftMenu
+        links={links}
+        topContent={
+          <Tip
+            label={locale.course.backToCourseTip}
+            openDelay={tooltipOpenDelay}
+            position="top"
+            spanStyle={styles.backToCoursesWrapper}
+            onClick={() => router.push(`/course/${courseSpec}`)}
+          >
+            <IconArrowLeft color={'var(--primary)'} />
+            <div className={styles.title}>
+              {locale.course.backToCourseButton}
+            </div>
+          </Tip>
+        }
+      />
       {user && <GroupSelectorMenu courseSpec={course.spec} user={user.login} />}
     </>
   );

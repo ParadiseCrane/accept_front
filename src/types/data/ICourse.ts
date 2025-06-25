@@ -84,8 +84,10 @@ export interface ICourseDashboardMain {
   invite?: string;
 }
 
+export type IUnitDashboardMain = Omit<ICourseDashboardMain, 'invite' | 'image'>;
+
 export interface IGroupOpenness {
   group: string;
   spec: string;
-  opened: true;
+  opened: boolean;
 }

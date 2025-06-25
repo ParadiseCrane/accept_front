@@ -1,5 +1,6 @@
 import UnitDashboard from '@components/Dashboard/UnitDashboard';
 import { ICourse, IUnit } from '@custom-types/data/ICourse';
+import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -13,6 +14,7 @@ function UnitDashboardPage(props: {
   courseSpec: string;
   courseAuthor: string;
 }) {
+  const refetchIntervalSeconds = 8;
   const { locale } = useLocale();
   const { user } = useUser();
 
@@ -21,11 +23,17 @@ function UnitDashboardPage(props: {
   return (
     <>
       <Title title={locale.titles.dashboard.unit} />
-      <UnitDashboard
-        unit={props.entity}
-        courseSpec={props.courseSpec}
-        isAuthor={user && user.login === props.courseAuthor}
-      />
+      <ChatHostsProvider
+        spec={props.courseSpec}
+        entity={'course'}
+        updateIntervalSeconds={refetchIntervalSeconds}
+      >
+        <UnitDashboard
+          unit={props.entity}
+          courseSpec={props.courseSpec}
+          isAuthor={user && user.login === props.courseAuthor}
+        />
+      </ChatHostsProvider>
     </>
   );
 }

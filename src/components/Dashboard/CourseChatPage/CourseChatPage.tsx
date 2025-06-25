@@ -1,13 +1,20 @@
-import { FC, memo } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import ChatPage from '../ChatPage/ChatPage';
 import styles from './styles.module.css';
 import { useLocale } from '@hooks/useLocale';
+import { useSearchParams } from 'next/navigation';
 
-const CourseChatPage: FC<{ spec: string; groupSpec: string | null }> = ({
-  spec,
-  groupSpec,
-}) => {
+const CourseChatPage: FC<{ spec: string }> = ({ spec }) => {
+  const params = useSearchParams();
   const { locale } = useLocale();
+  const [groupSpec, setGroupSpec] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (params) {
+      setGroupSpec(`${params.get('group')}`);
+    }
+  }, [params]);
+
   if (!groupSpec) {
     return <></>;
   }

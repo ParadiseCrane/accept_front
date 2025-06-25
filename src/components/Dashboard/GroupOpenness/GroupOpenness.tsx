@@ -83,7 +83,6 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
     );
 
   if (params && params.get('group') && params.get('group') === 'all') {
-    // TODO добавить надпись, что группа не выбрана
     return (
       <div className={styles.wrapper}>
         <div className={styles.emptyMessageWrapper}>

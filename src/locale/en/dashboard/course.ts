@@ -24,4 +24,8 @@ export const course = {
   actions: 'Actions',
   chatNoGroupSelected: 'Choose a group to view a chat',
   groupOpennessRequestFail: 'Failed to change element openness',
+  unit: {
+    openUnit: 'OpenClose unit for the group',
+    closeUnit: 'Close unit for the group',
+  },
 };

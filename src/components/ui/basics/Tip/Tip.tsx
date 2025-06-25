@@ -1,11 +1,18 @@
 import { Tooltip, TooltipProps } from '@mantine/core';
 import { FC, memo } from 'react';
+import styles from './tip.module.css';
 
 interface ITipProps extends TooltipProps {
   spanStyle?: string;
+  centerContent?: boolean;
 }
 
-const Tip: FC<ITipProps> = ({ children, spanStyle, ...tipProps }) => {
+const Tip: FC<ITipProps> = ({
+  children,
+  spanStyle,
+  centerContent,
+  ...tipProps
+}) => {
   return (
     <Tooltip
       withArrow
@@ -23,7 +30,9 @@ const Tip: FC<ITipProps> = ({ children, spanStyle, ...tipProps }) => {
       }}
       {...tipProps}
     >
-      <span className={spanStyle}>{children}</span>
+      <span className={`${centerContent ? styles.center : ''} ${spanStyle}`}>
+        {children}
+      </span>
     </Tooltip>
   );
 };

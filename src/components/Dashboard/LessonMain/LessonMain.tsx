@@ -12,7 +12,7 @@ import { IGroupInvite } from '@custom-types/data/IGroup';
 import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
 import { useLocale } from '@hooks/useLocale';
 
-const CourseMain: FC<{
+const LessonMain: FC<{
   courseProps: ICourse | undefined;
 }> = ({ courseProps }) => {
   const [course, setCourse] = useState<ICourseDashboardMain | undefined>();
@@ -34,10 +34,12 @@ const CourseMain: FC<{
           'GET'
         );
         if (!inviteRes.error) {
-          setCourse((prev) => ({
-            ...prev!,
+          setCourse({
+            title: courseProps.title,
+            description: courseProps.description,
+            image: courseProps.image,
             invite: inviteRes.response[0].invite_spec,
-          }));
+          });
         }
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -116,4 +118,4 @@ const CourseMain: FC<{
   );
 };
 
-export default memo(CourseMain);
+export default memo(LessonMain);

@@ -63,7 +63,7 @@ const LessonDashboard: FC<{
       // },
       // {
       //   page: (
-      //     <CourseChatPage spec={lesson.spec} groupSpec={params.get('group')} />
+      //     <CourseChatPage spec={lesson.spec} />
       //   ),
       //   icon: (
       //     <Indicator size={10} disabled blink>
