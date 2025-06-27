@@ -41,7 +41,7 @@ const UnitDashboard: FC<{
   unit: IUnit;
   courseSpec: string;
   isAuthor: boolean;
-}> = ({ unit, courseSpec, isAuthor }) => {
+}> = ({ unit, courseSpec }) => {
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();

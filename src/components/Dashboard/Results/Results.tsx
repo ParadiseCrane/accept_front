@@ -32,7 +32,7 @@ const Results: FC<{
   endDate: Date;
   full?: boolean;
   is_team?: boolean;
-  type: 'assignment' | 'tournament';
+  type: 'assignment' | 'tournament' | 'lesson';
 }> = ({ spec, isFinished, endDate, type, full, is_team }) => {
   const { locale } = useLocale();
 

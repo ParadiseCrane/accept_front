@@ -66,12 +66,15 @@ function Task(props: {
         ? 'assignment'
         : router.query.tournament
           ? 'tournament'
-          : 'regular',
+          : router.query.lesson
+            ? 'lesson'
+            : 'regular',
     [router.query]
   );
 
   const querySpec = useMemo(
-    () => router.query.assignment || router.query.tournament,
+    () =>
+      router.query.assignment || router.query.tournament || router.query.lesson,
     [router.query]
   );
 

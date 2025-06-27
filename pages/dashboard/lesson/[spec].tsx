@@ -1,5 +1,6 @@
 import LessonDashboard from '@components/Dashboard/LessonDashboard';
 import { ICourse, ILesson } from '@custom-types/data/ICourse';
+import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -13,6 +14,7 @@ function LessonDashboardPage(props: {
   courseSpec: string;
   courseAuthor: string;
 }) {
+  const refetchIntervalSeconds = 8;
   const { locale } = useLocale();
   const { user } = useUser();
 
@@ -21,11 +23,17 @@ function LessonDashboardPage(props: {
   return (
     <>
       <Title title={locale.titles.dashboard.lesson} />
-      <LessonDashboard
-        lesson={props.entity}
-        courseSpec={props.courseSpec}
-        isAuthor={user && user.login === props.courseAuthor}
-      />
+      <ChatHostsProvider
+        spec={props.entity.spec}
+        entity={'lesson'}
+        updateIntervalSeconds={refetchIntervalSeconds}
+      >
+        <LessonDashboard
+          lesson={props.entity}
+          courseSpec={props.courseSpec}
+          isAuthor={user && user.login === props.courseAuthor}
+        />
+      </ChatHostsProvider>
     </>
   );
 }

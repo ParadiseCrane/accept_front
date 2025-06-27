@@ -22,6 +22,8 @@ const Icon: FC<MyIconProps> = ({
     setMounted(true);
   }, []);
 
+  console.log('props.color', props.color);
+
   return (
     <div className={`${styles.wrapper} ${wrapperClassName || ''}`}>
       {mounted && (

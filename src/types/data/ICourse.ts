@@ -86,6 +86,8 @@ export interface ICourseDashboardMain {
 
 export type IUnitDashboardMain = Omit<ICourseDashboardMain, 'invite' | 'image'>;
 
+export type ILessonDashboardMain = IUnitDashboardMain;
+
 export interface IGroupOpenness {
   group: string;
   spec: string;

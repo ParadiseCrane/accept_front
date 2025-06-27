@@ -44,7 +44,7 @@ const DeleteTag: FC<{
         color="red"
         size="xs"
       >
-        <Trash />
+        <Trash color="red" />
       </Icon>
       <SimpleModal
         opened={opened}

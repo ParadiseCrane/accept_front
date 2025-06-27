@@ -30,7 +30,9 @@ const Tip: FC<ITipProps> = ({
       }}
       {...tipProps}
     >
-      <span className={`${centerContent ? styles.center : ''} ${spanStyle}`}>
+      <span
+        className={`${centerContent ? styles.center : ''} ${spanStyle ?? ''}`}
+      >
         {children}
       </span>
     </Tooltip>

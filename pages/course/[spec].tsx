@@ -106,7 +106,7 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
     }
 
     return innerActions;
-  }, [isModerator, value, isAuthor]);
+  }, [isModerator, isAuthor, value, course, locale]);
 
   return (
     <>

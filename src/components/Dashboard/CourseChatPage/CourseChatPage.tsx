@@ -4,7 +4,10 @@ import styles from './styles.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { useSearchParams } from 'next/navigation';
 
-const CourseChatPage: FC<{ spec: string }> = ({ spec }) => {
+const CourseChatPage: FC<{ spec: string; entity?: 'course' | 'lesson' }> = ({
+  spec,
+  entity = 'course',
+}) => {
   const params = useSearchParams();
   const { locale } = useLocale();
   const [groupSpec, setGroupSpec] = useState<string | null>(null);
@@ -34,7 +37,7 @@ const CourseChatPage: FC<{ spec: string }> = ({ spec }) => {
   return (
     <ChatPage
       spec={spec}
-      entity={'course'}
+      entity={entity}
       customRequest={`course/participant/${spec}/${groupSpec}`}
       group_spec={groupSpec}
     />

@@ -71,7 +71,7 @@ const EditTag: FC<{
         color="var(--primary)"
         size="xs"
       >
-        <Pencil />
+        <Pencil color="var(--primary)" />
       </Icon>
       <SimpleModal
         opened={opened}

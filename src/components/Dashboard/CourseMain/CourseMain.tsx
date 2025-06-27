@@ -86,25 +86,23 @@ const CourseMain: FC<{
           {course.title}
         </Title>
       </Center>
-      {course.image.length && (
-        <Paper ml={'xl'} mr={'xl'} mb={'md'} shadow={'md'} p={'md'}>
-          {locale.link.inviteLinkSelectedGroup}:
-          <Skeleton visible={linkLoading}>
-            {course.invite ? (
-              <LinkCopy
-                inviteSpec={course.invite}
-                regenerateLink={() => regenerateLink()}
-              />
-            ) : (
-              <div>
-                {params.get('group') === 'all'
-                  ? locale.link.inviteLinkChooseGroup
-                  : locale.link.inviteLinkGenerationError}
-              </div>
-            )}
-          </Skeleton>
-        </Paper>
-      )}
+      <Paper ml={'xl'} mr={'xl'} mb={'md'} shadow={'md'} p={'md'}>
+        {locale.link.inviteLinkSelectedGroup}:
+        <Skeleton visible={linkLoading}>
+          {course.invite ? (
+            <LinkCopy
+              inviteSpec={course.invite}
+              regenerateLink={() => regenerateLink()}
+            />
+          ) : (
+            <div>
+              {params.get('group') === 'all'
+                ? locale.link.inviteLinkChooseGroup
+                : locale.link.inviteLinkGenerationError}
+            </div>
+          )}
+        </Skeleton>
+      </Paper>
       <Box ml={'xl'} mr={'xl'}>
         <TipTapEditor
           editorMode={false}
