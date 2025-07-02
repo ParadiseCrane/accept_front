@@ -1,47 +1,35 @@
-import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
-import { STICKY_SIZES } from '@constants/Sizes';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
 import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { useInterval } from '@mantine/hooks';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import { Messages, Pencil, Trash, Users } from 'tabler-icons-react';
+import { FC, memo, useMemo } from 'react';
+import { Messages, Users } from 'tabler-icons-react';
 import {
-  IconUsersGroup,
-  IconUserCog,
   IconArticle,
   IconList,
   IconBellPlus,
-  IconLockCog,
   IconArrowLeft,
+  IconLockCog,
 } from '@tabler/icons-react';
 
-import { ICourse, IUnit } from '@custom-types/data/ICourse';
-import Moderators from './Moderators/Moderators';
+import { IUnit } from '@custom-types/data/ICourse';
 import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
-import CourseMain from './CourseMain/CourseMain';
-import Groups from './Groups/Groups';
-import { useSearchParams } from 'next/navigation';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
-import GroupOpenness from './GroupOpenness/GroupOpenness';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 import UnitMain from './UnitMain/UnitMain';
+import GroupOpenness from './GroupOpenness/GroupOpenness';
 
 const UnitDashboard: FC<{
   unit: IUnit;
   courseSpec: string;
   isAuthor: boolean;
-}> = ({ unit, courseSpec }) => {
+}> = ({ unit, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
@@ -72,18 +60,6 @@ const UnitDashboard: FC<{
         section: 'chat',
       },
       {
-        page: (
-          <CourseParticipants
-            type={'course'}
-            spec={courseSpec}
-            allParticipants
-          />
-        ),
-        icon: <IconList color="var(--secondary)" />,
-        title: locale.dashboard.course.allParticipants,
-        section: 'all_participants',
-      },
-      {
         page: <CourseParticipants type={'course'} spec={courseSpec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
@@ -95,10 +71,31 @@ const UnitDashboard: FC<{
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',
       },
+      {
+        page: <GroupOpenness spec={unit.spec} />,
+        icon: <IconLockCog color="var(--secondary)" />,
+        title: locale.dashboard.course.courseAccess,
+        section: 'access',
+      },
     ];
 
+    if (isAuthor) {
+      links.splice(2, 0, {
+        page: (
+          <CourseParticipants
+            type={'course'}
+            spec={courseSpec}
+            allParticipants
+          />
+        ),
+        icon: <IconList color="var(--secondary)" />,
+        title: locale.dashboard.course.allParticipants,
+        section: 'all_participants',
+      });
+    }
+
     return links;
-  }, [unit, locale, hasNewMessages, courseSpec]);
+  }, [unit, locale, hasNewMessages, courseSpec, isAuthor]);
 
   return (
     <>
