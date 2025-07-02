@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { memo, useCallback } from 'react';
 import UnitForm from '../Form/UnitForm';
 import LessonForm from '../Form/LessonForm';
+import Form from './LessonEditForm/Form';
 
 function LessonEditPage(props: { course: ILesson; depth: number }) {
   const { locale } = useLocale();
@@ -88,10 +89,21 @@ function LessonEditPage(props: { course: ILesson; depth: number }) {
   // );
 
   return (
-    <Wrapper>
+    <>
       <Title title={locale.titles.course.edit} />
-      <LessonForm />
-    </Wrapper>
+      <Form
+        handleSubmit={function (
+          _: UseFormReturnType<any, (values: any) => any>
+        ) {
+          throw new Error('Function not implemented.');
+        }}
+        initialValues={undefined}
+        buttonLabel={''}
+        assessmentTypes={[]}
+        securities={[]}
+        users={[]}
+      />
+    </>
   );
 }
 

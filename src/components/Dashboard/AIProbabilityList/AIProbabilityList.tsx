@@ -28,8 +28,12 @@ export type TogglerValue = 'date' | 'ai_generated';
 export type PercentageValue = '0.7' | '0.9';
 
 const shouldPaint = (value: number, aiPercentage: string): boolean => {
-  const percentileValue = 100 - (100 - parseInt(aiPercentage)) / 4;
+  const percentileValue = 100 - (100 - parseFloat(aiPercentage) * 100) / 4;
   return value >= percentileValue;
+};
+
+const percentageParse = (value: number): string => {
+  return (value * 100).toFixed(1);
 };
 
 const refactorAttempt = (
@@ -76,10 +80,10 @@ const refactorAttempt = (
     display: (
       <div
         className={`${tableStyles.titleWrapper} ${
-          shouldPaint(attempt.ai_generated!, aiPercentage) && styles.red
+          shouldPaint(attempt.ai_generated! * 100, aiPercentage) && styles.red
         }`}
       >
-        {attempt.ai_generated}%
+        {percentageParse(attempt.ai_generated!)}%
       </div>
     ),
     value: attempt.ai_generated,
@@ -164,8 +168,10 @@ const AIProbabilityList: FC<{
   const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
   const [aiPercentage, setAIPercentage] = useState<PercentageValue>('0.7');
   const refactor = useCallback(
-    (attempt: IAttemptDisplay) =>
-      refactorAttempt(attempt, type, spec, aiPercentage),
+    (attempt: IAttemptDisplay) => {
+      console.log('aiPercentage', aiPercentage);
+      return refactorAttempt(attempt, type, spec, aiPercentage);
+    },
     [type, spec, aiPercentage]
   );
 

@@ -1,15 +1,12 @@
 import CourseDashboard from '@components/Dashboard/CourseDashboard';
-import LessonDashboard from '@components/Dashboard/LessonDashboard';
-import UnitDashboard from '@components/Dashboard/UnitDashboard';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
-import { ICourse, ILesson, IUnit } from '@custom-types/data/ICourse';
+import { ICourse } from '@custom-types/data/ICourse';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { GetServerSideProps, GetStaticPaths } from 'next';
+import { GetServerSideProps } from 'next';
 import { ReactNode } from 'react';
 
 function CourseDashboardPage(props: { entity: ICourse; courseAuthor: string }) {
