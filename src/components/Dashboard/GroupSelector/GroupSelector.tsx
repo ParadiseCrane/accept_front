@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
 import { useRouter } from 'next/router';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
 import { IconUsersGroup, IconX } from '@tabler/icons-react';
@@ -20,7 +20,6 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const params = useParams();
   const [courseGroupPairLS, setCourseGroupPairLS] = useLocalStorage<
     ICourseGroupPair[]
   >({
@@ -28,7 +27,7 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
     defaultValue: [],
   });
 
-  const { data, loading, refetch } = useRequest<{}, any, IGroupBaseInfo[]>(
+  const { data } = useRequest<{}, any, IGroupBaseInfo[]>(
     `course/groups/${courseSpec}`,
     'GET',
     undefined

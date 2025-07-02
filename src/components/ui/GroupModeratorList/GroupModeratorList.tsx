@@ -36,6 +36,7 @@ export interface ICourseModeratorGroupItem
 
 const GroupModeratorList: FC<{
   url: string;
+  isAuthor: boolean;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
   refactorPair: ({
@@ -50,6 +51,7 @@ const GroupModeratorList: FC<{
   defaultRowsOnPage?: number;
 }> = ({
   url,
+  isAuthor,
   classNames,
   initialColumns,
   refactorPair,
@@ -183,8 +185,12 @@ const GroupModeratorList: FC<{
         loading={loading}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
-        additionalSearch={<AddModeratorModal refetchData={fetchData} />}
-        emptyTableButton={<AddModeratorModal refetchData={fetchData} />}
+        additionalSearch={
+          isAuthor && <AddModeratorModal refetchData={fetchData} />
+        }
+        emptyTableButton={
+          isAuthor && <AddModeratorModal refetchData={fetchData} />
+        }
       />
     </div>
   );

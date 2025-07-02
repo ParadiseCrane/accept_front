@@ -194,6 +194,12 @@ export const getServerSideProps: GetServerSideProps = async ({
       spec: query.spec,
     };
 
+    if (course.kind !== 'course') {
+      return {
+        notFound: true,
+      };
+    }
+
     return {
       props: {
         course,

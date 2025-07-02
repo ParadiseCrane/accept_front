@@ -62,7 +62,7 @@ const UnitDashboard: FC<{
         section: 'main',
       },
       {
-        page: <CourseChatPage spec={courseSpec} />,
+        page: <CourseChatPage spec={courseSpec} entity="course" />,
         icon: (
           <Indicator size={10} disabled blink>
             <Messages color="var(--secondary)" />

@@ -3,15 +3,11 @@ import { STICKY_SIZES } from '@constants/Sizes';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
 import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { useInterval } from '@mantine/hooks';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import { Messages, Pencil, Trash, Users } from 'tabler-icons-react';
+import { FC, memo, useMemo, useState } from 'react';
+import { Messages, Users } from 'tabler-icons-react';
 import {
   IconUsersGroup,
   IconUserCog,
@@ -28,7 +24,6 @@ import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';
-import { useSearchParams } from 'next/navigation';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
@@ -44,7 +39,6 @@ const CourseDashboard: FC<{
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
-  const params = useSearchParams();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -73,23 +67,11 @@ const CourseDashboard: FC<{
       },
       {
         page: (
-          <Moderators type={'course'} spec={course.spec} isAuthor={isAuthor!} />
+          <Moderators type={'course'} spec={course.spec} isAuthor={isAuthor} />
         ),
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
-      },
-      {
-        page: (
-          <CourseParticipants
-            type={'course'}
-            spec={course.spec}
-            allParticipants
-          />
-        ),
-        icon: <IconList color="var(--secondary)" />,
-        title: locale.dashboard.course.allParticipants,
-        section: 'all_participants',
       },
       {
         page: <CourseParticipants type={'course'} spec={course.spec} />,
@@ -121,6 +103,18 @@ const CourseDashboard: FC<{
           section: 'groups',
         },
       ];
+      links.splice(3, 0, {
+        page: (
+          <CourseParticipants
+            type={'course'}
+            spec={course.spec}
+            allParticipants
+          />
+        ),
+        icon: <IconList color="var(--secondary)" />,
+        title: locale.dashboard.course.allParticipants,
+        section: 'all_participants',
+      });
     }
 
     return links;
@@ -129,32 +123,6 @@ const CourseDashboard: FC<{
   const [activeModal, setActiveModal] = useState(false);
 
   const { isTeacher } = useUser();
-  const { width } = useWidth();
-
-  const actions: IStickyAction[] = [
-    {
-      color: 'green',
-      icon: (
-        <Pencil
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      href: `/course/edit/${course.spec}`,
-      description: locale.tip.sticky.course.edit(course.kind),
-    },
-    {
-      color: 'red',
-      icon: (
-        <Trash
-          width={STICKY_SIZES[width] / 3}
-          height={STICKY_SIZES[width] / 3}
-        />
-      ),
-      onClick: () => setActiveModal(true),
-      description: locale.tip.sticky.course.delete,
-    },
-  ];
 
   return (
     <>
@@ -167,7 +135,6 @@ const CourseDashboard: FC<{
               course={course}
             />
           )}
-          <Sticky actions={actions} />
         </>
       )}
       <LeftMenu

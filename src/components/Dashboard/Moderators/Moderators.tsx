@@ -3,20 +3,17 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
 import Link from 'next/link';
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 import styles from './style.module.css';
-import { useSearchParams } from 'next/navigation';
 import GroupModeratorList, {
   ICourseModeratorGroupItem,
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { IModeratorGroupPair } from '@custom-types/data/ICourse';
 import { Trash } from 'tabler-icons-react';
-import { Button, Icon, Tip } from '@ui/basics';
+import { Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
-import { sendRequest } from '@requests/request';
-import { AddModeratorModal } from './AddModeratorModal/AddModeratorModal';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -140,6 +137,7 @@ const Moderators: FC<{
     <div className={styles.wrapper}>
       <GroupModeratorList
         url={`course/moderator_group/${spec}`}
+        isAuthor={isAuthor}
         refactorPair={({
           pair,
           fetchData,

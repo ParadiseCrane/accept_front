@@ -5,6 +5,7 @@ export default async function TaskWithStatusToDisplay(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // TODO такого запроса на бэке нет
   await fetchWrapper({
     req: req,
     res: res,

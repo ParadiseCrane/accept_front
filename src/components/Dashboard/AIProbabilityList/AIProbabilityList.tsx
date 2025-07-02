@@ -25,7 +25,7 @@ import { IconCheck } from '@tabler/icons-react';
 
 export type TogglerValue = 'date' | 'ai_generated';
 
-export type PercentageValue = '70' | '90';
+export type PercentageValue = '0.7' | '0.9';
 
 const shouldPaint = (value: number, aiPercentage: string): boolean => {
   const percentileValue = 100 - (100 - parseInt(aiPercentage)) / 4;
@@ -162,7 +162,7 @@ const AIProbabilityList: FC<{
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
   const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
-  const [aiPercentage, setAIPercentage] = useState<PercentageValue>('70');
+  const [aiPercentage, setAIPercentage] = useState<PercentageValue>('0.7');
   const refactor = useCallback(
     (attempt: IAttemptDisplay) =>
       refactorAttempt(attempt, type, spec, aiPercentage),
@@ -214,11 +214,13 @@ const AIProbabilityList: FC<{
         data={[
           {
             label: '70%',
-            value: '70',
+            // value: '70',
+            value: '0.7',
           },
           {
             label: '90%',
-            value: '90',
+            // value: '90',
+            value: '0.9',
           },
         ]}
         value={aiPercentage}
