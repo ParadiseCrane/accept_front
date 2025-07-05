@@ -1,7 +1,7 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function TaskWithStatusToDisplay(
+export default async function AddTournamentTask(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -9,6 +9,7 @@ export default async function TaskWithStatusToDisplay(
   await fetchWrapper({
     req: req,
     res: res,
-    url: `api/lesson/tasks-with-status/${req.query.spec}`,
+    url: `api/lesson/task/${req.query.spec}`,
+    method: 'POST',
   });
 }

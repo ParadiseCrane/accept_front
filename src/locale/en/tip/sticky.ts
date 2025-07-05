@@ -58,5 +58,6 @@ export const sticky = {
       return 'Course dashboard';
     },
     add: 'Create course',
+    createTask: 'Create task',
   },
 };

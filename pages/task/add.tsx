@@ -63,6 +63,8 @@ function AddTask() {
     [router.query.tournament]
   );
 
+  const lesson = useMemo(() => router.query.lesson, [router.query.lesson]);
+
   const [hintAlarmTypes, setHintAlarmTypes] = useState<IHintAlarmType[]>([]);
 
   const { data, loading } = useRequest<{}, ITaskAddBundle>('bundle/task_add');
@@ -111,7 +113,7 @@ function AddTask() {
         allowedLanguages: allowedLanguages.map((lang: Item) => lang.value),
         forbiddenLanguages: forbiddenLanguages.map((lang: Item) => lang.value),
         tags: tags.map((tag: Item) => tag.value),
-        hidden: !!tournament,
+        hidden: !!tournament || !!lesson,
       };
       if (!form.values.shouldRestrictLanguages) {
         body.allowedLanguages = [];
@@ -134,7 +136,11 @@ function AddTask() {
         };
       }
       requestWithNotify(
-        !tournament ? 'task/add' : `tournament/task/${tournament}`,
+        !tournament
+          ? !lesson
+            ? 'task/add'
+            : `lesson/task/${lesson}`
+          : `tournament/task/${tournament}`,
         'POST',
         locale.notify.task.create,
         lang,
@@ -142,7 +148,7 @@ function AddTask() {
         body
       );
     },
-    [locale, user, lang, tournament]
+    [locale, user, lang, tournament, lesson]
   );
 
   return (

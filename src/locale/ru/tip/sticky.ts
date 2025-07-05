@@ -58,5 +58,6 @@ export const sticky = {
       return 'Панель управления курсом';
     },
     add: 'Создать курс',
+    createTask: 'Создать задачу',
   },
 };

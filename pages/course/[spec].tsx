@@ -15,7 +15,7 @@ import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useEffect, useMemo, useState } from 'react';
-import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
+import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
 
 const flattenCourse = ({
   course,
@@ -83,6 +83,15 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
             ? `/dashboard/${value.kind}/${value.spec}`
             : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`,
         description: locale.tip.sticky.course.dashboard(value.kind),
+      });
+    }
+
+    if (value.kind === 'lesson') {
+      innerActions.push({
+        color: 'green',
+        icon: <PlaylistAdd width={20} height={20} />,
+        href: `/task/add?lesson=${value.spec}`,
+        description: locale.tip.sticky.course.createTask,
       });
     }
 
