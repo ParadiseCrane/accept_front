@@ -10,6 +10,7 @@ import { useUser } from '@hooks/useUser';
 import { AppShell } from '@mantine/core';
 import { useDisclosure, useHash } from '@mantine/hooks';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
+import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
@@ -86,16 +87,15 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
       });
     }
 
-    if (value.kind === 'lesson') {
-      innerActions.push({
-        color: 'green',
-        icon: <PlaylistAdd width={20} height={20} />,
-        href: `/task/add?lesson=${value.spec}`,
-        description: locale.tip.sticky.course.createTask,
-      });
-    }
-
     if (isAuthor) {
+      if (value.kind === 'lesson') {
+        innerActions.push({
+          color: 'green',
+          icon: <PlaylistAdd width={20} height={20} />,
+          href: `/task/add?lesson=${value.spec}`,
+          description: locale.tip.sticky.course.createTask,
+        });
+      }
       innerActions.push(
         {
           color: 'green',
@@ -142,8 +142,18 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
           next={handlers.next}
         />
         <Main key={hash} />
-        {actions.length > 0 && (isModerator || isAuthor) && (
-          <Sticky actions={actions} />
+        {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
+        {isModerator && !isAuthor && (
+          <SingularSticky
+            color="grape"
+            href={
+              value.kind === 'course'
+                ? `/dashboard/${value.kind}/${value.spec}`
+                : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`
+            }
+            icon={<Dashboard height={25} width={25} />}
+            description={locale.tip.sticky.course.dashboard(value.kind)}
+          />
         )}
         <DeleteModal
           active={openModal}

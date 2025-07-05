@@ -1,7 +1,7 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function AddTournamentTask(
+export default async function AddLessonTask(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
