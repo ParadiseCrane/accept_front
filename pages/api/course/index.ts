@@ -15,7 +15,7 @@ export default async function GetCourseList(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // TODO поменять на нормальный запрос
+  // TODO mocked method
   // await fetchWrapper({
   //   req: req,
   //   res: res,

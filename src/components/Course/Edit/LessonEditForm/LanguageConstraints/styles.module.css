@@ -1,5 +1,5 @@
-.wrapper {
+.languages {
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-xl);
+  gap: var(--spacer-s);
 }

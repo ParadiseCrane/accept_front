@@ -1,5 +1,6 @@
 import { modals } from './modals';
 import { list } from './list';
+import { lesson } from './lesson';
 
 export const course = {
   courseImage: 'Обложка курса',
@@ -33,4 +34,5 @@ export const course = {
   },
   modals,
   list,
+  lesson,
 };

@@ -36,8 +36,10 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  const spec = `${req.url?.split('?item=').pop()!.split('&spec')[0]}`;
+
   const response = await fetchWrapperStatic({
-    url: `course-edit/${req.url?.split('?item=').pop()!.split('&spec')[0]}`,
+    url: `course-edit/${spec}`,
     req,
   });
 
@@ -46,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       await response.json();
 
     return {
-      props: entity,
+      props: { ...entity, course: { ...entity.course, spec } },
     };
   }
   return {

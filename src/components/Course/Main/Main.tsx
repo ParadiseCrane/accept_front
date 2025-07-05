@@ -7,6 +7,7 @@ import { FC, memo, useEffect, useState } from 'react';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import Lesson from '../Lesson/Lesson';
 
+// TODO mocked method
 const defaultLesson = ({
   spec,
   title,
@@ -48,6 +49,8 @@ const defaultLesson = ({
         complexity: 58,
       },
     ],
+    allowedLanguages: [],
+    forbiddenLanguages: [],
     spec: spec,
     title: title,
     description: desc,

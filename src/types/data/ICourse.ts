@@ -1,4 +1,6 @@
+import { IAssessmentType, ILanguage } from './atomic';
 import { IGroup } from './IGroup';
+import { ITag } from './ITag';
 import { ITaskDisplay } from './ITask';
 import { IUserBaseInfo } from './IUser';
 
@@ -54,8 +56,15 @@ export interface IUnit {
 
 export interface ILesson extends Omit<IUnit, 'kind'> {
   kind: 'lesson';
-  children: IBaseTreeUnit[];
   tasks: ITaskDisplay[];
+  allowedLanguages: ILanguage[];
+  forbiddenLanguages: ILanguage[];
+}
+
+export interface ILessonEditBundle {
+  lesson: ILesson;
+  tags: ITag[];
+  assessmentTypes: IAssessmentType[];
 }
 
 export interface ICourseListItem {

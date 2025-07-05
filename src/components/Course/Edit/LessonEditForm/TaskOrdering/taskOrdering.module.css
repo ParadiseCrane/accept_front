@@ -1,9 +1,0 @@
-.wrapperList {
-  display: flex;
-  justify-content: center;
-}
-
-.dragButton {
-  width: var(--spacer-s);
-  height: var(--spacer-s);
-}

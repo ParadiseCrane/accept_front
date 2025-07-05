@@ -1,107 +1,51 @@
-import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import {
-  ICourseAddEdit,
-  IBaseTreeUnit,
-  IUnit,
-  IUnitAddEdit,
-  ILesson,
-} from '@custom-types/data/ICourse';
+import { ILesson, ILessonEditBundle } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
-import { courseFormUtils } from '@utils/courseFormUtils';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRouter } from 'next/router';
-import { memo, useCallback } from 'react';
-import UnitForm from '../Form/UnitForm';
-import LessonForm from '../Form/LessonForm';
+import { memo, useMemo } from 'react';
 import Form from './LessonEditForm/Form';
+import { useRequest } from '@hooks/useRequest';
+import { LoadingOverlay } from '@ui/basics';
 
 function LessonEditPage(props: { course: ILesson; depth: number }) {
   const { locale } = useLocale();
-  // const { user } = useUser();
-  // const initialValues = courseFormUtils.getInitialValuesEditUnit({
-  //   title: props.course.title,
-  //   description: props.course.description,
-  //   children: props.course.children ?? [],
-  //   kind: props.course.kind,
-  // });
+  const { data, loading } = useRequest<{}, ILessonEditBundle>(
+    `lesson/bundle/lesson_edit/${props.course.spec}`,
+    'GET'
+  );
 
-  // const router = useRouter();
+  const initialValues = useMemo(() => {
+    if (data) {
+      return {
+        title: data.lesson.title,
+        description: data.lesson.description,
+        tags: data.tags,
+        assessmentTypes: data.assessmentTypes,
+        assessmentType: '',
+        allowedLanguages: data.lesson.allowedLanguages.map((lang) => ({
+          value: lang.spec.toString(),
+          name: lang.name,
+        })),
+        forbiddenLanguages: data.lesson.forbiddenLanguages.map((lang) => ({
+          value: lang.spec.toString(),
+          name: lang.name,
+        })),
+      };
+    }
+  }, [data]);
 
-  // const handleSubmit = useCallback(
-  //   (form: UseFormReturnType<typeof initialValues>) => {
-  //     if (
-  //       courseFormUtils.checkCourseTitleInvalidInput({
-  //         title: form.values.title.trim(),
-  //         locale,
-  //       }) ||
-  //       courseFormUtils.checkCourseDescriptionInvalidInput({
-  //         description: form.values.description,
-  //         locale,
-  //       }) ||
-  //       courseFormUtils.checkChildrenInvalidInput({
-  //         children: form.values.children,
-  //         locale,
-  //       }) ||
-  //       courseFormUtils.checkFormValidation({
-  //         value: form.validate().hasErrors,
-  //         locale,
-  //       })
-  //     )
-  //       return;
-
-  //     const course: IUnitAddEdit = {
-  //       ...form.values,
-  //     };
-
-  //     const children: IBaseTreeUnit[] = [...course.children];
-  //     const emptyChildren: IBaseTreeUnit[] = [];
-  //     for (let i = 0; i < children.length; i++) {
-  //       if (children[i].spec.includes('newElement')) {
-  //         emptyChildren.push({ ...children[i], spec: '' });
-  //       } else {
-  //         emptyChildren.push(children[i]);
-  //       }
-  //     }
-
-  //     const courseToSend: IUnitAddEdit = {
-  //       ...course,
-  //       children: emptyChildren,
-  //       kind: props.course.kind,
-  //     };
-
-  //     requestWithNotify<IUnitAddEdit, string>(
-  //       `course/put/${props.course.spec}`,
-  //       'PUT',
-  //       locale.notify.course.edit,
-  //       lang,
-  //       (response) => response,
-  //       courseToSend
-  //     ).then((res) => {
-  //       if (!res.error) {
-  //         router.push('/courses');
-  //       }
-  //     });
-  //   },
-  //   [lang, locale, router, user?.login]
-  // );
+  if (loading || !data) return <LoadingOverlay />;
 
   return (
     <>
       <Title title={locale.titles.course.edit} />
       <Form
-        handleSubmit={function (
-          _: UseFormReturnType<any, (values: any) => any>
-        ) {
-          throw new Error('Function not implemented.');
+        handleSubmit={(form) => {
+          form.validate();
+          console.log('handleSubmit', form.values);
         }}
-        initialValues={undefined}
-        buttonLabel={''}
-        assessmentTypes={[]}
-        securities={[]}
-        users={[]}
+        initialValues={initialValues}
+        buttonLabel={locale.edit}
+        assessmentTypes={data.assessmentTypes}
       />
     </>
   );
