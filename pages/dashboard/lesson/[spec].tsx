@@ -25,6 +25,7 @@ function LessonDashboardPage(props: {
       <Title title={locale.titles.dashboard.lesson} />
       <ChatHostsProvider
         spec={props.entity.spec}
+        // TODO mocked method
         entity={'lesson'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >

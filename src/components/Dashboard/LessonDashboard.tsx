@@ -27,7 +27,7 @@ const LessonDashboard: FC<{
   lesson: ILesson;
   courseSpec: string;
   isAuthor: boolean;
-}> = ({ lesson, courseSpec }) => {
+}> = ({ lesson, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
   const { user } = useUser();
@@ -58,18 +58,6 @@ const LessonDashboard: FC<{
         section: 'chat',
       },
       {
-        page: (
-          <CourseParticipants
-            type={'course'}
-            spec={courseSpec}
-            allParticipants
-          />
-        ),
-        icon: <IconList color="var(--secondary)" />,
-        title: locale.dashboard.course.allParticipants,
-        section: 'all_participants',
-      },
-      {
         page: <CourseParticipants type={'course'} spec={courseSpec} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
@@ -82,6 +70,21 @@ const LessonDashboard: FC<{
         section: 'create_notification',
       },
     ];
+
+    if (isAuthor) {
+      links.splice(2, 0, {
+        page: (
+          <CourseParticipants
+            type={'course'}
+            spec={courseSpec}
+            allParticipants
+          />
+        ),
+        icon: <IconList color="var(--secondary)" />,
+        title: locale.dashboard.course.allParticipants,
+        section: 'all_participants',
+      });
+    }
 
     return links;
   }, [lesson, locale, hasNewMessages, courseSpec]);

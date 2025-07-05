@@ -1,28 +1,11 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { FC, memo } from 'react';
 import { Center, Title, Box } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { IUnit, IUnitDashboardMain } from '@custom-types/data/ICourse';
+import { IUnit } from '@custom-types/data/ICourse';
 
 const UnitMain: FC<{
-  unitProps: IUnit | undefined;
-}> = ({ unitProps }) => {
-  const [unit, setUnit] = useState<IUnitDashboardMain | undefined>();
-
-  const fetchData = useCallback(async () => {
-    if (unitProps) {
-      setUnit({
-        title: unitProps.title,
-        description: unitProps.description,
-      });
-    }
-  }, [unitProps]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  if (!unit) return null;
-
+  unitProps: IUnit;
+}> = ({ unitProps: unit }) => {
   return (
     <>
       <Center mt={'md'} mb={'md'}>

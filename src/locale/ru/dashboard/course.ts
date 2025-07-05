@@ -24,8 +24,8 @@ export const course = {
   actions: 'Действия',
   chatNoGroupSelected: 'Выберите группу для просмотра чата',
   groupOpennessRequestFail: 'Не удалось изменить открытость элемента',
-  unit: {
-    openUnit: 'Открыть модуль для группы',
-    closeUnit: 'Закрыть модуль для группы',
+  lesson: {
+    openLesson: 'Открыть урок для текущей группы',
+    closeLesson: 'Закрыть урок для текущей группы',
   },
 };
