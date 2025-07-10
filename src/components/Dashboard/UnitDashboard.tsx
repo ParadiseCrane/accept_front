@@ -12,6 +12,7 @@ import {
   IconBellPlus,
   IconArrowLeft,
   IconLockCog,
+  IconUserCog,
 } from '@tabler/icons-react';
 
 import { IUnit } from '@custom-types/data/ICourse';
@@ -24,6 +25,7 @@ import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 import UnitMain from './UnitMain/UnitMain';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
+import Moderators from './Moderators/Moderators';
 
 const UnitDashboard: FC<{
   unit: IUnit;
@@ -58,6 +60,14 @@ const UnitDashboard: FC<{
         ),
         title: locale.dashboard.course.chat,
         section: 'chat',
+      },
+      {
+        page: (
+          <Moderators type={'course'} spec={courseSpec} isAuthor={isAuthor} />
+        ),
+        icon: <IconUserCog color="var(--secondary)" />,
+        title: locale.dashboard.course.moderators,
+        section: 'moderators',
       },
       {
         page: <CourseParticipants type={'course'} spec={courseSpec} />,

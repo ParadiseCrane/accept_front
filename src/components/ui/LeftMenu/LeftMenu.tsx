@@ -50,7 +50,7 @@ const LeftMenu: FC<{
         pathname: pathName,
         query: { ...query, section: section },
       };
-      router.push(newPathObject, undefined, { shallow: true });
+      router.replace(newPathObject, undefined, { shallow: true });
     },
     [router]
   );
@@ -64,7 +64,7 @@ const LeftMenu: FC<{
     if (!router.query.section) {
       changeParams!(links[0].section!);
     }
-  }, [changeParams, initialLoad, links, router]);
+  }, [changeParams, initialLoad, links]);
 
   return (
     <div className={styles.wrapper}>

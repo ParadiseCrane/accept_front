@@ -15,6 +15,8 @@ import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
 
@@ -39,7 +41,11 @@ const flattenCourse = ({
   return units;
 };
 
-function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
+function Course(props: {
+  course: ICourse;
+  has_moderate_rights: boolean;
+  item: string;
+}) {
   const { user } = useUser();
   const course = props.course;
   const isModerator = props.has_moderate_rights === true;
@@ -49,22 +55,31 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
     children: course.children,
   });
   const [openModal, setOpenModal] = useState(false);
+  const [itemSpec, setItemSpec] = useState(props.item);
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers] = useMoveThroughArray(
     units,
-    (item, hash) => item.spec == hash
+    (item, hash) => item.spec == hash,
+    (item) => `/course/${course.spec}?item=${item.spec}`
   );
-  const [hash, setHash] = useHash();
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
-    handlers.currentByHash(hash.slice(1));
-  }, [hash]);
+    router.replace(`/course/${course.spec}?item=${itemSpec ?? props.item}`);
+    handlers.currentByHash(itemSpec ?? props.item);
+  }, []);
 
   useEffect(() => {
-    if (!!value && value.spec !== hash.slice(1)) setHash(value.spec);
-  }, [value]);
+    const spec = searchParams.get('item');
+    console.log('useEffect spec', spec);
+    if (spec && spec !== itemSpec) {
+      setItemSpec(spec);
+      handlers.currentByHash(spec);
+    }
+  }, [searchParams, itemSpec]);
 
   useEffect(() => {
     if (user && user.login === course.author) {
@@ -141,7 +156,7 @@ function Course(props: { course: ICourse; has_moderate_rights: boolean }) {
           prev={handlers.prev}
           next={handlers.next}
         />
-        <Main key={hash} />
+        <Main key={value.spec} />
         {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
         {isModerator && !isAuthor && (
           <SingularSticky
@@ -223,6 +238,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         course,
         has_moderate_rights: hasModerateRights,
+        item: query.item && query.item.length > 0 ? query.item : query.spec,
       },
     };
   }

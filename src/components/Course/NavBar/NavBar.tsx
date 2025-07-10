@@ -60,6 +60,7 @@ const NavBar: FC<{
             .filter((element) => element.visible)
             .map((unit) => (
               <NavBlock
+                course={course}
                 hookUnit={hookUnit}
                 currentUnit={unit}
                 actions={actions}

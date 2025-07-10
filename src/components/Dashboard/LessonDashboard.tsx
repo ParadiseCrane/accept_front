@@ -11,6 +11,7 @@ import {
   IconList,
   IconBellPlus,
   IconArrowLeft,
+  IconUserCog,
 } from '@tabler/icons-react';
 
 import { ILesson } from '@custom-types/data/ICourse';
@@ -22,6 +23,7 @@ import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/router';
 import LessonMain from './LessonMain/LessonMain';
+import Moderators from './Moderators/Moderators';
 
 const LessonDashboard: FC<{
   lesson: ILesson;
@@ -56,6 +58,14 @@ const LessonDashboard: FC<{
         ),
         title: locale.dashboard.course.chat,
         section: 'chat',
+      },
+      {
+        page: (
+          <Moderators type={'course'} spec={courseSpec} isAuthor={isAuthor} />
+        ),
+        icon: <IconUserCog color="var(--secondary)" />,
+        title: locale.dashboard.course.moderators,
+        section: 'moderators',
       },
       {
         page: <CourseParticipants type={'course'} spec={courseSpec} />,

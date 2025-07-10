@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
 export interface UseMoveThroughArrayHandlers<T> {
@@ -14,12 +15,14 @@ export interface StateArray<T> {
 
 export function useMoveThroughArray<T>(
   initialValue: T[],
-  checkHash: (_: T, hash: string) => boolean
+  checkHash: (_: T, hash: string) => boolean,
+  routeToPush: (item: T) => string
 ): [T, UseMoveThroughArrayHandlers<T>, StateArray<T>] {
   const [state, setState] = useState<StateArray<T>>({
     array: initialValue,
     current: 0,
   });
+  const router = useRouter();
 
   const currentByHash = useCallback(
     (hash: string) =>
@@ -51,23 +54,31 @@ export function useMoveThroughArray<T>(
 
   const prev = useCallback(
     (steps = 1) =>
-      setState((currentState) => ({
-        array: currentState.array,
-        current: Math.max(0, currentState.current - steps),
-      })),
-    []
+      setState((currentState) => {
+        const newIndex = Math.max(0, currentState.current - steps);
+        router.replace(routeToPush(currentState.array[newIndex]));
+        return {
+          array: currentState.array,
+          current: newIndex,
+        };
+      }),
+    [router, routeToPush]
   );
 
   const next = useCallback(
     (steps = 1) =>
-      setState((currentState) => ({
-        array: currentState.array,
-        current: Math.min(
+      setState((currentState) => {
+        const newIndex = Math.min(
           currentState.array.length - 1,
           currentState.current + steps
-        ),
-      })),
-    []
+        );
+        router.replace(routeToPush(currentState.array[newIndex]));
+        return {
+          array: currentState.array,
+          current: newIndex,
+        };
+      }),
+    [router, routeToPush]
   );
 
   const handlers = useMemo(

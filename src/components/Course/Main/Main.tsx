@@ -6,6 +6,7 @@ import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent'
 import { FC, memo, useEffect, useState } from 'react';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import Lesson from '../Lesson/Lesson';
+import { useSearchParams } from 'next/navigation';
 
 // TODO mocked method
 const defaultLesson = ({
@@ -59,29 +60,27 @@ const defaultLesson = ({
 
 const Main: FC = () => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
-  const [hash] = useHash();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!hash.includes('#')) {
-      return;
+    const spec = searchParams.get('item');
+    if (spec && entity?.spec !== spec) {
+      sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
+        (res) => {
+          // setCourse(res.response as ICourse | IUnit | ILesson);
+          setEntity(
+            res.response.kind === 'lesson'
+              ? defaultLesson({
+                  spec: res.response.spec as string,
+                  desc: res.response.description as string,
+                  title: res.response.title as string,
+                })
+              : (res.response as ICourse | IUnit | ILesson)
+          );
+        }
+      );
     }
-
-    const spec = hash.split('#').pop()!;
-    sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
-      (res) => {
-        // setCourse(res.response as ICourse | IUnit | ILesson);
-        setEntity(
-          res.response.kind === 'lesson'
-            ? defaultLesson({
-                spec: res.response.spec as string,
-                desc: res.response.description as string,
-                title: res.response.title as string,
-              })
-            : (res.response as ICourse | IUnit | ILesson)
-        );
-      }
-    );
-  }, [hash]);
+  }, [searchParams, entity]);
 
   if (!entity) return null;
 
