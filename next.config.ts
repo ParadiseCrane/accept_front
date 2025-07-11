@@ -1,6 +1,7 @@
 import { NextConfig } from 'next';
 
 const prod = process.env.NODE_ENV === 'production';
+// const prod = 0;
 
 const nextConfig: NextConfig = {
   output: prod ? 'standalone' : undefined,
@@ -17,7 +18,9 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    optimizePackageImports: prod
+      ? ['@mantine/core', '@mantine/hooks', '@mantine/form', '@mantine/dates']
+      : [],
   },
   async redirects() {
     return prod

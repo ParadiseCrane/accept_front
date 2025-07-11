@@ -21,11 +21,10 @@ async function getLesson(course_spec: string, lesson_spec: string) {
   return { lesson, course };
 }
 
-export default async function LessonDashboardPage({
-  params,
-}: {
-  params: { course: string; lesson: string };
+export default async function LessonDashboardPage(props: {
+  params: Promise<{ course: string; lesson: string }>;
 }) {
+  const params = await props.params;
   const { lesson, course } = await getLesson(params.course, params.lesson);
 
   return (

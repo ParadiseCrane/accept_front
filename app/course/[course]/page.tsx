@@ -37,13 +37,12 @@ async function getCourseData(spec: string, item: string) {
   };
 }
 
-export default async function CoursePage({
-  params,
-  searchParams,
-}: {
-  params: { course: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+export default async function CoursePage(props: {
+  params: Promise<{ course: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const item = !searchParams
     ? params.course
     : Array.isArray(searchParams.item)
@@ -51,7 +50,6 @@ export default async function CoursePage({
       : searchParams.item || params.course;
 
   const data = await getCourseData(params.course, item);
-  console.log(data);
 
   return <CourseClient initialData={data} initialItem={data.item} />;
 }

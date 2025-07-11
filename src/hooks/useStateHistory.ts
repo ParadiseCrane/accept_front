@@ -14,13 +14,14 @@ export interface StateArray<T> {
 }
 
 export function useMoveThroughArray<T>(
+  start: number,
   initialValue: T[],
   checkHash: (_: T, hash: string) => boolean,
   routeToPush: (item: T) => string
 ): [T, UseMoveThroughArrayHandlers<T>, StateArray<T>] {
   const [state, setState] = useState<StateArray<T>>({
     array: initialValue,
-    current: 0,
+    current: start,
   });
   const router = useRouter();
 

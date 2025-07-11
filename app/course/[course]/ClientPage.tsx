@@ -13,7 +13,7 @@ import { useDisclosure } from '@mantine/hooks';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
 
@@ -45,13 +45,15 @@ export default function CourseClient({
 }) {
   const { user } = useUser();
   const { locale } = useLocale();
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [course] = useState(initialData.course);
   const [isModerator] = useState(initialData.has_moderate_rights);
   const [isAuthor, setIsAuthor] = useState(false);
-  const [itemSpec, setItemSpec] = useState(initialItem);
+  const item: string = useMemo(
+    () => searchParams?.get('item') || course.spec,
+    [searchParams, course.spec]
+  );
   const [openModal, setOpenModal] = useState(false);
   const [opened, { toggle }] = useDisclosure();
 
@@ -65,6 +67,7 @@ export default function CourseClient({
   );
 
   const [value, handlers] = useMoveThroughArray(
+    units.findIndex((unit) => unit.spec == item),
     units,
     (item, hash) => item.spec == hash,
     (item) => `/course/${course.spec}?item=${item.spec}`
@@ -75,19 +78,6 @@ export default function CourseClient({
       setIsAuthor(true);
     }
   }, [user, course.author]);
-
-  useEffect(() => {
-    router.replace(`/course/${course.spec}?item=${itemSpec}`);
-    handlers.currentByHash(itemSpec);
-  }, [course.spec, itemSpec, handlers, router]);
-
-  useEffect(() => {
-    const spec = searchParams?.get('item');
-    if (spec && spec !== itemSpec) {
-      setItemSpec(spec);
-      handlers.currentByHash(spec);
-    }
-  }, [searchParams, itemSpec, handlers]);
 
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];

@@ -60,6 +60,7 @@ function Course(props: {
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers] = useMoveThroughArray(
+    0,
     units,
     (item, hash) => item.spec == hash,
     (item) => `/course/${course.spec}?item=${item.spec}`
