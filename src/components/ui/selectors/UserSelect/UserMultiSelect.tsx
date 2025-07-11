@@ -1,3 +1,4 @@
+'use client';
 import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
 import { SelectItem } from '@custom-types/ui/atomic';
 import { ComboboxItem, Group, SelectProps, Text } from '@mantine/core';

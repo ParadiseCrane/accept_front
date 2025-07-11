@@ -1,3 +1,5 @@
+'use client';
+
 import { callback, pureCallback } from '@custom-types/ui/atomic';
 import {
   ICustomTransferListItem,

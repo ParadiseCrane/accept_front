@@ -1,3 +1,4 @@
+'use client';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';
 import stepperStyles from '@styles/ui/stepper.module.css';

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import Image from 'next/legacy/image';
 import packageInfo from 'package.json';

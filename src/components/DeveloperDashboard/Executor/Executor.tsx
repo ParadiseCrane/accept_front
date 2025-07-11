@@ -1,3 +1,4 @@
+'use client';
 import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';

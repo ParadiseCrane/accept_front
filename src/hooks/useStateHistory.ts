@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 
 export interface UseMoveThroughArrayHandlers<T> {
@@ -36,7 +36,7 @@ export function useMoveThroughArray<T>(
           current: index,
         };
       }),
-    []
+    [checkHash]
   );
 
   const current = useCallback(

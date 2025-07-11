@@ -1,8 +1,8 @@
+'use client';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { Box, Group, NavLink, UnstyledButton } from '@mantine/core';
-import { useRouter } from 'next/router';
+import { Box, NavLink } from '@mantine/core';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
-
 import styles from './leftMenu.module.css';
 
 const LeftMenu: FC<{
@@ -11,60 +11,41 @@ const LeftMenu: FC<{
   topContent?: ReactNode;
 }> = ({ links, topContent }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [initialLoad, setInitialLoad] = useState(true);
 
+  const currentSection = searchParams?.get('section');
+
   const displayPage = useCallback(() => {
-    if (router.query.section) {
-      if (
-        links.filter((element) => element.section == router.query.section)[0]
-      ) {
-        return links.filter(
-          (element) => element.section == router.query.section
-        )[0].page;
-      } else {
-        return links[0].page;
-      }
-    } else {
-      return links[0].page;
+    if (currentSection) {
+      const matchingLink = links.find(
+        (element) => element.section === currentSection
+      );
+      return matchingLink ? matchingLink.page : links[0].page;
     }
-  }, [links, router]);
+    return links[0].page;
+  }, [links, currentSection]);
 
   const changeParams = useCallback(
     (section: string) => {
-      const regExp = /\[.*?\]/g;
-      let pathName = router.pathname;
-      let query = { ...router.query };
-      const list = pathName.match(regExp);
-      if (list) {
-        for (let i = 0; i < list.length; i++) {
-          const variableName = list[i].replace('[', '').replace(']', '');
-          const value = router.query[variableName];
-          delete query[variableName];
-          pathName = pathName.replace(`[${variableName}]`, `${value}`);
-        }
-      }
-      // if (query.item) {
-      //   pathName = `${pathName}${query.item}`;
-      // }
-      const newPathObject = {
-        pathname: pathName,
-        query: { ...query, section: section },
-      };
-      router.replace(newPathObject, undefined, { shallow: true });
+      const params = new URLSearchParams(searchParams?.toString() || '');
+      params.set('section', section);
+      router.replace(`${pathname}?${params.toString()}`);
     },
-    [router]
+    [pathname, router, searchParams]
   );
 
   useEffect(() => {
     if (initialLoad) {
-      let section = router.query.section as string;
-      changeParams!(section!);
+      if (currentSection) {
+        changeParams(currentSection);
+      } else {
+        changeParams(links[0].section!);
+      }
       setInitialLoad(false);
     }
-    if (!router.query.section) {
-      changeParams!(links[0].section!);
-    }
-  }, [changeParams, initialLoad, links]);
+  }, [changeParams, currentSection, initialLoad, links]);
 
   return (
     <div className={styles.wrapper}>
@@ -74,10 +55,8 @@ const LeftMenu: FC<{
           {links.map((element, idx) => (
             <NavLink
               key={idx}
-              active={element.section == router.query.section}
-              onClick={() => {
-                changeParams!(links[idx].section!);
-              }}
+              active={element.section === currentSection}
+              onClick={() => changeParams(links[idx].section!)}
               label={element.title}
               leftSection={element.icon}
             />

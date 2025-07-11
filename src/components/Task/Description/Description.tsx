@@ -1,3 +1,4 @@
+'use client';
 import { ITask } from '@custom-types/data/ITask';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import Header from '@components/layout/Navbar/Header/Header';
 import { links } from '@constants/MainHeaderLinks';
 import { FC, memo } from 'react';

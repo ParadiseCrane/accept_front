@@ -1,3 +1,4 @@
+'use client';
 import { IAnalyticsData, IAnalyticsResponse } from '@custom-types/data/atomic';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';

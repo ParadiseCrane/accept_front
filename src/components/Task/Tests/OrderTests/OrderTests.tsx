@@ -1,3 +1,4 @@
+'use client';
 import { HORIZONTAL_TESTS_DRAG_LIMIT } from '@constants/Limits';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { setter } from '@custom-types/ui/atomic';

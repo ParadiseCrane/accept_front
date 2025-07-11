@@ -1,3 +1,4 @@
+'use client';
 import { ITeam } from '@custom-types/data/ITeam';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,5 @@
+'use client';
+
 import { IWidth } from '@custom-types/ui/atomic';
 import { useMediaQuery } from '@mantine/hooks';
 import {

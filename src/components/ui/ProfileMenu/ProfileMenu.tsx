@@ -1,3 +1,4 @@
+'use client';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import { accessLevels } from '@constants/protectedRoutes';
 import { useBackNotifications } from '@hooks/useBackNotifications';

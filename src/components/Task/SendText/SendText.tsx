@@ -1,3 +1,4 @@
+'use client';
 import { MAX_ANSWER_LENGTH } from '@constants/Limits';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import { MantineTransition, Menu } from '@mantine/core';
 import Link from 'next/link';
 import { FC, ReactNode, memo } from 'react';

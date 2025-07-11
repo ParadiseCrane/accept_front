@@ -1,3 +1,4 @@
+'use client';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import inputStyles from '@styles/ui/input.module.css';

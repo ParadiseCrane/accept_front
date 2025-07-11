@@ -1,3 +1,4 @@
+'use client';
 import { ITag } from '@custom-types/data/ITag';
 import {
   ITournamentDisplay,

@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';

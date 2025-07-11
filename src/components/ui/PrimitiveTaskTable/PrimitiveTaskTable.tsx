@@ -1,3 +1,4 @@
+'use client';
 import { ITag } from '@custom-types/data/ITag';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';

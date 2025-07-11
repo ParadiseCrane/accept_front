@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IRole } from '@custom-types/data/atomic';
 import { IUser, IUserDisplay } from '@custom-types/data/IUser';
@@ -141,7 +142,7 @@ const SimpleUserList: FC<{
       setData(userDisplayItemList);
       setLoading(false);
     });
-  }, [params]);
+  }, [params, processData, url]);
 
   return (
     <div>

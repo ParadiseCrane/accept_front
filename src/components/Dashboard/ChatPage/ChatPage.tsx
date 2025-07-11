@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { IHostData, useChatHosts } from '@hooks/useChatHosts';

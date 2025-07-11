@@ -1,3 +1,4 @@
+'use client';
 import Description from '@components/Task/Description/Description';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { useLocale } from '@hooks/useLocale';

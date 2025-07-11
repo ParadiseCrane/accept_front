@@ -1,3 +1,4 @@
+'use client';
 import { IFeedbackMessage } from '@custom-types/data/IFeedbackMessage';
 import { setter } from '@custom-types/ui/atomic';
 import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';

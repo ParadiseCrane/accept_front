@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { FC, memo } from 'react';
 

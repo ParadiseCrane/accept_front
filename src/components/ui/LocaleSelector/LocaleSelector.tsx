@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { UnstyledButton } from '@mantine/core';
 import { FC, memo } from 'react';

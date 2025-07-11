@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
@@ -53,7 +54,7 @@ const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [locale]
   );
 
   const numOfRows = 6;

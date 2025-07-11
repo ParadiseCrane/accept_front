@@ -1,3 +1,4 @@
+'use client';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 

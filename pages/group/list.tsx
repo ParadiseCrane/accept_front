@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { ILocale } from '@custom-types/ui/ILocale';

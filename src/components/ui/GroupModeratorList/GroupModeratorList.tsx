@@ -1,3 +1,4 @@
+'use client';
 import { AddModeratorModal } from '@components/Dashboard/Moderators/AddModeratorModal/AddModeratorModal';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IModeratorGroupPair } from '@custom-types/data/ICourse';
@@ -84,21 +85,13 @@ const GroupModeratorList: FC<{
     );
     if (!response.error) {
       const pairList = response.response;
-      const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
+      const pairItemList: ICourseModeratorGroupItem[] = pairList.map(
+        (pair: IModeratorGroupPair) => refactorPair({ pair, fetchData })
+      );
       setData(pairItemList);
     }
     setLoading(false);
-  }, []);
-
-  const processData = useCallback(
-    (response: IModeratorGroupPair[]): ICourseModeratorGroupItem[] =>
-      response.map((pair: IModeratorGroupPair) =>
-        refactorPair({ pair, fetchData })
-      ),
-    [refactorPair]
-  );
-
-  const params = useSearchParams();
+  }, [url, refactorPair]);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -152,7 +145,7 @@ const GroupModeratorList: FC<{
 
   useEffect(() => {
     fetchData();
-  }, [params]);
+  }, [fetchData]);
 
   return (
     <div>

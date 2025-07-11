@@ -1,3 +1,4 @@
+'use client';
 import { cardContent } from '@constants/ContactCards';
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo } from 'react';

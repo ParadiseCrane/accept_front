@@ -1,3 +1,4 @@
+'use client';
 import { ICON_SIZES } from '@constants/Sizes';
 import { IProjectCard } from '@custom-types/ui/IProjectCard';
 import { useLocale } from '@hooks/useLocale';

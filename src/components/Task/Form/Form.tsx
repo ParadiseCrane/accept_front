@@ -1,3 +1,4 @@
+'use client';
 import Checker from '@components/Task/Form/Checker/Checker';
 import ConstraintsInfo from '@components/Task/Form/ConstraintsInfo/ConstraintsInfo';
 import DescriptionInfo from '@components/Task/Form/DescriptionInfo/DescriptionInfo';

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Center } from '@mantine/core';
 import { Stepper as MantineStepper } from '@mantine/core';

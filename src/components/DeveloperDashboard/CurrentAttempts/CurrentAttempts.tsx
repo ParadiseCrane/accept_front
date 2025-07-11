@@ -1,3 +1,4 @@
+'use client';
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import { useLocale } from '@hooks/useLocale';
 import { Switch } from '@ui/basics';

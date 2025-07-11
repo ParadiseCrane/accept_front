@@ -1,13 +1,16 @@
+'use client';
+
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Button } from '@ui/basics';
 import ProfileMenu from '@ui/ProfileMenu/ProfileMenu';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { FC } from 'react';
 
 const SignIn: FC<{ size?: 'md' | 'lg' }> = ({ size = 'lg' }) => {
   const { locale } = useLocale();
   const router = useRouter();
+  const path = usePathname();
   const { user } = useUser();
 
   return (
@@ -15,14 +18,7 @@ const SignIn: FC<{ size?: 'md' | 'lg' }> = ({ size = 'lg' }) => {
       {!user ? (
         <Button
           kind="header"
-          onClick={() =>
-            router.push({
-              pathname: '/signin',
-              query: {
-                referrer: router.asPath,
-              },
-            })
-          }
+          onClick={() => router.push(`/signin?referrer=${path}`)}
         >
           {locale.mainHeaderLinks.signIn}
         </Button>

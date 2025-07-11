@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
 import Description from '@components/AssignmentSchema/Description/Description';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
@@ -41,7 +42,7 @@ function AssignmentSchema(props: {
           ]
         : [],
 
-    [hasWriteRights]
+    [hasWriteRights, assignmentSchema, locale]
   );
 
   return (

@@ -1,3 +1,4 @@
+'use client';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';

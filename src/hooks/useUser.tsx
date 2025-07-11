@@ -1,3 +1,5 @@
+'use client';
+
 import { accessLevels } from '@constants/protectedRoutes';
 import {
   IUserContext,

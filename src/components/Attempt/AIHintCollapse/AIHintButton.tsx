@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo } from 'react';
 import { Button } from '@ui/basics';

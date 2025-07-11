@@ -1,3 +1,4 @@
+'use client';
 import { MyIconProps } from '@custom-types/ui/basics/icon';
 import {
   CopyButton as MantineCopyButton,

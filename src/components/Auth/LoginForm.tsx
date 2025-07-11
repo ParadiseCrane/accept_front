@@ -47,17 +47,6 @@ const LoginForm: FC<{
     () => organizations?.map((item) => item.value) || [],
     [organizations]
   );
-
-  useEffect(() => {
-    const orgFromLS = getOrganizationFromLS() ?? '';
-    if (
-      orgFromLS &&
-      organizations?.filter((element) => element.value == orgFromLS)
-    ) {
-      form.setFieldValue('organization', orgFromLS);
-    }
-  }, [organizations_loading]);
-
   const form = useForm({
     initialValues: {
       organization: '',
@@ -78,6 +67,16 @@ const LoginForm: FC<{
     },
     validateInputOnBlur: true,
   });
+
+  useEffect(() => {
+    const orgFromLS = getOrganizationFromLS() ?? '';
+    if (
+      orgFromLS &&
+      organizations?.filter((element) => element.value == orgFromLS)
+    ) {
+      form.setFieldValue('organization', orgFromLS);
+    }
+  }, [organizations_loading, form, organizations]);
 
   const handleSignIn = useCallback(
     (values: { organization: string; login: string; password: string }) => {

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { useRequest } from '@hooks/useRequest';
 import { useInterval } from '@mantine/hooks';

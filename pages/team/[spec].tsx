@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
 import MemberItem from '@components/Team/MemberItem/MemberItem';
 import TitleInput from '@components/Team/TitleInput/TitleInput';

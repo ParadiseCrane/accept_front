@@ -1,3 +1,4 @@
+'use client';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
 import { useWidth } from '@hooks/useWidth';

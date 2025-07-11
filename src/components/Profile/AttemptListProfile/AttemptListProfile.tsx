@@ -1,3 +1,4 @@
+'use client';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
 import { ILocale } from '@custom-types/ui/ILocale';

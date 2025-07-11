@@ -1,3 +1,4 @@
+'use client';
 import NotificationList from '@components/Notification/List/NotificationList';
 import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';

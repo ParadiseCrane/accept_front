@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import Description from '@components/Assignment/Description/Description';
 import { STICKY_SIZES } from '@constants/Sizes';

@@ -1,3 +1,4 @@
+'use client';
 import { MyHelperTipProps } from '@custom-types/ui/basics/helper';
 import { Icon, Tip } from '@ui/basics';
 import { FC, memo } from 'react';

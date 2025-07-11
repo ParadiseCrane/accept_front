@@ -1,3 +1,4 @@
+'use client';
 import { IAssignment } from '@custom-types/data/IAssignment';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';

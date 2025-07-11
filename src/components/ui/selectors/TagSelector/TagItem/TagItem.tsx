@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { Item } from '@custom-types/ui/atomic';
 import inputStyles from '@styles/ui/input.module.css';

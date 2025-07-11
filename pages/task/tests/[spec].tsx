@@ -1,3 +1,4 @@
+'use client';
 import Tests from '@components/Task/Tests/Tests';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { ITaskTestData } from '@custom-types/data/atomic';

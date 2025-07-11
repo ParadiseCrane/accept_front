@@ -1,3 +1,4 @@
+'use client';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 import { IBaseTreeUnit, IUnit, IUnitAddEdit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
@@ -77,7 +78,7 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
         }
       });
     },
-    [lang, locale, router, user?.login]
+    [lang, locale, router, props]
   );
 
   return (

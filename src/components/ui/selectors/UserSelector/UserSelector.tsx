@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import {
   ICustomTransferListData,

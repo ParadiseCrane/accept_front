@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -99,8 +100,9 @@ const CourseParticipants: FC<{
   allParticipants?: boolean;
 }> = ({ type, spec, allParticipants }) => {
   const { locale } = useLocale();
-  const params = useSearchParams();
-  const group = allParticipants ? 'all' : params.get('group');
+  const searchParams = useSearchParams();
+  const group =
+    allParticipants || !searchParams ? 'all' : searchParams.get('group');
 
   return (
     <div className={styles.wrapper}>

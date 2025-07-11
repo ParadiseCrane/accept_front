@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
 import {

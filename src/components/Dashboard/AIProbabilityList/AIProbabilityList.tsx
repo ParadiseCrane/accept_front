@@ -1,3 +1,4 @@
+'use client';
 import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';

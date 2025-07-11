@@ -1,3 +1,4 @@
+'use client';
 import { IAttemptInfo, IRatingInfo } from '@custom-types/data/IProfileInfo';
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useMemo } from 'react';

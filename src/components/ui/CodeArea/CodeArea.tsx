@@ -1,3 +1,4 @@
+'use client';
 import { ILanguage } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import { MyButtonProps } from '@custom-types/ui/basics/button';

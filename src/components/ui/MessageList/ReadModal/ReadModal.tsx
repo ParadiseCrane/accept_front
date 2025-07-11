@@ -1,3 +1,4 @@
+'use client';
 import { IListMessage } from '@custom-types/ui/IListMessage';
 import { useLocale } from '@hooks/useLocale';
 import { Group } from '@mantine/core';

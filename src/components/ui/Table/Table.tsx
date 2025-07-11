@@ -1,3 +1,4 @@
+'use client';
 import { BaseSearch } from '@custom-types/data/request';
 import { setter } from '@custom-types/ui/atomic';
 import { ITableColumn } from '@custom-types/ui/ITable';

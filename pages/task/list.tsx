@@ -1,3 +1,4 @@
+'use client';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';

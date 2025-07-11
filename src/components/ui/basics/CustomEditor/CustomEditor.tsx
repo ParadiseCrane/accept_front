@@ -1,3 +1,4 @@
+'use client';
 import { Editor as EditorType } from '@tiptap/react';
 import { InputWrapper } from '@ui/basics';
 import { FC, ReactNode, memo } from 'react';

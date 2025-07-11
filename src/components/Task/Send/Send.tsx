@@ -1,3 +1,4 @@
+'use client';
 import { MAX_CODE_LENGTH } from '@constants/Limits';
 import { ILanguage } from '@custom-types/data/atomic';
 import { setter } from '@custom-types/ui/atomic';

@@ -1,3 +1,4 @@
+'use client';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';

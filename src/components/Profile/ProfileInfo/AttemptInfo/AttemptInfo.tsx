@@ -1,3 +1,4 @@
+'use client';
 import { getColor } from '@constants/Colors';
 import { IAttemptInfo } from '@custom-types/data/IProfileInfo';
 import { IPlotData } from '@custom-types/ui/IPlot';

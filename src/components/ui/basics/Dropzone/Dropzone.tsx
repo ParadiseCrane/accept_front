@@ -1,3 +1,5 @@
+'use client';
+
 import { MyButtonProps } from '@custom-types/ui/basics/button';
 import { useLocale } from '@hooks/useLocale';
 import { Group, Text } from '@mantine/core';

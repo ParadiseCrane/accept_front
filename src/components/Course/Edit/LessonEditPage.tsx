@@ -1,3 +1,4 @@
+'use client';
 import { ILesson, ILessonEditBundle } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';

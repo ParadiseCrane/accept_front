@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Organization/DeleteModal/DeleteModal';
 import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
 import { IGroupDisplay } from '@custom-types/data/IGroup';

@@ -1,3 +1,4 @@
+'use client';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { useLocale } from '@hooks/useLocale';
@@ -28,7 +29,7 @@ const DeleteModal: FC<{
     //   undefined,
     //   () => setActive(false)
     // );
-  }, [organization.spec, locale, lang]);
+  }, []);
 
   return (
     <>

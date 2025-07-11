@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
@@ -30,7 +31,7 @@ const MemberSelector: FC<{
         setUsers(res.response);
       }
     });
-  }, [opened, spec, entity, exclude]);
+  }, [opened, spec, entity, exclude, customRequest]);
 
   return (
     <>

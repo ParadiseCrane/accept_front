@@ -1,3 +1,4 @@
+'use client';
 import LessonDashboard from '@components/Dashboard/LessonDashboard';
 import { ICourse, ILesson } from '@custom-types/data/ICourse';
 import { ChatHostsProvider } from '@hooks/useChatHosts';

@@ -1,3 +1,4 @@
+'use client';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -113,7 +114,7 @@ const MainInfo: FC<{
               label={locale.task.form.hint.title}
               {...form.getInputProps('hasHint', { type: 'checkbox' })}
             />
-            {!searchParams.get('tournament') && (
+            {searchParams && !searchParams.get('tournament') && (
               <Switch
                 label={locale.task.form.training}
                 {...form.getInputProps('training', { type: 'checkbox' })}

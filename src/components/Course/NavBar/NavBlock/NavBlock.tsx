@@ -1,3 +1,4 @@
+'use client';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { ITreeUnit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import {
@@ -10,7 +11,7 @@ import { FC } from 'react';
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 import styles from './styles.module.css';
 import { Tip } from '@ui/basics';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export const NavBlock: FC<{
   course: IBaseTreeUnit;

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Tip } from '@ui/basics';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
@@ -46,7 +47,7 @@ const AIHintCollapse: FC<{
       );
       setSending(false);
     },
-    [lang, locale, spec, sending]
+    [lang, locale, spec, sending, hint]
   );
 
   const calculateCollapseWidth = () => {

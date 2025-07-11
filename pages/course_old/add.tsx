@@ -1,3 +1,4 @@
+'use client';
 import CourseForm from '@components/Course/Form/CourseForm';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
@@ -95,7 +96,7 @@ function CourseAdd() {
         }
       });
     },
-    [lang, locale, router, user?.login]
+    [lang, locale, router]
   );
 
   return (

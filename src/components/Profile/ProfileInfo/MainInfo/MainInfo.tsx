@@ -1,3 +1,4 @@
+'use client';
 import { IUser } from '@custom-types/data/IUser';
 import { Badge } from '@mantine/core';
 import { UserAvatar } from '@ui/basics';

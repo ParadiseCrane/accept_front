@@ -1,3 +1,4 @@
+'use client';
 import { ColorPicker as MantineColorPicker, Menu } from '@mantine/core';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';

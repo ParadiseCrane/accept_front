@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ICourseListItem } from '@custom-types/data/ICourse';
 import { BaseSearch } from '@custom-types/data/request';
@@ -85,7 +86,7 @@ const CourseList: FC<{
         )
         .map((item) => refactorCourse(item));
     },
-    [refactorCourse]
+    [lang, refactorCourse]
   );
 
   const { data, loading } = useRequest<{}, ICourseListItem[], ICourseItem[]>(

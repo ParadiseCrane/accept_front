@@ -1,4 +1,5 @@
-// @ts-nocheck
+'use client';
+
 import { ITag } from '@custom-types/data/ITag';
 import { Badge } from '@mantine/core';
 import { FC, memo } from 'react';
@@ -14,10 +15,18 @@ const TagList: FC<{ tags: ITag[]; locale?: ILocale }> = ({ tags, locale }) => {
         <Badge key={idx} variant="outline" color="gray">
           {locale ? (
             <Tip label={locale.task.list.publicTag}>
-              {tag.title || tag.label}
+              {
+                // @ts-ignore
+                tag.title || tag.label
+              }
             </Tip>
           ) : (
-            <>{tag.title || tag.label}</>
+            <>
+              {
+                // @ts-ignore
+                tag.title || tag.label
+              }
+            </>
           )}
         </Badge>
       ))}

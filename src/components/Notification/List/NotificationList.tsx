@@ -1,3 +1,4 @@
+'use client';
 import { INotification } from '@custom-types/data/notification';
 import { setter } from '@custom-types/ui/atomic';
 import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';

@@ -1,3 +1,4 @@
+'use client';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { useWidth } from '@hooks/useWidth';
 import { ActionIcon } from '@mantine/core';

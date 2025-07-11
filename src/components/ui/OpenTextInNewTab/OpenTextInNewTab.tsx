@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Icon, Tip } from '@ui/basics';
 import { openText } from '@utils/openText';

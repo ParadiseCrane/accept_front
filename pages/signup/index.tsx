@@ -1,3 +1,4 @@
+'use client';
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { IRegUser } from '@custom-types/data/IUser';
 import { SelectItem } from '@custom-types/ui/atomic';

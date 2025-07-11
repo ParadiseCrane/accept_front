@@ -1,3 +1,4 @@
+'use client';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import { Select as MantineSelect, SelectProps } from '@mantine/core';
 import inputStyles from '@styles/ui/input.module.css';

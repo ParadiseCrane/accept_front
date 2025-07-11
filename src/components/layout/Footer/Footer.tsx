@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon } from '@mantine/core';
 import LocaleSelector from '@ui/LocaleSelector/LocaleSelector';

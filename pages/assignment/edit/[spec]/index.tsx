@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/Assignment/Form/Form';
 import {
   IAssignmentAdd,

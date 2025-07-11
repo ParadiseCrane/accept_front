@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { Icon } from '@ui/basics';
 import { FC, ReactNode, RefObject, memo, useCallback, useRef } from 'react';

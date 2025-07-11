@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { Affix } from '@mantine/core';
 import { FC, ReactNode, memo } from 'react';

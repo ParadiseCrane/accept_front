@@ -1,3 +1,4 @@
+'use client';
 import {
   ICourse,
   IGroupOpenness,
@@ -36,14 +37,14 @@ const GroupOpennessTree: FC<{
   groupOpennessList: IGroupOpenness[];
   toggleGroupOpennessList: (spec: string) => Promise<void>;
 }> = ({ course, groupOpennessList, toggleGroupOpennessList }) => {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const units = flattenCourse({ course, children: course.children });
   const { locale } = useLocale();
   const { treeUnitList, actions, checkers } = useCourseGroupOpennessTree({
     course: units[0],
     allChildren: units,
     groupOpennessList,
-    groupSpec: params.get('group')!,
+    groupSpec: searchParams?.get('group') || 'all',
   });
 
   return (

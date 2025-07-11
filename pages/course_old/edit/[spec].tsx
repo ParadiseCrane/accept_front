@@ -1,3 +1,4 @@
+'use client';
 import CourseEditPage from '@components/Course/Edit/CourseEditPage';
 import LessonEditPage from '@components/Course/Edit/LessonEditPage';
 import UnitEditPage from '@components/Course/Edit/UnitEditPage';

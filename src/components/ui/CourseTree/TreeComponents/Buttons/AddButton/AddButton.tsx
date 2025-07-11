@@ -1,3 +1,4 @@
+'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ElementType } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Group, Kbd } from '@mantine/core';

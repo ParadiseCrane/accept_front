@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/AssignmentSchema/Form/Form';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import { ITaskDisplay } from '@custom-types/data/ITask';

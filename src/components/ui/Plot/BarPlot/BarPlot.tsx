@@ -1,3 +1,4 @@
+'use client';
 import { callback } from '@custom-types/ui/atomic';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { ColorSwatch } from '@ui/basics';

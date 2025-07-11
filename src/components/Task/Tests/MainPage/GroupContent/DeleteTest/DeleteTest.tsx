@@ -1,3 +1,4 @@
+'use client';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

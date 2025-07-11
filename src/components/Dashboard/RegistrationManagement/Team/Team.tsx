@@ -1,3 +1,4 @@
+'use client';
 import { ITeamAdd } from '@custom-types/data/ITeam';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { setter } from '@custom-types/ui/atomic';

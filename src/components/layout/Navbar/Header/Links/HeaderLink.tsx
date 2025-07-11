@@ -1,3 +1,4 @@
+'use client';
 import { accessLevels } from '@constants/protectedRoutes';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { useLocale } from '@hooks/useLocale';

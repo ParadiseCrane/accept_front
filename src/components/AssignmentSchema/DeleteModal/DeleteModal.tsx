@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

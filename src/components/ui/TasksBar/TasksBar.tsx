@@ -1,3 +1,4 @@
+'use client';
 import { IBarTask } from '@custom-types/data/ITask';
 import { ActionIcon } from '@mantine/core';
 import { letterFromIndex } from '@utils/letterFromIndex';

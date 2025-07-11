@@ -1,3 +1,4 @@
+'use client';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useLocale } from '@hooks/useLocale';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';

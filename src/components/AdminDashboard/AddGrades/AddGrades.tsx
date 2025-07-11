@@ -1,3 +1,4 @@
+'use client';
 import { IGroup } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import { Button, Icon, MultiSelect, NumberInput } from '@ui/basics';

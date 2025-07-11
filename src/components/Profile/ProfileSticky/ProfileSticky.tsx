@@ -1,3 +1,4 @@
+'use client';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';

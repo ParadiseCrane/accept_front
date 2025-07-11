@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import { useLocale } from '@hooks/useLocale';

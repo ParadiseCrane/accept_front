@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { useRequest } from '@hooks/useRequest';
 import { FC, memo, useMemo } from 'react';

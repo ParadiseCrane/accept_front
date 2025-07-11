@@ -1,3 +1,4 @@
+'use client';
 import { ITeam } from '@custom-types/data/ITeam';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

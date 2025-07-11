@@ -1,3 +1,4 @@
+'use client';
 import { setter } from '@custom-types/ui/atomic';
 import { Icon } from '@ui/basics';
 import { FC, ReactNode, memo } from 'react';

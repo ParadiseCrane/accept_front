@@ -1,12 +1,17 @@
+'use client';
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
-import { useRouter } from 'next/router';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
-import { useSearchParams } from 'next/navigation';
+import {
+  useRouter,
+  useSearchParams,
+  usePathname,
+  useParams,
+} from 'next/navigation';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
 import { IconUsersGroup, IconX } from '@tabler/icons-react';
@@ -20,6 +25,7 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathName = usePathname();
   const [courseGroupPairLS, setCourseGroupPairLS] = useLocalStorage<
     ICourseGroupPair[]
   >({
@@ -33,20 +39,36 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
     undefined
   );
 
-  const changeUrl = (groupSpec: string) => {
-    if (searchParams.has('section')) {
-      changeParams(searchParams.get('section')!, groupSpec);
-    }
-  };
+  const changeParams = useCallback(
+    (section: string, group: string) => {
+      let params = new URLSearchParams(searchParams?.toString());
+      params.set('group', group);
+      params.set('section', section);
+      router.push(pathName + '?' + params.toString());
+    },
+    [router, searchParams, pathName]
+  );
 
-  const setGroup = (group: IGroupBaseInfo) => {
-    setCurrentGroup(group);
-    changeUrl(group.spec);
-    setCourseGroupPairLS((prev) => [
-      ...prev,
-      { courseSpec, groupSpec: group.spec },
-    ]);
-  };
+  const changeUrl = useCallback(
+    (groupSpec: string) => {
+      if (searchParams && searchParams.has('section')) {
+        changeParams(searchParams.get('section')!, groupSpec);
+      }
+    },
+    [searchParams, changeParams]
+  );
+
+  const setGroup = useCallback(
+    (group: IGroupBaseInfo) => {
+      setCurrentGroup(group);
+      changeUrl(group.spec);
+      setCourseGroupPairLS((prev) => [
+        ...prev,
+        { courseSpec, groupSpec: group.spec },
+      ]);
+    },
+    [changeUrl, courseSpec, setCourseGroupPairLS]
+  );
 
   useEffect(() => {
     if (data) {
@@ -55,7 +77,9 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
         changeUrl('all');
       } else {
         const hasGroupUrl =
-          searchParams.has('group') && searchParams.get('group') !== 'all';
+          searchParams &&
+          searchParams.has('group') &&
+          searchParams.get('group') !== 'all';
         if (hasGroupUrl) {
           const group = data.filter(
             (item) => item.spec === searchParams.get('group')
@@ -82,27 +106,7 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
         }
       }
     }
-  }, [data]);
-
-  const changeParams = (section: string, group: string) => {
-    const regExp = /\[.*?\]/g;
-    let pathName = router.pathname;
-    let query = { ...router.query };
-    const list = pathName.match(regExp);
-    if (list) {
-      for (let i = 0; i < list.length; i++) {
-        const variableName = list[i].replace('[', '').replace(']', '');
-        const value = router.query[variableName];
-        delete query[variableName];
-        pathName = pathName.replace(`[${variableName}]`, `${value}`);
-      }
-    }
-    const newPathObject = {
-      pathname: pathName,
-      query: { ...query, section: section, group: group },
-    };
-    router.push(newPathObject, undefined, { shallow: true });
-  };
+  }, [data, changeUrl, courseGroupPairLS, courseSpec, searchParams, setGroup]);
 
   return (
     <>

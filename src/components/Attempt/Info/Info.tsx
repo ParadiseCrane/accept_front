@@ -1,3 +1,4 @@
+'use client';
 import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';
 import React, { FC, memo, useCallback, useState } from 'react';
 

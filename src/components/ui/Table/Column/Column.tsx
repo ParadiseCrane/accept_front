@@ -1,3 +1,4 @@
+'use client';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { Icon } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';

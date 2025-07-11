@@ -1,3 +1,4 @@
+'use client';
 import { IGroup } from '@custom-types/data/IGroup';
 import {
   ICustomTransferListData,

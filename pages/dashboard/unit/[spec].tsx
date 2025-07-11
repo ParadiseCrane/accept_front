@@ -1,3 +1,4 @@
+'use client';
 import UnitDashboard from '@components/Dashboard/UnitDashboard';
 import { ICourse, IUnit } from '@custom-types/data/ICourse';
 import { ChatHostsProvider } from '@hooks/useChatHosts';

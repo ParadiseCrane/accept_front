@@ -1,3 +1,4 @@
+'use client';
 import { CheckboxProps, Checkbox as MantineCheckbox } from '@mantine/core';
 import { FC, memo } from 'react';
 interface Props extends CheckboxProps {

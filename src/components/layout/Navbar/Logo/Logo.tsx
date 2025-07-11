@@ -1,3 +1,5 @@
+'use client';
+
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Badge, Title } from '@mantine/core';

@@ -1,3 +1,4 @@
+'use client';
 import { ActionIcon } from '@mantine/core';
 import Link from 'next/link';
 import { FC, memo } from 'react';

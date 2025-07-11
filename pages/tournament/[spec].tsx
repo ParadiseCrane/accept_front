@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
 import Description from '@components/Tournament/Description/Description';
 import PinModal from '@components/Tournament/PinModal/PinModal';

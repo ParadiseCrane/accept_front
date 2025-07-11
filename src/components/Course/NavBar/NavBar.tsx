@@ -1,3 +1,4 @@
+'use client';
 import { IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useCourseShowTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
@@ -10,7 +11,7 @@ import styles from './navbar.module.css';
 import { Tip } from '@ui/basics';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { IconArrowLeft } from '@tabler/icons-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 
 const NavBar: FC<{

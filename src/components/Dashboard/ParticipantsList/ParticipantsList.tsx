@@ -1,3 +1,4 @@
+'use client';
 import { IParticipant } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';

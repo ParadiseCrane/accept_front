@@ -1,3 +1,4 @@
+'use client';
 import { ILesson } from '@custom-types/data/ICourse';
 import { FC, memo } from 'react';
 

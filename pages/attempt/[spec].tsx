@@ -1,3 +1,4 @@
+'use client';
 import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
 import Code from '@components/Attempt/Code/Code';

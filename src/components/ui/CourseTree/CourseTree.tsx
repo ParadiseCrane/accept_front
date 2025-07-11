@@ -1,3 +1,4 @@
+'use client';
 import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useCourseAddTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import {
   ICourseShowTreeActions,

@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/AssignmentSchema/Form/Form';
 import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

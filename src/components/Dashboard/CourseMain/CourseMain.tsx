@@ -1,4 +1,5 @@
-import { FC, memo, useEffect, useState } from 'react';
+'use client';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Center, Title, Image, Skeleton, Box, Paper } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import {
@@ -17,10 +18,10 @@ const CourseMain: FC<{
 }> = ({ courseProps }) => {
   const [course, setCourse] = useState<ICourseDashboardMain | undefined>();
   const [linkLoading, setLinkLoading] = useState<boolean>(true);
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const { locale } = useLocale();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLinkLoading(true);
     if (courseProps) {
       setCourse({
@@ -28,9 +29,13 @@ const CourseMain: FC<{
         description: courseProps.description,
         image: courseProps.image,
       });
-      if (params.get('group') && params.get('group') !== 'all') {
+      if (
+        searchParams &&
+        searchParams.get('group') &&
+        searchParams.get('group') !== 'all'
+      ) {
         const inviteRes = await sendRequest<{}, IGroupInvite[]>(
-          `invite/${courseProps.spec}/${params.get('group')}`,
+          `invite/${courseProps.spec}/${searchParams.get('group')}`,
           'GET'
         );
         if (!inviteRes.error) {
@@ -43,11 +48,12 @@ const CourseMain: FC<{
       await new Promise((resolve) => setTimeout(resolve, 500));
       setLinkLoading(false);
     }
-  };
+  }, [courseProps, searchParams]);
 
   const regenerateLink = async () => {
+    if (!searchParams) return '';
     const response = await sendRequest<{}, string>(
-      `invite/${courseProps?.spec}/${params.get('group')}`,
+      `invite/${courseProps?.spec}/${searchParams.get('group')}`,
       'POST'
     );
     if (!response.error) {
@@ -58,7 +64,7 @@ const CourseMain: FC<{
 
   useEffect(() => {
     fetchData();
-  }, [courseProps, params]);
+  }, [fetchData]);
 
   if (!course) {
     return <></>;
@@ -96,7 +102,7 @@ const CourseMain: FC<{
             />
           ) : (
             <div>
-              {params.get('group') === 'all'
+              {searchParams && searchParams.get('group') === 'all'
                 ? locale.link.inviteLinkChooseGroup
                 : locale.link.inviteLinkGenerationError}
             </div>

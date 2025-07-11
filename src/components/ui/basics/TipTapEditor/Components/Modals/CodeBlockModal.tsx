@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Editor } from '@tiptap/react';
 import { Modal, Select } from '@ui/basics';

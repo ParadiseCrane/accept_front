@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import { ModalProps } from '@mantine/core';

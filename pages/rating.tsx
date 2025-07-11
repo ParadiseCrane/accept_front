@@ -1,3 +1,4 @@
+'use client';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { IRatingInfo } from '@custom-types/data/IRatingInfo';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
 import { DateTimePicker } from '@ui/basics';

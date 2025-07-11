@@ -1,3 +1,4 @@
+'use client';
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';

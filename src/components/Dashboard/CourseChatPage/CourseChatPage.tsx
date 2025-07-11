@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo, useEffect, useState } from 'react';
 import ChatPage from '../ChatPage/ChatPage';
 import styles from './styles.module.css';

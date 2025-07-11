@@ -1,3 +1,4 @@
+'use client';
 import { MyHelperProps } from '@custom-types/ui/basics/helper';
 import { HoverCard } from '@mantine/core';
 import { Icon } from '@ui/basics';

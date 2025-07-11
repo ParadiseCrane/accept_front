@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import ParticipantsList from '@components/Dashboard/ParticipantsList/ParticipantsList';

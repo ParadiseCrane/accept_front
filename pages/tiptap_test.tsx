@@ -1,3 +1,4 @@
+'use client';
 import { NextPage } from 'next';
 import { useLocale } from '@hooks/useLocale';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';

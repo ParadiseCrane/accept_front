@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
 import { ICourse } from '@custom-types/data/ICourse';
 import { setter } from '@custom-types/ui/atomic';

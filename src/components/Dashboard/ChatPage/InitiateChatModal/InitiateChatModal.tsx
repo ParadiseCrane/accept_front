@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -83,7 +84,7 @@ const InitiateChatModal: FC<{
         });
       }
     });
-  }, [entity, spec, form, locale, onSuccess]);
+  }, [entity, spec, form, locale, onSuccess, group_spec]);
 
   return (
     <>

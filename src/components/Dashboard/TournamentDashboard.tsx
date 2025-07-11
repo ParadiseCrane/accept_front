@@ -1,3 +1,4 @@
+'use client';
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
 import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';

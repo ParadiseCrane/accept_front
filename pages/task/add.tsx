@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/Task/Form/Form';
 import {
   IHintAlarmType,

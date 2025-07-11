@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
 import { IGroup } from '@custom-types/data/IGroup';
 import { callback } from '@custom-types/ui/atomic';

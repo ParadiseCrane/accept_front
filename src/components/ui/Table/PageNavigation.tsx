@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIconGroup, Group } from '@mantine/core';
 import { Icon, Select } from '@ui/basics';

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Button } from '@ui/basics';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';

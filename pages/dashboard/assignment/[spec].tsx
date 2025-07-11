@@ -1,3 +1,4 @@
+'use client';
 import AssignmentDashboard from '@components/Dashboard/AssignmentDashboard';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 import { ChatHostsProvider } from '@hooks/useChatHosts';

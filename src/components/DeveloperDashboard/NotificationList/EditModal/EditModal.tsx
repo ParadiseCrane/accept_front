@@ -1,3 +1,4 @@
+'use client';
 import DescriptionInfo from '@components/Notification/Form/DescriptionInfo';
 import MainInfo from '@components/Notification/Form/MainInfo';
 import { INotificationWithRefs } from '@custom-types/data/notification';

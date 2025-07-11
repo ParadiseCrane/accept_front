@@ -182,7 +182,7 @@ const AIProbabilityList: FC<{
         });
       }
     },
-    [setSearchParams, toggler]
+    [setSearchParams, setToggler]
   );
 
   useEffect(() => {

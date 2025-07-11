@@ -1,3 +1,4 @@
+'use client';
 import { ICourseAddEdit, IUnitAddEdit } from '@custom-types/data/ICourse';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

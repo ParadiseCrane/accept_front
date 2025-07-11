@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
@@ -70,22 +71,22 @@ function Course(props: {
   useEffect(() => {
     router.replace(`/course/${course.spec}?item=${itemSpec ?? props.item}`);
     handlers.currentByHash(itemSpec ?? props.item);
-  }, []);
+  }, [router, handlers, course, itemSpec, props]);
 
   useEffect(() => {
-    const spec = searchParams.get('item');
+    const spec = searchParams?.get('item');
     console.log('useEffect spec', spec);
     if (spec && spec !== itemSpec) {
       setItemSpec(spec);
       handlers.currentByHash(spec);
     }
-  }, [searchParams, itemSpec]);
+  }, [searchParams, itemSpec, handlers]);
 
   useEffect(() => {
     if (user && user.login === course.author) {
       setIsAuthor(true);
     }
-  }, [user]);
+  }, [user, course]);
 
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];

@@ -1,3 +1,4 @@
+'use client';
 import { SelectItem } from '@custom-types/ui/atomic';
 import { ComboboxItem, Text } from '@mantine/core';
 import { Select, UserAvatar } from '@ui/basics';

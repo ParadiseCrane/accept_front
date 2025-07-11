@@ -1,3 +1,4 @@
+'use client';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { useLocale } from '@hooks/useLocale';
 import { Burger, Drawer } from '@mantine/core';

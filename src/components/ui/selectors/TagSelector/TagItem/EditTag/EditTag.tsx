@@ -1,3 +1,4 @@
+'use client';
 import { ITag } from '@custom-types/data/ITag';
 import { Item } from '@custom-types/ui/atomic';
 import { pureCallback } from '@custom-types/ui/atomic';
@@ -60,7 +61,7 @@ const EditTag: FC<{
         );
       }
     },
-    [validate, updateURL, locale.tag.edit, lang, item.spec, refetch]
+    [validate, updateURL, locale, lang, item, refetch]
   );
 
   return (

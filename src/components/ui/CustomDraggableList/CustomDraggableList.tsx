@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@custom-types/ui/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import { reorderList } from '@utils/reorderList';

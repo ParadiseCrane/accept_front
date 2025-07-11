@@ -1,3 +1,4 @@
+'use client';
 import { MathExtension } from '@aarkue/tiptap-math-extension';
 import { useLocale } from '@hooks/useLocale';
 import { Link, RichTextEditor } from '@mantine/tiptap';

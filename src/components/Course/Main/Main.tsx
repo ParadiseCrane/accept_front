@@ -1,3 +1,4 @@
+'use client';
 import { IUnit, ILesson, ICourse } from '@custom-types/data/ICourse';
 import { AppShell, Box, Center, Title } from '@mantine/core';
 import { useHash } from '@mantine/hooks';
@@ -63,7 +64,7 @@ const Main: FC = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const spec = searchParams.get('item');
+    const spec = searchParams?.get('item');
     if (spec && entity?.spec !== spec) {
       sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
         (res) => {

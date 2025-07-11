@@ -1,3 +1,4 @@
+'use client';
 import { ActionIcon } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import { FC, memo } from 'react';

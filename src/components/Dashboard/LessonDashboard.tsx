@@ -1,3 +1,4 @@
+'use client';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
@@ -21,7 +22,7 @@ import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificat
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import LessonMain from './LessonMain/LessonMain';
 import Moderators from './Moderators/Moderators';
 
@@ -97,7 +98,7 @@ const LessonDashboard: FC<{
     }
 
     return links;
-  }, [lesson, locale, hasNewMessages, courseSpec]);
+  }, [lesson, locale, hasNewMessages, courseSpec, isAuthor]);
 
   return (
     <>

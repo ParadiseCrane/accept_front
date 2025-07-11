@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Center, Title, Box } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';

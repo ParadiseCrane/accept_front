@@ -1,3 +1,4 @@
+'use client';
 import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { ITournament } from '@custom-types/data/ITournament';

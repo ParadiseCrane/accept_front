@@ -1,3 +1,4 @@
+'use client';
 import { ICourseListItem } from '@custom-types/data/ICourse';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
