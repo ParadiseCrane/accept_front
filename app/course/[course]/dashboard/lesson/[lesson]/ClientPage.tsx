@@ -7,15 +7,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import Title from '@ui/Title/Title';
 
-export default function LessonClient({
-  lesson,
-  courseSpec,
-  courseAuthor,
-}: {
-  lesson: ILesson;
-  courseSpec: string;
-  courseAuthor: string;
-}) {
+export default function LessonClient({ lesson }: { lesson: ILesson }) {
   const refetchIntervalSeconds = 8;
   const { locale } = useLocale();
   const { user } = useUser();
@@ -30,11 +22,7 @@ export default function LessonClient({
         entity={'lesson'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
-        <LessonDashboard
-          lesson={lesson}
-          courseSpec={courseSpec}
-          isAuthor={user.login === courseAuthor}
-        />
+        <LessonDashboard lesson={lesson} />
       </ChatHostsProvider>
     </>
   );

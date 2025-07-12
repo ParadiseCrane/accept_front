@@ -74,7 +74,6 @@ export function CourseProvider({
         throw Error('Failed to fetch context');
         // TODO use proper handling
       }
-      console.log(navigation.response);
       setCourse(course.response);
       setIsModerator(hasModerateRights.response);
     } catch (err) {

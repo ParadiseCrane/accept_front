@@ -71,10 +71,7 @@ export default function CourseClient({ spec }: { spec: string }) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
-        href:
-          value.kind === 'course'
-            ? `/dashboard/${value.kind}/${value.spec}`
-            : `/dashboard/${value.kind}/${value.spec}?course=${spec}`,
+        href: `/course/${spec}/dashboard/${value.kind}/${value.spec}`,
         description: locale.tip.sticky.course.dashboard(value.kind),
       });
     }
@@ -132,11 +129,7 @@ export default function CourseClient({ spec }: { spec: string }) {
       {isModerator && !isAuthor && (
         <SingularSticky
           color="grape"
-          href={
-            value.kind === 'course'
-              ? `/dashboard/${value.kind}/${value.spec}`
-              : `/dashboard/${value.kind}/${value.spec}?course=${spec}`
-          }
+          href={`/course/${spec}/dashboard/${value.kind}/${value.spec}`}
           icon={<Dashboard height={25} width={25} />}
           description={locale.tip.sticky.course.dashboard(value.kind)}
         />

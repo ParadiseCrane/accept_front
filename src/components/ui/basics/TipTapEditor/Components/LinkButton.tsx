@@ -18,6 +18,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
       <RichTextEditor.Control
         onClick={() => {
           if (isActive) {
+            // TODO: Check what this is
             // console.log('link is', editor.getAttributes('link')['href']);
           } else {
             setShow(true);

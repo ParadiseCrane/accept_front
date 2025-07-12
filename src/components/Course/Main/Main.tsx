@@ -66,7 +66,6 @@ const Main: FC = () => {
     if (item && entity?.spec !== item) {
       sendRequest<any, any>(`course/${item}`, 'GET', undefined, undefined).then(
         (res) => {
-          // setCourse(res.response as ICourse | IUnit | ILesson);
           setEntity(
             res.response.kind === 'lesson'
               ? defaultLesson({
@@ -82,8 +81,6 @@ const Main: FC = () => {
   }, [item, entity]);
 
   if (!entity) return null;
-
-  // if ('tasks' in course) return <Lesson lesson={course} />;
 
   return (
     <AppShell.Main>

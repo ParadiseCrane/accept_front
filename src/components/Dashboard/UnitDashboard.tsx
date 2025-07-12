@@ -127,7 +127,7 @@ const UnitDashboard: FC<{
           </Tip>
         }
       />
-      {user && <GroupSelectorMenu courseSpec={courseSpec} user={user.login} />}
+      {user && <GroupSelectorMenu courseSpec={courseSpec} />}
     </>
   );
 };

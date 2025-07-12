@@ -15,11 +15,9 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
 import { IconUsersGroup, IconX } from '@tabler/icons-react';
+import { IResponse } from '@requests/request';
 
-const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
-  courseSpec,
-  user,
-}) => {
+const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
   const [showSelector, setShowSelector] = useState(false);
   const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
@@ -33,45 +31,13 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
     defaultValue: [],
   });
 
-  const { data } = useRequest<{}, any, IGroupBaseInfo[]>(
+  const _ = useRequest<undefined, IGroupBaseInfo[]>(
     `course/groups/${courseSpec}`,
     'GET',
-    undefined
-  );
-
-  const changeParams = useCallback(
-    (section: string, group: string) => {
-      let params = new URLSearchParams(searchParams?.toString());
-      params.set('group', group);
-      params.set('section', section);
-      router.push(pathName + '?' + params.toString());
-    },
-    [router, searchParams, pathName]
-  );
-
-  const changeUrl = useCallback(
-    (groupSpec: string) => {
-      if (searchParams && searchParams.has('section')) {
-        changeParams(searchParams.get('section')!, groupSpec);
-      }
-    },
-    [searchParams, changeParams]
-  );
-
-  const setGroup = useCallback(
-    (group: IGroupBaseInfo) => {
-      setCurrentGroup(group);
-      changeUrl(group.spec);
-      setCourseGroupPairLS((prev) => [
-        ...prev,
-        { courseSpec, groupSpec: group.spec },
-      ]);
-    },
-    [changeUrl, courseSpec, setCourseGroupPairLS]
-  );
-
-  useEffect(() => {
-    if (data) {
+    undefined,
+    undefined,
+    (response: IResponse<IGroupBaseInfo[]>) => {
+      const data = response.response;
       setGroups(data);
       if (data.length === 0) {
         changeUrl('all');
@@ -106,42 +72,74 @@ const GroupSelector: FC<{ courseSpec: string; user: string }> = ({
         }
       }
     }
-  }, [data, changeUrl, courseGroupPairLS, courseSpec, searchParams, setGroup]);
+  );
+
+  const changeParams = useCallback(
+    (section: string, group: string) => {
+      if (searchParams) {
+        const old_group = searchParams.get('group');
+        const old_section = searchParams.get('section');
+        if (old_group == group && old_section == section) {
+          return;
+        }
+      }
+      let params = new URLSearchParams(searchParams?.toString());
+      params.set('group', group);
+      params.set('section', section);
+      router.push(pathName + '?' + params.toString());
+    },
+    [router, searchParams, pathName]
+  );
+
+  const changeUrl = useCallback(
+    (groupSpec: string) => {
+      if (searchParams && searchParams.has('section')) {
+        changeParams(searchParams.get('section')!, groupSpec);
+      }
+    },
+    [searchParams, changeParams]
+  );
+
+  const setGroup = useCallback(
+    (group: IGroupBaseInfo) => {
+      setCurrentGroup(group);
+      changeUrl(group.spec);
+      setCourseGroupPairLS((prev) => [
+        ...prev,
+        { courseSpec, groupSpec: group.spec },
+      ]);
+    },
+    [changeUrl, courseSpec, setCourseGroupPairLS]
+  );
 
   return (
-    <>
-      {
-        <div
-          className={styles.wrapper + ' ' + (showSelector ? styles.show : '')}
-        >
-          <div className={styles.selectorWrapper}>
-            <div className={styles.selector}>
-              <CourseGroupSelector
-                groups={groups}
-                currentGroup={currentGroup}
-                select={(item: IGroupBaseInfo) => {
-                  setGroup(item);
-                }}
-              />
-            </div>
-          </div>
-          <div
-            className={styles.iconWrapper}
-            onClick={() => {
-              setShowSelector((value) => !value);
+    <div className={styles.wrapper + ' ' + (showSelector ? styles.show : '')}>
+      <div className={styles.selectorWrapper}>
+        <div className={styles.selector}>
+          <CourseGroupSelector
+            groups={groups}
+            currentGroup={currentGroup}
+            select={(item: IGroupBaseInfo) => {
+              setGroup(item);
             }}
-          >
-            <Icon size={'sm'} className={styles.iconRoot}>
-              {showSelector ? (
-                <IconX color={'var(--primary)'} />
-              ) : (
-                <IconUsersGroup color={'var(--primary)'} />
-              )}
-            </Icon>
-          </div>
+          />
         </div>
-      }
-    </>
+      </div>
+      <div
+        className={styles.iconWrapper}
+        onClick={() => {
+          setShowSelector((value) => !value);
+        }}
+      >
+        <Icon size={'sm'} className={styles.iconRoot}>
+          {showSelector ? (
+            <IconX color={'var(--primary)'} />
+          ) : (
+            <IconUsersGroup color={'var(--primary)'} />
+          )}
+        </Icon>
+      </div>
+    </div>
   );
 };
 

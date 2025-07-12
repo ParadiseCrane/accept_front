@@ -76,7 +76,6 @@ function Course(props: {
 
   useEffect(() => {
     const spec = searchParams?.get('item');
-    console.log('useEffect spec', spec);
     if (spec && spec !== itemSpec) {
       setItemSpec(spec);
       handlers.currentByHash(spec);

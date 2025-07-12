@@ -40,10 +40,7 @@ function LessonEditPage(props: { course: ILesson; depth: number }) {
     <>
       <Title title={locale.titles.course.edit} />
       <Form
-        handleSubmit={(form) => {
-          form.validate();
-          console.log('handleSubmit', form.values);
-        }}
+        handleSubmit={(form) => form.validate()}
         initialValues={initialValues}
         buttonLabel={locale.edit}
         assessmentTypes={data.assessmentTypes}
