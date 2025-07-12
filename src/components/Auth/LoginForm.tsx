@@ -74,7 +74,8 @@ const LoginForm: FC<{
       orgFromLS &&
       organizations?.filter((element) => element.value == orgFromLS)
     ) {
-      form.setFieldValue('organization', orgFromLS);
+      if (form.values.organization != orgFromLS)
+        form.setFieldValue('organization', orgFromLS);
     }
   }, [organizations_loading, form, organizations]);
 

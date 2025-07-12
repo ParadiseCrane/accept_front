@@ -5,6 +5,7 @@ import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
 import NavBar from '@components/Course/NavBar/NavBar';
 import { ICourse, IBaseTreeUnit } from '@custom-types/data/ICourse';
+import { useCourse } from '@hooks/useCourse';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
 import { useUser } from '@hooks/useUser';
@@ -13,8 +14,8 @@ import { useDisclosure } from '@mantine/hooks';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
 
 const flattenCourse = ({
@@ -33,36 +34,26 @@ const flattenCourse = ({
   return [courseAsUnit, ...children];
 };
 
-export default function CourseClient({
-  initialData,
-  initialItem,
-}: {
-  initialData: {
-    course: ICourse;
-    has_moderate_rights: boolean;
-  };
-  initialItem: string;
-}) {
+export default function CourseClient({ spec }: { spec: string }) {
   const { user } = useUser();
   const { locale } = useLocale();
   const searchParams = useSearchParams();
-
-  const [course] = useState(initialData.course);
-  const [isModerator] = useState(initialData.has_moderate_rights);
-  const [isAuthor, setIsAuthor] = useState(false);
+  let { course, isModerator, isAuthor } = useCourse();
   const item: string = useMemo(
-    () => searchParams?.get('item') || course.spec,
-    [searchParams, course.spec]
+    () => searchParams?.get('item') || spec,
+    [searchParams, spec]
   );
   const [openModal, setOpenModal] = useState(false);
   const [opened, { toggle }] = useDisclosure();
 
   const units = useMemo(
     () =>
-      flattenCourse({
-        course,
-        children: course.children,
-      }),
+      (course &&
+        flattenCourse({
+          course,
+          children: course.children,
+        })) ||
+      [],
     [course]
   );
 
@@ -70,14 +61,8 @@ export default function CourseClient({
     units.findIndex((unit) => unit.spec == item),
     units,
     (item, hash) => item.spec == hash,
-    (item) => `/course/${course.spec}?item=${item.spec}`
+    (item) => `/course/${spec}?item=${item.spec}`
   );
-
-  useEffect(() => {
-    if (user && user.login === course.author) {
-      setIsAuthor(true);
-    }
-  }, [user, course.author]);
 
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];
@@ -89,7 +74,7 @@ export default function CourseClient({
         href:
           value.kind === 'course'
             ? `/dashboard/${value.kind}/${value.spec}`
-            : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`,
+            : `/dashboard/${value.kind}/${value.spec}?course=${spec}`,
         description: locale.tip.sticky.course.dashboard(value.kind),
       });
     }
@@ -106,7 +91,7 @@ export default function CourseClient({
       innerActions.push(
         {
           color: 'green',
-          href: `/course/edit/${course.spec}?item=${value.spec}`,
+          href: `/course/edit/${spec}?item=${value.spec}`,
           icon: <Pencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit(value.kind),
         },
@@ -120,7 +105,7 @@ export default function CourseClient({
     }
 
     return innerActions;
-  }, [isModerator, isAuthor, value, course, locale]);
+  }, [isModerator, isAuthor, value, locale, spec]);
 
   return (
     <AppShell
@@ -138,7 +123,7 @@ export default function CourseClient({
       <NavBar
         units={units}
         hookUnit={value}
-        image={course.image}
+        image={course?.image}
         prev={handlers.prev}
         next={handlers.next}
       />
@@ -150,19 +135,21 @@ export default function CourseClient({
           href={
             value.kind === 'course'
               ? `/dashboard/${value.kind}/${value.spec}`
-              : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`
+              : `/dashboard/${value.kind}/${value.spec}?course=${spec}`
           }
           icon={<Dashboard height={25} width={25} />}
           description={locale.tip.sticky.course.dashboard(value.kind)}
         />
       )}
-      <DeleteModal
-        active={openModal}
-        setActive={setOpenModal}
-        course={course}
-      />
+      {course && (
+        <DeleteModal
+          active={openModal}
+          setActive={setOpenModal}
+          course={course}
+        />
+      )}
       {user && !isModerator && !isAuthor && (
-        <ChatSticky entity={'course'} spec={course.spec} host={user.login} />
+        <ChatSticky entity={'course'} spec={spec} host={user.login} />
       )}
     </AppShell>
   );

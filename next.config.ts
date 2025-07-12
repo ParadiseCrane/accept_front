@@ -4,6 +4,7 @@ const prod = process.env.NODE_ENV === 'production';
 // const prod = 0;
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
   output: prod ? 'standalone' : undefined,
   typescript: {
     ignoreBuildErrors: !!prod,
@@ -18,9 +19,7 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    optimizePackageImports: prod
-      ? ['@mantine/core', '@mantine/hooks', '@mantine/form', '@mantine/dates']
-      : [],
+    optimizePackageImports: prod ? ['@mantine/core', '@mantine/hooks'] : [],
   },
   async redirects() {
     return prod

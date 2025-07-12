@@ -17,7 +17,7 @@ import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent'
 const NavBar: FC<{
   units: IBaseTreeUnit[];
   hookUnit: IBaseTreeUnit;
-  image: string;
+  image?: string;
   prev: () => void;
   next: () => void;
 }> = ({ units, hookUnit, image, prev, next }) => {

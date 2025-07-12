@@ -1,13 +1,12 @@
 'use client';
 import { IUnit, ILesson, ICourse } from '@custom-types/data/ICourse';
 import { AppShell, Box, Center, Title } from '@mantine/core';
-import { useHash } from '@mantine/hooks';
 import { sendRequest } from '@requests/request';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 import { FC, memo, useEffect, useState } from 'react';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import Lesson from '../Lesson/Lesson';
-import { useSearchParams } from 'next/navigation';
+import { useCourse } from '@hooks/useCourse';
 
 // TODO mocked method
 const defaultLesson = ({
@@ -61,12 +60,11 @@ const defaultLesson = ({
 
 const Main: FC = () => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
-  const searchParams = useSearchParams();
+  const { item } = useCourse();
 
   useEffect(() => {
-    const spec = searchParams?.get('item');
-    if (spec && entity?.spec !== spec) {
-      sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
+    if (item && entity?.spec !== item) {
+      sendRequest<any, any>(`course/${item}`, 'GET', undefined, undefined).then(
         (res) => {
           // setCourse(res.response as ICourse | IUnit | ILesson);
           setEntity(
@@ -81,7 +79,7 @@ const Main: FC = () => {
         }
       );
     }
-  }, [searchParams, entity]);
+  }, [item, entity]);
 
   if (!entity) return null;
 
