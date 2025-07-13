@@ -9,33 +9,11 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: !!prod,
   },
-  modularizeImports: {
-    '@tabler/icons': {
-      transform: '@tabler/icons/{{member}}',
-    },
-  },
   expireTime: 1800, // half hour
   experimental: {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    optimizePackageImports: prod ? ['@mantine/core', '@mantine/hooks'] : [],
-  },
-  async redirects() {
-    return prod
-      ? [
-          {
-            source: '/course/:slug*',
-            destination: '/soon',
-            permanent: false,
-          },
-          {
-            source: '/courses',
-            destination: '/soon',
-            permanent: false,
-          },
-        ]
-      : [];
   },
   async rewrites() {
     return [
@@ -59,4 +37,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzer(nextConfig);
