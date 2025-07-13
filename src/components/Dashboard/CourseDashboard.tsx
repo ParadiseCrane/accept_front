@@ -20,7 +20,7 @@ import {
 
 import { ICourse } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
-import GroupSelectorMenu from './GroupSelector/GroupSelector';
+import { GroupSelectorMenu } from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';

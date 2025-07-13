@@ -57,7 +57,7 @@ export default function CourseClient({ spec }: { spec: string }) {
     [course]
   );
 
-  const [value, handlers] = useMoveThroughArray(
+  const [currentUnit, handlers] = useMoveThroughArray(
     units.findIndex((unit) => unit.spec == item),
     units,
     (item, hash) => item.spec == hash,
@@ -71,26 +71,26 @@ export default function CourseClient({ spec }: { spec: string }) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
-        href: `/course/${spec}/dashboard/${value.kind}/${value.spec}`,
-        description: locale.tip.sticky.course.dashboard(value.kind),
+        href: `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`,
+        description: locale.tip.sticky.course.dashboard(currentUnit.kind),
       });
     }
 
     if (isAuthor) {
-      if (value.kind === 'lesson') {
+      if (currentUnit.kind === 'lesson') {
         innerActions.push({
           color: 'green',
           icon: <PlaylistAdd width={20} height={20} />,
-          href: `/task/add?lesson=${value.spec}`,
+          href: `/task/add?lesson=${currentUnit.spec}`,
           description: locale.tip.sticky.course.createTask,
         });
       }
       innerActions.push(
         {
           color: 'green',
-          href: `/course/edit/${spec}?item=${value.spec}`,
+          href: `/course/edit/${spec}?item=${currentUnit.spec}`,
           icon: <Pencil height={20} width={20} />,
-          description: locale.tip.sticky.course.edit(value.kind),
+          description: locale.tip.sticky.course.edit(currentUnit.kind),
         },
         {
           color: 'red',
@@ -102,7 +102,7 @@ export default function CourseClient({ spec }: { spec: string }) {
     }
 
     return innerActions;
-  }, [isModerator, isAuthor, value, locale, spec]);
+  }, [isModerator, isAuthor, currentUnit, locale, spec]);
 
   return (
     <AppShell
@@ -119,19 +119,19 @@ export default function CourseClient({ spec }: { spec: string }) {
       <Header opened={opened} toggle={toggle} />
       <NavBar
         units={units}
-        hookUnit={value}
+        hookUnit={currentUnit}
         image={course?.image}
         prev={handlers.prev}
         next={handlers.next}
       />
-      <Main key={value.spec} />
+      <Main key={currentUnit.spec} />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky
           color="grape"
-          href={`/course/${spec}/dashboard/${value.kind}/${value.spec}`}
+          href={`/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`}
           icon={<Dashboard height={25} width={25} />}
-          description={locale.tip.sticky.course.dashboard(value.kind)}
+          description={locale.tip.sticky.course.dashboard(currentUnit.kind)}
         />
       )}
       {course && (

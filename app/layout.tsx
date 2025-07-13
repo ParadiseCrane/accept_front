@@ -21,7 +21,12 @@ import { theme } from '@constants/Theme';
 import { Metadata } from 'next';
 import { Exo_2, Red_Hat_Mono } from 'next/font/google';
 
-// export const metadata: Metadata = {}
+export const metadata: Metadata = {
+  title: 'Accept',
+  description:
+    'централизованная платформа, ориентированная на автоматизацию обучения программированию и повышение эффективности работы преподавателей с применением AI, а именно: проверка AI-плагиата, персонализированные подсказки об ошибках в коде, стилизация условий задач (для преподавателей), персонализированные рекомендации задач пользователям. ',
+  creator: 'Accept Team',
+};
 
 const exo2 = Exo_2({
   subsets: ['cyrillic', 'latin'],

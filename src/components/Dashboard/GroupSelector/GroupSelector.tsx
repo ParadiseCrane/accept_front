@@ -1,23 +1,20 @@
 'use client';
 import { useRequest } from '@hooks/useRequest';
 import { Icon } from '@ui/basics';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 
 import styles from './styles.module.css';
 import CourseGroupSelector from '@ui/selectors/CourseGroupSelector/CourseGroupSelector';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
-import {
-  useRouter,
-  useSearchParams,
-  usePathname,
-  useParams,
-} from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
 import { IconUsersGroup, IconX } from '@tabler/icons-react';
 import { IResponse } from '@requests/request';
 
-const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
+export const GroupSelectorMenu: FC<{ courseSpec: string }> = ({
+  courseSpec,
+}) => {
   const [showSelector, setShowSelector] = useState(false);
   const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const [currentGroup, setCurrentGroup] = useState<IGroupBaseInfo | null>(null);
@@ -142,5 +139,3 @@ const GroupSelector: FC<{ courseSpec: string }> = ({ courseSpec }) => {
     </div>
   );
 };
-
-export default GroupSelector;

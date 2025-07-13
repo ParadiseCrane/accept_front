@@ -16,7 +16,7 @@ import {
 } from '@tabler/icons-react';
 
 import { ILesson } from '@custom-types/data/ICourse';
-import GroupSelectorMenu from './GroupSelector/GroupSelector';
+import { GroupSelectorMenu } from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
@@ -32,7 +32,6 @@ const LessonDashboard: FC<{
 }> = ({ lesson }) => {
   const router = useRouter();
   const { locale } = useLocale();
-  const { user } = useUser();
   const { course, isAuthor } = useCourse();
 
   const { hasNewMessages } = useChatHosts();
@@ -103,26 +102,21 @@ const LessonDashboard: FC<{
   if (!course) return null;
 
   return (
-    <>
-      <LeftMenu
-        links={links}
-        topContent={
-          <Tip
-            label={locale.course.backToCourseTip}
-            openDelay={tooltipOpenDelay}
-            position="top"
-            spanStyle={styles.backToCoursesWrapper}
-            onClick={() => router.push(`/course/${course.spec}`)}
-          >
-            <IconArrowLeft color={'var(--primary)'} />
-            <div className={styles.title}>
-              {locale.course.backToCourseButton}
-            </div>
-          </Tip>
-        }
-      />
-      {user && <GroupSelectorMenu courseSpec={course.spec} />}
-    </>
+    <LeftMenu
+      links={links}
+      topContent={
+        <Tip
+          label={locale.course.backToCourseTip}
+          openDelay={tooltipOpenDelay}
+          position="top"
+          spanStyle={styles.backToCoursesWrapper}
+          onClick={() => router.push(`/course/${course.spec}`)}
+        >
+          <IconArrowLeft color={'var(--primary)'} />
+          <div className={styles.title}>{locale.course.backToCourseButton}</div>
+        </Tip>
+      }
+    />
   );
 };
 
