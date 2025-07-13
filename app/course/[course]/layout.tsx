@@ -7,7 +7,7 @@ import { cache, FC, ReactNode } from 'react';
 const getCourse = cache(async (spec: string): Promise<ICourse> => {
   const courseResponse = await fetchWrapperStaticApp({ url: `course/${spec}` });
   if (!courseResponse.ok) {
-    throw new Error('Failed to fetch course');
+    throw new Error(`Failed to fetch course '${spec}'`);
   }
   const course = (await courseResponse.json()) as ICourse;
   if (course.kind !== 'course') {

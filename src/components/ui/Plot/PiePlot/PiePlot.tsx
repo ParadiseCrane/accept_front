@@ -79,9 +79,11 @@ const PiePlot: FC<{
               width={2 * INNER_RADIUS * sinQuarterPi}
               height={2 * INNER_RADIUS * sinQuarterPi}
             >
-              {centerText
-                ? centralLabel(centerText)
-                : centralLabel(defaultText)}
+              <>
+                {centerText
+                  ? centralLabel(centerText)
+                  : centralLabel(defaultText)}
+              </>
             </foreignObject>
           )}
         </g>

@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
+    optimizeCss: true,
+  },
+  compiler: {
+    emotion: true,
+    styledComponents: true,
   },
   async rewrites() {
     return [
