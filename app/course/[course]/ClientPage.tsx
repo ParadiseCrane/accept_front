@@ -59,10 +59,8 @@ export default function CourseClient({ spec }: { spec: string }) {
     [course]
   );
   const changeHash = useCallback(
-    (newItem: IBaseTreeUnit) => {
-      console.log(newItem);
-      router.push(`/course/${spec}?item=${newItem.spec}`);
-    },
+    (newItem: IBaseTreeUnit) =>
+      router.push(`/course/${spec}?item=${newItem.spec}`),
     [spec, router]
   );
 
@@ -72,8 +70,6 @@ export default function CourseClient({ spec }: { spec: string }) {
     (item1, item2) => item1.spec == item2.spec,
     changeHash
   );
-
-  useEffect(() => console.log(currentUnit), [currentUnit]);
 
   const dashboardLink = useMemo(
     () =>
