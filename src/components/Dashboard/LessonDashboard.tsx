@@ -16,13 +16,11 @@ import {
 } from '@tabler/icons-react';
 
 import { ILesson } from '@custom-types/data/ICourse';
-import { GroupSelectorMenu } from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/navigation';
 import LessonMain from './LessonMain/LessonMain';
 import Moderators from './Moderators/Moderators';
 import { useCourse } from '@hooks/useCourse';
@@ -30,7 +28,6 @@ import { useCourse } from '@hooks/useCourse';
 const LessonDashboard: FC<{
   lesson: ILesson;
 }> = ({ lesson }) => {
-  const router = useRouter();
   const { locale } = useLocale();
   const { course, isAuthor } = useCourse();
 
@@ -110,10 +107,11 @@ const LessonDashboard: FC<{
           openDelay={tooltipOpenDelay}
           position="top"
           spanStyle={styles.backToCoursesWrapper}
-          onClick={() => router.push(`/course/${course.spec}`)}
         >
           <IconArrowLeft color={'var(--primary)'} />
-          <div className={styles.title}>{locale.course.backToCourseButton}</div>
+          <a className={styles.title} href={`/course/${course.spec}`}>
+            {locale.course.backToCourseButton}
+          </a>
         </Tip>
       }
     />

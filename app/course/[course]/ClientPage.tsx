@@ -14,8 +14,8 @@ import { useDisclosure } from '@mantine/hooks';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useSearchParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
 
 const flattenCourse = ({
@@ -38,7 +38,9 @@ export default function CourseClient({ spec }: { spec: string }) {
   const { user } = useUser();
   const { locale } = useLocale();
   const searchParams = useSearchParams();
+  const router = useRouter();
   let { course, isModerator, isAuthor } = useCourse();
+
   const item: string = useMemo(
     () => searchParams?.get('item') || spec,
     [searchParams, spec]
@@ -56,12 +58,29 @@ export default function CourseClient({ spec }: { spec: string }) {
       [],
     [course]
   );
+  const changeHash = useCallback(
+    (newItem: IBaseTreeUnit) => {
+      console.log(newItem);
+      router.push(`/course/${spec}?item=${newItem.spec}`);
+    },
+    [spec, router]
+  );
 
   const [currentUnit, handlers] = useMoveThroughArray(
     units.findIndex((unit) => unit.spec == item),
     units,
-    (item, hash) => item.spec == hash,
-    (item) => `/course/${spec}?item=${item.spec}`
+    (item1, item2) => item1.spec == item2.spec,
+    changeHash
+  );
+
+  useEffect(() => console.log(currentUnit), [currentUnit]);
+
+  const dashboardLink = useMemo(
+    () =>
+      currentUnit.kind == 'course'
+        ? `/course/${spec}/dashboard/course`
+        : `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`,
+    [spec, currentUnit]
   );
 
   const actions: IStickyAction[] = useMemo(() => {
@@ -71,7 +90,7 @@ export default function CourseClient({ spec }: { spec: string }) {
       innerActions.push({
         color: 'grape',
         icon: <Dashboard height={20} width={20} />,
-        href: `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`,
+        href: dashboardLink,
         description: locale.tip.sticky.course.dashboard(currentUnit.kind),
       });
     }
@@ -102,7 +121,7 @@ export default function CourseClient({ spec }: { spec: string }) {
     }
 
     return innerActions;
-  }, [isModerator, isAuthor, currentUnit, locale, spec]);
+  }, [isModerator, isAuthor, currentUnit, locale, spec, dashboardLink]);
 
   return (
     <AppShell
@@ -123,6 +142,7 @@ export default function CourseClient({ spec }: { spec: string }) {
         image={course?.image}
         prev={handlers.prev}
         next={handlers.next}
+        select={handlers.current}
       />
       <Main key={currentUnit.spec} />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}

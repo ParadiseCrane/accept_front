@@ -62,25 +62,12 @@ function Course(props: {
   const [value, handlers] = useMoveThroughArray(
     0,
     units,
-    (item, hash) => item.spec == hash,
+    (item1, item2) => item1.spec == item2.spec,
     (item) => `/course/${course.spec}?item=${item.spec}`
   );
   const { locale } = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  useEffect(() => {
-    router.replace(`/course/${course.spec}?item=${itemSpec ?? props.item}`);
-    handlers.currentByHash(itemSpec ?? props.item);
-  }, [router, handlers, course, itemSpec, props]);
-
-  useEffect(() => {
-    const spec = searchParams?.get('item');
-    if (spec && spec !== itemSpec) {
-      setItemSpec(spec);
-      handlers.currentByHash(spec);
-    }
-  }, [searchParams, itemSpec, handlers]);
 
   useEffect(() => {
     if (user && user.login === course.author) {
@@ -150,13 +137,6 @@ function Course(props: {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <NavBar
-          units={units}
-          hookUnit={value}
-          image={course.image}
-          prev={handlers.prev}
-          next={handlers.next}
-        />
         <Main key={value.spec} />
         {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
         {isModerator && !isAuthor && (

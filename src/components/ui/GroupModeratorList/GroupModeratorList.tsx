@@ -13,7 +13,6 @@ import tableStyles from '@styles/ui/customTable.module.css';
 import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
 import Fuse from 'fuse.js';
-import { useSearchParams } from 'next/navigation';
 import {
   FC,
   ReactNode,

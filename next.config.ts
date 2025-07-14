@@ -17,7 +17,6 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
   },
   compiler: {
-    emotion: true,
     styledComponents: true,
   },
   async rewrites() {
@@ -32,7 +31,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/courses',
-        destination: `/course/list`,
+        destination: `/course`,
       },
       {
         source: '/api/image/:slug*', // No credentials!

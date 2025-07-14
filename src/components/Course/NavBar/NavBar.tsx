@@ -11,7 +11,6 @@ import styles from './navbar.module.css';
 import { Tip } from '@ui/basics';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { IconArrowLeft } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
 
 const NavBar: FC<{
@@ -20,12 +19,12 @@ const NavBar: FC<{
   image?: string;
   prev: () => void;
   next: () => void;
-}> = ({ units, hookUnit, image, prev, next }) => {
+  select: (_: IBaseTreeUnit) => void;
+}> = ({ units, hookUnit, image, prev, next, select }) => {
   const course: IBaseTreeUnit = units[0];
   const children: IBaseTreeUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
   const { locale } = useLocale();
-  const router = useRouter();
 
   const { treeUnitList, actions, checkers } = useCourseShowTree({
     course,
@@ -39,10 +38,9 @@ const NavBar: FC<{
         openDelay={tooltipOpenDelay}
         position="top"
         spanStyle={styles.backToCoursesWrapper}
-        onClick={() => router.push('/courses')}
       >
         <IconArrowLeft color={'var(--primary)'} />
-        <div>{locale.course.backToCoursesButton}</div>
+        <a href="/courses">{locale.course.backToCoursesButton}</a>
       </Tip>
       <div className={styles.navbarWrapper}>
         <div className={styles.imageWithUnits}>
@@ -61,11 +59,11 @@ const NavBar: FC<{
             .filter((element) => element.visible)
             .map((unit) => (
               <NavBlock
-                course={course}
                 hookUnit={hookUnit}
                 currentUnit={unit}
                 actions={actions}
                 checkers={checkers}
+                onClick={select}
                 key={unit.spec}
               />
             ))}
