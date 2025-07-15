@@ -37,15 +37,12 @@ function LessonEditPage(props: { course: ILesson; depth: number }) {
   if (loading || !data) return <LoadingOverlay />;
 
   return (
-    <>
-      <Title title={locale.titles.course.edit} />
-      <Form
-        handleSubmit={(form) => form.validate()}
-        initialValues={initialValues}
-        buttonLabel={locale.edit}
-        assessmentTypes={data.assessmentTypes}
-      />
-    </>
+    <Form
+      handleSubmit={(form) => form.validate()}
+      initialValues={initialValues}
+      buttonLabel={locale.edit}
+      assessmentTypes={data.assessmentTypes}
+    />
   );
 }
 

@@ -112,6 +112,7 @@ const Main: FC = () => {
           </Center>
           <Box ml={'xl'} mr={'xl'}>
             <TipTapEditor
+              key={entity.spec}
               editorMode={false}
               content={entity.description}
               onUpdate={() => {}}

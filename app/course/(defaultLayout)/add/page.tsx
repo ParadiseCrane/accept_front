@@ -1,48 +1,71 @@
 'use client';
+import CourseForm from '@components/Course/Form/CourseForm';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
-import { IBaseTreeUnit, IUnit, IUnitAddEdit } from '@custom-types/data/ICourse';
+import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form/lib/types';
+import Title from '@ui/Title/Title';
 import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRouter } from 'next/navigation';
-import { memo, useCallback } from 'react';
-import UnitForm from '../Form/UnitForm';
+import { useCallback } from 'react';
 
-function UnitEditPage(props: { course: IUnit; depth: number }) {
+export default function CourseAdd() {
   const { locale, lang } = useLocale();
-  const initialValues = courseFormUtils.getInitialValuesEditUnit({
-    title: props.course.title,
-    description: props.course.description,
-    children: props.course.children ?? [],
-    kind: props.course.kind,
-  });
-
   const router = useRouter();
+
+  const initialValues = courseFormUtils.getInitialValuesAddCourse({
+    title: locale.ui.courseTree.title,
+  });
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
       if (
+        courseFormUtils.checkCourseImageInvalidInput({
+          image: form.values.image,
+          locale,
+        })
+      ) {
+        return;
+      }
+
+      if (
         courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
-        }) ||
+        })
+      ) {
+        return;
+      }
+
+      if (
         courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
-        }) ||
+        })
+      ) {
+        return;
+      }
+
+      if (
         courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
-        }) ||
+        })
+      ) {
+        return;
+      }
+
+      if (
         courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })
-      )
+      ) {
         return;
+      }
 
-      const course: IUnitAddEdit = {
+      const course: ICourseAddEdit = {
         ...form.values,
       };
 
@@ -56,16 +79,12 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
         }
       }
 
-      const courseToSend: IUnitAddEdit = {
-        ...course,
-        children: emptyChildren,
-        kind: props.course.kind,
-      };
+      const courseToSend = { ...course, children: emptyChildren };
 
-      requestWithNotify<IUnitAddEdit, string>(
-        `course/put/${props.course.spec}`,
-        'PUT',
-        locale.notify.course.edit,
+      requestWithNotify<ICourseAddEdit, string>(
+        'course/add',
+        'POST',
+        locale.notify.course.create,
         lang,
         (response) => response,
         courseToSend
@@ -75,19 +94,18 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
         }
       });
     },
-    [lang, locale, router, props]
+    [lang, locale, router]
   );
 
   return (
     <Wrapper>
-      <UnitForm
+      <Title title={locale.titles.course.add} />
+      <CourseForm
         handleSubmit={handleSubmit}
         initialValues={initialValues}
-        editMode={true}
-        {...props}
+        editMode={false}
+        depth={0}
       />
     </Wrapper>
   );
 }
-
-export default memo(UnitEditPage);

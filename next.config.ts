@@ -30,10 +30,6 @@ const nextConfig: NextConfig = {
         destination: `/task/list`,
       },
       {
-        source: '/courses',
-        destination: `/course`,
-      },
-      {
         source: '/api/image/:slug*', // No credentials!
         destination: `${process.env.API_ENDPOINT}/api/image/:slug*`,
       },

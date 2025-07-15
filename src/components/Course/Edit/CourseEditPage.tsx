@@ -7,17 +7,14 @@ import {
   IBaseTreeUnit,
 } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
 import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { memo, useCallback } from 'react';
 
 function CourseEditPage(props: { course: ICourse; depth: number }) {
   const { locale, lang } = useLocale();
-  const { user } = useUser();
   const initialValues = courseFormUtils.getInitialValuesEditCourse({
     title: props.course.title,
     description: props.course.description,
@@ -83,7 +80,7 @@ function CourseEditPage(props: { course: ICourse; depth: number }) {
         courseToSend
       ).then((res) => {
         if (!res.error) {
-          router.push('/courses');
+          router.push('/course/list');
         }
       });
     },
@@ -92,7 +89,6 @@ function CourseEditPage(props: { course: ICourse; depth: number }) {
 
   return (
     <Wrapper>
-      <Title title={locale.titles.course.edit} />
       <CourseForm
         handleSubmit={handleSubmit}
         initialValues={initialValues}
