@@ -103,7 +103,7 @@ export default function CourseClient({ spec }: { spec: string }) {
       innerActions.push(
         {
           color: 'green',
-          href: `/course/${spec}/edit?item=${currentUnit.spec}`,
+          href: `/course/${spec}/edit/${currentUnit.spec}`,
           icon: <Pencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit(currentUnit.kind),
         },

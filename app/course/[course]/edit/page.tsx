@@ -28,16 +28,12 @@ const getCourseData = async (
 };
 
 export default async function Page({
-  params,
-  searchParams,
+  params: params_promise,
 }: {
-  params: { spec: string };
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ course: string; item?: string }>;
 }) {
-  const item = (await searchParams)['item'];
-  if (typeof item == 'object')
-    throw new Error('Item props expected to be a string');
-  const data = await getCourseData(item ?? params.spec);
+  const params = await params_promise;
+  const data = await getCourseData(params.item ?? params.course);
 
   if (data.course.kind === 'course')
     return <CourseEditPage course={data.course} depth={data.depth} />;
