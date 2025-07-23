@@ -71,9 +71,9 @@ export interface ICourseListItem {
   author: string;
   spec: string;
   title: string;
-  date: Date;
+  last_update: Date;
   dateFormatted: string;
-  numOfModules: number;
+  amount: number;
 }
 
 export interface ICourseGroupPair {

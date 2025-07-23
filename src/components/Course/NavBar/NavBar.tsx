@@ -12,6 +12,7 @@ import { Tip } from '@ui/basics';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
+import Link from 'next/link';
 
 const NavBar: FC<{
   units: IBaseTreeUnit[];
@@ -33,15 +34,17 @@ const NavBar: FC<{
 
   return (
     <AppShell.Navbar className={styles.navbar}>
-      <Tip
-        label={locale.course.backToCoursesTip}
-        openDelay={tooltipOpenDelay}
-        position="top"
-        spanStyle={styles.backToCoursesWrapper}
-      >
-        <IconArrowLeft color={'var(--primary)'} />
-        <a href="/courses">{locale.course.backToCoursesButton}</a>
-      </Tip>
+      <Link href={'/course/list'}>
+        <Tip
+          label={locale.course.backToCoursesTip}
+          openDelay={tooltipOpenDelay}
+          position="top"
+          spanStyle={styles.backToCoursesWrapper}
+        >
+          <IconArrowLeft color={'var(--primary)'} />
+          <div>{locale.course.backToCoursesButton}</div>
+        </Tip>
+      </Link>
       <div className={styles.navbarWrapper}>
         <div className={styles.imageWithUnits}>
           <div className={styles.imageWrapper}>

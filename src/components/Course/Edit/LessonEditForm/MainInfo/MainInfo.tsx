@@ -56,15 +56,10 @@ const MainInfo: FC<{
       <TagSelector
         initialTags={initialTags}
         setUsed={setUsed}
-        // TODO mocked method
-        // fetchURL={'lesson_tag/list'}
-        // addURL={'lesson_tag/add'}
-        // updateURL={'lesson_tag/edit'}
-        // deleteURL={'lesson_tag/delete'}
-        fetchURL={'tournament_tag/list'}
-        addURL={'tournament_tag/add'}
-        updateURL={'tournament_tag/edit'}
-        deleteURL={'tournament_tag/delete'}
+        fetchURL={'lesson_tag/list'}
+        addURL={'lesson_tag/add'}
+        updateURL={'lesson_tag/edit'}
+        deleteURL={'lesson_tag/delete'}
         form={form}
         field={'tags'}
         width="80%"

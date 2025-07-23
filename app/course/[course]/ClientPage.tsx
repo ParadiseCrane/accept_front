@@ -73,7 +73,7 @@ export default function CourseClient({ spec }: { spec: string }) {
 
   const dashboardLink = useMemo(
     () =>
-      currentUnit.kind == 'course'
+      !currentUnit.kind
         ? `/course/${spec}/dashboard/course`
         : `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`,
     [spec, currentUnit]
@@ -140,7 +140,7 @@ export default function CourseClient({ spec }: { spec: string }) {
         next={handlers.next}
         select={handlers.current}
       />
-      <Main key={currentUnit.spec} />
+      <Main />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky

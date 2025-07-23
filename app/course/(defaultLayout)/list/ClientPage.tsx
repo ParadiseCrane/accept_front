@@ -78,7 +78,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
 
 const refactorCourse = (course: ICourseListItem): any => ({
   lastChange: {
-    value: course.date,
+    value: course.last_update,
     display: (
       <div className={tableStyles.titleWrapper}>{course.dateFormatted}</div>
     ),
@@ -99,9 +99,7 @@ const refactorCourse = (course: ICourseListItem): any => ({
   },
   numOfModules: {
     value: course.author,
-    display: (
-      <div className={tableStyles.titleWrapper}>{course.numOfModules}</div>
-    ),
+    display: <div className={tableStyles.titleWrapper}>{course.amount}</div>,
   },
 });
 

@@ -33,6 +33,10 @@ const ImageSelector: FC<{
   }, [allPresets]);
 
   useEffect(() => {
+    setImages(emptyImageList);
+  }, [currentPreset, emptyImageList]);
+
+  useEffect(() => {
     if (currentPreset) {
       const kind = 'course';
       const name = currentPreset?.name;

@@ -26,46 +26,25 @@ function CourseAdd() {
         courseFormUtils.checkCourseImageInvalidInput({
           image: form.values.image,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })
-      ) {
+      )
         return;
-      }
 
       const course: ICourseAddEdit = {
         ...form.values,

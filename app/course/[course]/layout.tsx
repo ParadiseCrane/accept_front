@@ -10,7 +10,7 @@ const getCourse = cache(async (spec: string): Promise<ICourse> => {
     throw new Error(`Failed to fetch course '${spec}'`);
   }
   const course = (await courseResponse.json()) as ICourse;
-  if (course.kind !== 'course') {
+  if (course.kind) {
     throw new Error(`Expected a course, got ${course.kind}`);
   }
   return course;

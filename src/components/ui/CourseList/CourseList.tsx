@@ -37,8 +37,8 @@ const refactorData = (
   const dayMonth = new Intl.DateTimeFormat(lang === 'ru' ? 'ru-RU' : 'en-US', {
     day: 'numeric',
     month: 'long',
-  }).format(new Date(course.date));
-  return `${dayMonth} ${new Date(course.date).getFullYear()}`;
+  }).format(new Date(course.last_update));
+  return `${dayMonth} ${new Date(course.last_update).getFullYear()}`;
 };
 
 const CourseList: FC<{

@@ -1,4 +1,5 @@
 'use client';
+
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
@@ -29,7 +30,7 @@ import CourseChatPage from './CourseChatPage/CourseChatPage';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const CourseDashboard: FC<{
   course: ICourse;
@@ -140,21 +141,21 @@ const CourseDashboard: FC<{
       <LeftMenu
         links={links}
         topContent={
-          <Tip
-            label={locale.course.backToCourseTip}
-            openDelay={tooltipOpenDelay}
-            position="top"
-            spanStyle={styles.backToCoursesWrapper}
-            onClick={() => router.push(`/course/${courseSpec}`)}
-          >
-            <IconArrowLeft color={'var(--primary)'} />
-            <div className={styles.title}>
-              {locale.course.backToCourseButton}
-            </div>
-          </Tip>
+          <></>
+          // <Tip
+          //   label={locale.course.backToCourseTip}
+          //   openDelay={tooltipOpenDelay}
+          //   position="top"
+          //   spanStyle={styles.backToCoursesWrapper}
+          //   onClick={() => router.push(`/course/${courseSpec}`)}
+          // >
+          //   <IconArrowLeft color={'var(--primary)'} />
+          //   <div className={styles.title}>
+          //     {locale.course.backToCourseButton}
+          //   </div>
+          // </Tip>
         }
       />
-      {user && <GroupSelectorMenu courseSpec={course.spec} />}
     </>
   );
 };

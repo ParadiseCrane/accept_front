@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { Image, MantineStyleProp, Skeleton } from '@mantine/core';
 import styles from './styles.module.css';
 
@@ -15,7 +15,7 @@ interface ImageComponentProps {
   imageStyle?: MantineStyleProp;
 }
 
-export const ImageComponent: FC<ImageComponentProps> = ({
+export const ImageComponent = memo(function Component({
   index,
   item,
   cover = false,
@@ -26,20 +26,22 @@ export const ImageComponent: FC<ImageComponentProps> = ({
   radius = 'md',
   animate = false,
   imageStyle,
-}) => {
+}: ImageComponentProps) {
   const [data, setData] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (item !== '') {
-      fetch(`/api/image/${item}`)
-        .then((res) => res.blob())
-        .then((blob) => {
-          setData(URL.createObjectURL(blob));
-        });
+      (async () => {
+        const res = await fetch(`/api/image/${item}`);
+        if (!res.ok) setError(true);
+        const blob = await res.blob();
+        setData(URL.createObjectURL(blob));
+      })();
     }
   }, [item]);
 
-  if (!item || (item === '' && cover)) {
+  if ((!item && cover) || error) {
     return (
       <Image
         alt={`Image ${index + 1}`}
@@ -77,4 +79,4 @@ export const ImageComponent: FC<ImageComponentProps> = ({
       style={imageStyle}
     />
   );
-};
+});

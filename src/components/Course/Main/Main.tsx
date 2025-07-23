@@ -6,7 +6,7 @@ import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent'
 import { FC, memo, useEffect, useState } from 'react';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import Lesson from '../Lesson/Lesson';
-import { useCourse } from '@hooks/useCourse';
+import { useSearchParams } from 'next/navigation';
 
 // TODO mocked method
 const defaultLesson = ({
@@ -60,11 +60,12 @@ const defaultLesson = ({
 
 const Main: FC = () => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
-  const { item } = useCourse();
+  const searchParams = useSearchParams();
+  const spec = searchParams?.get('item');
 
   useEffect(() => {
-    if (item && entity?.spec !== item) {
-      sendRequest<any, any>(`course/${item}`, 'GET', undefined, undefined).then(
+    if (spec && entity?.spec !== spec) {
+      sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
         (res) => {
           setEntity(
             res.response.kind === 'lesson'
@@ -78,9 +79,9 @@ const Main: FC = () => {
         }
       );
     }
-  }, [item, entity]);
+  }, [spec, entity]);
 
-  if (!entity) return null;
+  if (!entity || !spec || (spec && entity.spec !== spec)) return null;
 
   return (
     <AppShell.Main>
