@@ -17,6 +17,8 @@ import {
   IconBellPlus,
   IconLockCog,
   IconArrowLeft,
+  IconTrash,
+  IconPencil,
 } from '@tabler/icons-react';
 
 import { ICourse } from '@custom-types/data/ICourse';
@@ -31,6 +33,7 @@ import GroupOpenness from './GroupOpenness/GroupOpenness';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
 import { useRouter } from 'next/navigation';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 
 const CourseDashboard: FC<{
   course: ICourse;
@@ -39,7 +42,10 @@ const CourseDashboard: FC<{
 }> = ({ course, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
-  const { user } = useUser();
+
+  const [activeModal, setActiveModal] = useState(false);
+
+  const { isTeacher } = useUser();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -121,12 +127,32 @@ const CourseDashboard: FC<{
     return links;
   }, [hasNewMessages, locale, course, isAuthor]);
 
-  const [activeModal, setActiveModal] = useState(false);
+  const actions: IStickyAction[] = useMemo(() => {
+    const innerActions: IStickyAction[] = [];
 
-  const { isTeacher } = useUser();
+    if (isAuthor) {
+      innerActions.push(
+        {
+          color: 'green',
+          href: `/course/${courseSpec}/edit/${courseSpec}`,
+          icon: <IconPencil height={20} width={20} />,
+          description: locale.tip.sticky.course.edit('course'),
+        },
+        {
+          color: 'red',
+          onClick: () => setActiveModal(true),
+          icon: <IconTrash height={20} width={20} />,
+          description: locale.tip.sticky.course.delete,
+        }
+      );
+    }
+
+    return innerActions;
+  }, [isAuthor, locale, courseSpec]);
 
   return (
     <>
+      {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isTeacher && (
         <>
           {course && (
@@ -141,19 +167,18 @@ const CourseDashboard: FC<{
       <LeftMenu
         links={links}
         topContent={
-          <></>
-          // <Tip
-          //   label={locale.course.backToCourseTip}
-          //   openDelay={tooltipOpenDelay}
-          //   position="top"
-          //   spanStyle={styles.backToCoursesWrapper}
-          //   onClick={() => router.push(`/course/${courseSpec}`)}
-          // >
-          //   <IconArrowLeft color={'var(--primary)'} />
-          //   <div className={styles.title}>
-          //     {locale.course.backToCourseButton}
-          //   </div>
-          // </Tip>
+          <Tip
+            label={locale.course.backToCourseTip}
+            openDelay={tooltipOpenDelay}
+            position="top"
+            spanStyle={styles.backToCoursesWrapper}
+            onClick={() => router.push(`/course/${courseSpec}`)}
+          >
+            <IconArrowLeft color={'var(--primary)'} />
+            <div className={styles.title}>
+              {locale.course.backToCourseButton}
+            </div>
+          </Tip>
         }
       />
     </>

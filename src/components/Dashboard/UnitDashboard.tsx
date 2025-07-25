@@ -23,7 +23,7 @@ import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificat
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import UnitMain from './UnitMain/UnitMain';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
 import Moderators from './Moderators/Moderators';
