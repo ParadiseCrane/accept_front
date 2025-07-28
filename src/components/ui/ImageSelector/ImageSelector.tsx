@@ -91,7 +91,7 @@ const ImageSelector: FC<{
               }
             }}
             active={form.values.image === item}
-            key={index}
+            key={`${item} ${index}`}
           />
         ))}
       </SimpleGrid>
