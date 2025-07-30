@@ -44,6 +44,7 @@ function Task(props: {
   languages: ILanguage[];
   has_write_rights: boolean;
   has_read_tests_rights: boolean;
+  homeHref?: string;
 }) {
   const task = props.task;
   const languages = props.languages;
@@ -191,13 +192,13 @@ function Task(props: {
           <TasksBar
             currentTask={task.spec}
             tasks={tasks}
-            homeHref={`/${type}/${querySpec}`}
+            homeHref={props.homeHref ?? `/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
           {user && (
             <ChatSticky entity={type} spec={querySpec} host={user.login} />
           )}
-          <Timer url={`${type}/info/${querySpec}`} />
+          {type !== 'lesson' && <Timer url={`${type}/info/${querySpec}`} />}
         </>
       )}
 

@@ -73,9 +73,9 @@ export default function CourseClient({ spec }: { spec: string }) {
 
   const dashboardLink = useMemo(
     () =>
-      !currentUnit.kind
-        ? `/course/${spec}/dashboard/course`
-        : `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`,
+      currentUnit.kind
+        ? `/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`
+        : `/course/${spec}/dashboard/course`,
     [spec, currentUnit]
   );
 
@@ -145,7 +145,7 @@ export default function CourseClient({ spec }: { spec: string }) {
       {isModerator && !isAuthor && (
         <SingularSticky
           color="grape"
-          href={`/course/${spec}/dashboard/${currentUnit.kind}/${currentUnit.spec}`}
+          href={dashboardLink}
           icon={<Dashboard height={25} width={25} />}
           description={locale.tip.sticky.course.dashboard(currentUnit.kind)}
         />

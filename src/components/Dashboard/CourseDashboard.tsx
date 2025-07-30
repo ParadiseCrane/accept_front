@@ -153,16 +153,12 @@ const CourseDashboard: FC<{
   return (
     <>
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
-      {isTeacher && (
-        <>
-          {course && (
-            <DeleteModal
-              active={activeModal}
-              setActive={setActiveModal}
-              course={course}
-            />
-          )}
-        </>
+      {isTeacher && isAuthor && course && (
+        <DeleteModal
+          active={activeModal}
+          setActive={setActiveModal}
+          course={course}
+        />
       )}
       <LeftMenu
         links={links}

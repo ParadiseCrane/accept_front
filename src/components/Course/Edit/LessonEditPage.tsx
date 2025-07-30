@@ -1,7 +1,10 @@
 'use client';
-import { ILesson, ILessonEditBundle } from '@custom-types/data/ICourse';
+import {
+  ILesson,
+  ILessonEditBundle,
+  ILessonEditBundleRes,
+} from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
 import { memo, useMemo } from 'react';
 import Form from './LessonEditForm/Form';
 import { useRequest } from '@hooks/useRequest';
@@ -9,7 +12,7 @@ import { LoadingOverlay } from '@ui/basics';
 
 function LessonEditPage(props: { course: ILesson; depth: number }) {
   const { locale } = useLocale();
-  const { data, loading } = useRequest<{}, ILessonEditBundle>(
+  const { data, loading } = useRequest<{}, ILessonEditBundleRes>(
     `lesson/bundle/lesson_edit/${props.course.spec}`,
     'GET'
   );
@@ -20,7 +23,7 @@ function LessonEditPage(props: { course: ILesson; depth: number }) {
         title: data.lesson.title,
         description: data.lesson.description,
         tags: data.tags,
-        assessmentTypes: data.assessmentTypes,
+        assessmentTypes: data.assessment_types,
         assessmentType: '',
         allowedLanguages: data.lesson.allowedLanguages.map((lang) => ({
           value: lang.spec.toString(),
@@ -41,7 +44,7 @@ function LessonEditPage(props: { course: ILesson; depth: number }) {
       handleSubmit={(form) => form.validate()}
       initialValues={initialValues}
       buttonLabel={locale.edit}
-      assessmentTypes={data.assessmentTypes}
+      assessmentTypes={data.assessment_types}
     />
   );
 }

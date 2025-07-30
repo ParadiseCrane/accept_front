@@ -30,12 +30,7 @@ function LessonDashboardPage(props: {
         entity={'lesson'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
-        <>LessonDashboard</>
-        {/* <LessonDashboard
-          lesson={props.entity}
-          courseSpec={props.courseSpec}
-          isAuthor={user && user.login === props.courseAuthor}
-        /> */}
+        <LessonDashboard lesson={props.entity} />
       </ChatHostsProvider>
     </>
   );

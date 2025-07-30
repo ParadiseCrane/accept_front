@@ -10,7 +10,7 @@ import styles from './tasksBar.module.css';
 
 const TasksBar: FC<{
   tasks: IBarTask[];
-  homeHref: string;
+  homeHref: string | null;
   taskQuery: string;
   currentTask: string;
 }> = ({ tasks, homeHref, taskQuery, currentTask }) => {
@@ -18,16 +18,18 @@ const TasksBar: FC<{
     <>
       {tasks.length > 0 && (
         <div className={styles.wrapper}>
-          <ActionIcon
-            className={styles.taskStatus}
-            style={{
-              backgroundColor: 'var(--primary)',
-            }}
-            component={Link}
-            href={homeHref}
-          >
-            <Home color="white" />
-          </ActionIcon>
+          {homeHref && (
+            <ActionIcon
+              className={styles.taskStatus}
+              style={{
+                backgroundColor: 'var(--primary)',
+              }}
+              component={Link}
+              href={homeHref}
+            >
+              <Home color="white" />
+            </ActionIcon>
+          )}
           {tasks.map((task, index) => (
             <Link
               href={`/task/${task.spec}?${taskQuery}`}

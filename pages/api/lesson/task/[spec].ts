@@ -6,6 +6,7 @@ export default async function AddLessonTask(
   res: NextApiResponse
 ) {
   // TODO mocked method, Саня сделал, надо заменить
+  // и я хз, как, потому что он сделал два spec
   await fetchWrapper({
     req: req,
     res: res,
