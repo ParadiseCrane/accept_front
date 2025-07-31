@@ -1618,7 +1618,7 @@ const localToggleRoot = ({
   });
 };
 
-const localCloseElementAndChildren = ({
+const localCloseElementAndChildrenWithGroups = ({
   currentUnit,
   groupSpec,
   treeUnitList,
@@ -1660,7 +1660,7 @@ const localCloseElementAndChildren = ({
   });
 };
 
-const localOpenElementAndParents = ({
+const localOpenElementAndParentsWithGroups = ({
   currentUnit,
   groupSpec,
   locale,
@@ -1707,6 +1707,60 @@ const localOpenElementAndParents = ({
       title: locale.dashboard.course.groupOpennessRequestFail,
       autoClose: 5000,
     });
+  });
+};
+
+const localOpenElementAndParents = ({
+  currentUnit,
+  treeUnitList,
+}: ILocalMethodInput): ITreeUnit[] => {
+  const parentSpecList: string[] = [];
+  let parent = getParent({
+    courseUnit: currentUnit,
+    courseUnitList: treeUnitList,
+  });
+  // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
+  while (parent.depth > 0) {
+    parentSpecList.push(parent.spec);
+    parent = getParent({
+      courseUnit: parent,
+      courseUnitList: treeUnitList,
+    });
+  }
+  // нужно сделать так, чтобы все родители были visible и isOpen
+  const parentList = treeUnitList
+    .filter((unit) => parentSpecList.includes(unit.spec))
+    .map(
+      (e) =>
+        ({
+          ...e,
+          visible: true,
+          isOpen: true,
+          childrenVisible: true,
+        }) as ITreeUnit
+    );
+  // и все children всех родителей были visible
+  let allChildren: ITreeUnit[] = [];
+  for (let i = 0; i < parentList.length; i++) {
+    allChildren = [
+      ...allChildren,
+      ...findChildrenDirect({ parent: parentList[i], treeUnitList }),
+    ];
+  }
+  // нужно, чтобы дочерние элементы сами не были родителями, которые уже есть в списке родителей
+  allChildren = allChildren
+    .filter((e) => !parentSpecList.includes(e.spec))
+    .map((e) => ({ ...e, visible: true }));
+  const elementsToExclude = [...parentList, ...allChildren];
+  const remainingElements = excludeElementsFromList({
+    elements: elementsToExclude,
+    list: treeUnitList,
+  });
+  // объединяем два массива
+  return setNewIndexValues({
+    treeUnitList: [...remainingElements, ...elementsToExclude].sort(
+      (a, b) => a.orderAsNumber - b.orderAsNumber
+    ),
   });
 };
 
@@ -1779,6 +1833,11 @@ export interface ICourseShowTreeActions {
   }: {
     currentUnit: ITreeUnit;
   }) => void;
+  openElementAndParents: ({
+    currentUnit,
+  }: {
+    currentUnit: IBaseTreeUnit;
+  }) => void;
 }
 
 export interface ICourseShowTreeCheckers {
@@ -1792,6 +1851,14 @@ export interface ICourseShowTreeCheckers {
 interface IUseCourseShowTreeProps {
   course: IBaseTreeUnit;
   children: IBaseTreeUnit[];
+}
+
+export interface ICourseGroupOpennessTreeActions {
+  toggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => void;
 }
 
 interface IUseCourseGroupOpennessTreeProps {
@@ -2048,6 +2115,20 @@ export const useCourseShowTree = ({
     setTreeUnitList(newList);
   };
 
+  const openElementAndParents = ({
+    currentUnit,
+  }: {
+    currentUnit: IBaseTreeUnit;
+  }) => {
+    if (treeUnitList.length > 0) {
+      const newList = localOpenElementAndParents({
+        currentUnit: treeUnitList.find((e) => e.spec === currentUnit.spec)!,
+        treeUnitList,
+      });
+      setTreeUnitList(newList);
+    }
+  };
+
   const canToggleChildrenVisibility = ({
     currentUnit,
   }: {
@@ -2058,7 +2139,7 @@ export const useCourseShowTree = ({
 
   return {
     treeUnitList,
-    actions: { toggleChildrenVisibility },
+    actions: { toggleChildrenVisibility, openElementAndParents },
     checkers: {
       canToggleChildrenVisibility,
     },
@@ -2108,14 +2189,14 @@ export const useCourseGroupOpennessTree = ({
       });
     } else {
       currentUnit.isOpen
-        ? localCloseElementAndChildren({
+        ? localCloseElementAndChildrenWithGroups({
             currentUnit,
             groupSpec,
             treeUnitList,
             locale,
             setTreeUnitList,
           })
-        : localOpenElementAndParents({
+        : localOpenElementAndParentsWithGroups({
             currentUnit,
             groupSpec,
             treeUnitList,

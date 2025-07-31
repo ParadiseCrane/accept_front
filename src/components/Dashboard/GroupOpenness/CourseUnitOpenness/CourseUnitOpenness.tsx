@@ -1,7 +1,7 @@
 'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import {
-  ICourseShowTreeActions,
+  ICourseGroupOpennessTreeActions,
   ICourseShowTreeCheckers,
 } from '@hooks/useCourseTree';
 import { Box, Group, TextInput } from '@mantine/core';
@@ -17,7 +17,7 @@ export const CourseUnitOpenness = ({
   toggleOpennessTreeUnit,
 }: {
   currentUnit: ITreeUnit;
-  actions: ICourseShowTreeActions;
+  actions: ICourseGroupOpennessTreeActions;
   checkers: ICourseShowTreeCheckers;
   toggleOpennessTreeUnit: ({ currentUnit }: { currentUnit: ITreeUnit }) => void;
 }) => {

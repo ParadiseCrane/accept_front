@@ -24,12 +24,14 @@ import styles from './dashboard.module.css';
 import LessonMain from './LessonMain/LessonMain';
 import Moderators from './Moderators/Moderators';
 import { useCourse } from '@hooks/useCourse';
+import { useRouter } from 'next/navigation';
 
 const LessonDashboard: FC<{
   lesson: ILesson;
 }> = ({ lesson }) => {
   const { locale } = useLocale();
   const { course, isAuthor } = useCourse();
+  const router = useRouter();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -107,11 +109,12 @@ const LessonDashboard: FC<{
           openDelay={tooltipOpenDelay}
           position="top"
           spanStyle={styles.backToCoursesWrapper}
+          onClick={() =>
+            router.push(`/course/${course.spec}?item=${lesson.spec}`)
+          }
         >
           <IconArrowLeft color={'var(--primary)'} />
-          <a className={styles.title} href={`/course/${course.spec}`}>
-            {locale.course.backToCourseButton}
-          </a>
+          <div className={styles.title}>{locale.course.backToCourseButton}</div>
         </Tip>
       }
     />

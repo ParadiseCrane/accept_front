@@ -118,7 +118,9 @@ const UnitDashboard: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
             spanStyle={styles.backToCoursesWrapper}
-            onClick={() => router.push(`/course/${courseSpec}`)}
+            onClick={() =>
+              router.push(`/course/${courseSpec}?item=${unit.spec}`)
+            }
           >
             <IconArrowLeft color={'var(--primary)'} />
             <div className={styles.title}>

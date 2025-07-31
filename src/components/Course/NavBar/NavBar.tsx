@@ -2,8 +2,8 @@
 import { IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useCourseShowTree } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
-import { AppShell, Image, ScrollArea } from '@mantine/core';
-import { FC, memo } from 'react';
+import { AppShell } from '@mantine/core';
+import { FC, memo, useEffect, useState } from 'react';
 
 import { NavBlock } from './NavBlock/NavBlock';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
@@ -26,11 +26,23 @@ const NavBar: FC<{
   const children: IBaseTreeUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
   const { locale } = useLocale();
+  const [prevUnit, setPrevUnit] = useState<IBaseTreeUnit | null>(null);
 
   const { treeUnitList, actions, checkers } = useCourseShowTree({
     course,
     children,
   });
+
+  useEffect(() => {
+    if (
+      hookUnit.spec !== prevUnit?.spec &&
+      treeUnitList.length > 0 &&
+      hookUnit.spec !== course.spec
+    ) {
+      actions.openElementAndParents({ currentUnit: hookUnit });
+      setPrevUnit(hookUnit);
+    }
+  }, [prevUnit, hookUnit, actions, treeUnitList, course]);
 
   return (
     <AppShell.Navbar className={styles.navbar}>

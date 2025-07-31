@@ -16,6 +16,8 @@ const Lesson: FC<Props> = ({ lesson }) => {
   const { locale } = useLocale();
   const { course } = useCourse();
 
+  if (!course) return null;
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
@@ -32,7 +34,7 @@ const Lesson: FC<Props> = ({ lesson }) => {
       <div className={styles.tasksWrapper}>
         <PrimitiveTaskTable
           tasks={lesson.tasks}
-          linkQuery={`lesson=${lesson.spec}`}
+          linkQuery={`course=${course.spec}&lesson=${lesson.spec}`}
           empty={locale.tournament.emptyTasks}
         />
       </div>

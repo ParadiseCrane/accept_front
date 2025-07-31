@@ -45,11 +45,6 @@ export const NavBlock: FC<{
           >
             <div>{currentUnit.title}</div>
           </Tip>
-          <ToggleVisibilityButton
-            currentUnit={currentUnit}
-            canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
-            toggleChildrenVisibility={actions.toggleChildrenVisibility}
-          />
         </div>
       </div>
     );

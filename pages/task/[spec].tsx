@@ -306,12 +306,19 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const response_json = await response.json();
 
+    let homeHref = undefined;
+
+    if (query.course && query.lesson) {
+      homeHref = `/course/${query.course}?item=${query.lesson}`;
+    }
+
     return {
       props: {
         task: response_json.task,
         languages: response_json.languages,
         has_write_rights: response_json.has_write_rights,
         has_read_tests_rights: response_json.has_read_tests_rights,
+        homeHref,
       },
     };
   }
