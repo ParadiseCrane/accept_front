@@ -17,7 +17,7 @@ import {
 } from '@tabler/icons-react';
 
 import { IUnit } from '@custom-types/data/ICourse';
-import { GroupSelectorMenu } from './GroupSelector/GroupSelector';
+import { GroupSelector } from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
@@ -129,7 +129,7 @@ const UnitDashboard: FC<{
           </Tip>
         }
       />
-      {user && <GroupSelectorMenu courseSpec={courseSpec} />}
+      {user && <GroupSelector courseSpec={courseSpec} />}
     </>
   );
 };

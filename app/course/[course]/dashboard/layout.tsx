@@ -1,5 +1,5 @@
 'use client';
-import { GroupSelectorMenu } from '@components/Dashboard/GroupSelector/GroupSelector';
+import { GroupSelector } from '@components/Dashboard/GroupSelector/GroupSelector';
 import { useCourse } from '@hooks/useCourse';
 import { useUser } from '@hooks/useUser';
 import { DefaultLayout } from '@layouts/DefaultLayout';
@@ -11,7 +11,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <DefaultLayout>
       <>{children}</>
-      {course && user && <GroupSelectorMenu courseSpec={course.spec} />}
+      {course && user && <GroupSelector courseSpec={course.spec} />}
     </DefaultLayout>
   );
 };

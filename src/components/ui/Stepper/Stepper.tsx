@@ -49,7 +49,6 @@ const Stepper: FC<{
       for (let i = 0; i < stepFields[step].length; i++) {
         const field = stepFields[step][i];
         const res = form.validateField(field);
-        console.log(`validate ${field}`, res);
         error = error || res.hasError;
       }
       return error;
