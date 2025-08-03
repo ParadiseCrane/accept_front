@@ -16,9 +16,9 @@ function CourseEdit(props: {
     return <CourseEditPage course={props.course} depth={props.depth} />;
 
   if (props.course.kind === 'unit')
-    return <UnitEditPage course={props.course} depth={props.depth} />;
+    return <UnitEditPage unit={props.course} depth={props.depth} />;
 
-  return <LessonEditPage course={props.course} depth={props.depth} />;
+  return <LessonEditPage lesson={props.course} depth={props.depth} />;
 }
 
 CourseEdit.getLayout = (page: ReactNode) => {

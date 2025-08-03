@@ -114,6 +114,7 @@ const TagSelector: FC<{
       value={tags}
       onChange={onChange}
       width={width}
+      height={allTags.length === 0 ? 'min-content' : undefined}
     />
   );
 };

@@ -52,6 +52,7 @@ const MainInfo: FC<{
         label={locale.course.lesson.form.description}
         form={form}
         name={'description'}
+        required
       />
       <TagSelector
         initialTags={initialTags}
@@ -64,13 +65,16 @@ const MainInfo: FC<{
         field={'tags'}
         width="80%"
       />
-      <Radio
-        label={locale.tournament.form.assessmentType.title}
-        field={'assessmentType'}
-        form={form}
-        items={assessmentTypeItems}
-        onChange={handlerAssessmentType}
-      />
+      {assessmentTypeItems.length > 1 && (
+        <Radio
+          label={locale.tournament.form.assessmentType.title}
+          field={'assessmentType'}
+          form={form}
+          items={assessmentTypeItems}
+          onChange={handlerAssessmentType}
+          required
+        />
+      )}
     </>
   );
 };

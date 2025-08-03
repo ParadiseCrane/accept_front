@@ -38,6 +38,6 @@ export default async function Page({
   if (data.course.kind === 'course')
     return <CourseEditPage course={data.course} depth={data.depth} />;
   if (data.course.kind === 'unit')
-    return <UnitEditPage course={data.course} depth={data.depth} />;
-  return <LessonEditPage course={data.course} depth={data.depth} />;
+    return <UnitEditPage unit={data.course} depth={data.depth} />;
+  return <LessonEditPage lesson={data.course} depth={data.depth} />;
 }

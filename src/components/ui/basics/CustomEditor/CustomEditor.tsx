@@ -12,13 +12,23 @@ const CustomEditor: FC<{
   editorMinHeight?: string;
   helperContent?: string | ReactNode;
   shrink?: boolean;
-}> = ({ name, label, form, editorMinHeight, helperContent, shrink }) => {
+  required?: boolean;
+}> = ({
+  name,
+  label,
+  form,
+  editorMinHeight,
+  helperContent,
+  shrink,
+  required,
+}) => {
   return (
     <div>
       <InputWrapper
         label={label}
         helperContent={helperContent}
         shrink={shrink}
+        required={required}
         {...form.getInputProps(name)}
       >
         <TipTapEditor

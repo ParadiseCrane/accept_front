@@ -67,9 +67,9 @@ export interface ILessonEditBundle {
   assessmentTypes: IAssessmentType[];
 }
 
-export interface ILessonEditBundleRes
+export interface ILessonEditBundleSend
   extends Omit<ILessonEditBundle, 'assessmentTypes'> {
-  assessment_types: IAssessmentType[];
+  assessmentType: number;
 }
 
 export interface ICourseListItem {

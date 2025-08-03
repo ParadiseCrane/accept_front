@@ -9,13 +9,13 @@ import { useRouter } from 'next/navigation';
 import { memo, useCallback } from 'react';
 import UnitForm from '../Form/UnitForm';
 
-function UnitEditPage(props: { course: IUnit; depth: number }) {
+function UnitEditPage(props: { unit: IUnit; depth: number }) {
   const { locale, lang } = useLocale();
   const initialValues = courseFormUtils.getInitialValuesEditUnit({
-    title: props.course.title,
-    description: props.course.description,
-    children: props.course.children ?? [],
-    kind: props.course.kind,
+    title: props.unit.title,
+    description: props.unit.description,
+    children: props.unit.children ?? [],
+    kind: props.unit.kind,
   });
 
   const router = useRouter();
@@ -59,11 +59,11 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
       const courseToSend: IUnitAddEdit = {
         ...course,
         children: emptyChildren,
-        kind: props.course.kind,
+        kind: props.unit.kind,
       };
 
       requestWithNotify<IUnitAddEdit, string>(
-        `course/put/${props.course.spec}`,
+        `course/put/${props.unit.spec}`,
         'PUT',
         locale.notify.course.edit,
         lang,
