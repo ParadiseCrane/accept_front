@@ -7,11 +7,21 @@ import { Metadata, ResolvingMetadata } from 'next';
 const getCourse = cache(async (spec: string): Promise<ICourse> => {
   const courseResponse = await fetchWrapperStaticApp({ url: `course/${spec}` });
   if (!courseResponse.ok) {
-    throw new Error(`Failed to fetch course '${spec}'`);
+    throw new Error(
+      JSON.stringify({
+        code: courseResponse.status,
+        message: `Failed to fetch course '${spec}'`,
+      })
+    );
   }
   const course = (await courseResponse.json()) as ICourse;
   if (course.kind) {
-    throw new Error(`Expected a course, got ${course.kind}`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Expected a course, got '${course.kind}'`,
+      })
+    );
   }
   return course;
 });

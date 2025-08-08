@@ -68,7 +68,7 @@ const ImageSelector: FC<{
         }
       );
     }
-  }, [currentPreset, emptyImageList, form]);
+  }, [currentPreset, emptyImageList, form.values.image]);
 
   return (
     <Box>
