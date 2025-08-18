@@ -10,13 +10,23 @@ const getLesson = cache(async (lesson_spec: string): Promise<ILesson> => {
   });
 
   if (!lessonResponse.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
 
   const lesson = (await lessonResponse.json()) as ILesson;
 
   if (lesson.kind !== 'lesson') {
-    throw new Error('Not a lesson');
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
 
   return lesson;

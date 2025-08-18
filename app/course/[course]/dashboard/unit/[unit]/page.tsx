@@ -7,11 +7,21 @@ import { Metadata, ResolvingMetadata } from 'next';
 const getUnit = cache(async (spec: string): Promise<IUnit> => {
   const unitResponse = await fetchWrapperStaticApp({ url: `course/${spec}` });
   if (!unitResponse.ok) {
-    throw new Error(`Failed to fetch unit '${spec}'`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
   const unit = (await unitResponse.json()) as IUnit;
   if (unit.kind !== 'unit') {
-    throw new Error(`Expected a course, got ${unit.kind}`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
   return unit;
 });
@@ -19,11 +29,21 @@ const getUnit = cache(async (spec: string): Promise<IUnit> => {
 const getCourse = cache(async (spec: string): Promise<ICourse> => {
   const courseResponse = await fetchWrapperStaticApp({ url: `course/${spec}` });
   if (!courseResponse.ok) {
-    throw new Error(`Failed to fetch unit '${spec}'`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
   const course = (await courseResponse.json()) as ICourse;
   if (course.kind) {
-    throw new Error(`Expected a course, got ${course.kind}`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
   return course;
 });

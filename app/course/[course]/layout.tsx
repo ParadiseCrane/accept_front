@@ -42,7 +42,12 @@ const getCourseData = async (spec: string) => {
   ]);
 
   if (!navResponse.ok || !hasModerateRightsResponse.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
 
   const navigation = await navResponse.json();

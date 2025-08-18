@@ -44,7 +44,7 @@ function Task(props: {
   languages: ILanguage[];
   has_write_rights: boolean;
   has_read_tests_rights: boolean;
-  homeHref?: string;
+  homeHref: string | null;
 }) {
   const task = props.task;
   const languages = props.languages;
@@ -306,7 +306,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const response_json = await response.json();
 
-    let homeHref = undefined;
+    let homeHref = null;
 
     if (query.course && query.lesson) {
       homeHref = `/course/${query.course}?item=${query.lesson}`;

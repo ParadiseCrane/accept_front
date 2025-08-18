@@ -15,7 +15,12 @@ const getCourseData = async (
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
 
   const entity: { course: ICourse | IUnit | ILesson; depth: number } =

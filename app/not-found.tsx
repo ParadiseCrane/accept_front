@@ -5,10 +5,10 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import Title from '@ui/Title/Title';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const Error: NextPage<{ error?: Error }> = ({ error }) => {
+const Error: NextPage<{ error: Error }> = ({ error }) => {
   const { locale } = useLocale();
   const router = useRouter();
   const [canGoBack, setCanGoBack] = useState(false);
@@ -23,9 +23,14 @@ const Error: NextPage<{ error?: Error }> = ({ error }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (document) {
+      document.title = locale.errorPage.getTitle(404);
+    }
+  }, [locale.errorPage]);
+
   return (
     <div className={styles.wrapper}>
-      <Title title={'404'} />
       <div className={styles.statusCode}>{404}</div>
       <div className={styles.description}>{locale.errorPage.description}</div>
       <Link href="/" className={styles.return}>

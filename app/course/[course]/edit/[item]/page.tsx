@@ -9,7 +9,12 @@ type ReturnType = { course: ICourse | IUnit | ILesson; depth: number };
 const getCourseEdit = cache(async (spec: string): Promise<ReturnType> => {
   const response = await fetchWrapperStaticApp({ url: `course-edit/${spec}` });
   if (!response.ok) {
-    throw new Error(`Failed to fetch '${spec}'`);
+    throw new Error(
+      JSON.stringify({
+        code: 404,
+        message: `Failed to fetch data`,
+      })
+    );
   }
   const entity: ReturnType = await response.json();
 
