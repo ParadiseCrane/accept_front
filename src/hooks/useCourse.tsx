@@ -13,25 +13,32 @@ import { ICourse } from '@custom-types/data/ICourse';
 import { useUser } from './useUser';
 import { sendRequest } from '@requests/request';
 import { useSearchParams } from 'next/navigation';
+import { IGroupBaseInfo } from '@custom-types/data/IGroup';
 
 interface CourseInfo {
   course: ICourse | null;
   refetch: () => Promise<void>;
+  fetchGroups: () => Promise<void>;
+  onGroupDelete: (spec: string) => void;
   isLoading: boolean;
   error: string | null;
   isModerator: boolean;
   isAuthor: boolean;
   item: string | null;
+  groups: IGroupBaseInfo[];
 }
 
 const CourseContext = createContext<CourseInfo>({
   course: null,
   refetch: () => new Promise(() => {}),
+  fetchGroups: () => new Promise(() => {}),
+  onGroupDelete: (spec: string) => {},
   isLoading: true,
   error: null,
   isModerator: false,
   isAuthor: false,
   item: null,
+  groups: [],
 });
 
 export function CourseProvider({
@@ -55,39 +62,62 @@ export function CourseProvider({
   const [isModerator, setIsModerator] = useState(
     initialData?.has_moderate_rights || false
   );
+  const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const searchParams = useSearchParams();
 
   const fetchData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const [navigation, course, hasModerateRights] = await Promise.all([
-        sendRequest(`course/course_navigation_tree/${spec}`, 'GET'), // TODO Save navigation info as well
-        sendRequest<undefined, ICourse>(`course/${spec}`, 'GET'),
-        sendRequest<any, boolean>('rights', 'POST', {
-          action: 'moderate',
-          entity_spec: spec,
-          entity: 'course',
-        }),
-      ]);
+    if (spec !== course?.spec) {
+      try {
+        setIsLoading(true);
+        const [navigation, course, hasModerateRights] = await Promise.all([
+          sendRequest(`course/course_navigation_tree/${spec}`, 'GET'), // TODO Save navigation info as well
+          sendRequest<undefined, ICourse>(`course/${spec}`, 'GET'),
+          sendRequest<any, boolean>('rights', 'POST', {
+            action: 'moderate',
+            entity_spec: spec,
+            entity: 'course',
+          }),
+        ]);
 
-      if (navigation.error || course.error || hasModerateRights.error) {
-        throw Error('Failed to fetch context');
-        // TODO use proper handling
+        if (navigation.error || course.error || hasModerateRights.error) {
+          throw Error('Failed to fetch context');
+          // TODO use proper handling
+        }
+        setCourse(course.response);
+        setIsModerator(hasModerateRights.response);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setIsLoading(false);
       }
-      setCourse(course.response);
-      setIsModerator(hasModerateRights.response);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setIsLoading(false);
+    }
+  }, [spec, course?.spec]);
+
+  const fetchGroups = useCallback(async () => {
+    try {
+      const res = await sendRequest<{}, IGroupBaseInfo[]>(
+        `course/groups/${spec}`,
+        'GET'
+      );
+      if (!res.error) setGroups(res.response);
+    } catch {
+      throw Error('Failed to fetch groups');
     }
   }, [spec]);
+
+  const onGroupDelete = useCallback((spec: string) => {
+    setGroups((prev) => prev.filter((e) => e.spec !== spec));
+  }, []);
 
   useEffect(() => {
     if (!initialData) {
       fetchData();
     }
-  }, [fetchData, initialData]);
+  }, [initialData, fetchData]);
+
+  useEffect(() => {
+    fetchGroups();
+  }, [fetchGroups]);
 
   const value = useMemo(
     () =>
@@ -99,8 +129,22 @@ export function CourseProvider({
         refetch: fetchData,
         isAuthor: course && user && course.author === user.login,
         item: searchParams?.get('item') || course?.spec,
+        fetchGroups,
+        onGroupDelete,
+        groups,
       }) as CourseInfo,
-    [course, error, fetchData, isLoading, isModerator, searchParams, user]
+    [
+      course,
+      error,
+      fetchData,
+      isLoading,
+      isModerator,
+      searchParams,
+      user,
+      groups,
+      fetchGroups,
+      onGroupDelete,
+    ]
   );
 
   return (

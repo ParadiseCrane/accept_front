@@ -35,7 +35,6 @@ const UnitDashboard: FC<{
 }> = ({ unit, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
-  const { user } = useUser();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -129,7 +128,6 @@ const UnitDashboard: FC<{
           </Tip>
         }
       />
-      {user && <GroupSelector courseSpec={courseSpec} />}
     </>
   );
 };

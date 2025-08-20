@@ -64,12 +64,15 @@ export interface ILesson extends Omit<IUnit, 'kind'> {
 export interface ILessonEditBundle {
   lesson: ILesson;
   tags: ITag[];
-  assessmentTypes: IAssessmentType[];
+  assessment_types: IAssessmentType[];
 }
 
-export interface ILessonEditBundleSend
-  extends Omit<ILessonEditBundle, 'assessmentTypes'> {
-  assessmentType: number;
+export interface ILessonEditSend {
+  spec: string;
+  title: string;
+  description: string;
+  tasks: string[];
+  tags: string[];
 }
 
 export interface ICourseListItem {

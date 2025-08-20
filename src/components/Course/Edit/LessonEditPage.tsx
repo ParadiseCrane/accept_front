@@ -2,10 +2,10 @@
 import {
   ILesson,
   ILessonEditBundle,
-  ILessonEditBundleSend,
+  ILessonEditSend,
 } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import Form from './LessonEditForm/Form';
 import { useRequest } from '@hooks/useRequest';
 import { LoadingOverlay } from '@ui/basics';
@@ -19,24 +19,9 @@ import { useRouter } from 'next/navigation';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { Item } from '@custom-types/ui/atomic';
 
-// TODO mocked method
-interface ILessonMocked
-  extends Omit<
-    ILesson,
-    'allowedLanguages' | 'forbiddenLanguages' | 'kind' | 'children' | 'tasks'
-  > {
-  tags: string[];
-  tasks: string[];
-}
-
-interface ILessonEditBundleRes
-  extends Omit<ILessonEditBundle, 'assessmentTypes'> {
-  assessment_types: IAssessmentType[];
-}
-
 function LessonEditPage(props: { lesson: ILesson; depth: number }) {
   const { locale } = useLocale();
-  const { data, loading } = useRequest<{}, ILessonEditBundleRes>(
+  const { data, loading } = useRequest<{}, ILessonEditBundle>(
     `lesson/bundle/lesson_edit/${props.lesson.spec}`,
     'GET'
   );
@@ -81,15 +66,15 @@ function LessonEditPage(props: { lesson: ILesson; depth: number }) {
 
       if (!data) return;
 
-      const lessonToSend: ILessonMocked = {
+      const lessonToSend: ILessonEditSend = {
         spec: data.lesson.spec,
         title: form.values?.title ?? '',
         description: form.values?.description ?? '',
-        tasks: data.lesson.tasks.map((item) => item.spec) ?? [],
-        tags: form.values?.tags.map((item: Item) => item.value) ?? [],
+        tasks: data.lesson.tasks.map((e) => e.spec),
+        tags: form.values?.tags.map((e) => e.value) ?? [],
       };
 
-      requestWithNotify<ILessonMocked, string>(
+      requestWithNotify<ILessonEditSend, string>(
         'lesson/edit',
         'PUT',
         locale.notify.course.create,
