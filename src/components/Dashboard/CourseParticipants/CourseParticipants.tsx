@@ -6,11 +6,12 @@ import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { capitalize } from '@utils/capitalize';
 import Link from 'next/link';
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 import styles from './style.module.css';
 import SimpleUserList from '../../ui/SimpleUserList/SimpleUserList';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@ui/basics';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -94,6 +95,25 @@ const refactorUser = (user: IUserDisplay): any => ({
   },
 });
 
+const EmptyTableComponent: FC<{
+  title: string;
+  buttonTitle: string;
+  redirectTo: string;
+}> = ({ title, buttonTitle, redirectTo }) => {
+  const router = useRouter();
+  const redirect = useCallback(
+    () => router.push(redirectTo),
+    [redirectTo, router]
+  );
+
+  return (
+    <>
+      {title}
+      <Button onClick={redirect}>{buttonTitle}</Button>
+    </>
+  );
+};
+
 const CourseParticipants: FC<{
   type: 'course';
   spec: string;
@@ -101,17 +121,32 @@ const CourseParticipants: FC<{
 }> = ({ type, spec, allParticipants }) => {
   const { locale } = useLocale();
   const searchParams = useSearchParams();
-  const group =
-    allParticipants || !searchParams ? 'all' : searchParams.get('group');
+  const groupSpec = searchParams && searchParams.get('group');
+  const isGroupSelected = groupSpec !== 'all';
+  const groupSpecForRequest = allParticipants ? 'all' : groupSpec;
 
   return (
     <div className={styles.wrapper}>
       <SimpleUserList
-        url={`${type}/participant/${spec}/${group}`}
+        url={`${type}/participant/${spec}/${groupSpecForRequest}`}
         refactorUser={refactorUser}
         initialColumns={initialColumns}
         noDefault
-        empty={<>{locale.ui.table.emptyMessage}</>}
+        emptyTableComponent={
+          isGroupSelected ? (
+            <EmptyTableComponent
+              title={locale.dashboard.course.noParticipantsFound}
+              buttonTitle={locale.dashboard.course.editGroup}
+              redirectTo={`/group/edit/${groupSpec}`}
+            />
+          ) : (
+            <EmptyTableComponent
+              title={locale.dashboard.course.noGroupsFound}
+              buttonTitle={locale.group.add}
+              redirectTo={`/group/add?course=${spec}`}
+            />
+          )
+        }
         classNames={{
           wrapper: tableStyles.wrapper,
           table: tableStyles.table,

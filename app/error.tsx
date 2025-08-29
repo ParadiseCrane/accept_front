@@ -1,17 +1,33 @@
 'use client';
+
 import { useLocale } from '@hooks/useLocale';
 import styles from '@styles/error.module.css';
 import { IconArrowLeft } from '@tabler/icons-react';
-import Title from '@ui/Title/Title';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, MouseEvent } from 'react';
 
 function Error({ error, reset }: { error: Error; reset: () => void }) {
   const { locale } = useLocale();
   const [canGoBack, setCanGoBack] = useState(false);
   const router = useRouter();
   const [statusCode, setStatusCode] = useState<number | null>(null);
+
+  const getMainHref = () => {
+    if (statusCode === 401) {
+      return `/signin?referrer=${window.location.pathname}`;
+    }
+
+    return '/';
+  };
+
+  const arrowAction = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      router.back();
+    },
+    [router]
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -46,27 +62,11 @@ function Error({ error, reset }: { error: Error; reset: () => void }) {
       <div className={styles.description}>
         {locale.errorPage.getTitle(statusCode)}
       </div>
-      <Link
-        href="/"
-        className={styles.return}
-        onClick={(e) => {
-          if (statusCode === 401) {
-            e.preventDefault();
-            router.push('/signin');
-          }
-        }}
-      >
+      <Link href={getMainHref()} className={styles.return}>
         {locale.errorPage.getButtonTitle(statusCode)}
       </Link>
       {canGoBack && (
-        <Link
-          href="/"
-          className={styles.goBack}
-          onClick={(e) => {
-            e.preventDefault();
-            router.back();
-          }}
-        >
+        <Link href="/" className={styles.goBack} onClick={arrowAction}>
           <IconArrowLeft /> {locale.errorPage.goBack}
         </Link>
       )}

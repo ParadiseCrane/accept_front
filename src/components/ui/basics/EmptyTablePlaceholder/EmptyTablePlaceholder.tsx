@@ -48,7 +48,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
+const EmptyTablePlaceholder: FC<{ component: ReactNode }> = ({ component }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(() => DEFAULT_ON_PAGE, []);
 
@@ -76,8 +76,7 @@ const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
     <div className={styles.parent}>
       <div className={styles.blurWrapper}>
         <div className={styles.titleButtonWrapper}>
-          {locale.ui.table.emptyTableMessage}
-          {button}
+          {component || <>{locale.ui.table.emptyTableMessage}</>}
         </div>
       </div>
       <div className={styles.tablePadding}>

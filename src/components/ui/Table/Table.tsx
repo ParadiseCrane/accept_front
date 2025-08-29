@@ -36,7 +36,7 @@ const Table: FC<{
   empty?: ReactNode;
   isEmpty?: boolean;
   nothingFound?: ReactNode;
-  emptyTableButton?: ReactNode;
+  emptyTableComponent?: ReactNode;
   customSort?: (key: string, order: -1 | 0 | 1) => void;
 }> = ({
   columns,
@@ -54,7 +54,7 @@ const Table: FC<{
   empty,
   isEmpty,
   nothingFound,
-  emptyTableButton,
+  emptyTableComponent,
   customSort,
 }) => {
   const { locale } = useLocale();
@@ -218,7 +218,7 @@ const Table: FC<{
     >
       {!loading && empty && isEmpty ? (
         <div>
-          <EmptyTablePlaceholder button={emptyTableButton} />
+          <EmptyTablePlaceholder component={emptyTableComponent} />
         </div>
       ) : (
         <div className={styles.main}>

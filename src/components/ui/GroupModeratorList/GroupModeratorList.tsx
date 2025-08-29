@@ -180,8 +180,13 @@ const GroupModeratorList: FC<{
         additionalSearch={
           isAuthor && <AddModeratorModal refetchData={fetchData} />
         }
-        emptyTableButton={
-          isAuthor && <AddModeratorModal refetchData={fetchData} />
+        emptyTableComponent={
+          isAuthor && (
+            <>
+              {locale.ui.table.emptyTableMessage}
+              <AddModeratorModal refetchData={fetchData} />
+            </>
+          )
         }
       />
     </div>

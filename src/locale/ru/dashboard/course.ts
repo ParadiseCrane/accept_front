@@ -28,4 +28,6 @@ export const course = {
     openLesson: 'Открыть урок для текущей группы',
     closeLesson: 'Закрыть урок для текущей группы',
   },
+  noParticipantsFound: 'Участники не найдены!',
+  noGroupsFound: 'Группы не найдены!',
 };
