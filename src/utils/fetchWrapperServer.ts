@@ -8,11 +8,13 @@ export const fetchWrapperStaticApp = async ({
   method = 'GET',
   body = undefined,
   auth = true,
+  cacheTags = undefined,
 }: {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   body?: any;
   auth?: boolean;
+  cacheTags?: string[];
 }) => {
   const cookieStore = await cookies();
 
@@ -38,6 +40,14 @@ export const fetchWrapperStaticApp = async ({
 
   if (!['GET', 'DELETE'].includes(method) && body) {
     fetchOptions.body = JSON.stringify(body);
+  }
+
+  if (cacheTags) {
+    fetchOptions.cache = 'force-cache';
+    fetchOptions.next = {
+      tags: cacheTags,
+      revalidate: 3600,
+    };
   }
 
   // Get API base URL
