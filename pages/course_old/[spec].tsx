@@ -137,7 +137,7 @@ function Course(props: {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <Main key={value.spec} />
+        {/* <Main key={value.spec} /> */}
         {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
         {isModerator && !isAuthor && (
           <SingularSticky

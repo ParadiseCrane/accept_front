@@ -4,7 +4,12 @@ import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
 import NavBar from '@components/Course/NavBar/NavBar';
-import { ICourse, IBaseTreeUnit } from '@custom-types/data/ICourse';
+import {
+  ICourse,
+  IBaseTreeUnit,
+  IUnit,
+  ILesson,
+} from '@custom-types/data/ICourse';
 import { useCourse } from '@hooks/useCourse';
 import { useLocale } from '@hooks/useLocale';
 import { useMoveThroughArray } from '@hooks/useStateHistory';
@@ -34,17 +39,23 @@ const flattenCourse = ({
   return [courseAsUnit, ...children];
 };
 
-export default function CourseClient({ spec }: { spec: string }) {
+export default function CourseClient({
+  spec,
+  item,
+}: {
+  spec: string;
+  item: ICourse | IUnit | ILesson;
+}) {
   const { user } = useUser();
   const { locale } = useLocale();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const router = useRouter();
   let { course, isModerator, isAuthor } = useCourse();
 
-  const item: string = useMemo(
-    () => searchParams?.get('item') || spec,
-    [searchParams, spec]
-  );
+  // const item: string = useMemo(
+  //   () => searchParams?.get('item') || spec,
+  //   [searchParams, spec]
+  // );
   const [openModal, setOpenModal] = useState(false);
   const [opened, { toggle }] = useDisclosure();
 
@@ -65,7 +76,7 @@ export default function CourseClient({ spec }: { spec: string }) {
   );
 
   const [currentUnit, handlers] = useMoveThroughArray(
-    units.findIndex((unit) => unit.spec == item),
+    units.findIndex((unit) => unit.spec == item.spec),
     units,
     (item1, item2) => item1.spec == item2.spec,
     changeHash
@@ -140,7 +151,7 @@ export default function CourseClient({ spec }: { spec: string }) {
         next={handlers.next}
         select={handlers.current}
       />
-      <Main />
+      <Main item={item} />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky

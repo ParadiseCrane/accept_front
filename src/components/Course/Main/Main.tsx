@@ -17,13 +17,13 @@ const defaultLesson = (lesson: ILesson): ILesson => {
   };
 };
 
-const Main: FC = () => {
-  const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
+const Main: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
+  const [entity, setEntity] = useState<ICourse | IUnit | ILesson>(null!);
   const searchParams = useSearchParams();
   const spec = searchParams?.get('item');
 
   useEffect(() => {
-    if (spec && entity?.spec !== spec) {
+    if (spec && entity?.spec !== spec && item.spec !== spec) {
       sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
         (res) => {
           setEntity(
@@ -35,20 +35,28 @@ const Main: FC = () => {
         }
       );
     }
-  }, [spec, entity]);
+  }, [spec, entity, item]);
+
+  if (!spec || spec == item.spec) {
+    return <Content item={item} />;
+  }
 
   if (!entity || !spec || (spec && entity.spec !== spec)) return null;
 
+  return <Content item={entity} />;
+};
+
+const Content: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
   return (
     <AppShell.Main>
-      {'tasks' in entity ? (
-        <Lesson lesson={entity} />
+      {'tasks' in item ? (
+        <Lesson lesson={item} />
       ) : (
         <>
-          {entity.kind === 'course' && (
+          {item.kind === 'course' && (
             <ImageComponent
               index={0}
-              item={entity.image}
+              item={item.image}
               active={false}
               animate
               height={240}
@@ -64,14 +72,14 @@ const Main: FC = () => {
           )}
           <Center mt={'md'} mb={'md'}>
             <Title order={1} ta={'center'}>
-              {entity.title}
+              {item.title}
             </Title>
           </Center>
           <Box ml={'xl'} mr={'xl'}>
             <TipTapEditor
-              key={entity.spec}
+              key={item.spec}
               editorMode={false}
-              content={entity.description}
+              content={item.description}
               onUpdate={() => {}}
             />
           </Box>
