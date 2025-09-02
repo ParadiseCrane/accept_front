@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: !!prod,
   },
+  bundlePagesRouterDependencies: true,
   expireTime: 1800, // half hour
   experimental: {
     staticGenerationRetryCount: 1,

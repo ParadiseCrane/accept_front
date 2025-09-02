@@ -156,7 +156,7 @@ const AddUsers: FC<{}> = () => {
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IStudentAdd[]);
     setErrors([]);
     setTable('users');

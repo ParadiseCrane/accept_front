@@ -47,6 +47,7 @@
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.4",
+    "exceljs": "^4.4.0",
     "fuse.js": "^6.6.2",
     "jose": "^6.0.10",
     "katex": "^0.16.11",
@@ -58,8 +59,7 @@
     "react-dom": "^19.0.0",
     "react-to-print": "^3.0.2",
     "tiptap-extension-resize-image": "^1.1.9",
-    "uuid": "8.3.2",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.11/xlsx-0.18.11.tgz"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

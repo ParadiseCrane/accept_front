@@ -123,7 +123,7 @@ const ChangeGrades: FC<{}> = () => {
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IGradeChange[]);
     setErrors([]);
     setTable('users');
