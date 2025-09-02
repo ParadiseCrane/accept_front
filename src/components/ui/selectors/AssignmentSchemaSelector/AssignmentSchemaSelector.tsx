@@ -5,7 +5,7 @@ import { ActionIcon } from '@mantine/core';
 import { Select } from '@ui/basics';
 import Link from 'next/link';
 import { ComponentPropsWithoutRef, FC, forwardRef, memo, useMemo } from 'react';
-import { Eye } from 'tabler-icons-react';
+import { IconEye } from '@tabler/icons-react';
 
 import styles from './assignmentSchemaSelector.module.css';
 
@@ -23,7 +23,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
       <div className={styles.itemIcon}>
         <Link href={`/assignment_schema/${value}`}>
           <ActionIcon size="md">
-            <Eye color={'var(--primary)'} />
+            <IconEye color={'var(--primary)'} />
           </ActionIcon>
         </Link>
       </div>

@@ -18,7 +18,7 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { requestWithError } from '@utils/requestWithError';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { Download } from 'tabler-icons-react';
+import { IconDownload } from '@tabler/icons-react';
 function TestsPage(props: { spec: string; has_write_rights: boolean }) {
   const task_spec = props.spec;
   const hasWriteRights = props.has_write_rights;
@@ -99,7 +99,7 @@ function TestsPage(props: { spec: string; has_write_rights: boolean }) {
           loading ? (
             <Loader color="white.0" variant="dots" size="md" />
           ) : (
-            <Download />
+            <IconDownload />
           )
         }
         description={locale.tip.sticky.tests.download}

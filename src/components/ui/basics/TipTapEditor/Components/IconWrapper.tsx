@@ -1,5 +1,5 @@
 'use client';
-import { Icon } from 'tabler-icons-react';
+import { Icon } from '@tabler/icons-react';
 
 import styles from './IconWrapper.module.css';
 

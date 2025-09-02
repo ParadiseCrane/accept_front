@@ -8,7 +8,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 const DeleteTest: FC<{
   index: number;
@@ -41,7 +41,7 @@ const DeleteTest: FC<{
         size="xs"
         tooltipLabel={locale.ui.taskTest.delete.test}
       >
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={opened}

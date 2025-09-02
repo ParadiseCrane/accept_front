@@ -2,7 +2,7 @@
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { List, ListNumbers } from 'tabler-icons-react';
+import { IconList, IconListNumbers } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -17,7 +17,7 @@ export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.bulletList}
       title={locale.tiptap.bulletList}
     >
-      <IconWrapper isActive={isActive} IconChild={List} />
+      <IconWrapper isActive={isActive} IconChild={IconList} />
     </RichTextEditor.Control>
   );
 };
@@ -33,7 +33,7 @@ export const ToggleOrderedList = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.orderedList}
       title={locale.tiptap.orderedList}
     >
-      <IconWrapper isActive={isActive} IconChild={ListNumbers} />
+      <IconWrapper isActive={isActive} IconChild={IconListNumbers} />
     </RichTextEditor.Control>
   );
 };

@@ -4,7 +4,7 @@ import { Icon, TextInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useRouter } from 'next/router';
 import { FC, memo, useCallback, useState } from 'react';
-import { Check, Pencil, X } from 'tabler-icons-react';
+import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
 
 import styles from './titleInput.module.css';
 
@@ -116,15 +116,15 @@ const TitleInput: FC<{
             {editTitle ? (
               <>
                 <Icon size="sm" color="green" onClick={sendTitle}>
-                  <Check />
+                  <IconCheck />
                 </Icon>
                 <Icon size="sm" color="red" onClick={closeEdit}>
-                  <X />
+                  <IconX />
                 </Icon>
               </>
             ) : (
               <Icon size="sm" color="var(--primary)" onClick={openEdit}>
-                <Pencil />
+                <IconPencil />
               </Icon>
             )}
           </div>

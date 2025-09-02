@@ -9,7 +9,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Pencil } from 'tabler-icons-react';
+import { IconPencil } from '@tabler/icons-react';
 
 const EditTag: FC<{
   item: Item;
@@ -72,7 +72,7 @@ const EditTag: FC<{
         color="var(--primary)"
         size="xs"
       >
-        <Pencil color="var(--primary)" />
+        <IconPencil color="var(--primary)" />
       </Icon>
       <SimpleModal
         opened={opened}

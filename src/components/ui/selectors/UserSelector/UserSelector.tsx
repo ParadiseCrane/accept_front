@@ -10,7 +10,7 @@ import inputStyles from '@styles/ui/input.module.css';
 import { Icon, SegmentedControl } from '@ui/basics';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye } from 'tabler-icons-react';
+import { IconEye } from '@tabler/icons-react';
 
 import styles from './userSelector.module.css';
 
@@ -100,7 +100,7 @@ const UserSelector: FC<{
               variant="transparent"
               size="xs"
             >
-              <Eye />
+              <IconEye />
             </Icon>
           </div>
         </div>

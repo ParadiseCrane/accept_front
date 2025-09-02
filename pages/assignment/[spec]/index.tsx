@@ -18,7 +18,7 @@ import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useState } from 'react';
-import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
+import { IconDashboard, IconPencil, IconTrash } from '@tabler/icons-react';
 
 function Assignment(props: { assignment: IAssignment }) {
   const assignment = props.assignment;
@@ -33,7 +33,7 @@ function Assignment(props: { assignment: IAssignment }) {
     {
       color: 'grape',
       icon: (
-        <Dashboard
+        <IconDashboard
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -44,7 +44,7 @@ function Assignment(props: { assignment: IAssignment }) {
     {
       color: 'green',
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -55,7 +55,7 @@ function Assignment(props: { assignment: IAssignment }) {
     {
       color: 'red',
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

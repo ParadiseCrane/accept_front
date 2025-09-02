@@ -12,7 +12,7 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { ReactElement, useCallback } from 'react';
-import { Crown, Trophy } from 'tabler-icons-react';
+import { IconCrown, IconTrophy } from '@tabler/icons-react';
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -31,7 +31,7 @@ function Rating(props: { users: IRatingInfo[] }) {
       <>
         <td>
           {item.score == best_score ? (
-            <Crown
+            <IconCrown
               strokeWidth={1.3}
               fill={'#FFD700'}
               className={styles.crown}
@@ -58,7 +58,7 @@ function Rating(props: { users: IRatingInfo[] }) {
       <Title title={locale.titles.rating} />
       <div className={styles.wrapper}>
         <div className={styles.info}>
-          <Trophy size={40} strokeWidth={1} fill={'#FFD700'} />
+          <IconTrophy size={40} strokeWidth={1} fill={'#FFD700'} />
           {locale.rating.info(LIMIT)}
         </div>
         <PrimitiveTable

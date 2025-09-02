@@ -33,12 +33,12 @@ import {
   useState,
 } from 'react';
 import {
-  Clock,
-  Confetti,
-  Infinity as InfinityIcon,
-  Plus,
-  Run,
-} from 'tabler-icons-react';
+  IconClock,
+  IconConfetti,
+  IconInfinity as InfinityIcon,
+  IconPlus,
+  IconRun,
+} from '@tabler/icons-react';
 
 import styles from './assignmentList.module.css';
 
@@ -197,7 +197,7 @@ const getAssignmentIcon = (
   if (assignment.status.spec === 0) {
     return (
       <Tip position="bottom" label={locale.tip.status.pending}>
-        <Clock color="orange" />
+        <IconClock color="orange" />
       </Tip>
     );
   }
@@ -211,13 +211,13 @@ const getAssignmentIcon = (
     }
     return (
       <Tip position="bottom" label={locale.tip.status.running}>
-        <Run color="var(--positive)" />
+        <IconRun color="var(--positive)" />
       </Tip>
     );
   }
   return (
     <Tip position="bottom" label={locale.tip.status.finished}>
-      <Confetti color="black" />
+      <IconConfetti color="black" />
     </Tip>
   );
 };
@@ -476,7 +476,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
         <SingularSticky
           color={'var(--positive)'}
           href={'/assignment/add'}
-          icon={<Plus height={20} width={20} />}
+          icon={<IconPlus height={20} width={20} />}
           description={locale.tip.sticky.assignment.add}
         />
       )}

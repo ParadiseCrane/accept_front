@@ -5,7 +5,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useWidth } from '@hooks/useWidth';
 import { Button } from '@ui/basics';
 import { FC } from 'react';
-import { ChevronRight } from 'tabler-icons-react';
+import { IconChevronRight } from '@tabler/icons-react';
 
 import styles from './projectCard.module.css';
 
@@ -36,7 +36,7 @@ export const ProjectCard: FC<{
             variant="outline"
             href={card.href}
             rightSection={
-              <ChevronRight
+              <IconChevronRight
                 color="var(--primary)"
                 size={ICON_SIZES['md'][width]}
               />

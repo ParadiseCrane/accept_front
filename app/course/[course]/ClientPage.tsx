@@ -19,9 +19,14 @@ import { useDisclosure } from '@mantine/hooks';
 import ChatSticky from '@ui/ChatSticky/ChatSticky';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  IconDashboard,
+  IconPencil,
+  IconPlaylistAdd,
+  IconTrash,
+} from '@tabler/icons-react';
 
 const flattenCourse = ({
   course,
@@ -48,14 +53,9 @@ export default function CourseClient({
 }) {
   const { user } = useUser();
   const { locale } = useLocale();
-  // const searchParams = useSearchParams();
   const router = useRouter();
   let { course, isModerator, isAuthor } = useCourse();
 
-  // const item: string = useMemo(
-  //   () => searchParams?.get('item') || spec,
-  //   [searchParams, spec]
-  // );
   const [openModal, setOpenModal] = useState(false);
   const [opened, { toggle }] = useDisclosure();
 
@@ -96,7 +96,7 @@ export default function CourseClient({
     if (isModerator || isAuthor) {
       innerActions.push({
         color: 'grape',
-        icon: <Dashboard height={20} width={20} />,
+        icon: <IconDashboard height={20} width={20} />,
         href: dashboardLink,
         description: locale.tip.sticky.course.dashboard(currentUnit.kind),
       });
@@ -106,7 +106,7 @@ export default function CourseClient({
       if (currentUnit.kind === 'lesson') {
         innerActions.push({
           color: 'green',
-          icon: <PlaylistAdd width={20} height={20} />,
+          icon: <IconPlaylistAdd width={20} height={20} />,
           href: `/task/add?lesson=${currentUnit.spec}`,
           description: locale.tip.sticky.course.createTask,
         });
@@ -115,13 +115,13 @@ export default function CourseClient({
         {
           color: 'green',
           href: `/course/${spec}/edit/${currentUnit.spec}`,
-          icon: <Pencil height={20} width={20} />,
+          icon: <IconPencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit(currentUnit.kind),
         },
         {
           color: 'red',
           onClick: () => setOpenModal(true),
-          icon: <Trash height={20} width={20} />,
+          icon: <IconTrash height={20} width={20} />,
           description: locale.tip.sticky.course.delete,
         }
       );
@@ -157,7 +157,7 @@ export default function CourseClient({
         <SingularSticky
           color="grape"
           href={dashboardLink}
-          icon={<Dashboard height={25} width={25} />}
+          icon={<IconDashboard height={25} width={25} />}
           description={locale.tip.sticky.course.dashboard(currentUnit.kind)}
         />
       )}

@@ -5,7 +5,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useWidth } from '@hooks/useWidth';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useState } from 'react';
-import { Pencil, Trash } from 'tabler-icons-react';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
 
 import ProfileDeleteModal from '../ProfileDeleteModal/ProfileDeleteModal';
 import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
@@ -20,7 +20,7 @@ const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
     {
       color: 'green',
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -31,7 +31,7 @@ const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
     {
       color: 'red',
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

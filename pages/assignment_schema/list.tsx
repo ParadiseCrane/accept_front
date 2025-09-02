@@ -20,7 +20,7 @@ import { hasSubarray } from '@utils/hasSubarray';
 import Fuse from 'fuse.js';
 import Link from 'next/link';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 
 interface Item {
   value: any;
@@ -303,7 +303,7 @@ function AssignmentList() {
       />
       <SingularSticky
         href={`/assignment_schema/add`}
-        icon={<Plus height={25} width={25} />}
+        icon={<IconPlus height={25} width={25} />}
         description={locale.tip.sticky.assignmentSchema.add}
       />
     </div>

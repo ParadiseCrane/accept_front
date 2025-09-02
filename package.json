@@ -57,7 +57,6 @@
     "react-cool-virtual": "^0.7.0",
     "react-dom": "^19.0.0",
     "react-to-print": "^3.0.2",
-    "tabler-icons-react": "^1.56.0",
     "tiptap-extension-resize-image": "^1.1.9",
     "uuid": "8.3.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.11/xlsx-0.18.11.tgz"

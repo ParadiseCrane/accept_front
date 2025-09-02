@@ -20,7 +20,7 @@ import {
 } from '@utils/notificationFunctions';
 import { getAddUserData } from '@utils/readExcel';
 import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './changeGrades.module.css';
 
@@ -238,7 +238,7 @@ const ChangeGrades: FC<{}> = () => {
             <Helper dropdownContent={locale.helpers.grade.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.grade.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={'var(--negative)'} />}
             />
           </>
         }

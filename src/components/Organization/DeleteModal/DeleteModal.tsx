@@ -8,7 +8,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 const DeleteModal: FC<{
   organization: IOrganization;
@@ -34,7 +34,7 @@ const DeleteModal: FC<{
   return (
     <>
       <Icon color="red" size="xs" onClick={() => setActive(true)}>
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={active}

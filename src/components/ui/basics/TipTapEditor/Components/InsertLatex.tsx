@@ -3,7 +3,7 @@ import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { useState } from 'react';
-import { Math } from 'tabler-icons-react';
+import { IconMath } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 import { LatexModal } from './Modals/LatexModal';
@@ -39,7 +39,7 @@ export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
           setShowModal(true);
         }}
       >
-        <IconWrapper isActive={false} IconChild={Math} />
+        <IconWrapper isActive={false} IconChild={IconMath} />
       </RichTextEditor.Control>
       <LatexModal
         isOpened={showModal}

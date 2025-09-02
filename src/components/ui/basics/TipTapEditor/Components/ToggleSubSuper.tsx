@@ -2,7 +2,7 @@
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Subscript, Superscript } from 'tabler-icons-react';
+import { IconSubscript, IconSuperscript } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -17,7 +17,7 @@ export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.subscript}
       title={locale.tiptap.subscript}
     >
-      <IconWrapper isActive={isActive} IconChild={Subscript} />
+      <IconWrapper isActive={isActive} IconChild={IconSubscript} />
     </RichTextEditor.Control>
   );
 };
@@ -33,7 +33,7 @@ export const ToggleSuperscript = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.superscript}
       title={locale.tiptap.superscript}
     >
-      <IconWrapper isActive={isActive} IconChild={Superscript} />
+      <IconWrapper isActive={isActive} IconChild={IconSuperscript} />
     </RichTextEditor.Control>
   );
 };

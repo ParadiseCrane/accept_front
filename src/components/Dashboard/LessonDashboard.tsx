@@ -6,7 +6,7 @@ import { useUser } from '@hooks/useUser';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { FC, memo, useMemo } from 'react';
-import { Messages, Users } from 'tabler-icons-react';
+import { IconMessages, IconUsers } from '@tabler/icons-react';
 import {
   IconArticle,
   IconList,
@@ -52,7 +52,7 @@ const LessonDashboard: FC<{
         page: <CourseChatPage spec={lesson.spec} entity="lesson" />,
         icon: (
           <Indicator size={10} disabled blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.chat,
@@ -68,7 +68,7 @@ const LessonDashboard: FC<{
       },
       {
         page: <CourseParticipants type={'course'} spec={course.spec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },

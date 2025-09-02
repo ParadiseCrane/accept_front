@@ -17,7 +17,7 @@ import {
 } from '@utils/notificationFunctions';
 import { getAddUserData } from '@utils/readExcel';
 import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './addUsers.module.css';
 
@@ -308,7 +308,7 @@ const AddUsers: FC<{}> = () => {
             <Helper dropdownContent={locale.helpers.student.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.student.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={'var(--negative)'} />}
             />
           </>
         }

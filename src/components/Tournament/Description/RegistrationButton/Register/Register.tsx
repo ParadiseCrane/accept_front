@@ -8,7 +8,7 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, memo, useCallback, useMemo, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from '../registrationButton.module.css';
 import RegistrationModal from './RegistrationModal/RegistrationModal';
@@ -88,7 +88,7 @@ const Register: FC<{
         {!allowRegistrationAfterStart && (
           <Helper
             dropdownContent={locale.helpers.tournament.registrationWarning}
-            customIcon={<AlertCircle color={'var(--negative)'} />}
+            customIcon={<IconAlertCircle color={'var(--negative)'} />}
           />
         )}
       </div>

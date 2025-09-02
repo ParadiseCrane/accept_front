@@ -12,7 +12,7 @@ import GroupList from '@ui/GroupList/GroupList';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Title from '@ui/Title/Title';
 import { ReactNode } from 'react';
-import { Check, Pencil, Plus, X } from 'tabler-icons-react';
+import { IconCheck, IconPencil, IconPlus, IconX } from '@tabler/icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -78,7 +78,7 @@ const refactorGroup = (group: IGroupDisplay): any => ({
             size="xs"
             href={`/group/edit/${group.spec}`}
           >
-            <Pencil />
+            <IconPencil />
           </Icon>
           <DeleteModal group={group} />
         </div>
@@ -92,7 +92,9 @@ const refactorGroup = (group: IGroupDisplay): any => ({
   readonly: {
     value: group.readonly,
     display: (
-      <div>{group.readonly ? <X color="red" /> : <Check color="green" />}</div>
+      <div>
+        {group.readonly ? <IconX color="red" /> : <IconCheck color="green" />}
+      </div>
     ),
   },
 });
@@ -112,7 +114,7 @@ function GroupListPage() {
         <SingularSticky
           color="var(--positive)"
           href={`/group/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.group.add}
         />
       )}
