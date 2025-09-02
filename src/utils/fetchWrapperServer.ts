@@ -46,7 +46,7 @@ export const fetchWrapperStaticApp = async ({
     fetchOptions.cache = 'force-cache';
     fetchOptions.next = {
       tags: cacheTags,
-      revalidate: 3600,
+      revalidate: 30,
     };
   }
 
