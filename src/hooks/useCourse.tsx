@@ -53,7 +53,7 @@ export function CourseProvider({
   children: ReactNode;
   spec: string;
 }) {
-  let { user } = useUser();
+  let { user, isAdmin } = useUser();
   const [course, setCourse] = useState<ICourse | null>(
     initialData?.course || null
   );
@@ -127,7 +127,7 @@ export function CourseProvider({
         error,
         isModerator,
         refetch: fetchData,
-        isAuthor: course && user && course.author === user.login,
+        isAuthor: (course && user && course.author === user.login) || isAdmin,
         item: searchParams?.get('item') || course?.spec,
         fetchGroups,
         onGroupDelete,
@@ -144,6 +144,7 @@ export function CourseProvider({
       groups,
       fetchGroups,
       onGroupDelete,
+      isAdmin,
     ]
   );
 

@@ -27,6 +27,37 @@
   border-top-width: 0.8px;
 }
 
+/* font-size settings */
+.ProseMirror {
+  h1 {
+    font-size: calc(1.2 * var(--mantine-h1-font-size));
+  }
+
+  h2 {
+    font-size: calc(1.2 * var(--mantine-h2-font-size));
+  }
+
+  h3 {
+    font-size: calc(1.2 * var(--mantine-h3-font-size));
+  }
+
+  h4 {
+    font-size: calc(1.2 * var(--mantine-h4-font-size));
+  }
+
+  p {
+    font-size: calc(1.2 * var(--mantine-font-size-md));
+  }
+
+  code {
+    font-size: 1rem;
+  }
+
+  .tiptap-math {
+    font-size: 1.5rem;
+  }
+}
+
 .ProseMirror img {
   margin-bottom: 0px;
 }
@@ -51,7 +82,6 @@
 .tiptap pre code {
   background: none;
   color: inherit;
-  font-size: 0.8rem;
   padding: 0;
 }
 
