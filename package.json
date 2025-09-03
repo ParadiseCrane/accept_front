@@ -7,9 +7,9 @@
     "dev": "next dev --turbopack -p 8080",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint --config .config/eslint.config.mjs",
     "check-types": "tsc --pretty --noEmit",
-    "pretty": "prettier --write src/* pages/* styles/*",
+    "pretty": "prettier --config .config/.prettierrc --write src/* pages/* styles/*",
     "analyze": "cross-env ANALYZE=true yarn build",
     "prepare": "husky",
     "postinstall": "husky"
