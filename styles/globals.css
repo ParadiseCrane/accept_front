@@ -169,21 +169,21 @@ body {
   font-size: 1.6rem;
   font-weight: bold;
   margin: 1rem 0;
-  color: #3730a3;
+  color: #000;
 }
 
 .markdown-content h2 {
   font-size: 1.35rem;
   font-weight: bold;
   margin: 0.75rem 0;
-  color: #3730a3;
+  color: #000;
 }
 
 .markdown-content h3 {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 0.5rem 0;
-  color: #3730a3;
+  color: #000;
 }
 
 .markdown-content p {

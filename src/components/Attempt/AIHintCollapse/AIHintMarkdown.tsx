@@ -8,7 +8,11 @@ const AIHintMarkdown: FC<{
   hint?: string;
 }> = ({ hint }) => {
   if (!hint) return null;
-  return <ReactMarkdown remarkPlugins={[remarkGfm]}>{hint}</ReactMarkdown>;
+  return (
+    <div className="markdown-content">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{hint}</ReactMarkdown>
+    </div>
+  );
 };
 
 export default memo(AIHintMarkdown);

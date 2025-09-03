@@ -8,7 +8,7 @@ import { LeftComponent } from './Left';
 import { RightComponent } from './Right';
 import { useStream } from '@hooks/useStream';
 import AIHintButton from '../AIHintCollapse/AIHintButton';
-import { Grid, GridCol } from '@mantine/core';
+import { Divider, Grid, GridCol } from '@mantine/core';
 import {
   errorNotification,
   newNotification,
@@ -37,8 +37,8 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   }, [error]);
 
   return (
-    <Grid grow gutter="md" m={'md'}>
-      <GridCol span="content">
+    <Grid grow gutter="md" m={'xl'}>
+      <GridCol span={2}>
         <LeftComponent
           attempt={attempt}
           requestAIHint={startStream}
@@ -48,7 +48,8 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
           toggle={toggle}
         />
       </GridCol>
-      <GridCol span={6}>
+      <Divider orientation="vertical" />
+      <GridCol span={4} mx={'xl'}>
         <AIHintButton
           customStyle={styles.smallButton}
           onClick={startStream}
@@ -56,7 +57,8 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         />
         <AIHintMarkdown key={hint.length} hint={hint} />
       </GridCol>
-      <GridCol span="content">
+      <Divider orientation="vertical" />
+      <GridCol span="auto" my={'xl'}>
         <RightComponent attempt={attempt} syncScroll={false} />
       </GridCol>
     </Grid>

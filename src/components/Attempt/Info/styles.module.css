@@ -27,6 +27,7 @@
 }
 
 .right {
+  margin: 0 var(--spacer-m);
   min-width: 200px;
   font-size: var(--font-size-s);
   display: flex;
