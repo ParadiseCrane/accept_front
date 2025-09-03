@@ -123,7 +123,7 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
   }, [tables]);
 
   return (
-    <div className={styles.right} id="attempt_right_section">
+    <div className={styles.right}>
       {tables.length > 0 &&
         tables.map((table, index) => (
           <div

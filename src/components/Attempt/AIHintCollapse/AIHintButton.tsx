@@ -5,19 +5,9 @@ import { Button } from '@ui/basics';
 const AIHintButton: FC<{
   customStyle?: string;
   loading: boolean;
-  isOpen: boolean;
-  hint: string;
   onClick?: () => void;
-}> = ({ loading, hint, isOpen, customStyle, onClick }) => {
+}> = ({ loading, customStyle, onClick }) => {
   const { locale } = useLocale();
-
-  const buttonText = loading
-    ? locale.attempt.aiHint.generatingHint
-    : hint.length
-      ? isOpen
-        ? locale.attempt.aiHint.hideHint
-        : locale.attempt.aiHint.showHint
-      : locale.attempt.aiHint.requestHint;
 
   return (
     <Button
@@ -28,7 +18,7 @@ const AIHintButton: FC<{
       customStyle={customStyle}
       disabled={loading}
     >
-      {buttonText}
+      {locale.attempt.aiHint.requestHint}
     </Button>
   );
 };

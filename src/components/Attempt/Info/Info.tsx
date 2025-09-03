@@ -2,11 +2,17 @@ import { IAttempt } from '@custom-types/data/IAttempt';
 import React, { FC, memo, useEffect } from 'react';
 
 import styles from './styles.module.css';
-import AIHintCollapse from '../AIHintCollapse/AIHintCollapse';
+import AIHintMarkdown from '../AIHintCollapse/AIHintMarkdown';
 import { useDisclosure } from '@mantine/hooks';
 import { LeftComponent } from './Left';
 import { RightComponent } from './Right';
 import { useStream } from '@hooks/useStream';
+import AIHintButton from '../AIHintCollapse/AIHintButton';
+import { Grid, GridCol } from '@mantine/core';
+import {
+  errorNotification,
+  newNotification,
+} from '@utils/notificationFunctions';
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -19,9 +25,20 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     startStream,
   } = useStream(`/api/attempt-hint/${attempt.spec}`);
 
+  useEffect(() => {
+    if (error !== null) {
+      const id = newNotification({
+        title: 'Error',
+        message: error,
+        autoClose: 5000,
+      });
+      errorNotification({ id });
+    }
+  }, [error]);
+
   return (
-    <div className={styles.infoWrapper} id="attempt_info_section">
-      <div className={styles.leftWrapper}>
+    <Grid grow gutter="md" m={'md'}>
+      <GridCol span="content">
         <LeftComponent
           attempt={attempt}
           requestAIHint={startStream}
@@ -30,10 +47,19 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
           opened={opened}
           toggle={toggle}
         />
-        <AIHintCollapse opened={true} hint={hint} spec={attempt.spec} />
-      </div>
-      <RightComponent attempt={attempt} syncScroll={false} />
-    </div>
+      </GridCol>
+      <GridCol span={6}>
+        <AIHintButton
+          customStyle={styles.smallButton}
+          onClick={startStream}
+          loading={loading || streaming}
+        />
+        <AIHintMarkdown key={hint.length} hint={hint} />
+      </GridCol>
+      <GridCol span="content">
+        <RightComponent attempt={attempt} syncScroll={false} />
+      </GridCol>
+    </Grid>
   );
 };
 

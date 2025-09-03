@@ -1,3 +1,4 @@
+import { useDebouncedState } from '@mantine/hooks';
 import { useCallback, useState } from 'react';
 
 interface IStreamData {
@@ -11,6 +12,7 @@ interface IStreamData {
 export function useStream(url: string): IStreamData {
   const [loading, setLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
+  // const [content, setContent] = useDebouncedState('', 200);
   const [content, setContent] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +31,9 @@ export function useStream(url: string): IStreamData {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        setLoading(false);
+        setError(await response.text());
+        return;
       }
 
       if (!response.body) {

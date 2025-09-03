@@ -23,6 +23,13 @@ export default async function handler(req: NextRequest) {
       }
     );
 
+    if (backendResponse.status == 429) {
+      return new Response((await backendResponse.json()).error, {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     if (!backendResponse.ok) {
       return new Response(JSON.stringify({ error: 'Backend failed' }), {
         status: 502,

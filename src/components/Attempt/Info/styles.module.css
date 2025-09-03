@@ -1,10 +1,10 @@
 .infoWrapper {
   margin: var(--spacer-l) var(--spacer-l) var(--spacer-huge) var(--spacer-l);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   font-size: var(--font-size-m);
-  gap: var(--spacer-s);
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  /* gap: var(--spacer-s); */
 }
 
 .link {

@@ -1,12 +1,11 @@
 import { FC, memo, useEffect, useState } from 'react';
 import styles from './styles.module.css';
-import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';
+import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
 import { Divider } from '@mantine/core';
 import PlagiarismButton from '../PlagiarismButton/PlagiarismButton';
-import AIHintButton from '../AIHintCollapse/AIHintButton';
 
 interface Props {
   attempt: IAttempt;
@@ -17,14 +16,7 @@ interface Props {
   requestAIHint: () => void;
 }
 
-const Left: FC<Props> = ({
-  attempt,
-  hintLoading,
-  hint,
-  opened,
-  requestAIHint,
-  toggle,
-}) => {
+const Left: FC<Props> = ({ attempt }) => {
   const { locale } = useLocale();
   const [isBrowser, setIsBrowser] = useState(false);
 
@@ -98,13 +90,6 @@ const Left: FC<Props> = ({
           <PlagiarismButton
             attempt={attempt}
             customStyle={styles.smallButton}
-          />
-          <AIHintButton
-            customStyle={styles.smallButton}
-            onClick={hint ? toggle : requestAIHint}
-            isOpen={opened}
-            loading={hintLoading}
-            hint={hint}
           />
         </>
       )}
