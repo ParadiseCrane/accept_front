@@ -1,0 +1,20 @@
+.main {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: #00000008;
+}
+
+.contentWrapper {
+  background-color: white;
+  padding-top: var(--app-shell-header-offset);
+  padding-bottom: var(--app-shell-padding);
+  margin: 0 auto;
+  width: calc(3.5 * var(--app-shell-navbar-offset));
+  box-shadow: 0px 0px 11px 3px #0000001f;
+}
+
+@media screen and (max-width: 768px) {
+  .contentWrapper {
+    width: 100%;
+  }
+}
