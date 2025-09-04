@@ -11,7 +11,7 @@ export const courseTree = {
   deleteElement: 'Удалить выбранный элемент и его дочерние элементы',
   showChildren: 'Показать дочерние элементы',
   hideChildren: 'Скрыть дочерние элементы',
-  openElementAndChildren: 'Открыть выбранный для текущей группы',
+  openElementAndChildren: 'Открыть выбранный элемент для текущей группы',
   closeElementAndChildren:
     'Закрыть выбранный элемент и его дочерние элементы для текущей группы',
 };

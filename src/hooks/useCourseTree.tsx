@@ -1673,7 +1673,7 @@ const localOpenElementAndParentsWithGroups = ({
     courseUnitList: treeUnitList,
   });
   // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
-  while (parent.depth >= 0) {
+  while (parent.depth > 0) {
     parentSpecList.push(parent.spec);
     parent = getParent({
       courseUnit: parent,
@@ -1683,7 +1683,7 @@ const localOpenElementAndParentsWithGroups = ({
   // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
   setTreeUnitList(
     treeUnitList.map((unit) => {
-      if (parentSpecList.includes(unit.spec)) {
+      if (parentSpecList.includes(unit.spec) || unit.kind === 'course') {
         return {
           ...unit,
           isOpen: true,

@@ -58,6 +58,7 @@ const getInitialValuesEditUnit = ({
     description,
     kind,
     children,
+    image: '',
   };
 };
 

@@ -9,7 +9,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { IGroupBaseInfo } from '@custom-types/data/IGroup';
 import { useLocalStorage } from '@mantine/hooks';
 import { ICourseGroupPair } from '@custom-types/data/ICourse';
-import { IconUsersGroup, IconX } from '@tabler/icons-react';
+import { IconArrowLeft, IconUsersGroup } from '@tabler/icons-react';
 
 const Component: FC<{
   courseSpec: string;
@@ -110,7 +110,7 @@ const Component: FC<{
       >
         <Icon size="sm" className={styles.iconRoot}>
           {showSelector ? (
-            <IconX color="var(--primary)" />
+            <IconArrowLeft color="var(--primary)" />
           ) : (
             <IconUsersGroup color="var(--primary)" />
           )}

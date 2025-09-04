@@ -28,7 +28,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 8,
+    size: 4,
   },
   {
     label: locale.users.list.shortName,
@@ -45,7 +45,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: true,
     hidden: false,
-    size: 3,
+    size: 8,
   },
   {
     label: locale.users.list.role,

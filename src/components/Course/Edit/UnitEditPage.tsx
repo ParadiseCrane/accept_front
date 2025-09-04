@@ -60,6 +60,7 @@ function UnitEditPage(props: { unit: IUnit; depth: number }) {
         ...course,
         children: emptyChildren,
         kind: props.unit.kind,
+        image: '',
       };
 
       requestWithNotify<IUnitAddEdit, string>(
@@ -71,7 +72,7 @@ function UnitEditPage(props: { unit: IUnit; depth: number }) {
         courseToSend
       ).then((res) => {
         if (!res.error) {
-          router.push('/courses');
+          router.push('/course/list');
         }
       });
     },
