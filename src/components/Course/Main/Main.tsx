@@ -43,42 +43,44 @@ const Main: FC = () => {
   return (
     <AppShell.Main classNames={{ main: styles.main }}>
       <div className={styles.contentWrapper}>
-        {'tasks' in entity ? (
-          <Lesson lesson={entity} />
-        ) : (
-          <>
-            {entity.kind === 'course' && (
-              <ImageComponent
-                index={0}
-                item={entity.image}
-                active={false}
-                animate
-                height={240}
-                radius="md"
-                imageStyle={{
-                  width: '100%',
-                  height: 'auto',
-                  maxHeight: 240,
-                  objectFit: 'cover',
-                }}
-                cover
-              />
-            )}
-            <Center mt={'md'} mb={'md'}>
-              <Title order={1} ta={'center'}>
-                {entity.title}
-              </Title>
-            </Center>
-            <Box ml={'xl'} mr={'xl'}>
-              <TipTapEditor
-                key={entity.spec}
-                editorMode={false}
-                content={entity.description}
-                onUpdate={() => {}}
-              />
-            </Box>
-          </>
-        )}
+        <div className={styles.content}>
+          {'tasks' in entity ? (
+            <Lesson lesson={entity} />
+          ) : (
+            <>
+              {entity.kind === 'course' && (
+                <ImageComponent
+                  index={0}
+                  item={entity.image}
+                  active={false}
+                  animate
+                  height={240}
+                  radius="md"
+                  imageStyle={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: 240,
+                    objectFit: 'cover',
+                  }}
+                  cover
+                />
+              )}
+              <Center mt={'md'} mb={'md'}>
+                <Title order={1} ta={'center'}>
+                  {entity.title}
+                </Title>
+              </Center>
+              <Box ml={'xl'} mr={'xl'}>
+                <TipTapEditor
+                  key={entity.spec}
+                  editorMode={false}
+                  content={entity.description}
+                  onUpdate={() => {}}
+                />
+              </Box>
+            </>
+          )}
+        </div>
       </div>
     </AppShell.Main>
   );
