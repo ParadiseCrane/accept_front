@@ -1853,6 +1853,12 @@ interface IUseCourseShowTreeProps {
   children: IBaseTreeUnit[];
 }
 
+interface IUseCourseShowContentsTreeProps {
+  courseSpec: string;
+  currentUnitSpec: string;
+  children: IBaseTreeUnit[];
+}
+
 export interface ICourseGroupOpennessTreeActions {
   toggleChildrenVisibility: ({
     currentUnit,
@@ -2220,5 +2226,26 @@ export const useCourseGroupOpennessTree = ({
     checkers: {
       canToggleChildrenVisibility,
     },
+  };
+};
+
+export const useCourseContentsTree = ({
+  children,
+  currentUnitSpec,
+  courseSpec,
+}: IUseCourseShowContentsTreeProps) => {
+  console.log('currentUnit', currentUnitSpec);
+
+  const treeUnitList = createTreeUnitListCourseShow({
+    course: children.find((e) => e.spec === courseSpec) ?? children[0],
+    children,
+    editMode: false,
+  }).map((e) => ({ ...e, visible: true, childrenVisible: true }));
+
+  return {
+    treeUnitList: findChildrenAllLevels({
+      parent: treeUnitList.find((e) => e.spec === currentUnitSpec)!,
+      treeUnitList,
+    }),
   };
 };

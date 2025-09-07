@@ -1,5 +1,10 @@
 'use client';
-import { IUnit, ILesson, ICourse } from '@custom-types/data/ICourse';
+import {
+  IUnit,
+  ILesson,
+  ICourse,
+  IBaseTreeUnit,
+} from '@custom-types/data/ICourse';
 import { AppShell, Box, Center, Title } from '@mantine/core';
 import { sendRequest } from '@requests/request';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
@@ -9,6 +14,7 @@ import Lesson from '../Lesson/Lesson';
 import { useSearchParams } from 'next/navigation';
 
 import styles from './main.module.css';
+import { Contents } from '../Contents/Contents';
 
 // TODO mocked method
 const defaultLesson = (lesson: ILesson): ILesson => {
@@ -19,7 +25,12 @@ const defaultLesson = (lesson: ILesson): ILesson => {
   };
 };
 
-const Main: FC = () => {
+interface Props {
+  units: IBaseTreeUnit[];
+  courseSpec: string;
+}
+
+const Main: FC<Props> = ({ units, courseSpec }) => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
   const searchParams = useSearchParams();
   const spec = searchParams?.get('item');
@@ -78,6 +89,13 @@ const Main: FC = () => {
                   onUpdate={() => {}}
                 />
               </Box>
+              {units.length > 0 && (
+                <Contents
+                  units={units}
+                  currentUnitSpec={spec}
+                  courseSpec={courseSpec}
+                />
+              )}
             </>
           )}
         </div>

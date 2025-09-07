@@ -119,6 +119,8 @@ export default function CourseClient({ spec }: { spec: string }) {
     return innerActions;
   }, [isModerator, isAuthor, currentUnit, locale, spec, dashboardLink]);
 
+  if (!course) return null;
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -140,7 +142,7 @@ export default function CourseClient({ spec }: { spec: string }) {
         next={handlers.next}
         select={handlers.current}
       />
-      <Main />
+      <Main units={units} courseSpec={course.spec} />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky
