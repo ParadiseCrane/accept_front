@@ -10,7 +10,7 @@ import {
   newNotification,
 } from '@utils/notificationFunctions';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Alarm } from 'tabler-icons-react';
+import { IconAlarm } from '@tabler/icons-react';
 
 import styles from './timer.module.css';
 
@@ -154,7 +154,7 @@ const Timer: FC<{ url: string }> = ({ url }: { url: string }) => {
               (almostDone || almostStarted ? styles.almostDoneIcon : '')
             }
           >
-            <Alarm
+            <IconAlarm
               color={
                 almostDone
                   ? 'var(--negative)'

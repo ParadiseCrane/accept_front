@@ -18,14 +18,14 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import {
-  Dashboard,
-  Key,
-  Pencil,
-  PlaylistAdd,
-  ReportAnalytics,
-  ShirtSport,
-  Trash,
-} from 'tabler-icons-react';
+  IconDashboard,
+  IconKey,
+  IconPencil,
+  IconPlaylistAdd,
+  IconReportAnalytics,
+  IconShirtSport,
+  IconTrash,
+} from '@tabler/icons-react';
 
 function Tournament(props: {
   tournament: ITournament;
@@ -55,7 +55,7 @@ function Tournament(props: {
       {
         color: 'grape',
         icon: (
-          <Dashboard
+          <IconDashboard
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -66,7 +66,7 @@ function Tournament(props: {
       {
         color: 'blue',
         icon: (
-          <Key
+          <IconKey
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -78,7 +78,7 @@ function Tournament(props: {
       {
         color: 'green',
         icon: (
-          <PlaylistAdd
+          <IconPlaylistAdd
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -90,7 +90,7 @@ function Tournament(props: {
       {
         color: 'green',
         icon: (
-          <Pencil
+          <IconPencil
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -102,7 +102,7 @@ function Tournament(props: {
       {
         color: 'red',
         icon: (
-          <Trash
+          <IconTrash
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -141,7 +141,7 @@ function Tournament(props: {
             {
               color: 'green',
               icon: (
-                <ReportAnalytics
+                <IconReportAnalytics
                   width={STICKY_SIZES[width] / 3}
                   height={STICKY_SIZES[width] / 3}
                 />
@@ -152,7 +152,7 @@ function Tournament(props: {
             {
               color: 'blue',
               icon: (
-                <ShirtSport
+                <IconShirtSport
                   width={STICKY_SIZES[width] / 3}
                   height={STICKY_SIZES[width] / 3}
                 />
@@ -167,7 +167,7 @@ function Tournament(props: {
       return (
         <SingularSticky
           icon={
-            <ReportAnalytics
+            <IconReportAnalytics
               width={STICKY_SIZES[width] / 2}
               height={STICKY_SIZES[width] / 2}
             />

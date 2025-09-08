@@ -6,7 +6,7 @@ import { useForm } from '@mantine/form';
 import { Button, InputWrapper, TextArea } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback } from 'react';
-import { Send as SendPlane } from 'tabler-icons-react';
+import { IconSend as SendPlane } from '@tabler/icons-react';
 
 import styles from './sendText.module.css';
 

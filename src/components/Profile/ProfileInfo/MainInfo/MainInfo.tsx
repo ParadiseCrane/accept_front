@@ -3,7 +3,7 @@ import { IUser } from '@custom-types/data/IUser';
 import { Badge } from '@mantine/core';
 import { UserAvatar } from '@ui/basics';
 import { FC, memo } from 'react';
-import { Medal2 } from 'tabler-icons-react';
+import { IconMedal2 } from '@tabler/icons-react';
 
 import styles from './mainInfo.module.css';
 
@@ -39,7 +39,7 @@ const MainInfo: FC<{ user: IUser; place?: number }> = ({ user, place }) => {
       <div className={styles.avatarWrapper}>
         <UserAvatar login={user.login} size="xl" />
         {place && place < 4 && (
-          <Medal2
+          <IconMedal2
             strokeWidth={0.8}
             size={'45px'}
             fill={getRatingColor(place)}

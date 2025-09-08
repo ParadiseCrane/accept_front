@@ -18,7 +18,12 @@ import {
   useRef,
   useState,
 } from 'react';
-import { AlertCircle, CircleX, FileUpload, Photo } from 'tabler-icons-react';
+import {
+  IconAlertCircle,
+  IconCircleX,
+  IconFileUpload,
+  IconPhoto,
+} from '@tabler/icons-react';
 
 import styles from './dropzone.module.css';
 
@@ -120,7 +125,7 @@ const Dropzone: FC<{
           style={{ minHeight: 220, pointerEvents: 'none' }}
         >
           <MantineDropzone.Accept>
-            <FileUpload
+            <IconFileUpload
               style={{
                 width: 80,
                 height: 80,
@@ -129,7 +134,7 @@ const Dropzone: FC<{
             />
           </MantineDropzone.Accept>
           <MantineDropzone.Reject>
-            <CircleX
+            <IconCircleX
               style={{
                 width: 80,
                 height: 80,
@@ -138,7 +143,7 @@ const Dropzone: FC<{
             />
           </MantineDropzone.Reject>
           <MantineDropzone.Idle>
-            <Photo
+            <IconPhoto
               style={{
                 width: 80,
                 height: 80,
@@ -181,7 +186,7 @@ const Dropzone: FC<{
                   ))}
                 </div>
               }
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={'var(--negative)'} />}
             />
           )}
           {additionalButtons}

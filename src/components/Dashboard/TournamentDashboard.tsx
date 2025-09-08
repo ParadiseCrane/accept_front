@@ -19,19 +19,19 @@ import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
-  AddressBook,
-  AlignRight,
-  Ban,
-  BellPlus,
-  Messages,
-  Pencil,
-  Puzzle,
-  Settings as SettingsIcon,
-  Table,
-  Trash,
-  Users,
-  Vocabulary,
-} from 'tabler-icons-react';
+  IconAddressBook,
+  IconAlignRight,
+  IconBan,
+  IconBellPlus,
+  IconMessages,
+  IconPencil,
+  IconPuzzle,
+  IconSettings as SettingsIcon,
+  IconTable,
+  IconTrash,
+  IconUsers,
+  IconVocabulary,
+} from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
 import CreateNotification from './CreateNotification/CreateNotification';
@@ -94,7 +94,7 @@ const TournamentDashboard: FC<{
             refetch={() => refetch(false)}
           />
         ),
-        icon: <Vocabulary color="var(--secondary)" />,
+        icon: <IconVocabulary color="var(--secondary)" />,
         title: locale.dashboard.tournament.mainInfo,
         section: 'tournament',
       },
@@ -102,7 +102,7 @@ const TournamentDashboard: FC<{
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
@@ -119,7 +119,7 @@ const TournamentDashboard: FC<{
             is_team={tournament.maxTeamSize != 1}
           />
         ),
-        icon: <Table color="var(--secondary)" />,
+        icon: <IconTable color="var(--secondary)" />,
         title: locale.dashboard.tournament.results,
         section: 'results',
       },
@@ -134,7 +134,7 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
           />
         ),
-        icon: <AlignRight color="var(--secondary)" />,
+        icon: <IconAlignRight color="var(--secondary)" />,
         title: locale.dashboard.tournament.attempts,
         section: 'attempts',
       },
@@ -169,13 +169,13 @@ const TournamentDashboard: FC<{
             spec={spec}
           />
         ),
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.tournament.participants,
         section: 'participants',
       },
       {
         page: <TaskList type={'tournament'} spec={spec} />,
-        icon: <Puzzle color="var(--secondary)" />,
+        icon: <IconPuzzle color="var(--secondary)" />,
         title: locale.dashboard.tournament.tasks,
         section: 'tasks',
       },
@@ -186,7 +186,7 @@ const TournamentDashboard: FC<{
             maxTeamSize={tournament?.maxTeamSize || 1}
           />
         ),
-        icon: <AddressBook color="var(--secondary)" />,
+        icon: <IconAddressBook color="var(--secondary)" />,
         title: locale.dashboard.tournament.registrationManagement,
         section: 'registration',
       },
@@ -194,7 +194,7 @@ const TournamentDashboard: FC<{
         page: tournament && (
           <CreateNotification spec={tournament.spec} type="tournament" />
         ),
-        icon: <BellPlus color="var(--secondary)" />,
+        icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.tournament.createNotification,
         section: 'create_notification',
       },
@@ -210,7 +210,7 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
           />
         ),
-        icon: <Ban color="var(--secondary)" />,
+        icon: <IconBan color="var(--secondary)" />,
         title: locale.dashboard.tournament.bannedAttempts,
         section: 'banned_attempts',
       },
@@ -225,7 +225,7 @@ const TournamentDashboard: FC<{
     if (tournament?.maxTeamSize != 1) {
       links.splice(4, 0, {
         page: <TeamList spec={spec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.tournament.teams,
         section: 'teams',
       });
@@ -243,7 +243,7 @@ const TournamentDashboard: FC<{
     {
       color: 'green',
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -254,7 +254,7 @@ const TournamentDashboard: FC<{
     {
       color: 'red',
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

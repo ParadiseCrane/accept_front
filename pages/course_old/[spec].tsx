@@ -19,7 +19,12 @@ import Head from 'next/head';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
-import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
+import {
+  IconDashboard,
+  IconPencil,
+  IconPlaylistAdd,
+  IconTrash,
+} from '@tabler/icons-react';
 
 const flattenCourse = ({
   course,
@@ -81,7 +86,7 @@ function Course(props: {
     if (isModerator || isAuthor) {
       innerActions.push({
         color: 'grape',
-        icon: <Dashboard height={20} width={20} />,
+        icon: <IconDashboard height={20} width={20} />,
         href:
           value.kind === 'course'
             ? `/dashboard/${value.kind}/${value.spec}`
@@ -94,7 +99,7 @@ function Course(props: {
       if (value.kind === 'lesson') {
         innerActions.push({
           color: 'green',
-          icon: <PlaylistAdd width={20} height={20} />,
+          icon: <IconPlaylistAdd width={20} height={20} />,
           href: `/task/add?lesson=${value.spec}`,
           description: locale.tip.sticky.course.createTask,
         });
@@ -103,7 +108,7 @@ function Course(props: {
         {
           color: 'green',
           href: `/course/edit/${course.spec}?item=${value.spec}`,
-          icon: <Pencil height={20} width={20} />,
+          icon: <IconPencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit(value.kind),
         },
         {
@@ -111,7 +116,7 @@ function Course(props: {
           onClick: () => {
             setOpenModal(true);
           },
-          icon: <Trash height={20} width={20} />,
+          icon: <IconTrash height={20} width={20} />,
           description: locale.tip.sticky.course.delete,
         }
       );
@@ -147,7 +152,7 @@ function Course(props: {
                 ? `/dashboard/${value.kind}/${value.spec}`
                 : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`
             }
-            icon={<Dashboard height={25} width={25} />}
+            icon={<IconDashboard height={25} width={25} />}
             description={locale.tip.sticky.course.dashboard(value.kind)}
           />
         )}

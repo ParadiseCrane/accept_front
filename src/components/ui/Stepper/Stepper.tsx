@@ -6,7 +6,7 @@ import { UseFormReturnType } from '@mantine/form';
 import stepperStyles from '@styles/ui/stepper.module.css';
 import { Button } from '@ui/basics';
 import { FC, ReactNode, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 const Stepper: FC<{
   form: UseFormReturnType<any>;
@@ -122,13 +122,15 @@ const Stepper: FC<{
             description={descriptions[index]}
             icon={
               getErrorsStep(index) ? (
-                <AlertCircle color={'var(--negative)'} />
+                <IconAlertCircle color={'var(--negative)'} />
               ) : icons ? (
                 icons[index]
               ) : undefined
             }
             completedIcon={
-              getErrorsStep(index) ? <AlertCircle color={'white'} /> : undefined
+              getErrorsStep(index) ? (
+                <IconAlertCircle color={'white'} />
+              ) : undefined
             }
             color={getErrorsStep(index) ? 'red' : undefined}
           >

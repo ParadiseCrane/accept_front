@@ -25,19 +25,13 @@ const defaultLesson = (lesson: ILesson): ILesson => {
   };
 };
 
-interface Props {
-  units: IBaseTreeUnit[];
-  courseSpec: string;
-  select: (_: IBaseTreeUnit) => void;
-}
-
-const Main: FC<Props> = ({ units, courseSpec, select }) => {
-  const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
+const Main: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
+  const [entity, setEntity] = useState<ICourse | IUnit | ILesson>(null!);
   const searchParams = useSearchParams();
   const spec = searchParams?.get('item');
 
   useEffect(() => {
-    if (spec && entity?.spec !== spec) {
+    if (spec && entity?.spec !== spec && item.spec !== spec) {
       sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
         (res) => {
           setEntity(
@@ -48,60 +42,56 @@ const Main: FC<Props> = ({ units, courseSpec, select }) => {
         }
       );
     }
-  }, [spec, entity]);
+  }, [spec, entity, item]);
+
+  if (!spec || spec == item.spec) {
+    return <Content item={item} />;
+  }
 
   if (!entity || !spec || (spec && entity.spec !== spec)) return null;
 
+  return <Content item={entity} />;
+};
+
+const Content: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
   return (
-    <AppShell.Main classNames={{ main: styles.main }}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.content}>
-          {'tasks' in entity ? (
-            <Lesson lesson={entity} />
-          ) : (
-            <>
-              {entity.kind === 'course' && (
-                <ImageComponent
-                  index={0}
-                  item={entity.image}
-                  active={false}
-                  animate
-                  height={240}
-                  radius="md"
-                  imageStyle={{
-                    width: '100%',
-                    height: 'auto',
-                    maxHeight: 240,
-                    objectFit: 'cover',
-                  }}
-                  cover
-                />
-              )}
-              <Center mt={'md'} mb={'md'}>
-                <Title order={1} ta={'center'}>
-                  {entity.title}
-                </Title>
-              </Center>
-              <Box ml={'xl'} mr={'xl'}>
-                <TipTapEditor
-                  key={entity.spec}
-                  editorMode={false}
-                  content={entity.description}
-                  onUpdate={() => {}}
-                />
-              </Box>
-              {units.length > 0 && (
-                <Contents
-                  units={units}
-                  currentUnit={entity}
-                  courseSpec={courseSpec}
-                  select={select}
-                />
-              )}
-            </>
+    <AppShell.Main>
+      {'tasks' in item ? (
+        <Lesson lesson={item} />
+      ) : (
+        <>
+          {item.kind === 'course' && (
+            <ImageComponent
+              index={0}
+              item={item.image}
+              active={false}
+              animate
+              height={240}
+              radius="md"
+              imageStyle={{
+                width: '100%',
+                height: 'auto',
+                maxHeight: 240,
+                objectFit: 'cover',
+              }}
+              cover
+            />
           )}
-        </div>
-      </div>
+          <Center mt={'md'} mb={'md'}>
+            <Title order={1} ta={'center'}>
+              {item.title}
+            </Title>
+          </Center>
+          <Box ml={'xl'} mr={'xl'}>
+            <TipTapEditor
+              key={item.spec}
+              editorMode={false}
+              content={item.description}
+              onUpdate={() => {}}
+            />
+          </Box>
+        </>
+      )}
     </AppShell.Main>
   );
 };

@@ -2,7 +2,7 @@
 import { useBackNotifications } from '@hooks/useBackNotifications';
 import { Indicator } from '@ui/basics';
 import { FC, memo } from 'react';
-import { BellRinging } from 'tabler-icons-react';
+import { IconBellRinging } from '@tabler/icons-react';
 
 const NotificationIcon: FC<{
   iconSize?: number;
@@ -12,7 +12,10 @@ const NotificationIcon: FC<{
   const { unviewed } = useBackNotifications();
   return (
     <Indicator size={indicatorSize || 7} disabled={unviewed <= 0}>
-      <BellRinging color={color || 'var(--secondary)'} size={iconSize || 20} />
+      <IconBellRinging
+        color={color || 'var(--secondary)'}
+        size={iconSize || 20}
+      />
     </Indicator>
   );
 };

@@ -3,7 +3,7 @@ import { useLocale } from '@hooks/useLocale';
 import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
+import { IconColorPicker as ColorPickerIcon } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 import { ColorPickerModal } from './Modals/ColorPickerModal';

@@ -4,7 +4,7 @@ import { ActionIcon } from '@mantine/core';
 import { letterFromIndex } from '@utils/letterFromIndex';
 import Link from 'next/link';
 import { FC, memo } from 'react';
-import { Home } from 'tabler-icons-react';
+import { IconHome } from '@tabler/icons-react';
 
 import styles from './tasksBar.module.css';
 
@@ -27,7 +27,7 @@ const TasksBar: FC<{
               component={Link}
               href={homeHref}
             >
-              <Home color="white" />
+              <IconHome color="white" />
             </ActionIcon>
           )}
           {tasks.map((task, index) => (

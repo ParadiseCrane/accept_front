@@ -4,7 +4,7 @@ import styles from './style.module.css';
 import { useLocale } from '@hooks/useLocale';
 import { IGroupInvite } from '@custom-types/data/IGroup';
 import { Icon, Tip } from '@ui/basics';
-import { Pencil, Plus } from 'tabler-icons-react';
+import { IconPencil, IconPlus } from '@tabler/icons-react';
 import { Divider, LoadingOverlay } from '@mantine/core';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 import CopyButton from '@ui/CopyButton/CopyButton';
@@ -91,7 +91,7 @@ const Groups: FC<{
                   tooltipLabel={locale.dashboard.course.editGroup}
                   href={`/group/edit/${group.group.spec}`}
                 >
-                  <Pencil color="var(--primary)" />
+                  <IconPencil color="var(--primary)" />
                 </Icon>
                 <DeleteModal
                   group={{
@@ -121,7 +121,7 @@ const Groups: FC<{
           color="green"
           size="sm"
         >
-          <Plus />
+          <IconPlus />
         </Icon>
       </Tip>
     </div>

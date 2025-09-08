@@ -9,7 +9,7 @@ import CourseList from '@ui/CourseList/CourseList';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import tableStyles from '@styles/ui/customTable.module.css';
 
 interface ClientPageProps {}
@@ -117,7 +117,7 @@ const ClientPage: FC<ClientPageProps> = () => {
         <SingularSticky
           color="var(--positive)"
           href={`/course/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.course.add}
         />
       )}

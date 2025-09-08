@@ -2,7 +2,6 @@
 import { useLocale } from '@hooks/useLocale';
 import styles from '@styles/error.module.css';
 import { IconArrowLeft } from '@tabler/icons-react';
-import Title from '@ui/Title/Title';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

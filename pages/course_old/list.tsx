@@ -10,7 +10,7 @@ import CourseList from '@ui/CourseList/CourseList';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Title from '@ui/Title/Title';
 import { ReactNode } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
@@ -118,7 +118,7 @@ function CourseListPage() {
         <SingularSticky
           color="var(--positive)"
           href={`/course/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.course.add}
         />
       )}

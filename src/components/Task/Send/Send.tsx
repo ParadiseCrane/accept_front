@@ -18,7 +18,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Send as SendPlane } from 'tabler-icons-react';
+import { IconSend as SendPlane } from '@tabler/icons-react';
 
 import styles from './send.module.css';
 

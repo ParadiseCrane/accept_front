@@ -5,7 +5,7 @@ import { ComboboxItem, Group, SelectProps, Text } from '@mantine/core';
 import { MultiSelect, UserAvatar } from '@ui/basics';
 import Link from 'next/link';
 import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
-import { Eye } from 'tabler-icons-react';
+import { IconEye } from '@tabler/icons-react';
 
 import { UserItemProps, UserSelectProps } from './UserSelect';
 import styles from './userSelect.module.css';
@@ -44,7 +44,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
         </div>
         <div className={styles.itemIcon}>
           <Link href={`/profile/${value}`}>
-            <Eye color={'var(--primary)'} />
+            <IconEye color={'var(--primary)'} />
           </Link>
         </div>
       </div>

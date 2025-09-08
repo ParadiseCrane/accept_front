@@ -4,7 +4,7 @@ import { ActionIcon } from '@mantine/core';
 import LocaleSelector from '@ui/LocaleSelector/LocaleSelector';
 import Link from 'next/link';
 import { FC, memo } from 'react';
-import { BrandGithub } from 'tabler-icons-react';
+import { IconBrandGithub } from '@tabler/icons-react';
 
 import styles from './footer.module.css';
 
@@ -19,7 +19,7 @@ const Footer: FC = () => {
       <div className={styles.githubs}>
         <div className={styles.github}>
           <ActionIcon component={Link} href={'https://github.com/dsomni'}>
-            <BrandGithub size={24} color={'white'} />
+            <IconBrandGithub size={24} color={'white'} />
           </ActionIcon>
         </div>
         <div className={styles.github}>
@@ -28,12 +28,12 @@ const Footer: FC = () => {
             component={Link}
             href={'https://github.com/ParadiseCrane'}
           >
-            <BrandGithub size={32} color={'white'} />
+            <IconBrandGithub size={32} color={'white'} />
           </ActionIcon>
         </div>
         <div className={styles.github}>
           <ActionIcon component={Link} href={'https://github.com/RetroMeras'}>
-            <BrandGithub size={24} color={'white'} />
+            <IconBrandGithub size={24} color={'white'} />
           </ActionIcon>
         </div>
       </div>

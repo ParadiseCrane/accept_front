@@ -17,7 +17,7 @@ import {
 } from '@utils/notificationFunctions';
 import { getAddUserData } from '@utils/readExcel';
 import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './addUsers.module.css';
 
@@ -156,7 +156,7 @@ const AddUsers: FC<{}> = () => {
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IStudentAdd[]);
     setErrors([]);
     setTable('users');
@@ -308,7 +308,7 @@ const AddUsers: FC<{}> = () => {
             <Helper dropdownContent={locale.helpers.student.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.student.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={'var(--negative)'} />}
             />
           </>
         }

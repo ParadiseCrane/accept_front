@@ -13,7 +13,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Search } from 'tabler-icons-react';
+import { IconSearch } from '@tabler/icons-react';
 
 import InnerTable from './InnerTable/InnerTable';
 import PageNavigation from './PageNavigation';
@@ -226,7 +226,7 @@ const Table: FC<{
             {withSearch && (
               <div className={styles.search}>
                 <TextInput
-                  leftSection={<Search />}
+                  leftSection={<IconSearch />}
                   classNames={{
                     input: styles.inputElem,
                   }}

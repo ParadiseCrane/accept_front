@@ -19,7 +19,7 @@ import {
   useState,
 } from 'react';
 import useVirtual from 'react-cool-virtual';
-import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
+import { IconChevronsLeft, IconChevronsRight } from '@tabler/icons-react';
 
 import styles from './selectField.module.css';
 
@@ -94,7 +94,7 @@ const SelectFieldComponent: FC<Props> = ({
     () =>
       withLeftSection && (
         <Icon {...iconProps}>
-          <ChevronsLeft />
+          <IconChevronsLeft />
         </Icon>
       ),
     [iconProps, withLeftSection]
@@ -104,7 +104,7 @@ const SelectFieldComponent: FC<Props> = ({
     () =>
       withRightSection && (
         <Icon {...iconProps}>
-          <ChevronsRight />
+          <IconChevronsRight />
         </Icon>
       ),
     [iconProps, withRightSection]

@@ -10,7 +10,7 @@ import MessageList from '@ui/MessageList/MessageList';
 import { requestWithError } from '@utils/requestWithError';
 import { shrinkText } from '@utils/shrinkText';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { MailOpened, Trash } from 'tabler-icons-react';
+import { IconMailOpened, IconTrash } from '@tabler/icons-react';
 
 import styles from './notificationList.module.css';
 
@@ -80,12 +80,12 @@ const NotificationList: FC<{}> = (s) => {
   const actions: IListAction[] = useMemo(
     () => [
       {
-        icon: <MailOpened />,
+        icon: <IconMailOpened />,
         tooltipLabel: locale.notification.list.viewed,
         onClick: handleView,
       },
       {
-        icon: <Trash />,
+        icon: <IconTrash />,
         tooltipLabel: locale.notification.list.delete,
         onClick: handleDelete,
       },

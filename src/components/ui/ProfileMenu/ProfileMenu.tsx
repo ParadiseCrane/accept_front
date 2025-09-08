@@ -10,7 +10,7 @@ import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal
 import { putOrganizationToLS } from '@utils/manageLocalStorage';
 import Link from 'next/link';
 import { FC, memo, useState } from 'react';
-import { Logout, Plus } from 'tabler-icons-react';
+import { IconLogout, IconPlus } from '@tabler/icons-react';
 
 import AccountsMenu from './AccountsMenu/AccountsMenu';
 import styles from './profileMenu.module.css';
@@ -71,7 +71,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
           <Menu.Item
             component={Link}
             href={'/add_account'}
-            leftSection={<Plus color="var(--secondary)" size={20} />}
+            leftSection={<IconPlus color="var(--secondary)" size={20} />}
             style={{ display: accounts.length == 1 ? '' : 'none' }}
           >
             {locale.accounts.addAccount}
@@ -93,7 +93,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
             modalText={locale.accounts.confirmSessionLogout}
           >
             <Menu.Item
-              leftSection={<Logout color="var(--secondary)" size={20} />}
+              leftSection={<IconLogout color="var(--secondary)" size={20} />}
             >
               {locale.mainHeaderLinks.profileLinks.signOut}
             </Menu.Item>
