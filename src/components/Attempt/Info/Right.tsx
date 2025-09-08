@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, {
   FC,
   memo,
@@ -6,13 +6,13 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-} from 'react';
-import styles from './styles.module.css';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { ITestResult } from '@custom-types/data/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { IAttempt } from '@custom-types/data/IAttempt';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
+} from "react";
+import styles from "./styles.module.css";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { ITestResult } from "@custom-types/data/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 
 const maxRowsInTable = 10;
 const maxTables = 3;
@@ -67,13 +67,13 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
         ...row,
         index: index + 1, // row.test + 1
       })),
-    [attempt.results]
+    [attempt.results],
   );
   const columnSizes = useMemo(() => [1, 2], []);
 
   const columns = useMemo(
     () => [locale.attempt.test, locale.attempt.result],
-    [locale.attempt.result, locale.attempt.test]
+    [locale.attempt.result, locale.attempt.test],
   );
 
   const gridTemplate = useMemo(() => {
@@ -81,7 +81,7 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
     if (!columnSizes || columnSizes.length < columns.length) {
       total = columns.length;
       return {
-        gridTemplateColumns: columns.map((_) => 100 / total).join('% ') + '%',
+        gridTemplateColumns: columns.map((_) => 100 / total).join("% ") + "%",
       };
     }
     for (let i = 0; i < columns.length; i++) {
@@ -89,8 +89,8 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
     }
     return {
       gridTemplateColumns:
-        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join('% ') +
-        '%',
+        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join("% ") +
+        "%",
     };
   }, [columnSizes, columns]);
 
@@ -124,51 +124,49 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
   }, [tables]);
 
   return (
-    <div className={styles.right} id="attempt_right_section">
+    <div className={styles.right}>
       {tables.length > 0 &&
         tables.map((table, index) => (
-          <>
-            <div
-              className={styles.tableWrapper}
-              ref={(el) => setRef(el, index)}
-              key={index}
-              onScroll={syncScroll ? handleScroll(index) : undefined}
-            >
-              {table.length > 0 && (
-                <table className={tableStyles.table}>
-                  <thead>
-                    <tr className={tableStyles.row} style={gridTemplate}>
-                      {columns.map((column, index) => (
-                        <th key={index} className={styles.column}>
-                          {column}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {table.map((row, index) => (
-                      <tr
-                        key={`${row.verdict.spec} ${index}`}
-                        className={
-                          tableStyles.row +
-                          ' ' +
-                          (index % 2 === 0 ? tableStyles.even : '')
-                        }
-                        style={gridTemplate}
-                      >
-                        <td className={`${tableStyles.cell} ${styles.cell}`}>
-                          {row.index}
-                        </td>
-                        <td className={`${tableStyles.cell} ${styles.cell}`}>
-                          <VerdictWrapper verdict={row.verdict} full />
-                        </td>
-                      </tr>
+          <div
+            className={styles.tableWrapper}
+            ref={(el) => setRef(el, index)}
+            key={index}
+            onScroll={syncScroll ? handleScroll(index) : undefined}
+          >
+            {table.length > 0 && (
+              <table className={tableStyles.table}>
+                <thead>
+                  <tr className={tableStyles.row} style={gridTemplate}>
+                    {columns.map((column, index) => (
+                      <th key={index} className={styles.column}>
+                        {column}
+                      </th>
                     ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          </>
+                  </tr>
+                </thead>
+                <tbody>
+                  {table.map((row, index) => (
+                    <tr
+                      key={`${row.verdict.spec} ${index}`}
+                      className={
+                        tableStyles.row +
+                        " " +
+                        (index % 2 === 0 ? tableStyles.even : "")
+                      }
+                      style={gridTemplate}
+                    >
+                      <td className={`${tableStyles.cell} ${styles.cell}`}>
+                        {row.index}
+                      </td>
+                      <td className={`${tableStyles.cell} ${styles.cell}`}>
+                        <VerdictWrapper verdict={row.verdict} full />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         ))}
     </div>
   );

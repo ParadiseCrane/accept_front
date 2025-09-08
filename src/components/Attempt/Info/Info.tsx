@@ -1,47 +1,68 @@
-'use client';
-import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';
-import React, { FC, memo, useCallback, useState } from 'react';
+"use client";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import React, { FC, memo, useEffect } from "react";
 
-import styles from './styles.module.css';
-import AIHintCollapse from '../AIHintCollapse/AIHintCollapse';
-import { useDisclosure } from '@mantine/hooks';
-import { sendRequest } from '@requests/request';
-import { LeftComponent } from './Left';
-import { RightComponent } from './Right';
+import styles from "./styles.module.css";
+import AIHintMarkdown from "../AIHintCollapse/AIHintMarkdown";
+import { useDisclosure } from "@mantine/hooks";
+import { LeftComponent } from "./Left";
+import { RightComponent } from "./Right";
+import { useStream } from "@hooks/useStream";
+import AIHintButton from "../AIHintCollapse/AIHintButton";
+import { Divider, Grid, GridCol } from "@mantine/core";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
 
 const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, { toggle }] = useDisclosure(false);
-  const [hintLoading, setHintLoading] = useState(false);
-  const [hint, setHint] = useState<IAIHint | undefined>(undefined);
 
-  const requestAIHint = useCallback(async () => {
-    setHintLoading(true);
-    const response = await sendRequest<{}, IAIHint>(
-      `attempt-hint/${attempt.spec}`,
-      'GET'
-    );
-    if (!response.error) {
-      setHint(response.response);
-      toggle();
+  const {
+    loading,
+    streaming,
+    data: hint,
+    error,
+    startStream,
+  } = useStream(`/api/attempt-hint/${attempt.spec}`);
+
+  useEffect(() => {
+    if (error !== null) {
+      const id = newNotification({
+        title: "Error",
+        message: error,
+        autoClose: 5000,
+      });
+      errorNotification({ id });
     }
-    setHintLoading(false);
-  }, [attempt.spec, toggle]);
+  }, [error]);
 
   return (
-    <div className={styles.infoWrapper} id="attempt_info_section">
-      <div className={styles.leftWrapper}>
+    <Grid grow gutter="md" m={"xl"}>
+      <GridCol span={2}>
         <LeftComponent
           attempt={attempt}
-          requestAIHint={requestAIHint}
-          hintLoading={hintLoading}
+          requestAIHint={startStream}
+          hintLoading={loading || streaming}
           hint={hint}
           opened={opened}
           toggle={toggle}
         />
-        <AIHintCollapse opened={opened} hint={hint} spec={attempt.spec} />
-      </div>
-      <RightComponent attempt={attempt} syncScroll={false} />
-    </div>
+      </GridCol>
+      <Divider orientation="vertical" />
+      <GridCol span={4} mx={"xl"}>
+        <AIHintButton
+          customStyle={styles.smallButton}
+          onClick={startStream}
+          loading={loading || streaming}
+        />
+        <AIHintMarkdown key={hint.length} hint={hint} />
+      </GridCol>
+      <Divider orientation="vertical" />
+      <GridCol span="auto" my={"xl"}>
+        <RightComponent attempt={attempt} syncScroll={false} />
+      </GridCol>
+    </Grid>
   );
 };
 
