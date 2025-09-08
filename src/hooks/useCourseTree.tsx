@@ -2234,8 +2234,6 @@ export const useCourseContentsTree = ({
   currentUnitSpec,
   courseSpec,
 }: IUseCourseShowContentsTreeProps) => {
-  console.log('currentUnit', currentUnitSpec);
-
   const treeUnitList = createTreeUnitListCourseShow({
     course: children.find((e) => e.spec === courseSpec) ?? children[0],
     children,
@@ -2246,6 +2244,6 @@ export const useCourseContentsTree = ({
     treeUnitList: findChildrenAllLevels({
       parent: treeUnitList.find((e) => e.spec === currentUnitSpec)!,
       treeUnitList,
-    }),
+    }).filter((e) => e.spec !== courseSpec),
   };
 };

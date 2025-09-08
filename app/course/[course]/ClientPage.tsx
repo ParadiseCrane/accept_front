@@ -142,7 +142,7 @@ export default function CourseClient({ spec }: { spec: string }) {
         next={handlers.next}
         select={handlers.current}
       />
-      <Main units={units} courseSpec={course.spec} />
+      <Main units={units} courseSpec={course.spec} select={handlers.current} />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky

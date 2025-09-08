@@ -28,9 +28,10 @@ const defaultLesson = (lesson: ILesson): ILesson => {
 interface Props {
   units: IBaseTreeUnit[];
   courseSpec: string;
+  select: (_: IBaseTreeUnit) => void;
 }
 
-const Main: FC<Props> = ({ units, courseSpec }) => {
+const Main: FC<Props> = ({ units, courseSpec, select }) => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
   const searchParams = useSearchParams();
   const spec = searchParams?.get('item');
@@ -92,8 +93,9 @@ const Main: FC<Props> = ({ units, courseSpec }) => {
               {units.length > 0 && (
                 <Contents
                   units={units}
-                  currentUnitSpec={spec}
+                  currentUnit={entity}
                   courseSpec={courseSpec}
+                  select={select}
                 />
               )}
             </>
