@@ -36,7 +36,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.name.value > b.name.value ? 1 : a.name.value == b.name.value ? 0 : -1,
-    sorted: 0,
+    sorted: -1,
     allowMiddleState: true,
     hidable: false,
     hidden: false,

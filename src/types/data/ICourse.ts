@@ -34,6 +34,7 @@ export interface IUnitAddEdit {
   description: string;
   kind: 'unit';
   children: IBaseTreeUnit[];
+  image: '';
 }
 
 export interface ICourse {

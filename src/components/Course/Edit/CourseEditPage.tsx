@@ -55,7 +55,7 @@ function CourseEditPage(props: { course: ICourse; depth: number }) {
         ...form.values,
       };
 
-      const children: IBaseTreeUnit[] = [...course.children];
+      const children: IBaseTreeUnit[] = course.children;
       const emptyChildren: IBaseTreeUnit[] = [];
       for (let i = 0; i < children.length; i++) {
         if (children[i].spec.includes('newElement')) {

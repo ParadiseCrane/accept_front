@@ -105,6 +105,12 @@ export const CourseUnitOpenness = ({
           classNames={{ input: styles.input }}
           onMouseDown={(e) => e.preventDefault()}
         />
+        <ToggleOpennessButton
+          styles={undefined}
+          currentUnit={currentUnit}
+          toggleOpennessTreeUnit={toggleOpennessTreeUnit}
+          canToggleOpennessTreeUnit={true}
+        />
       </Group>
     </Box>
   );

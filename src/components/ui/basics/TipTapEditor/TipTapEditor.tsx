@@ -25,6 +25,7 @@ import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
+import { HardBreak } from '@tiptap/extension-hard-break';
 import { Editor, useEditor } from '@tiptap/react';
 import csharp from 'highlight.js/lib/languages/csharp';
 import css from 'highlight.js/lib/languages/css';
@@ -98,6 +99,18 @@ export const TipTapEditor = ({
   lowlight.register('python', python);
   lowlight.register('csharp', csharp);
 
+  const testFunc = (a: string) => {
+    // text
+    lowlight.register('html', html);
+    lowlight.register('css', css);
+    lowlight.register('js', js);
+    lowlight.register('ts', ts);
+    lowlight.register('python', python);
+    lowlight.register('csharp', csharp);
+
+    return ``;
+  };
+
   const { locale } = useLocale();
 
   const languages = [
@@ -153,6 +166,7 @@ export const TipTapEditor = ({
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
       Underline,
+      HardBreak,
     ],
     content,
     editable: editorMode ? true : false,

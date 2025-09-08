@@ -130,6 +130,8 @@ export default function CourseClient({
     return innerActions;
   }, [isModerator, isAuthor, currentUnit, locale, spec, dashboardLink]);
 
+  if (!course) return null;
+
   return (
     <AppShell
       header={{ height: 60 }}

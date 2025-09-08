@@ -1673,7 +1673,7 @@ const localOpenElementAndParentsWithGroups = ({
     courseUnitList: treeUnitList,
   });
   // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
-  while (parent.depth >= 0) {
+  while (parent.depth > 0) {
     parentSpecList.push(parent.spec);
     parent = getParent({
       courseUnit: parent,
@@ -1683,7 +1683,7 @@ const localOpenElementAndParentsWithGroups = ({
   // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
   setTreeUnitList(
     treeUnitList.map((unit) => {
-      if (parentSpecList.includes(unit.spec)) {
+      if (parentSpecList.includes(unit.spec) || unit.kind === 'course') {
         return {
           ...unit,
           isOpen: true,
@@ -1850,6 +1850,12 @@ export interface ICourseShowTreeCheckers {
 
 interface IUseCourseShowTreeProps {
   course: IBaseTreeUnit;
+  children: IBaseTreeUnit[];
+}
+
+interface IUseCourseShowContentsTreeProps {
+  courseSpec: string;
+  currentUnitSpec: string;
   children: IBaseTreeUnit[];
 }
 
@@ -2220,5 +2226,24 @@ export const useCourseGroupOpennessTree = ({
     checkers: {
       canToggleChildrenVisibility,
     },
+  };
+};
+
+export const useCourseContentsTree = ({
+  children,
+  currentUnitSpec,
+  courseSpec,
+}: IUseCourseShowContentsTreeProps) => {
+  const treeUnitList = createTreeUnitListCourseShow({
+    course: children.find((e) => e.spec === courseSpec) ?? children[0],
+    children,
+    editMode: false,
+  }).map((e) => ({ ...e, visible: true, childrenVisible: true }));
+
+  return {
+    treeUnitList: findChildrenAllLevels({
+      parent: treeUnitList.find((e) => e.spec === currentUnitSpec)!,
+      treeUnitList,
+    }).filter((e) => e.spec !== courseSpec),
   };
 };

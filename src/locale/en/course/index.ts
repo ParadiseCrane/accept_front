@@ -32,6 +32,10 @@ export const course = {
       ).get(key.toLowerCase()) ?? key
     );
   },
+  contents: (kind: 'unit' | 'course'): string => {
+    if (kind === 'unit') return 'Unit contents';
+    return 'Course contents';
+  },
   modals,
   list,
   lesson,

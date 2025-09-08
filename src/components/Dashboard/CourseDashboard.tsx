@@ -52,7 +52,7 @@ const CourseDashboard: FC<{
     let links: IMenuLink[] = [];
     links = [
       {
-        page: <CourseMain courseProps={course} />,
+        page: <CourseMain course={course} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <IconArticle color="var(--secondary)" />

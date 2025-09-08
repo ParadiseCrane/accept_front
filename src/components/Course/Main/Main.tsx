@@ -1,5 +1,10 @@
 'use client';
-import { IUnit, ILesson, ICourse } from '@custom-types/data/ICourse';
+import {
+  IUnit,
+  ILesson,
+  ICourse,
+  IBaseTreeUnit,
+} from '@custom-types/data/ICourse';
 import { AppShell, Box, Center, Title } from '@mantine/core';
 import { sendRequest } from '@requests/request';
 import { ImageComponent } from '@ui/ImageSelector/ImageComponent/ImageComponent';
@@ -7,6 +12,9 @@ import { FC, memo, useEffect, useState } from 'react';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import Lesson from '../Lesson/Lesson';
 import { useSearchParams } from 'next/navigation';
+
+import styles from './main.module.css';
+import { Contents } from '../Contents/Contents';
 
 // TODO mocked method
 const defaultLesson = (lesson: ILesson): ILesson => {
@@ -31,7 +39,6 @@ const Main: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
               ? defaultLesson(res.response)
               : (res.response as ICourse | IUnit | ILesson)
           );
-          // setEntity(res.response);
         }
       );
     }
