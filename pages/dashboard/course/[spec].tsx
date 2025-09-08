@@ -13,7 +13,7 @@ import { ReactNode } from "react";
 function CourseDashboardPage(props: { entity: ICourse; courseAuthor: string }) {
   const { locale } = useLocale();
   const refetchIntervalSeconds = 8;
-  const { user } = useUser();
+  const { user, isAdmin } = useUser();
 
   if (!user) return;
 
@@ -28,7 +28,7 @@ function CourseDashboardPage(props: { entity: ICourse; courseAuthor: string }) {
         <CourseDashboard
           course={props.entity}
           courseSpec={props.entity.spec}
-          isAuthor={user && user.login === props.courseAuthor}
+          isAuthor={(user && user.login === props.courseAuthor) || isAdmin}
         />
       </ChatHostsProvider>
     </>

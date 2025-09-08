@@ -10,7 +10,7 @@ export default function CourseDashboardClient(props: {
   courseAuthor: string;
 }) {
   const refetchIntervalSeconds = 8;
-  const { user } = useUser();
+  const { user, isAdmin } = useUser();
 
   if (!user) return null;
 
@@ -23,7 +23,7 @@ export default function CourseDashboardClient(props: {
       <CourseDashboard
         course={props.entity}
         courseSpec={props.entity.spec}
-        isAuthor={user && user.login === props.courseAuthor}
+        isAuthor={(user && user.login === props.courseAuthor) || isAdmin}
       />
     </ChatHostsProvider>
   );
