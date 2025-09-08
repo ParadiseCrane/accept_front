@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/Organization/Form/Form';
 import { IGroup } from '@custom-types/data/IGroup';
 import { IOrganization } from '@custom-types/data/IOrganization';

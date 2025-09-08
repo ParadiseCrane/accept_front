@@ -1,3 +1,4 @@
+'use client';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
@@ -5,7 +6,7 @@ import { useUser } from '@hooks/useUser';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { FC, memo, useMemo } from 'react';
-import { Messages, Users } from 'tabler-icons-react';
+import { IconMessages, IconUsers } from '@tabler/icons-react';
 import {
   IconArticle,
   IconList,
@@ -15,30 +16,28 @@ import {
 } from '@tabler/icons-react';
 
 import { ILesson } from '@custom-types/data/ICourse';
-import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
 import LessonMain from './LessonMain/LessonMain';
 import Moderators from './Moderators/Moderators';
+import { useCourse } from '@hooks/useCourse';
+import { useRouter } from 'next/navigation';
 
 const LessonDashboard: FC<{
   lesson: ILesson;
-  courseSpec: string;
-  isAuthor: boolean;
-}> = ({ lesson, courseSpec, isAuthor }) => {
-  const router = useRouter();
+}> = ({ lesson }) => {
   const { locale } = useLocale();
-  const { user } = useUser();
+  const { course, isAuthor } = useCourse();
+  const router = useRouter();
 
   const { hasNewMessages } = useChatHosts();
 
   const links: IMenuLink[] = useMemo(() => {
-    let links: IMenuLink[] = [];
-    links = [
+    if (!course) return [];
+    let links: IMenuLink[] = [
       {
         page: <LessonMain lessonProps={lesson} />,
         icon: (
@@ -53,7 +52,7 @@ const LessonDashboard: FC<{
         page: <CourseChatPage spec={lesson.spec} entity="lesson" />,
         icon: (
           <Indicator size={10} disabled blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.chat,
@@ -61,20 +60,20 @@ const LessonDashboard: FC<{
       },
       {
         page: (
-          <Moderators type={'course'} spec={courseSpec} isAuthor={isAuthor} />
+          <Moderators type={'course'} spec={course.spec} isAuthor={isAuthor} />
         ),
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: 'moderators',
       },
       {
-        page: <CourseParticipants type={'course'} spec={courseSpec} />,
-        icon: <Users color="var(--secondary)" />,
+        page: <CourseParticipants type={'course'} spec={course.spec} />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },
       {
-        page: <CreateNotificationCourse spec={courseSpec} type="course" />,
+        page: <CreateNotificationCourse spec={course.spec} type="course" />,
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: 'create_notification',
@@ -86,7 +85,7 @@ const LessonDashboard: FC<{
         page: (
           <CourseParticipants
             type={'course'}
-            spec={courseSpec}
+            spec={course.spec}
             allParticipants
           />
         ),
@@ -97,29 +96,28 @@ const LessonDashboard: FC<{
     }
 
     return links;
-  }, [lesson, locale, hasNewMessages, courseSpec]);
+  }, [lesson, locale, hasNewMessages, course, isAuthor]);
+
+  if (!course) return null;
 
   return (
-    <>
-      <LeftMenu
-        links={links}
-        topContent={
-          <Tip
-            label={locale.course.backToCourseTip}
-            openDelay={tooltipOpenDelay}
-            position="top"
-            spanStyle={styles.backToCoursesWrapper}
-            onClick={() => router.push(`/course/${courseSpec}`)}
-          >
-            <IconArrowLeft color={'var(--primary)'} />
-            <div className={styles.title}>
-              {locale.course.backToCourseButton}
-            </div>
-          </Tip>
-        }
-      />
-      {user && <GroupSelectorMenu courseSpec={courseSpec} user={user.login} />}
-    </>
+    <LeftMenu
+      links={links}
+      topContent={
+        <Tip
+          label={locale.course.backToCourseTip}
+          openDelay={tooltipOpenDelay}
+          position="top"
+          spanStyle={styles.backToCoursesWrapper}
+          onClick={() =>
+            router.push(`/course/${course.spec}?item=${lesson.spec}`)
+          }
+        >
+          <IconArrowLeft color={'var(--primary)'} />
+          <div className={styles.title}>{locale.course.backToCourseButton}</div>
+        </Tip>
+      }
+    />
   );
 };
 

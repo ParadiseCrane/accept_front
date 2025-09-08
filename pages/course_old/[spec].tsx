@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import Header from '@components/Course/Header';
 import Main from '@components/Course/Main/Main';
@@ -18,7 +19,12 @@ import Head from 'next/head';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
-import { Dashboard, Pencil, PlaylistAdd, Trash } from 'tabler-icons-react';
+import {
+  IconDashboard,
+  IconPencil,
+  IconPlaylistAdd,
+  IconTrash,
+} from '@tabler/icons-react';
 
 const flattenCourse = ({
   course,
@@ -59,8 +65,9 @@ function Course(props: {
 
   const [opened, { toggle }] = useDisclosure();
   const [value, handlers] = useMoveThroughArray(
+    0,
     units,
-    (item, hash) => item.spec == hash,
+    (item1, item2) => item1.spec == item2.spec,
     (item) => `/course/${course.spec}?item=${item.spec}`
   );
   const { locale } = useLocale();
@@ -68,24 +75,10 @@ function Course(props: {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace(`/course/${course.spec}?item=${itemSpec ?? props.item}`);
-    handlers.currentByHash(itemSpec ?? props.item);
-  }, []);
-
-  useEffect(() => {
-    const spec = searchParams.get('item');
-    console.log('useEffect spec', spec);
-    if (spec && spec !== itemSpec) {
-      setItemSpec(spec);
-      handlers.currentByHash(spec);
-    }
-  }, [searchParams, itemSpec]);
-
-  useEffect(() => {
     if (user && user.login === course.author) {
       setIsAuthor(true);
     }
-  }, [user]);
+  }, [user, course]);
 
   const actions: IStickyAction[] = useMemo(() => {
     const innerActions: IStickyAction[] = [];
@@ -93,7 +86,7 @@ function Course(props: {
     if (isModerator || isAuthor) {
       innerActions.push({
         color: 'grape',
-        icon: <Dashboard height={20} width={20} />,
+        icon: <IconDashboard height={20} width={20} />,
         href:
           value.kind === 'course'
             ? `/dashboard/${value.kind}/${value.spec}`
@@ -106,7 +99,7 @@ function Course(props: {
       if (value.kind === 'lesson') {
         innerActions.push({
           color: 'green',
-          icon: <PlaylistAdd width={20} height={20} />,
+          icon: <IconPlaylistAdd width={20} height={20} />,
           href: `/task/add?lesson=${value.spec}`,
           description: locale.tip.sticky.course.createTask,
         });
@@ -115,7 +108,7 @@ function Course(props: {
         {
           color: 'green',
           href: `/course/edit/${course.spec}?item=${value.spec}`,
-          icon: <Pencil height={20} width={20} />,
+          icon: <IconPencil height={20} width={20} />,
           description: locale.tip.sticky.course.edit(value.kind),
         },
         {
@@ -123,7 +116,7 @@ function Course(props: {
           onClick: () => {
             setOpenModal(true);
           },
-          icon: <Trash height={20} width={20} />,
+          icon: <IconTrash height={20} width={20} />,
           description: locale.tip.sticky.course.delete,
         }
       );
@@ -149,14 +142,7 @@ function Course(props: {
         layout="alt"
       >
         <Header opened={opened} toggle={toggle} />
-        <NavBar
-          units={units}
-          hookUnit={value}
-          image={course.image}
-          prev={handlers.prev}
-          next={handlers.next}
-        />
-        <Main key={value.spec} />
+        {/* <Main key={value.spec} /> */}
         {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
         {isModerator && !isAuthor && (
           <SingularSticky
@@ -166,7 +152,7 @@ function Course(props: {
                 ? `/dashboard/${value.kind}/${value.spec}`
                 : `/dashboard/${value.kind}/${value.spec}?course=${course.spec}`
             }
-            icon={<Dashboard height={25} width={25} />}
+            icon={<IconDashboard height={25} width={25} />}
             description={locale.tip.sticky.course.dashboard(value.kind)}
           />
         )}

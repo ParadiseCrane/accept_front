@@ -1,23 +1,22 @@
+'use client';
 import CourseForm from '@components/Course/Form/CourseForm';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 import { ICourseAddEdit, IBaseTreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form/lib/types';
 import Title from '@ui/Title/Title';
 import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRouter } from 'next/router';
-import { ReactNode, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
-function CourseAdd() {
+export default function CourseAdd() {
   const { locale, lang } = useLocale();
-  const { user } = useUser();
+  const router = useRouter();
+
   const initialValues = courseFormUtils.getInitialValuesAddCourse({
     title: locale.ui.courseTree.title,
   });
-  const router = useRouter();
 
   const handleSubmit = useCallback(
     (form: UseFormReturnType<typeof initialValues>) => {
@@ -25,46 +24,25 @@ function CourseAdd() {
         courseFormUtils.checkCourseImageInvalidInput({
           image: form.values.image,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseTitleInvalidInput({
           title: form.values.title.trim(),
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkCourseDescriptionInvalidInput({
           description: form.values.description,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkChildrenInvalidInput({
           children: form.values.children,
           locale,
-        })
-      ) {
-        return;
-      }
-
-      if (
+        }) ||
         courseFormUtils.checkFormValidation({
           value: form.validate().hasErrors,
           locale,
         })
-      ) {
+      )
         return;
-      }
 
       const course: ICourseAddEdit = {
         ...form.values,
@@ -91,11 +69,11 @@ function CourseAdd() {
         courseToSend
       ).then((res) => {
         if (!res.error) {
-          router.push('/courses');
+          router.push('/course/list');
         }
       });
     },
-    [lang, locale, router, user?.login]
+    [lang, locale, router]
   );
 
   return (
@@ -110,9 +88,3 @@ function CourseAdd() {
     </Wrapper>
   );
 }
-
-CourseAdd.getLayout = (page: ReactNode) => {
-  return <DefaultLayout>{page}</DefaultLayout>;
-};
-
-export default CourseAdd;

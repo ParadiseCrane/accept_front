@@ -1,3 +1,4 @@
+'use client';
 import { MAX_ANSWER_LENGTH, MAX_TEST_LENGTH } from '@constants/Limits';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { setter } from '@custom-types/ui/atomic';

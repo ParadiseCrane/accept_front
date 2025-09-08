@@ -1,3 +1,4 @@
+'use client';
 import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { IAttemptDisplay } from '@custom-types/data/IAttempt';
 import { ITaskBaseInfo } from '@custom-types/data/ITask';
@@ -168,10 +169,8 @@ const AIProbabilityList: FC<{
   const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
   const [aiPercentage, setAIPercentage] = useState<PercentageValue>('0.7');
   const refactor = useCallback(
-    (attempt: IAttemptDisplay) => {
-      console.log('aiPercentage', aiPercentage);
-      return refactorAttempt(attempt, type, spec, aiPercentage);
-    },
+    (attempt: IAttemptDisplay) =>
+      refactorAttempt(attempt, type, spec, aiPercentage),
     [type, spec, aiPercentage]
   );
 

@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@custom-types/ui/atomic';
 import { setter } from '@custom-types/ui/atomic';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';

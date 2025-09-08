@@ -1,19 +1,21 @@
+'use client';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
 import { IGroupInvite } from '@custom-types/data/IGroup';
 import { Icon, Tip } from '@ui/basics';
-import { Pencil, Plus, Trash } from 'tabler-icons-react';
-import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
+import { IconPencil, IconPlus } from '@tabler/icons-react';
+import { Divider, LoadingOverlay } from '@mantine/core';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
 import CopyButton from '@ui/CopyButton/CopyButton';
 import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
 import { sendRequest } from '@requests/request';
+import { useCourse } from '@hooks/useCourse';
 
 const Groups: FC<{
   course_spec: string;
 }> = ({ course_spec }) => {
+  const { onGroupDelete } = useCourse();
   const { locale } = useLocale();
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState<IGroupInvite[]>([]);
@@ -29,6 +31,14 @@ const Groups: FC<{
     }
     setLoading(false);
   }, [course_spec]);
+
+  const onDelete = useCallback(
+    async (spec: string) => {
+      await fetchData();
+      onGroupDelete(spec);
+    },
+    [fetchData, onGroupDelete]
+  );
 
   useEffect(() => {
     fetchData();
@@ -81,7 +91,7 @@ const Groups: FC<{
                   tooltipLabel={locale.dashboard.course.editGroup}
                   href={`/group/edit/${group.group.spec}`}
                 >
-                  <Pencil color="var(--primary)" />
+                  <IconPencil color="var(--primary)" />
                 </Icon>
                 <DeleteModal
                   group={{
@@ -90,7 +100,7 @@ const Groups: FC<{
                     readonly: group.group.readonly,
                     spec: group.group.spec,
                   }}
-                  refetchData={fetchData}
+                  onDelete={onDelete}
                 />
               </div>
             </div>
@@ -111,7 +121,7 @@ const Groups: FC<{
           color="green"
           size="sm"
         >
-          <Plus />
+          <IconPlus />
         </Icon>
       </Tip>
     </div>

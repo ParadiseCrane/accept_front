@@ -1,3 +1,4 @@
+'use client';
 import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
 import ProfileSticky from '@components/Profile/ProfileSticky/ProfileSticky';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';

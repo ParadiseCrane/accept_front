@@ -1,3 +1,4 @@
+'use client';
 import LoginForm from '@components/Auth/LoginForm';
 import { useUser } from '@hooks/useUser';
 import { LoginLayout } from '@layouts/LoginLayout';
@@ -27,7 +28,7 @@ function AddAccount() {
         refreshAccess();
         return res.response;
       }),
-    []
+    [refreshAccess]
   );
   return <LoginForm signIn={signIn} />;
 }

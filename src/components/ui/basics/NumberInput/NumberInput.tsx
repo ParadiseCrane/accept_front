@@ -1,3 +1,4 @@
+'use client';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import {
   NumberInput as MantineNumberInput,

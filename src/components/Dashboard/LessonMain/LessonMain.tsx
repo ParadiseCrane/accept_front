@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Center, Title, Box } from '@mantine/core';
 import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
@@ -23,7 +24,6 @@ const LessonMain: FC<{
   const sendGroupOpenness = useCallback(async () => {
     if (groupSpec && groupSpec !== 'all') {
       const prevState = isOpenForGroups;
-      console.log('prevState', prevState);
       setIsOpenForGroups((prev) => !prev);
       await sendRequest<{}, IGroupOpenness[]>(
         `course/toggle_group_openness/${lesson.spec}/${groupSpec}`,
@@ -43,7 +43,6 @@ const LessonMain: FC<{
   const getGroupOpenness = useCallback(async () => {
     if (params) {
       setGroupSpec(params.get('group') ?? '');
-      console.log('params', params.get('group'));
       const groupOpennessListResponse = await sendRequest<{}, IGroupOpenness[]>(
         `course/course_openness_list/${lesson.spec}/${params.get('group')}`,
         'GET'

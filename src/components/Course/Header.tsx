@@ -1,3 +1,4 @@
+'use client';
 import Logo from '@components/layout/Navbar/Logo/Logo';
 import SignIn from '@components/layout/Navbar/SignIn/SignIn';
 import { AppShell, Burger, Group } from '@mantine/core';

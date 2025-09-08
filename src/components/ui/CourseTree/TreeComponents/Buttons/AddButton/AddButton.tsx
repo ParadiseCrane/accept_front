@@ -1,9 +1,10 @@
+'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ElementType } from '@hooks/useCourseTree';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Text } from '@mantine/core';
 import { FC } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 
 import styles from './styles.module.css';
 import { Tip } from '@ui/basics';
@@ -43,7 +44,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
               }}
             >
               <ActionIcon size={'xs'}>
-                <Plus />
+                <IconPlus />
               </ActionIcon>
               <Text size="sm">{locale.ui.courseTree.unit}</Text>
             </div>
@@ -57,7 +58,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
             }}
           >
             <ActionIcon size={'xs'}>
-              <Plus />
+              <IconPlus />
             </ActionIcon>
             <Text size="sm">{locale.ui.courseTree.lesson}</Text>
           </div>

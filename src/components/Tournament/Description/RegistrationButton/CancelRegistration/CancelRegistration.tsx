@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';
@@ -6,7 +7,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from '../registrationButton.module.css';
 
@@ -73,7 +74,7 @@ const CancelRegistration: FC<{
         {status == 1 && !allowRegistrationAfterStart && (
           <Helper
             dropdownContent={locale.helpers.tournament.refusalWarning}
-            customIcon={<AlertCircle color={'var(--negative)'} />}
+            customIcon={<IconAlertCircle color={'var(--negative)'} />}
           />
         )}
       </div>

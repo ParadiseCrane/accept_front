@@ -14,7 +14,7 @@ const projectLinks: IHeaderLink[] = [
   {
     text: (locale) => locale.projects.courses.title,
     type: 'regular',
-    href: '/courses',
+    href: '/course/list',
   },
 ];
 

@@ -1,3 +1,4 @@
+'use client';
 import {
   ICourse,
   IGroupOpenness,
@@ -17,14 +18,18 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
     IGroupOpenness[] | null
   >(null);
   const [loading, setLoading] = useState(false);
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const { locale } = useLocale();
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    if (params.get('group') && params.get('group') !== 'all') {
+    if (
+      searchParams &&
+      searchParams.get('group') &&
+      searchParams.get('group') !== 'all'
+    ) {
       const groupOpennessListResponse = await sendRequest<{}, IGroupOpenness[]>(
-        `course/course_openness_list/${spec}/${params.get('group')}`,
+        `course/course_openness_list/${spec}/${searchParams.get('group')}`,
         'GET'
       );
       const courseNavigationTreeResponse = await sendRequest<{}, ICourse>(
@@ -41,7 +46,11 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
         });
         setGroupOpennessList(groupOpennessListResponse.response);
       }
-    } else if (params.get('group') && params.get('group') === 'all') {
+    } else if (
+      searchParams &&
+      searchParams.get('group') &&
+      searchParams.get('group') === 'all'
+    ) {
       setGroupOpennessList([]);
       setCourse({
         author: '',
@@ -54,23 +63,30 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
       });
     }
     setLoading(false);
-  }, [spec, params]);
+  }, [spec, searchParams]);
 
-  const toggleGroupOpennessList = useCallback(async (spec: string) => {
-    setLoading(true);
-    const response = await sendRequest<{}, IGroupOpenness[]>(
-      `course/toggle_group_openness/${spec}/${params.get('group')}`,
-      'PUT'
-    );
-    if (!response.error) {
-      setGroupOpennessList(response.response);
-    }
-    setLoading(false);
-  }, []);
+  const toggleGroupOpennessList = useCallback(
+    async (spec: string) => {
+      if (!searchParams) {
+        throw Error('searchParams are undefined');
+      }
+      // TODO: handle error
+      setLoading(true);
+      const response = await sendRequest<{}, IGroupOpenness[]>(
+        `course/toggle_group_openness/${spec}/${searchParams?.get('group')}`,
+        'PUT'
+      );
+      if (!response.error) {
+        setGroupOpennessList(response.response);
+      }
+      setLoading(false);
+    },
+    [searchParams]
+  );
 
   useEffect(() => {
     fetchData();
-  }, [spec, params]);
+  }, [fetchData]);
 
   if (!course || !groupOpennessList || loading)
     return (
@@ -82,7 +98,11 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
       </div>
     );
 
-  if (params && params.get('group') && params.get('group') === 'all') {
+  if (
+    searchParams &&
+    searchParams.get('group') &&
+    searchParams.get('group') === 'all'
+  ) {
     return (
       <div className={styles.wrapper}>
         <div className={styles.emptyMessageWrapper}>

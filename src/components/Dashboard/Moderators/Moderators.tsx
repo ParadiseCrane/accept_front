@@ -1,3 +1,4 @@
+'use client';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { useLocale } from '@hooks/useLocale';
@@ -10,7 +11,7 @@ import GroupModeratorList, {
   ICourseModeratorGroupItem,
 } from '@ui/GroupModeratorList/GroupModeratorList';
 import { IModeratorGroupPair } from '@custom-types/data/ICourse';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 import { Icon, Tip } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserBaseInfo } from '@custom-types/data/IUser';
@@ -101,7 +102,7 @@ const refactorPair = ({
               variant="transparent"
               size="xs"
             >
-              <Trash />
+              <IconTrash />
             </Icon>
           </Tip>
         )}

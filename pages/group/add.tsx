@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/Group/Form/Form';
 import { IGroup } from '@custom-types/data/IGroup';
 import { IUserDisplay } from '@custom-types/data/IUser';

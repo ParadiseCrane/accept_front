@@ -1,3 +1,4 @@
+'use client';
 import { AddModeratorModal } from '@components/Dashboard/Moderators/AddModeratorModal/AddModeratorModal';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IModeratorGroupPair } from '@custom-types/data/ICourse';
@@ -12,7 +13,6 @@ import tableStyles from '@styles/ui/customTable.module.css';
 import Table from '@ui/Table/Table';
 import { customTableSort } from '@utils/customTableSort';
 import Fuse from 'fuse.js';
-import { useSearchParams } from 'next/navigation';
 import {
   FC,
   ReactNode,
@@ -84,21 +84,13 @@ const GroupModeratorList: FC<{
     );
     if (!response.error) {
       const pairList = response.response;
-      const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
+      const pairItemList: ICourseModeratorGroupItem[] = pairList.map(
+        (pair: IModeratorGroupPair) => refactorPair({ pair, fetchData })
+      );
       setData(pairItemList);
     }
     setLoading(false);
-  }, []);
-
-  const processData = useCallback(
-    (response: IModeratorGroupPair[]): ICourseModeratorGroupItem[] =>
-      response.map((pair: IModeratorGroupPair) =>
-        refactorPair({ pair, fetchData })
-      ),
-    [refactorPair]
-  );
-
-  const params = useSearchParams();
+  }, [url, refactorPair]);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -152,7 +144,7 @@ const GroupModeratorList: FC<{
 
   useEffect(() => {
     fetchData();
-  }, [params]);
+  }, [fetchData]);
 
   return (
     <div>
@@ -188,8 +180,13 @@ const GroupModeratorList: FC<{
         additionalSearch={
           isAuthor && <AddModeratorModal refetchData={fetchData} />
         }
-        emptyTableButton={
-          isAuthor && <AddModeratorModal refetchData={fetchData} />
+        emptyTableComponent={
+          isAuthor && (
+            <>
+              {locale.ui.table.emptyTableMessage}
+              <AddModeratorModal refetchData={fetchData} />
+            </>
+          )
         }
       />
     </div>

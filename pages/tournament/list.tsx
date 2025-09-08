@@ -1,3 +1,4 @@
+'use client';
 import { ITag } from '@custom-types/data/ITag';
 import {
   ITournamentDisplay,
@@ -23,7 +24,12 @@ import { mapTournamentStatus } from '@utils/mapStatus';
 import Fuse from 'fuse.js';
 import Link from 'next/link';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Clock, Confetti, Plus, Run } from 'tabler-icons-react';
+import {
+  IconClock,
+  IconConfetti,
+  IconPlus,
+  IconRun,
+} from '@tabler/icons-react';
 
 interface Item {
   value: any;
@@ -194,19 +200,19 @@ const getTournamentIcon = (
     case 0:
       return (
         <Tip position="bottom" label={locale.tip.status.pending}>
-          <Clock color="orange" />
+          <IconClock color="orange" />
         </Tip>
       );
     case 1:
       return (
         <Tip position="bottom" label={locale.tip.status.running}>
-          <Run color="var(--positive)" />
+          <IconRun color="var(--positive)" />
         </Tip>
       );
     case 2:
       return (
         <Tip position="bottom" label={locale.tip.status.finished}>
-          <Confetti color="black" />
+          <IconConfetti color="black" />
         </Tip>
       );
     default:
@@ -437,7 +443,7 @@ function TournamentList() {
       {isTeacher && (
         <SingularSticky
           href={`/tournament/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.tournament.add}
         />
       )}

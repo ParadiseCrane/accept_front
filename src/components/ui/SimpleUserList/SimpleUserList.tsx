@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IRole } from '@custom-types/data/atomic';
 import { IUser, IUserDisplay } from '@custom-types/data/IUser';
@@ -40,6 +41,7 @@ const SimpleUserList: FC<{
   refactorUser: (_: IUserDisplay) => any;
   noDefault?: boolean;
   empty?: ReactNode;
+  emptyTableComponent?: ReactNode;
   defaultRowsOnPage?: number;
 }> = ({
   url,
@@ -48,6 +50,7 @@ const SimpleUserList: FC<{
   refactorUser,
   noDefault,
   empty,
+  emptyTableComponent,
   defaultRowsOnPage,
 }) => {
   const { locale } = useLocale();
@@ -141,7 +144,7 @@ const SimpleUserList: FC<{
       setData(userDisplayItemList);
       setLoading(false);
     });
-  }, [params]);
+  }, [params, processData, url]);
 
   return (
     <div>
@@ -169,6 +172,7 @@ const SimpleUserList: FC<{
         onPage={[5, defaultOnPage]}
         total={total}
         empty={empty || <>{locale.ui.table.emptyMessage}</>}
+        emptyTableComponent={emptyTableComponent}
         isEmpty={data?.length == 0}
         nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
         loading={loading}

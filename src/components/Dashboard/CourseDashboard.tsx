@@ -1,3 +1,5 @@
+'use client';
+
 import DeleteModal from '@components/Course/DeleteModal/DeleteModal';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
@@ -6,7 +8,7 @@ import { useUser } from '@hooks/useUser';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { FC, memo, useMemo, useState } from 'react';
-import { Messages, Users } from 'tabler-icons-react';
+import { IconMessages, IconUsers } from '@tabler/icons-react';
 import {
   IconUsersGroup,
   IconUserCog,
@@ -15,11 +17,12 @@ import {
   IconBellPlus,
   IconLockCog,
   IconArrowLeft,
+  IconTrash,
+  IconPencil,
 } from '@tabler/icons-react';
 
 import { ICourse } from '@custom-types/data/ICourse';
 import Moderators from './Moderators/Moderators';
-import GroupSelectorMenu from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CourseMain from './CourseMain/CourseMain';
 import Groups from './Groups/Groups';
@@ -28,7 +31,8 @@ import CourseChatPage from './CourseChatPage/CourseChatPage';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 
 const CourseDashboard: FC<{
   course: ICourse;
@@ -37,7 +41,10 @@ const CourseDashboard: FC<{
 }> = ({ course, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
-  const { user } = useUser();
+
+  const [activeModal, setActiveModal] = useState(false);
+
+  const { isTeacher } = useUser();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -45,7 +52,7 @@ const CourseDashboard: FC<{
     let links: IMenuLink[] = [];
     links = [
       {
-        page: <CourseMain courseProps={course} />,
+        page: <CourseMain course={course} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
             <IconArticle color="var(--secondary)" />
@@ -58,7 +65,7 @@ const CourseDashboard: FC<{
         page: <CourseChatPage spec={course.spec} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.chat,
@@ -74,7 +81,7 @@ const CourseDashboard: FC<{
       },
       {
         page: <CourseParticipants type={'course'} spec={course.spec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },
@@ -119,22 +126,38 @@ const CourseDashboard: FC<{
     return links;
   }, [hasNewMessages, locale, course, isAuthor]);
 
-  const [activeModal, setActiveModal] = useState(false);
+  const actions: IStickyAction[] = useMemo(() => {
+    const innerActions: IStickyAction[] = [];
 
-  const { isTeacher } = useUser();
+    if (isAuthor) {
+      innerActions.push(
+        {
+          color: 'green',
+          href: `/course/${courseSpec}/edit/${courseSpec}`,
+          icon: <IconPencil height={20} width={20} />,
+          description: locale.tip.sticky.course.edit('course'),
+        },
+        {
+          color: 'red',
+          onClick: () => setActiveModal(true),
+          icon: <IconTrash height={20} width={20} />,
+          description: locale.tip.sticky.course.delete,
+        }
+      );
+    }
+
+    return innerActions;
+  }, [isAuthor, locale, courseSpec]);
 
   return (
     <>
-      {isTeacher && (
-        <>
-          {course && (
-            <DeleteModal
-              active={activeModal}
-              setActive={setActiveModal}
-              course={course}
-            />
-          )}
-        </>
+      {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
+      {isTeacher && isAuthor && course && (
+        <DeleteModal
+          active={activeModal}
+          setActive={setActiveModal}
+          course={course}
+        />
       )}
       <LeftMenu
         links={links}
@@ -153,7 +176,6 @@ const CourseDashboard: FC<{
           </Tip>
         }
       />
-      {user && <GroupSelectorMenu courseSpec={course.spec} user={user.login} />}
     </>
   );
 };

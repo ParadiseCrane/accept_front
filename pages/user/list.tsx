@@ -1,3 +1,4 @@
+'use client';
 import { accessLevels } from '@constants/protectedRoutes';
 import { IUser } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';

@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ITeamDisplay, ITeamDisplayWithBanned } from '@custom-types/data/ITeam';
 import { BaseSearch } from '@custom-types/data/request';

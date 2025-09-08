@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
 import MemberItem from '@components/Team/MemberItem/MemberItem';
 import TitleInput from '@components/Team/TitleInput/TitleInput';
@@ -17,7 +18,7 @@ import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { ReactNode, useMemo, useState } from 'react';
-import { Key, Trash } from 'tabler-icons-react';
+import { IconKey, IconTrash } from '@tabler/icons-react';
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -40,7 +41,7 @@ function TeamProfile(props: { team: ITeam }) {
         onClick: () => setOpenedDeleteModal(true),
         color: 'red',
         icon: (
-          <Trash
+          <IconTrash
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -51,7 +52,7 @@ function TeamProfile(props: { team: ITeam }) {
         onClick: () => setOpenedModal(true),
         color: 'var(--secondary)',
         icon: (
-          <Key
+          <IconKey
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />

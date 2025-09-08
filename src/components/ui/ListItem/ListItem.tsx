@@ -1,10 +1,11 @@
+'use client';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import inputStyles from '@styles/ui/input.module.css';
 import { Icon } from '@ui/basics';
 import TestArea from '@ui/TestArea/TestArea';
 import { ChangeEvent, FC, ReactNode, memo } from 'react';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 import styles from './listItem.module.css';
 
@@ -59,7 +60,7 @@ const ListItem: FC<{
               variant="transparent"
               size="xs"
             >
-              <Trash />
+              <IconTrash />
             </Icon>
           )}
           {!!additionalActions &&

@@ -1,3 +1,4 @@
+'use client';
 import { BaseSearch } from '@custom-types/data/request';
 import { setter } from '@custom-types/ui/atomic';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -12,7 +13,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Search } from 'tabler-icons-react';
+import { IconSearch } from '@tabler/icons-react';
 
 import InnerTable from './InnerTable/InnerTable';
 import PageNavigation from './PageNavigation';
@@ -35,7 +36,7 @@ const Table: FC<{
   empty?: ReactNode;
   isEmpty?: boolean;
   nothingFound?: ReactNode;
-  emptyTableButton?: ReactNode;
+  emptyTableComponent?: ReactNode;
   customSort?: (key: string, order: -1 | 0 | 1) => void;
 }> = ({
   columns,
@@ -53,7 +54,7 @@ const Table: FC<{
   empty,
   isEmpty,
   nothingFound,
-  emptyTableButton,
+  emptyTableComponent,
   customSort,
 }) => {
   const { locale } = useLocale();
@@ -217,7 +218,7 @@ const Table: FC<{
     >
       {!loading && empty && isEmpty ? (
         <div>
-          <EmptyTablePlaceholder button={emptyTableButton} />
+          <EmptyTablePlaceholder component={emptyTableComponent} />
         </div>
       ) : (
         <div className={styles.main}>
@@ -225,7 +226,7 @@ const Table: FC<{
             {withSearch && (
               <div className={styles.search}>
                 <TextInput
-                  leftSection={<Search />}
+                  leftSection={<IconSearch />}
                   classNames={{
                     input: styles.inputElem,
                   }}

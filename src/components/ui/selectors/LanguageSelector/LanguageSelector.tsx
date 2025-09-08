@@ -1,3 +1,4 @@
+'use client';
 import { ILanguage } from '@custom-types/data/atomic';
 import { Item, setter } from '@custom-types/ui/atomic';
 import {
@@ -77,7 +78,7 @@ const LanguageSelector: FC<{
         </div>
       );
     },
-    [shrink]
+    []
   );
   return (
     <div className={styles.wrapper}>

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
 import { Avatar as MantineAvatar, Menu } from '@mantine/core';
@@ -13,7 +14,7 @@ import {
 } from '@utils/notificationFunctions';
 import Link from 'next/link';
 import { FC, memo, useCallback, useState } from 'react';
-import { Logout, Plus, Trash } from 'tabler-icons-react';
+import { IconLogout, IconPlus, IconTrash } from '@tabler/icons-react';
 
 import styles from './accountsMenu.module.css';
 import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
@@ -219,7 +220,7 @@ const AccountsMenu: FC<{}> = () => {
                       modalText={`${locale.accounts.confirmLogOut} ${item.login} (${item.organization})?`}
                     >
                       <Icon size="xs" className={styles.trash_icon}>
-                        <Trash color="#00000060" />
+                        <IconTrash color="#00000060" />
                       </Icon>
                     </ConfirmLogoutModal>
                   </Tip>
@@ -239,7 +240,7 @@ const AccountsMenu: FC<{}> = () => {
         <Menu.Item
           component={Link}
           href={'/add_account'}
-          leftSection={<Plus color="var(--secondary)" size={20} />}
+          leftSection={<IconPlus color="var(--secondary)" size={20} />}
         >
           {locale.accounts.addAccount}
         </Menu.Item>
@@ -247,7 +248,7 @@ const AccountsMenu: FC<{}> = () => {
 
         <Menu.Item
           onClick={removeSession}
-          leftSection={<Logout color="var(--secondary)" size={20} />}
+          leftSection={<IconLogout color="var(--secondary)" size={20} />}
         >
           {locale.accounts.logOut}
         </Menu.Item>

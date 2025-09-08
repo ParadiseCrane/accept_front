@@ -1,3 +1,4 @@
+'use client';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType, useForm } from '@mantine/form';

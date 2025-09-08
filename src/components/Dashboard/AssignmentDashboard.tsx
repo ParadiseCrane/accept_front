@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
 import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
 import ParticipantsList from '@components/Dashboard/ParticipantsList/ParticipantsList';
@@ -17,16 +18,16 @@ import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
-  AlignRight,
-  BellPlus,
-  Messages,
-  Pencil,
-  Puzzle,
-  Table,
-  Trash,
-  Users,
-  Vocabulary,
-} from 'tabler-icons-react';
+  IconAlignRight,
+  IconBellPlus,
+  IconMessages,
+  IconPencil,
+  IconPuzzle,
+  IconTable,
+  IconTrash,
+  IconUsers,
+  IconVocabulary,
+} from '@tabler/icons-react';
 
 import ChatPage from './ChatPage/ChatPage';
 import CreateNotification from './CreateNotification/CreateNotification';
@@ -84,7 +85,7 @@ const AssignmentDashboard: FC<{
             refetch={() => refetch(false)}
           />
         ),
-        icon: <Vocabulary color="var(--secondary)" />,
+        icon: <IconVocabulary color="var(--secondary)" />,
         title: locale.dashboard.assignment.mainInfo,
         section: 'assignment',
       },
@@ -92,7 +93,7 @@ const AssignmentDashboard: FC<{
         page: <ChatPage entity={'assignment'} spec={spec} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
@@ -109,7 +110,7 @@ const AssignmentDashboard: FC<{
             is_team={false}
           />
         ),
-        icon: <Table color="var(--secondary)" />,
+        icon: <IconTable color="var(--secondary)" />,
         title: locale.dashboard.assignment.results,
         section: 'results',
       },
@@ -123,7 +124,7 @@ const AssignmentDashboard: FC<{
             endDate={assignment.end}
           />
         ),
-        icon: <AlignRight color="var(--secondary)" />,
+        icon: <IconAlignRight color="var(--secondary)" />,
         title: locale.dashboard.assignment.attempts,
         section: 'attempts',
       },
@@ -151,13 +152,13 @@ const AssignmentDashboard: FC<{
       },
       {
         page: <ParticipantsList type={'assignment'} spec={spec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.assignment.participants,
         section: 'participants',
       },
       {
         page: <TaskList type={'assignment'} spec={spec} />,
-        icon: <Puzzle color="var(--secondary)" />,
+        icon: <IconPuzzle color="var(--secondary)" />,
         title: locale.dashboard.assignment.tasks,
         section: 'tasks',
       },
@@ -165,7 +166,7 @@ const AssignmentDashboard: FC<{
         page: assignment && (
           <CreateNotification spec={assignment.spec} type={'assignment'} />
         ),
-        icon: <BellPlus color="var(--secondary)" />,
+        icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.assignment.createNotification,
         section: 'create_notifications',
       },
@@ -182,7 +183,7 @@ const AssignmentDashboard: FC<{
     {
       color: 'green',
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -193,7 +194,7 @@ const AssignmentDashboard: FC<{
     {
       color: 'red',
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

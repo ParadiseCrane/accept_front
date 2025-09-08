@@ -1,3 +1,4 @@
+'use client';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

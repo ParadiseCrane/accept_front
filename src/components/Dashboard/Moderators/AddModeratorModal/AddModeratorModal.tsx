@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Button, Modal, Select } from '@ui/basics';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
@@ -76,20 +77,20 @@ export const AddModeratorModal = ({
   }, []);
 
   const addModerator = useCallback(async () => {
-    if (user && group) {
+    if (user && group && pathParams) {
       await sendRequest<{}, {}>(
         `course_moderator/${pathParams.spec}/${user.value}/${group.value}`,
         'POST'
       );
     }
-  }, [user, group]);
+  }, [user, group, pathParams]);
 
   useEffect(() => {
     if (showModal) {
       fetchAllGroupsData();
       fetchUsersForGroup();
     }
-  }, [pathParams, showModal]);
+  }, [showModal, fetchAllGroupsData, fetchUsersForGroup]);
 
   return (
     <>

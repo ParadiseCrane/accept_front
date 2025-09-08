@@ -1,3 +1,4 @@
+'use client';
 import { Tooltip, TooltipProps } from '@mantine/core';
 import { FC, memo } from 'react';
 import styles from './tip.module.css';

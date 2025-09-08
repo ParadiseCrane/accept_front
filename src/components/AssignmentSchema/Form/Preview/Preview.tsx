@@ -1,3 +1,4 @@
+'use client';
 import Description from '@components/AssignmentSchema/Description/Description';
 import { FC, memo } from 'react';
 

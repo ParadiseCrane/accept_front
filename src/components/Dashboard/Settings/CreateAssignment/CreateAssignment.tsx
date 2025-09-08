@@ -1,3 +1,4 @@
+'use client';
 import { ITournament } from '@custom-types/data/ITournament';
 import { useLocale } from '@hooks/useLocale';
 import { useForm } from '@mantine/form';

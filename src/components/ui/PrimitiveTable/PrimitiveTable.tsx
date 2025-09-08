@@ -1,3 +1,4 @@
+'use client';
 import { FC, ReactNode, memo, useMemo } from 'react';
 
 import styles from './primitiveTable.module.css';

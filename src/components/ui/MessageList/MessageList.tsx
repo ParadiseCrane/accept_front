@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
 import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
 import { useLocale } from '@hooks/useLocale';

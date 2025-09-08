@@ -1,3 +1,4 @@
+'use client';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { Item, setter } from '@custom-types/ui/atomic';
 import {

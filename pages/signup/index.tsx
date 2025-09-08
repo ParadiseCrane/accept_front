@@ -1,3 +1,4 @@
+'use client';
 import { IOrganization } from '@custom-types/data/IOrganization';
 import { IRegUser } from '@custom-types/data/IUser';
 import { SelectItem } from '@custom-types/ui/atomic';
@@ -18,7 +19,11 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactElement, useCallback, useMemo } from 'react';
-import { AlignJustified, LetterCase, ShieldLock } from 'tabler-icons-react';
+import {
+  IconAlignJustified,
+  IconLetterCase,
+  IconShieldLock,
+} from '@tabler/icons-react';
 
 const stepFields = [
   ['login'],
@@ -166,9 +171,15 @@ function SignUp() {
         form={form}
         stepFields={stepFields}
         icons={[
-          <LetterCase key={0} style={{ width: rem(24), height: rem(24) }} />,
-          <ShieldLock key={1} style={{ width: rem(24), height: rem(24) }} />,
-          <AlignJustified
+          <IconLetterCase
+            key={0}
+            style={{ width: rem(24), height: rem(24) }}
+          />,
+          <IconShieldLock
+            key={1}
+            style={{ width: rem(24), height: rem(24) }}
+          />,
+          <IconAlignJustified
             key={2}
             style={{ width: rem(24), height: rem(24) }}
           />,

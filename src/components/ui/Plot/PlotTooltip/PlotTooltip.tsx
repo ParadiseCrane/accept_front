@@ -1,3 +1,4 @@
+'use client';
 import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
 
 import styles from './plotTooltip.module.css';

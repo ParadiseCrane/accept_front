@@ -1,3 +1,4 @@
+'use client';
 import { ILanguage } from '@custom-types/data/atomic';
 import { IAttempt } from '@custom-types/data/IAttempt';
 // @ts-ignore

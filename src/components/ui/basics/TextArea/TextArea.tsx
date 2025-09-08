@@ -1,3 +1,4 @@
+'use client';
 import { TextAreaProps } from '@custom-types/ui/basics/textArea';
 import { Textarea as MantineTextarea } from '@mantine/core';
 import inputStyles from '@styles/ui/input.module.css';

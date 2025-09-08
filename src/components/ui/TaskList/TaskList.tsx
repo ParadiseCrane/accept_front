@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ITaskListBundle } from '@custom-types/data/bundle';
 import { ITag } from '@custom-types/data/ITag';

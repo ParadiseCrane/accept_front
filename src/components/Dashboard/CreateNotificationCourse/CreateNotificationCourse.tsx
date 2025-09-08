@@ -1,3 +1,4 @@
+'use client';
 import { INewNotification } from '@custom-types/data/notification';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';
@@ -29,7 +30,7 @@ const CreateNotificationCourse: FC<{
   spec: string;
   type: string;
 }> = ({ spec, type }) => {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const [users, setUsers] = useState<IUserDisplay[] | null>(null);
@@ -103,13 +104,13 @@ const CreateNotificationCourse: FC<{
       (_: string) => '',
       notification
     );
-  }, [type, spec, form.values, user?.login, locale, lang]);
+  }, [type, spec, form, user?.login, locale, lang]);
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
-    if (params.has('group')) {
+    if (searchParams && searchParams.has('group')) {
       const response = await sendRequest<{}, IUserDisplay[]>(
-        `course/participant/${spec}/${params.get('group')}`,
+        `course/participant/${spec}/${searchParams.get('group')}`,
         'GET'
       );
       if (!response.error) {
@@ -120,7 +121,7 @@ const CreateNotificationCourse: FC<{
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
     setLoading(false);
-  }, [params, spec]);
+  }, [searchParams, spec]);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);

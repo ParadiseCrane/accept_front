@@ -2,12 +2,12 @@ import { projectHistory } from '@constants/History';
 import { Timeline } from '@ui/basics';
 import { FC, ReactNode, memo, useMemo } from 'react';
 import {
-  AppWindow,
-  ArrowUpRightCircle,
-  Bug,
-  Cheese,
-  CodePlus,
-} from 'tabler-icons-react';
+  IconAppWindow,
+  IconArrowUpRightCircle,
+  IconBug,
+  IconCheese,
+  IconCodePlus,
+} from '@tabler/icons-react';
 
 import styles from './projectHistory.module.css';
 
@@ -16,14 +16,14 @@ const iconSize = 30;
 const colors = ['', 'old-accept.0', 'blue'];
 
 const typeBullets: { [key: string]: ReactNode } = {
-  new: <CodePlus size={iconSize} />,
-  bugfix: <Bug size={iconSize} />,
+  new: <IconCodePlus size={iconSize} />,
+  bugfix: <IconBug size={iconSize} />,
 
-  update: <ArrowUpRightCircle size={iconSize} />,
+  update: <IconArrowUpRightCircle size={iconSize} />,
 
-  style: <AppWindow size={iconSize} />,
+  style: <IconAppWindow size={iconSize} />,
 
-  soon: <Cheese size={iconSize} />,
+  soon: <IconCheese size={iconSize} />,
 };
 
 const ProjectHistory: FC<{}> = () => {

@@ -1,3 +1,4 @@
+'use client';
 import { ICourseListItem } from '@custom-types/data/ICourse';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -9,7 +10,7 @@ import CourseList from '@ui/CourseList/CourseList';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import Title from '@ui/Title/Title';
 import { ReactNode } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
@@ -77,7 +78,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
 
 const refactorCourse = (course: ICourseListItem): any => ({
   lastChange: {
-    value: course.date,
+    value: course.last_update,
     display: (
       <div className={tableStyles.titleWrapper}>{course.dateFormatted}</div>
     ),
@@ -98,9 +99,7 @@ const refactorCourse = (course: ICourseListItem): any => ({
   },
   numOfModules: {
     value: course.author,
-    display: (
-      <div className={tableStyles.titleWrapper}>{course.numOfModules}</div>
-    ),
+    display: <div className={tableStyles.titleWrapper}>{course.amount}</div>,
   },
 });
 
@@ -119,7 +118,7 @@ function CourseListPage() {
         <SingularSticky
           color="var(--positive)"
           href={`/course/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.course.add}
         />
       )}

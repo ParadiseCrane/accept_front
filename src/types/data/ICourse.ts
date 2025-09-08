@@ -34,6 +34,7 @@ export interface IUnitAddEdit {
   description: string;
   kind: 'unit';
   children: IBaseTreeUnit[];
+  image: '';
 }
 
 export interface ICourse {
@@ -64,16 +65,24 @@ export interface ILesson extends Omit<IUnit, 'kind'> {
 export interface ILessonEditBundle {
   lesson: ILesson;
   tags: ITag[];
-  assessmentTypes: IAssessmentType[];
+  assessment_types: IAssessmentType[];
+}
+
+export interface ILessonEditSend {
+  spec: string;
+  title: string;
+  description: string;
+  tasks: string[];
+  tags: string[];
 }
 
 export interface ICourseListItem {
   author: string;
   spec: string;
   title: string;
-  date: Date;
+  last_update: Date;
   dateFormatted: string;
-  numOfModules: number;
+  amount: number;
 }
 
 export interface ICourseGroupPair {

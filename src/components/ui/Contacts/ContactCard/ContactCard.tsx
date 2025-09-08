@@ -1,3 +1,4 @@
+'use client';
 import { IContactCard } from '@custom-types/ui/IContactCard';
 import Link from 'next/link';
 import { FC, memo } from 'react';

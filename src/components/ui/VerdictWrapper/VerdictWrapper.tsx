@@ -1,3 +1,4 @@
+'use client';
 import { IAttemptStatus, IVerdict } from '@custom-types/data/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Tip } from '@ui/basics';

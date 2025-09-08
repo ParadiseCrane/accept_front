@@ -1,3 +1,4 @@
+'use client';
 import { ITask } from '@custom-types/data/ITask';
 import { sendRequest } from '@requests/request';
 import ComponentToPDF from '@ui/ComponentToPDF/ComponentToPDF';

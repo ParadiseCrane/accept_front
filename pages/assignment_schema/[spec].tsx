@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
 import Description from '@components/AssignmentSchema/Description/Description';
 import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
@@ -8,7 +9,7 @@ import Title from '@ui/Title/Title';
 import { fetchWrapperStatic } from '@utils/fetchWrapper';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useMemo, useState } from 'react';
-import { Pencil, Trash } from 'tabler-icons-react';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
 
 function AssignmentSchema(props: {
   schema: IAssignmentSchema;
@@ -27,7 +28,7 @@ function AssignmentSchema(props: {
             {
               color: 'green',
               href: `/assignment_schema/edit/${assignmentSchema.spec}`,
-              icon: <Pencil height={20} width={20} />,
+              icon: <IconPencil height={20} width={20} />,
               description: locale.tip.sticky.assignmentSchema.edit,
             },
             {
@@ -35,13 +36,13 @@ function AssignmentSchema(props: {
               onClick: () => {
                 setOpenModal(true);
               },
-              icon: <Trash height={20} width={20} />,
+              icon: <IconTrash height={20} width={20} />,
               description: locale.tip.sticky.assignmentSchema.delete,
             },
           ]
         : [],
 
-    [hasWriteRights]
+    [hasWriteRights, assignmentSchema, locale]
   );
 
   return (

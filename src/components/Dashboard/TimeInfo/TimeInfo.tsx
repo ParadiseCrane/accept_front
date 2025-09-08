@@ -1,3 +1,4 @@
+'use client';
 import CustomTimeModal from '@components/Dashboard/TimeInfo/CustomTimeModal/CustomTimeModal';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { useLocale } from '@hooks/useLocale';

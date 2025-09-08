@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo } from 'react';
 
 const Row: FC<{
@@ -19,8 +20,8 @@ const Row: FC<{
               ? row[key].display
               : row[key]
             : row[key] === 0
-            ? 0
-            : '-'}
+              ? 0
+              : '-'}
         </td>
       ))}
     </tr>

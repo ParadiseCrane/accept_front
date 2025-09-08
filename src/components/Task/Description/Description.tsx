@@ -1,3 +1,4 @@
+'use client';
 import { ITask } from '@custom-types/data/ITask';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -7,7 +8,7 @@ import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
 import CopyButton from '@ui/CopyButton/CopyButton';
 import TagList from '@ui/TagList/TagList';
 import { FC, memo, useEffect } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './description.module.css';
 import { IconUsersGroup } from '@tabler/icons-react';
@@ -67,7 +68,7 @@ const Description: FC<{
 
       {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
-          <AlertCircle color={'var(--negative)'} />
+          <IconAlertCircle color={'var(--negative)'} />
 
           <div className={styles.alert}>
             {locale.task.description.languagesRestrictions}

@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { ICourseListItem } from '@custom-types/data/ICourse';
 import { BaseSearch } from '@custom-types/data/request';
@@ -36,8 +37,8 @@ const refactorData = (
   const dayMonth = new Intl.DateTimeFormat(lang === 'ru' ? 'ru-RU' : 'en-US', {
     day: 'numeric',
     month: 'long',
-  }).format(new Date(course.date));
-  return `${dayMonth} ${new Date(course.date).getFullYear()}`;
+  }).format(new Date(course.last_update));
+  return `${dayMonth} ${new Date(course.last_update).getFullYear()}`;
 };
 
 const CourseList: FC<{
@@ -85,7 +86,7 @@ const CourseList: FC<{
         )
         .map((item) => refactorCourse(item));
     },
-    [refactorCourse]
+    [lang, refactorCourse]
   );
 
   const { data, loading } = useRequest<{}, ICourseListItem[], ICourseItem[]>(

@@ -1,3 +1,4 @@
+'use client';
 import { IParticipant } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
 import { BanModal } from '@ui/modals';

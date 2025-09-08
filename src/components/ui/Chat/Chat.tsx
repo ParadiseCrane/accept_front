@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { useLocale } from '@hooks/useLocale';
@@ -8,7 +9,7 @@ import { sendRequest } from '@requests/request';
 import { Icon } from '@ui/basics';
 import { getLocalDate } from '@utils/datetime';
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Send } from 'tabler-icons-react';
+import { IconSend } from '@tabler/icons-react';
 
 import styles from './chat.module.css';
 
@@ -197,7 +198,7 @@ const Chat: FC<{
           color="var(--primary)"
           wrapperClassName={styles.iconWrapper}
         >
-          <Send />
+          <IconSend />
         </Icon>
       </div>
     </div>

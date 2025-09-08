@@ -1,3 +1,4 @@
+'use client';
 import { MAX_TEST_LENGTH } from '@constants/Limits';
 import {
   ITaskCheckType,

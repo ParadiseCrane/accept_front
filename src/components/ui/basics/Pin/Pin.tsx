@@ -1,3 +1,4 @@
+'use client';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import {

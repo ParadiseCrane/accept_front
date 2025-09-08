@@ -1,3 +1,4 @@
+'use client';
 import Form from '@components/Notification/Form/Form';
 import { IRole } from '@custom-types/data/atomic';
 import { IGroup } from '@custom-types/data/IGroup';

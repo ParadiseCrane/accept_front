@@ -1,3 +1,5 @@
+'use client';
+
 import { ICON_SIZES } from '@constants/Sizes';
 import { IWidth } from '@custom-types/ui/atomic';
 import { MyIconProps } from '@custom-types/ui/basics/icon';

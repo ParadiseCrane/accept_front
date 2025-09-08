@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { callback } from '@custom-types/ui/atomic';

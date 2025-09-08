@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { useUser } from '@hooks/useUser';
@@ -6,7 +7,7 @@ import { useClickOutside } from '@mantine/hooks';
 import { Icon, Indicator } from '@ui/basics';
 import Chat from '@ui/Chat/Chat';
 import { FC, memo, useCallback, useState } from 'react';
-import { MessageCircle2 } from 'tabler-icons-react';
+import { IconMessageCircle2 } from '@tabler/icons-react';
 
 import styles from './chatSticky.module.css';
 
@@ -62,7 +63,7 @@ const ChatSticky: FC<{
             zIndex={100}
             blink
           >
-            <MessageCircle2 color="white" />
+            <IconMessageCircle2 color="white" />
           </Indicator>
         </Icon>
       </Affix>

@@ -1,3 +1,4 @@
+'use client';
 import { IActivityData } from '@custom-types/data/atomic';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { sendRequest } from '@requests/request';

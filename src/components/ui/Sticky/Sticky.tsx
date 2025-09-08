@@ -1,10 +1,11 @@
+'use client';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { pureCallback, setter } from '@custom-types/ui/atomic';
 import { useWidth } from '@hooks/useWidth';
 import { ActionIcon, Affix, Transition } from '@mantine/core';
 import { useClickOutside } from '@mantine/hooks';
 import { FC, ReactNode, memo, useState } from 'react';
-import { DotsVertical, X } from 'tabler-icons-react';
+import { IconDotsVertical, IconX } from '@tabler/icons-react';
 
 import ActionButton from './ActionButton/ActionButton';
 import styles from './sticky.module.css';
@@ -48,13 +49,16 @@ const Sticky: FC<{
         style={{ backgroundColor: color || 'var(--secondary)' }}
       >
         {!visible && (
-          <DotsVertical
+          <IconDotsVertical
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
         )}
         {visible && (
-          <X width={STICKY_SIZES[width] / 3} height={STICKY_SIZES[width] / 3} />
+          <IconX
+            width={STICKY_SIZES[width] / 3}
+            height={STICKY_SIZES[width] / 3}
+          />
         )}
       </ActionIcon>
     </Affix>

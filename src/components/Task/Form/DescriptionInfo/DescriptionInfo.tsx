@@ -1,3 +1,4 @@
+'use client';
 import { IHintAlarmType } from '@custom-types/data/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { CustomEditor, NumberInput, Radio } from '@ui/basics';

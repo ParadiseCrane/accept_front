@@ -1,3 +1,4 @@
+'use client';
 import DeveloperDashboard from '@components/DeveloperDashboard/DeveloperDashboard';
 import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';

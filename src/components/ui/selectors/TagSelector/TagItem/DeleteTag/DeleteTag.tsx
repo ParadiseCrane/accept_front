@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@custom-types/ui/atomic';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -7,7 +8,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 const DeleteTag: FC<{
   item: Item;
@@ -44,7 +45,7 @@ const DeleteTag: FC<{
         color="red"
         size="xs"
       >
-        <Trash color="red" />
+        <IconTrash color="red" />
       </Icon>
       <SimpleModal
         opened={opened}

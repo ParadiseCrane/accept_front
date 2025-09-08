@@ -1,3 +1,4 @@
+'use client';
 import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

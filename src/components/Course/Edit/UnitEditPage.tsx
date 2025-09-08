@@ -1,23 +1,21 @@
+'use client';
 import { Wrapper } from '@components/Course/Wrapper/Wrapper';
 import { IBaseTreeUnit, IUnit, IUnitAddEdit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
 import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
 import { courseFormUtils } from '@utils/courseFormUtils';
 import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { memo, useCallback } from 'react';
 import UnitForm from '../Form/UnitForm';
 
-function UnitEditPage(props: { course: IUnit; depth: number }) {
+function UnitEditPage(props: { unit: IUnit; depth: number }) {
   const { locale, lang } = useLocale();
-  const { user } = useUser();
   const initialValues = courseFormUtils.getInitialValuesEditUnit({
-    title: props.course.title,
-    description: props.course.description,
-    children: props.course.children ?? [],
-    kind: props.course.kind,
+    title: props.unit.title,
+    description: props.unit.description,
+    children: props.unit.children ?? [],
+    kind: props.unit.kind,
   });
 
   const router = useRouter();
@@ -61,11 +59,12 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
       const courseToSend: IUnitAddEdit = {
         ...course,
         children: emptyChildren,
-        kind: props.course.kind,
+        kind: props.unit.kind,
+        image: '',
       };
 
       requestWithNotify<IUnitAddEdit, string>(
-        `course/put/${props.course.spec}`,
+        `course/put/${props.unit.spec}`,
         'PUT',
         locale.notify.course.edit,
         lang,
@@ -73,16 +72,15 @@ function UnitEditPage(props: { course: IUnit; depth: number }) {
         courseToSend
       ).then((res) => {
         if (!res.error) {
-          router.push('/courses');
+          router.push('/course/list');
         }
       });
     },
-    [lang, locale, router, user?.login]
+    [lang, locale, router, props]
   );
 
   return (
     <Wrapper>
-      <Title title={locale.titles.course.edit} />
       <UnitForm
         handleSubmit={handleSubmit}
         initialValues={initialValues}

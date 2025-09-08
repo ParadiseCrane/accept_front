@@ -1,3 +1,4 @@
+'use client';
 import Profile from '@components/Profile/Profile';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
 import { useLocale } from '@hooks/useLocale';

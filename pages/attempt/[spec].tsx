@@ -1,3 +1,4 @@
+'use client';
 import BanModal from '@components/Attempt/BanModals/BanModal';
 import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
 import Code from '@components/Attempt/Code/Code';
@@ -16,6 +17,13 @@ import { getCookieValue } from '@utils/cookies';
 import { getApiUrl } from '@utils/getServerUrl';
 import { GetServerSideProps } from 'next';
 import { ReactNode, useMemo } from 'react';
+
+function uuidToNumber(uuid: string): number {
+  const clean = uuid.replace(/-/g, '');
+  const hashInt = parseInt(clean.slice(0, 12), 16);
+
+  return (hashInt % 14) + 3;
+}
 
 function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
@@ -111,8 +119,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         attempt: {
           ...res,
-          // TODO убрать после привязки бэка
-          ai_generated: Math.round(Math.random() * (99 - 60) + 60),
+          // TODO mocked method убрать после привязки бэка
+          ai_generated: uuidToNumber(res.spec),
           training: true,
         } as IAttempt,
       },

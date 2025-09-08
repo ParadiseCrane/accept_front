@@ -1,3 +1,4 @@
+'use client';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -51,30 +52,29 @@ const MainInfo: FC<{
         label={locale.course.lesson.form.description}
         form={form}
         name={'description'}
+        required
       />
       <TagSelector
         initialTags={initialTags}
         setUsed={setUsed}
-        // TODO mocked method
-        // fetchURL={'lesson_tag/list'}
-        // addURL={'lesson_tag/add'}
-        // updateURL={'lesson_tag/edit'}
-        // deleteURL={'lesson_tag/delete'}
-        fetchURL={'tournament_tag/list'}
-        addURL={'tournament_tag/add'}
-        updateURL={'tournament_tag/edit'}
-        deleteURL={'tournament_tag/delete'}
+        fetchURL={'lesson_tag/list'}
+        addURL={'lesson_tag/add'}
+        updateURL={'lesson_tag/edit'}
+        deleteURL={'lesson_tag/delete'}
         form={form}
         field={'tags'}
         width="80%"
       />
-      <Radio
-        label={locale.tournament.form.assessmentType.title}
-        field={'assessmentType'}
-        form={form}
-        items={assessmentTypeItems}
-        onChange={handlerAssessmentType}
-      />
+      {assessmentTypeItems.length > 1 && (
+        <Radio
+          label={locale.tournament.form.assessmentType.title}
+          field={'assessmentType'}
+          form={form}
+          items={assessmentTypeItems}
+          onChange={handlerAssessmentType}
+          required
+        />
+      )}
     </>
   );
 };

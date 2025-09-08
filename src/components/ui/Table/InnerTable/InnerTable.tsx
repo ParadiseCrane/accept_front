@@ -1,3 +1,4 @@
+'use client';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import { FC, memo, useMemo } from 'react';
 

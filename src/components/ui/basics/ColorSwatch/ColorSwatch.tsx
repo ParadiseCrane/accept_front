@@ -1,3 +1,4 @@
+'use client';
 import {
   ColorSwatch as ColorSwatchCheckbox,
   ColorSwatchProps,

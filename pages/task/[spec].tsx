@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Task/DeleteModal/DeleteModal';
 import Description from '@components/Task/Description/Description';
 import { STICKY_SIZES } from '@constants/Sizes';
@@ -24,7 +25,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye, Notes, Pencil, Trash } from 'tabler-icons-react';
+import { IconEye, IconNotes, IconPencil, IconTrash } from '@tabler/icons-react';
 
 const DynamicSend = dynamic(() => import('@components/Task/Send/Send'), {
   ssr: false,
@@ -43,6 +44,7 @@ function Task(props: {
   languages: ILanguage[];
   has_write_rights: boolean;
   has_read_tests_rights: boolean;
+  homeHref: string | null;
 }) {
   const task = props.task;
   const languages = props.languages;
@@ -119,7 +121,7 @@ function Task(props: {
       inner_actions.push({
         color: 'var(--accent)',
         icon: (
-          <Eye
+          <IconEye
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -133,7 +135,7 @@ function Task(props: {
         color: 'blue',
         href: `/task/tests/${task.spec}`,
         icon: (
-          <Notes
+          <IconNotes
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -148,7 +150,7 @@ function Task(props: {
           color: 'green',
           href: `/task/edit/${task.spec}`,
           icon: (
-            <Pencil
+            <IconPencil
               width={STICKY_SIZES[width] / 3}
               height={STICKY_SIZES[width] / 3}
             />
@@ -158,7 +160,7 @@ function Task(props: {
         {
           color: 'red',
           icon: (
-            <Trash
+            <IconTrash
               width={STICKY_SIZES[width] / 3}
               height={STICKY_SIZES[width] / 3}
             />
@@ -190,13 +192,13 @@ function Task(props: {
           <TasksBar
             currentTask={task.spec}
             tasks={tasks}
-            homeHref={`/${type}/${querySpec}`}
+            homeHref={props.homeHref ?? `/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
           {user && (
             <ChatSticky entity={type} spec={querySpec} host={user.login} />
           )}
-          <Timer url={`${type}/info/${querySpec}`} />
+          {type !== 'lesson' && <Timer url={`${type}/info/${querySpec}`} />}
         </>
       )}
 
@@ -304,12 +306,19 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (response.status === 200) {
     const response_json = await response.json();
 
+    let homeHref = null;
+
+    if (query.course && query.lesson) {
+      homeHref = `/course/${query.course}?item=${query.lesson}`;
+    }
+
     return {
       props: {
         task: response_json.task,
         languages: response_json.languages,
         has_write_rights: response_json.has_write_rights,
         has_read_tests_rights: response_json.has_read_tests_rights,
+        homeHref,
       },
     };
   }

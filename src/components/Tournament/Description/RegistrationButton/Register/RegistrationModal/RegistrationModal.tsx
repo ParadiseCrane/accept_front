@@ -1,3 +1,4 @@
+'use client';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
 import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
 import { pureCallback, setter } from '@custom-types/ui/atomic';

@@ -1,3 +1,4 @@
+'use client';
 import { ITournament } from '@custom-types/data/ITournament';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

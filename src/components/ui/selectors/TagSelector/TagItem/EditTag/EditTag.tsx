@@ -1,3 +1,4 @@
+'use client';
 import { ITag } from '@custom-types/data/ITag';
 import { Item } from '@custom-types/ui/atomic';
 import { pureCallback } from '@custom-types/ui/atomic';
@@ -8,7 +9,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Pencil } from 'tabler-icons-react';
+import { IconPencil } from '@tabler/icons-react';
 
 const EditTag: FC<{
   item: Item;
@@ -60,7 +61,7 @@ const EditTag: FC<{
         );
       }
     },
-    [validate, updateURL, locale.tag.edit, lang, item.spec, refetch]
+    [validate, updateURL, locale, lang, item, refetch]
   );
 
   return (
@@ -71,7 +72,7 @@ const EditTag: FC<{
         color="var(--primary)"
         size="xs"
       >
-        <Pencil color="var(--primary)" />
+        <IconPencil color="var(--primary)" />
       </Icon>
       <SimpleModal
         opened={opened}

@@ -1,13 +1,14 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIconGroup, Group } from '@mantine/core';
 import { Icon, Select } from '@ui/basics';
 import { FC, memo, useMemo } from 'react';
 import {
-  ArrowNarrowLeft,
-  ArrowNarrowRight,
-  ChevronLeft,
-  ChevronRight,
-} from 'tabler-icons-react';
+  IconArrowNarrowLeft,
+  IconArrowNarrowRight,
+  IconChevronLeft,
+  IconChevronRight,
+} from '@tabler/icons-react';
 
 import styles from './table.module.css';
 
@@ -71,7 +72,7 @@ const PageNavigation: FC<{
                   disabled={page == 0}
                   onClick={() => handlePageChange(0)}
                 >
-                  <ArrowNarrowLeft />
+                  <IconArrowNarrowLeft />
                 </Icon>
                 <Icon
                   color="gray"
@@ -79,7 +80,7 @@ const PageNavigation: FC<{
                   size="xs"
                   onClick={() => handlePageChange(Math.max(page - 1, 0))}
                 >
-                  <ChevronLeft />
+                  <IconChevronLeft />
                 </Icon>
               </ActionIconGroup>
               <div>
@@ -95,7 +96,7 @@ const PageNavigation: FC<{
                   disabled={page == lastPage}
                   onClick={() => handlePageChange(Math.min(page + 1, lastPage))}
                 >
-                  <ChevronRight />
+                  <IconChevronRight />
                 </Icon>
                 <Icon
                   color="gray"
@@ -103,7 +104,7 @@ const PageNavigation: FC<{
                   disabled={page == lastPage}
                   onClick={() => handlePageChange(lastPage)}
                 >
-                  <ArrowNarrowRight />
+                  <IconArrowNarrowRight />
                 </Icon>
               </ActionIconGroup>
             </Group>

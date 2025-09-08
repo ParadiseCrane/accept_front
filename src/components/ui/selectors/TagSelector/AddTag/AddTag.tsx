@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';
@@ -6,7 +7,7 @@ import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 
 const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
   refetch,
@@ -55,7 +56,7 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
   return (
     <>
       <Icon onClick={() => setOpened(true)} size="sm">
-        <Plus color="var(--positive)" />
+        <IconPlus color="var(--positive)" />
       </Icon>
       <SimpleModal
         opened={opened}

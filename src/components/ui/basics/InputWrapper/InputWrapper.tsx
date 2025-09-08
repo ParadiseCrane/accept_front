@@ -1,3 +1,4 @@
+'use client';
 import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
 import { Input as MantineInput } from '@mantine/core';
 import inputStyles from '@styles/ui/input.module.css';

@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@custom-types/ui/atomic';
 import { TaskSelector } from '@ui/selectors';
 import { FC, memo, useCallback } from 'react';

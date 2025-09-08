@@ -1,15 +1,16 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import {
-  ChevronDown,
-  H1,
-  H2,
-  H3,
-  H4,
-  Heading as HeadingIcon,
-} from 'tabler-icons-react';
+  IconChevronDown,
+  IconH1,
+  IconH2,
+  IconH3,
+  IconH4,
+  IconHeading as HeadingIcon,
+} from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -52,7 +53,7 @@ export const HeadingsGroupCollapsed = ({
             title={locale.tiptap.headings}
           >
             <HeadingIcon size={'1.2rem'} style={{ stroke: '#444746' }} />
-            <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
+            <IconChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
         <HoverCard.Dropdown>
@@ -79,7 +80,7 @@ const ToggleHeading1 = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.heading1}
       title={locale.tiptap.heading1}
     >
-      <IconWrapper isActive={isActive} IconChild={H1} />
+      <IconWrapper isActive={isActive} IconChild={IconH1} />
     </RichTextEditor.Control>
   );
 };
@@ -97,7 +98,7 @@ const ToggleHeading2 = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.heading2}
       title={locale.tiptap.heading2}
     >
-      <IconWrapper isActive={isActive} IconChild={H2} />
+      <IconWrapper isActive={isActive} IconChild={IconH2} />
     </RichTextEditor.Control>
   );
 };
@@ -115,7 +116,7 @@ const ToggleHeading3 = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.heading3}
       title={locale.tiptap.heading3}
     >
-      <IconWrapper isActive={isActive} IconChild={H3} />
+      <IconWrapper isActive={isActive} IconChild={IconH3} />
     </RichTextEditor.Control>
   );
 };
@@ -133,7 +134,7 @@ const ToggleHeading4 = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.heading4}
       title={locale.tiptap.heading4}
     >
-      <IconWrapper isActive={isActive} IconChild={H4} />
+      <IconWrapper isActive={isActive} IconChild={IconH4} />
     </RichTextEditor.Control>
   );
 };

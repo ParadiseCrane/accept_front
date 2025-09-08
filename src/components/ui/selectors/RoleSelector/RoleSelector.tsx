@@ -1,3 +1,4 @@
+'use client';
 import { IRole } from '@custom-types/data/atomic';
 import {
   ICustomTransferListData,

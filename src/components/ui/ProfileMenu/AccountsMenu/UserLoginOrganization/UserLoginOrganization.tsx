@@ -1,3 +1,4 @@
+'use client';
 import React, { FC, memo } from 'react';
 
 import styles from './userLoginOrganization.module.css';

@@ -1,3 +1,4 @@
+'use client';
 import NotificationList from '@components/Notification/List/NotificationList';
 import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
@@ -20,13 +21,13 @@ import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { useRouter } from 'next/router';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
 import {
-  AlignRight,
-  BellPlus,
-  BellRinging,
-  Chalkboard,
-  Robot,
-  Settings as SettingsIcon,
-} from 'tabler-icons-react';
+  IconAlignRight,
+  IconBellPlus,
+  IconBellRinging,
+  IconChalkboard,
+  IconRobot,
+  IconSettings as SettingsIcon,
+} from '@tabler/icons-react';
 
 import styles from './profile.module.css';
 
@@ -58,7 +59,7 @@ const getLinks = ({
               rating_info={rating_info}
             />
           ),
-          icon: <Robot color="var(--secondary)" />,
+          icon: <IconRobot color="var(--secondary)" />,
           title: locale.profile.profile,
           section: 'profile',
         },
@@ -66,7 +67,7 @@ const getLinks = ({
           page: <NotificationList />,
           icon: (
             <Indicator disabled={unviewed <= 0} size={8}>
-              <BellRinging color="var(--secondary)" />
+              <IconBellRinging color="var(--secondary)" />
             </Indicator>
           ),
           title: locale.profile.notification,
@@ -74,19 +75,19 @@ const getLinks = ({
         },
         {
           page: <AssignmentList />,
-          icon: <Chalkboard color="var(--secondary)" />,
+          icon: <IconChalkboard color="var(--secondary)" />,
           title: locale.profile.assignments,
           section: 'assignments',
         },
         {
           page: <AttemptListProfile />,
-          icon: <AlignRight color="var(--secondary)" />,
+          icon: <IconAlignRight color="var(--secondary)" />,
           title: locale.profile.attempts,
           section: 'attempts',
         },
         {
           page: <CreateNotification />,
-          icon: <BellPlus color="var(--secondary)" />,
+          icon: <IconBellPlus color="var(--secondary)" />,
           title: locale.profile.createNotification,
           section: 'create_notification',
         },
@@ -107,7 +108,7 @@ const getLinks = ({
               rating_info={rating_info}
             />
           ),
-          icon: <Robot color="var(--secondary)" />,
+          icon: <IconRobot color="var(--secondary)" />,
           title: locale.profile.profile,
           section: 'profile',
         },
@@ -115,7 +116,7 @@ const getLinks = ({
           page: <NotificationList />,
           icon: (
             <Indicator disabled={unviewed <= 0} size={8}>
-              <BellRinging color="var(--secondary)" />
+              <IconBellRinging color="var(--secondary)" />
             </Indicator>
           ),
           title: locale.profile.notification,
@@ -123,13 +124,13 @@ const getLinks = ({
         },
         {
           page: <AssignmentList />,
-          icon: <Chalkboard color="var(--secondary)" />,
+          icon: <IconChalkboard color="var(--secondary)" />,
           title: locale.profile.assignments,
           section: 'assignments',
         },
         {
           page: <AttemptListProfile />,
-          icon: <AlignRight color="var(--secondary)" />,
+          icon: <IconAlignRight color="var(--secondary)" />,
           title: locale.profile.attempts,
           section: 'attempts',
         },

@@ -1,3 +1,4 @@
+'use client';
 import { IRole } from '@custom-types/data/atomic';
 import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';

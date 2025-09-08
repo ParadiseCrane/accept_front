@@ -1,3 +1,4 @@
+'use client';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { Button } from '@ui/basics';

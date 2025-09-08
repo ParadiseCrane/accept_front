@@ -1,3 +1,4 @@
+'use client';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -13,7 +14,7 @@ import Title from '@ui/Title/Title';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { IconPlus } from '@tabler/icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -182,7 +183,7 @@ function TaskListPage() {
       {isTeacher && (
         <SingularSticky
           href={`/task/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.task.add}
         />
       )}

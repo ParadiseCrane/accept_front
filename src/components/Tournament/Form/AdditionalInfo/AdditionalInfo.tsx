@@ -1,3 +1,4 @@
+'use client';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { ISecurity } from '@custom-types/data/ITournament';
 import { useLocale } from '@hooks/useLocale';

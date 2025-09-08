@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { ConfirmModal } from '@ui/modals';
 import { requestWithError } from '@utils/requestWithError';

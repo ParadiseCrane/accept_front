@@ -1,3 +1,4 @@
+'use client';
 import { Item } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { CustomEditor, NumberInput, Switch, TextInput } from '@ui/basics';

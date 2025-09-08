@@ -1,7 +1,8 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Strikethrough } from 'tabler-icons-react';
+import { IconStrikethrough } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -16,7 +17,7 @@ export const ToggleStrikethrough = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.striketrough}
       title={locale.tiptap.striketrough}
     >
-      <IconWrapper isActive={isActive} IconChild={Strikethrough} />
+      <IconWrapper isActive={isActive} IconChild={IconStrikethrough} />
     </RichTextEditor.Control>
   );
 };

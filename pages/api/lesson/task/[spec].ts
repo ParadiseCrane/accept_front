@@ -5,7 +5,6 @@ export default async function AddLessonTask(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // TODO mocked method
   await fetchWrapper({
     req: req,
     res: res,

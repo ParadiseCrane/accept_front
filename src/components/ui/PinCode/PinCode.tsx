@@ -1,9 +1,10 @@
+'use client';
 import { PIN_LENGTH } from '@constants/TournamentSecurity';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import { CopyIcon, Icon, Pin } from '@ui/basics';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Refresh } from 'tabler-icons-react';
+import { IconRefresh } from '@tabler/icons-react';
 
 import styles from './pinCode.module.css';
 
@@ -59,7 +60,7 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
             color="var(--primary)"
             onClick={refreshPin}
           >
-            <Refresh />
+            <IconRefresh />
           </Icon>
         </div>
       }

@@ -1,9 +1,10 @@
+'use client';
 import { IGroup } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import { Button, Icon, MultiSelect, NumberInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+import { IconTrash } from '@tabler/icons-react';
 
 import styles from './addGrades.module.css';
 
@@ -100,7 +101,7 @@ const AddGrades: FC<{}> = () => {
               onChange={setLetters(index)}
             />
             <Icon onClick={onDelete(index)} size="xs">
-              <Trash color="var(--negative)" />
+              <IconTrash color="var(--negative)" />
             </Icon>
           </div>
         ))}

@@ -1,3 +1,4 @@
+'use client';
 import ProjectHistory from '@components/ProjectHistory/ProjectHistory';
 import Contacts from '@ui/Contacts/Contacts';
 import { FC, memo } from 'react';

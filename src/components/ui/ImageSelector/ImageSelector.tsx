@@ -1,10 +1,11 @@
+'use client';
 import { ICourseAddEdit } from '@custom-types/data/ICourse';
 import { IImagePreset } from '@custom-types/data/IImagePreset';
 import { useRequest } from '@hooks/useRequest';
 import { Box, SimpleGrid } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import PresetSingleSelect from '@ui/selectors/PresetSingleSelect/PresetSingleSelect';
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
 import { ImageComponent } from './ImageComponent/ImageComponent';
 import { sendRequest } from '@requests/request';
 import { useLocale } from '@hooks/useLocale';
@@ -15,7 +16,7 @@ const ImageSelector: FC<{
     (values: ICourseAddEdit) => ICourseAddEdit
   >;
 }> = ({ form }) => {
-  const emptyImageList = ['', '', '', '', '', ''];
+  const emptyImageList = useMemo(() => ['', '', '', '', '', ''], []);
   const [presets, setPresets] = useState<IImagePreset[]>([]);
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
   const [images, setImages] = useState<string[]>(emptyImageList);
@@ -30,6 +31,10 @@ const ImageSelector: FC<{
       setCurrentPreset((allPresets as IImagePreset[])[0]);
     }
   }, [allPresets]);
+
+  useEffect(() => {
+    setImages(emptyImageList);
+  }, [currentPreset, emptyImageList]);
 
   useEffect(() => {
     if (currentPreset) {
@@ -63,7 +68,7 @@ const ImageSelector: FC<{
         }
       );
     }
-  }, [currentPreset]);
+  }, [currentPreset, emptyImageList, form.values.image]);
 
   return (
     <Box>
@@ -86,7 +91,7 @@ const ImageSelector: FC<{
               }
             }}
             active={form.values.image === item}
-            key={index}
+            key={`${item} ${index}`}
           />
         ))}
       </SimpleGrid>

@@ -1,3 +1,4 @@
+'use client';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { useLocale } from '@hooks/useLocale';
 import stepperStyles from '@styles/ui/stepper.module.css';

@@ -1,3 +1,4 @@
+'use client';
 import { FC, memo, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import { IAIHint, IAttempt } from '@custom-types/data/IAttempt';

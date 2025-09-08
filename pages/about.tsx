@@ -1,3 +1,4 @@
+'use client';
 import About from '@components/About/About';
 import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';

@@ -1,3 +1,4 @@
+'use client';
 import { Menu } from '@mantine/core';
 import { LoadingOverlay } from '@ui/basics';
 import { FC, memo, useCallback, useState } from 'react';

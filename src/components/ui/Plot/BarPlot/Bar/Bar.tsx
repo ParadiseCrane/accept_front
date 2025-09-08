@@ -1,3 +1,4 @@
+'use client';
 import { callback } from '@custom-types/ui/atomic';
 import { IPlotData } from '@custom-types/ui/IPlot';
 import { FC, ReactNode, memo, useCallback } from 'react';
@@ -32,7 +33,7 @@ const Bar: FC<{
   const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
     () => setTooltipLabel(hoverLabel(data)),
-    [setTooltipLabel, data.amount]
+    [setTooltipLabel, data, hoverLabel]
   );
   const onLeave = useCallback(
     () => setTooltipLabel(undefined),

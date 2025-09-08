@@ -1,9 +1,10 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import { getCookie } from '@utils/cookies';
 import { useId, useState } from 'react';
-import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
+import { IconPhotoSearch, IconPhotoUp } from '@tabler/icons-react';
 
 import { imageInsertFunction } from '../TipTapEditor';
 import styles from '../TipTapEditor.module.css';
@@ -84,7 +85,7 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
         style={{ display: 'flex', flexDirection: 'column' }}
         className={styles.upload_image}
       >
-        <IconWrapper isActive={false} IconChild={PhotoUp} />
+        <IconWrapper isActive={false} IconChild={IconPhotoUp} />
       </label>
       <input
         type="file"
@@ -118,7 +119,7 @@ export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
         aria-label={locale.tiptap.imageURL}
         title={locale.tiptap.imageURL}
       >
-        <IconWrapper isActive={false} IconChild={PhotoSearch} />
+        <IconWrapper isActive={false} IconChild={IconPhotoSearch} />
       </RichTextEditor.Control>
       {show && (
         <ImageUrlModal

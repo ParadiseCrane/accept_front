@@ -1,3 +1,4 @@
+'use client';
 import tableStyles from '@styles/ui/customTable.module.css';
 import styles from './styles.module.css';
 import { useClipboard } from '@mantine/hooks';
@@ -43,7 +44,7 @@ export const LinkCopy: FC<{
         autoClose: 5000,
       });
     },
-    [invite]
+    [clipboard, locale]
   );
 
   return (

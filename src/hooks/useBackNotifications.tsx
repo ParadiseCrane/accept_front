@@ -1,3 +1,5 @@
+'use client';
+
 import { INotification } from '@custom-types/data/notification';
 import { sendRequest } from '@requests/request';
 import {

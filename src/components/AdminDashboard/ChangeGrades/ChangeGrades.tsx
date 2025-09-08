@@ -1,3 +1,4 @@
+'use client';
 import {
   IGradeChange,
   IGradeChangeResponse,
@@ -19,7 +20,7 @@ import {
 } from '@utils/notificationFunctions';
 import { getAddUserData } from '@utils/readExcel';
 import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './changeGrades.module.css';
 
@@ -122,7 +123,7 @@ const ChangeGrades: FC<{}> = () => {
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IGradeChange[]);
     setErrors([]);
     setTable('users');
@@ -237,7 +238,7 @@ const ChangeGrades: FC<{}> = () => {
             <Helper dropdownContent={locale.helpers.grade.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.grade.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={'var(--negative)'} />}
             />
           </>
         }

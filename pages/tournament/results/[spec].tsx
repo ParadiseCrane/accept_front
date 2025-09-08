@@ -1,3 +1,4 @@
+'use client';
 import Results from '@components/Dashboard/Results/Results';
 import { ITournament } from '@custom-types/data/ITournament';
 import { useLocale } from '@hooks/useLocale';

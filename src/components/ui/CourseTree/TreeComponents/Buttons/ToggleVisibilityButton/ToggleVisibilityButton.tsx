@@ -1,3 +1,4 @@
+'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon } from '@mantine/core';

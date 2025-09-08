@@ -1,38 +1,24 @@
 import { NextConfig } from 'next';
 
 const prod = process.env.NODE_ENV === 'production';
+// const prod = 0;
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
   output: prod ? 'standalone' : undefined,
   typescript: {
     ignoreBuildErrors: !!prod,
   },
-  modularizeImports: {
-    '@tabler/icons': {
-      transform: '@tabler/icons/{{member}}',
-    },
-  },
+  bundlePagesRouterDependencies: true,
   expireTime: 1800, // half hour
   experimental: {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
+    optimizeCss: true,
   },
-  async redirects() {
-    return prod
-      ? [
-          {
-            source: '/course/:slug*',
-            destination: '/soon',
-            permanent: false,
-          },
-          {
-            source: '/courses',
-            destination: '/soon',
-            permanent: false,
-          },
-        ]
-      : [];
+  compiler: {
+    styledComponents: true,
   },
   async rewrites() {
     return [
@@ -45,10 +31,6 @@ const nextConfig: NextConfig = {
         destination: `/task/list`,
       },
       {
-        source: '/courses',
-        destination: `/course/list`,
-      },
-      {
         source: '/api/image/:slug*', // No credentials!
         destination: `${process.env.API_ENDPOINT}/api/image/:slug*`,
       },
@@ -56,4 +38,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzer(nextConfig);

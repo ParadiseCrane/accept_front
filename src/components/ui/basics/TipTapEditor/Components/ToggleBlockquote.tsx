@@ -1,7 +1,8 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Blockquote } from 'tabler-icons-react';
+import { IconBlockquote } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -16,7 +17,7 @@ export const ToggleBlockquote = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.quote}
       title={locale.tiptap.quote}
     >
-      <IconWrapper isActive={isActive} IconChild={Blockquote} />
+      <IconWrapper isActive={isActive} IconChild={IconBlockquote} />
     </RichTextEditor.Control>
   );
 };

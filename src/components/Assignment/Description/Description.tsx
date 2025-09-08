@@ -1,3 +1,4 @@
+'use client';
 import { IAssignment } from '@custom-types/data/IAssignment';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { useLocale } from '@hooks/useLocale';
@@ -11,7 +12,6 @@ import { FC, memo, useEffect, useState } from 'react';
 import styles from './description.module.css';
 
 const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
-  console.log('assignment tasks', assignment.tasks);
   const { locale } = useLocale();
   const [startDate, setStartDate] = useState('-');
   const [endDate, setEndDate] = useState('-');

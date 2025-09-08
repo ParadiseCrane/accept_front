@@ -1,3 +1,4 @@
+'use client';
 import LessonDashboard from '@components/Dashboard/LessonDashboard';
 import { ICourse, ILesson } from '@custom-types/data/ICourse';
 import { ChatHostsProvider } from '@hooks/useChatHosts';
@@ -25,15 +26,10 @@ function LessonDashboardPage(props: {
       <Title title={locale.titles.dashboard.lesson} />
       <ChatHostsProvider
         spec={props.entity.spec}
-        // TODO mocked method
         entity={'lesson'}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
-        <LessonDashboard
-          lesson={props.entity}
-          courseSpec={props.courseSpec}
-          isAuthor={user && user.login === props.courseAuthor}
-        />
+        <LessonDashboard lesson={props.entity} />
       </ChatHostsProvider>
     </>
   );

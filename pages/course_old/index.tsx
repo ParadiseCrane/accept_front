@@ -1,3 +1,4 @@
+'use client';
 import Todo from '@components/Todo/Todo';
 import { useLocale } from '@hooks/useLocale';
 import Title from '@ui/Title/Title';

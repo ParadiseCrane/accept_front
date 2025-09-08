@@ -1,3 +1,4 @@
+'use client';
 import { MAX_CODE_LENGTH } from '@constants/Limits';
 import { ILanguage } from '@custom-types/data/atomic';
 import { setter } from '@custom-types/ui/atomic';
@@ -17,7 +18,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Send as SendPlane } from 'tabler-icons-react';
+import { IconSend as SendPlane } from '@tabler/icons-react';
 
 import styles from './send.module.css';
 

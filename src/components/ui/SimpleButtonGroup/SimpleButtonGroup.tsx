@@ -1,3 +1,4 @@
+'use client';
 import { callback } from '@custom-types/ui/atomic';
 import { MyButtonProps } from '@custom-types/ui/basics/button';
 import { useLocale } from '@hooks/useLocale';

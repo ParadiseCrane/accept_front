@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -25,9 +26,8 @@ const Form: FC<{
     validate: {
       name: (value) =>
         value.length < 3 ? locale.group.form.validation.name(3) : null,
-      members: (value) => {
-        value.length < 2 ? locale.group.form.validation.members(2) : null;
-      },
+      members: (value) =>
+        value.length < 2 ? locale.group.form.validation.members(2) : null,
     },
     validateInputOnBlur: true,
     validateInputOnChange: true,

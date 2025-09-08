@@ -1,3 +1,5 @@
+'use client';
+
 import { MyButtonProps } from '@custom-types/ui/basics/button';
 import { HoverCard, Button as MantineButton } from '@mantine/core';
 import { concatClassNames } from '@utils/concatClassNames';

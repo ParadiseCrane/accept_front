@@ -1,3 +1,4 @@
+'use client';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { IChecker } from '@custom-types/data/ITask';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';

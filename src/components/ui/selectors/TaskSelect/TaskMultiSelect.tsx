@@ -1,3 +1,4 @@
+'use client';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { SelectItem } from '@custom-types/ui/atomic';
 import { ComboboxItem } from '@mantine/core';

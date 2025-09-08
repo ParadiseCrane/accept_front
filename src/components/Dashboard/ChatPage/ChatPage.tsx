@@ -1,3 +1,4 @@
+'use client';
 import { IActivity } from '@custom-types/data/atomic';
 import { IChatMessage } from '@custom-types/data/IMessage';
 import { IHostData, useChatHosts } from '@hooks/useChatHosts';
@@ -12,7 +13,7 @@ import {
 import Chat from '@ui/Chat/Chat';
 import Fuse from 'fuse.js';
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye, Search } from 'tabler-icons-react';
+import { IconEye, IconSearch } from '@tabler/icons-react';
 
 import styles from './chatPage.module.css';
 import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
@@ -103,7 +104,7 @@ const ChatPage: FC<{
           ) : (
             <div className={styles.hostsWrapper}>
               <TextInput
-                leftSection={<Search />}
+                leftSection={<IconSearch />}
                 onChange={(e) => setSearchString(e.target.value.trim())}
                 placeholder={locale.dashboard.chat.search.placeholder}
               />
@@ -148,7 +149,7 @@ const ChatPage: FC<{
                           variant="transparent"
                           size="xs"
                         >
-                          <Eye />
+                          <IconEye />
                         </Icon>
                       </div>
                     ))}

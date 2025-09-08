@@ -1,3 +1,5 @@
+'use client';
+
 import { IDropdownContent } from '@custom-types/ui/basics/helper';
 import { useLocale } from '@hooks/useLocale';
 import { DateTimePickerProps as MantineDateTimePickerProps } from '@mantine/dates';

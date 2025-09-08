@@ -1,3 +1,4 @@
+'use client';
 import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
 import { Badge } from '@mantine/core';

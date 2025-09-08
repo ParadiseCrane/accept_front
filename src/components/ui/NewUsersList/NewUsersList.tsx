@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { IStudentAdd } from '@custom-types/data/IStudent';
 import { BaseSearch } from '@custom-types/data/request';

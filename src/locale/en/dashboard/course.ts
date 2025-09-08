@@ -28,4 +28,6 @@ export const course = {
     openLesson: 'Open lesson for the current group',
     closeLesson: 'Close lesson for the current group',
   },
+  noParticipantsFound: 'No participants found!',
+  noGroupsFound: 'No groups found!',
 };

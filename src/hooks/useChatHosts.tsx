@@ -1,3 +1,5 @@
+'use client';
+
 import { IActivity } from '@custom-types/data/atomic';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { pureCallback, setter } from '@custom-types/ui/atomic';

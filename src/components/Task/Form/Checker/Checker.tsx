@@ -1,3 +1,4 @@
+'use client';
 import { ILanguage } from '@custom-types/data/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';

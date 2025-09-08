@@ -1,10 +1,11 @@
+'use client';
 import { tooltipOpenDelay } from '@constants/Duration';
 import { useLocale } from '@hooks/useLocale';
 import { ActionIcon, Group, Kbd } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { Tip } from '@ui/basics';
 import { FC, memo } from 'react';
-import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 
 const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
   prev,
@@ -26,7 +27,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         openDelay={tooltipOpenDelay}
       >
         <ActionIcon onClick={() => prev()} size={'sm'}>
-          <ArrowLeft />
+          <IconArrowLeft />
         </ActionIcon>
       </Tip>
       <Tip
@@ -38,7 +39,7 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         openDelay={tooltipOpenDelay}
       >
         <ActionIcon onClick={() => next()} size={'sm'}>
-          <ArrowRight />
+          <IconArrowRight />
         </ActionIcon>
       </Tip>
     </Group>

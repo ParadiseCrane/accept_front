@@ -1,3 +1,4 @@
+'use client';
 import { DEFAULT_ON_PAGE } from '@constants/Defaults';
 import { BaseSearch } from '@custom-types/data/request';
 import { ILocale } from '@custom-types/ui/ILocale';
@@ -47,13 +48,13 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
+const EmptyTablePlaceholder: FC<{ component: ReactNode }> = ({ component }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(() => DEFAULT_ON_PAGE, []);
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [locale]
   );
 
   const numOfRows = 6;
@@ -75,8 +76,7 @@ const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
     <div className={styles.parent}>
       <div className={styles.blurWrapper}>
         <div className={styles.titleButtonWrapper}>
-          {locale.ui.table.emptyTableMessage}
-          {button}
+          {component || <>{locale.ui.table.emptyTableMessage}</>}
         </div>
       </div>
       <div className={styles.tablePadding}>

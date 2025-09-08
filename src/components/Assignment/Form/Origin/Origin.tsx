@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
 import { useLocale } from '@hooks/useLocale';
 import { CustomEditor, Helper, TextInput } from '@ui/basics';

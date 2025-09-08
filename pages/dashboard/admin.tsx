@@ -1,3 +1,4 @@
+'use client';
 import AdminDashboard from '@components/AdminDashboard/AdminDashboard';
 import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';

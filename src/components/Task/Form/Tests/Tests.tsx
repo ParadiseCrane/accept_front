@@ -1,7 +1,8 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { Icon } from '@ui/basics';
 import { FC, memo } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 import styles from './tests.module.css';
 
@@ -11,7 +12,7 @@ const Tests: FC<{}> = () => {
   return (
     <div className={styles.wrapper}>
       <Icon size="xs">
-        <AlertCircle color={'var(--negative)'} />
+        <IconAlertCircle color={'var(--negative)'} />
       </Icon>
 
       <div className={styles.alert}>

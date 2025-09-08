@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { setter } from '@custom-types/ui/atomic';
 import { ILocale } from '@custom-types/ui/ILocale';

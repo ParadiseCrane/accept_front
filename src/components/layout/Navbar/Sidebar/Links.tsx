@@ -1,3 +1,4 @@
+'use client';
 import { pureCallback } from '@custom-types/ui/atomic';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { useLocale } from '@hooks/useLocale';

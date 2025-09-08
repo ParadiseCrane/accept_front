@@ -1,3 +1,4 @@
+'use client';
 import { IAttempt } from '@custom-types/data/IAttempt';
 import { useLocale } from '@hooks/useLocale';
 import modalStyles from '@styles/ui/modal.module.css';
@@ -7,7 +8,7 @@ import SingularSticky from '@ui/Sticky/SingularSticky';
 import { getLocalDate } from '@utils/datetime';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { HeartPlus } from 'tabler-icons-react';
+import { IconHeartPlus } from '@tabler/icons-react';
 
 import styles from './banModal.module.css';
 
@@ -30,7 +31,7 @@ const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   return (
     <>
       <SingularSticky
-        icon={<HeartPlus width={32} height={32} />}
+        icon={<IconHeartPlus width={32} height={32} />}
         color="green"
         onClick={() => setOpened(true)}
         description={locale.tip.sticky.attempt.unban}

@@ -1,3 +1,4 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import styles from '@styles/error.module.css';
 import Title from '@ui/Title/Title';

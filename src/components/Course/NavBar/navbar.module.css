@@ -1,5 +1,10 @@
 .navbar {
   height: 100%;
+
+  a {
+    color: var(--dark1);
+    text-decoration: none;
+  }
 }
 
 .navbarWrapper {

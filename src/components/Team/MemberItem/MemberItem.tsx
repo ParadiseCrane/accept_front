@@ -1,3 +1,4 @@
+'use client';
 import { ITeam } from '@custom-types/data/ITeam';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
@@ -6,7 +7,7 @@ import { requestWithNotify } from '@utils/requestWithNotify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, memo, useCallback } from 'react';
-import { CircleMinus } from 'tabler-icons-react';
+import { IconCircleMinus } from '@tabler/icons-react';
 
 import styles from './memberItem.module.css';
 
@@ -47,7 +48,7 @@ const MemberItem: FC<{
           color="red"
           tooltipLabel={locale.tip.team.kickParticipant}
         >
-          <CircleMinus />
+          <IconCircleMinus />
         </Icon>
       )}
     </div>

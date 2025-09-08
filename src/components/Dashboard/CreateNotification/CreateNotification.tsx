@@ -1,3 +1,4 @@
+'use client';
 import { INewNotification } from '@custom-types/data/notification';
 import { useLocale } from '@hooks/useLocale';
 import { useUser } from '@hooks/useUser';

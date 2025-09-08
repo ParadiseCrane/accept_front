@@ -1,7 +1,8 @@
+'use client';
 import { ITreeUnit } from '@custom-types/data/ICourse';
 import { ActionIcon } from '@mantine/core';
 import React, { FC } from 'react';
-import { CaretDown, CaretRight } from 'tabler-icons-react';
+import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
 
 interface IToggleVisibilityButtonProps {
   currentUnit: ITreeUnit;
@@ -37,14 +38,14 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
         }}
         c={'dark'}
       >
-        {currentUnit.childrenVisible ? <CaretDown /> : <CaretRight />}
+        {currentUnit.childrenVisible ? <IconCaretDown /> : <IconCaretRight />}
       </ActionIcon>
     );
   }
 
   return (
     <ActionIcon variant="transparent" size={'sm'} disabled>
-      <CaretRight />
+      <IconCaretRight />
     </ActionIcon>
   );
 };

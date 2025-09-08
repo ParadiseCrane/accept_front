@@ -1,3 +1,4 @@
+'use client';
 import DeleteModal from '@components/Organization/DeleteModal/DeleteModal';
 import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
 import { IGroupDisplay } from '@custom-types/data/IGroup';
@@ -29,7 +30,7 @@ import {
 } from '@utils/notificationFunctions';
 import { requestWithError } from '@utils/requestWithError';
 import { FC, memo, useCallback, useState } from 'react';
-import { Check, Pencil, Plus, X } from 'tabler-icons-react';
+import { IconCheck, IconPencil, IconPlus, IconX } from '@tabler/icons-react';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -96,7 +97,7 @@ const refactorOrganization = (organization: IOrganization): any => ({
             size="xs"
             href={`/organization/edit/${organization.spec}`}
           >
-            <Pencil />
+            <IconPencil />
           </Icon>
           <DeleteModal organization={organization} />
         </div>
@@ -108,9 +109,9 @@ const refactorOrganization = (organization: IOrganization): any => ({
     display: (
       <div>
         {organization.allowRegistration ? (
-          <Check color="green" />
+          <IconCheck color="green" />
         ) : (
-          <X color="red" />
+          <IconX color="red" />
         )}
       </div>
     ),
@@ -132,7 +133,7 @@ const Organizations: FC<{}> = () => {
       <SingularSticky
         color="var(--positive)"
         href={`/organization/add`}
-        icon={<Plus height={25} width={25} />}
+        icon={<IconPlus height={25} width={25} />}
         description={locale.tip.sticky.group.add}
       />
     </div>

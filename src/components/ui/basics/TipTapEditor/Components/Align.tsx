@@ -1,14 +1,15 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
 import {
-  AlignCenter as AlignCenterIcon,
-  AlignJustified as AlignJustifyIcon,
-  AlignLeft as AlignLeftIcon,
-  AlignRight as AlignRightIcon,
-  ChevronDown,
-} from 'tabler-icons-react';
+  IconAlignCenter as AlignCenterIcon,
+  IconAlignJustified as AlignJustifyIcon,
+  IconAlignLeft as AlignLeftIcon,
+  IconAlignRight as AlignRightIcon,
+  IconChevronDown,
+} from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -51,7 +52,7 @@ export const AlignGroupCollapsed = ({
             title={locale.tiptap.align}
           >
             <AlignLeftIcon size={'1.2rem'} style={{ stroke: '#444746' }} />
-            <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
+            <IconChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
         <HoverCard.Dropdown>

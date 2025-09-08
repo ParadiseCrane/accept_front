@@ -1,3 +1,4 @@
+'use client';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { ITableColumn } from '@custom-types/ui/ITable';
@@ -5,11 +6,12 @@ import { useLocale } from '@hooks/useLocale';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { capitalize } from '@utils/capitalize';
 import Link from 'next/link';
-import { FC, memo } from 'react';
+import { FC, memo, useCallback } from 'react';
 
 import styles from './style.module.css';
 import SimpleUserList from '../../ui/SimpleUserList/SimpleUserList';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@ui/basics';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -26,7 +28,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 8,
+    size: 4,
   },
   {
     label: locale.users.list.shortName,
@@ -43,7 +45,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: true,
     hidden: false,
-    size: 3,
+    size: 8,
   },
   {
     label: locale.users.list.role,
@@ -93,23 +95,58 @@ const refactorUser = (user: IUserDisplay): any => ({
   },
 });
 
+const EmptyTableComponent: FC<{
+  title: string;
+  buttonTitle: string;
+  redirectTo: string;
+}> = ({ title, buttonTitle, redirectTo }) => {
+  const router = useRouter();
+  const redirect = useCallback(
+    () => router.push(redirectTo),
+    [redirectTo, router]
+  );
+
+  return (
+    <>
+      {title}
+      <Button onClick={redirect}>{buttonTitle}</Button>
+    </>
+  );
+};
+
 const CourseParticipants: FC<{
   type: 'course';
   spec: string;
   allParticipants?: boolean;
 }> = ({ type, spec, allParticipants }) => {
   const { locale } = useLocale();
-  const params = useSearchParams();
-  const group = allParticipants ? 'all' : params.get('group');
+  const searchParams = useSearchParams();
+  const groupSpec = searchParams && searchParams.get('group');
+  const isGroupSelected = groupSpec !== 'all';
+  const groupSpecForRequest = allParticipants ? 'all' : groupSpec;
 
   return (
     <div className={styles.wrapper}>
       <SimpleUserList
-        url={`${type}/participant/${spec}/${group}`}
+        url={`${type}/participant/${spec}/${groupSpecForRequest}`}
         refactorUser={refactorUser}
         initialColumns={initialColumns}
         noDefault
-        empty={<>{locale.ui.table.emptyMessage}</>}
+        emptyTableComponent={
+          isGroupSelected ? (
+            <EmptyTableComponent
+              title={locale.dashboard.course.noParticipantsFound}
+              buttonTitle={locale.dashboard.course.editGroup}
+              redirectTo={`/group/edit/${groupSpec}`}
+            />
+          ) : (
+            <EmptyTableComponent
+              title={locale.dashboard.course.noGroupsFound}
+              buttonTitle={locale.group.add}
+              redirectTo={`/group/add?course=${spec}`}
+            />
+          )
+        }
         classNames={{
           wrapper: tableStyles.wrapper,
           table: tableStyles.table,

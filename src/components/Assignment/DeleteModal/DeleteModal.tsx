@@ -1,3 +1,4 @@
+'use client';
 import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

@@ -1,3 +1,4 @@
+'use client';
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useChatHosts } from '@hooks/useChatHosts';
 import { useLocale } from '@hooks/useLocale';
@@ -5,7 +6,7 @@ import { useUser } from '@hooks/useUser';
 import { Indicator, Tip } from '@ui/basics';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
 import { FC, memo, useMemo } from 'react';
-import { Messages, Users } from 'tabler-icons-react';
+import { IconMessages, IconUsers } from '@tabler/icons-react';
 import {
   IconArticle,
   IconList,
@@ -16,13 +17,13 @@ import {
 } from '@tabler/icons-react';
 
 import { IUnit } from '@custom-types/data/ICourse';
-import GroupSelectorMenu from './GroupSelector/GroupSelector';
+import { GroupSelector } from './GroupSelector/GroupSelector';
 import CourseParticipants from '@components/Dashboard/CourseParticipants/CourseParticipants';
 import CreateNotificationCourse from './CreateNotificationCourse/CreateNotificationCourse';
 import CourseChatPage from './CourseChatPage/CourseChatPage';
 import { tooltipOpenDelay } from '@constants/Duration';
 import styles from './dashboard.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import UnitMain from './UnitMain/UnitMain';
 import GroupOpenness from './GroupOpenness/GroupOpenness';
 import Moderators from './Moderators/Moderators';
@@ -34,7 +35,6 @@ const UnitDashboard: FC<{
 }> = ({ unit, courseSpec, isAuthor }) => {
   const router = useRouter();
   const { locale } = useLocale();
-  const { user } = useUser();
 
   const { hasNewMessages } = useChatHosts();
 
@@ -55,7 +55,7 @@ const UnitDashboard: FC<{
         page: <CourseChatPage spec={courseSpec} entity="course" />,
         icon: (
           <Indicator size={10} disabled blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.course.chat,
@@ -71,7 +71,7 @@ const UnitDashboard: FC<{
       },
       {
         page: <CourseParticipants type={'course'} spec={courseSpec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: 'participants',
       },
@@ -117,7 +117,9 @@ const UnitDashboard: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
             spanStyle={styles.backToCoursesWrapper}
-            onClick={() => router.push(`/course/${courseSpec}`)}
+            onClick={() =>
+              router.push(`/course/${courseSpec}?item=${unit.spec}`)
+            }
           >
             <IconArrowLeft color={'var(--primary)'} />
             <div className={styles.title}>
@@ -126,7 +128,6 @@ const UnitDashboard: FC<{
           </Tip>
         }
       />
-      {user && <GroupSelectorMenu courseSpec={courseSpec} user={user.login} />}
     </>
   );
 };

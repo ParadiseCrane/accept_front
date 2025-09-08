@@ -1,3 +1,4 @@
+'use client';
 import { IAssessmentType } from '@custom-types/data/atomic';
 import { callback } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
@@ -10,7 +11,7 @@ import LanguageRestriction from './LanguageConstraints/LanguageRestriction';
 
 const stepFields: string[][] = [
   ['title', 'description', 'tags', 'assessmentType'],
-  ['shouldRestrictLanguages', 'allowedLanguages', 'forbiddenLanguages'],
+  // ['shouldRestrictLanguages', 'allowedLanguages', 'forbiddenLanguages'],
 ];
 
 const Form: FC<{
@@ -34,10 +35,10 @@ const Form: FC<{
         value.length < 20
           ? locale.course.lesson.form.validation.description
           : null,
-      assessmentType: (value) =>
-        value.length === 0
-          ? locale.course.lesson.form.validation.assessmentType
-          : null,
+      // assessmentType: (value) =>
+      //   value.length === 0
+      //     ? locale.course.lesson.form.validation.assessmentType
+      //     : null,
     },
     validateInputOnBlur: true,
   });
@@ -51,7 +52,7 @@ const Form: FC<{
         stepFields={stepFields}
         pages={[
           <MainInfo key={'0'} form={form} />,
-          <LanguageRestriction key={'1'} form={form} />,
+          // <LanguageRestriction key={'1'} form={form} />,
         ]}
         labels={locale.course.lesson.form.labels}
         descriptions={locale.course.lesson.form.descriptions}

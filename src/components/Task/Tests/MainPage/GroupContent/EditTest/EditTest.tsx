@@ -1,3 +1,4 @@
+'use client';
 import { MAX_ANSWER_LENGTH, MAX_TEST_LENGTH } from '@constants/Limits';
 import { ITaskTestData } from '@custom-types/data/atomic';
 import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
@@ -10,7 +11,7 @@ import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import TestArea from '@ui/TestArea/TestArea';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { FC, memo, useCallback, useState } from 'react';
-import { Pencil } from 'tabler-icons-react';
+import { IconPencil } from '@tabler/icons-react';
 
 import styles from './editTest.module.css';
 
@@ -87,7 +88,7 @@ const EditTest: FC<{
         size="xs"
         tooltipLabel={locale.ui.taskTest.edit}
       >
-        <Pencil color="var(--primary)" />
+        <IconPencil color="var(--primary)" />
       </Icon>
       <SimpleModal
         opened={opened}

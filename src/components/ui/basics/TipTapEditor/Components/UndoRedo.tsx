@@ -1,7 +1,12 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { ArrowBackUp, ArrowForwardUp, Eraser } from 'tabler-icons-react';
+import {
+  IconArrowBackUp,
+  IconArrowForwardUp,
+  IconEraser,
+} from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 
@@ -16,7 +21,7 @@ export const UndoButton = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.undo}
       title={locale.tiptap.undo}
     >
-      <IconWrapper isActive={isActive} IconChild={ArrowBackUp} />
+      <IconWrapper isActive={isActive} IconChild={IconArrowBackUp} />
     </RichTextEditor.Control>
   );
 };
@@ -32,7 +37,7 @@ export const RedoButton = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.redo}
       title={locale.tiptap.redo}
     >
-      <IconWrapper isActive={isActive} IconChild={ArrowForwardUp} />
+      <IconWrapper isActive={isActive} IconChild={IconArrowForwardUp} />
     </RichTextEditor.Control>
   );
 };

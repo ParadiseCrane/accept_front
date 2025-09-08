@@ -1,4 +1,5 @@
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
+'use client';
+
 import { ICourse } from '@custom-types/data/ICourse';
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';

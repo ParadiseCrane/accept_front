@@ -1,3 +1,4 @@
+'use client';
 import { IndicatorProps, Indicator as MantineIndicator } from '@mantine/core';
 import { FC, memo, useMemo } from 'react';
 

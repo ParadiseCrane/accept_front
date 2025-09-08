@@ -1,3 +1,4 @@
+'use client';
 import SignIn from '@components/layout/Navbar/SignIn/SignIn';
 import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
 import { Group } from '@mantine/core';

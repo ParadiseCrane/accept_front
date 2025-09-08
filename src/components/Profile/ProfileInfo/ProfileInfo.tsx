@@ -1,3 +1,4 @@
+'use client';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
 import { FC, memo } from 'react';
 

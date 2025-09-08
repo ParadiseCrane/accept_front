@@ -1,8 +1,9 @@
+'use client';
 import { useLocale } from '@hooks/useLocale';
 import { HoverCard } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Editor } from '@tiptap/react';
-import { Highlight as HighlightIcon } from 'tabler-icons-react';
+import { IconHighlight as HighlightIcon } from '@tabler/icons-react';
 
 import { IconWrapper } from './IconWrapper';
 import { ColorPickerModal } from './Modals/ColorPickerModal';
