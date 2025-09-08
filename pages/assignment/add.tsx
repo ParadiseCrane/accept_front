@@ -1,35 +1,36 @@
-import Form from '@components/Assignment/Form/Form';
+"use client";
+import Form from "@components/Assignment/Form/Form";
 import {
   IAssignmentAdd,
   IAssignmentAddBundle,
-} from '@custom-types/data/IAssignment';
-import { INewNotification } from '@custom-types/data/notification';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import { sendRequest } from '@requests/request';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+} from "@custom-types/data/IAssignment";
+import { INewNotification } from "@custom-types/data/notification";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form/lib/types";
+import { sendRequest } from "@requests/request";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { GetServerSideProps } from 'next';
-import { ReactNode, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback } from "react";
 
 const initialValues = {
-  origin: '',
-  starter: '',
+  origin: "",
+  starter: "",
   startDate: new Date(),
   endDate: new Date(),
   groups: [],
   infinite: false,
   status: 0,
   dates: 0,
-  notificationTitle: 'Вам задан новый урок',
-  notificationDescription: '',
+  notificationTitle: "Вам задан новый урок",
+  notificationDescription: "",
   notificationShortDescription: 'Проверьте вкладку "Мои уроки" в профиле',
 };
 
@@ -50,9 +51,9 @@ function AssignmentAdd(props: IAssignmentAddBundle) {
       }
 
       const assignment = {
-        spec: '',
+        spec: "",
         origin: form.values.origin,
-        starter: user?.login || '',
+        starter: user?.login || "",
         status: form.values.status,
         infinite: form.values.infinite,
         start: form.values.startDate,
@@ -61,32 +62,32 @@ function AssignmentAdd(props: IAssignmentAddBundle) {
       };
 
       requestWithNotify<IAssignmentAdd, string>(
-        'assignment/add',
-        'POST',
+        "assignment/add",
+        "POST",
         locale.notify.assignment.create,
         lang,
         (response) => response,
-        assignment
+        assignment,
       );
       const notification: INewNotification = {
-        spec: '',
+        spec: "",
         title: form.values.notificationTitle,
         shortDescription: form.values.notificationShortDescription,
         description: form.values.notificationDescription,
         logins: [],
         groups: form.values.groups,
         roles: [],
-        author: user?.login || '',
+        author: user?.login || "",
         broadcast: false,
       };
 
       sendRequest<INewNotification, string>(
-        'notification/add',
-        'POST',
-        notification
+        "notification/add",
+        "POST",
+        notification,
       );
     },
-    [lang, locale, user?.login]
+    [lang, locale, user?.login],
   );
 
   return (
@@ -114,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const response = await fetchWrapperStatic({
-    url: 'bundle/assignment-add',
+    url: "bundle/assignment-add",
     req,
   });
 
@@ -128,9 +129,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

@@ -1,9 +1,10 @@
-import { IAttemptStatus, IVerdict } from '@custom-types/data/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { Tip } from '@ui/basics';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { IAttemptStatus, IVerdict } from "@custom-types/data/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Tip } from "@ui/basics";
+import { FC, memo, useMemo } from "react";
 
-import styles from './verdictWrapper.module.css';
+import styles from "./verdictWrapper.module.css";
 
 const VerdictWrapper: FC<{
   status?: IAttemptStatus;
@@ -16,22 +17,22 @@ const VerdictWrapper: FC<{
   const verdictColor = useMemo(
     () =>
       !verdict
-        ? 'black'
+        ? "black"
         : status && status.spec !== 2
           ? status.spec == 3
-            ? 'var(--accent)'
-            : 'black'
+            ? "var(--accent)"
+            : "black"
           : verdict?.spec == 0
-            ? 'var(--positive)'
-            : 'var(--negative)',
-    [status, verdict]
+            ? "var(--positive)"
+            : "var(--negative)",
+    [status, verdict],
   );
 
-  const verdictShortText = useMemo(() => verdict?.shortText || '-', [verdict]);
+  const verdictShortText = useMemo(() => verdict?.shortText || "-", [verdict]);
 
   const verdictTestString = useMemo(
-    () => (test !== undefined ? ` #${test + 1}` : ''),
-    [test]
+    () => (test !== undefined ? ` #${test + 1}` : ""),
+    [test],
   );
 
   const isVerdictEmpty = useMemo(() => !verdict, [verdict]);
@@ -43,8 +44,8 @@ const VerdictWrapper: FC<{
       }}
       className={
         styles.wrapper +
-        ' ' +
-        (isVerdictEmpty || full ? styles.emptyVerdict : '')
+        " " +
+        (isVerdictEmpty || full ? styles.emptyVerdict : "")
       }
     >
       {full ? (
@@ -66,7 +67,9 @@ const VerdictWrapper: FC<{
         <Tip
           label={
             <span style={{ color: verdictColor }}>
-              {`${verdict?.fullText}${verdictTestString}`}
+              {status && status.spec !== 2
+                ? locale.attempt.statuses[status.spec]
+                : `${verdict?.fullText}${verdictTestString}`}
             </span>
           }
           openDelay={200}

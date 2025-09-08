@@ -1,48 +1,75 @@
-import { IUnit } from '@custom-types/data/ICourse';
-import { useCourseShowTree } from '@hooks/useCourseTree';
-import { useLocale } from '@hooks/useLocale';
-import { AppShell, Image, ScrollArea } from '@mantine/core';
-import { FC, memo } from 'react';
+"use client";
+import { IBaseTreeUnit } from "@custom-types/data/ICourse";
+import { useCourseShowTree } from "@hooks/useCourseTree";
+import { useLocale } from "@hooks/useLocale";
+import { AppShell } from "@mantine/core";
+import { FC, memo, useEffect, useState } from "react";
 
-import { NavBlock } from './NavBlock/NavBlock';
-import NavigationMenu from './NavigationMenu/NavigationMenu';
+import { NavBlock } from "./NavBlock/NavBlock";
+import NavigationMenu from "./NavigationMenu/NavigationMenu";
+import styles from "./navbar.module.css";
+import { Tip } from "@ui/basics";
+import { tooltipOpenDelay } from "@constants/Duration";
+import { IconArrowLeft } from "@tabler/icons-react";
+import { ImageComponent } from "@ui/ImageSelector/ImageComponent/ImageComponent";
+import Link from "next/link";
 
 const NavBar: FC<{
-  units: IUnit[];
-  hookUnit: IUnit;
-  image: string;
+  units: IBaseTreeUnit[];
+  hookUnit: IBaseTreeUnit;
+  image?: string;
   prev: () => void;
   next: () => void;
-}> = ({ units, hookUnit, image, prev, next }) => {
-  const course: IUnit = units[0];
-  const children: IUnit[] =
+  select: (_: IBaseTreeUnit) => void;
+}> = ({ units, hookUnit, image, prev, next, select }) => {
+  const course: IBaseTreeUnit = units[0];
+  const children: IBaseTreeUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
   const { locale } = useLocale();
+  const [prevUnit, setPrevUnit] = useState<IBaseTreeUnit | null>(null);
 
   const { treeUnitList, actions, checkers } = useCourseShowTree({
     course,
     children,
   });
 
+  useEffect(() => {
+    if (
+      hookUnit.spec !== prevUnit?.spec &&
+      treeUnitList.length > 0 &&
+      hookUnit.spec !== course.spec
+    ) {
+      actions.openElementAndParents({ currentUnit: hookUnit });
+      setPrevUnit(hookUnit);
+    }
+  }, [prevUnit, hookUnit, actions, treeUnitList, course]);
+
   return (
-    <AppShell.Navbar p="md">
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%',
-        }}
-      >
-        <div>
-          <Image
-            src={`/api/image/${image}`}
-            radius="md"
-            h={100}
-            fit="cover"
-            mb={20}
-            alt={locale.course.courseImage}
-          />
+    <AppShell.Navbar className={styles.navbar}>
+      <Link href={"/course/list"}>
+        <Tip
+          label={locale.course.backToCoursesTip}
+          openDelay={tooltipOpenDelay}
+          position="top"
+          spanStyle={styles.backToCoursesWrapper}
+        >
+          <IconArrowLeft color={"var(--primary)"} />
+          <div>{locale.course.backToCoursesButton}</div>
+        </Tip>
+      </Link>
+      <div className={styles.navbarWrapper}>
+        <div className={styles.imageWithUnits}>
+          <div className={styles.imageWrapper}>
+            <ImageComponent
+              index={0}
+              item={image}
+              active={false}
+              animate
+              height={100}
+              radius="md"
+              cover
+            />
+          </div>
           {treeUnitList
             .filter((element) => element.visible)
             .map((unit) => (
@@ -51,11 +78,14 @@ const NavBar: FC<{
                 currentUnit={unit}
                 actions={actions}
                 checkers={checkers}
+                onClick={select}
                 key={unit.spec}
               />
             ))}
         </div>
-        <NavigationMenu prev={prev} next={next} />
+        <div className={styles.navMenu}>
+          <NavigationMenu prev={prev} next={next} />
+        </div>
       </div>
     </AppShell.Navbar>
   );

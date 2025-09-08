@@ -1,21 +1,22 @@
-import Form from '@components/Group/Form/Form';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { UseFormReturnType } from '@mantine/form';
+"use client";
+import Form from "@components/Group/Form/Form";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { UseFormReturnType } from "@mantine/form";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useMemo } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
 
-import styles from './addGrade.module.css';
+import styles from "./addGrade.module.css";
 
 const initialValues = {
-  spec: '',
-  name: '',
+  spec: "",
+  name: "",
   readonly: true,
   members: [] as string[],
 };
@@ -23,7 +24,7 @@ const initialValues = {
 const AddGrade: FC<{}> = () => {
   const { locale, lang } = useLocale();
 
-  const { data } = useRequest<{}, IUserDisplay[]>('user/list-display', 'GET');
+  const { data } = useRequest<{}, IUserDisplay[]>("user/list-display", "GET");
   const users = useMemo(() => (data && data.length > 0 ? data : []), [data]);
 
   const handleSubmit = useCallback(
@@ -38,22 +39,22 @@ const AddGrade: FC<{}> = () => {
         return;
       }
       requestWithNotify<{ group: IGroup; members: string[] }, boolean>(
-        'group/add',
-        'POST',
+        "group/add",
+        "POST",
         locale.notify.group.create,
         lang,
-        (_: boolean) => '',
+        (_: boolean) => "",
         {
           group: {
-            spec: '',
+            spec: "",
             name: form.values.name,
             readonly: true,
           },
           members: form.values.members,
-        }
+        },
       );
     },
-    [locale, lang]
+    [locale, lang],
   );
 
   return (

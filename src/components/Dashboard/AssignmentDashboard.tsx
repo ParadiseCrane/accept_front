@@ -1,36 +1,39 @@
-import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import ParticipantsList from '@components/Dashboard/ParticipantsList/ParticipantsList';
-import Results from '@components/Dashboard/Results/Results';
-import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useChatHosts } from '@hooks/useChatHosts';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { useInterval } from '@mantine/hooks';
-import { Indicator } from '@ui/basics';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+"use client";
+import DeleteModal from "@components/Assignment/DeleteModal/DeleteModal";
+import AttemptsList from "@components/Dashboard/AttemptsList/AttemptsList";
+import ParticipantsList from "@components/Dashboard/ParticipantsList/ParticipantsList";
+import Results from "@components/Dashboard/Results/Results";
+import TimeInfo from "@components/Dashboard/TimeInfo/TimeInfo";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { IAssignmentDisplay } from "@custom-types/data/IAssignment";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useChatHosts } from "@hooks/useChatHosts";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { useInterval } from "@mantine/hooks";
+import { Indicator } from "@ui/basics";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import {
-  AlignRight,
-  BellPlus,
-  Messages,
-  Pencil,
-  Puzzle,
-  Table,
-  Trash,
-  Users,
-  Vocabulary,
-} from 'tabler-icons-react';
+  IconAlignRight,
+  IconBellPlus,
+  IconMessages,
+  IconPencil,
+  IconPuzzle,
+  IconTable,
+  IconTrash,
+  IconUsers,
+  IconVocabulary,
+} from "@tabler/icons-react";
 
-import ChatPage from './ChatPage/ChatPage';
-import CreateNotification from './CreateNotification/CreateNotification';
-import TaskList from './TaskList/TaskList';
+import ChatPage from "./ChatPage/ChatPage";
+import CreateNotification from "./CreateNotification/CreateNotification";
+import TaskList from "./TaskList/TaskList";
+import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
+import { IconRobot } from "@tabler/icons-react";
 
 const AssignmentDashboard: FC<{
   spec: string;
@@ -41,7 +44,12 @@ const AssignmentDashboard: FC<{
 
   const { data, refetch } = useRequest<undefined, IAssignmentDisplay>(
     `assignment/display/${spec}`,
-    'GET'
+    "GET",
+  );
+
+  const { data: aiCount } = useRequest<undefined, number>(
+    `assignment/attempts/ai/count/${spec}`,
+    "GET",
   );
 
   const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
@@ -62,7 +70,7 @@ const AssignmentDashboard: FC<{
       {
         page: assignment && (
           <TimeInfo
-            type={'assignment'}
+            type={"assignment"}
             entity={{
               title: assignment.title,
               spec: assignment.spec,
@@ -77,19 +85,19 @@ const AssignmentDashboard: FC<{
             refetch={() => refetch(false)}
           />
         ),
-        icon: <Vocabulary color="var(--secondary)" />,
+        icon: <IconVocabulary color="var(--secondary)" />,
         title: locale.dashboard.assignment.mainInfo,
-        section: 'assignment',
+        section: "assignment",
       },
       {
-        page: <ChatPage entity={'assignment'} spec={spec} />,
+        page: <ChatPage entity={"assignment"} spec={spec} />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
-        section: 'chat',
+        section: "chat",
       },
       {
         page: assignment && (
@@ -97,51 +105,73 @@ const AssignmentDashboard: FC<{
             spec={spec}
             isFinished={!assignment.infinite && assignment.status.spec == 2}
             endDate={assignment.end}
-            type={'assignment'}
+            type={"assignment"}
             full
             is_team={false}
           />
         ),
-        icon: <Table color="var(--secondary)" />,
+        icon: <IconTable color="var(--secondary)" />,
         title: locale.dashboard.assignment.results,
-        section: 'results',
+        section: "results",
       },
       {
         page: assignment && (
           <AttemptsList
-            type={'assignment'}
+            type={"assignment"}
             spec={assignment.spec}
             shouldNotRefetch={assignment.status.spec != 1}
             isFinished={assignment.status.spec == 2}
             endDate={assignment.end}
           />
         ),
-        icon: <AlignRight color="var(--secondary)" />,
+        icon: <IconAlignRight color="var(--secondary)" />,
         title: locale.dashboard.assignment.attempts,
-        section: 'attempts',
-      },
-      {
-        page: <ParticipantsList type={'assignment'} spec={spec} />,
-        icon: <Users color="var(--secondary)" />,
-        title: locale.dashboard.assignment.participants,
-        section: 'participants',
-      },
-      {
-        page: <TaskList type={'assignment'} spec={spec} />,
-        icon: <Puzzle color="var(--secondary)" />,
-        title: locale.dashboard.assignment.tasks,
-        section: 'tasks',
+        section: "attempts",
       },
       {
         page: assignment && (
-          <CreateNotification spec={assignment.spec} type={'assignment'} />
+          <AIProbabilityList
+            type={"assignment"}
+            spec={assignment.spec}
+            shouldNotRefetch={assignment.status.spec != 1}
+          />
         ),
-        icon: <BellPlus color="var(--secondary)" />,
+        icon: (
+          <Indicator
+            size={"lg"}
+            label={aiCount}
+            disabled={!aiCount}
+            inline
+            position="top-start"
+          >
+            <IconRobot color="var(--secondary)" />
+          </Indicator>
+        ),
+        title: locale.dashboard.assignment.aiProbability,
+        section: "ai_probability",
+      },
+      {
+        page: <ParticipantsList type={"assignment"} spec={spec} />,
+        icon: <IconUsers color="var(--secondary)" />,
+        title: locale.dashboard.assignment.participants,
+        section: "participants",
+      },
+      {
+        page: <TaskList type={"assignment"} spec={spec} />,
+        icon: <IconPuzzle color="var(--secondary)" />,
+        title: locale.dashboard.assignment.tasks,
+        section: "tasks",
+      },
+      {
+        page: assignment && (
+          <CreateNotification spec={assignment.spec} type={"assignment"} />
+        ),
+        icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.assignment.createNotification,
-        section: 'create_notifications',
+        section: "create_notifications",
       },
     ],
-    [assignment, hasNewMessages, locale, refetch, spec]
+    [assignment, hasNewMessages, locale, refetch, spec, aiCount],
   );
 
   const [activeModal, setActiveModal] = useState(false);
@@ -151,9 +181,9 @@ const AssignmentDashboard: FC<{
 
   const actions: IStickyAction[] = [
     {
-      color: 'green',
+      color: "green",
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -162,9 +192,9 @@ const AssignmentDashboard: FC<{
       description: locale.tip.sticky.assignment.edit,
     },
     {
-      color: 'red',
+      color: "red",
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

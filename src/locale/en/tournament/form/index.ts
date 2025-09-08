@@ -1,31 +1,32 @@
-import { steps } from './steps';
-import { validation } from './validation';
+import { steps } from "./steps";
+import { validation } from "./validation";
 
 export const form = {
   steps,
   validation,
-  title: 'Title',
-  description: 'Description',
-  author: 'Author',
-  allowRegistrationAfterStart: 'Registration after start',
-  shouldPenalizeAttempt: 'Penalize attempts',
+  title: "Title",
+  description: "Description",
+  author: "Author",
+  allowRegistrationAfterStart: "Registration after start",
+  shouldPenalizeAttempt: "Penalize attempts",
   assessmentType: {
-    title: 'Assessment type',
-    variants: ['Per test', 'Per task'],
+    title: "Assessment type",
+    variants: ["Per test", "Per task"],
   },
-  maxTeamSize: 'Maximal number of participants in team',
+  maxTeamSize: "Maximal number of participants in team",
+  public: "Public",
 
-  calendar: 'Select start and end dates',
-  startDate: 'Start date',
-  endDate: 'End date',
-  freezeTableDate: 'Froze table date',
+  calendar: "Select start and end dates",
+  startDate: "Start date",
+  endDate: "End date",
+  freezeTableDate: "Froze table date",
 
-  moderators: 'Moderators',
-  selectedModerators: 'Selected moderators',
-  taskOrdering: 'Task order',
-  zeroTask: 'Tasks were not added yet',
+  moderators: "Moderators",
+  selectedModerators: "Selected moderators",
+  taskOrdering: "Task order",
+  zeroTask: "Tasks were not added yet",
   security: {
-    title: 'Access type',
-    variants: ['Open registration', 'Pin code registration'],
+    title: "Access type",
+    variants: ["Open registration", "Pin code registration"],
   },
 };

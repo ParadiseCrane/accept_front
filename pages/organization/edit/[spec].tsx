@@ -1,20 +1,21 @@
-import Form from '@components/Organization/Form/Form';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+"use client";
+import Form from "@components/Organization/Form/Form";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { GetServerSideProps } from 'next';
-import { ReactNode, useCallback, useMemo } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function EditOrganization(props: { organization: IOrganization }) {
   const organization = props.organization;
@@ -25,7 +26,7 @@ function EditOrganization(props: { organization: IOrganization }) {
     () => ({
       ...organization,
     }),
-    [organization]
+    [organization],
   );
 
   const handleSubmit = useCallback(
@@ -41,7 +42,7 @@ function EditOrganization(props: { organization: IOrganization }) {
       }
       requestWithNotify(
         `organization/edit`,
-        'POST',
+        "POST",
         locale.notify.group.edit, //TODO: fix
         lang,
         (spec: string) => spec,
@@ -50,10 +51,10 @@ function EditOrganization(props: { organization: IOrganization }) {
           name: form.values.name,
           description: form.values.description,
           allowRegistration: form.values.allowRegistration,
-        }
+        },
       );
     },
-    [locale, lang]
+    [locale, lang],
   );
 
   return (
@@ -80,10 +81,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const res = await fetchWrapperStatic({
@@ -99,9 +97,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

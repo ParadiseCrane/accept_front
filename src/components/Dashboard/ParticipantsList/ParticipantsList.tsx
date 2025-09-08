@@ -1,19 +1,20 @@
-import { IParticipant } from '@custom-types/data/IUser';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
-import UserList from '@ui/UserList/UserList';
-import { capitalize } from '@utils/capitalize';
-import Link from 'next/link';
-import { FC, memo } from 'react';
+"use client";
+import { IParticipant } from "@custom-types/data/IUser";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import UserList from "@ui/UserList/UserList";
+import { capitalize } from "@utils/capitalize";
+import Link from "next/link";
+import { FC, memo } from "react";
 
-import styles from './participantsList.module.css';
+import styles from "./participantsList.module.css";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.users.list.login,
-    key: 'login',
+    key: "login",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login.value > b.login.value
@@ -29,7 +30,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.shortName,
-    key: 'shortName',
+    key: "shortName",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.shortName.value > b.shortName.value
@@ -46,7 +47,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.role,
-    key: 'role',
+    key: "role",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.role.value.spec > b.role.value.spec
@@ -75,7 +76,7 @@ const refactorUser = (user: IParticipant): any => ({
           <span className={tableStyles.tags}>
             {user.groups.map((group, idx) => (
               <div className={tableStyles.tag} key={idx}>
-                {group.name + (idx == user.groups.length - 1 ? '' : ', ')}
+                {group.name + (idx == user.groups.length - 1 ? "" : ", ")}
               </div>
             ))}
           </span>
@@ -92,7 +93,7 @@ const refactorUser = (user: IParticipant): any => ({
     display: (
       <div
         style={{
-          color: user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
+          color: user.role.accessLevel > 50 ? "var(--accent)" : "black",
         }}
       >
         {capitalize(user.role.name)}
@@ -102,7 +103,7 @@ const refactorUser = (user: IParticipant): any => ({
 });
 
 const ParticipantsList: FC<{
-  type: 'assignment' | 'tournament' | 'course';
+  type: "assignment" | "tournament" | "course";
   spec: string;
 }> = ({ type, spec }) => {
   const { locale } = useLocale();

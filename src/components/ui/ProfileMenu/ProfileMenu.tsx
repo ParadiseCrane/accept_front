@@ -1,20 +1,21 @@
-import { menuLinks } from '@constants/ProfileMenuLinks';
-import { accessLevels } from '@constants/protectedRoutes';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Menu } from '@mantine/core';
-import { Indicator, UserAvatar } from '@ui/basics';
-import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
-import { putOrganizationToLS } from '@utils/manageLocalStorage';
-import Link from 'next/link';
-import { FC, memo, useState } from 'react';
-import { Logout, Plus } from 'tabler-icons-react';
+"use client";
+import { menuLinks } from "@constants/ProfileMenuLinks";
+import { accessLevels } from "@constants/protectedRoutes";
+import { useBackNotifications } from "@hooks/useBackNotifications";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Menu } from "@mantine/core";
+import { Indicator, UserAvatar } from "@ui/basics";
+import ConfirmLogoutModal from "@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal";
+import { putOrganizationToLS } from "@utils/manageLocalStorage";
+import Link from "next/link";
+import { FC, memo, useState } from "react";
+import { IconLogout, IconPlus } from "@tabler/icons-react";
 
-import AccountsMenu from './AccountsMenu/AccountsMenu';
-import styles from './profileMenu.module.css';
+import AccountsMenu from "./AccountsMenu/AccountsMenu";
+import styles from "./profileMenu.module.css";
 
-const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
+const ProfileMenu: FC<{ size: "md" | "lg" }> = ({ size }) => {
   const { locale } = useLocale();
   const { user, signOut, accessLevel, accounts } = useUser();
 
@@ -28,7 +29,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
         opened={showMenu}
         trigger="hover"
         zIndex={100}
-        transitionProps={{ transition: 'scale-y', duration: 150 }}
+        transitionProps={{ transition: "scale-y", duration: 150 }}
       >
         <Menu.Target>
           <div>
@@ -38,7 +39,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
                 size={size}
                 radius={size}
                 organization={user?.organization}
-                alt={'User avatar'}
+                alt={"User avatar"}
                 classNames={{ root: styles.avatar }}
               />
             </Indicator>
@@ -46,7 +47,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label className={styles.label}>
-            {user?.shortName || ''}
+            {user?.shortName || ""}
           </Menu.Label>
 
           <Menu.Divider />
@@ -54,7 +55,8 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
           {menuLinks
             .filter(
               (item) =>
-                !item.permission || accessLevel >= accessLevels[item.permission]
+                !item.permission ||
+                accessLevel >= accessLevels[item.permission],
             )
             .map((item, index) => (
               <Menu.Item
@@ -69,9 +71,9 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
 
           <Menu.Item
             component={Link}
-            href={'/add_account'}
-            leftSection={<Plus color="var(--secondary)" size={20} />}
-            style={{ display: accounts.length == 1 ? '' : 'none' }}
+            href={"/add_account"}
+            leftSection={<IconPlus color="var(--secondary)" size={20} />}
+            style={{ display: accounts.length == 1 ? "" : "none" }}
           >
             {locale.accounts.addAccount}
           </Menu.Item>
@@ -92,7 +94,7 @@ const ProfileMenu: FC<{ size: 'md' | 'lg' }> = ({ size }) => {
             modalText={locale.accounts.confirmSessionLogout}
           >
             <Menu.Item
-              leftSection={<Logout color="var(--secondary)" size={20} />}
+              leftSection={<IconLogout color="var(--secondary)" size={20} />}
             >
               {locale.mainHeaderLinks.profileLinks.signOut}
             </Menu.Item>

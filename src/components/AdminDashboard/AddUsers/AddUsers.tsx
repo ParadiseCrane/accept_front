@@ -1,24 +1,25 @@
-import { IStudentAdd, IStudentAddResponse } from '@custom-types/data/IStudent';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { Button, Dropzone, Helper, SegmentedControl } from '@ui/basics';
-import NewUsersList from '@ui/NewUsersList/NewUsersList';
+"use client";
+import { IStudentAdd, IStudentAddResponse } from "@custom-types/data/IStudent";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { Button, Dropzone, Helper, SegmentedControl } from "@ui/basics";
+import NewUsersList from "@ui/NewUsersList/NewUsersList";
 import StudentErrorList, {
   IStudentAddResponseTable,
-} from '@ui/StudentErrorList/StudentErrorList';
+} from "@ui/StudentErrorList/StudentErrorList";
 import {
   errorNotification,
   newNotification,
   successNotification,
   warningNotification,
-} from '@utils/notificationFunctions';
-import { getAddUserData } from '@utils/readExcel';
-import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+} from "@utils/notificationFunctions";
+import { getAddUserData } from "@utils/readExcel";
+import { FC, memo, useCallback, useState } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
 
-import styles from './addUsers.module.css';
+import styles from "./addUsers.module.css";
 
 const USERS_AT_ONCE = 50;
 const ERRORS_AT_ONCE = 8;
@@ -26,7 +27,7 @@ const ERRORS_AT_ONCE = 8;
 const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.users.list.login,
-    key: 'login',
+    key: "login",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login > b.login ? 1 : a.login == b.login ? 0 : -1,
@@ -38,7 +39,7 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.fullName,
-    key: 'fullName',
+    key: "fullName",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.fullName > b.fullName ? 1 : a.fullName == b.fullName ? 0 : -1,
@@ -50,7 +51,7 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.grade,
-    key: 'grade',
+    key: "grade",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
@@ -68,7 +69,7 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.password,
-    key: 'password',
+    key: "password",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -80,16 +81,16 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
 ];
 
 const compKind = (a: any, b: any) =>
-  a.error.value === 'error' && b.error.value !== 'error'
+  a.error.value === "error" && b.error.value !== "error"
     ? 1
-    : a.error.value !== 'error' && b.error.value === 'error'
+    : a.error.value !== "error" && b.error.value === "error"
       ? -1
       : 0;
 
 const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.users.list.login,
-    key: 'login',
+    key: "login",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login > b.login ? 1 : a.login == b.login ? 0 : -1,
@@ -101,7 +102,7 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.fullName,
-    key: 'fullName',
+    key: "fullName",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.fullName > b.fullName ? 1 : a.fullName == b.fullName ? 0 : -1,
@@ -113,7 +114,7 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.grade,
-    key: 'grade',
+    key: "grade",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
@@ -131,7 +132,7 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.error,
-    key: 'error',
+    key: "error",
     sortable: true,
     sortFunction: compKind,
     sorted: -1,
@@ -143,29 +144,29 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
 ];
 
 const ACCEPTED = [
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.ms-excel',
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel",
 ];
 
 const AddUsers: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IStudentAdd[]>([]);
   const [errors, setErrors] = useState<IStudentAddResponseTable[]>([]);
-  const [table, setTable] = useState<'users' | 'errors'>('users');
+  const [table, setTable] = useState<"users" | "errors">("users");
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IStudentAdd[]);
     setErrors([]);
-    setTable('users');
+    setTable("users");
   }, []);
 
   const sendUsers = useCallback(async (users: IStudentAdd[]) => {
     return await sendRequest<IStudentAdd[], IStudentAddResponse[]>(
-      'students/add',
-      'POST',
-      users
+      "students/add",
+      "POST",
+      users,
     );
   }, []);
 
@@ -176,13 +177,13 @@ const AddUsers: FC<{}> = () => {
     });
 
     let errors: string[] = [];
-    await sendRequest<{}, {}>('students/start-add', 'GET');
+    await sendRequest<{}, {}>("students/start-add", "GET");
     for (let idx = 0; idx < users.length / USERS_AT_ONCE; idx++) {
       const res = await sendUsers(
         users.slice(
           idx * USERS_AT_ONCE,
-          Math.min((idx + 1) * USERS_AT_ONCE, users.length)
-        )
+          Math.min((idx + 1) * USERS_AT_ONCE, users.length),
+        ),
       ).then((res) => {
         return res;
       });
@@ -190,8 +191,8 @@ const AddUsers: FC<{}> = () => {
         errors.push(
           `${idx * USERS_AT_ONCE}-${Math.min(
             (idx + 1) * USERS_AT_ONCE,
-            users.length
-          )}`
+            users.length,
+          )}`,
         );
       }
     }
@@ -199,8 +200,8 @@ const AddUsers: FC<{}> = () => {
     let wrong_students: IStudentAddResponse[] = [];
 
     await sendRequest<{}, IStudentAddResponse[]>(
-      'students/end-add',
-      'GET'
+      "students/end-add",
+      "GET",
     ).then((res) => {
       if (res.error) {
         errorNotification({
@@ -224,9 +225,9 @@ const AddUsers: FC<{}> = () => {
                 className={styles.error}
                 style={{
                   color:
-                    item.message.kind == 'error'
-                      ? 'var(--negative)'
-                      : 'var(--neutral)',
+                    item.message.kind == "error"
+                      ? "var(--negative)"
+                      : "var(--neutral)",
                 }}
               >
                 {locale.student.errors[item.message.kind]}
@@ -235,17 +236,17 @@ const AddUsers: FC<{}> = () => {
                 hoverCardProps={{ arrowSize: 15 }}
                 dropdownContent={item.message.text[lang]}
                 iconColor={
-                  item.message.kind == 'error'
-                    ? 'var(--negative)'
-                    : 'var(--neutral)'
+                  item.message.kind == "error"
+                    ? "var(--negative)"
+                    : "var(--neutral)"
                 }
               />
             </div>
           ),
         },
-      }))
+      })),
     );
-    setTable('errors');
+    setTable("errors");
 
     if (errors.length > 0) {
       errorNotification({
@@ -264,9 +265,9 @@ const AddUsers: FC<{}> = () => {
           message: `${locale.student.add.errorDetail} ${errors
             .slice(
               idx * ERRORS_AT_ONCE,
-              Math.min((idx + 1) * ERRORS_AT_ONCE, errors.length)
+              Math.min((idx + 1) * ERRORS_AT_ONCE, errors.length),
             )
-            .join(', ')}`,
+            .join(", ")}`,
           autoClose: 20000,
         });
       }
@@ -293,21 +294,21 @@ const AddUsers: FC<{}> = () => {
     <>
       <Dropzone
         onDrop={onDrop}
-        title={''}
-        description={''}
+        title={""}
+        description={""}
         accept={ACCEPTED}
         showButton
         additionalButtons={
           <>
             {users.length > 0 && (
-              <Button onClick={handleSend} color={'var(--positive)'}>
+              <Button onClick={handleSend} color={"var(--positive)"}>
                 {locale.add}
               </Button>
             )}
             <Helper dropdownContent={locale.helpers.student.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.student.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={"var(--negative)"} />}
             />
           </>
         }
@@ -317,15 +318,15 @@ const AddUsers: FC<{}> = () => {
             <div className={styles.segmentControl}>
               <SegmentedControl
                 value={table}
-                onChange={(value) => setTable(value as 'users' | 'errors')}
+                onChange={(value) => setTable(value as "users" | "errors")}
                 data={[
                   {
                     label: locale.student.segments.users,
-                    value: 'users',
+                    value: "users",
                   },
                   {
                     label: locale.student.segments.errors,
-                    value: 'errors',
+                    value: "errors",
                   },
                 ]}
               />
@@ -335,7 +336,7 @@ const AddUsers: FC<{}> = () => {
               />
             </div>
           )}
-          {table != 'errors' && (
+          {table != "errors" && (
             <NewUsersList
               data={users}
               initialColumns={usersInitialColumns}
@@ -343,7 +344,7 @@ const AddUsers: FC<{}> = () => {
               noDefault
             />
           )}
-          {table == 'errors' && (
+          {table == "errors" && (
             <StudentErrorList
               data={errors}
               initialColumns={errorsInitialColumns}

@@ -1,17 +1,18 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useLocale } from '@hooks/useLocale';
-import inputStyles from '@styles/ui/input.module.css';
-import { Icon, SegmentedControl } from '@ui/basics';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye } from 'tabler-icons-react';
+} from "@custom-types/ui/basics/customTransferList";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { useLocale } from "@hooks/useLocale";
+import inputStyles from "@styles/ui/input.module.css";
+import { Icon, SegmentedControl } from "@ui/basics";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { IconEye } from "@tabler/icons-react";
 
-import styles from './userSelector.module.css';
+import styles from "./userSelector.module.css";
 
 const UserSelector: FC<{
   setFieldValue: (_: string[]) => void;
@@ -39,7 +40,7 @@ const UserSelector: FC<{
 
   const initialUsersInner = useMemo(
     () => (initialUsers ? [...initialUsers] : []),
-    [initialUsers]
+    [initialUsers],
   );
 
   const [users, setUsers] = useState<ICustomTransferListData>(undefined);
@@ -50,7 +51,7 @@ const UserSelector: FC<{
       setFieldValue(data[1].map((item) => item.login));
       setUsers(data);
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   useEffect(() => {
@@ -74,8 +75,8 @@ const UserSelector: FC<{
     setUsers(data);
   }, [allUsers, initialUsersInner]);
 
-  const [displayedField, setDisplayedField] = useState<'shortName' | 'login'>(
-    'shortName'
+  const [displayedField, setDisplayedField] = useState<"shortName" | "login">(
+    "shortName",
   );
 
   const itemComponent: ICustomTransferListItemComponent = useCallback(
@@ -84,7 +85,7 @@ const UserSelector: FC<{
         <div
           key={index}
           className={`${styles.itemWrapper} ${
-            shrink ? inputStyles.shrink : ''
+            shrink ? inputStyles.shrink : ""
           }`}
         >
           <div className={styles.item} onClick={onClick}>
@@ -99,13 +100,13 @@ const UserSelector: FC<{
               variant="transparent"
               size="xs"
             >
-              <Eye />
+              <IconEye />
             </Icon>
           </div>
         </div>
       );
     },
-    [displayedField, shrink]
+    [displayedField, shrink],
   );
 
   return (
@@ -114,20 +115,20 @@ const UserSelector: FC<{
         data={[
           {
             label: locale.group.form.login,
-            value: 'login',
+            value: "login",
           },
           {
             label: locale.group.form.shortName,
-            value: 'shortName',
+            value: "shortName",
           },
         ]}
         value={displayedField}
-        onChange={(value) => setDisplayedField(value as 'login' | 'shortName')}
+        onChange={(value) => setDisplayedField(value as "login" | "shortName")}
       />
       <CustomTransferList
         titles={titles(locale)}
         itemComponent={itemComponent}
-        searchKeys={['login', 'name', 'shortName']}
+        searchKeys={["login", "name", "shortName"]}
         {...inputProps}
         value={users}
         onChange={onChange}

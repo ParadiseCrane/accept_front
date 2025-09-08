@@ -1,10 +1,12 @@
-import { MyButtonProps } from '@custom-types/ui/basics/button';
-import { HoverCard, Button as MantineButton } from '@mantine/core';
-import { concatClassNames } from '@utils/concatClassNames';
-import Link from 'next/link';
-import { FC, memo, useEffect, useRef, useState } from 'react';
+"use client";
 
-import styles from './button.module.css';
+import { MyButtonProps } from "@custom-types/ui/basics/button";
+import { HoverCard, Button as MantineButton } from "@mantine/core";
+import { concatClassNames } from "@utils/concatClassNames";
+import Link from "next/link";
+import { FC, memo, useEffect, useRef, useState } from "react";
+
+import styles from "./button.module.css";
 
 const Button: FC<MyButtonProps> = ({
   hoverCardProps,
@@ -17,6 +19,8 @@ const Button: FC<MyButtonProps> = ({
   kind,
   variant,
   shrink,
+  size,
+  customStyle,
   ...props
 }) => {
   const button = useRef<HTMLDivElement>(null);
@@ -24,7 +28,7 @@ const Button: FC<MyButtonProps> = ({
   const [mounted, setMounted] = useState(false);
 
   // TODO remove any
-  const component: any = props.href ? Link : 'button';
+  const component: any = props.href ? Link : "button";
   const propsClassName: any = props.classNames;
 
   useEffect(() => {
@@ -38,7 +42,7 @@ const Button: FC<MyButtonProps> = ({
           withArrow
           position="bottom"
           arrowSize={5}
-          transitionProps={{ transition: 'scale', duration: 300 }}
+          transitionProps={{ transition: "scale", duration: 300 }}
           {...hoverCardProps}
         >
           <div className={targetWrapperClassName} style={targetWrapperStyle}>
@@ -47,8 +51,8 @@ const Button: FC<MyButtonProps> = ({
                 ref={button}
                 style={{ ...buttonWrapperStyle }}
                 className={
-                  `${styles.buttonWrapper} ${shrink ? styles.shrink : ''}` +
-                  ' ' +
+                  `${styles.buttonWrapper} ${shrink ? styles.shrink : ""}` +
+                  " " +
                   (props.disabled
                     ? styles.disabled
                     : `${kind && styles[kind]} ${variant && styles[variant]}`)
@@ -60,11 +64,12 @@ const Button: FC<MyButtonProps> = ({
                   classNames={{
                     ...props.classNames,
                     label: concatClassNames(
-                      styles.label,
-                      propsClassName?.label
+                      `${customStyle} ${styles.label}`,
+                      propsClassName?.label,
                     ),
                     root: concatClassNames(styles.root, propsClassName?.root),
                   }}
+                  size={size}
                 />
               </div>
             </HoverCard.Target>
@@ -73,7 +78,7 @@ const Button: FC<MyButtonProps> = ({
           {!!dropdownContent && (
             <HoverCard.Dropdown {...hoverCardDropdownProps}>
               <div className={styles.dropdownContentWrapper}>
-                {typeof dropdownContent == 'string' ? (
+                {typeof dropdownContent == "string" ? (
                   dropdownContent
                 ) : dropdownContent instanceof Array ? (
                   <div>
@@ -82,7 +87,7 @@ const Button: FC<MyButtonProps> = ({
                     ))}
                   </div>
                 ) : (
-                  dropdownContent || ''
+                  dropdownContent || ""
                 )}
               </div>
             </HoverCard.Dropdown>

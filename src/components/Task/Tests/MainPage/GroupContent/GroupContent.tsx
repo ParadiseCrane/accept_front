@@ -1,30 +1,31 @@
-import { MAX_TEST_LENGTH } from '@constants/Limits';
+"use client";
+import { MAX_TEST_LENGTH } from "@constants/Limits";
 import {
   ITaskCheckType,
   ITaskTestData,
   ITaskType,
-} from '@custom-types/data/atomic';
-import { IChecker } from '@custom-types/data/ITask';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Dropzone, Helper, HelperTip } from '@ui/basics';
-import ListItem from '@ui/ListItem/ListItem';
-import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
+} from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Dropzone, Helper, HelperTip } from "@ui/basics";
+import ListItem from "@ui/ListItem/ListItem";
+import OpenTestInNewTab from "@ui/OpenTestInNewTab/OpenTestInNewTab";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useMemo } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
 
-import AddModal from './AddModal/AddModal';
-import DeleteTest from './DeleteTest/DeleteTest';
-import EditTest from './EditTest/EditTest';
-import styles from './groupContent.module.css';
+import AddModal from "./AddModal/AddModal";
+import DeleteTest from "./DeleteTest/DeleteTest";
+import EditTest from "./EditTest/EditTest";
+import styles from "./groupContent.module.css";
 
-const filterNonDigits = (s: string) => s.match(/\d/g)?.join('') || '0';
+const filterNonDigits = (s: string) => s.match(/\d/g)?.join("") || "0";
 
 const GroupContent: FC<{
   group_index: number;
@@ -54,19 +55,19 @@ const GroupContent: FC<{
     async (tests_to_add: ITaskTestData[]) => {
       requestWithNotify<ITaskTestData[], boolean>(
         `task_test/post/${task_spec}/${group_index}`,
-        'POST',
+        "POST",
         locale.notify.task_test.post,
         lang,
-        () => '',
+        () => "",
         tests_to_add,
         (response) => {
           if (response) {
             refetch(false);
           }
-        }
+        },
       );
     },
-    [task_spec, group_index, lang, locale, refetch]
+    [task_spec, group_index, lang, locale, refetch],
   );
 
   const onDrop = useCallback(
@@ -80,20 +81,20 @@ const GroupContent: FC<{
       }[] = [];
       for (let i = 0; i < length; i++) {
         const file = files[i];
-        const name = file.name.startsWith('i')
-          ? 'input'
-          : file.name.startsWith('o')
-            ? 'output'
-            : '';
+        const name = file.name.startsWith("i")
+          ? "input"
+          : file.name.startsWith("o")
+            ? "output"
+            : "";
         switch (name) {
-          case 'input':
+          case "input":
             inputs.push({
               index: +filterNonDigits(file.name),
               content: await files[i].text(),
             });
             break;
 
-          case 'output':
+          case "output":
             outputs.push({
               index: +filterNonDigits(file.name),
               content: await files[i].text(),
@@ -120,7 +121,7 @@ const GroupContent: FC<{
         // text task
         for (let i = 0; i < outputs.length; i++) {
           tests.push({
-            inputData: '',
+            inputData: "",
             outputData: outputs[i].content.trimEnd(),
           });
         }
@@ -129,7 +130,7 @@ const GroupContent: FC<{
         for (let i = 0; i < inputs.length; i++) {
           tests.push({
             inputData: inputs[i].content.trimEnd(),
-            outputData: '',
+            outputData: "",
           });
         }
       }
@@ -146,7 +147,7 @@ const GroupContent: FC<{
       }
       await addTests(tests);
     },
-    [checkType, taskType, addTests, locale]
+    [checkType, taskType, addTests, locale],
   );
 
   const helperContent = useMemo(
@@ -157,7 +158,7 @@ const GroupContent: FC<{
         ))}
       </div>
     ),
-    [locale]
+    [locale],
   );
 
   const hideInput = useMemo(() => taskType.spec == 1, [taskType.spec]);
@@ -182,7 +183,7 @@ const GroupContent: FC<{
           label={locale.task.tests.prohibitEdit(truncate_limit)}
         />
       ),
-    [hideInput, hideOutput, locale.task.tests, refetch, truncate_limit]
+    [hideInput, hideOutput, locale.task.tests, refetch, truncate_limit],
   );
 
   return (
@@ -190,13 +191,13 @@ const GroupContent: FC<{
       disabled={!hasWriteRights}
       onDrop={onDrop}
       title={locale.ui.codeArea.dragFiles}
-      description={''}
+      description={""}
       showButton
       plural
       maxSize={MAX_TEST_LENGTH * 2} // amount of symbols * average utf-8 symbol size
       buttonProps={{
         style: {
-          width: '100%',
+          width: "100%",
         },
         dropdownContent: helperContent,
       }}
@@ -215,14 +216,14 @@ const GroupContent: FC<{
                 readonly
                 values={tests.map((item) => ({
                   inputData: item.isInputTruncated
-                    ? item.inputData + '...'
+                    ? item.inputData + "..."
                     : item.inputData,
                   outputData: item.isOutputTruncated
-                    ? item.outputData + '...'
+                    ? item.outputData + "..."
                     : item.outputData,
                 }))}
                 label={
-                  locale.task.tests.test + ' #' + (test_offset + index + 1)
+                  locale.task.tests.test + " #" + (test_offset + index + 1)
                 }
                 inLabel={locale.task.form.inputTest}
                 outLabel={locale.task.form.outputTest}
@@ -232,10 +233,10 @@ const GroupContent: FC<{
                 maxRows={7}
                 minRows={7}
                 openInputNewTab={
-                  <OpenTestInNewTab spec={test.spec} field={'input'} />
+                  <OpenTestInNewTab spec={test.spec} field={"input"} />
                 }
                 openOutputNewTab={
-                  <OpenTestInNewTab spec={test.spec} field={'output'} />
+                  <OpenTestInNewTab spec={test.spec} field={"output"} />
                 }
                 additionalActions={
                   hasWriteRights

@@ -1,67 +1,45 @@
-import { NextConfig } from 'next';
+import { NextConfig } from "next";
 
-const prod = process.env.NODE_ENV === 'production';
+const prod = process.env.NODE_ENV === "production";
+// const prod = 0;
 
 const nextConfig: NextConfig = {
-  output: prod ? 'standalone' : undefined,
+  reactStrictMode: true,
+  output: prod ? "standalone" : undefined,
   typescript: {
     ignoreBuildErrors: !!prod,
   },
-  modularizeImports: {
-    '@tabler/icons': {
-      transform: '@tabler/icons/{{member}}',
-    },
-  },
+  bundlePagesRouterDependencies: true,
   expireTime: 1800, // half hour
   experimental: {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
+    optimizeCss: true,
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: new URL(process.env.API_ENDPOINT || '').hostname,
-      },
-    ],
-  },
-  async redirects() {
-    return prod
-      ? [
-          {
-            source: '/course/:slug*',
-            destination: '/soon',
-            permanent: false,
-          },
-          {
-            source: '/courses',
-            destination: '/soon',
-            permanent: false,
-          },
-        ]
-      : [];
+  compiler: {
+    styledComponents: true,
   },
   async rewrites() {
     return [
       {
-        source: '/profile',
+        source: "/profile",
         destination: `/profile/me`,
       },
       {
-        source: '/edu',
+        source: "/edu",
         destination: `/task/list`,
       },
       {
-        source: '/courses',
-        destination: `/course/list`,
-      },
-      {
-        source: '/api/image/:slug*', // No credentials!
+        source: "/api/image/:slug*", // No credentials!
         destination: `${process.env.API_ENDPOINT}/api/image/:slug*`,
       },
     ];
   },
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer(nextConfig);

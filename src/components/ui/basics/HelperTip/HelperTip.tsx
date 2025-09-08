@@ -1,7 +1,8 @@
-import { MyHelperTipProps } from '@custom-types/ui/basics/helper';
-import { Icon, Tip } from '@ui/basics';
-import { FC, memo } from 'react';
-import { Help } from 'tabler-icons-react';
+"use client";
+import { MyHelperTipProps } from "@custom-types/ui/basics/helper";
+import { Icon, Tip } from "@ui/basics";
+import { FC, memo } from "react";
+import { IconHelp } from "@tabler/icons-react";
 
 const HelperTip: FC<MyHelperTipProps> = ({
   customIcon,
@@ -11,8 +12,8 @@ const HelperTip: FC<MyHelperTipProps> = ({
 }) => {
   return (
     <Tip {...props}>
-      <Icon size={size || 'xs'}>
-        {customIcon || <Help color={iconColor || 'var(--dark4)'} />}
+      <Icon size={size || "xs"}>
+        {customIcon || <IconHelp color={iconColor || "var(--dark4)"} />}
       </Icon>
     </Tip>
   );

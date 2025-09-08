@@ -1,41 +1,50 @@
-import { INewNotification } from '@custom-types/data/notification';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Group } from '@mantine/core';
-import { useForm } from '@mantine/form';
+"use client";
+import { INewNotification } from "@custom-types/data/notification";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Group } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import {
   Button,
   CustomEditor,
   Helper,
   LoadingOverlay,
   TextInput,
-} from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import styles from './createNotificationCourse.module.css';
-import { UserSelector } from '@ui/selectors';
-import { useSearchParams } from 'next/navigation';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { sendRequest } from '@requests/request';
-import { ILocale } from '@custom-types/ui/ILocale';
+import styles from "./createNotificationCourse.module.css";
+import { GroupSelector, UserSelector } from "@ui/selectors";
+import { useSearchParams } from "next/navigation";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { sendRequest } from "@requests/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { IGroup } from "@custom-types/data/IGroup";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
 
 const CreateNotificationCourse: FC<{
   spec: string;
   type: string;
 }> = ({ spec, type }) => {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const [users, setUsers] = useState<IUserDisplay[] | null>(null);
+  const [groups, setGroups] = useState<IGroup[] | null>(null);
+  const [initialGroups] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const form = useForm({
     initialValues: {
-      notificationTitle: '',
-      notificationShortDescription: '',
-      notificationDescription: '',
+      notificationTitle: "",
+      notificationShortDescription: "",
+      notificationDescription: "",
       selectedUsers: [] as string[],
+      groups: [],
     },
     validate: {
       notificationTitle: (value) =>
@@ -43,48 +52,66 @@ const CreateNotificationCourse: FC<{
 
       notificationShortDescription: () => null,
       notificationDescription: () => null,
+      groups: (_, values) =>
+        !(values.selectedUsers.length > 0) && !(values.groups.length > 0)
+          ? locale.notification.form.validate.users
+          : null,
+      selectedUsers: (_, values) =>
+        !(values.selectedUsers.length > 0) && !(values.groups.length > 0)
+          ? locale.notification.form.validate.users
+          : null,
     },
     validateInputOnBlur: true,
   });
 
   const setFieldValue = useCallback(
-    (users: string[]) => form.setFieldValue('selectedUsers', users),
-    [] // eslint-disable-line
+    (users: string[]) => form.setFieldValue("selectedUsers", users),
+    [], // eslint-disable-line
   );
 
   const initialProps = useMemo(() => {
-    form.getInputProps('selectedUsers');
+    form.getInputProps("selectedUsers");
   }, []); // eslint-disable-line
 
   const handleSubmit = useCallback(() => {
+    if (form.validate().hasErrors) {
+      const id = newNotification({});
+      errorNotification({
+        id,
+        title: locale.validationError,
+        autoClose: 5000,
+      });
+      return;
+    }
+
     const notification: INewNotification = {
-      spec: '',
+      spec: "",
       title: form.values.notificationTitle,
       shortDescription: form.values.notificationShortDescription,
       description: form.values.notificationDescription,
       logins: form.values.selectedUsers,
-      groups: [],
+      groups: form.values.groups,
       roles: [],
-      author: user?.login || '',
+      author: user?.login || "",
       broadcast: false,
     };
 
     requestWithNotify<INewNotification, string>(
       `${type}/add-notification/${spec}`,
-      'POST',
+      "POST",
       locale.notify.notification.create,
       lang,
-      (_: string) => '',
-      notification
+      (_: string) => "",
+      notification,
     );
-  }, [type, spec, form.values, user?.login, locale, lang]);
+  }, [type, spec, form, user?.login, locale, lang]);
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
-    if (params.has('group')) {
+    if (searchParams && searchParams.has("group")) {
       const response = await sendRequest<{}, IUserDisplay[]>(
-        `course/participant/${spec}/${params.get('group')}`,
-        'GET'
+        `course/participant/${spec}/${searchParams.get("group")}`,
+        "GET",
       );
       if (!response.error) {
         setUsers(response.response);
@@ -94,17 +121,36 @@ const CreateNotificationCourse: FC<{
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
     setLoading(false);
-  }, [params, spec]);
+  }, [searchParams, spec]);
+
+  const fetchGroups = useCallback(async () => {
+    setLoading(true);
+    const response = await sendRequest<{}, IGroup[]>(
+      `course/groups/${spec}`,
+      "GET",
+      undefined,
+    );
+    if (!response.error) {
+      setGroups(response.response);
+    } else {
+      setGroups([]);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setLoading(false);
+  }, [spec]);
 
   useEffect(() => {
     fetchUsers();
-    form.setFieldValue('selectedUsers', []);
-  }, [params]);
+  }, [fetchUsers]);
 
-  if (!users || loading) {
+  useEffect(() => {
+    fetchGroups();
+  }, [fetchGroups]);
+
+  if (!users || !groups || loading) {
     return (
-      <div style={{ position: 'relative', height: '100%' }}>
-        <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
+      <div style={{ position: "relative", height: "100%" }}>
+        <LoadingOverlay visible={loading} loaderProps={{ radius: "lg" }} />
       </div>
     );
   }
@@ -134,7 +180,7 @@ const CreateNotificationCourse: FC<{
         <TextInput
           label={locale.notification.form.title}
           required
-          {...form.getInputProps('notificationTitle')}
+          {...form.getInputProps("notificationTitle")}
         />
         <TextInput
           label={locale.notification.form.shortDescription}
@@ -145,7 +191,7 @@ const CreateNotificationCourse: FC<{
               ))}
             </div>
           }
-          {...form.getInputProps('notificationShortDescription')}
+          {...form.getInputProps("notificationShortDescription")}
         />
         <CustomEditor
           helperContent={
@@ -157,7 +203,7 @@ const CreateNotificationCourse: FC<{
           }
           label={locale.notification.form.description}
           form={form}
-          name={'notificationDescription'}
+          name={"notificationDescription"}
         />
       </div>
       <UserSelector
@@ -169,9 +215,15 @@ const CreateNotificationCourse: FC<{
           locale.ui.userSelector.selectedGroupMembers,
         ]}
       />
+      <GroupSelector
+        form={form}
+        groups={groups}
+        initialGroups={initialGroups}
+        field={"groups"}
+      />
       <Group
         align="center"
-        style={{ display: 'flex', justifyContent: 'center' }}
+        style={{ display: "flex", justifyContent: "center" }}
       >
         <Button
           disabled={Object.keys(form.errors).length > 0}

@@ -1,21 +1,22 @@
-import { useLocale } from '@hooks/useLocale';
-import { ConfirmModal } from '@ui/modals';
-import { requestWithError } from '@utils/requestWithError';
-import { useRouter } from 'next/router';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { ConfirmModal } from "@ui/modals";
+import { requestWithError } from "@utils/requestWithError";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback } from "react";
 
-import ActivityGraph from './ActivityGraph/ActivityGraph';
-import RoutesList from './RoutesList/RoutesList';
+import ActivityGraph from "./ActivityGraph/ActivityGraph";
+import RoutesList from "./RoutesList/RoutesList";
 
 const Analytics: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const router = useRouter();
   const clearAnalytics = useCallback(() => {
     requestWithError<undefined, boolean>(
-      'analytics/delete',
-      'GET',
+      "analytics/delete",
+      "GET",
       locale.notify.analytics.delete,
-      lang
+      lang,
     ).then((res) => {
       if (!res.error) {
         router.reload();
@@ -28,7 +29,7 @@ const Analytics: FC<{}> = () => {
       <ConfirmModal
         confirm={clearAnalytics}
         buttonText={locale.delete}
-        kind={'negative'}
+        kind={"negative"}
       />
       <ActivityGraph />
       <RoutesList />

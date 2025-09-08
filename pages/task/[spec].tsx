@@ -1,41 +1,42 @@
-import DeleteModal from '@components/Task/DeleteModal/DeleteModal';
-import Description from '@components/Task/Description/Description';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { ILanguage } from '@custom-types/data/atomic';
-import { IBarTask, ITask } from '@custom-types/data/ITask';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import TaskLayout from '@layouts/TaskLayout';
-import { sendRequest } from '@requests/request';
-import { Kbd } from '@ui/basics';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import ChatSticky from '@ui/ChatSticky/ChatSticky';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import TasksBar from '@ui/TasksBar/TasksBar';
-import Timer from '@ui/Timer/Timer';
-import { getCookieValue } from '@utils/cookies';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye, Notes, Pencil, Trash } from 'tabler-icons-react';
+"use client";
+import DeleteModal from "@components/Task/DeleteModal/DeleteModal";
+import Description from "@components/Task/Description/Description";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { ILanguage } from "@custom-types/data/atomic";
+import { IBarTask, ITask } from "@custom-types/data/ITask";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import TaskLayout from "@layouts/TaskLayout";
+import { sendRequest } from "@requests/request";
+import { Kbd } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import ChatSticky from "@ui/ChatSticky/ChatSticky";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import TasksBar from "@ui/TasksBar/TasksBar";
+import Timer from "@ui/Timer/Timer";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { IconEye, IconNotes, IconPencil, IconTrash } from "@tabler/icons-react";
 
-const DynamicSend = dynamic(() => import('@components/Task/Send/Send'), {
+const DynamicSend = dynamic(() => import("@components/Task/Send/Send"), {
   ssr: false,
 });
 const DynamicSendText = dynamic(
-  () => import('@components/Task/SendText/SendText'),
-  { ssr: false }
+  () => import("@components/Task/SendText/SendText"),
+  { ssr: false },
 );
 const DynamicResults = dynamic(
-  () => import('@components/Task/Results/Results'),
-  { ssr: false }
+  () => import("@components/Task/Results/Results"),
+  { ssr: false },
 );
 
 function Task(props: {
@@ -43,6 +44,7 @@ function Task(props: {
   languages: ILanguage[];
   has_write_rights: boolean;
   has_read_tests_rights: boolean;
+  homeHref: string | null;
 }) {
   const task = props.task;
   const languages = props.languages;
@@ -63,16 +65,19 @@ function Task(props: {
   const type = useMemo(
     () =>
       router.query.assignment
-        ? 'assignment'
+        ? "assignment"
         : router.query.tournament
-          ? 'tournament'
-          : 'regular',
-    [router.query]
+          ? "tournament"
+          : router.query.lesson
+            ? "lesson"
+            : "regular",
+    [router.query],
   );
 
   const querySpec = useMemo(
-    () => router.query.assignment || router.query.tournament,
-    [router.query]
+    () =>
+      router.query.assignment || router.query.tournament || router.query.lesson,
+    [router.query],
   );
 
   const fetch_tasks = useCallback(
@@ -80,21 +85,21 @@ function Task(props: {
       return () =>
         sendRequest<undefined, IBarTask[]>(
           `${type}/tasks_status/${spec}`,
-          'GET',
+          "GET",
           undefined,
-          5000
+          5000,
         ).then((res) => {
           if (!res.error) {
             setTasks(res.response);
           }
         });
     },
-    [type]
+    [type],
   );
 
   useEffect(() => {
     let id: undefined | number = undefined;
-    if (type !== 'regular' && typeof querySpec == 'string') {
+    if (type !== "regular" && typeof querySpec == "string") {
       if (id) {
         window.clearInterval(id);
       }
@@ -114,9 +119,9 @@ function Task(props: {
     let inner_actions = [];
     if (task.hint && showHint) {
       inner_actions.push({
-        color: 'var(--accent)',
+        color: "var(--accent)",
         icon: (
-          <Eye
+          <IconEye
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -127,10 +132,10 @@ function Task(props: {
     }
     if (hasReadTestsRights) {
       inner_actions.push({
-        color: 'blue',
+        color: "blue",
         href: `/task/tests/${task.spec}`,
         icon: (
-          <Notes
+          <IconNotes
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -142,10 +147,10 @@ function Task(props: {
     if (hasWriteRights) {
       inner_actions.push(
         {
-          color: 'green',
+          color: "green",
           href: `/task/edit/${task.spec}`,
           icon: (
-            <Pencil
+            <IconPencil
               width={STICKY_SIZES[width] / 3}
               height={STICKY_SIZES[width] / 3}
             />
@@ -153,16 +158,16 @@ function Task(props: {
           description: locale.tip.sticky.task.edit,
         },
         {
-          color: 'red',
+          color: "red",
           icon: (
-            <Trash
+            <IconTrash
               width={STICKY_SIZES[width] / 3}
               height={STICKY_SIZES[width] / 3}
             />
           ),
           onClick: () => setActiveModal(true),
           description: locale.tip.sticky.task.delete,
-        }
+        },
       );
     }
 
@@ -175,25 +180,25 @@ function Task(props: {
         <meta property="og:title" content={task.title} />
         <meta
           property="og:description"
-          content={task.description.replace(/<[^>]*>/g, '')}
+          content={task.description.replace(/<[^>]*>/g, "")}
         />
         <meta
           property="description"
-          content={task.description.replace(/<[^>]*>/g, '')}
+          content={task.description.replace(/<[^>]*>/g, "")}
         />
       </Head>
-      {type !== 'regular' && typeof querySpec === 'string' && (
+      {type !== "regular" && typeof querySpec === "string" && (
         <>
           <TasksBar
             currentTask={task.spec}
             tasks={tasks}
-            homeHref={`/${type}/${querySpec}`}
+            homeHref={props.homeHref ?? `/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
           {user && (
             <ChatSticky entity={type} spec={querySpec} host={user.login} />
           )}
-          <Timer url={`${type}/info/${querySpec}`} />
+          {type !== "lesson" && <Timer url={`${type}/info/${querySpec}`} />}
         </>
       )}
 
@@ -284,25 +289,28 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/bundle/task-page/${spec}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
-      'content-type': 'application/json',
+      "content-type": "application/json",
     } as { [key: string]: string },
   });
   if (response.status === 200) {
     const response_json = await response.json();
+
+    let homeHref = null;
+
+    if (query.course && query.lesson) {
+      homeHref = `/course/${query.course}?item=${query.lesson}`;
+    }
 
     return {
       props: {
@@ -310,13 +318,11 @@ export const getServerSideProps: GetServerSideProps = async ({
         languages: response_json.languages,
         has_write_rights: response_json.has_write_rights,
         has_read_tests_rights: response_json.has_read_tests_rights,
+        homeHref,
       },
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

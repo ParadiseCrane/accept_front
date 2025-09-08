@@ -1,9 +1,10 @@
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { Button } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Button } from "@ui/basics";
+import { FC, memo } from "react";
 
-import styles from './isCreate.module.css';
+import styles from "./isCreate.module.css";
 
 const IsCreate: FC<{
   setIsCreate: setter<boolean>;

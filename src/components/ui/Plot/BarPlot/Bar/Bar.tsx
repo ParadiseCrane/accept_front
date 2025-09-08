@@ -1,8 +1,9 @@
-import { callback } from '@custom-types/ui/atomic';
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, ReactNode, memo, useCallback } from 'react';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { FC, ReactNode, memo, useCallback } from "react";
 
-import styles from './bar.module.css';
+import styles from "./bar.module.css";
 
 const Bar: FC<{
   index: number;
@@ -32,11 +33,11 @@ const Bar: FC<{
   const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
     () => setTooltipLabel(hoverLabel(data)),
-    [setTooltipLabel, data.amount]
+    [setTooltipLabel, data, hoverLabel],
   );
   const onLeave = useCallback(
     () => setTooltipLabel(undefined),
-    [setTooltipLabel]
+    [setTooltipLabel],
   );
   return (
     <>

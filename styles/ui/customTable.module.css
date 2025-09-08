@@ -58,11 +58,36 @@
   overflow-wrap: anywhere;
 }
 
+.titleWrapperCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 2em;
+  row-gap: var(--spacer-xs);
+  padding-right: 5%;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+  width: 100%;
+}
+
 .title {
+  display: flex;
   text-decoration: none;
   text-align: left;
   font-size: 1.15em;
   color: var(--primary);
+}
+
+.spanStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.icon {
+  /* height: 2em; */
 }
 
 .title:hover {
@@ -77,6 +102,10 @@
   flex-wrap: wrap;
   text-align: right;
   color: grey;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .groups {

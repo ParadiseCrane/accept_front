@@ -1,12 +1,13 @@
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import { FC, memo } from 'react';
+"use client";
+import AttemptsList from "@components/Dashboard/AttemptsList/AttemptsList";
+import { FC, memo } from "react";
 
 const AllAttempts: FC<{}> = () => {
   return (
     <>
       <AttemptsList
-        type={'all'}
-        spec={''}
+        type={"all"}
+        spec={""}
         shouldNotRefetch={false}
         isFinished={false}
         endDate={new Date()}

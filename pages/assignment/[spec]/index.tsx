@@ -1,23 +1,24 @@
-import DeleteModal from '@components/Assignment/DeleteModal/DeleteModal';
-import Description from '@components/Assignment/Description/Description';
-import { STICKY_SIZES } from '@constants/Sizes';
+"use client";
+import DeleteModal from "@components/Assignment/DeleteModal/DeleteModal";
+import Description from "@components/Assignment/Description/Description";
+import { STICKY_SIZES } from "@constants/Sizes";
 import {
   IAssignment,
   IAssignmentDisplay,
-} from '@custom-types/data/IAssignment';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import ChatSticky from '@ui/ChatSticky/ChatSticky';
-import Sticky from '@ui/Sticky/Sticky';
-import { IStickyAction } from '@ui/Sticky/Sticky';
-import Timer from '@ui/Timer/Timer';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { GetServerSideProps } from 'next';
-import { ReactNode, useState } from 'react';
-import { Dashboard, Pencil, Trash } from 'tabler-icons-react';
+} from "@custom-types/data/IAssignment";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import ChatSticky from "@ui/ChatSticky/ChatSticky";
+import Sticky from "@ui/Sticky/Sticky";
+import { IStickyAction } from "@ui/Sticky/Sticky";
+import Timer from "@ui/Timer/Timer";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import { GetServerSideProps } from "next";
+import { ReactNode, useState } from "react";
+import { IconDashboard, IconPencil, IconTrash } from "@tabler/icons-react";
 
 function Assignment(props: { assignment: IAssignment }) {
   const assignment = props.assignment;
@@ -30,9 +31,9 @@ function Assignment(props: { assignment: IAssignment }) {
 
   const actions: IStickyAction[] = [
     {
-      color: 'grape',
+      color: "grape",
       icon: (
-        <Dashboard
+        <IconDashboard
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -41,9 +42,9 @@ function Assignment(props: { assignment: IAssignment }) {
       description: locale.tip.sticky.assignment.dashboard,
     },
     {
-      color: 'green',
+      color: "green",
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -52,9 +53,9 @@ function Assignment(props: { assignment: IAssignment }) {
       description: locale.tip.sticky.assignment.edit,
     },
     {
-      color: 'red',
+      color: "red",
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -81,7 +82,7 @@ function Assignment(props: { assignment: IAssignment }) {
       {isTeacher && <Sticky actions={actions} />}
       {user && (
         <ChatSticky
-          entity={'assignment'}
+          entity={"assignment"}
           spec={assignment.spec}
           host={user.login}
         />
@@ -104,10 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
 
@@ -126,9 +124,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

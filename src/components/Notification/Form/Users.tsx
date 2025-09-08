@@ -1,21 +1,19 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { Overlay } from '@ui/basics';
-import { UserSelector } from '@ui/selectors';
-import { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { Overlay } from "@ui/basics";
+import { UserSelector } from "@ui/selectors";
+import { FC, memo, useCallback, useMemo } from "react";
 
-const Users: FC<{ form: any; users: IUserDisplay[] }> = ({
-  form,
-  users,
-}) => {
+const Users: FC<{ form: any; users: IUserDisplay[] }> = ({ form, users }) => {
   const setFieldValue = useCallback(
-    (users: string[]) => form.setFieldValue('logins', users),
-    [] // eslint-disable-line
+    (users: string[]) => form.setFieldValue("logins", users),
+    [], // eslint-disable-line
   );
   const initialProps = useMemo(() => {
-    form.getInputProps('logins');
+    form.getInputProps("logins");
   }, []); // eslint-disable-line
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: "relative" }}>
       {form.values.broadcast && <Overlay />}
       <UserSelector
         setFieldValue={setFieldValue}

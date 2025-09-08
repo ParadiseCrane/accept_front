@@ -1,47 +1,82 @@
-import { FC, useEffect, useState } from 'react';
-import { Image, Skeleton } from '@mantine/core';
-import styles from './styles.module.css';
-import { useRequest } from '@hooks/useRequest';
-import { sendRequest } from '@requests/request';
+import { FC, memo, useEffect, useState } from "react";
+import { Image, MantineStyleProp, Skeleton } from "@mantine/core";
+import styles from "./styles.module.css";
 
 interface ImageComponentProps {
   index: number;
-  item: string;
-  onClick: () => void;
+  item?: string;
+  cover?: boolean;
+  onClick?: () => void;
   active: boolean;
+  height?: number;
+  width?: number;
+  radius?: string;
+  animate?: boolean;
+  imageStyle?: MantineStyleProp;
 }
 
-export const ImageComponent: FC<ImageComponentProps> = ({
+export const ImageComponent = memo(function Component({
   index,
   item,
+  cover = false,
   onClick,
   active,
-}) => {
+  height = 100,
+  width,
+  radius = "md",
+  animate = false,
+  imageStyle,
+}: ImageComponentProps) {
   const [data, setData] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (item !== '') {
-      fetch(`/api/image/${item}`)
-        .then((res) => res.blob())
-        .then((blob) => {
-          setData(URL.createObjectURL(blob));
-        });
+    if (item !== "") {
+      (async () => {
+        const res = await fetch(`/api/image/${item}`);
+        if (!res.ok) setError(true);
+        const blob = await res.blob();
+        setData(URL.createObjectURL(blob));
+      })();
     }
   }, [item]);
 
-  if (!data || item === '') {
-    return <Skeleton animate={false} height={100} radius="md" />;
+  if ((!item && cover) || error) {
+    return (
+      <Image
+        alt={`Image ${index + 1}`}
+        src={"/media/cover_placeholder.png"}
+        radius={radius}
+        h={height}
+        fit="cover"
+        onClick={onClick}
+        className={active ? styles.image_component : ""}
+        style={imageStyle}
+      />
+    );
+  }
+
+  if (!data || item === "") {
+    return (
+      <Skeleton
+        animate={animate}
+        height={height}
+        radius={radius}
+        width={width}
+      />
+    );
   }
 
   return (
     <Image
       alt={`Image ${index + 1}`}
       src={data}
-      radius={'md'}
-      h={100}
+      radius={radius}
+      h={height}
       fit="cover"
       onClick={onClick}
-      className={active ? styles.image_component : ''}
+      className={active ? styles.image_component : ""}
+      style={imageStyle}
     />
   );
-};
+});

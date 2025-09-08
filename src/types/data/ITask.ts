@@ -6,8 +6,8 @@ import {
   ITaskTestData,
   ITaskType,
   IVerdict,
-} from './atomic';
-import { ITag } from './ITag';
+} from "./atomic";
+import { ITag } from "./ITag";
 
 export interface IHint {
   content: string;
@@ -53,10 +53,12 @@ export interface ITaskDisplay {
   insertedDate: Date;
   complexity: number;
   status?: IAttemptStatus;
+  organization?: string;
 }
 
 export interface ITaskDisplayWithPublic extends ITaskDisplay {
   public: boolean;
+  training: boolean;
 }
 
 export interface ITask extends ITaskDisplay {
@@ -76,6 +78,7 @@ export interface ITask extends ITaskDisplay {
   testsNumber: number;
   taskType: ITaskType;
   predefined: boolean;
+  training: boolean;
 }
 
 export interface ITaskEdit extends ITask {

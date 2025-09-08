@@ -1,22 +1,23 @@
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Avatar as MantineAvatar, Menu } from '@mantine/core';
-import { sendRequest } from '@requests/request';
-import { Icon, Tip, UserAvatar } from '@ui/basics';
-import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
-import { clearCookie } from '@utils/cookies';
-import { putOrganizationToLS } from '@utils/manageLocalStorage';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Avatar as MantineAvatar, Menu } from "@mantine/core";
+import { sendRequest } from "@requests/request";
+import { Icon, Tip, UserAvatar } from "@ui/basics";
+import ConfirmLogoutModal from "@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal";
+import { clearCookie } from "@utils/cookies";
+import { putOrganizationToLS } from "@utils/manageLocalStorage";
 import {
   errorNotification,
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import Link from 'next/link';
-import { FC, memo, useCallback, useState } from 'react';
-import { Logout, Plus, Trash } from 'tabler-icons-react';
+} from "@utils/notificationFunctions";
+import Link from "next/link";
+import { FC, memo, useCallback, useState } from "react";
+import { IconLogout, IconPlus, IconTrash } from "@tabler/icons-react";
 
-import styles from './accountsMenu.module.css';
-import UserLoginOrganization from './UserLoginOrganization/UserLoginOrganization';
+import styles from "./accountsMenu.module.css";
+import UserLoginOrganization from "./UserLoginOrganization/UserLoginOrganization";
 
 const AccountsMenu: FC<{}> = () => {
   const { locale } = useLocale();
@@ -42,7 +43,7 @@ const AccountsMenu: FC<{}> = () => {
   const removeSession = useCallback(() => {
     const id = newNotification({
       title: locale.notify.auth.signOut.loading,
-      message: locale.loading + '...',
+      message: locale.loading + "...",
     });
     signOut().then((res) => {
       if (res) {
@@ -65,43 +66,43 @@ const AccountsMenu: FC<{}> = () => {
     (login: string, organization: string) => {
       return () =>
         sendRequest<{ login: string; organization: string }, object>(
-          '/auth/change_account',
-          'POST',
+          "/auth/change_account",
+          "POST",
           {
             login,
             organization,
-          }
+          },
         ).then((res) => {
           if (!res.error) {
-            clearCookie('user');
+            clearCookie("user");
             refreshAccess();
             window.location.reload();
           }
         });
     },
-    [refreshAccess]
+    [refreshAccess],
   );
 
   const removeAccount = useCallback(
     (login: string, organization: string) => {
       return () =>
         sendRequest<{ login: string; organization: string }, object>(
-          '/auth/remove_account',
-          'PUT',
+          "/auth/remove_account",
+          "PUT",
           {
             login,
             organization,
-          }
+          },
         ).then((res) => {
           if (!res.error) {
             putOrganizationToLS({ value: organization });
-            clearCookie('user');
-            clearCookie('accounts');
+            clearCookie("user");
+            clearCookie("accounts");
             refreshAccess();
           }
         });
     },
-    [refreshAccess]
+    [refreshAccess],
   );
 
   const handleSignOut = useCallback(() => {
@@ -120,7 +121,7 @@ const AccountsMenu: FC<{}> = () => {
       opened={showMenu}
       position="bottom-end"
       zIndex={100}
-      transitionProps={{ transition: 'scale-y', duration: 150 }}
+      transitionProps={{ transition: "scale-y", duration: 150 }}
       width={200}
       openDelay={200}
       trigger="hover"
@@ -132,13 +133,13 @@ const AccountsMenu: FC<{}> = () => {
               filteredAccounts
                 .slice(
                   0,
-                  Math.min(showAccountsLeft ? 2 : 3, filteredAccounts.length)
+                  Math.min(showAccountsLeft ? 2 : 3, filteredAccounts.length),
                 )
                 .map((item, index) => (
                   <UserAvatar
                     style={{
-                      marginLeft: '-5px',
-                      outline: '1px solid white',
+                      marginLeft: "-5px",
+                      outline: "1px solid white",
                     }}
                     key={index}
                     login={item.login}
@@ -149,9 +150,9 @@ const AccountsMenu: FC<{}> = () => {
             {accounts.length > 3 ? (
               <MantineAvatar
                 style={{
-                  marginLeft: '-5px',
-                  outline: '1px solid white',
-                  color: 'var(--primary)',
+                  marginLeft: "-5px",
+                  outline: "1px solid white",
+                  color: "var(--primary)",
                 }}
                 classNames={{ placeholder: styles.accounts_left }}
                 radius="lg"
@@ -162,7 +163,7 @@ const AccountsMenu: FC<{}> = () => {
                 {accountsLeftText}
               </MantineAvatar>
             ) : (
-              <div style={{ display: 'none' }}></div>
+              <div style={{ display: "none" }}></div>
             )}
           </div>
         </div>
@@ -179,18 +180,18 @@ const AccountsMenu: FC<{}> = () => {
               <Menu.Item component="div">
                 <div
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
                 >
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 'var(--spacer-xs)',
-                      width: '100%',
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: "var(--spacer-xs)",
+                      width: "100%",
                     }}
                     onClick={changeAccount(item.login, item.organization)}
                   >
@@ -199,7 +200,7 @@ const AccountsMenu: FC<{}> = () => {
                       size="md"
                       login={item.login}
                       organization={item.organization}
-                      alt={'Users avatar'}
+                      alt={"Users avatar"}
                     />
                     <UserLoginOrganization
                       login={item.login}
@@ -219,7 +220,7 @@ const AccountsMenu: FC<{}> = () => {
                       modalText={`${locale.accounts.confirmLogOut} ${item.login} (${item.organization})?`}
                     >
                       <Icon size="xs" className={styles.trash_icon}>
-                        <Trash color="#00000060" />
+                        <IconTrash color="#00000060" />
                       </Icon>
                     </ConfirmLogoutModal>
                   </Tip>
@@ -228,7 +229,7 @@ const AccountsMenu: FC<{}> = () => {
               <Menu.Divider
                 // если элемент в списке последний, то мы не отображаем divider
                 style={{
-                  display: index == filteredAccounts.length - 1 ? 'none' : '',
+                  display: index == filteredAccounts.length - 1 ? "none" : "",
                 }}
               />
             </div>
@@ -238,8 +239,8 @@ const AccountsMenu: FC<{}> = () => {
         <Menu.Divider />
         <Menu.Item
           component={Link}
-          href={'/add_account'}
-          leftSection={<Plus color="var(--secondary)" size={20} />}
+          href={"/add_account"}
+          leftSection={<IconPlus color="var(--secondary)" size={20} />}
         >
           {locale.accounts.addAccount}
         </Menu.Item>
@@ -247,7 +248,7 @@ const AccountsMenu: FC<{}> = () => {
 
         <Menu.Item
           onClick={removeSession}
-          leftSection={<Logout color="var(--secondary)" size={20} />}
+          leftSection={<IconLogout color="var(--secondary)" size={20} />}
         >
           {locale.accounts.logOut}
         </Menu.Item>

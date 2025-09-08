@@ -1,16 +1,17 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IRole } from '@custom-types/data/atomic';
-import { IUser, IUserDisplay } from '@custom-types/data/IUser';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { customTableSort } from '@utils/customTableSort';
-import Fuse from 'fuse.js';
-import { useSearchParams } from 'next/navigation';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IRole } from "@custom-types/data/atomic";
+import { IUser, IUserDisplay } from "@custom-types/data/IUser";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
+import { useSearchParams } from "next/navigation";
 import {
   FC,
   ReactNode,
@@ -19,7 +20,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item<T = any> {
   value: T;
@@ -27,7 +28,7 @@ interface Item<T = any> {
 }
 
 export interface IUserDisplayItem
-  extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+  extends Omit<IUser, "login" | "shortName" | "role"> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;
@@ -40,6 +41,7 @@ const SimpleUserList: FC<{
   refactorUser: (_: IUserDisplay) => any;
   noDefault?: boolean;
   empty?: ReactNode;
+  emptyTableComponent?: ReactNode;
   defaultRowsOnPage?: number;
 }> = ({
   url,
@@ -48,17 +50,18 @@ const SimpleUserList: FC<{
   refactorUser,
   noDefault,
   empty,
+  emptyTableComponent,
   defaultRowsOnPage,
 }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(
     () => defaultRowsOnPage || DEFAULT_ON_PAGE,
-    [defaultRowsOnPage]
+    [defaultRowsOnPage],
   );
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [initialColumns, locale],
   );
 
   const [users, setUsers] = useState<IUserDisplayItem[]>([]);
@@ -67,7 +70,7 @@ const SimpleUserList: FC<{
   const processData = useCallback(
     (response: IUserDisplay[]): IUserDisplayItem[] =>
       response.map((user: IUserDisplay) => refactorUser(user)),
-    [refactorUser]
+    [refactorUser],
   );
 
   // const { data, loading } = useRequest<{}, IUserDisplay[], IUserDisplayItem[]>(
@@ -89,8 +92,8 @@ const SimpleUserList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['shortName.value', 'login.value'],
+      search: "",
+      keys: ["shortName.value", "login.value"],
     },
   });
 
@@ -103,14 +106,14 @@ const SimpleUserList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
               .map((result) => result.item);
 
       const sorted = searched.sort((a, b) =>
-        customTableSort(a, b, searchParams.sort_by, columns)
+        customTableSort(a, b, searchParams.sort_by, columns),
       );
 
       setTotal(sorted.length);
@@ -119,11 +122,11 @@ const SimpleUserList: FC<{
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
-          : undefined
+          : undefined,
       );
       setUsers(users);
     },
-    [columns, searchParams]
+    [columns, searchParams],
   );
 
   useEffect(() => {
@@ -134,14 +137,14 @@ const SimpleUserList: FC<{
 
   useEffect(() => {
     setLoading(true);
-    sendRequest<{}, IUserDisplay[]>(url, 'GET', undefined).then((res) => {
+    sendRequest<{}, IUserDisplay[]>(url, "GET", undefined).then((res) => {
       const userDisplayList = res.response;
       const userDisplayItemList: IUserDisplayItem[] =
         processData(userDisplayList);
       setData(userDisplayItemList);
       setLoading(false);
     });
-  }, [params]);
+  }, [params, processData, url]);
 
   return (
     <div>
@@ -169,6 +172,7 @@ const SimpleUserList: FC<{
         onPage={[5, defaultOnPage]}
         total={total}
         empty={empty || <>{locale.ui.table.emptyMessage}</>}
+        emptyTableComponent={emptyTableComponent}
         isEmpty={data?.length == 0}
         nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
         loading={loading}

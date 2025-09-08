@@ -1,14 +1,15 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { callback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Button, CustomEditor, Helper, Switch, TextInput } from '@ui/basics';
-import { UserSelector } from '@ui/selectors';
-import { FC, useCallback, useEffect, useMemo } from 'react';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button, CustomEditor, Helper, Switch, TextInput } from "@ui/basics";
+import { UserSelector } from "@ui/selectors";
+import { FC, useCallback, useEffect, useMemo } from "react";
 
-import styles from './form.module.css';
+import styles from "./form.module.css";
 
 const Form: FC<{
   buttonText: string;
@@ -43,25 +44,25 @@ const Form: FC<{
       <TextInput
         label={locale.organization.spec}
         required
-        {...form.getInputProps('spec')}
+        {...form.getInputProps("spec")}
       />
 
       <TextInput
         label={locale.organization.name}
         required
-        {...form.getInputProps('name')}
+        {...form.getInputProps("name")}
       />
 
       <CustomEditor
         form={form}
         label={locale.organization.description}
-        name={'description'}
+        name={"description"}
       />
 
       <div className={styles.readOnlySwitch}>
         <Switch
           label={locale.organization.allowRegistration}
-          {...form.getInputProps('allowRegistration', { type: 'checkbox' })}
+          {...form.getInputProps("allowRegistration", { type: "checkbox" })}
         />
       </div>
 

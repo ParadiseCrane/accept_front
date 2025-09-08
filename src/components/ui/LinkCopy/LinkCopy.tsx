@@ -1,16 +1,17 @@
-import tableStyles from '@styles/ui/customTable.module.css';
-import styles from './styles.module.css';
-import { useClipboard } from '@mantine/hooks';
+"use client";
+import tableStyles from "@styles/ui/customTable.module.css";
+import styles from "./styles.module.css";
+import { useClipboard } from "@mantine/hooks";
 import {
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import { useLocale } from '@hooks/useLocale';
-import { FC, useCallback, useState } from 'react';
-import { sendRequest } from '@requests/request';
-import { Icon, Tip } from '@ui/basics';
-import { IconRefresh } from '@tabler/icons-react';
-import { Skeleton } from '@mantine/core';
+} from "@utils/notificationFunctions";
+import { useLocale } from "@hooks/useLocale";
+import { FC, useCallback, useState } from "react";
+import { sendRequest } from "@requests/request";
+import { Icon, Tip } from "@ui/basics";
+import { IconRefresh } from "@tabler/icons-react";
+import { Skeleton } from "@mantine/core";
 
 export const LinkCopy: FC<{
   inviteSpec: string;
@@ -24,7 +25,6 @@ export const LinkCopy: FC<{
   const regenerateInvite = async () => {
     setLoading(true);
     const response = await regenerateLink();
-    console.log('response', response);
     if (response.length !== 0) {
       setInvite(response);
     }
@@ -44,18 +44,21 @@ export const LinkCopy: FC<{
         autoClose: 5000,
       });
     },
-    [invite]
+    [clipboard, locale],
   );
 
   return (
-    <div className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}>
+    <div
+      className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}
+      style={{ flexWrap: "nowrap" }}
+    >
       <Tip label={locale.link.copyLink}>
         <Skeleton visible={loading}>
           <div
             className={`${tableStyles.link} ${styles.link_wrapper}`}
             onClick={() => {
               onLinkClick(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/invite/${invite}`,
               );
             }}
           >

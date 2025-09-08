@@ -1,62 +1,97 @@
-import { ICourse } from '@custom-types/data/ICourse';
-import { ITask } from '@custom-types/data/ITask';
-import { AppShell, Center, Title, Image, Box } from '@mantine/core';
-import { useHash } from '@mantine/hooks';
-import { sendRequest } from '@requests/request';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { FC, memo, useEffect, useState } from 'react';
+"use client";
+import {
+  IUnit,
+  ILesson,
+  ICourse,
+  IBaseTreeUnit,
+} from "@custom-types/data/ICourse";
+import { AppShell, Box, Center, Title } from "@mantine/core";
+import { sendRequest } from "@requests/request";
+import { ImageComponent } from "@ui/ImageSelector/ImageComponent/ImageComponent";
+import { FC, memo, useEffect, useState } from "react";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import Lesson from "../Lesson/Lesson";
+import { useSearchParams } from "next/navigation";
 
-const Main: FC = () => {
-  const [course, setCourse] = useState<ICourse | ITask | null>(null);
-  const [hash] = useHash();
+import styles from "./main.module.css";
+import { Contents } from "../Contents/Contents";
+
+// TODO mocked method
+const defaultLesson = (lesson: ILesson): ILesson => {
+  return {
+    ...lesson,
+    allowedLanguages: [],
+    forbiddenLanguages: [],
+  };
+};
+
+const Main: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
+  const [entity, setEntity] = useState<ICourse | IUnit | ILesson>(null!);
+  const searchParams = useSearchParams();
+  const spec = searchParams?.get("item");
 
   useEffect(() => {
-    if (!hash.includes('#')) {
-      return;
+    if (spec && entity?.spec !== spec && item.spec !== spec) {
+      sendRequest<any, any>(`course/${spec}`, "GET", undefined, undefined).then(
+        (res) => {
+          setEntity(
+            res.response.kind === "lesson"
+              ? defaultLesson(res.response)
+              : (res.response as ICourse | IUnit | ILesson),
+          );
+        },
+      );
     }
+  }, [spec, entity, item]);
 
-    const spec = hash.split('#').pop()!;
-    sendRequest<any, any>(`course/${spec}`, 'GET', undefined, undefined).then(
-      (res) => {
-        setCourse(res.response as ICourse | ITask);
-      }
-    );
-  }, [hash]);
-
-  if (!course) {
-    return <div>Loading</div>;
+  if (!spec || spec == item.spec) {
+    return <Content item={item} />;
   }
 
-  if (!('children' in course)) return <div>task</div>;
+  if (!entity || !spec || (spec && entity.spec !== spec)) return null;
+
+  return <Content item={entity} />;
+};
+
+const Content: FC<{ item: ICourse | IUnit | ILesson }> = ({ item }) => {
   return (
     <AppShell.Main>
-      {course.image.length > 0 && (
-        <Image
-          src={`/api/image/${course.image}`}
-          alt="Picture of the course"
-          width={600}
-          height={200}
-          radius={'md'}
-          style={{
-            width: '100%',
-            height: 'auto',
-            maxHeight: 200,
-            objectFit: 'cover',
-          }}
-        />
+      {"tasks" in item ? (
+        <Lesson lesson={item} />
+      ) : (
+        <>
+          {item.kind === "course" && (
+            <ImageComponent
+              index={0}
+              item={item.image}
+              active={false}
+              animate
+              height={240}
+              radius="md"
+              imageStyle={{
+                width: "100%",
+                height: "auto",
+                maxHeight: 240,
+                objectFit: "cover",
+              }}
+              cover
+            />
+          )}
+          <Center mt={"md"} mb={"md"}>
+            <Title order={1} ta={"center"}>
+              {item.title}
+            </Title>
+          </Center>
+          <Box ml={"xl"} mr={"xl"}>
+            <TipTapEditor
+              key={item.spec}
+              editorMode={false}
+              content={item.description}
+              onUpdate={() => {}}
+            />
+          </Box>
+        </>
       )}
-      <Center mt={'md'} mb={'md'}>
-        <Title order={1} ta={'center'}>
-          {course.title}
-        </Title>
-      </Center>
-      <Box ml={'xl'} mr={'xl'}>
-        <TipTapEditor
-          editorMode={false}
-          content={course.description}
-          onUpdate={() => {}}
-        />
-      </Box>
     </AppShell.Main>
   );
 };

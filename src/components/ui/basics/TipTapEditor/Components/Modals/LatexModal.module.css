@@ -9,14 +9,6 @@
   font-size: large;
 }
 
-.latex_modal_input {
-  width: 100%;
-}
-
-.latex_modal_input:focus {
-  outline: none;
-}
-
 .input_with_editor {
   display: flex;
   flex-direction: column;

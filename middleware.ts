@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { protectedRoutesInfo } from './src/constants/protectedRoutes';
-import { getApiUrl } from '@utils/getServerUrl';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { protectedRoutesInfo } from "./src/constants/protectedRoutes";
+import { getApiUrl } from "@utils/getServerUrl";
 
 const protectedRoutes = Object.keys(protectedRoutesInfo).sort();
 
@@ -27,8 +27,8 @@ const removeSpec = (pathname: string): [string, string?] => {
   let spec = undefined;
   let path = pathname;
   if (SPEC.test(pathname.toLowerCase())) {
-    path = pathname.slice(0, pathname.lastIndexOf('/'));
-    spec = pathname.slice(pathname.lastIndexOf('/') + 1);
+    path = pathname.slice(0, pathname.lastIndexOf("/"));
+    spec = pathname.slice(pathname.lastIndexOf("/") + 1);
   }
   return [path, spec];
 };
@@ -37,17 +37,17 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/static') ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static") ||
     PUBLIC_FILE.test(pathname)
   ) {
     return NextResponse.next();
   }
   const [route, spec] = removeSpec(pathname);
-  if (route == '/api/image' && spec == '') {
+  if (route == "/api/image" && spec == "") {
     const formData = await request.formData();
     const response = await fetch(`${getApiUrl()}/api/image`, {
-      method: 'POST',
+      method: "POST",
       body: formData,
     });
     return NextResponse.json(await response.json());
@@ -57,25 +57,25 @@ export async function middleware(request: NextRequest) {
     const access = protectedRoutesInfo[route];
 
     const access_token = request.cookies.get(
-      'access_token'
+      "access_token",
       //@ts-ignore
     )?.value;
 
-    const headers = access_token
-      ? { Authorization: `Bearer ${access_token}` }
-      : undefined;
-
     const accepted = await access(
       spec,
-      headers,
+      access_token,
       pathname,
-      request.nextUrl.searchParams
+      request.nextUrl.searchParams,
     );
-    if (typeof accepted != 'boolean') {
-      return NextResponse.redirect(request.nextUrl.origin + accepted);
+    if (typeof accepted == "object") {
+      return NextResponse.rewrite(
+        new URL(`/${accepted.errorCode}`, request.url),
+      );
+    } else if (typeof accepted != "boolean") {
+      return NextResponse.rewrite(new URL("/503", request.url));
+    } else if (!accepted) {
+      return NextResponse.rewrite(new URL("/403", request.url));
     }
-    if (!accepted)
-      return NextResponse.redirect(request.nextUrl.origin + '/403');
   }
   return NextResponse.next();
 }

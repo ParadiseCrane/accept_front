@@ -6,6 +6,9 @@
 
 .cell {
   font-size: var(--font-size-s);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .headerCell {
@@ -23,4 +26,8 @@
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+.smallButton {
+  --font-size: var(--font-size-btn-s);
 }

@@ -1,11 +1,13 @@
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { Item } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { NumberInput, Radio, Switch, TextInput } from '@ui/basics';
-import { TagSelector } from '@ui/selectors';
-import { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { ITaskCheckType, ITaskType } from "@custom-types/data/atomic";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { NumberInput, Radio, Switch, TextInput } from "@ui/basics";
+import { TagSelector } from "@ui/selectors";
+import { FC, memo, useCallback, useMemo } from "react";
 
-import styles from './mainInfo.module.css';
+import styles from "./mainInfo.module.css";
+import { useSearchParams } from "next/navigation";
 
 const MainInfo: FC<{
   form: any;
@@ -13,11 +15,12 @@ const MainInfo: FC<{
   taskCheckTypes: ITaskCheckType[];
 }> = ({ form, taskTypes, taskCheckTypes }) => {
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
   const initialTags = useMemo(
     () => {
       return form.values.tags;
     },
-    [form.values.tags.length] // eslint-disable-line
+    [form.values.tags.length], // eslint-disable-line
   );
 
   const taskCheckTypeItems = useMemo(
@@ -26,7 +29,7 @@ const MainInfo: FC<{
         value: checkType.spec.toString(),
         label: locale.task.form.checkTypes[checkType.spec],
       })),
-    [locale, taskCheckTypes]
+    [locale, taskCheckTypes],
   );
 
   const taskTypeItems = useMemo(
@@ -35,21 +38,21 @@ const MainInfo: FC<{
         value: taskType.spec.toString(),
         label: locale.task.form.taskTypes[taskType.spec],
       })),
-    [locale, taskTypes]
+    [locale, taskTypes],
   );
 
   const handlerTaskType = useCallback(
     (value: string) => {
-      form.setFieldValue('taskType', value);
-      value === '1' ? form.setFieldValue('checkType', '0') : () => {};
-      form.validateField('tests');
+      form.setFieldValue("taskType", value);
+      value === "1" ? form.setFieldValue("checkType", "0") : () => {};
+      form.validateField("tests");
     },
-    [form]
+    [form],
   );
 
   const setUsed = useCallback(
-    (value: Item[]) => form.setFieldValue('tags', value),
-    [form.setFieldValue] // eslint-disable-line
+    (value: Item[]) => form.setFieldValue("tags", value),
+    [form.setFieldValue], // eslint-disable-line
   );
 
   return (
@@ -57,18 +60,18 @@ const MainInfo: FC<{
       <TextInput
         label={locale.task.form.title}
         required
-        {...form.getInputProps('title')}
+        {...form.getInputProps("title")}
       />
 
       <TagSelector
         initialTags={initialTags}
         setUsed={setUsed}
-        fetchURL={'tag/list'}
-        addURL={'tag/add'}
-        updateURL={'tag/edit'}
-        deleteURL={'tag/delete'}
+        fetchURL={"tag/list"}
+        addURL={"tag/add"}
+        updateURL={"tag/edit"}
+        deleteURL={"tag/delete"}
         form={form}
-        field={'tags'}
+        field={"tags"}
       />
 
       <NumberInput
@@ -76,12 +79,12 @@ const MainInfo: FC<{
         required
         noClampOnBlur
         hideControls
-        {...form.getInputProps('complexity')}
+        {...form.getInputProps("complexity")}
       />
       <div className={styles.radioGroups}>
         <Radio
           label={locale.task.form.taskType}
-          field={'taskType'}
+          field={"taskType"}
           form={form}
           items={taskTypeItems}
           onChange={handlerTaskType}
@@ -93,23 +96,31 @@ const MainInfo: FC<{
             </div>
           }
         />
-        {form.values.taskType === '0' && (
+        {form.values.taskType === "0" && (
           <Radio
             label={locale.task.form.checkType}
-            field={'checkType'}
+            field={"checkType"}
             form={form}
             items={taskCheckTypeItems}
             onChange={(value) => {
-              form.setFieldValue('checkType', value);
-              form.validateField('tests');
+              form.setFieldValue("checkType", value);
+              form.validateField("tests");
             }}
           />
         )}
         {!form.values.isTournament && (
-          <Switch
-            label={locale.task.form.hint.title}
-            {...form.getInputProps('hasHint', { type: 'checkbox' })}
-          />
+          <>
+            <Switch
+              label={locale.task.form.hint.title}
+              {...form.getInputProps("hasHint", { type: "checkbox" })}
+            />
+            {searchParams && !searchParams.get("tournament") && (
+              <Switch
+                label={locale.task.form.training}
+                {...form.getInputProps("training", { type: "checkbox" })}
+              />
+            )}
+          </>
         )}
       </div>
     </>

@@ -1,10 +1,11 @@
-import Form from '@components/Notification/Form/Form';
-import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useRequest } from '@hooks/useRequest';
-import { LoadingOverlay } from '@ui/basics';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import Form from "@components/Notification/Form/Form";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useRequest } from "@hooks/useRequest";
+import { LoadingOverlay } from "@ui/basics";
+import { FC, memo, useMemo } from "react";
 
 const CrateNotification: FC<{}> = () => {
   const { data, loading } = useRequest<
@@ -15,7 +16,7 @@ const CrateNotification: FC<{}> = () => {
       groups: IGroup[];
       roles: IRole[];
     }
-  >('notification/addBundle', 'GET');
+  >("notification/addBundle", "GET");
 
   const users = useMemo(() => (data ? data.users : []), [data]);
   const groups = useMemo(() => (data ? data.groups : []), [data]);
@@ -24,9 +25,9 @@ const CrateNotification: FC<{}> = () => {
   return (
     <div
       style={{
-        position: 'relative',
-        minHeight: '300px',
-        margin: 'var(--spacer-xl) var(--spacer-l) 0 0',
+        position: "relative",
+        minHeight: "300px",
+        margin: "var(--spacer-xl) var(--spacer-l) 0 0",
       }}
     >
       <LoadingOverlay visible={loading} />

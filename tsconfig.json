@@ -39,7 +39,8 @@
     "**/*.tsx",
     "pages/api/task_test/post/[task_spec]",
     "src/utils/imageLoader.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "next.config.ts"
   ],
   "exclude": ["node_modules"]
 }

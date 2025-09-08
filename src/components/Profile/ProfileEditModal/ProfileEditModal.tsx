@@ -1,16 +1,17 @@
-import { IRole } from '@custom-types/data/atomic';
-import { IUser } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { useUser } from '@hooks/useUser';
-import { useForm } from '@mantine/form';
-import { LoadingOverlay, Select, TextInput } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
+import { IUser } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { useForm } from "@mantine/form";
+import { LoadingOverlay, Select, TextInput } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
-import styles from './profileEditModal.module.css';
+import styles from "./profileEditModal.module.css";
 
 const ProfileEditModal: FC<{
   user: IUser;
@@ -34,25 +35,25 @@ const ProfileEditModal: FC<{
 
   const filterRoles = useCallback(
     (data: IRole[]) => data.filter((item) => item.accessLevel <= accessLevel),
-    [accessLevel]
+    [accessLevel],
   );
 
   const { data, loading } = useRequest<{}, IRole[]>(
-    'role',
-    'GET',
+    "role",
+    "GET",
     undefined,
-    filterRoles
+    filterRoles,
   );
 
   const handleSubmit = useCallback(() => {
     requestWithNotify(
-      'profile/editAdmin',
-      'PUT',
+      "profile/editAdmin",
+      "PUT",
       locale.notify.profile.main,
       lang,
-      () => '',
+      () => "",
       form.values,
-      () => location.reload()
+      () => location.reload(),
     );
   }, [locale, lang, form.values]);
 
@@ -63,19 +64,19 @@ const ProfileEditModal: FC<{
           <TextInput
             label={locale.auth.labels.name}
             size="lg"
-            {...form.getInputProps('name')}
+            {...form.getInputProps("name")}
           />
           <TextInput
             label={locale.auth.labels.surname}
             size="lg"
-            {...form.getInputProps('surname')}
+            {...form.getInputProps("surname")}
           />
           <TextInput
             label={locale.auth.labels.patronymic}
             size="lg"
-            {...form.getInputProps('patronymic')}
+            {...form.getInputProps("patronymic")}
           />
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: "relative" }}>
             <LoadingOverlay visible={loading} />
             <Select
               label={locale.users.list.role}
@@ -87,7 +88,7 @@ const ProfileEditModal: FC<{
                       value: role.spec.toString(),
                     }))
               }
-              {...form.getInputProps('role')}
+              {...form.getInputProps("role")}
             />
           </div>
         </div>

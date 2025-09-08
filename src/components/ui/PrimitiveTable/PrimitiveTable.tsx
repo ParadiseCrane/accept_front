@@ -1,6 +1,7 @@
-import { FC, ReactNode, memo, useMemo } from 'react';
+"use client";
+import { FC, ReactNode, memo, useMemo } from "react";
 
-import styles from './primitiveTable.module.css';
+import styles from "./primitiveTable.module.css";
 
 const PrimitiveTable: FC<{
   columns: string[];
@@ -15,7 +16,7 @@ const PrimitiveTable: FC<{
     if (!columnSizes || columnSizes.length < columns.length) {
       total = columns.length;
       return {
-        gridTemplateColumns: columns.map((_) => 100 / total).join('% ') + '%',
+        gridTemplateColumns: columns.map((_) => 100 / total).join("% ") + "%",
       };
     }
     for (let i = 0; i < columns.length; i++) {
@@ -23,8 +24,8 @@ const PrimitiveTable: FC<{
     }
     return {
       gridTemplateColumns:
-        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join('% ') +
-        '%',
+        columns.map((_, idx) => (columnSizes[idx] / total) * 100).join("% ") +
+        "%",
     };
   }, [columnSizes, columns]);
 
@@ -49,8 +50,8 @@ const PrimitiveTable: FC<{
                 key={index}
                 className={
                   classNames?.row +
-                  ' ' +
-                  (index % 2 === 0 ? classNames?.even : '')
+                  " " +
+                  (index % 2 === 0 ? classNames?.even : "")
                 }
                 style={gridTemplate}
               >

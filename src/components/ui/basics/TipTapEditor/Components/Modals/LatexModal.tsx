@@ -1,19 +1,20 @@
-import { MathExtension } from '@aarkue/tiptap-math-extension';
-import { useLocale } from '@hooks/useLocale';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Document } from '@tiptap/extension-document';
-import { History } from '@tiptap/extension-history';
-import { Paragraph } from '@tiptap/extension-paragraph';
-import { Text } from '@tiptap/extension-text';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Editor, useEditor } from '@tiptap/react';
-import { Checkbox } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { useEffect, useState } from 'react';
+"use client";
+import { MathExtension } from "@aarkue/tiptap-math-extension";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Document } from "@tiptap/extension-document";
+import { History } from "@tiptap/extension-history";
+import { Paragraph } from "@tiptap/extension-paragraph";
+import { Text } from "@tiptap/extension-text";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Editor, useEditor } from "@tiptap/react";
+import { Checkbox, Modal, TextInput } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { useEffect, useState } from "react";
 
-import styles from './LatexModal.module.css';
+import styles from "./LatexModal.module.css";
 
 const insertLatexFunction = ({
   editor,
@@ -24,13 +25,13 @@ const insertLatexFunction = ({
   expression: string;
   inline: boolean;
 }) => {
-  const characterFilter = expression.replaceAll('$', '');
-  const dataDisplay = inline ? 'no' : 'yes';
+  const characterFilter = expression.replaceAll("$", "");
+  const dataDisplay = inline ? "no" : "yes";
   editor
     ?.chain()
     .clearContent()
     .insertContent(
-      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
+      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`,
     )
     .run();
 };
@@ -50,7 +51,7 @@ export const LatexModal = ({
     inline: boolean;
   }) => void;
 }) => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [inline, setInline] = useState(true);
   const { locale } = useLocale();
 
@@ -65,7 +66,7 @@ export const LatexModal = ({
       History,
       Paragraph,
       Text,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       TextStyle,
     ],
   });
@@ -89,13 +90,12 @@ export const LatexModal = ({
   };
 
   return (
-    <SimpleModal opened={isOpened} close={onClose}>
+    <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
       <div className={styles.latex_modal_body}>
         <span className={styles.title}>{locale.tiptap.latex}</span>
         {editor && (
           <div className={styles.input_with_editor}>
-            <input
-              className={styles.latex_modal_input}
+            <TextInput
               onChange={(e) => {
                 setInput(e.target.value);
                 insertLatexFunction({
@@ -152,6 +152,6 @@ export const LatexModal = ({
           cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
-    </SimpleModal>
+    </Modal>
   );
 };

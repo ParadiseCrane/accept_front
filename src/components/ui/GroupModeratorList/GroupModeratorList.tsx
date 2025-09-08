@@ -1,17 +1,18 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IUserBaseInfo } from '@custom-types/data/IUser';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { customTableSort } from '@utils/customTableSort';
-import Fuse from 'fuse.js';
-import { useSearchParams } from 'next/navigation';
+"use client";
+import { AddModeratorModal } from "@components/Dashboard/Moderators/AddModeratorModal/AddModeratorModal";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IModeratorGroupPair } from "@custom-types/data/ICourse";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IUserBaseInfo } from "@custom-types/data/IUser";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -20,7 +21,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item<T = any> {
   value: T;
@@ -28,21 +29,29 @@ interface Item<T = any> {
 }
 
 export interface ICourseModeratorGroupItem
-  extends Omit<ICourseModeratorGroup, 'moderator' | 'group'> {
+  extends Omit<IModeratorGroupPair, "moderator" | "group"> {
   moderator: Item<IUserBaseInfo>;
   group: Item<IGroup>;
 }
 
 const GroupModeratorList: FC<{
   url: string;
+  isAuthor: boolean;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorPair: (_: ICourseModeratorGroup) => ICourseModeratorGroupItem;
+  refactorPair: ({
+    pair,
+    fetchData,
+  }: {
+    pair: IModeratorGroupPair;
+    fetchData: () => Promise<void>;
+  }) => ICourseModeratorGroupItem;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
 }> = ({
   url,
+  isAuthor,
   classNames,
   initialColumns,
   refactorPair,
@@ -53,27 +62,35 @@ const GroupModeratorList: FC<{
   const { locale } = useLocale();
   const defaultOnPage = useMemo(
     () => defaultRowsOnPage || DEFAULT_ON_PAGE,
-    [defaultRowsOnPage]
+    [defaultRowsOnPage],
   );
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [initialColumns, locale],
   );
 
   const [pairs, setPairs] = useState<ICourseModeratorGroupItem[]>([]);
   const [total, setTotal] = useState(0);
-
-  const processData = useCallback(
-    (response: ICourseModeratorGroup[]): ICourseModeratorGroupItem[] =>
-      response.map((pair: ICourseModeratorGroup) => refactorPair(pair)),
-    [refactorPair]
-  );
-
   const [data, setData] = useState<ICourseModeratorGroupItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const params = useSearchParams();
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    const response = await sendRequest<{}, IModeratorGroupPair[]>(
+      url,
+      "GET",
+      undefined,
+    );
+    if (!response.error) {
+      const pairList = response.response;
+      const pairItemList: ICourseModeratorGroupItem[] = pairList.map(
+        (pair: IModeratorGroupPair) => refactorPair({ pair, fetchData }),
+      );
+      setData(pairItemList);
+    }
+    setLoading(false);
+  }, [url, refactorPair]);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -82,8 +99,8 @@ const GroupModeratorList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['group.value', 'moderator.value'],
+      search: "",
+      keys: ["group.value", "moderator.value"],
     },
   });
 
@@ -96,14 +113,14 @@ const GroupModeratorList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
               .map((result) => result.item);
 
       const sorted = searched.sort((a, b) =>
-        customTableSort(a, b, searchParams.sort_by, columns)
+        customTableSort(a, b, searchParams.sort_by, columns),
       );
 
       setTotal(sorted.length);
@@ -112,11 +129,11 @@ const GroupModeratorList: FC<{
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
-          : undefined
+          : undefined,
       );
       setPairs(pairs);
     },
-    [columns, searchParams]
+    [columns, searchParams],
   );
 
   useEffect(() => {
@@ -126,16 +143,8 @@ const GroupModeratorList: FC<{
   }, [applyFilters, data]);
 
   useEffect(() => {
-    setLoading(true);
-    sendRequest<{}, ICourseModeratorGroup[]>(url, 'GET', undefined).then(
-      (res) => {
-        const pairList = res.response;
-        const pairItemList: ICourseModeratorGroupItem[] = processData(pairList);
-        setData(pairItemList);
-        setLoading(false);
-      }
-    );
-  }, [params]);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div>
@@ -168,6 +177,17 @@ const GroupModeratorList: FC<{
         loading={loading}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
+        additionalSearch={
+          isAuthor && <AddModeratorModal refetchData={fetchData} />
+        }
+        emptyTableComponent={
+          isAuthor && (
+            <>
+              {locale.ui.table.emptyTableMessage}
+              <AddModeratorModal refetchData={fetchData} />
+            </>
+          )
+        }
       />
     </div>
   );

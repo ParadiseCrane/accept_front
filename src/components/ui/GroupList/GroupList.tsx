@@ -1,14 +1,15 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { customTableSort } from '@utils/customTableSort';
-import Fuse from 'fuse.js';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -17,7 +18,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item {
   value: any;
@@ -25,7 +26,7 @@ interface Item {
 }
 
 interface IGroupDisplayList
-  extends Omit<IGroupDisplay, 'title' | 'participants' | 'readonly'> {
+  extends Omit<IGroupDisplay, "title" | "participants" | "readonly"> {
   title: Item;
   participants: Item;
   readonly: Item;
@@ -54,12 +55,12 @@ const GroupsList: FC<{
 
   const defaultOnPage = useMemo(
     () => defaultRowsOnPage || DEFAULT_ON_PAGE,
-    [defaultRowsOnPage]
+    [defaultRowsOnPage],
   );
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [initialColumns, locale],
   );
 
   const [groups, setGroups] = useState<IGroupDisplayList[]>([]);
@@ -67,14 +68,14 @@ const GroupsList: FC<{
   const processData = useCallback(
     (response: IGroupDisplay[]): IGroupDisplayList[] =>
       response.map((item) => refactorGroup(item)),
-    [refactorGroup]
+    [refactorGroup],
   );
 
   const { data, loading } = useRequest<
     {},
     IGroupDisplay[],
     IGroupDisplayList[]
-  >(url, 'GET', undefined, processData);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -83,8 +84,8 @@ const GroupsList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['name.value'],
+      search: "",
+      keys: ["name.value"],
     },
   });
 
@@ -97,14 +98,14 @@ const GroupsList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
               .map((result) => result.item);
 
       const sorted = searched.sort((a, b) =>
-        customTableSort(a, b, searchParams.sort_by, columns)
+        customTableSort(a, b, searchParams.sort_by, columns),
       );
 
       setTotal(sorted.length);
@@ -113,11 +114,11 @@ const GroupsList: FC<{
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
-          : undefined
+          : undefined,
       );
       setGroups(paged);
     },
-    [columns, searchParams]
+    [columns, searchParams],
   );
 
   useEffect(() => {

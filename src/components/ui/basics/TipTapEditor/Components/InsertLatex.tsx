@@ -1,11 +1,12 @@
-import { useLocale } from '@hooks/useLocale';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { useState } from 'react';
-import { Math } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { useState } from "react";
+import { IconMath } from "@tabler/icons-react";
 
-import { IconWrapper } from './IconWrapper';
-import { LatexModal } from './Modals/LatexModal';
+import { IconWrapper } from "./IconWrapper";
+import { LatexModal } from "./Modals/LatexModal";
 
 const insertLatexFunction = ({
   editor,
@@ -16,12 +17,12 @@ const insertLatexFunction = ({
   expression: string;
   inline: boolean;
 }) => {
-  const characterFilter = expression.replaceAll('$', '');
-  const dataDisplay = inline ? 'no' : 'yes';
+  const characterFilter = expression.replaceAll("$", "");
+  const dataDisplay = inline ? "no" : "yes";
   editor
     ?.chain()
     .insertContent(
-      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
+      `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`,
     )
     .run();
 };
@@ -38,7 +39,7 @@ export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
           setShowModal(true);
         }}
       >
-        <IconWrapper isActive={false} IconChild={Math} />
+        <IconWrapper isActive={false} IconChild={IconMath} />
       </RichTextEditor.Control>
       <LatexModal
         isOpened={showModal}

@@ -1,9 +1,10 @@
-import { Menu } from '@mantine/core';
-import { LoadingOverlay } from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
+"use client";
+import { Menu } from "@mantine/core";
+import { LoadingOverlay } from "@ui/basics";
+import { FC, memo, useCallback, useState } from "react";
 
-import { IData, ILabel } from '../ResultsTable';
-import styles from './dropdownList.module.css';
+import { IData, ILabel } from "../ResultsTable";
+import styles from "./dropdownList.module.css";
 
 const DropdownList: FC<{ cell: IData }> = ({ cell }) => {
   const [rest, setRest] = useState<ILabel[] | undefined>();
@@ -28,7 +29,7 @@ const DropdownList: FC<{ cell: IData }> = ({ cell }) => {
           </Menu.Target>
           <Menu.Dropdown>
             <div className={styles.restWrapper}>
-              <LoadingOverlay visible={!rest} loaderProps={{ size: 'sm' }} />
+              <LoadingOverlay visible={!rest} loaderProps={{ size: "sm" }} />
               {rest !== undefined &&
                 rest.map((item, index) => (
                   <Menu.Item key={index}>{item}</Menu.Item>

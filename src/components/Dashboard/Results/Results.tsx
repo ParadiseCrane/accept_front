@@ -1,29 +1,30 @@
+"use client";
 import {
   IActivityResults,
   IResult,
   IResultPayload,
-} from '@custom-types/data/IResults';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { sendRequest } from '@requests/request';
-import { LoadingOverlay, SegmentedControl, Tip } from '@ui/basics';
-import ResultsTable, { IData, ILabel } from '@ui/ResultsTable/ResultsTable';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import Link from 'next/link';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/data/IResults";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { sendRequest } from "@requests/request";
+import { LoadingOverlay, SegmentedControl, Tip } from "@ui/basics";
+import ResultsTable, { IData, ILabel } from "@ui/ResultsTable/ResultsTable";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import Link from "next/link";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import styles from './results.module.css';
+import styles from "./results.module.css";
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined
-    ? '#000'
+    ? "#000"
     : score === 100
-      ? 'var(--positive)'
-      : 'var(--negative)';
+      ? "var(--positive)"
+      : "var(--negative)";
 };
 
 const getTotalScoreColor = (score: number | undefined) => {
-  return !score || score === 0 ? 'var(--negative)' : 'var(--positive)';
+  return !score || score === 0 ? "var(--negative)" : "var(--positive)";
 };
 
 const Results: FC<{
@@ -32,26 +33,26 @@ const Results: FC<{
   endDate: Date;
   full?: boolean;
   is_team?: boolean;
-  type: 'assignment' | 'tournament';
+  type: "assignment" | "tournament" | "lesson";
 }> = ({ spec, isFinished, endDate, type, full, is_team }) => {
   const { locale } = useLocale();
 
-  const [fetchDate, setFetchDate] = useState<'actual' | 'end'>(
-    isFinished ? 'end' : 'actual'
+  const [fetchDate, setFetchDate] = useState<"actual" | "end">(
+    isFinished ? "end" : "actual",
   );
 
-  const [displayMode, setDisplayMode] = useState<'verdict' | 'score'>('score');
+  const [displayMode, setDisplayMode] = useState<"verdict" | "score">("score");
 
   const url = useMemo(() => `${type}/results/${spec}`, [spec, type]);
   const innerToDate = useMemo(
-    () => (fetchDate == 'end' ? endDate : undefined),
-    [fetchDate, endDate]
+    () => (fetchDate == "end" ? endDate : undefined),
+    [fetchDate, endDate],
   );
 
   const { data, loading, refetch } = useRequest<
     { toDate?: Date },
     IActivityResults
-  >(url, 'POST', {
+  >(url, "POST", {
     toDate: innerToDate,
   });
 
@@ -65,18 +66,18 @@ const Results: FC<{
         key={index}
         href={`/attempt/${item.attempt}`}
         style={{
-          textDecoration: 'none',
+          textDecoration: "none",
           color: getScoreColor(item.score),
         }}
       >
         {item.verdict
-          ? displayMode == 'score'
+          ? displayMode == "score"
             ? item.score.toString()
             : `${item.verdict.shortText} #${item.verdictTest}`
-          : '?'}
+          : "?"}
       </Link>
     ),
-    [displayMode]
+    [displayMode],
   );
 
   const fetchRestResults = useCallback(
@@ -86,14 +87,14 @@ const Results: FC<{
       return async () =>
         await sendRequest<IResultPayload, IResult[]>(
           `results/${type}`,
-          'POST',
+          "POST",
           {
             spec,
             target,
             task: task.spec,
             toDate: innerToDate,
           },
-          60 * 1000
+          60 * 1000,
         ).then((res) => {
           const result = res.error
             ? ([] as ILabel[])
@@ -101,7 +102,7 @@ const Results: FC<{
           return result;
         });
     },
-    [data, full, type, spec, innerToDate, resultComponent]
+    [data, full, type, spec, innerToDate, resultComponent],
   );
 
   const table_data: IData[][] = useMemo(() => {
@@ -112,10 +113,10 @@ const Results: FC<{
           best: (
             <div style={{ color: getScoreColor(task_result?.score) }}>
               {task_result
-                ? displayMode == 'score'
+                ? displayMode == "score"
                   ? task_result.score.toString()
                   : `${task_result.verdict.shortText} #${task_result.verdictTest}`
-                : '-'}
+                : "-"}
             </div>
           ),
           rest: full
@@ -143,7 +144,7 @@ const Results: FC<{
             best: <>{participant_result.place.toString()}</>,
             rest: undefined,
           },
-        ])
+        ]),
     );
   }, [data, fetchRestResults, displayMode, full]);
 
@@ -155,30 +156,30 @@ const Results: FC<{
             data={[
               {
                 label: locale.dashboard.assignment.toDate.end,
-                value: 'end',
+                value: "end",
               },
               {
                 label: locale.dashboard.assignment.toDate.actual,
-                value: 'actual',
+                value: "actual",
               },
             ]}
             value={fetchDate}
-            onChange={(value) => setFetchDate(value as 'actual' | 'end')}
+            onChange={(value) => setFetchDate(value as "actual" | "end")}
           />
         )}
         <SegmentedControl
           data={[
             {
               label: locale.assignment.score,
-              value: 'score',
+              value: "score",
             },
             {
               label: locale.assignment.verdicts,
-              value: 'verdict',
+              value: "verdict",
             },
           ]}
           value={displayMode}
-          onChange={(value) => setDisplayMode(value as 'verdict' | 'score')}
+          onChange={(value) => setDisplayMode(value as "verdict" | "score")}
         />
       </div>
 
@@ -192,8 +193,8 @@ const Results: FC<{
                 key={index}
                 href={`/task/${task.spec}?${type}=${spec}`}
                 style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
+                  textDecoration: "none",
+                  color: "inherit",
                 }}
               >
                 {letterFromIndex(index)}
@@ -211,8 +212,8 @@ const Results: FC<{
                 key={index}
                 href={`/team/${result.participant.identifier}`}
                 style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
+                  textDecoration: "none",
+                  color: "inherit",
                 }}
               >
                 {result.participant.label}
@@ -222,14 +223,14 @@ const Results: FC<{
                 <Link
                   href={`/profile/${result.participant.identifier}`}
                   style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
+                    textDecoration: "none",
+                    color: "inherit",
                   }}
                 >
                   {result.participant.label}
                 </Link>
               </Tip>
-            )
+            ),
           )}
           data={table_data}
         />

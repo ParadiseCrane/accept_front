@@ -1,14 +1,15 @@
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
+"use client";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
 import {
   MultiSelect as MantineMultiSelect,
   MultiSelectProps,
-} from '@mantine/core';
-import inputStyles from '@styles/ui/input.module.css';
-import { concatClassNames } from '@utils/concatClassNames';
-import dynamic from 'next/dynamic';
-import { FC, memo, useEffect } from 'react';
+} from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { concatClassNames } from "@utils/concatClassNames";
+import dynamic from "next/dynamic";
+import { FC, memo, useEffect } from "react";
 
-import InputLabel from '../InputLabel/InputLabel';
+import InputLabel from "../InputLabel/InputLabel";
 
 interface Props extends MultiSelectProps {
   helperContent?: IDropdownContent;
@@ -26,7 +27,7 @@ const MultiSelect: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
     >
       <InputLabel
         label={label}
@@ -34,7 +35,7 @@ const MultiSelect: FC<Props> = ({
         required={required}
       />
       <MantineMultiSelect
-        size={shrink ? 'sm' : 'md'}
+        size={shrink ? "sm" : "md"}
         clearable={false}
         // label={undefined}
         {...props}

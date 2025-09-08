@@ -1,12 +1,13 @@
-import { IListMessage } from '@custom-types/ui/IListMessage';
-import { useLocale } from '@hooks/useLocale';
-import { Group } from '@mantine/core';
-import { Button, LoadingOverlay, Modal } from '@ui/basics';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import { getLocalDate } from '@utils/datetime';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+"use client";
+import { IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { Group } from "@mantine/core";
+import { Button, LoadingOverlay, Modal } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import { getLocalDate } from "@utils/datetime";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import styles from './readModal.module.css';
+import styles from "./readModal.module.css";
 
 const ReadModal: FC<{
   opened: boolean;
@@ -42,7 +43,7 @@ const ReadModal: FC<{
 
   const nextOne = useCallback(() => {
     setCurrent((current) =>
-      current < messages.length - 1 ? current + 1 : current
+      current < messages.length - 1 ? current + 1 : current,
     );
   }, [messages]);
 

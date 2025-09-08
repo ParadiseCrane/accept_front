@@ -1,13 +1,14 @@
+"use client";
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
-} from '@custom-types/ui/IDraggableBoard';
-import { concatClassNames } from '@utils/concatClassNames';
-import React, { FC, ReactNode, memo } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+} from "@custom-types/ui/IDraggableBoard";
+import { concatClassNames } from "@utils/concatClassNames";
+import React, { FC, ReactNode, memo } from "react";
+import { Draggable } from "react-beautiful-dnd";
 
-import ItemList from '../ItemList/ItemList';
-import styles from './boardColumn.module.css';
+import ItemList from "../ItemList/ItemList";
+import styles from "./boardColumn.module.css";
 
 const BoardColumn: FC<{
   label: ReactNode;
@@ -22,14 +23,14 @@ const BoardColumn: FC<{
         <div
           className={`${concatClassNames(
             styles.wrapper,
-            classNames?.columnWrapper
+            classNames?.columnWrapper,
           )} ${
             snapshot.isDragging
               ? concatClassNames(
                   styles.draggingWrapper,
-                  classNames?.columnWrapperDragging
+                  classNames?.columnWrapperDragging,
                 )
-              : ''
+              : ""
           }`}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -40,14 +41,14 @@ const BoardColumn: FC<{
               {...provided.dragHandleProps}
               className={`${concatClassNames(
                 styles.labelWrapper,
-                classNames?.columnLabelWrapper
+                classNames?.columnLabelWrapper,
               )} ${
                 snapshot.isDragging
                   ? concatClassNames(
                       styles.draggingLabel,
-                      classNames?.columnLabelDragging
+                      classNames?.columnLabelDragging,
                     )
-                  : ''
+                  : ""
               }`}
             >
               {label}

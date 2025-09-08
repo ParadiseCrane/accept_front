@@ -1,29 +1,35 @@
-import { ITag } from '@custom-types/data/ITag';
+"use client";
+import { ITag } from "@custom-types/data/ITag";
 import {
   ITournamentDisplay,
   ITournamentListBundle,
-} from '@custom-types/data/ITournament';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
-import { Tip } from '@ui/basics';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Table from '@ui/Table/Table';
-import Title from '@ui/Title/Title';
-import { customTableSort } from '@utils/customTableSort';
-import { getLocalDate } from '@utils/datetime';
-import { hasSubarray } from '@utils/hasSubarray';
-import { mapTournamentStatus } from '@utils/mapStatus';
-import Fuse from 'fuse.js';
-import Link from 'next/link';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Clock, Confetti, Plus, Run } from 'tabler-icons-react';
+} from "@custom-types/data/ITournament";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect } from "@ui/basics";
+import { Tip } from "@ui/basics";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Table from "@ui/Table/Table";
+import Title from "@ui/Title/Title";
+import { customTableSort } from "@utils/customTableSort";
+import { getLocalDate } from "@utils/datetime";
+import { hasSubarray } from "@utils/hasSubarray";
+import { mapTournamentStatus } from "@utils/mapStatus";
+import Fuse from "fuse.js";
+import Link from "next/link";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  IconClock,
+  IconConfetti,
+  IconPlus,
+  IconRun,
+} from "@tabler/icons-react";
 
 interface Item {
   value: any;
@@ -33,7 +39,7 @@ interface Item {
 interface ITournamentDisplayList
   extends Omit<
     ITournamentDisplay,
-    'title' | 'author' | 'start' | 'end' | 'status'
+    "title" | "author" | "start" | "end" | "status"
   > {
   title: Item;
   author: Item;
@@ -49,10 +55,10 @@ const sortByStartEnd = ({
 }: {
   a: any;
   b: any;
-  startEnd: 'start' | 'end';
+  startEnd: "start" | "end";
 }) => {
   if (a.status.value == 0 && b.status.value == 0) {
-    if (startEnd == 'start') {
+    if (startEnd == "start") {
       return 0;
     } else {
       return a.end.value > b.end.value
@@ -62,7 +68,7 @@ const sortByStartEnd = ({
           : -1;
     }
   } else if (a.status.value == 1 && b.status.value == 1) {
-    if (startEnd == 'start') {
+    if (startEnd == "start") {
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
@@ -72,7 +78,7 @@ const sortByStartEnd = ({
       return 0;
     }
   } else if (a.status.value == 2 && b.status.value == 2) {
-    if (startEnd == 'start') {
+    if (startEnd == "start") {
       return 0;
     } else {
       return a.end.value < b.end.value
@@ -88,8 +94,8 @@ const sortByStartEnd = ({
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
-    label: '',
-    key: 'status',
+    label: "",
+    key: "status",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.status.value > b.status.value
@@ -106,7 +112,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.tournament.list.title,
-    key: 'title',
+    key: "title",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.title.value > b.title.value
@@ -122,7 +128,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.tournament.list.author,
-    key: 'author',
+    key: "author",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.author > b.author ? 1 : a.author == b.author ? 0 : -1;
@@ -135,7 +141,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.tournament.list.start,
-    key: 'start',
+    key: "start",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.start.value > b.start.value
@@ -152,7 +158,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.tournament.list.end,
-    key: 'end',
+    key: "end",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.end.value > b.end.value
@@ -169,7 +175,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.tournament.list.maxTeamSize,
-    key: 'maxTeamSize',
+    key: "maxTeamSize",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.maxTeamSize > b.maxTeamSize
@@ -188,25 +194,25 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
 
 const getTournamentIcon = (
   tournament: ITournamentDisplay,
-  locale: ILocale
+  locale: ILocale,
 ): ReactNode => {
   switch (tournament.status.spec) {
     case 0:
       return (
         <Tip position="bottom" label={locale.tip.status.pending}>
-          <Clock color="orange" />
+          <IconClock color="orange" />
         </Tip>
       );
     case 1:
       return (
         <Tip position="bottom" label={locale.tip.status.running}>
-          <Run color="var(--positive)" />
+          <IconRun color="var(--positive)" />
         </Tip>
       );
     case 2:
       return (
         <Tip position="bottom" label={locale.tip.status.finished}>
-          <Confetti color="black" />
+          <IconConfetti color="black" />
         </Tip>
       );
     default:
@@ -228,7 +234,7 @@ const getSortValue = (tournament: any): number => {
 
 const processData = (
   data: ITournamentListBundle,
-  locale: ILocale
+  locale: ILocale,
 ): {
   tournaments: ITournamentDisplayList[];
   tags: ITag[];
@@ -264,7 +270,7 @@ const processData = (
                 {tournament.tags.map((tag, idx) => (
                   <div className={tableStyles.tag} key={idx}>
                     {tag.title +
-                      (idx == tournament.tags.length - 1 ? '' : ', ')}
+                      (idx == tournament.tags.length - 1 ? "" : ", ")}
                   </div>
                 ))}
               </span>
@@ -272,7 +278,7 @@ const processData = (
           </div>
         ),
       },
-    })
+    }),
   );
   const tags = data.tags;
   return { tournaments, tags };
@@ -295,17 +301,17 @@ function TournamentList() {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'status', order: -1 }],
+    sort_by: [{ field: "status", order: -1 }],
     // sort_by: [],
     search_params: {
-      search: '',
-      keys: ['title.value', 'author.value'],
+      search: "",
+      keys: ["title.value", "author.value"],
     },
   });
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [locale]
+    [locale],
   );
 
   const searchTags = useMemo(
@@ -314,7 +320,7 @@ function TournamentList() {
         label: tag.title,
         value: tag.spec,
       })),
-    [tags]
+    [tags],
   );
 
   const { data, loading } = useRequest<
@@ -325,12 +331,12 @@ function TournamentList() {
       tags: ITag[];
     }
   >(
-    'tournament/list',
-    'GET',
+    "tournament/list",
+    "GET",
     undefined,
     (() => {
       return (data: ITournamentListBundle) => processData(data, locale);
-    })()
+    })(),
   );
 
   const applyFilters = useCallback(
@@ -342,7 +348,7 @@ function TournamentList() {
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -353,13 +359,13 @@ function TournamentList() {
           ? searched.filter((task) =>
               hasSubarray(
                 task.tags.map((tag: ITag) => tag.spec),
-                currentTags
-              )
+                currentTags,
+              ),
             )
           : searched;
 
       const sorted = tagged.sort((a, b) =>
-        customTableSort(a, b, searchParams.sort_by, columns)
+        customTableSort(a, b, searchParams.sort_by, columns),
       );
 
       setTotal(sorted.length);
@@ -368,11 +374,11 @@ function TournamentList() {
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
-          : undefined
+          : undefined,
       );
       setList(paged);
     },
-    [columns, currentTags, searchParams]
+    [columns, currentTags, searchParams],
   );
 
   useEffect(() => {
@@ -420,7 +426,7 @@ function TournamentList() {
         searchParams={searchParams}
         withSearch
         additionalSearch={
-          <div style={{ maxWidth: '300px' }}>
+          <div style={{ maxWidth: "300px" }}>
             <MultiSelect
               searchable
               data={searchTags}
@@ -437,7 +443,7 @@ function TournamentList() {
       {isTeacher && (
         <SingularSticky
           href={`/tournament/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.tournament.add}
         />
       )}

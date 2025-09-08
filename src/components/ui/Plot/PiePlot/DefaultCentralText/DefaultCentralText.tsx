@@ -1,7 +1,8 @@
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo } from 'react';
+"use client";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { FC, memo } from "react";
 
-import styles from './defaultCentralText.module.css';
+import styles from "./defaultCentralText.module.css";
 
 const DefaultCentralText: FC<IPlotData> = ({ color, label, amount }) => {
   return (

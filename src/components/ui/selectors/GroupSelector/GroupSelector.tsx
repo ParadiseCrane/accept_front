@@ -1,14 +1,15 @@
-import { IGroup } from '@custom-types/data/IGroup';
+"use client";
+import { IGroup } from "@custom-types/data/IGroup";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { useLocale } from '@hooks/useLocale';
-import inputStyles from '@styles/ui/input.module.css';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import inputStyles from "@styles/ui/input.module.css";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
-import styles from './groupSelector.module.css';
+import styles from "./groupSelector.module.css";
 
 const GroupSelector: FC<{
   form: any;
@@ -46,7 +47,7 @@ const GroupSelector: FC<{
         <div
           key={index}
           className={`${styles.itemWrapper} ${
-            shrink ? inputStyles.shrink : ''
+            shrink ? inputStyles.shrink : ""
           }`}
           onClick={onClick}
         >
@@ -54,7 +55,7 @@ const GroupSelector: FC<{
         </div>
       );
     },
-    [shrink]
+    [shrink],
   );
 
   const onChange = useCallback(
@@ -62,11 +63,11 @@ const GroupSelector: FC<{
       if (!data) return;
       form.setFieldValue(
         field,
-        data[1].map((item) => item.spec)
+        data[1].map((item) => item.spec),
       );
       setGroups(data);
     },
-    [form.setFieldValue] // eslint-disable-line
+    [form.setFieldValue], // eslint-disable-line
   );
 
   return (
@@ -81,7 +82,7 @@ const GroupSelector: FC<{
           locale.ui.groupSelector.selected,
         ]}
         itemComponent={itemComponent}
-        searchKeys={['name']}
+        searchKeys={["name"]}
         shrink={shrink}
       />
     </div>

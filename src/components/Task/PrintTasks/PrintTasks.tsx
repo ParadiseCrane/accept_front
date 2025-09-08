@@ -1,11 +1,12 @@
-import { ITask } from '@custom-types/data/ITask';
-import { sendRequest } from '@requests/request';
-import ComponentToPDF from '@ui/ComponentToPDF/ComponentToPDF';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
+"use client";
+import { ITask } from "@custom-types/data/ITask";
+import { sendRequest } from "@requests/request";
+import ComponentToPDF from "@ui/ComponentToPDF/ComponentToPDF";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import { FC, ReactNode, memo, useCallback, useState } from "react";
 
-import Description from '../Description/Description';
-import styles from './printTasks.module.css';
+import Description from "../Description/Description";
+import styles from "./printTasks.module.css";
 
 const PrintTasks: FC<{
   tasks: string[];
@@ -17,26 +18,26 @@ const PrintTasks: FC<{
   const beforeHandlePrint = useCallback(
     async () =>
       await sendRequest<string[], ITask[]>(
-        'task/ordered-tasks',
-        'POST',
+        "task/ordered-tasks",
+        "POST",
         task_specs,
-        60000
+        60000,
       ).then((res) => {
         if (!res.error) {
           setTasks(
             res.response.map((task, index) => ({
               ...task,
               title: `${letterFromIndex(index)}. ${task.title}`,
-            }))
+            })),
           );
         }
       }),
-    [task_specs]
+    [task_specs],
   );
 
   return (
     <ComponentToPDF
-      title={typeof title == 'string' ? title : undefined}
+      title={typeof title == "string" ? title : undefined}
       component={(ref) => (
         <div ref={ref}>
           <div className={styles.tournamentInfo}>

@@ -1,16 +1,18 @@
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { useLocale } from '@hooks/useLocale';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Icon } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+"use client";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteModal: FC<{
   group: IGroupDisplay;
-}> = ({ group }) => {
+  onDelete?: (specc: string) => Promise<void>;
+}> = ({ group, onDelete }) => {
   const { locale, lang } = useLocale();
 
   const [active, setActive] = useState(false);
@@ -18,19 +20,23 @@ const DeleteModal: FC<{
   const handleDelete = useCallback(() => {
     requestWithNotify(
       `group/delete/${group.spec}`,
-      'DELETE',
+      "DELETE",
       locale.notify.group.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       undefined,
-      () => setActive(false)
+      () => {
+        setActive(false);
+        // TODO протестировать refetchData
+        onDelete && onDelete(group.spec);
+      },
     );
-  }, [group.spec, locale, lang]);
+  }, [group.spec, locale, lang, onDelete]);
 
   return (
     <>
       <Icon color="red" size="xs" onClick={() => setActive(true)}>
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={active}

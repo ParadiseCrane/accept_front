@@ -1,10 +1,11 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem } from '@mantine/core';
-import { MultiSelect } from '@ui/basics';
-import React, { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem } from "@mantine/core";
+import { MultiSelect } from "@ui/basics";
+import React, { FC, memo, useCallback, useMemo } from "react";
 
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
+import { TaskItemProps, TaskSelectProps } from "./TaskSelect";
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
   label,
@@ -22,9 +23,9 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
           ({
             label: item.title,
             value: item.spec,
-          }) as TaskItemProps
+          }) as TaskItemProps,
       ),
-    [tasks]
+    [tasks],
   );
 
   const onSelect = useCallback(
@@ -36,7 +37,7 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
       const map = new Map(tasks.map((item) => [item.spec, item]));
       select(specs.map((spec) => map.get(spec) as ITaskDisplay));
     },
-    [select, tasks]
+    [select, tasks],
   );
 
   return (
@@ -53,7 +54,7 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
           (options as ComboboxItem[]).filter(
             (item) =>
               item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
-              item.value.toLowerCase().includes(search.toLowerCase().trim())
+              item.value.toLowerCase().includes(search.toLowerCase().trim()),
           )
         }
         {...additionalProps}

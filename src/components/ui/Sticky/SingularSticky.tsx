@@ -1,8 +1,9 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { Affix } from '@mantine/core';
-import { FC, ReactNode, memo } from 'react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { Affix } from "@mantine/core";
+import { FC, ReactNode, memo } from "react";
 
-import ActionButton from './ActionButton/ActionButton';
+import ActionButton from "./ActionButton/ActionButton";
 
 type positions = {
   bottom: number;
@@ -30,7 +31,7 @@ const SingularSticky: FC<{
         <ActionButton
           action={{
             icon: icon,
-            color: color || 'var(--positive)',
+            color: color || "var(--positive)",
             onClick: onClick,
             href: href,
             description: description,

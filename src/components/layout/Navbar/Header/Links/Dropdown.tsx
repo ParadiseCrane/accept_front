@@ -1,8 +1,9 @@
-import { MantineTransition, Menu } from '@mantine/core';
-import Link from 'next/link';
-import { FC, ReactNode, memo } from 'react';
+"use client";
+import { MantineTransition, Menu } from "@mantine/core";
+import Link from "next/link";
+import { FC, ReactNode, memo } from "react";
 
-import styles from './dropdown.module.css';
+import styles from "./dropdown.module.css";
 
 interface Item {
   label: string;

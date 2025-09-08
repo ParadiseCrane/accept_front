@@ -1,9 +1,10 @@
-import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem } from '@mantine/core';
-import { Select } from '@ui/basics';
-import React, { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem } from "@mantine/core";
+import { Select } from "@ui/basics";
+import React, { FC, memo, useCallback, useMemo } from "react";
 
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
+import { TaskItemProps, TaskSelectProps } from "./TaskSelect";
 
 const TaskSingleSelect: FC<TaskSelectProps> = ({
   label,
@@ -21,9 +22,9 @@ const TaskSingleSelect: FC<TaskSelectProps> = ({
           ({
             label: item.title,
             value: item.spec,
-          }) as TaskItemProps
+          }) as TaskItemProps,
       ),
-    [tasks]
+    [tasks],
   );
 
   const onSelect = useCallback(
@@ -37,7 +38,7 @@ const TaskSingleSelect: FC<TaskSelectProps> = ({
         select([tasks[taskIndex]]);
       }
     },
-    [select, tasks]
+    [select, tasks],
   );
 
   return (
@@ -54,7 +55,7 @@ const TaskSingleSelect: FC<TaskSelectProps> = ({
           (options as ComboboxItem[]).filter(
             (item) =>
               item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
-              item.value.toLowerCase().includes(search.toLowerCase().trim())
+              item.value.toLowerCase().includes(search.toLowerCase().trim()),
           )
         }
         {...additionalProps}

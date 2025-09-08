@@ -1,21 +1,22 @@
-import { IActivity } from '@custom-types/data/atomic';
-import { IChatMessage } from '@custom-types/data/IMessage';
-import { IHostData, useChatHosts } from '@hooks/useChatHosts';
-import { useLocale } from '@hooks/useLocale';
+"use client";
+import { IActivity } from "@custom-types/data/atomic";
+import { IChatMessage } from "@custom-types/data/IMessage";
+import { IHostData, useChatHosts } from "@hooks/useChatHosts";
+import { useLocale } from "@hooks/useLocale";
 import {
   Icon,
   Indicator,
   LoadingOverlay,
   TextInput,
   UserAvatar,
-} from '@ui/basics';
-import Chat from '@ui/Chat/Chat';
-import Fuse from 'fuse.js';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Eye, Search } from 'tabler-icons-react';
+} from "@ui/basics";
+import Chat from "@ui/Chat/Chat";
+import Fuse from "fuse.js";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { IconEye, IconSearch } from "@tabler/icons-react";
 
-import styles from './chatPage.module.css';
-import InitiateChatModal from './InitiateChatModal/InitiateChatModal';
+import styles from "./chatPage.module.css";
+import InitiateChatModal from "./InitiateChatModal/InitiateChatModal";
 
 const ChatPage: FC<{
   spec: string;
@@ -37,11 +38,11 @@ const ChatPage: FC<{
 
   const [searchedHosts, setSearchedHosts] = useState<IHostData[]>(hosts);
 
-  const [searchString, setSearchString] = useState<string>('');
+  const [searchString, setSearchString] = useState<string>("");
 
   const hostLogins = useMemo(
     () => hosts.map((item) => item.user.login),
-    [hosts]
+    [hosts],
   );
 
   const handleHostSelection = useCallback(
@@ -51,14 +52,14 @@ const ChatPage: FC<{
         selectHost(host.user.login);
       };
     },
-    [selectHost]
+    [selectHost],
   );
 
   const handleSearch = useCallback(() => {
     if (hosts.length == 0) return;
     if (searchString.length == 0) return setSearchedHosts(hosts);
     const fuse = new Fuse(hosts, {
-      keys: ['user.login', 'user.shortName'],
+      keys: ["user.login", "user.shortName"],
       findAllMatches: true,
     });
     const searched = fuse.search(searchString).map((item) => item.item);
@@ -103,7 +104,7 @@ const ChatPage: FC<{
           ) : (
             <div className={styles.hostsWrapper}>
               <TextInput
-                leftSection={<Search />}
+                leftSection={<IconSearch />}
                 onChange={(e) => setSearchString(e.target.value.trim())}
                 placeholder={locale.dashboard.chat.search.placeholder}
               />
@@ -115,7 +116,7 @@ const ChatPage: FC<{
                         className={`${styles.hostWrapper} ${
                           host.user.login == currentHost
                             ? styles.currentHost
-                            : ''
+                            : ""
                         }`}
                         key={index}
                       >
@@ -133,7 +134,7 @@ const ChatPage: FC<{
                               radius="md"
                               size="md"
                               login={host.user.login}
-                              alt={'Users avatar'}
+                              alt={"Users avatar"}
                             />
                           </Indicator>
                           <div className={styles.hostName}>
@@ -148,7 +149,7 @@ const ChatPage: FC<{
                           variant="transparent"
                           size="xs"
                         >
-                          <Eye />
+                          <IconEye />
                         </Icon>
                       </div>
                     ))}

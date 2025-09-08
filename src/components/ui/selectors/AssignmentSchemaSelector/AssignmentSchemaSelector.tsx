@@ -1,14 +1,15 @@
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon } from '@mantine/core';
-import { Select } from '@ui/basics';
-import Link from 'next/link';
-import { ComponentPropsWithoutRef, FC, forwardRef, memo, useMemo } from 'react';
-import { Eye } from 'tabler-icons-react';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon } from "@mantine/core";
+import { Select } from "@ui/basics";
+import Link from "next/link";
+import { ComponentPropsWithoutRef, FC, forwardRef, memo, useMemo } from "react";
+import { IconEye } from "@tabler/icons-react";
 
-import styles from './assignmentSchemaSelector.module.css';
+import styles from "./assignmentSchemaSelector.module.css";
 
-interface ItemProps extends ComponentPropsWithoutRef<'div'> {
+interface ItemProps extends ComponentPropsWithoutRef<"div"> {
   value: string;
   label: string;
 }
@@ -22,15 +23,15 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
       <div className={styles.itemIcon}>
         <Link href={`/assignment_schema/${value}`}>
           <ActionIcon size="md">
-            <Eye color={'var(--primary)'} />
+            <IconEye color={"var(--primary)"} />
           </ActionIcon>
         </Link>
       </div>
     </div>
-  )
+  ),
 );
 
-SelectItem.displayName = 'AssignmentSchemaSelectItem';
+SelectItem.displayName = "AssignmentSchemaSelectItem";
 
 const AssignmentSchemaSelector: FC<{
   form: any;
@@ -45,7 +46,7 @@ const AssignmentSchemaSelector: FC<{
         value: schema.spec,
         label: schema.title,
       })),
-    [schemas]
+    [schemas],
   );
 
   return (

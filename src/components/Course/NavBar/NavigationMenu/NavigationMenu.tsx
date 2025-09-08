@@ -1,10 +1,11 @@
-import { tooltipOpenDelay } from '@constants/Duration';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Group, Kbd } from '@mantine/core';
-import { useHotkeys } from '@mantine/hooks';
-import { Tip } from '@ui/basics';
-import { FC, memo } from 'react';
-import { ArrowLeft, ArrowRight } from 'tabler-icons-react';
+"use client";
+import { tooltipOpenDelay } from "@constants/Duration";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon, Group, Kbd } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
+import { Tip } from "@ui/basics";
+import { FC, memo } from "react";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
 const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
   prev,
@@ -12,11 +13,11 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
 }) => {
   const { locale } = useLocale();
   useHotkeys([
-    ['ctrl + ,', () => prev()],
-    ['ctrl + .', () => next()],
+    ["ctrl + ,", () => prev()],
+    ["ctrl + .", () => next()],
   ]);
   return (
-    <Group justify="space-between" p={'xs'} w={'100%'} display={'flex'}>
+    <Group justify="space-between" p={"xs"} w={"100%"} display={"flex"}>
       <Tip
         label={
           <div>
@@ -25,8 +26,8 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         }
         openDelay={tooltipOpenDelay}
       >
-        <ActionIcon onClick={() => prev()} size={'sm'}>
-          <ArrowLeft />
+        <ActionIcon onClick={() => prev()} size={"sm"}>
+          <IconArrowLeft />
         </ActionIcon>
       </Tip>
       <Tip
@@ -37,8 +38,8 @@ const NavigationMenu: FC<{ prev: () => void; next: () => void }> = ({
         }
         openDelay={tooltipOpenDelay}
       >
-        <ActionIcon onClick={() => next()} size={'sm'}>
-          <ArrowRight />
+        <ActionIcon onClick={() => next()} size={"sm"}>
+          <IconArrowRight />
         </ActionIcon>
       </Tip>
     </Group>

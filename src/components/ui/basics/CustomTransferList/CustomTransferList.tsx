@@ -1,24 +1,25 @@
+"use client";
 import {
   ICustomTransferListData,
   ICustomTransferListItem,
   ICustomTransferListItemComponent,
   ICustomTransferListItemComponentProps,
-} from '@custom-types/ui/basics/customTransferList';
-import { MyInputWrapperProps } from '@custom-types/ui/basics/inputWrapper';
-import { LoadingOverlay } from '@ui/basics';
-import InputWrapper from '@ui/basics/InputWrapper/InputWrapper';
-import { FC, ReactNode, memo, useCallback, useMemo } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { MyInputWrapperProps } from "@custom-types/ui/basics/inputWrapper";
+import { LoadingOverlay } from "@ui/basics";
+import InputWrapper from "@ui/basics/InputWrapper/InputWrapper";
+import { FC, ReactNode, memo, useCallback, useMemo } from "react";
 
-import styles from './customTransferList.module.css';
+import styles from "./customTransferList.module.css";
 import {
   Props as DefaultSelectFieldProps,
   SelectField,
-} from './SelectField/SelectField';
+} from "./SelectField/SelectField";
 
 interface Props
   extends Omit<
     MyInputWrapperProps,
-    'children' | 'onChange' | 'classNames' | 'styles'
+    "children" | "onChange" | "classNames" | "styles"
   > {
   value: ICustomTransferListData;
   // TODO: add className types
@@ -48,7 +49,7 @@ const defaultItemComponent = ({
 
 const compareItems = (
   a: ICustomTransferListItem,
-  b: ICustomTransferListItem
+  b: ICustomTransferListItem,
 ): 1 | 0 | -1 => {
   if (a.sortValue == b.sortValue) {
     return 0;
@@ -63,15 +64,15 @@ const CustomTransferList: FC<Props> = ({
   value,
   onChange,
   loading,
-  titles = ['', ''],
+  titles = ["", ""],
   itemComponent = defaultItemComponent,
   sortOrder = 1,
-  searchKeys = ['label'],
+  searchKeys = ["label"],
   classNames,
   selectFieldProps: selectFieldClassNames,
   styles: _innerStyles,
-  height = '350px',
-  width = '100%',
+  height = "350px",
+  width = "100%",
   extraActions = [[], []],
   ...props
 }) => {
@@ -109,21 +110,21 @@ const CustomTransferList: FC<Props> = ({
 
       onChange(data);
     },
-    [innerValue, onChange, sortOrder]
+    [innerValue, onChange, sortOrder],
   );
 
   const selectItems = useCallback(
     (labels: string[]) => {
       return () => moveFromTo(labels, 0, 1);
     },
-    [moveFromTo]
+    [moveFromTo],
   );
 
   const unselectItems = useCallback(
     (labels: string[]) => {
       return () => moveFromTo(labels, 1, 0);
     },
-    [moveFromTo]
+    [moveFromTo],
   );
 
   const inputStyles = useMemo(() => {

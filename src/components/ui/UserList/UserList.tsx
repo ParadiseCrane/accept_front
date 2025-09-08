@@ -1,19 +1,20 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IParticipantListBundle, IUser } from '@custom-types/data/IUser';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
-import Table from '@ui/Table/Table';
-import { capitalize } from '@utils/capitalize';
-import { customTableSort } from '@utils/customTableSort';
-import { hasSubarray } from '@utils/hasSubarray';
-import Fuse from 'fuse.js';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IParticipantListBundle, IUser } from "@custom-types/data/IUser";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect } from "@ui/basics";
+import Table from "@ui/Table/Table";
+import { capitalize } from "@utils/capitalize";
+import { customTableSort } from "@utils/customTableSort";
+import { hasSubarray } from "@utils/hasSubarray";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -22,14 +23,14 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item<T = any> {
   value: T;
   display: string | ReactNode;
 }
 
-interface IUserDisplayList extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+interface IUserDisplayList extends Omit<IUser, "login" | "shortName" | "role"> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;
@@ -57,12 +58,12 @@ const UsersList: FC<{
   const { locale } = useLocale();
   const defaultOnPage = useMemo(
     () => defaultRowsOnPage || DEFAULT_ON_PAGE,
-    [defaultRowsOnPage]
+    [defaultRowsOnPage],
   );
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [initialColumns, locale],
   );
 
   const [groups, setGroups] = useState<IGroup[]>([]);
@@ -76,7 +77,7 @@ const UsersList: FC<{
 
   const processData = useCallback(
     (
-      response: IParticipantListBundle
+      response: IParticipantListBundle,
     ): {
       users: IUserDisplayList[];
       groups: IGroup[];
@@ -86,7 +87,7 @@ const UsersList: FC<{
       groups: response.groups,
       roles: response.roles,
     }),
-    [refactorUser]
+    [refactorUser],
   );
 
   const { data, loading } = useRequest<
@@ -97,7 +98,7 @@ const UsersList: FC<{
       groups: IGroup[];
       roles: IRole[];
     }
-  >(url, 'GET', undefined, processData);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -106,8 +107,8 @@ const UsersList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['login.value', 'shortName.value', 'name'],
+      search: "",
+      keys: ["login.value", "shortName.value", "name"],
     },
   });
 
@@ -117,7 +118,7 @@ const UsersList: FC<{
         label: group.name,
         value: group.spec,
       })),
-    [groups]
+    [groups],
   );
   const searchRoles = useMemo(
     () =>
@@ -125,7 +126,7 @@ const UsersList: FC<{
         label: capitalize(role.name),
         value: role.spec.toString(),
       })),
-    [roles]
+    [roles],
   );
 
   const applyFilters = useCallback(
@@ -137,7 +138,7 @@ const UsersList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -148,20 +149,20 @@ const UsersList: FC<{
           ? searched.filter((user) =>
               hasSubarray(
                 user.groups.map((group: IGroup) => group.spec),
-                currentGroups
-              )
+                currentGroups,
+              ),
             )
           : searched;
 
       const withRole =
         currentRoles.length > 0
           ? grouped.filter((user) =>
-              currentRoles.includes(user.role.value.spec.toString())
+              currentRoles.includes(user.role.value.spec.toString()),
             )
           : grouped;
 
       const sorted = withRole.sort((a, b) =>
-        customTableSort(a, b, searchParams.sort_by, columns)
+        customTableSort(a, b, searchParams.sort_by, columns),
       );
 
       setTotal(sorted.length);
@@ -170,11 +171,11 @@ const UsersList: FC<{
         searchParams.pager.skip,
         searchParams.pager.limit > 0
           ? searchParams.pager.skip + searchParams.pager.limit
-          : undefined
+          : undefined,
       );
       setUsers(paged);
     },
-    [columns, currentGroups, currentRoles, searchParams, setTotal]
+    [columns, currentGroups, currentRoles, searchParams, setTotal],
   );
 
   useEffect(() => {
@@ -229,10 +230,10 @@ const UsersList: FC<{
         additionalSearch={
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 'var(--spacer-l)',
-              width: '100%',
+              display: "flex",
+              flexDirection: "row",
+              gap: "var(--spacer-l)",
+              width: "100%",
             }}
           >
             <MultiSelect

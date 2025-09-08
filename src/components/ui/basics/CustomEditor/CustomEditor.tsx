@@ -1,23 +1,34 @@
-import { Editor as EditorType } from '@tiptap/react';
-import { InputWrapper } from '@ui/basics';
-import { FC, ReactNode, memo } from 'react';
+"use client";
+import { Editor as EditorType } from "@tiptap/react";
+import { InputWrapper } from "@ui/basics";
+import { FC, ReactNode, memo } from "react";
 
-import { TipTapEditor } from '../TipTapEditor/TipTapEditor';
+import { TipTapEditor } from "../TipTapEditor/TipTapEditor";
 
 const CustomEditor: FC<{
   name: string;
   label: string;
   form?: any;
-
+  editorMinHeight?: string;
   helperContent?: string | ReactNode;
   shrink?: boolean;
-}> = ({ name, label, form, helperContent, shrink }) => {
+  required?: boolean;
+}> = ({
+  name,
+  label,
+  form,
+  editorMinHeight,
+  helperContent,
+  shrink,
+  required,
+}) => {
   return (
     <div>
       <InputWrapper
         label={label}
         helperContent={helperContent}
         shrink={shrink}
+        required={required}
         {...form.getInputProps(name)}
       >
         <TipTapEditor
@@ -31,6 +42,7 @@ const CustomEditor: FC<{
           onBlur={() => {
             form.validateField(name);
           }}
+          minHeight={editorMinHeight}
         />
       </InputWrapper>
     </div>

@@ -1,11 +1,12 @@
-import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { useLocale } from '@hooks/useLocale';
-import { Burger, Drawer } from '@mantine/core';
-import { FC, useState } from 'react';
+"use client";
+import { IHeaderLink } from "@custom-types/ui/IHeaderLink";
+import { useLocale } from "@hooks/useLocale";
+import { Burger, Drawer } from "@mantine/core";
+import { FC, useState } from "react";
 
-import Logo from '../Logo/Logo';
-import { Links } from './Links';
-import styles from './sideBar.module.css';
+import Logo from "../Logo/Logo";
+import { Links } from "./Links";
+import styles from "./sideBar.module.css";
 
 export const Sidebar: FC<{
   links: IHeaderLink[];
@@ -30,7 +31,7 @@ export const Sidebar: FC<{
           position="top"
           opened={open}
           onClose={() => setOpen(false)}
-          size={'0px'}
+          size={"0px"}
         >
           <div className={styles.drawerContent}>
             <Links

@@ -1,22 +1,23 @@
-import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { Icon } from '@ui/basics';
-import GroupList from '@ui/GroupList/GroupList';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Title from '@ui/Title/Title';
-import { ReactNode } from 'react';
-import { Check, Pencil, Plus, X } from 'tabler-icons-react';
+"use client";
+import DeleteModal from "@components/Group/DeleteModal/DeleteModal";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { Icon } from "@ui/basics";
+import GroupList from "@ui/GroupList/GroupList";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Title from "@ui/Title/Title";
+import { ReactNode } from "react";
+import { IconCheck, IconPencil, IconPlus, IconX } from "@tabler/icons-react";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.group.list.name,
-    key: 'name',
+    key: "name",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.name.value > b.name.value ? 1 : a.name.value == b.name.value ? 0 : -1,
@@ -28,7 +29,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.group.list.participants,
-    key: 'participants',
+    key: "participants",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.participants.value > b.participants.value
@@ -44,7 +45,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.group.list.readonly,
-    key: 'readonly',
+    key: "readonly",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.readonly.value > b.readonly.value
@@ -64,12 +65,12 @@ const refactorGroup = (group: IGroupDisplay): any => ({
     value: group.name,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <div style={{ color: 'var(--primary)' }}>{group.name}</div>
+        <div style={{ color: "var(--primary)" }}>{group.name}</div>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 'var(--spacer-xs)',
+            display: "flex",
+            flexDirection: "row",
+            gap: "var(--spacer-xs)",
           }}
         >
           <Icon
@@ -77,7 +78,7 @@ const refactorGroup = (group: IGroupDisplay): any => ({
             size="xs"
             href={`/group/edit/${group.spec}`}
           >
-            <Pencil />
+            <IconPencil />
           </Icon>
           <DeleteModal group={group} />
         </div>
@@ -91,7 +92,9 @@ const refactorGroup = (group: IGroupDisplay): any => ({
   readonly: {
     value: group.readonly,
     display: (
-      <div>{group.readonly ? <X color="red" /> : <Check color="green" />}</div>
+      <div>
+        {group.readonly ? <IconX color="red" /> : <IconCheck color="green" />}
+      </div>
     ),
   },
 });
@@ -103,7 +106,7 @@ function GroupListPage() {
     <div>
       <Title title={locale.titles.group.list} />
       <GroupList
-        url={'group/list'}
+        url={"group/list"}
         refactorGroup={refactorGroup}
         initialColumns={initialColumns}
       />
@@ -111,7 +114,7 @@ function GroupListPage() {
         <SingularSticky
           color="var(--positive)"
           href={`/group/add`}
-          icon={<Plus height={25} width={25} />}
+          icon={<IconPlus height={25} width={25} />}
           description={locale.tip.sticky.group.add}
         />
       )}

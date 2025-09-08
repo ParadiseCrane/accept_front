@@ -1,6 +1,7 @@
-import { setter } from '@custom-types/ui/atomic';
-import { Tabs as MantineTabs, TabsProps } from '@mantine/core';
-import { FC, ReactNode, memo, useState } from 'react';
+"use client";
+import { setter } from "@custom-types/ui/atomic";
+import { Tabs as MantineTabs, TabsProps } from "@mantine/core";
+import { FC, ReactNode, memo, useState } from "react";
 
 interface TabPage {
   value: string;
@@ -8,7 +9,7 @@ interface TabPage {
   page: (_: string | null, __: setter<string | null>) => ReactNode;
 }
 
-interface Props extends Omit<TabsProps, 'children'> {
+interface Props extends Omit<TabsProps, "children"> {
   pages: TabPage[];
   defaultPage: string;
 }
@@ -19,10 +20,10 @@ const Tabs: FC<Props> = ({ pages, defaultPage, ...props }) => {
   return (
     <MantineTabs
       style={{
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
       }}
-      styles={{ tabLabel: { fontSize: 'var(--font-size-s)' } }}
+      styles={{ tabLabel: { fontSize: "var(--font-size-s)" } }}
       value={activeTab}
       onChange={setActiveTab}
       {...props}

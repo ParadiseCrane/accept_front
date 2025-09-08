@@ -1,27 +1,28 @@
-import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { INewNotification } from '@custom-types/data/notification';
-import { useLocale } from '@hooks/useLocale';
-import { useForm } from '@mantine/form';
-import Stepper from '@ui/Stepper/Stepper';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { INewNotification } from "@custom-types/data/notification";
+import { useLocale } from "@hooks/useLocale";
+import { useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
-import DescriptionInfo from './DescriptionInfo';
-import GroupsRoles from './GroupsRoles';
-import MainInfo from './MainInfo';
-import Users from './Users';
+import DescriptionInfo from "./DescriptionInfo";
+import GroupsRoles from "./GroupsRoles";
+import MainInfo from "./MainInfo";
+import Users from "./Users";
 
 const stepFields = [
-  ['title', 'author'],
-  ['shortDescription', 'description'],
+  ["title", "author"],
+  ["shortDescription", "description"],
   [],
-  ['logins', 'groups', 'roles'],
+  ["logins", "groups", "roles"],
 ];
 
 const Form: FC<{
@@ -34,11 +35,11 @@ const Form: FC<{
 
   const form = useForm({
     initialValues: {
-      spec: '',
-      title: '',
-      author: '',
-      shortDescription: '',
-      description: '',
+      spec: "",
+      title: "",
+      author: "",
+      shortDescription: "",
+      description: "",
       logins: [],
       broadcast: false,
       groups: [],
@@ -93,12 +94,12 @@ const Form: FC<{
       ...form.values,
     };
     requestWithNotify<INewNotification, string>(
-      'notification/add',
-      'POST',
+      "notification/add",
+      "POST",
       locale.notify.notification.create,
       lang,
-      (_: string) => '',
-      body
+      (_: string) => "",
+      body,
     );
   }, [form, locale, lang]);
 

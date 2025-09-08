@@ -1,13 +1,14 @@
-import { MAX_ANSWER_LENGTH } from '@constants/Limits';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { useForm } from '@mantine/form';
-import { Button, InputWrapper, TextArea } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
-import { Send as SendPlane } from 'tabler-icons-react';
+"use client";
+import { MAX_ANSWER_LENGTH } from "@constants/Limits";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useForm } from "@mantine/form";
+import { Button, InputWrapper, TextArea } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
+import { IconSend as SendPlane } from "@tabler/icons-react";
 
-import styles from './sendText.module.css';
+import styles from "./sendText.module.css";
 
 const SendText: FC<{
   spec: string;
@@ -18,7 +19,7 @@ const SendText: FC<{
 
   const form = useForm({
     initialValues: {
-      answers: Array(testsNumber).fill(''),
+      answers: Array(testsNumber).fill(""),
       nonEmpty: true,
       maxLength: true,
     },
@@ -31,7 +32,7 @@ const SendText: FC<{
   });
 
   const resetAnswers = useCallback(() => {
-    form.setFieldValue('answers', Array(testsNumber).fill(''));
+    form.setFieldValue("answers", Array(testsNumber).fill(""));
   }, [form, testsNumber]);
 
   const handleSubmit = useCallback(() => {
@@ -41,21 +42,21 @@ const SendText: FC<{
     const body = {
       task: spec,
       language: 1,
-      programText: '',
+      programText: "",
       textAnswers: form.values.answers,
     };
     requestWithNotify(
-      'attempt/submit',
-      'POST',
+      "attempt/submit",
+      "POST",
       locale.notify.attempt.send,
       lang,
-      (_: {}) => '',
+      (_: {}) => "",
       body,
       () => {},
-      { autoClose: 5000 }
+      { autoClose: 5000 },
     );
     resetAnswers();
-    setActiveTab('results');
+    setActiveTab("results");
   }, [
     form,
     spec,
@@ -84,7 +85,7 @@ const SendText: FC<{
             ) : undefined
           }
           leftSection={
-            <SendPlane color={!form.isValid() ? 'black' : 'var(--primary)'} />
+            <SendPlane color={!form.isValid() ? "black" : "var(--primary)"} />
           }
         >
           {locale.task.submit}
@@ -93,7 +94,7 @@ const SendText: FC<{
       <InputWrapper {...form.getInputProps(`nonEmpty`)}>
         <div className={styles.itemsWrapper}>
           {Array(testsNumber)
-            .fill('')
+            .fill("")
             .map((_, index) => (
               <div className={styles.itemWrapper} key={index}>
                 <div className={styles.itemTitle}>

@@ -1,4 +1,5 @@
-import { FC, memo } from 'react';
+"use client";
+import { FC, memo } from "react";
 
 const Row: FC<{
   keys: string[];
@@ -13,14 +14,14 @@ const Row: FC<{
       className={even ? classNames.even : classNames.odd}
     >
       {keys.map((key, index) => (
-        <td className={classNames[key] + ' ' + classNames.cell} key={index}>
+        <td className={classNames[key] + " " + classNames.cell} key={index}>
           {row[key]
-            ? typeof row[key] === 'object'
+            ? typeof row[key] === "object"
               ? row[key].display
               : row[key]
             : row[key] === 0
-            ? 0
-            : '-'}
+              ? 0
+              : "-"}
         </td>
       ))}
     </tr>

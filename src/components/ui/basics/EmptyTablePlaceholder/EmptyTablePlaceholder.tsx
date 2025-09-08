@@ -1,12 +1,13 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { FC, ReactNode, memo, useMemo, useState } from 'react';
-import styles from './style.module.css';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { FC, ReactNode, memo, useMemo, useState } from "react";
+import styles from "./style.module.css";
 
 interface IEmptyItem {
   content: {
@@ -20,7 +21,7 @@ const fillList = (numOfRows: number): IEmptyItem[] => {
   for (let i = 0; i < numOfRows; i++) {
     list.push({
       content: {
-        value: '',
+        value: "",
         display: <div className={tableStyles.titleWrapper} />,
       },
     });
@@ -31,7 +32,7 @@ const fillList = (numOfRows: number): IEmptyItem[] => {
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.ui.table.emptyTableTitle,
-    key: 'content',
+    key: "content",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login.value > b.login.value
@@ -47,13 +48,13 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const EmptyTablePlaceholder: FC = () => {
+const EmptyTablePlaceholder: FC<{ component: ReactNode }> = ({ component }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(() => DEFAULT_ON_PAGE, []);
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [locale],
   );
 
   const numOfRows = 6;
@@ -66,15 +67,17 @@ const EmptyTablePlaceholder: FC = () => {
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['content.value'],
+      search: "",
+      keys: ["content.value"],
     },
   });
 
   return (
     <div className={styles.parent}>
       <div className={styles.blurWrapper}>
-        {locale.ui.table.emptyTableMessage}
+        <div className={styles.titleButtonWrapper}>
+          {component || <>{locale.ui.table.emptyTableMessage}</>}
+        </div>
       </div>
       <div className={styles.tablePadding}>
         <Table

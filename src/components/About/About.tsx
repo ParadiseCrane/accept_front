@@ -1,8 +1,9 @@
-import ProjectHistory from '@components/ProjectHistory/ProjectHistory';
-import Contacts from '@ui/Contacts/Contacts';
-import { FC, memo } from 'react';
+"use client";
+import ProjectHistory from "@components/ProjectHistory/ProjectHistory";
+import Contacts from "@ui/Contacts/Contacts";
+import { FC, memo } from "react";
 
-import styles from './about.module.css';
+import styles from "./about.module.css";
 
 const About: FC<{}> = () => {
   return (

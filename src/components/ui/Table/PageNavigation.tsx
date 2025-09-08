@@ -1,15 +1,16 @@
-import { useLocale } from '@hooks/useLocale';
-import { ActionIconGroup, Group } from '@mantine/core';
-import { Icon, Select } from '@ui/basics';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIconGroup, Group } from "@mantine/core";
+import { Icon, Select } from "@ui/basics";
+import { FC, memo, useMemo } from "react";
 import {
-  ArrowNarrowLeft,
-  ArrowNarrowRight,
-  ChevronLeft,
-  ChevronRight,
-} from 'tabler-icons-react';
+  IconArrowNarrowLeft,
+  IconArrowNarrowRight,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 
-import styles from './table.module.css';
+import styles from "./table.module.css";
 
 const PageNavigation: FC<{
   onPage: number[];
@@ -31,7 +32,7 @@ const PageNavigation: FC<{
   const { locale } = useLocale();
   const lastPage = useMemo(
     () => Math.ceil(totalLength / (perPage || totalLength || 1)) - 1,
-    [totalLength, perPage]
+    [totalLength, perPage],
   );
 
   return (
@@ -44,7 +45,7 @@ const PageNavigation: FC<{
           <div className={styles.pageNavigationWrapper}>
             <div className={styles.perPageWrapper}>
               <div className={styles.perPage}>
-                {locale.ui.table.perPage + ':'}{' '}
+                {locale.ui.table.perPage + ":"}{" "}
               </div>
               <Select
                 data={onPage
@@ -54,7 +55,7 @@ const PageNavigation: FC<{
                   }))
                   .concat({
                     label: locale.all,
-                    value: '0',
+                    value: "0",
                   })}
                 classNames={{
                   input: styles.selectPerPage,
@@ -71,7 +72,7 @@ const PageNavigation: FC<{
                   disabled={page == 0}
                   onClick={() => handlePageChange(0)}
                 >
-                  <ArrowNarrowLeft />
+                  <IconArrowNarrowLeft />
                 </Icon>
                 <Icon
                   color="gray"
@@ -79,11 +80,11 @@ const PageNavigation: FC<{
                   size="xs"
                   onClick={() => handlePageChange(Math.max(page - 1, 0))}
                 >
-                  <ChevronLeft />
+                  <IconChevronLeft />
                 </Icon>
               </ActionIconGroup>
               <div>
-                {page * perPage + 1} -{' '}
+                {page * perPage + 1} -{" "}
                 {perPage
                   ? Math.min((page + 1) * perPage, totalLength)
                   : totalLength}
@@ -95,7 +96,7 @@ const PageNavigation: FC<{
                   disabled={page == lastPage}
                   onClick={() => handlePageChange(Math.min(page + 1, lastPage))}
                 >
-                  <ChevronRight />
+                  <IconChevronRight />
                 </Icon>
                 <Icon
                   color="gray"
@@ -103,7 +104,7 @@ const PageNavigation: FC<{
                   disabled={page == lastPage}
                   onClick={() => handlePageChange(lastPage)}
                 >
-                  <ArrowNarrowRight />
+                  <IconArrowNarrowRight />
                 </Icon>
               </ActionIconGroup>
             </Group>

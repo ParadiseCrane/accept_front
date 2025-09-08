@@ -1,11 +1,12 @@
-import { useLocale } from '@hooks/useLocale';
-import { Icon, TextInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRouter } from 'next/router';
-import { FC, memo, useCallback, useState } from 'react';
-import { Check, Pencil, X } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Icon, TextInput } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback, useState } from "react";
+import { IconCheck, IconPencil, IconX } from "@tabler/icons-react";
 
-import styles from './titleInput.module.css';
+import styles from "./titleInput.module.css";
 
 const TitleInput: FC<{
   spec: string;
@@ -21,17 +22,17 @@ const TitleInput: FC<{
 
   const validate = useCallback(
     (new_title: string) => {
-      let new_team_name = new_title.trim().replace(/\s+/, ' ');
+      let new_team_name = new_title.trim().replace(/\s+/, " ");
       let error =
         new_team_name.length == 0
           ? locale.tournament.registration.form.validation.teamName.empty
           : new_team_name.length < 4
             ? locale.tournament.registration.form.validation.teamName.minLength(
-                4
+                4,
               )
             : new_team_name.length > 20
               ? locale.tournament.registration.form.validation.teamName.maxLength(
-                  20
+                  20,
                 )
               : !new_team_name.match(/^[a-zA-Zа-яА-ЯЁё][a-zA-Zа-яА-ЯЁё_ ]+$/)
                 ? locale.tournament.registration.form.validation.teamName
@@ -44,7 +45,7 @@ const TitleInput: FC<{
       setError(null!);
       return true;
     },
-    [locale]
+    [locale],
   );
 
   const sendTitle = useCallback(() => {
@@ -53,15 +54,15 @@ const TitleInput: FC<{
     }
     // to requestWithError
     requestWithNotify(
-      'team/edit',
-      'PUT',
+      "team/edit",
+      "PUT",
       locale.notify.team.edit,
       lang,
-      () => '',
+      () => "",
       {
         name: newTitle,
         spec: spec,
-      }
+      },
     ).then((res) => {
       if (!res.error) {
         router.reload();
@@ -85,14 +86,14 @@ const TitleInput: FC<{
       setNewTitle(e.target.value);
       validate(e.target.value);
     },
-    [validate]
+    [validate],
   );
 
   return (
     <div className={styles.teamName}>
       <span
         className={styles.title}
-        style={{ display: editTitle ? 'none' : 'block' }}
+        style={{ display: editTitle ? "none" : "block" }}
       >
         {title}
       </span>
@@ -102,8 +103,8 @@ const TitleInput: FC<{
             classNames={{ input: styles.titleInput }}
             inputWrapperProps={{
               style: {
-                width: editTitle ? 'unset' : '0',
-                visibility: editTitle ? 'visible' : 'hidden',
+                width: editTitle ? "unset" : "0",
+                visibility: editTitle ? "visible" : "hidden",
               },
             }}
             value={newTitle}
@@ -115,15 +116,15 @@ const TitleInput: FC<{
             {editTitle ? (
               <>
                 <Icon size="sm" color="green" onClick={sendTitle}>
-                  <Check />
+                  <IconCheck />
                 </Icon>
                 <Icon size="sm" color="red" onClick={closeEdit}>
-                  <X />
+                  <IconX />
                 </Icon>
               </>
             ) : (
               <Icon size="sm" color="var(--primary)" onClick={openEdit}>
-                <Pencil />
+                <IconPencil />
               </Icon>
             )}
           </div>

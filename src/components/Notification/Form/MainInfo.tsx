@@ -1,9 +1,10 @@
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Switch, TextInput } from '@ui/basics';
-import { FC, memo, useState } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Switch, TextInput } from "@ui/basics";
+import { FC, memo, useState } from "react";
 
-const SYSTEM_AUTHOR = 'System';
+const SYSTEM_AUTHOR = "System";
 
 const MainInfo: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -16,7 +17,7 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
       <TextInput
         label={locale.notification.form.title}
         required
-        {...form.getInputProps('title')}
+        {...form.getInputProps("title")}
       />
       <TextInput
         label={locale.notification.form.author}
@@ -28,7 +29,7 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
           </div>
         }
         disabled={asSystem}
-        {...form.getInputProps('author')}
+        {...form.getInputProps("author")}
       />
       {isAdmin && (
         <Switch
@@ -36,7 +37,7 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
           styles={{}}
           checked={asSystem}
           onChange={(event) => {
-            form.setFieldValue('author', SYSTEM_AUTHOR),
+            form.setFieldValue("author", SYSTEM_AUTHOR),
               setAsSystem(event.currentTarget.checked);
           }}
         />

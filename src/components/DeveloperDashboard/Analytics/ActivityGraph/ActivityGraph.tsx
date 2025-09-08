@@ -1,8 +1,9 @@
-import { IActivityData } from '@custom-types/data/atomic';
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { sendRequest } from '@requests/request';
-import { BarPlot } from '@ui/Plot';
-import { FC, memo, useEffect, useState } from 'react';
+"use client";
+import { IActivityData } from "@custom-types/data/atomic";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { sendRequest } from "@requests/request";
+import { BarPlot } from "@ui/Plot";
+import { FC, memo, useEffect, useState } from "react";
 
 const HOUR = 60 * 60 * 1000;
 
@@ -36,8 +37,8 @@ const mapActivityToPlotData = (activity: IActivityData[]): IPlotData[] => {
     label:
       index == 0 || index == full_activity.length - 1
         ? new Date(item.date).toLocaleString()
-        : '',
-    color: 'var(--primary)',
+        : "",
+    color: "var(--primary)",
   }));
 };
 
@@ -48,9 +49,9 @@ const ActivityGraph: FC<{}> = () => {
   useEffect(() => {
     setLoading(true);
     sendRequest<{ from_date: Date; to_date: Date }, IActivityData[]>(
-      'analytics/activity',
-      'POST',
-      { to_date: new Date(), from_date: new Date(0) }
+      "analytics/activity",
+      "POST",
+      { to_date: new Date(), from_date: new Date(0) },
     ).then((res) => {
       if (!res.error) {
         setData(mapActivityToPlotData(res.response));

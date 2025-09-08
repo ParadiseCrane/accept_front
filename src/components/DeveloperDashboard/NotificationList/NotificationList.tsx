@@ -1,22 +1,23 @@
-import { INotificationWithRefs } from '@custom-types/data/notification';
-import { setter } from '@custom-types/ui/atomic';
-import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { Badge } from '@mantine/core';
-import { TextInput } from '@ui/basics';
-import MessageList from '@ui/MessageList/MessageList';
-import { requestWithError } from '@utils/requestWithError';
-import { shrinkText } from '@utils/shrinkText';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Pencil, Search, Trash } from 'tabler-icons-react';
+"use client";
+import { INotificationWithRefs } from "@custom-types/data/notification";
+import { setter } from "@custom-types/ui/atomic";
+import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { Badge } from "@mantine/core";
+import { TextInput } from "@ui/basics";
+import MessageList from "@ui/MessageList/MessageList";
+import { requestWithError } from "@utils/requestWithError";
+import { shrinkText } from "@utils/shrinkText";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { IconPencil, IconSearch, IconTrash } from "@tabler/icons-react";
 
-import EditModal from './EditModal/EditModal';
-import styles from './notificationList.module.css';
+import EditModal from "./EditModal/EditModal";
+import styles from "./notificationList.module.css";
 
 const NotificationList: FC<{}> = () => {
   const { locale, lang } = useLocale();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [displayedNotifications, setDisplayedNotifications] = useState<
     INotificationWithRefs[]
   >([]);
@@ -24,17 +25,17 @@ const NotificationList: FC<{}> = () => {
   const processNotifications = useCallback(
     (notifications: INotificationWithRefs[]) => {
       return notifications.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
       );
     },
-    []
+    [],
   );
 
   const { data, loading, refetch } = useRequest<{}, INotificationWithRefs[]>(
-    'notification/dev/all',
-    'GET',
+    "notification/dev/all",
+    "GET",
     undefined,
-    processNotifications
+    processNotifications,
   );
 
   const handleSearch = useCallback(
@@ -42,22 +43,22 @@ const NotificationList: FC<{}> = () => {
       setSearch(value);
       if (!data) return;
       var list = [...data];
-      const Fuse = (await import('fuse.js')).default;
+      const Fuse = (await import("fuse.js")).default;
       const fuse = new Fuse(list, {
-        keys: ['title'],
+        keys: ["title"],
         findAllMatches: true,
       });
 
       const searched =
-        value == '' ? list : fuse.search(value).map((result) => result.item);
+        value == "" ? list : fuse.search(value).map((result) => result.item);
       setDisplayedNotifications(searched);
     },
-    [data]
+    [data],
   );
 
   useEffect(() => {
     if (data) {
-      handleSearch('');
+      handleSearch("");
     }
   }, [handleSearch, data]);
 
@@ -73,9 +74,9 @@ const NotificationList: FC<{}> = () => {
             message: item.description,
             subject: item.shortDescription,
             title: item.title,
-          }) as IListMessage
+          }) as IListMessage,
       ),
-    [displayedNotifications]
+    [displayedNotifications],
   );
   const [openedModal, setOpenedModal] = useState(false);
   const [editIndex, setEditIndex] = useState(0);
@@ -83,23 +84,23 @@ const NotificationList: FC<{}> = () => {
   const handleDelete = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {
       requestWithError<string[], boolean>(
-        'notification/dev/delete',
-        'DELETE',
+        "notification/dev/delete",
+        "DELETE",
         locale.notification.list.requestDelete,
         lang,
         selected,
         () => {
           refetch();
           setSelected([]);
-        }
+        },
       );
     },
-    [lang, locale, refetch]
+    [lang, locale, refetch],
   );
 
   const disabledEdit = useCallback(
     (selected: string[]) => selected.length > 1,
-    []
+    [],
   );
 
   const handleEdit = useCallback(
@@ -108,30 +109,30 @@ const NotificationList: FC<{}> = () => {
       setEditIndex(data?.findIndex((item) => item.spec == selected[0]) || 0);
       setSelected([]);
     },
-    [data]
+    [data],
   );
 
   const actions: IListAction[] = useMemo(
     () => [
       {
-        icon: <Trash />,
+        icon: <IconTrash />,
         tooltipLabel: locale.notification.list.delete,
         onClick: handleDelete,
       },
       {
-        icon: <Pencil />,
+        icon: <IconPencil />,
         tooltipLabel: locale.notification.list.edit,
         onClick: handleEdit,
         disabled: disabledEdit,
       },
     ],
-    [handleDelete, locale, disabledEdit, handleEdit]
+    [handleDelete, locale, disabledEdit, handleEdit],
   );
 
   return (
     <div>
       <TextInput
-        leftSection={<Search />}
+        leftSection={<IconSearch />}
         classNames={{
           input: styles.search,
         }}
@@ -171,7 +172,7 @@ const NotificationList: FC<{}> = () => {
           messages={messages}
           refetch={() => refetch(false)}
           handleViewed={() => {}}
-          rowClassName={(_: IListMessage) => ''}
+          rowClassName={(_: IListMessage) => ""}
         />
       </div>
     </div>

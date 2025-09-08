@@ -1,10 +1,11 @@
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
-import { useLocale } from '@hooks/useLocale';
-import { Center, Pagination, Tooltip } from '@mantine/core';
-import { Checkbox, Icon, LoadingOverlay } from '@ui/basics';
-import { getLocalDate } from '@utils/datetime';
-import { shrinkText } from '@utils/shrinkText';
+"use client";
+import { pureCallback, setter } from "@custom-types/ui/atomic";
+import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { Center, Pagination, Tooltip } from "@mantine/core";
+import { Checkbox, Icon, LoadingOverlay } from "@ui/basics";
+import { getLocalDate } from "@utils/datetime";
+import { shrinkText } from "@utils/shrinkText";
 import {
   ChangeEvent,
   FC,
@@ -14,10 +15,10 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
-import styles from './messageList.module.css';
-import ReadModal from './ReadModal/ReadModal';
+import styles from "./messageList.module.css";
+import ReadModal from "./ReadModal/ReadModal";
 
 const ON_PAGE = 10;
 
@@ -64,7 +65,7 @@ const MessageList: FC<{
         setSelected((selected) => {
           let processedSelected = [...selected];
           const idx = processedSelected.findIndex(
-            (value) => value == message.spec
+            (value) => value == message.spec,
           );
           if (idx >= 0) processedSelected.splice(idx, 1);
           return processedSelected;
@@ -78,7 +79,7 @@ const MessageList: FC<{
       setCurrent(index + ON_PAGE * (activePage - 1));
       setOpenedModal(true);
     },
-    [activePage]
+    [activePage],
   );
 
   const handleCloseModal = useCallback(
@@ -87,12 +88,12 @@ const MessageList: FC<{
       setOpenedModal(false);
       setTimeout(refetch, 500);
     },
-    [handleViewed, refetch]
+    [handleViewed, refetch],
   );
 
   const totalPages = useMemo(
     () => Math.max(Math.ceil(messages.length / ON_PAGE), 1),
-    [messages.length]
+    [messages.length],
   );
 
   const shouldShowPagination = useMemo(() => totalPages > 1, [totalPages]);

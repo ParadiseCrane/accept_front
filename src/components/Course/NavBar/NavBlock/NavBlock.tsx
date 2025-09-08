@@ -1,31 +1,40 @@
-import { tooltipOpenDelay } from '@constants/Duration';
-import { ITreeUnit, IUnit } from '@custom-types/data/ICourse';
+"use client";
+import { tooltipOpenDelay } from "@constants/Duration";
+import { ITreeUnit, IBaseTreeUnit } from "@custom-types/data/ICourse";
 import {
   ICourseShowTreeActions,
   ICourseShowTreeCheckers,
-} from '@hooks/useCourseTree';
-import { Anchor } from '@mantine/core';
-import { FC } from 'react';
+} from "@hooks/useCourseTree";
+import { FC } from "react";
 
-import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
-import styles from './styles.module.css';
-import { Tip } from '@ui/basics';
+import { ToggleVisibilityButton } from "../ToggleVisibilityButton/ToggleVisibilityButton";
+import styles from "./styles.module.css";
+import { Tip } from "@ui/basics";
 
 export const NavBlock: FC<{
-  hookUnit: IUnit;
   currentUnit: ITreeUnit;
+  hookUnit: IBaseTreeUnit;
   actions: ICourseShowTreeActions;
   checkers: ICourseShowTreeCheckers;
-}> = ({ hookUnit, currentUnit, actions, checkers }) => {
+  onClick: (_: IBaseTreeUnit) => void;
+}> = ({ hookUnit, currentUnit, actions, checkers, onClick }) => {
   const active = hookUnit.spec === currentUnit.spec;
 
-  if (currentUnit.kind === 'course') {
+  const action = () => {
+    onClick(currentUnit);
+    !currentUnit.childrenVisible &&
+      checkers.canToggleChildrenVisibility({ currentUnit }) &&
+      actions.toggleChildrenVisibility({ currentUnit });
+  };
+
+  if (currentUnit.kind === "course") {
     return (
       <div
+        onClick={action}
         className={styles.box_wrapper}
         style={{
           paddingLeft: `${currentUnit.depth}rem`,
-          backgroundColor: active ? 'var(--dark7)' : '',
+          backgroundColor: active ? "var(--dark7)" : "",
         }}
       >
         <div className={styles.box}>
@@ -34,32 +43,21 @@ export const NavBlock: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
           >
-            <Anchor
-              href={`#${currentUnit.spec}`}
-              underline="never"
-              c={'dark'}
-              className={styles.title}
-            >
-              {currentUnit.title}
-            </Anchor>
+            <div>{currentUnit.title}</div>
           </Tip>
-          <ToggleVisibilityButton
-            currentUnit={currentUnit}
-            canToggleChildrenVisibility={checkers.canToggleChildrenVisibility}
-            toggleChildrenVisibility={actions.toggleChildrenVisibility}
-          />
         </div>
       </div>
     );
   }
 
-  if (currentUnit.kind === 'unit') {
+  if (currentUnit.kind === "unit") {
     return (
       <div
+        onClick={action}
         className={styles.box_wrapper}
         style={{
           paddingLeft: `${1.375 * currentUnit.depth}rem`,
-          backgroundColor: active ? 'var(--dark7)' : '',
+          backgroundColor: active ? "var(--dark7)" : "",
         }}
       >
         <div className={styles.box}>
@@ -68,14 +66,7 @@ export const NavBlock: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
           >
-            <Anchor
-              href={`#${currentUnit.spec}`}
-              underline="never"
-              c={'dark'}
-              className={styles.title}
-            >
-              {currentUnit.title}
-            </Anchor>
+            <div className={styles.title}>{currentUnit.title}</div>
           </Tip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
@@ -89,10 +80,11 @@ export const NavBlock: FC<{
 
   return (
     <div
+      onClick={() => onClick(currentUnit)}
       className={styles.box_wrapper}
       style={{
         paddingLeft: `${1.375 * currentUnit.depth}rem`,
-        backgroundColor: active ? 'var(--dark7)' : '',
+        backgroundColor: active ? "var(--dark7)" : "",
       }}
     >
       <div className={styles.box}>
@@ -101,14 +93,7 @@ export const NavBlock: FC<{
           openDelay={tooltipOpenDelay}
           position="top"
         >
-          <Anchor
-            href={`#${currentUnit.spec}`}
-            underline="never"
-            c={'dark'}
-            className={styles.title}
-          >
-            {currentUnit.title}
-          </Anchor>
+          <div className={styles.title}>{currentUnit.title}</div>
         </Tip>
       </div>
     </div>

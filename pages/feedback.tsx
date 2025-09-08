@@ -1,22 +1,23 @@
+"use client";
 import {
   IFeedbackMessage,
   feedbackSubjects,
-} from '@custom-types/data/IFeedbackMessage';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { useForm } from '@mantine/form';
-import styles from '@styles/feedback.module.css';
-import { Button, CustomEditor, Select, TextInput } from '@ui/basics';
-import Contacts from '@ui/Contacts/Contacts';
-import Title from '@ui/Title/Title';
-import { timezoneDate } from '@utils/datetime';
+} from "@custom-types/data/IFeedbackMessage";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { useForm } from "@mantine/form";
+import styles from "@styles/feedback.module.css";
+import { Button, CustomEditor, Select, TextInput } from "@ui/basics";
+import Contacts from "@ui/Contacts/Contacts";
+import Title from "@ui/Title/Title";
+import { timezoneDate } from "@utils/datetime";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ReactElement, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { ReactElement, useCallback } from "react";
 
 export function Feedback() {
   const { locale, lang } = useLocale();
@@ -25,11 +26,11 @@ export function Feedback() {
 
   const form = useForm({
     initialValues: {
-      spec: '',
-      author: '',
-      message: '',
-      title: '',
-      subject: 'bug',
+      spec: "",
+      author: "",
+      message: "",
+      title: "",
+      subject: "bug",
       date: new Date(),
       reviewed: false,
     } as IFeedbackMessage,
@@ -57,17 +58,17 @@ export function Feedback() {
 
     const message: IFeedbackMessage = {
       ...form.values,
-      spec: '',
-      author: user?.login || 'anonymous',
+      spec: "",
+      author: user?.login || "anonymous",
       date: timezoneDate(new Date()),
     };
     requestWithNotify<IFeedbackMessage, boolean>(
-      'feedback/add',
-      'POST',
+      "feedback/add",
+      "POST",
       locale.notify.feedback.send,
       lang,
-      () => '',
-      message
+      () => "",
+      message,
     );
   }, [form, lang, locale, user?.login]);
 
@@ -85,17 +86,17 @@ export function Feedback() {
                 label: locale.feedback.subjects[item],
                 value: item,
               }))}
-              {...form.getInputProps('subject')}
+              {...form.getInputProps("subject")}
             />
             <TextInput
               label={locale.feedback.form.title}
-              name={'title'}
-              {...form.getInputProps('title')}
+              name={"title"}
+              {...form.getInputProps("title")}
             />
             <CustomEditor
               label={locale.feedback.form.message}
               form={form}
-              name={'message'}
+              name={"message"}
             />
             <div className={styles.buttonWrapper}>
               <Button disabled={!form.isValid()} onClick={handleSubmit}>

@@ -1,12 +1,13 @@
-import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem, Text } from '@mantine/core';
-import { Select, UserAvatar } from '@ui/basics';
-import Link from 'next/link';
-import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
-import { Eye } from 'tabler-icons-react';
+"use client";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem, Text } from "@mantine/core";
+import { Select, UserAvatar } from "@ui/basics";
+import Link from "next/link";
+import React, { FC, forwardRef, memo, useCallback, useMemo } from "react";
+import { IconEye } from "@tabler/icons-react";
 
-import { UserItemProps, UserSelectProps } from './UserSelect';
-import styles from './userSelect.module.css';
+import { UserItemProps, UserSelectProps } from "./UserSelect";
+import styles from "./userSelect.module.css";
 
 const UserSingleSelect: FC<UserSelectProps> = ({
   label,
@@ -16,6 +17,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
   select,
   multiple,
   additionalProps,
+  renderOption,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
     ({ login, label, value, ...others }: UserItemProps, ref) => (
@@ -29,7 +31,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             radius="md"
             size="md"
             login={login}
-            alt={'User`s avatar'}
+            alt={"User`s avatar"}
           />
           <div>
             <Text size="sm">{label}</Text>
@@ -40,13 +42,13 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         </div>
         <div className={styles.itemIcon}>
           <Link href={`/profile/${value}`}>
-            <Eye color={'var(--primary)'} />
+            <IconEye color={"var(--primary)"} />
           </Link>
         </div>
       </div>
-    )
+    ),
   );
-  SelectItem.displayName = 'SelectItem';
+  SelectItem.displayName = "SelectItem";
 
   const data = useMemo(
     () =>
@@ -57,9 +59,10 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
-          }) as UserItemProps
+            // disabled: 'banned' in item ? item.banned : undefined,
+          }) as UserItemProps,
       ),
-    [users]
+    [users],
   );
 
   const onSelect = useCallback(
@@ -73,7 +76,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         select([users[userIndex]]);
       }
     },
-    [select, users]
+    [select, users],
   );
 
   return (
@@ -91,7 +94,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
           (options as ComboboxItem[]).filter(
             (item) =>
               item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
-              item.value.toLowerCase().includes(search.toLowerCase().trim())
+              item.value.toLowerCase().includes(search.toLowerCase().trim()),
           )
         }
         {...additionalProps}
@@ -99,6 +102,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
           onSelect(login);
           additionalProps?.onChange(login);
         }}
+        renderOption={renderOption}
       />
     </>
   );

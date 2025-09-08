@@ -1,16 +1,17 @@
-import { Item } from '@custom-types/ui/atomic';
-import { setter } from '@custom-types/ui/atomic';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
+"use client";
+import { Item } from "@custom-types/ui/atomic";
+import { setter } from "@custom-types/ui/atomic";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
 import {
   Radio as MantineRadio,
   RadioGroupProps,
   RadioProps,
-} from '@mantine/core';
-import inputStyles from '@styles/ui/input.module.css';
-import { InputLabel } from '@ui/basics';
-import { FC, ReactNode, memo } from 'react';
+} from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { InputLabel } from "@ui/basics";
+import { FC, ReactNode, memo } from "react";
 
-import styles from './radio.module.css';
+import styles from "./radio.module.css";
 
 const Radio: FC<{
   label: ReactNode;
@@ -38,14 +39,14 @@ const Radio: FC<{
   shrink,
 }) => {
   return (
-    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ''}`}>
+    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ""}`}>
       <InputLabel
         label={label}
         helperContent={helperContent}
         required={required}
       />
       <MantineRadio.Group
-        size={shrink ? 'sm' : 'md'}
+        size={shrink ? "sm" : "md"}
         className={styles.groupWrapper}
         {...groupProps}
         {...form.getInputProps(field)}

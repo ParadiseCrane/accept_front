@@ -1,11 +1,12 @@
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
-import { useLocale } from '@hooks/useLocale';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
-import { FC, memo } from 'react';
+"use client";
+import { ITaskBaseInfo } from "@custom-types/data/ITask";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { CustomDraggableList } from "@ui/CustomDraggableList/CustomDraggableList";
+import { FC, memo } from "react";
 
-import styles from './taskOrdering.module.css';
-import { Item } from '@custom-types/ui/atomic';
+import styles from "./taskOrdering.module.css";
+import { Item } from "@custom-types/ui/atomic";
 
 const TaskOrdering: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -28,8 +29,8 @@ const TaskOrdering: FC<{ form: any }> = ({ form }) => {
             }
             setValues={(values: Item[]) =>
               form.setFieldValue(
-                'tasks',
-                values.map((value) => value.value)
+                "tasks",
+                values.map((value) => value.value),
               )
             }
             classNames={{

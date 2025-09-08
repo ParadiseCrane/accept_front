@@ -1,7 +1,9 @@
-import { IActivity } from '@custom-types/data/atomic';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { sendRequest } from '@requests/request';
+"use client";
+
+import { IActivity } from "@custom-types/data/atomic";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { pureCallback, setter } from "@custom-types/ui/atomic";
+import { sendRequest } from "@requests/request";
 import {
   FC,
   ReactNode,
@@ -11,9 +13,9 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
-import { useRefetch } from './useRefetch';
+import { useRefetch } from "./useRefetch";
 
 export interface IHostData {
   user: IUserDisplay;
@@ -44,12 +46,12 @@ export const ChatHostsProvider: FC<{
   const fetchInitialHosts = useCallback(() => {
     setLoading(true);
     return sendRequest<{ entity: IActivity; spec: string }, IHostData[]>(
-      'hosts/all',
-      'POST',
+      "hosts/all",
+      "POST",
       {
         entity,
         spec,
-      }
+      },
     ).then((res) => {
       if (!res.error) {
         let sorted = res.response.sort((a, b) => b.amount - a.amount);
@@ -76,7 +78,7 @@ export const ChatHostsProvider: FC<{
 
   const { updatesCounter } = useRefetch(
     fetchInitialHosts,
-    updateIntervalSeconds
+    updateIntervalSeconds,
   );
 
   const value = useMemo<IChatHostsContext>(
@@ -95,7 +97,7 @@ export const ChatHostsProvider: FC<{
       updatesCounter,
       selectHost,
       fetchInitialHosts,
-    ]
+    ],
   );
 
   return (

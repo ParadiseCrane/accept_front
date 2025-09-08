@@ -1,11 +1,13 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
-import { ElementType } from '@hooks/useCourseTree';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Text, Tooltip } from '@mantine/core';
-import { FC } from 'react';
-import { Plus } from 'tabler-icons-react';
+"use client";
+import { ITreeUnit } from "@custom-types/data/ICourse";
+import { ElementType } from "@hooks/useCourseTree";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon, Text } from "@mantine/core";
+import { FC } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
+import { Tip } from "@ui/basics";
 
 interface IAddButtonProps {
   currentUnit: ITreeUnit;
@@ -30,37 +32,37 @@ export const AddButtons: FC<IAddButtonProps> = ({
   return (
     <div
       className={styles.add_menu}
-      style={{ display: visible ? 'block' : 'none' }}
+      style={{ display: visible ? "block" : "none" }}
     >
       <div className={styles.add_menu_wrapper}>
         {canAddNewUnit({ currentUnit }) && (
-          <Tooltip label={locale.ui.courseTree.addUnit}>
+          <Tip label={locale.ui.courseTree.addUnit}>
             <div
               className={styles.icon_pair}
               onClick={() => {
-                addTreeUnit({ currentUnit, elementType: 'unit' });
+                addTreeUnit({ currentUnit, elementType: "unit" });
               }}
             >
-              <ActionIcon size={'xs'}>
-                <Plus />
+              <ActionIcon size={"xs"}>
+                <IconPlus />
               </ActionIcon>
-              <Text>{locale.ui.courseTree.unit}</Text>
+              <Text size="sm">{locale.ui.courseTree.unit}</Text>
             </div>
-          </Tooltip>
+          </Tip>
         )}
-        <Tooltip label={locale.ui.courseTree.addLesson}>
+        <Tip label={locale.ui.courseTree.addLesson}>
           <div
             className={styles.icon_pair}
             onClick={() => {
-              addTreeUnit({ currentUnit, elementType: 'lesson' });
+              addTreeUnit({ currentUnit, elementType: "lesson" });
             }}
           >
-            <ActionIcon size={'xs'}>
-              <Plus />
+            <ActionIcon size={"xs"}>
+              <IconPlus />
             </ActionIcon>
-            <Text>{locale.ui.courseTree.lesson}</Text>
+            <Text size="sm">{locale.ui.courseTree.lesson}</Text>
           </div>
-        </Tooltip>
+        </Tip>
       </div>
     </div>
   );

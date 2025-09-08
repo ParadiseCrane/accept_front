@@ -1,10 +1,11 @@
-import { ITaskTestData } from '@custom-types/data/atomic';
-import { useLocale } from '@hooks/useLocale';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Button, InputWrapper } from '@ui/basics';
-import ListItem from '@ui/ListItem/ListItem';
-import OpenTextInNewTab from '@ui/OpenTextInNewTab/OpenTextInNewTab';
-import { FC, Fragment, memo, useCallback } from 'react';
+"use client";
+import { ITaskTestData } from "@custom-types/data/atomic";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button, InputWrapper } from "@ui/basics";
+import ListItem from "@ui/ListItem/ListItem";
+import OpenTextInNewTab from "@ui/OpenTextInNewTab/OpenTextInNewTab";
+import { FC, Fragment, memo, useCallback } from "react";
 
 const Examples: FC<{ form: any; shrink?: boolean }> = ({ form, shrink }) => {
   const { locale } = useLocale();
@@ -12,15 +13,15 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({ form, shrink }) => {
   const onDeleteExample = useCallback(
     (index: number) => {
       form.setFieldValue(
-        'examples',
+        "examples",
         (() => {
           form.values.examples.splice(index, 1);
           return form.values.examples;
-        })()
+        })(),
       );
-      form.validateField('examples');
+      form.validateField("examples");
     },
-    [form]
+    [form],
   );
 
   return (
@@ -30,7 +31,7 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({ form, shrink }) => {
           <Fragment key={index}>
             <ListItem
               field="examples"
-              label={locale.task.form.example + ' #' + (index + 1)}
+              label={locale.task.form.example + " #" + (index + 1)}
               inLabel={locale.task.form.inputExample}
               outLabel={locale.task.form.outputExample}
               form={form}
@@ -45,7 +46,7 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({ form, shrink }) => {
       {form.errors.examples && (
         <InputWrapper
           shrink={shrink}
-          {...form.getInputProps('examples')}
+          {...form.getInputProps("examples")}
           onChange={() => {}}
         />
       )}
@@ -54,16 +55,16 @@ const Examples: FC<{ form: any; shrink?: boolean }> = ({ form, shrink }) => {
         variant="light"
         onClick={() => {
           form.setFieldValue(
-            'examples',
+            "examples",
             (() => {
               form.values.examples.push({
-                inputData: '',
-                outputData: '',
+                inputData: "",
+                outputData: "",
               });
               return form.values.examples;
-            })()
+            })(),
           );
-          form.validateField('examples');
+          form.validateField("examples");
         }}
       >
         +

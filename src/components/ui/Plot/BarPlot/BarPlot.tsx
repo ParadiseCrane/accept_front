@@ -1,11 +1,12 @@
-import { callback } from '@custom-types/ui/atomic';
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { ColorSwatch } from '@ui/basics';
-import { FC, ReactNode, memo, useMemo, useState } from 'react';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { ColorSwatch } from "@ui/basics";
+import { FC, ReactNode, memo, useMemo, useState } from "react";
 
-import PlotTooltip from '../PlotTooltip/PlotTooltip';
-import Bar from './Bar/Bar';
-import styles from './barPlot.module.css';
+import PlotTooltip from "../PlotTooltip/PlotTooltip";
+import Bar from "./Bar/Bar";
+import styles from "./barPlot.module.css";
 
 const PADDING = 0.1; // percent
 const ROW_LINES = 10;
@@ -28,7 +29,7 @@ const BarPlot: FC<{
   hoverLabel,
 }) => {
   const [toolTipLabel, setToolTipLabel] = useState<ReactNode | undefined>(
-    undefined
+    undefined,
   );
 
   const padding = (300 / (data.length + 1)) * PADDING;
@@ -38,9 +39,9 @@ const BarPlot: FC<{
   const upperBound = useMemo(
     () =>
       Math.round(
-        Math.max(...data.map((item) => item.amount)) / ROW_LINES + 0.75
+        Math.max(...data.map((item) => item.amount)) / ROW_LINES + 0.75,
       ) * ROW_LINES,
-    [data]
+    [data],
   );
 
   return (
@@ -59,7 +60,7 @@ const BarPlot: FC<{
           {new Array(ROW_LINES + 1).fill(0).map((_, index) => (
             <line
               key={index}
-              x1={hideRowLabels ? '0' : '20'}
+              x1={hideRowLabels ? "0" : "20"}
               x2="320"
               y1={index * (height / ROW_LINES)}
               y2={index * (height / ROW_LINES)}
@@ -71,8 +72,8 @@ const BarPlot: FC<{
         </g>
         <g>
           <line
-            x1={hideRowLabels ? '0' : '20'}
-            x2={hideRowLabels ? '0' : '20'}
+            x1={hideRowLabels ? "0" : "20"}
+            x2={hideRowLabels ? "0" : "20"}
             y1={0}
             y2={height + 5}
             stroke="black"

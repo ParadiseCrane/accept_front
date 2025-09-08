@@ -1,12 +1,13 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { useLocale } from '@hooks/useLocale';
-import { Burger, Stack } from '@mantine/core';
-import { FC, Fragment, useState } from 'react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { IHeaderLink } from "@custom-types/ui/IHeaderLink";
+import { useLocale } from "@hooks/useLocale";
+import { Burger, Stack } from "@mantine/core";
+import { FC, Fragment, useState } from "react";
 
-import { HeaderLink } from '../Header/Links/HeaderLink';
-import SignIn from '../SignIn/SignIn';
-import styles from './sideBar.module.css';
+import { HeaderLink } from "../Header/Links/HeaderLink";
+import SignIn from "../SignIn/SignIn";
+import styles from "./sideBar.module.css";
 
 export const Links: FC<{
   links: IHeaderLink[];
@@ -25,7 +26,7 @@ export const Links: FC<{
         <SignIn />
         {links.map((link, index) => (
           <Fragment key={index}>
-            {link.text(locale) == 'dropdown' ? (
+            {link.text(locale) == "dropdown" ? (
               <>
                 <div
                   className={styles.linkDiv}
@@ -35,12 +36,12 @@ export const Links: FC<{
                 </div>
                 <div
                   className={styles.collapse}
-                  style={{ display: openCollapse ? 'block' : 'none' }}
+                  style={{ display: openCollapse ? "block" : "none" }}
                 >
                   {dropdownLinks &&
                     dropdownLinks.map((link, index) => (
                       <Fragment key={index}>
-                        <div style={{ margin: 'var(--spacer-l) 10%' }}>
+                        <div style={{ margin: "var(--spacer-l) 10%" }}>
                           <HeaderLink
                             link={link}
                             additionalClass={styles.noHoverLink}

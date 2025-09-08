@@ -1,8 +1,9 @@
-import { useLocale } from '@hooks/useLocale';
-import styles from '@styles/error.module.css';
-import Title from '@ui/Title/Title';
-import { NextPage, NextPageContext } from 'next';
-import Link from 'next/link';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import styles from "@styles/error.module.css";
+import Title from "@ui/Title/Title";
+import { NextPage, NextPageContext } from "next";
+import Link from "next/link";
 
 const Error: NextPage<{ statusCode?: number }> = ({ statusCode }) => {
   const { locale } = useLocale();

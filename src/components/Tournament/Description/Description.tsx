@@ -1,18 +1,19 @@
-import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { ITournament } from '@custom-types/data/ITournament';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { sendRequest } from '@requests/request';
-import { Overlay } from '@ui/basics';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { getLocalDate } from '@utils/datetime';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+"use client";
+import PrintTasks from "@components/Task/PrintTasks/PrintTasks";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import { Overlay } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
+import { getLocalDate } from "@utils/datetime";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 
-import styles from './description.module.css';
-import RegistrationButton from './RegistrationButton/RegistrationButton';
+import styles from "./description.module.css";
+import RegistrationButton from "./RegistrationButton/RegistrationButton";
 
 const Description: FC<{
   tournament: ITournament;
@@ -30,26 +31,26 @@ const Description: FC<{
     tournament.tasks.map((task, index) => ({
       ...task,
       title: `${letterFromIndex(index)}. ${task.title}`,
-    }))
+    })),
   );
   const [successfullyRegistered, setSuccessfullyRegistered] = useState(false);
 
   const special = useMemo(
     () =>
       isAdmin ||
-      tournament.moderators.includes(user?.login || '') ||
+      tournament.moderators.includes(user?.login || "") ||
       tournament.author == user?.login,
-    [isAdmin, tournament.author, tournament.moderators, user?.login]
+    [isAdmin, tournament.author, tournament.moderators, user?.login],
   );
 
   const registered = useMemo(
     () => special || successfullyRegistered || !!is_participant,
-    [special, is_participant, successfullyRegistered]
+    [special, is_participant, successfullyRegistered],
   );
 
   const banned = useMemo(
     () => !!user && tournament.banned.includes(user.login),
-    [user, tournament.banned]
+    [user, tournament.banned],
   );
 
   const showTasks = useMemo(
@@ -57,7 +58,7 @@ const Description: FC<{
       special ||
       (registered && tournament.status.spec != 0) ||
       tournament.status.spec == 2,
-    [registered, special, tournament.status?.spec]
+    [registered, special, tournament.status?.spec],
   );
 
   useEffect(() => {
@@ -65,16 +66,16 @@ const Description: FC<{
     if (tournament.tasks.length && !isPreview) {
       sendRequest<string[], ITaskDisplay[]>(
         `task/list-specs`,
-        'POST',
+        "POST",
         tournament.tasks.map((task: any) => task.value || task.spec),
-        5000
+        5000,
       ).then((res) => {
         if (!cleanUp && !res.error) {
           setTasks(
             res.response.map((task, index) => ({
               ...task,
               title: `${letterFromIndex(index)}. ${task.title}`,
-            }))
+            })),
           );
         }
       });
@@ -113,7 +114,7 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startDate}:{' '}
+              {locale.tournament.form.startDate}:{" "}
               {getLocalDate(tournament.start)}
             </div>
             <div className={styles.duration}>

@@ -1,13 +1,14 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { Icon } from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
-import { Triangle, TriangleInverted } from 'tabler-icons-react';
+"use client";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { Icon } from "@ui/basics";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTriangle, IconTriangleInverted } from "@tabler/icons-react";
 
-import styles from './column.module.css';
+import styles from "./column.module.css";
 
 const getCurrentOrder = (
   currentOrder: number,
-  allowMiddleState: boolean
+  allowMiddleState: boolean,
 ): -1 | 0 | 1 => {
   if (!allowMiddleState) {
     return -currentOrder as -1 | 1;
@@ -31,7 +32,7 @@ const Column: FC<{
   classNames?: any;
 }> = ({ column, onSort, classNames }) => {
   const [currentOrder, setCurrentOrder] = useState(
-    !column.allowMiddleState && column.sorted == 0 ? 1 : column.sorted
+    !column.allowMiddleState && column.sorted == 0 ? 1 : column.sorted,
   );
 
   const nextOrder = useCallback(() => {
@@ -44,9 +45,9 @@ const Column: FC<{
     <th
       className={
         styles.header +
-        ' ' +
+        " " +
         classNames[column.key] +
-        ' ' +
+        " " +
         classNames.headerCell
       }
       onClick={column.sortable ? nextOrder : () => {}}
@@ -56,11 +57,11 @@ const Column: FC<{
         <div className={styles.sortIcon}>
           {currentOrder === -1 ? (
             <Icon size="xs">
-              <TriangleInverted color="black" />
+              <IconTriangleInverted color="black" />
             </Icon>
           ) : currentOrder === 1 ? (
             <Icon size="xs">
-              <Triangle color="black" />
+              <IconTriangle color="black" />
             </Icon>
           ) : (
             <></>

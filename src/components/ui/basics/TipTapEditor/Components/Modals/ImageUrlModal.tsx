@@ -1,11 +1,13 @@
-import { useLocale } from '@hooks/useLocale';
-import { Editor } from '@tiptap/react';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { useCallback, useState } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Editor } from "@tiptap/react";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { useCallback, useState } from "react";
 
-import { imageInsertFunction } from '../../TipTapEditor';
-import styles from './ImageUrlModal.module.css';
+import { imageInsertFunction } from "../../TipTapEditor";
+import styles from "./ImageUrlModal.module.css";
+import { Modal, TextInput } from "@ui/basics";
 
 const loadImageFromUrl = ({
   src,
@@ -25,7 +27,7 @@ const loadImageFromUrl = ({
         src: src,
         alt: locale.tiptap.imageAltTitle,
         width: width,
-      })
+      }),
     )
     .run();
 };
@@ -39,36 +41,33 @@ export const ImageUrlModal = ({
   close: any;
   editor: Editor;
 }) => {
-  const [src, setSrc] = useState('');
+  const [src, setSrc] = useState("");
   const { locale } = useLocale();
 
   const onClose = useCallback(() => {
-    setSrc('');
+    setSrc("");
     close();
   }, [setSrc, close]);
 
   return (
-    <SimpleModal opened={isOpened} close={onClose}>
+    <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
       <div className={styles.image_url_modal_body}>
-        <span className={styles.title}>{locale.tiptap.imageURL}</span>
-        <div className={styles.input}>
-          <input
-            className={styles.image_url_modal_input}
-            onChange={(e) => {
-              setSrc(e.target.value);
-            }}
-          />
-        </div>
+        <TextInput
+          label={locale.tiptap.imageURL}
+          onChange={(e) => {
+            setSrc(e.target.value);
+          }}
+        />
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              if (src.includes('http')) {
+              if (src.includes("http")) {
                 loadImageFromUrl({
                   editor: editor,
                   src: src,
                   locale: locale,
-                  width: '300px',
+                  width: "300px",
                 });
                 onClose();
               }
@@ -78,6 +77,6 @@ export const ImageUrlModal = ({
           cancelButton={{ onClick: onClose, label: locale.tiptap.close }}
         />
       </div>
-    </SimpleModal>
+    </Modal>
   );
 };

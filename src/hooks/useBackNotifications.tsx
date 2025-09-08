@@ -1,10 +1,12 @@
-import { INotification } from '@custom-types/data/notification';
-import { sendRequest } from '@requests/request';
+"use client";
+
+import { INotification } from "@custom-types/data/notification";
+import { sendRequest } from "@requests/request";
 import {
   infoNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithError } from '@utils/requestWithError';
+} from "@utils/notificationFunctions";
+import { requestWithError } from "@utils/requestWithError";
 import {
   FC,
   ReactNode,
@@ -13,18 +15,18 @@ import {
   useContext,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
-import { useLocale } from './useLocale';
-import { useLongPooling } from './useLongPooling';
-import { useUser } from './useUser';
+import { useLocale } from "./useLocale";
+import { useLongPooling } from "./useLongPooling";
+import { useUser } from "./useUser";
 
 interface INotificationContext {
   unviewed: number;
   sendViewed: (
     _: string[],
     __: { error: string; loading: string },
-    ___: () => void
+    ___: () => void,
   ) => void;
   loading: boolean;
   refetchNewNotifications: () => void;
@@ -47,14 +49,14 @@ export const BackNotificationsProvider: FC<{
         });
       return sendRequest<undefined, { unviewed: number; hasNew: boolean }>(
         `notification/new-info/${skip || false}`,
-        'GET'
+        "GET",
       ).then((res) => {
         if (!res.error) {
           setUnviewed(res.response.unviewed);
           if (res.response.hasNew) {
             return sendRequest<undefined, INotification[]>(
-              'notification/new',
-              'GET'
+              "notification/new",
+              "GET",
             ).then((res) => {
               if (!res.error) {
                 res.response.map((notification) => {
@@ -74,7 +76,7 @@ export const BackNotificationsProvider: FC<{
         }
       });
     },
-    [user]
+    [user],
   );
 
   const { loading: fetching } = useLongPooling(fetchNotifications, 2);
@@ -83,23 +85,23 @@ export const BackNotificationsProvider: FC<{
     (
       viewed: string[],
       messages: { error: string; loading: string },
-      onSuccess: () => void
+      onSuccess: () => void,
     ) => {
       if (viewed.length > 0) {
         requestWithError<string[], boolean>(
-          'notification/viewed',
-          'POST',
+          "notification/viewed",
+          "POST",
           messages,
           lang,
           Array.from(new Set(viewed)),
           () => {
             setTimeout(() => fetchNotifications(false), 500);
             onSuccess();
-          }
+          },
         );
       }
     },
-    [fetchNotifications, lang]
+    [fetchNotifications, lang],
   );
 
   const value: INotificationContext = useMemo(
@@ -109,7 +111,7 @@ export const BackNotificationsProvider: FC<{
       loading: fetching,
       refetchNewNotifications: () => fetchNotifications(true),
     }),
-    [unviewed, sendViewed, fetching, fetchNotifications]
+    [unviewed, sendViewed, fetching, fetchNotifications],
   );
 
   return (

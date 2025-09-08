@@ -1,25 +1,26 @@
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useLocale } from '@hooks/useLocale';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useLocale } from "@hooks/useLocale";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import { FC, memo, useMemo } from "react";
 import {
-  Atom,
-  BellRinging,
-  DeviceAnalytics,
-  ListDetails,
-  Terminal,
-  TestPipe,
-  TestPipe2,
-  UserExclamation,
-} from 'tabler-icons-react';
+  IconAtom,
+  IconBellRinging,
+  IconDeviceAnalytics,
+  IconListDetails,
+  IconTerminal,
+  IconTestPipe,
+  IconTestPipe2,
+  IconUserExclamation,
+} from "@tabler/icons-react";
 
-import AllAttempts from './AllAttempts/AllAttempts';
-import Analytics from './Analytics/Analytics';
-import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
-import Executor from './Executor/Executor';
-import FeedbackList from './FeedbackList/FeedbackList';
-import NotificationList from './NotificationList/NotificationList';
-import Organizations from './Organizations/Organizations';
+import AllAttempts from "./AllAttempts/AllAttempts";
+import Analytics from "./Analytics/Analytics";
+import CurrentAttempts from "./CurrentAttempts/CurrentAttempts";
+import Executor from "./Executor/Executor";
+import FeedbackList from "./FeedbackList/FeedbackList";
+import NotificationList from "./NotificationList/NotificationList";
+import Organizations from "./Organizations/Organizations";
 // import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = () => {
@@ -29,48 +30,48 @@ const DeveloperDashboard: FC<{}> = () => {
     () => [
       {
         page: <FeedbackList />,
-        icon: <UserExclamation color="var(--secondary)" />,
+        icon: <IconUserExclamation color="var(--secondary)" />,
         title: locale.dashboard.developer.feedbackList,
-        section: 'feedback',
+        section: "feedback",
       },
       {
         page: <CurrentAttempts />,
-        icon: <TestPipe color="var(--secondary)" />,
+        icon: <IconTestPipe color="var(--secondary)" />,
         title: locale.dashboard.developer.currentAttempts.title,
-        section: 'current_attempts',
+        section: "current_attempts",
       },
       {
         page: <AllAttempts />,
-        icon: <TestPipe2 color="var(--secondary)" />,
+        icon: <IconTestPipe2 color="var(--secondary)" />,
         title: locale.dashboard.developer.allAttempts,
-        section: 'all_attempts',
+        section: "all_attempts",
       },
       {
         page: <NotificationList />,
-        icon: <BellRinging color="var(--secondary)" />,
+        icon: <IconBellRinging color="var(--secondary)" />,
         title: locale.dashboard.developer.notificationList,
-        section: 'notifications',
+        section: "notifications",
       },
       {
         page: <Organizations />,
-        icon: <ListDetails color="var(--secondary)" />,
+        icon: <IconListDetails color="var(--secondary)" />,
         title: locale.dashboard.developer.organizationList,
-        section: 'organizations',
+        section: "organizations",
       },
       {
         page: <Executor />,
-        icon: <Terminal color="var(--secondary)" />,
+        icon: <IconTerminal color="var(--secondary)" />,
         title: locale.dashboard.developer.executor,
-        section: 'executor',
+        section: "executor",
       },
       {
         page: <Analytics />,
-        icon: <DeviceAnalytics color="var(--secondary)" />,
+        icon: <IconDeviceAnalytics color="var(--secondary)" />,
         title: locale.dashboard.developer.analytics.title,
-        section: 'analytics',
+        section: "analytics",
       },
     ],
-    [locale]
+    [locale],
   );
   return (
     <>

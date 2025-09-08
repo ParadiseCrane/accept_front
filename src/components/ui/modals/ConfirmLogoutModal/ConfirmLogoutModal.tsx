@@ -1,14 +1,14 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { FC, ReactNode, memo, useCallback, useState } from "react";
 
-import styles from './confirmLogoutModal.module.css';
+import styles from "./confirmLogoutModal.module.css";
 
 const ConfirmLogoutModal: FC<{
   confirm: pureCallback<void>;
-  kind?: 'positive' | 'negative';
+  kind?: "positive" | "negative";
   onClose?: pureCallback<void>;
   disabled?: boolean;
   openMenu: pureCallback<void>;
@@ -27,7 +27,6 @@ const ConfirmLogoutModal: FC<{
   modalText,
   children,
 }) => {
-  const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
 
   const openModal = useCallback(() => setOpened(true), []);
@@ -35,7 +34,7 @@ const ConfirmLogoutModal: FC<{
     onClose();
     setOpened(false);
     closeMenu();
-  }, [onClose]);
+  }, [onClose, closeMenu]);
 
   const onConfirm = useCallback(() => {
     confirm();

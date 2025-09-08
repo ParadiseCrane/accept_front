@@ -1,25 +1,25 @@
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Link from 'next/link';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Link from "next/link";
+import { FC, memo, useCallback } from "react";
 
-import styles from './style.module.css';
-import { useSearchParams } from 'next/navigation';
+import styles from "./style.module.css";
 import GroupModeratorList, {
   ICourseModeratorGroupItem,
-} from '@ui/GroupModeratorList/GroupModeratorList';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
-import { Trash } from 'tabler-icons-react';
-import { Icon, Tip } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { IUserBaseInfo } from '@custom-types/data/IUser';
+} from "@ui/GroupModeratorList/GroupModeratorList";
+import { IModeratorGroupPair } from "@custom-types/data/ICourse";
+import { IconTrash } from "@tabler/icons-react";
+import { Icon, Tip } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { IUserBaseInfo } from "@custom-types/data/IUser";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.dashboard.course.group,
-    key: 'group',
+    key: "group",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.group.value.name > b.group.value.name
@@ -35,7 +35,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.dashboard.course.moderator,
-    key: 'moderator',
+    key: "moderator",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.moderator.value.shortName > b.moderator.value.shortName
@@ -52,18 +52,27 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const refactorPair = (
-  pair: ICourseModeratorGroup,
-  isAuthor: boolean,
-  locale: ILocale,
-  handleDelete: any
-): ICourseModeratorGroupItem => ({
+const refactorPair = ({
+  pair,
+  fetchData,
+  handleDelete,
+  isAuthor,
+  locale,
+}: {
+  pair: IModeratorGroupPair;
+  fetchData: () => Promise<void>;
+  isAuthor: boolean;
+  locale: ILocale;
+  handleDelete: (
+    moderator: IUserBaseInfo,
+    fetchData: () => Promise<void>,
+  ) => void;
+}): ICourseModeratorGroupItem => ({
   ...pair,
   group: {
     value: pair.group,
     display: (
       <div className={tableStyles.titleWrapper}>
-        {/* TODO добавить реальную ссылку на группу */}
         <Link
           href={`/group/edit/${pair.group.spec}`}
           className={tableStyles.title}
@@ -77,7 +86,6 @@ const refactorPair = (
     value: pair.moderator,
     display: (
       <div className={tableStyles.titleWrapper}>
-        {/* TODO добавить реальную ссылку на модератора */}
         <Link
           href={`/profile/${pair.moderator.login}`}
           className={tableStyles.title}
@@ -85,15 +93,16 @@ const refactorPair = (
           {pair.moderator.shortName}
         </Link>
         {isAuthor && (
-          // TODO add action for button
           <Tip label={locale.dashboard.course.deleteModerator}>
             <Icon
-              onClick={handleDelete}
+              onClick={() => {
+                handleDelete(pair.moderator, fetchData);
+              }}
               color="red"
               variant="transparent"
               size="xs"
             >
-              <Trash />
+              <IconTrash />
             </Icon>
           </Tip>
         )}
@@ -103,39 +112,40 @@ const refactorPair = (
 });
 
 const Moderators: FC<{
-  type: 'course';
+  type: "course";
   spec: string;
   isAuthor: boolean;
 }> = ({ spec, isAuthor }) => {
   const { locale, lang } = useLocale();
-  const params = useSearchParams();
 
   const handleDelete = useCallback(
-    (moderator: IUserBaseInfo) => {
-      const body = {
-        moderator: moderator.login,
-      };
+    (moderator: IUserBaseInfo, fetchData: () => Promise<void>) => {
       requestWithNotify(
-        `course_moderator/${spec}`,
-        'DELETE',
+        `course_moderator/${spec}/${moderator.login}`,
+        "DELETE",
         locale.notify.moderator.delete,
         lang,
-        (_: any) => '',
-        body,
-        () => {},
-        { autoClose: 8000 }
+        (_: any) => "",
+        {},
+        fetchData,
+        { autoClose: 8000 },
       );
     },
-    [spec, locale, lang]
+    [spec, locale, lang],
   );
 
   return (
     <div className={styles.wrapper}>
       <GroupModeratorList
         url={`course/moderator_group/${spec}`}
-        refactorPair={(pair: ICourseModeratorGroup) =>
-          refactorPair(pair, isAuthor, locale, handleDelete)
-        }
+        isAuthor={isAuthor}
+        refactorPair={({
+          pair,
+          fetchData,
+        }: {
+          pair: IModeratorGroupPair;
+          fetchData: () => Promise<void>;
+        }) => refactorPair({ pair, fetchData, isAuthor, locale, handleDelete })}
         initialColumns={initialColumns}
         noDefault
         empty={<>{locale.ui.table.emptyMessage}</>}

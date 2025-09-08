@@ -1,13 +1,14 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { setter } from '@custom-types/ui/atomic';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useLocale } from '@hooks/useLocale';
-import { Button, LoadingOverlay } from '@ui/basics';
-import { UserSelector } from '@ui/selectors';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { setter } from "@custom-types/ui/atomic";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { useLocale } from "@hooks/useLocale";
+import { Button, LoadingOverlay } from "@ui/basics";
+import { UserSelector } from "@ui/selectors";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
-import styles from '../registrationManagement.module.css';
+import styles from "../registrationManagement.module.css";
 
 const Solo: FC<{
   spec: string;
@@ -28,15 +29,15 @@ const Solo: FC<{
     (logins: string[]) => {
       requestWithNotify<string[], {}>(
         `tournament/register-users/${spec}`,
-        'POST',
+        "POST",
         locale.notify.tournament.registration,
         lang,
-        () => '',
+        () => "",
         logins,
-        () => refetch(false)
+        () => refetch(false),
       );
     },
-    [refetch, spec, locale, lang]
+    [refetch, spec, locale, lang],
   );
 
   return (
@@ -44,10 +45,10 @@ const Solo: FC<{
       {<LoadingOverlay visible={loading} />}
       <div
         style={{
-          width: '90%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'var(--spacer-m)',
+          width: "90%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--spacer-m)",
         }}
       >
         <UserSelector
@@ -61,7 +62,7 @@ const Solo: FC<{
           ]}
           height="400px"
         />
-        <div style={{ margin: '0 auto' }}>
+        <div style={{ margin: "0 auto" }}>
           <Button onClick={() => handleRegister(participants)}>
             {locale.edit}
           </Button>

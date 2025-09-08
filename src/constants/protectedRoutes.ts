@@ -1,7 +1,9 @@
-import { checkWrapper } from '@utils/checkAccess';
+import { IResponseErrorObject } from "@custom-types/data/atomic";
+import { checkWrapper } from "@utils/checkAccess";
 
 // TODO: Somehow remove
 export const accessLevels = {
+  anyone: 0,
   user: 1,
   student: 2,
   teacher: 3,
@@ -12,51 +14,135 @@ export const accessLevels = {
 export const protectedRoutesInfo: {
   [key: string]: (
     _entity_spec: string | undefined,
-    _headers: { Authorization: string } | undefined,
+    _access_token: string | undefined,
     _pathname: string,
-    _searchParams?: URLSearchParams
-  ) => Promise<string | boolean>;
+    _searchParams?: URLSearchParams,
+  ) => Promise<string | boolean | IResponseErrorObject>;
 } = {
   // TODO: Check rights
-  '/tournament': checkWrapper('read', 'tournament'),
-  '/tournament/add': checkWrapper('add', 'tournament'),
-  '/tournament/edit': checkWrapper('write', 'tournament'),
-  '/assignment_schema/add': checkWrapper('add', 'assignment_schema'),
-  '/assignment_schema/edit': checkWrapper('write', 'assignment_schema'),
-  '/assignment_schema/list': checkWrapper('read_list', 'assignment_schema'),
-  '/assignment_schema': checkWrapper('read', 'assignment_schema'),
-  '/assignment': checkWrapper('read', 'assignment'),
-  '/assignment/add': checkWrapper('add', 'assignment'),
-  '/assignment/edit': checkWrapper('write', 'assignment'),
-  '/organization/add': checkWrapper('moderate', 'organization'),
-  '/organization/edit': checkWrapper('moderate', 'organization'),
-  '/group/add': checkWrapper('add', 'group'),
-  '/group/edit': checkWrapper('write', 'assignment'),
-  '/group/list': checkWrapper('read_list', 'group'),
-  '/notification/add': checkWrapper('add', 'notification'),
-  '/task/add': (_, headers, pathname, searchParams) => {
-    const tournament_spec = searchParams?.get('tournament');
+  "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
+  "/tournament/add": checkWrapper(
+    "add",
+    "tournament",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/tournament/edit": checkWrapper(
+    "write",
+    "tournament",
+    accessLevels["teacher"],
+  ),
+  "/assignment_schema/add": checkWrapper(
+    "add",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/assignment_schema/edit": checkWrapper(
+    "write",
+    "assignment_schema",
+    accessLevels["teacher"],
+  ),
+  "/assignment_schema/list": checkWrapper(
+    "read_list",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/assignment_schema": checkWrapper(
+    "read",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/assignment": checkWrapper("read", "assignment", accessLevels["teacher"]),
+  "/assignment/add": checkWrapper(
+    "add",
+    "assignment",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/assignment/edit": checkWrapper(
+    "write",
+    "assignment",
+    accessLevels["teacher"],
+  ),
+  "/organization/add": checkWrapper(
+    "moderate",
+    "organization",
+    accessLevels["developer"],
+    true,
+  ),
+  "/organization/edit": checkWrapper(
+    "moderate",
+    "organization",
+    accessLevels["admin"],
+    true,
+  ),
+  "/group/add": checkWrapper("add", "group", accessLevels["teacher"], true),
+  "/group/edit": checkWrapper(
+    "write",
+    "assignment",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/group/list": checkWrapper(
+    "read_list",
+    "group",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/notification/add": checkWrapper(
+    "add",
+    "notification",
+    accessLevels["teacher"], // Is it true??
+  ),
+  "/task/add": (_, access_token, pathname, searchParams) => {
+    const tournament_spec = searchParams?.get("tournament");
     if (!tournament_spec)
-      return checkWrapper('add', 'task')(
+      return checkWrapper("add", "task", accessLevels["teacher"], true)(
         undefined,
-        headers,
+        access_token,
         pathname,
-        searchParams
+        searchParams,
       );
-    return checkWrapper('moderate', 'tournament')(
+    return checkWrapper("moderate", "tournament", accessLevels["admin"])(
       tournament_spec,
-      headers,
+      access_token,
       pathname,
-      searchParams
+      searchParams,
     );
   },
-  '/user/list': checkWrapper('read_list', 'user'),
-  '/task': checkWrapper('read', 'task'),
-  '/task/edit': checkWrapper('write', 'task'),
-  '/task/tests': checkWrapper('read_tests', 'task'),
-  '/dashboard/admin': checkWrapper('read', 'admin_dashboard'),
-  '/dashboard/assignment': checkWrapper('moderate', 'assignment'),
-  '/dashboard/developer': checkWrapper('read', 'developer_dashboard'),
-  '/dashboard/tournament': checkWrapper('moderate', 'tournament'),
-  '/attempt': checkWrapper('read', 'attempt'),
+  "/user/list": checkWrapper(
+    "read_list",
+    "user",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/task": checkWrapper("read", "task", accessLevels["admin"]),
+  "/task/edit": checkWrapper("write", "task", accessLevels["admin"]),
+  "/task/tests": checkWrapper("read_tests", "task", accessLevels["admin"]),
+  "/dashboard/admin": checkWrapper(
+    "read",
+    "admin_dashboard",
+    accessLevels["admin"],
+  ),
+  "/dashboard/assignment": checkWrapper(
+    "moderate",
+    "assignment",
+    accessLevels["teacher"],
+    true,
+  ),
+  "/dashboard/developer": checkWrapper(
+    "read",
+    "developer_dashboard",
+    accessLevels["developer"],
+    true,
+  ),
+  "/dashboard/tournament": checkWrapper(
+    "moderate",
+    "tournament",
+    accessLevels["admin"],
+  ),
+  "/attempt": checkWrapper("read", "attempt", accessLevels["teacher"]),
 };

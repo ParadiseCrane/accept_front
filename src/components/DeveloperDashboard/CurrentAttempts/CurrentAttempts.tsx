@@ -1,7 +1,8 @@
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import { useLocale } from '@hooks/useLocale';
-import { Switch } from '@ui/basics';
-import { FC, memo, useState } from 'react';
+"use client";
+import AttemptsList from "@components/Dashboard/AttemptsList/AttemptsList";
+import { useLocale } from "@hooks/useLocale";
+import { Switch } from "@ui/basics";
+import { FC, memo, useState } from "react";
 // import styles from './currentAttempts.module.scss'
 
 const CurrentAttempts: FC<{}> = () => {
@@ -16,8 +17,8 @@ const CurrentAttempts: FC<{}> = () => {
         label={locale.dashboard.developer.currentAttempts.shouldRefetch}
       />
       <AttemptsList
-        type={'current'}
-        spec={''}
+        type={"current"}
+        spec={""}
         shouldNotRefetch={!shouldRefetch}
         isFinished={false}
         endDate={new Date()}

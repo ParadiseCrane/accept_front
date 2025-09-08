@@ -1,7 +1,8 @@
-import { IRole } from '@custom-types/data/atomic';
-import { Select } from '@ui/basics';
-import { capitalize } from '@utils/capitalize';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
+import { Select } from "@ui/basics";
+import { capitalize } from "@utils/capitalize";
+import { FC, memo, useMemo } from "react";
 
 const SingleRoleSelector: FC<{
   label: string;
@@ -15,10 +16,10 @@ const SingleRoleSelector: FC<{
         label: capitalize(item.name),
         value: item.spec.toString(),
       })),
-    [roles]
+    [roles],
   );
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: "100%" }}>
       <Select label={label} data={data} {...form.getInputProps(field)} />
     </div>
   );

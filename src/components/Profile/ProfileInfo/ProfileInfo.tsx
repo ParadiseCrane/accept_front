@@ -1,12 +1,13 @@
-import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
-import { FC, memo } from 'react';
+"use client";
+import { IFullProfileBundle } from "@custom-types/data/IProfileInfo";
+import { FC, memo } from "react";
 
-import AttemptInfo from './AttemptInfo/AttemptInfo';
-import GroupsInfo from './GroupsInfo/GroupsInfo';
-import MainInfo from './MainInfo/MainInfo';
-import styles from './profileInfo.module.css';
-import ShortStatistics from './ShortStatistics/ShortStatistics';
-import TaskInfo from './TaskInfo/TaskInfo';
+import AttemptInfo from "./AttemptInfo/AttemptInfo";
+import GroupsInfo from "./GroupsInfo/GroupsInfo";
+import MainInfo from "./MainInfo/MainInfo";
+import styles from "./profileInfo.module.css";
+import ShortStatistics from "./ShortStatistics/ShortStatistics";
+import TaskInfo from "./TaskInfo/TaskInfo";
 
 const ProfileInfo: FC<IFullProfileBundle> = ({
   user,
