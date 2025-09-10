@@ -1,4 +1,3 @@
-import { useDebouncedState } from "@mantine/hooks";
 import { useCallback, useState } from "react";
 
 interface IStreamData {
@@ -12,7 +11,6 @@ interface IStreamData {
 export function useStream(url: string): IStreamData {
   const [loading, setLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
-  // const [content, setContent] = useDebouncedState('', 200);
   const [content, setContent] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -45,26 +43,43 @@ export function useStream(url: string): IStreamData {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-
+      let buffer = "";
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value, { stream: true });
-        if (chunk.length <= 6) continue;
+        buffer += decoder.decode(value, { stream: true });
 
-        try {
-          const data = JSON.parse(chunk.slice(6));
-          if (data.content) {
-            setContent((prev) => prev + data.content);
+        // find all "data:" occurrences
+        const parts = buffer.split(/(?=data:)/g);
+
+        // keep last partial (may be incomplete JSON)
+        buffer = parts.pop() || "";
+
+        for (const part of parts) {
+          const line = part.trim();
+          if (!line.startsWith("data:")) continue;
+
+          const jsonStr = line.slice(5).trim();
+          try {
+            const data = JSON.parse(jsonStr);
+
+            if (data.content) {
+              setContent((prev) => prev + data.content);
+            } else if (data.event === "complete") {
+              setStreaming(false);
+            } else if (data.event === "error") {
+              setError(data.message ?? "Unknown server error");
+              setStreaming(false);
+            }
+          } catch {
+            // ignore incomplete fragments, leave in buffer
+            buffer = part;
           }
-        } catch (parseError) {
-          setError("Error parsing stream data");
-          break;
         }
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setError("Unknown error");
     } finally {
       setStreaming(false);
