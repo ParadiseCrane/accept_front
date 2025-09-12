@@ -1,4 +1,4 @@
-// pages/api/stream.ts
+// pages/api/stream.ts - SIMPLER VERSION
 import { NextRequest } from "next/server";
 import { getCookieValue } from "@utils/cookies";
 import { getApiUrl } from "@utils/getServerUrl";
@@ -44,21 +44,13 @@ export default async function handler(req: NextRequest) {
       });
     }
 
-    // Create a transform stream to handle chunks
-    const transformer = new TransformStream({
-      async transform(chunk, controller) {
-        controller.enqueue(chunk);
-      },
-    });
-
-    // Pipe the stream through our transformer
-    const transformedStream = backendResponse.body.pipeThrough(transformer);
-
-    return new Response(transformedStream, {
+    // Simply pass through the stream without transformation
+    return new Response(backendResponse.body, {
       headers: {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
         "X-Accel-Buffering": "no",
+        Connection: "keep-alive",
       },
     });
   } catch (error) {

@@ -77,7 +77,7 @@ const LoginForm: FC<{
       if (form.values.organization != orgFromLS)
         form.setFieldValue("organization", orgFromLS);
     }
-  }, [organizations_loading, form, organizations]);
+  }, [organizations_loading, organizations]);
 
   const handleSignIn = useCallback(
     (values: { organization: string; login: string; password: string }) => {

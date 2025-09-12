@@ -27,21 +27,22 @@ const getCourse = cache(async (spec: string): Promise<ICourse> => {
 });
 
 const getCourseData = async (spec: string) => {
-  const [navResponse, course, hasModerateRightsResponse] = await Promise.all([
+  const [navResponse, course] = await Promise.all([
     fetchWrapperStaticApp({ url: `course/course_navigation_tree/${spec}` }),
     getCourse(spec),
-    fetchWrapperStaticApp({
-      url: "rights",
-      method: "POST",
-      body: {
-        action: "moderate",
-        entity_spec: spec,
-        entity: "course",
-      },
-    }),
   ]);
 
-  if (!navResponse.ok || !hasModerateRightsResponse.ok) {
+  const hasModerateRightsResponse = await fetchWrapperStaticApp({
+    url: "rights",
+    method: "POST",
+    body: {
+      action: "moderate",
+      entity_spec: spec,
+      entity: "course",
+    },
+  });
+
+  if (!navResponse.ok) {
     throw new Error(
       JSON.stringify({
         code: 404,
@@ -51,12 +52,12 @@ const getCourseData = async (spec: string) => {
   }
 
   const navigation = await navResponse.json();
-  const hasModerateRights = await hasModerateRightsResponse.json();
+  // const hasModerateRights = await hasModerateRightsResponse.json();
 
   course.children = navigation.children;
   return {
     course,
-    has_moderate_rights: hasModerateRights,
+    has_moderate_rights: hasModerateRightsResponse.ok,
     item: spec,
   };
 };

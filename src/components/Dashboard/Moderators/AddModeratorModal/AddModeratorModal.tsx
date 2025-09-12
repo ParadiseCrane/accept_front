@@ -8,9 +8,8 @@ import styles from "./styles.module.css";
 import { ComboboxItem } from "@mantine/core";
 import { useParams } from "next/navigation";
 import { sendRequest } from "@requests/request";
-import { IModeratorGroupPair } from "@custom-types/data/ICourse";
-import { IGroupBaseInfo } from "@custom-types/data/IGroup";
 import { IUserDisplay } from "@custom-types/data/IUser";
+import { useCourse } from "@hooks/useCourse";
 
 export const AddModeratorModal = ({
   refetchData,
@@ -24,42 +23,15 @@ export const AddModeratorModal = ({
   const [groupsWithoutModerator, setGroupsWithoutModerator] = useState<
     ComboboxItem[]
   >([]);
-  const pathParams = useParams<{ spec: string }>();
+  const pathParams = useParams<{ group: string }>();
   const { locale } = useLocale();
+  const { groups } = useCourse();
 
   const onClose = () => {
     setShowModal(false);
     setUser(null);
     setGroup(null);
   };
-
-  const fetchAllGroupsData = useCallback(async () => {
-    if (pathParams && pathParams.spec) {
-      // получаем все группы
-      const allGroupsResponse = await sendRequest<{}, IGroupBaseInfo[]>(
-        `course/groups/${pathParams.spec}`,
-        "GET",
-      );
-      // получаем группы, где есть модератор
-      const moderatorGroupsResponse = await sendRequest<
-        {},
-        IModeratorGroupPair[]
-      >(`course/moderator_group/${pathParams.spec}`, "GET");
-      if (!allGroupsResponse.error && !moderatorGroupsResponse.error) {
-        const specs = moderatorGroupsResponse.response.map(
-          (group) => group.group.spec,
-        );
-        // фильтруем группы, оставляя только группы без модератора
-        const filter = allGroupsResponse.response
-          .map<ComboboxItem>((group) => {
-            return { label: group.name, value: group.spec };
-          })
-          .filter((group) => !specs.includes(group.value));
-        // сетаем группы без модератора
-        setGroupsWithoutModerator(filter);
-      }
-    }
-  }, [pathParams]);
 
   const fetchUsersForGroup = useCallback(async () => {
     const allUsersForGroupResponse = await sendRequest<{}, IUserDisplay[]>(
@@ -79,7 +51,7 @@ export const AddModeratorModal = ({
   const addModerator = useCallback(async () => {
     if (user && group && pathParams) {
       await sendRequest<{}, {}>(
-        `course_moderator/${pathParams.spec}/${user.value}/${group.value}`,
+        `course_moderator/${pathParams.group}/${user.value}/${group.value}`,
         "POST",
       );
     }
@@ -87,10 +59,14 @@ export const AddModeratorModal = ({
 
   useEffect(() => {
     if (showModal) {
-      fetchAllGroupsData();
+      setGroupsWithoutModerator(
+        groups.map<ComboboxItem>((group) => {
+          return { label: group.name, value: group.spec };
+        }),
+      );
       fetchUsersForGroup();
     }
-  }, [showModal, fetchAllGroupsData, fetchUsersForGroup]);
+  }, [showModal, , fetchUsersForGroup]);
 
   return (
     <>
