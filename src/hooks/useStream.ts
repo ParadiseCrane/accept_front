@@ -4,29 +4,44 @@ interface IStreamData {
   loading: boolean;
   streaming: boolean;
   data: string;
+  chunk: string;
   error: string | null;
   startStream: () => Promise<void>;
 }
 
-export function useStream(url: string): IStreamData {
+export function useStream(
+  url: string,
+  method?: "GET" | "POST",
+  body?: any,
+): IStreamData {
   const [loading, setLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [content, setContent] = useState("");
+  const [chunk, setChunk] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const startStream = useCallback(async () => {
     setLoading(true);
     setStreaming(false);
     setContent("");
+    setChunk("");
     setError(null);
 
     try {
-      const response = await fetch(url, {
+      const init: any = {
         headers: {
           Accept: "text/event-stream",
           "Cache-Control": "no-cache",
+          "Content-Type": "application/json",
         },
-      });
+      };
+      if (method != "GET") {
+        init.method = method || "POST";
+      }
+      if (body != undefined) {
+        init.body = JSON.stringify(body);
+      }
+      const response = await fetch(`/api/${url}`, init);
 
       if (!response.ok) {
         setLoading(false);
@@ -66,6 +81,7 @@ export function useStream(url: string): IStreamData {
 
             if (data.content) {
               setContent((prev) => prev + data.content);
+              setChunk(data.content);
             } else if (data.event === "complete") {
               setStreaming(false);
             } else if (data.event === "error") {
@@ -85,12 +101,13 @@ export function useStream(url: string): IStreamData {
       setStreaming(false);
       setLoading(false);
     }
-  }, [url]);
+  }, [url, method, body]);
 
   return {
     loading,
     streaming,
     data: content,
+    chunk,
     error,
     startStream,
   };

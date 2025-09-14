@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    optimizeCss: true,
+    // optimizeCss: true,
   },
   compiler: {
     styledComponents: true,

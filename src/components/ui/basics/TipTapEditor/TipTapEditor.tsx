@@ -1,7 +1,11 @@
 "use client";
 import { MathExtension } from "@aarkue/tiptap-math-extension";
 import { useLocale } from "@hooks/useLocale";
-import { Link, RichTextEditor } from "@mantine/tiptap";
+import {
+  Link,
+  RichTextEditor,
+  RichTextEditorControlsGroup,
+} from "@mantine/tiptap";
 import { Blockquote } from "@tiptap/extension-blockquote";
 import { Bold } from "@tiptap/extension-bold";
 import { BulletList } from "@tiptap/extension-bullet-list";
@@ -60,6 +64,7 @@ import { ToggleUnderline } from "./Components/ToggleUnderline";
 import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
+import { StylizeText } from "./Components/StyleText";
 
 export const imageInsertFunction = ({
   src,
@@ -195,16 +200,16 @@ export const TipTapEditor = ({
             <ColorPickerButton editor={editor} />
             <HighLightColorButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <InsertGroupSeparate
               editor={editor}
               className={styles.insert_group_separate}
               languages={languages}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <HeadingsGroupSeparate
               editor={editor}
               className={styles.headings_group_separate}
@@ -214,21 +219,21 @@ export const TipTapEditor = ({
               className={styles.headings_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <ToggleBlockquote editor={editor} />
             <ToggleBulletList editor={editor} />
             <ToggleOrderedList editor={editor} />
             <ToggleSubscript editor={editor} />
             <ToggleSuperscript editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <LinkButton editor={editor} />
             <UnlinkButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <AlignGroupSeparate
               editor={editor}
               className={styles.align_group_separate}
@@ -238,11 +243,13 @@ export const TipTapEditor = ({
               className={styles.align_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
+          <StylizeText editor={editor} />
         </RichTextEditor.Toolbar>
       )}
       <RichTextEditor.Content
