@@ -63,7 +63,7 @@ export const StylizeText = ({ editor }: { editor: Editor }) => {
             onChange={(event) => setStyle(event.currentTarget.value)}
           />
           <Button loading={loading} onClick={startStream}>
-            Запросить
+            {locale.apply}
           </Button>
         </Group>
       </Menu.Dropdown>
