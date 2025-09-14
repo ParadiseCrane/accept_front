@@ -65,6 +65,7 @@ import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
 import { StylizeText } from "./Components/StyleText";
+import { GenerateImage } from "./Components/GenerateImage";
 
 export const imageInsertFunction = ({
   src,
