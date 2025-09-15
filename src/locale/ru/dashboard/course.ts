@@ -1,6 +1,7 @@
 export const course = {
   main: "Главная",
   chat: "Чат",
+  results: "Таблица результатов",
   moderators: "Модераторы",
   moderator: "Модератор",
   group: "Группа",

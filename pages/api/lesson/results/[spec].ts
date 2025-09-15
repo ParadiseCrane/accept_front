@@ -1,7 +1,7 @@
 import { fetchWrapper } from "@utils/fetchWrapper";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function AssignmentTaskResults(
+export default async function LessonResults(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -9,7 +9,7 @@ export default async function AssignmentTaskResults(
   await fetchWrapper({
     req: req,
     res: res,
-    url: "api/results/lesson",
+    url: `api/lesson-results/${req.query.spec}`,
     method: "POST",
   });
 }
