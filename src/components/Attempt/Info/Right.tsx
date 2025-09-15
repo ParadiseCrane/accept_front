@@ -117,12 +117,7 @@ const Right: FC<Props> = ({ attempt, syncScroll }) => {
     if (el) tableRefs.current[index] = el;
   }, []);
 
-  const tables: Array<Array<IRowItem>> = distributeRows([
-    ...rows,
-    ...rows,
-    ...rows,
-    ...rows,
-  ]);
+  const tables: Array<Array<IRowItem>> = distributeRows(rows);
 
   useEffect(() => {
     tableRefs.current = tableRefs.current.slice(0, tables.length);
