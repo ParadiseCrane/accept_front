@@ -66,6 +66,11 @@
   width: 2px;
 }
 
+.tableWrapper::-webkit-scrollbar:horizontal {
+  width: 0px;
+  height: 0px;
+}
+
 .smallButton {
   --font-size: var(--font-size-btn-s);
 }
