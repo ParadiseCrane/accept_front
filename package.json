@@ -59,8 +59,8 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-cool-virtual": "^0.7.0",
     "react-dom": "19.1.1",
-    "react-to-print": "^3.0.2",
     "react-markdown": "^10.1.0",
+    "react-to-print": "^3.0.2",
     "remark-gfm": "^4.0.1",
     "tiptap-extension-resize-image": "^1.1.9",
     "uuid": "8.3.2"

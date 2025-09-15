@@ -24,7 +24,7 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
     data: hint,
     error,
     startStream,
-  } = useStream(`/api/attempt-hint/${attempt.spec}`);
+  } = useStream(`attempt-hint/${attempt.spec}`);
 
   useEffect(() => {
     if (error !== null) {

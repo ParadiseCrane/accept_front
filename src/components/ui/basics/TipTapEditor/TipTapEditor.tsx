@@ -33,15 +33,13 @@ import js from "highlight.js/lib/languages/javascript";
 import python from "highlight.js/lib/languages/python";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
-import { all, createLowlight } from "lowlight";
+import { createLowlight } from "lowlight";
 import { ImageResize } from "tiptap-extension-resize-image";
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from "./Components/Align";
 import { ClearFormattingButton } from "./Components/ClearFormattingButton";
-// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from "./Components/ColorPickerButton";
 import { HighLightColorButton } from "./Components/HighlightColorButton";
-import { InsertGroupSeparate } from "./Components/InsertGroup";
 import { LinkButton, UnlinkButton } from "./Components/LinkButton";
 import { ToggleBlockquote } from "./Components/ToggleBlockquote";
 import { ToggleBold } from "./Components/ToggleBold";
@@ -60,18 +58,11 @@ import { ToggleUnderline } from "./Components/ToggleUnderline";
 import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
-
-export const imageInsertFunction = ({
-  src,
-  alt,
-  width,
-}: {
-  src: string;
-  alt: string;
-  width: string;
-}): string => {
-  return `<img src="${src}" alt="${alt}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${alt}" draggable="true" display="block">`;
-};
+import { StylizeText } from "./Components/StyleText";
+import { ToggleCodeBlock } from "./Components/ToggleCodeBlock";
+import { InsertLatexExpression } from "./Components/InsertLatex";
+import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
+import { GenerateImage } from "./Components/GenerateImage";
 
 export const TipTapEditor = ({
   editorMode,
@@ -195,16 +186,15 @@ export const TipTapEditor = ({
             <ColorPickerButton editor={editor} />
             <HighLightColorButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
-            <InsertGroupSeparate
-              editor={editor}
-              className={styles.insert_group_separate}
-              languages={languages}
-            />
+            <ToggleCodeBlock editor={editor} languages={languages} />
+            <InsertLatexExpression editor={editor} />
+            <InsertImageAsFile editor={editor} />
+            <InsertImageAsUrl editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <HeadingsGroupSeparate
               editor={editor}
               className={styles.headings_group_separate}
@@ -214,21 +204,21 @@ export const TipTapEditor = ({
               className={styles.headings_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <ToggleBlockquote editor={editor} />
             <ToggleBulletList editor={editor} />
             <ToggleOrderedList editor={editor} />
             <ToggleSubscript editor={editor} />
             <ToggleSuperscript editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <LinkButton editor={editor} />
             <UnlinkButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <AlignGroupSeparate
               editor={editor}
               className={styles.align_group_separate}
@@ -238,10 +228,15 @@ export const TipTapEditor = ({
               className={styles.align_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <StylizeText editor={editor} />
+            <GenerateImage editor={editor} />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}

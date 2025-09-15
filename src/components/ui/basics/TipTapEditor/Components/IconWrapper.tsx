@@ -1,4 +1,3 @@
-"use client";
 import { Icon } from "@tabler/icons-react";
 
 import styles from "./IconWrapper.module.css";
@@ -7,12 +6,12 @@ export const IconWrapper = ({
   isActive,
   IconChild,
 }: {
-  isActive: boolean;
   IconChild: Icon;
+  isActive?: boolean;
 }) => {
   return (
     <div
-      className={isActive ? styles.icon_wrapper_active : styles.icon_wrapper}
+      className={!!isActive ? styles.icon_wrapper_active : styles.icon_wrapper}
     >
       <IconChild
         size={"1.2rem"}

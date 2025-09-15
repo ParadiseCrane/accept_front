@@ -2,75 +2,13 @@
 import { useLocale } from "@hooks/useLocale";
 import { RichTextEditor } from "@mantine/tiptap";
 import { Editor } from "@tiptap/react";
-import { getCookie } from "@utils/cookies";
 import { useId, useState } from "react";
 import { IconPhotoSearch, IconPhotoUp } from "@tabler/icons-react";
 
-import { imageInsertFunction } from "../TipTapEditor";
 import styles from "../TipTapEditor.module.css";
 import { IconWrapper } from "./IconWrapper";
 import { ImageUrlModal } from "./Modals/ImageUrlModal";
-
-const loadImageAsFile = async ({
-  files,
-  editor,
-  timeout,
-  locale,
-  width,
-}: {
-  files: FileList | null;
-  editor: Editor;
-  timeout: number;
-  locale: any;
-  width: string;
-}) => {
-  if (files && files[0]) {
-    const formData = new FormData();
-    formData.append("upload", files[0]);
-    try {
-      const access_token = getCookie("access_token");
-      const response: Response | any = await Promise.race([
-        fetch("/api/image", {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          } as { [key: string]: string },
-        }),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("timeout")), timeout),
-        ),
-      ]);
-      const json = await response.json();
-      const src: string = json["url"];
-
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunction({
-            src: src,
-            alt: locale.tiptap.imageAltTitle,
-            width: width,
-          }),
-        )
-        .run();
-    } catch (error) {
-      // TODO: Create error notification
-      const src = "/media/placeholder.jpg";
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunction({
-            src: src,
-            alt: locale.tiptap.imageUploadFail,
-            width: width,
-          }),
-        )
-        .run();
-    }
-  }
-};
+import { uploadImageAsFile } from "@utils/image";
 
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
   const { locale } = useLocale();
@@ -92,7 +30,7 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
         accept={"image/*"}
         className="Input__input"
         onChange={(e) => {
-          loadImageAsFile({
+          uploadImageAsFile({
             files: e.target.files,
             editor: editor,
             timeout: 4000,
