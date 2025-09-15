@@ -13,7 +13,7 @@ const TipTapTest: NextPage = () => {
     <div style={{ display: "flex", flexDirection: "column", padding: "50px" }}>
       <TipTapEditor
         editorMode={true}
-        content={""}
+        content={"Улыбок тебе, дед Макар!"}
         onUpdate={(editor: Editor) => {
           const data = editor.getHTML();
           setContent(data);

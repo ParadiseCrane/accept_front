@@ -27,6 +27,7 @@ export const GenerateImage = ({ editor }: { editor: Editor }) => {
         close={() => {
           setOpened(false);
         }}
+        editor={editor}
       />
     </>
   );
