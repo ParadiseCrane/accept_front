@@ -1,6 +1,5 @@
 "use client";
 import { Editor } from "@tiptap/react";
-import { getCookie } from "@utils/cookies";
 import { ILocale } from "@custom-types/ui/ILocale";
 
 export const imageInsertFunctionTipTap = ({
@@ -14,7 +13,6 @@ export const imageInsertFunctionTipTap = ({
 }): string => {
   return `<img src="${src}" alt="${alt}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${alt}" draggable="true" display="block">`;
 };
-
 export const uploadImageAsFile = async ({
   files,
   editor,
@@ -28,53 +26,44 @@ export const uploadImageAsFile = async ({
   locale: ILocale;
   width: string;
 }) => {
-  if (files && files[0]) {
-    const formData = new FormData();
-    formData.append("upload", files[0]);
-    try {
-      const access_token = getCookie("access_token");
-      const response: Response | any = await Promise.race([
-        fetch("/api/image", {
-          method: "POST",
-          body: formData,
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          } as { [key: string]: string },
-        }),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("timeout")), timeout),
-        ),
-      ]);
-      const json = await response.json();
-      const src: string = json["url"];
+  if (!files?.length) return;
 
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunctionTipTap({
-            src: src,
-            alt: locale.tiptap.imageAltTitle,
-            width: width,
-          }),
-        )
-        .run();
-    } catch (error) {
-      // TODO: Create error notification
-      const src = "/media/placeholder.jpg";
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunctionTipTap({
-            src: src,
-            alt: locale.tiptap.imageUploadFail,
-            width: width,
-          }),
-        )
-        .run();
-    }
+  const formData = new FormData();
+  formData.append("upload", files[0]);
+
+  try {
+    const response = await fetch("/api/image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const json = await response.json();
+    const src = json.url || "/media/placeholder.jpg";
+
+    editor
+      .chain()
+      .insertContent(
+        imageInsertFunctionTipTap({
+          src,
+          alt: locale.tiptap.imageAltTitle,
+          width,
+        })
+      )
+      .run();
+  } catch (error) {
+    editor
+      .chain()
+      .insertContent(
+        imageInsertFunctionTipTap({
+          src: "/media/placeholder.jpg",
+          alt: locale.tiptap.imageUploadFail,
+          width,
+        })
+      )
+      .run();
   }
 };
+
 export const base64ToFileList = (
   base64String: string,
   filename: string = "image.png",

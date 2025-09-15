@@ -44,20 +44,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   const [route, spec] = removeSpec(pathname);
-  if (route == "/api/image" && spec == "") {
-    const formData = await request.formData();
-    const response = await fetch(`${getApiUrl()}/api/image`, {
-      method: "POST",
-      body: formData,
-    });
-    return NextResponse.json(await response.json());
-  }
 
   if (isProtected(route)) {
     const access = protectedRoutesInfo[route];
 
     const access_token = request.cookies.get(
-      "access_token",
+      "access_token"
       //@ts-ignore
     )?.value;
 
@@ -65,11 +57,11 @@ export async function middleware(request: NextRequest) {
       spec,
       access_token,
       pathname,
-      request.nextUrl.searchParams,
+      request.nextUrl.searchParams
     );
     if (typeof accepted == "object") {
       return NextResponse.rewrite(
-        new URL(`/${accepted.errorCode}`, request.url),
+        new URL(`/${accepted.errorCode}`, request.url)
       );
     } else if (typeof accepted != "boolean") {
       return NextResponse.rewrite(new URL("/503", request.url));

@@ -39,11 +39,16 @@ export const sendRequest = <ISend, IReceive>(
   }
 
   let options: any = {
-    credentials: 'include',
+    credentials: "include",
     method,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
   };
-  if (body) {
+  if (body instanceof FormData) {
+    delete options.headers["Content-Type"]; // Let fetch set correct boundary
+    options.body = body;
+  } else if (body) {
     options.body = JSON.stringify(body);
   }
 

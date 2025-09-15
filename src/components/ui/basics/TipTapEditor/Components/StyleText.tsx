@@ -14,7 +14,7 @@ import { useLocale } from "@hooks/useLocale";
 export const StylizeText = ({ editor }: { editor: Editor }) => {
   const { locale } = useLocale();
   const [opened, setOpened] = useState(false);
-  const [style, setStyle] = useState("Сказка о царе Сатане");
+  const [style, setStyle] = useState("Сказка о царе Салтане");
 
   const { data, chunk, error, startStream, loading, streaming } = useStream(
     "ai/text_style",
