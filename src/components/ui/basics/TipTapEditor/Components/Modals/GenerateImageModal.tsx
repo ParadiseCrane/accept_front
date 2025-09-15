@@ -14,6 +14,7 @@ import {
 import { useState, useCallback, useMemo } from "react";
 import { sendRequest } from "@requests/request";
 import { Editor } from "@tiptap/react";
+import { base64ToFileList, uploadImageAsFile } from "@utils/image";
 
 export const GenerateImageModal = ({
   isOpened,
@@ -29,6 +30,7 @@ export const GenerateImageModal = ({
   const [amount, setAmount] = useState<number | undefined>(3);
   const [desc, setDesc] = useState<string>(editor.getText());
   const [loading, setLoading] = useState<boolean>(false);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [images, setImages] = useState<string[]>([]);
 
   const [currentImage, setCurrentImage] = useState("0");
@@ -36,7 +38,7 @@ export const GenerateImageModal = ({
   const items = useMemo(
     () =>
       Array.from({ length: images.length }).map((_, index) => ({
-        label: `Вариант ${index + 1}`,
+        label: `${locale.tiptap.imageGeneration.variant} ${index + 1}`,
         value: `${index}`,
       })),
     [images.length],
@@ -68,18 +70,30 @@ export const GenerateImageModal = ({
     [amount],
   );
 
+  const uploadImage = useCallback(() => {
+    if (images.length == 0) return;
+    setUploading(true);
+    uploadImageAsFile({
+      files: base64ToFileList(images[+currentImage]),
+      editor,
+      locale,
+      timeout: 5000,
+      width: `${32 * 16}px`,
+    }).finally(() => setUploading(false));
+  }, [currentImage, images]);
+
   return (
     <Modal
       opened={isOpened}
       onClose={close}
-      title={"Генерация картинки"}
+      title={locale.tiptap.imageGeneration.title}
       withCloseButton={true}
       size={"lg"}
       styles={{ title: { fontSize: "var(--font-size-xl)" } }}
     >
       <Stack gap={"xl"} pos={"relative"} mx={"md"} mb={"md"}>
         <Stack>
-          <Text size="lg">Количество вариантов</Text>
+          <Text size="lg">{locale.tiptap.imageGeneration.amountLabel}</Text>
           <Slider
             restrictToMarks
             marks={Array.from({ length: 5 }).map((_, index) => ({
@@ -94,10 +108,10 @@ export const GenerateImageModal = ({
           />
         </Stack>
         <Stack>
-          <Text size="lg">{"Описание картинки"}</Text>
+          <Text size="lg">{locale.tiptap.imageGeneration.description}</Text>
           <Textarea
             size="lg"
-            placeholder={locale.tiptap.stylize.placeholder}
+            placeholder={locale.tiptap.imageGeneration.placeholder}
             minRows={3}
             maxRows={6}
             autosize
@@ -106,12 +120,13 @@ export const GenerateImageModal = ({
           />
         </Stack>
         <Button
+          disabled={desc.trim().length == 0}
           variant="outline"
           size="md"
           fullWidth
-          onClick={() => send(desc)}
+          onClick={() => send(desc.trim())}
         >
-          Сгенерировать
+          {locale.generate}
         </Button>
 
         {items.length > 0 && (
@@ -132,6 +147,8 @@ export const GenerateImageModal = ({
               color="green"
               fullWidth
               disabled={items.length == 0 || loading}
+              onClick={uploadImage}
+              loading={uploading}
             >
               {locale.tiptap.insert}
             </Button>

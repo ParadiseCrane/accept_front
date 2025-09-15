@@ -39,6 +39,7 @@ import { link } from "./link";
 const ru = {
   accept: "Accept",
   apply: "Применить",
+  generate: "Сгенерировать",
   loading: "Загрузка",
   download: "Скачать",
   name: "Название",

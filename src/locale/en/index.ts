@@ -39,6 +39,7 @@ import { link } from "./link";
 const en = {
   accept: "Accept",
   apply: "Apply",
+  generate: "Generate",
   loading: "Loading",
   name: "Title",
   save: "Save",

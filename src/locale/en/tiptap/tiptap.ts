@@ -43,4 +43,11 @@ export const tiptap = {
     label: "Apply style for current text",
     placeholder: "Describe the style",
   },
+  imageGeneration: {
+    title: "Image generation",
+    amountLabel: "Number of variants",
+    description: "Image description",
+    placeholder: "i.e., 'Illustration of a cat in the suit'",
+    variant: "Variant",
+  },
 };

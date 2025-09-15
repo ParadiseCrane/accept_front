@@ -1,11 +1,7 @@
 "use client";
 import { MathExtension } from "@aarkue/tiptap-math-extension";
 import { useLocale } from "@hooks/useLocale";
-import {
-  Link,
-  RichTextEditor,
-  RichTextEditorControlsGroup,
-} from "@mantine/tiptap";
+import { Link, RichTextEditor } from "@mantine/tiptap";
 import { Blockquote } from "@tiptap/extension-blockquote";
 import { Bold } from "@tiptap/extension-bold";
 import { BulletList } from "@tiptap/extension-bullet-list";
@@ -37,15 +33,13 @@ import js from "highlight.js/lib/languages/javascript";
 import python from "highlight.js/lib/languages/python";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
-import { all, createLowlight } from "lowlight";
+import { createLowlight } from "lowlight";
 import { ImageResize } from "tiptap-extension-resize-image";
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from "./Components/Align";
 import { ClearFormattingButton } from "./Components/ClearFormattingButton";
-// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from "./Components/ColorPickerButton";
 import { HighLightColorButton } from "./Components/HighlightColorButton";
-import { InsertGroupSeparate } from "./Components/InsertGroup";
 import { LinkButton, UnlinkButton } from "./Components/LinkButton";
 import { ToggleBlockquote } from "./Components/ToggleBlockquote";
 import { ToggleBold } from "./Components/ToggleBold";
@@ -65,19 +59,10 @@ import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
 import { StylizeText } from "./Components/StyleText";
+import { ToggleCodeBlock } from "./Components/ToggleCodeBlock";
+import { InsertLatexExpression } from "./Components/InsertLatex";
+import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
 import { GenerateImage } from "./Components/GenerateImage";
-
-export const imageInsertFunction = ({
-  src,
-  alt,
-  width,
-}: {
-  src: string;
-  alt: string;
-  width: string;
-}): string => {
-  return `<img src="${src}" alt="${alt}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${alt}" draggable="true" display="block">`;
-};
 
 export const TipTapEditor = ({
   editorMode,
@@ -203,11 +188,10 @@ export const TipTapEditor = ({
           </RichTextEditor.ControlsGroup>
           <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <InsertGroupSeparate
-              editor={editor}
-              className={styles.insert_group_separate}
-              languages={languages}
-            />
+            <ToggleCodeBlock editor={editor} languages={languages} />
+            <InsertLatexExpression editor={editor} />
+            <InsertImageAsFile editor={editor} />
+            <InsertImageAsUrl editor={editor} />
           </RichTextEditor.ControlsGroup>
           <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
@@ -250,7 +234,10 @@ export const TipTapEditor = ({
             <RedoButton editor={editor} />
           </RichTextEditor.ControlsGroup>
           <ToolbarDivider />
-          <StylizeText editor={editor} />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <StylizeText editor={editor} />
+            <GenerateImage editor={editor} />
+          </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
       <RichTextEditor.Content
