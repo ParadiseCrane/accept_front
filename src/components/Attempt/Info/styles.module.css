@@ -47,9 +47,10 @@
 }
 
 .tableWrapper {
-  white-space: pre-wrap;
+  white-space: nowrap;
   max-height: 60vh;
   overflow: scroll;
+  flex: 1;
 }
 
 .tableWrapper table thead {
