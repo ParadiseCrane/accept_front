@@ -51,11 +51,11 @@ const Results: FC<{
   );
 
   const { data, loading, refetch } = useRequest<
-    { toDate?: Date; group?: string },
+    { toDate?: Date; group_spec?: string },
     IActivityResults
   >(url, "POST", {
     toDate: innerToDate,
-    group: groupSpec,
+    group_spec: groupSpec,
   });
 
   useEffect(() => {
