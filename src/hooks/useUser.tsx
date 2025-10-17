@@ -22,6 +22,9 @@ import {
 const UserContext = createContext<IUserContext>(null!);
 
 export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const CHECK_INTERVAL = 1000;
+  const [token, setToken] = useState<string | null>(null);
+
   const whoAmI = useCallback(async () => {
     const cookie_user = getCookie("user");
     const cookie_accounts = getCookie("accounts");
@@ -206,8 +209,18 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }));
 
   useEffect(() => {
+    const id = setInterval(() => {
+      const newValue = getCookie("access_token");
+      if (newValue !== token) {
+        setToken(newValue ?? null);
+      }
+    }, CHECK_INTERVAL);
+    return () => clearInterval(id);
+  }, [token, CHECK_INTERVAL]);
+
+  useEffect(() => {
     refreshAccess();
-  }, [refreshAccess]);
+  }, [refreshAccess, token]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
