@@ -26,6 +26,7 @@ export interface ICourseAddEdit {
   description: string;
   kind: "course";
   image: string;
+  public: boolean;
   children: IBaseTreeUnit[];
 }
 
@@ -44,6 +45,7 @@ export interface ICourse {
   kind: "course";
   image: string;
   author: string;
+  public: boolean;
   children: IBaseTreeUnit[];
 }
 

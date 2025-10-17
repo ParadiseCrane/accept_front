@@ -17,6 +17,7 @@ const getInitialValuesAddCourse = ({
     kind: "course",
     image: "",
     children: [],
+    public: false,
   };
 };
 
@@ -26,12 +27,14 @@ const getInitialValuesEditCourse = ({
   children,
   image,
   kind,
+  is_public,
 }: {
   title: string;
   description: string;
   children: IBaseTreeUnit[];
   image: string;
   kind: "course";
+  is_public: boolean;
 }): ICourseAddEdit => {
   return {
     title,
@@ -39,6 +42,7 @@ const getInitialValuesEditCourse = ({
     kind,
     image,
     children,
+    public: is_public ?? false,
   };
 };
 
