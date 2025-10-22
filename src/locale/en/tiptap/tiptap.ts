@@ -35,7 +35,8 @@ export const tiptap = {
   defaultLanguage: "Default",
   language: "Language",
   chooseProgrammingLanguage: "Choose programming language",
-  chooseCalloutType: "Choose card type",
+  chooseCalloutType: "Choose callout type",
+  enterCalloutTitle: "Enter callout title (optional)",
   calloutDefaultContent: "Enter text",
   getCalloutTitleByType: (type: string) => {
     switch (type) {

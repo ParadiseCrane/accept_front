@@ -1,7 +1,7 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
-import { Modal, Select } from "@ui/basics";
+import { Modal, Select, TextInput } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { useState } from "react";
 
@@ -13,10 +13,12 @@ const insertCallout = ({
   editor,
   type,
   locale,
+  title,
 }: {
   editor: Editor;
   type: ComboboxItem | null;
   locale: ILocale;
+  title: string;
 }) => {
   editor
     ?.chain()
@@ -25,7 +27,9 @@ const insertCallout = ({
       type: "aside",
       attrs: {
         type: type?.value ?? "warning",
-        title: locale.tiptap.getCalloutTitleByType(type?.value ?? ""),
+        title: title.length
+          ? title
+          : locale.tiptap.getCalloutTitleByType(type?.value ?? "warning"),
       },
       content: [
         {
@@ -40,11 +44,6 @@ const insertCallout = ({
       ],
     })
     .run();
-  // if (type === null || type.label === defaultType) {
-  //   editor?.chain().setCodeBlock().run();
-  // } else {
-  //   editor?.chain().setCodeBlock({ language: type.value }).run();
-  // }
 };
 
 export const AddCalloutModal = ({
@@ -59,6 +58,7 @@ export const AddCalloutModal = ({
   editor: Editor;
 }) => {
   const [input, setInput] = useState<ComboboxItem | null>(null);
+  const [title, setTitle] = useState<string>("");
 
   const onClose = () => {
     close();
@@ -98,6 +98,11 @@ export const AddCalloutModal = ({
           onChange={(value: string | null) => setInputByString(value)}
           defaultValue={typesForSelect[0].value}
         />
+        <TextInput
+          placeholder={locale.tiptap.enterCalloutTitle}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
@@ -106,6 +111,7 @@ export const AddCalloutModal = ({
                 editor: editor,
                 type: input,
                 locale,
+                title,
               });
               onClose();
             },

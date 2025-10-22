@@ -23,25 +23,6 @@ export const AddCalloutButton = ({
       <RichTextEditor.Control
         onClick={() => {
           setShow(true);
-          // editor
-          //   ?.chain()
-          //   .focus()
-          //   .insertContent({
-          //     type: "aside",
-          //     attrs: {
-          //       type: locale.tiptap.calloutDefaultType,
-          //       title: locale.tiptap.calloutDefaultType,
-          //     },
-          //     content: [
-          //       {
-          //         type: "paragraph",
-          //         content: [
-          //           { type: "text", text: locale.tiptap.calloutDefaultContent },
-          //         ],
-          //       },
-          //     ],
-          //   })
-          //   .run();
         }}
         aria-label={locale.tiptap.callout}
         title={locale.tiptap.callout}

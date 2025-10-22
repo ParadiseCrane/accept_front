@@ -1,6 +1,6 @@
+"use client";
 import React from "react";
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
-import { useLocale } from "@hooks/useLocale";
 import {
   IconRocket,
   IconAlertTriangle,
@@ -29,9 +29,8 @@ interface CalloutProps {
 }
 
 export const Callout: React.FC<CalloutProps> = ({ node }) => {
-  const { locale } = useLocale();
-  const type = node.attrs.type ?? "warning";
-  const title = locale.tiptap.getCalloutTitleByType(type);
+  const type = node.attrs.type;
+  const title = node.attrs.title;
 
   return (
     <NodeViewWrapper
@@ -41,11 +40,6 @@ export const Callout: React.FC<CalloutProps> = ({ node }) => {
     >
       <p className={`${type} starlight-aside__title`} aria-hidden="true">
         {getIconByType(type)}
-        {/* <AlertTriangle
-          className="starlight-aside__icon"
-          width={16}
-          height={16}
-        /> */}
         {title}
       </p>
       <div className="starlight-aside__content">
