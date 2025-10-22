@@ -60,6 +60,8 @@ import { ToggleUnderline } from "./Components/ToggleUnderline";
 import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
+import { CalloutExtension } from "./Components/Callout/Extension";
+import { AddCalloutButton } from "./Components/AddCallout";
 
 export const imageInsertFunction = ({
   src,
@@ -99,18 +101,6 @@ export const TipTapEditor = ({
   lowlight.register("python", python);
   lowlight.register("csharp", csharp);
 
-  const testFunc = (a: string) => {
-    // text
-    lowlight.register("html", html);
-    lowlight.register("css", css);
-    lowlight.register("js", js);
-    lowlight.register("ts", ts);
-    lowlight.register("python", python);
-    lowlight.register("csharp", csharp);
-
-    return ``;
-  };
-
   const { locale } = useLocale();
 
   const languages = [
@@ -127,6 +117,25 @@ export const TipTapEditor = ({
     { nameAsString: "C#", name: "csharp", nameAsFn: csharp },
   ];
 
+  const calloutTypes = [
+    {
+      value: "warning",
+      label: locale.tiptap.getCalloutTitleByType("warning"),
+    },
+    {
+      value: "remark",
+      label: locale.tiptap.getCalloutTitleByType("remark"),
+    },
+    {
+      value: "tip",
+      label: locale.tiptap.getCalloutTitleByType("tip"),
+    },
+    {
+      value: "danger",
+      label: locale.tiptap.getCalloutTitleByType("danger"),
+    },
+  ];
+
   const registerLanguages = () => {
     for (let i = 1; i < languages.length; i++) {
       lowlight.register(languages[i].nameAsString, languages[i].nameAsFn!);
@@ -138,6 +147,7 @@ export const TipTapEditor = ({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
+      CalloutExtension,
       MathExtension.configure({ evaluation: false }),
       ImageResize,
       Blockquote,
@@ -216,6 +226,7 @@ export const TipTapEditor = ({
           </RichTextEditor.ControlsGroup>
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
             <ToolbarDivider />
+            <AddCalloutButton editor={editor} types={calloutTypes} />
             <ToggleBlockquote editor={editor} />
             <ToggleBulletList editor={editor} />
             <ToggleOrderedList editor={editor} />

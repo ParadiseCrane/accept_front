@@ -135,3 +135,53 @@
 .tiptap pre .hljs-strong {
   font-weight: 700;
 }
+
+.warning {
+  --sl-color-asides-text-accent: hsl(41, 80%, 25%);
+  --sl-color-asides-border: hsl(41, 90%, 60%);
+  background-color: hsl(41, 90%, 88%);
+}
+
+.tip {
+  --sl-color-asides-text-accent: hsl(281, 90%, 30%);
+  --sl-color-asides-border: hsl(281, 90%, 60%);
+  background-color: hsl(281, 80%, 90%);
+}
+
+.remark {
+  --sl-color-asides-text-accent: hsl(234, 80%, 30%);
+  --sl-color-asides-border: hsl(234, 90%, 60%);
+  background-color: hsl(234, 88%, 90%);
+}
+
+.danger {
+  --sl-color-asides-text-accent: hsl(339, 80%, 30%);
+  --sl-color-asides-border: hsl(339, 90%, 60%);
+  background-color: hsl(339, 80%, 90%);
+}
+
+.starlight-aside {
+  padding: 1rem;
+  border-inline-start: 0.25rem solid var(--sl-color-asides-border);
+  color: var(--sl-color-white);
+}
+
+.starlight-aside__icon {
+  font-size: 1.333em;
+  width: 1em;
+  height: 1em;
+}
+
+.starlight-aside__title {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: var(--sl-text-h5);
+  font-weight: 600;
+  line-height: var(--sl-line-height-headings);
+  color: var(--sl-color-asides-text-accent);
+}
+
+.starlight-aside__content {
+  margin-top: 0.5rem;
+}

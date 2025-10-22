@@ -3,10 +3,9 @@ import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
 import { Modal, Select } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
-import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import { useState } from "react";
 
-import styles from "./LatexModal.module.css";
+import styles from "./CodeBlockModal.module.css";
 import { ComboboxItem } from "@mantine/core";
 
 const insertCodeBlock = ({
@@ -63,7 +62,7 @@ export const CodeBlockModal = ({
 
   return (
     <Modal opened={isOpened} onClose={onClose} withCloseButton={false}>
-      <div className={styles.latex_modal_body}>
+      <div className={styles.codeblock_modal_body}>
         <span className={styles.title}>
           {locale.tiptap.chooseProgrammingLanguage}
         </span>
