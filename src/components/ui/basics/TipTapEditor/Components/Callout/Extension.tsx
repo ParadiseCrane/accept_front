@@ -1,16 +1,25 @@
-"use client";
-
-import { Node, mergeAttributes } from "@tiptap/core";
+import { Node, mergeAttributes, CommandProps } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import { Plugin, PluginKey } from "prosemirror-state";
+import { keymap } from "prosemirror-keymap";
+import { TextSelection } from "prosemirror-state";
 import { Callout } from "./Callout";
+
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    aside: {
+      exitAside: () => ReturnType;
+    };
+  }
+}
 
 export const CalloutExtension = Node.create({
   name: "aside",
 
-  group: "block",
+  group: "topLevel",
   content: "block+",
-  atom: false,
+  defining: true,
+  isolating: false,
+  selectable: true,
 
   addAttributes() {
     return {
@@ -20,11 +29,7 @@ export const CalloutExtension = Node.create({
   },
 
   parseHTML() {
-    return [
-      {
-        tag: "aside.starlight-aside",
-      },
-    ];
+    return [{ tag: "aside.starlight-aside" }];
   },
 
   renderHTML({ HTMLAttributes }) {
@@ -35,21 +40,42 @@ export const CalloutExtension = Node.create({
     return ReactNodeViewRenderer(Callout);
   },
 
-  addProseMirrorPlugins(): Plugin<any>[] {
-    return [
-      new Plugin({
-        key: new PluginKey("noNestedAside"),
-        filterTransaction: (tr) => {
-          let valid = true;
-          tr.doc.descendants((node, _pos, parent) => {
-            if (node.type.name === "aside" && parent?.type.name === "aside") {
-              valid = false;
-              return false;
-            }
-          });
-          return valid;
+  addCommands() {
+    return {
+      exitAside:
+        () =>
+        ({ state, dispatch }: CommandProps) => {
+          const { $from } = state.selection;
+          const parent = $from.node(-1);
+          if (parent.type.name !== this.name) return false;
+
+          const endPos = $from.end($from.depth - 1);
+
+          if (dispatch) {
+            const paragraph = state.schema.nodes.paragraph.create();
+            const tr = state.tr.insert(endPos, paragraph);
+            tr.setSelection(TextSelection.near(tr.doc.resolve(endPos + 1)));
+            dispatch(tr.scrollIntoView());
+          }
+          return true;
         },
-      }) as Plugin<any>,
-    ];
+    };
+  },
+});
+
+export const exitAsideOnEnter = keymap({
+  Enter: (state, dispatch, view) => {
+    const { $from } = state.selection;
+    const parent = $from.node(-1);
+    if (parent.type.name !== "aside") return false;
+    if ($from.pos < $from.end()) return false;
+
+    const paragraph = state.schema.nodes.paragraph.create();
+    const endPos = $from.end($from.depth - 1);
+    const tr = state.tr.insert(endPos, paragraph);
+    tr.setSelection(TextSelection.near(tr.doc.resolve(endPos + 1)));
+    dispatch?.(tr.scrollIntoView());
+    view?.focus();
+    return true;
   },
 });

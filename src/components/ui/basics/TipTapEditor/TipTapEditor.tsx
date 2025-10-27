@@ -1,4 +1,6 @@
 "use client";
+
+import { Node } from "@tiptap/core";
 import { MathExtension } from "@aarkue/tiptap-math-extension";
 import { useLocale } from "@hooks/useLocale";
 import { Link, RichTextEditor } from "@mantine/tiptap";
@@ -33,7 +35,7 @@ import js from "highlight.js/lib/languages/javascript";
 import python from "highlight.js/lib/languages/python";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
-import { all, createLowlight } from "lowlight";
+import { createLowlight } from "lowlight";
 import { ImageResize } from "tiptap-extension-resize-image";
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from "./Components/Align";
@@ -60,7 +62,10 @@ import { ToggleUnderline } from "./Components/ToggleUnderline";
 import { ToolbarDivider } from "./Components/ToolbarDivider";
 import { RedoButton, UndoButton } from "./Components/UndoRedo";
 import styles from "./TipTapEditor.module.css";
-import { CalloutExtension } from "./Components/Callout/Extension";
+import {
+  CalloutExtension,
+  exitAsideOnEnter,
+} from "./Components/Callout/Extension";
 import { AddCalloutButton } from "./Components/AddCallout";
 
 export const imageInsertFunction = ({
@@ -177,11 +182,19 @@ export const TipTapEditor = ({
       TextStyle,
       Underline,
       HardBreak,
+      Node.create({
+        name: "doc",
+        topNode: true,
+        content: "(block | topLevel)+",
+      }),
     ],
     content,
     editable: editorMode ? true : false,
     onUpdate: () => {
       onUpdate(editor!);
+    },
+    onCreate: () => {
+      editor?.registerPlugin(exitAsideOnEnter);
     },
     onBlur: onBlur,
   });
