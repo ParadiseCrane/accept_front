@@ -29,7 +29,10 @@ export const Callout = ({ node }: CalloutProps) => {
       className={`starlight-aside ${type}`}
       data-drag-handle
     >
-      <NodeViewContent as="div" className="starlight-aside__title-wrapper" />
+      <div className={`${type} callout_wrapper`}>
+        <div className={"starlight-aside__icon"}>{getIconByType(type)}</div>
+        <NodeViewContent as="div" className="starlight-aside__title-wrapper" />
+      </div>
     </NodeViewWrapper>
   );
 };

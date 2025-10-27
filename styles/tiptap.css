@@ -170,6 +170,8 @@
   font-size: 1.333em;
   width: 1em;
   height: 1em;
+  line-height: var(--sl-line-height-headings);
+  color: var(--sl-color-asides-text-accent);
 }
 
 .starlight-aside__title {
@@ -184,4 +186,10 @@
 
 .starlight-aside__content {
   margin-top: 0.5rem;
+}
+
+.callout_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
