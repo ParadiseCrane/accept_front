@@ -67,6 +67,7 @@ import {
   exitAsideOnEnter,
 } from "./Components/Callout/Extension";
 import { AddCalloutButton } from "./Components/AddCallout";
+import { CalloutTitle } from "./Components/Callout/CalloutTitle";
 
 export const imageInsertFunction = ({
   src,
@@ -153,6 +154,7 @@ export const TipTapEditor = ({
     immediatelyRender: false,
     extensions: [
       CalloutExtension,
+      CalloutTitle,
       MathExtension.configure({ evaluation: false }),
       ImageResize,
       Blockquote,

@@ -13,12 +13,10 @@ const insertCallout = ({
   editor,
   type,
   locale,
-  title,
 }: {
   editor: Editor;
   type: ComboboxItem | null;
   locale: ILocale;
-  title: string;
 }) => {
   editor
     ?.chain()
@@ -27,11 +25,19 @@ const insertCallout = ({
       type: "aside",
       attrs: {
         type: type?.value ?? "warning",
-        title: title.length
-          ? title
-          : locale.tiptap.getCalloutTitleByType(type?.value ?? "warning"),
       },
       content: [
+        {
+          type: "callout_title",
+          content: [
+            {
+              type: "text",
+              text: locale.tiptap.getCalloutTitleByType(
+                type?.value ?? "warning",
+              ),
+            },
+          ],
+        },
         {
           type: "paragraph",
           content: [
@@ -58,7 +64,6 @@ export const AddCalloutModal = ({
   editor: Editor;
 }) => {
   const [input, setInput] = useState<ComboboxItem | null>(null);
-  const [title, setTitle] = useState<string>("");
 
   const onClose = () => {
     close();
@@ -98,11 +103,6 @@ export const AddCalloutModal = ({
           onChange={(value: string | null) => setInputByString(value)}
           defaultValue={typesForSelect[0].value}
         />
-        <TextInput
-          placeholder={locale.tiptap.enterCalloutTitle}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
         <SimpleButtonGroup
           reversePositive={false}
           actionButton={{
@@ -111,7 +111,6 @@ export const AddCalloutModal = ({
                 editor: editor,
                 type: input,
                 locale,
-                title,
               });
               onClose();
             },

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { NodeViewWrapper, NodeViewContent } from "@tiptap/react";
 import {
   IconRocket,
@@ -9,42 +9,27 @@ import {
 } from "@tabler/icons-react";
 
 const getIconByType = (type: string) => {
-  if (type === "danger") {
-    return <IconAlertHexagon />;
-  }
-
-  if (type === "remark") {
-    return <IconAlertCircle />;
-  }
-
-  if (type === "tip") {
-    return <IconRocket />;
-  }
-
+  if (type === "danger") return <IconAlertHexagon />;
+  if (type === "remark") return <IconAlertCircle />;
+  if (type === "tip") return <IconRocket />;
   return <IconAlertTriangle />;
 };
 
 interface CalloutProps {
   node: any;
+  updateAttributes: (attrs: Record<string, any>) => void;
 }
 
-export const Callout: React.FC<CalloutProps> = ({ node }) => {
+export const Callout = ({ node }: CalloutProps) => {
   const type = node.attrs.type;
-  const title = node.attrs.title;
 
   return (
     <NodeViewWrapper
       as="aside"
-      className={`${type} starlight-aside`}
-      aria-label={title}
+      className={`starlight-aside ${type}`}
+      data-drag-handle
     >
-      <p className={`${type} starlight-aside__title`} aria-hidden="true">
-        {getIconByType(type)}
-        {title}
-      </p>
-      <div className="starlight-aside__content">
-        <NodeViewContent as="div" />
-      </div>
+      <NodeViewContent as="div" className="starlight-aside__title-wrapper" />
     </NodeViewWrapper>
   );
 };
