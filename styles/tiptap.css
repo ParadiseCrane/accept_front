@@ -184,6 +184,10 @@
   color: var(--sl-color-asides-text-accent);
 }
 
+.starlight-aside__title-wrapper {
+  width: 100%;
+}
+
 .starlight-aside__content {
   margin-top: 0.5rem;
 }

@@ -16,7 +16,8 @@ export const CalloutExtension = Node.create({
   name: "aside",
 
   group: "topLevel",
-  content: "callout_title block+",
+  content:
+    "callout_title (paragraph | image | bulletList | listItem | orderedList)+",
   defining: true,
   isolating: false,
 
@@ -56,6 +57,12 @@ export const CalloutExtension = Node.create({
           if (parent.type.name !== this.name) return false;
 
           if ($from.parentOffset > 0) return false;
+
+          const calloutNode = parent;
+          const firstChild = calloutNode.firstChild;
+          const currentNode = $from.node();
+
+          if (currentNode !== firstChild) return false;
 
           if (dispatch) {
             const start = $from.before($from.depth - 1);
