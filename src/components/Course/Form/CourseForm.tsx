@@ -21,7 +21,7 @@ const CourseForm: FC<{
   const form = useForm<ICourseAddEdit | IUnitAddEdit>({
     initialValues: initialValues,
   });
-  console.log("form.values", form.values);
+
   return (
     <Stack m={"xl"} className={styles.form}>
       <Group grow align="flex-start">

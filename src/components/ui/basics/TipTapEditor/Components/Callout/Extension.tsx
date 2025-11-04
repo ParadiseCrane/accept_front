@@ -52,17 +52,23 @@ export const CalloutExtension = Node.create({
       keymap({
         Backspace: (state, dispatch, view) => {
           const { $from } = state.selection;
-          const parent = $from.node(-1);
 
-          if (parent.type.name !== this.name) return false;
+          const asideNode = $from.node(-1);
+          if (!asideNode || asideNode.type.name !== this.name) return false;
 
           if ($from.parentOffset > 0) return false;
 
-          const calloutNode = parent;
-          const firstChild = calloutNode.firstChild;
           const currentNode = $from.node();
+          const calloutChildren = asideNode.content.content;
 
-          if (currentNode !== firstChild) return false;
+          const index = calloutChildren.findIndex(
+            (child) => child === currentNode,
+          );
+          if (index <= 0) return false;
+
+          const prevNode = calloutChildren[index - 1];
+
+          if (prevNode.type.name !== "callout_title") return false;
 
           if (dispatch) {
             const start = $from.before($from.depth - 1);
