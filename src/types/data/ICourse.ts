@@ -60,11 +60,11 @@ export interface IUnit {
 export interface ILesson extends Omit<IUnit, "kind"> {
   kind: "lesson";
   tasks: ITaskDisplay[];
-  allowedLanguages: ILanguage[];
-  forbiddenLanguages: ILanguage[];
 }
 
 export interface ILessonEditBundle {
+  allowedLanguages: ILanguage[];
+  forbiddenLanguages: ILanguage[];
   lesson: ILesson;
   tags: ITag[];
   assessment_types: IAssessmentType[];
@@ -76,6 +76,8 @@ export interface ILessonEditSend {
   description: string;
   tasks: string[];
   tags: string[];
+  allowedLanguages: string[];
+  forbiddenLanguages: string[];
 }
 
 export interface ICourseListItem {

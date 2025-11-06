@@ -16,15 +16,6 @@ import { useSearchParams } from "next/navigation";
 import styles from "./main.module.css";
 import { Contents } from "../Contents/Contents";
 
-// TODO mocked method
-const defaultLesson = (lesson: ILesson): ILesson => {
-  return {
-    ...lesson,
-    allowedLanguages: [],
-    forbiddenLanguages: [],
-  };
-};
-
 interface Props {
   units: IBaseTreeUnit[];
   courseSpec: string;
@@ -40,11 +31,7 @@ const Main: FC<Props> = ({ units, courseSpec, select }) => {
     if (spec && entity?.spec !== spec) {
       sendRequest<any, any>(`course/${spec}`, "GET", undefined, undefined).then(
         (res) => {
-          setEntity(
-            res.response.kind === "lesson"
-              ? defaultLesson(res.response)
-              : (res.response as ICourse | IUnit | ILesson),
-          );
+          setEntity(res.response as ICourse | IUnit | ILesson);
         },
       );
     }

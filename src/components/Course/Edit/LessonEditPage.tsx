@@ -16,8 +16,6 @@ import {
   newNotification,
 } from "@utils/notificationFunctions";
 import { useRouter } from "next/navigation";
-import { IAssessmentType } from "@custom-types/data/atomic";
-import { Item } from "@custom-types/ui/atomic";
 
 function LessonEditPage(props: { lesson: ILesson; depth: number }) {
   const { locale } = useLocale();
@@ -39,15 +37,16 @@ function LessonEditPage(props: { lesson: ILesson; depth: number }) {
         })),
         assessmentTypes: data.assessment_types,
         assessmentType: data.assessment_types[0].spec.toString(),
-        // TODO mocked method
-        // allowedLanguages: data.lesson.allowedLanguages.map((lang) => ({
-        //   value: lang.spec.toString(),
-        //   name: lang.name,
-        // })),
-        // forbiddenLanguages: data.lesson.forbiddenLanguages.map((lang) => ({
-        //   value: lang.spec.toString(),
-        //   name: lang.name,
-        // })),
+        allowedLanguages: data.allowedLanguages.map((lang) => ({
+          value: lang.spec.toString(),
+          name: lang.name,
+        })),
+        forbiddenLanguages: data.forbiddenLanguages.map((lang) => ({
+          value: lang.spec.toString(),
+          name: lang.name,
+        })),
+        shouldRestrictLanguages:
+          data.allowedLanguages.length || data.forbiddenLanguages.length,
       };
     }
   }, [data]);
@@ -72,6 +71,10 @@ function LessonEditPage(props: { lesson: ILesson; depth: number }) {
         description: form.values?.description ?? "",
         tasks: data.lesson.tasks.map((e) => e.spec),
         tags: form.values?.tags.map((e) => e.value) ?? [],
+        allowedLanguages:
+          form.values?.allowedLanguages.map((e) => e.value) ?? [],
+        forbiddenLanguages:
+          form.values?.forbiddenLanguages.map((e) => e.value) ?? [],
       };
 
       requestWithNotify<ILessonEditSend, string>(
