@@ -17,7 +17,7 @@ export const CalloutExtension = Node.create({
 
   group: "topLevel",
   content:
-    "callout_title (paragraph | image | bulletList | listItem | orderedList)+",
+    "callout_title (paragraph | image | bulletList | listItem | orderedList | codeBlock)+",
   defining: true,
   isolating: false,
 
