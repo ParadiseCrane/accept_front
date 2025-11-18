@@ -30,7 +30,15 @@ export const CalloutExtension = Node.create({
   },
 
   parseHTML() {
-    return [{ tag: "aside.starlight-aside" }];
+    return [
+      {
+        tag: "aside.starlight-aside",
+        priority: 1000,
+        getAttrs: (el) => ({
+          type: el.getAttribute("type") || "warning",
+        }),
+      },
+    ];
   },
 
   renderHTML({ node, HTMLAttributes }) {

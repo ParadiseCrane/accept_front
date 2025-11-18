@@ -9,7 +9,7 @@ export const CalloutTitle = Node.create({
   defining: true,
 
   parseHTML() {
-    return [{ tag: "p.starlight-aside__title" }];
+    return [{ tag: "p.starlight-aside__title", priority: 1000 }];
   },
 
   renderHTML() {
