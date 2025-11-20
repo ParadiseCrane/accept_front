@@ -56,4 +56,16 @@ export const tiptap = {
   close: "Закрыть",
   block: "В виде блока",
   inline: "Встроенный",
+  stylize: {
+    hint: "Стилизовать",
+    label: "Применить стиль к тексту",
+    placeholder: "Опишите стиль",
+  },
+  imageGeneration: {
+    title: "Генерация картинки",
+    amountLabel: "Количество вариантов",
+    description: "Описание картинки",
+    placeholder: "Например, 'Иллюстрация кота в костюме на белом фоне'",
+    variant: "Вариант",
+  },
 };

@@ -56,4 +56,16 @@ export const tiptap = {
   close: "Close",
   block: "Block",
   inline: "Inline",
+  stylize: {
+    hint: "Stylize text",
+    label: "Apply style for current text",
+    placeholder: "Describe the style",
+  },
+  imageGeneration: {
+    title: "Image generation",
+    amountLabel: "Number of variants",
+    description: "Image description",
+    placeholder: "i.e., 'Illustration of a cat in the suit'",
+    variant: "Variant",
+  },
 };

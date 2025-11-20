@@ -40,10 +40,8 @@ import { ImageResize } from "tiptap-extension-resize-image";
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from "./Components/Align";
 import { ClearFormattingButton } from "./Components/ClearFormattingButton";
-// import { IProgrammingLanguage } from '@custom-types/data/tiptap';
 import { ColorPickerButton } from "./Components/ColorPickerButton";
 import { HighLightColorButton } from "./Components/HighlightColorButton";
-import { InsertGroupSeparate } from "./Components/InsertGroup";
 import { LinkButton, UnlinkButton } from "./Components/LinkButton";
 import { ToggleBlockquote } from "./Components/ToggleBlockquote";
 import { ToggleBold } from "./Components/ToggleBold";
@@ -69,17 +67,11 @@ import {
 import { AddCalloutButton } from "./Components/AddCallout";
 import { CalloutTitle } from "./Components/Callout/CalloutTitle";
 
-export const imageInsertFunction = ({
-  src,
-  alt,
-  width,
-}: {
-  src: string;
-  alt: string;
-  width: string;
-}): string => {
-  return `<img src="${src}" alt="${alt}" style="width: ${width}; height: auto; cursor: pointer; display: block" title="${alt}" draggable="true" display="block">`;
-};
+import { StylizeText } from "./Components/StyleText";
+import { ToggleCodeBlock } from "./Components/ToggleCodeBlock";
+import { InsertLatexExpression } from "./Components/InsertLatex";
+import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
+import { GenerateImage } from "./Components/GenerateImage";
 
 export const TipTapEditor = ({
   editorMode,
@@ -220,16 +212,15 @@ export const TipTapEditor = ({
             <ColorPickerButton editor={editor} />
             <HighLightColorButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
-            <InsertGroupSeparate
-              editor={editor}
-              className={styles.insert_group_separate}
-              languages={languages}
-            />
+            <ToggleCodeBlock editor={editor} languages={languages} />
+            <InsertLatexExpression editor={editor} />
+            <InsertImageAsFile editor={editor} />
+            <InsertImageAsUrl editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <HeadingsGroupSeparate
               editor={editor}
               className={styles.headings_group_separate}
@@ -239,6 +230,7 @@ export const TipTapEditor = ({
               className={styles.headings_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
             <ToolbarDivider />
             <AddCalloutButton editor={editor} types={calloutTypes} />
@@ -248,13 +240,13 @@ export const TipTapEditor = ({
             <ToggleSubscript editor={editor} />
             <ToggleSuperscript editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <LinkButton editor={editor} />
             <UnlinkButton editor={editor} />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <AlignGroupSeparate
               editor={editor}
               className={styles.align_group_separate}
@@ -264,10 +256,15 @@ export const TipTapEditor = ({
               className={styles.align_group_collapsed}
             />
           </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
+          </RichTextEditor.ControlsGroup>
+          <ToolbarDivider />
+          <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
+            <StylizeText editor={editor} />
+            <GenerateImage editor={editor} />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
