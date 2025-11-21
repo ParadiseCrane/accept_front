@@ -38,7 +38,7 @@ export const tiptap = {
   chooseCalloutType: "Выберите тип выноски",
   enterCalloutTitle: "Введите заголовок выноски (опционально)",
   calloutDefaultContent: "Введите текст",
-  getCalloutTitleByType: (type: string) => {
+  getCalloutTitleByType: (type: string): string => {
     switch (type) {
       case "warning":
         return "Внимание";
