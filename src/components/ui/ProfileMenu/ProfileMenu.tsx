@@ -87,8 +87,8 @@ const ProfileMenu: FC<{ size: "md" | "lg" }> = ({ size }) => {
               toggleMenu(undefined);
             }}
             confirm={() => {
-              signOut();
               putOrganizationToLS({ value: user?.organization });
+              signOut();
             }}
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}

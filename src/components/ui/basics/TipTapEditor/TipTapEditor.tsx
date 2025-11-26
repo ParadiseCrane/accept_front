@@ -28,7 +28,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Underline } from "@tiptap/extension-underline";
 import { HardBreak } from "@tiptap/extension-hard-break";
-import { Editor, useEditor } from "@tiptap/react";
+import { Editor, useEditor, BubbleMenu } from "@tiptap/react";
 import csharp from "highlight.js/lib/languages/csharp";
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
@@ -37,6 +37,7 @@ import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { createLowlight } from "lowlight";
 import { ImageResize } from "tiptap-extension-resize-image";
+import BubbleMenuExtension from "@tiptap/extension-bubble-menu";
 
 import { AlignGroupCollapsed, AlignGroupSeparate } from "./Components/Align";
 import { ClearFormattingButton } from "./Components/ClearFormattingButton";
@@ -72,6 +73,9 @@ import { ToggleCodeBlock } from "./Components/ToggleCodeBlock";
 import { InsertLatexExpression } from "./Components/InsertLatex";
 import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
 import { GenerateImage } from "./Components/GenerateImage";
+import { BubbleMenuComponent } from "./Components/BubbleMenu";
+import { useTipTapEditable } from "@hooks/useTipTapEditable";
+import { useEffect } from "react";
 
 export const TipTapEditor = ({
   editorMode,
@@ -90,6 +94,8 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
+  const { isEditable } = useTipTapEditable();
+  const isTipTapEditable = editorMode && isEditable;
   const lowlight = createLowlight();
 
   lowlight.register("html", html);
@@ -152,6 +158,9 @@ export const TipTapEditor = ({
       Blockquote,
       Link,
       Bold,
+      BubbleMenuExtension.configure({
+        element: document.querySelector(".menu") as HTMLElement,
+      }),
       BulletList,
       Code,
       CodeBlockLowlight.configure({
@@ -183,7 +192,7 @@ export const TipTapEditor = ({
       }),
     ],
     content,
-    editable: editorMode ? true : false,
+    editable: editorMode,
     onUpdate: () => {
       onUpdate(editor!);
     },
@@ -192,6 +201,10 @@ export const TipTapEditor = ({
     },
     onBlur: onBlur,
   });
+
+  useEffect(() => {
+    editor?.setEditable(isTipTapEditable);
+  }, [isTipTapEditable]);
 
   const outlineClass = editorMode ? "outline-tiptap" : "";
 
@@ -268,6 +281,7 @@ export const TipTapEditor = ({
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
+      {editor && <BubbleMenuComponent editor={editor} />}
       <RichTextEditor.Content
         className={`${styles.content} ${outlineClass}`}
         style={{ minHeight: minHeight }}

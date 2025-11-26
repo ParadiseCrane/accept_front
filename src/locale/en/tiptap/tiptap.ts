@@ -60,6 +60,7 @@ export const tiptap = {
     hint: "Stylize text",
     label: "Apply style for current text",
     placeholder: "Describe the style",
+    error: "Text stylization error",
   },
   imageGeneration: {
     title: "Image generation",

@@ -7,7 +7,10 @@ import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
 import styles from "@styles/auth/login.module.css";
 import { Button, PasswordInput, Select, TextInput, Tip } from "@ui/basics";
-import { getOrganizationFromLS } from "@utils/manageLocalStorage";
+import {
+  getOrganizationFromLS,
+  putOrganizationToLS,
+} from "@utils/manageLocalStorage";
 import {
   errorNotification,
   newNotification,
@@ -81,6 +84,7 @@ const LoginForm: FC<{
 
   const handleSignIn = useCallback(
     (values: { organization: string; login: string; password: string }) => {
+      putOrganizationToLS({ value: values.organization });
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
