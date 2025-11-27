@@ -4,6 +4,9 @@ import { InputWrapper } from "@ui/basics";
 import { FC, ReactNode, memo } from "react";
 
 import { TipTapEditor } from "../TipTapEditor/TipTapEditor";
+import { Text } from "@mantine/core";
+import { ErrorBoundary } from "react-error-boundary";
+import { useLocale } from "@hooks/useLocale";
 
 const CustomEditor: FC<{
   name: string;
@@ -22,6 +25,7 @@ const CustomEditor: FC<{
   shrink,
   required,
 }) => {
+  const { locale } = useLocale();
   return (
     <div>
       <InputWrapper
@@ -31,19 +35,27 @@ const CustomEditor: FC<{
         required={required}
         {...form.getInputProps(name)}
       >
-        <TipTapEditor
-          editorMode={true}
-          content={form.values[name]}
-          form={form}
-          onUpdate={(editor: EditorType) => {
-            const data = editor.getHTML();
-            form.setFieldValue(name, data);
-          }}
-          onBlur={() => {
-            form.validateField(name);
-          }}
-          minHeight={editorMinHeight}
-        />
+        <ErrorBoundary
+          fallback={
+            <Text ta="center" size="xl">
+              {locale.tiptap.error}
+            </Text>
+          }
+        >
+          <TipTapEditor
+            editorMode={true}
+            content={form.values[name]}
+            form={form}
+            onUpdate={(editor: EditorType) => {
+              const data = editor.getHTML();
+              form.setFieldValue(name, data);
+            }}
+            onBlur={() => {
+              form.validateField(name);
+            }}
+            minHeight={editorMinHeight}
+          />
+        </ErrorBoundary>
       </InputWrapper>
     </div>
   );

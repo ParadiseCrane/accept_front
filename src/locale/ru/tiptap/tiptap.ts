@@ -1,4 +1,5 @@
 export const tiptap = {
+  error: "Произошла ошибка во время работы редактора",
   bold: "Жирный",
   italic: "Курсив",
   underline: "Подчеркнутый",
@@ -59,8 +60,11 @@ export const tiptap = {
   stylize: {
     hint: "Стилизовать",
     label: "Применить стиль к тексту",
+    labelSelected: "Применить стиль к выделенному тексту",
     placeholder: "Опишите стиль",
     error: "Ошибка стилизации текста",
+    success: "Текст стилизован",
+    inProgress: "Стилизуем текст",
   },
   imageGeneration: {
     title: "Генерация картинки",

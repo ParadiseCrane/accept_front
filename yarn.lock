@@ -10,6 +10,11 @@
     evaluatex "^2.2.0"
     katex "^0.16.7"
 
+"@babel/runtime@^7.12.5":
+  version "7.28.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
+  integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
+
 "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.7", "@babel/runtime@^7.20.13", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.27.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
@@ -4275,6 +4280,13 @@ react-dropzone-esm@15.2.0:
   integrity sha512-pPwR8xWVL+tFLnbAb8KVH5f6Vtl397tck8dINkZ1cPMxHWH+l9dFmIgRWgbh7V7jbjIcuKXCsVrXbhQz68+dVA==
   dependencies:
     prop-types "^15.8.1"
+
+react-error-boundary@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-6.0.0.tgz#a9e552146958fa77d873b587aa6a5e97544ee954"
+  integrity sha512-gdlJjD7NWr0IfkPlaREN2d9uUZUlksrfOx7SX62VRerwXbMY6ftGCIZua1VG1aXFNOimhISsTq+Owp725b9SiA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

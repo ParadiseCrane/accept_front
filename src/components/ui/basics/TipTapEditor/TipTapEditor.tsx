@@ -74,7 +74,7 @@ import { InsertLatexExpression } from "./Components/InsertLatex";
 import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
 import { GenerateImage } from "./Components/GenerateImage";
 import { BubbleMenuComponent } from "./Components/BubbleMenu";
-import { useTipTapEditable } from "@hooks/useTipTapEditable";
+import { useTipTapBubbleMenu } from "@hooks/useTipTapBubbleMenu";
 import { useEffect } from "react";
 
 export const TipTapEditor = ({
@@ -94,7 +94,7 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
-  const { isEditable } = useTipTapEditable();
+  const { isEditable } = useTipTapBubbleMenu();
   const isTipTapEditable = editorMode && isEditable;
   const lowlight = createLowlight();
 
@@ -210,7 +210,7 @@ export const TipTapEditor = ({
 
   return (
     <RichTextEditor editor={editor}>
-      {editorMode && editor && (
+      {editorMode && editor && isEditable && (
         <RichTextEditor.Toolbar
           sticky={true}
           stickyOffset={60}

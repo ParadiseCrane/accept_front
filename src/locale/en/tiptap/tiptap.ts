@@ -1,4 +1,5 @@
 export const tiptap = {
+  error: "An error occurred inside the editor",
   bold: "Toggle bold",
   italic: "Toggle italic",
   underline: "Toggle underline",
@@ -59,8 +60,11 @@ export const tiptap = {
   stylize: {
     hint: "Stylize text",
     label: "Apply style for current text",
+    labelSelected: "Apply style for selected text",
     placeholder: "Describe the style",
     error: "Text stylization error",
+    success: "Text stylized",
+    inProgress: "Stylizing text",
   },
   imageGeneration: {
     title: "Image generation",
