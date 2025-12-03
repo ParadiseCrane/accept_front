@@ -42,19 +42,21 @@ const CustomEditor: FC<{
             </Text>
           }
         >
-          <TipTapEditor
-            editorMode={true}
-            content={form.values[name]}
-            form={form}
-            onUpdate={(editor: EditorType) => {
-              const data = editor.getHTML();
-              form.setFieldValue(name, data);
-            }}
-            onBlur={() => {
-              form.validateField(name);
-            }}
-            minHeight={editorMinHeight}
-          />
+          <div style={{ position: "relative" }}>
+            <TipTapEditor
+              editorMode={true}
+              content={form.values[name]}
+              form={form}
+              onUpdate={(editor: EditorType) => {
+                const data = editor.getHTML();
+                form.setFieldValue(name, data);
+              }}
+              onBlur={() => {
+                form.validateField(name);
+              }}
+              minHeight={editorMinHeight}
+            />
+          </div>
         </ErrorBoundary>
       </InputWrapper>
     </div>

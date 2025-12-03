@@ -99,7 +99,6 @@ export const TipTapBubbleMenuProvider = ({
       style: string;
       selectedText: string;
     }): Promise<string> => {
-      setModalVisible(false);
       setIsEditable(false);
       let value = "";
       const id = newNotification({
@@ -130,13 +129,12 @@ export const TipTapBubbleMenuProvider = ({
         });
       } finally {
         setIsEditable(true);
+        setModalVisible(false);
         return value;
       }
     },
     [setModalVisible, setIsEditable],
   );
-
-  console.log("hook state", { isEditable, isModalVisible, selectedRange });
 
   return (
     <TipTapBubbleMenuContext.Provider

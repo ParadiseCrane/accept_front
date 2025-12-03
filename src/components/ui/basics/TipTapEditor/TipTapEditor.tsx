@@ -76,6 +76,7 @@ import { GenerateImage } from "./Components/GenerateImage";
 import { BubbleMenuComponent } from "./Components/BubbleMenu";
 import { useTipTapBubbleMenu } from "@hooks/useTipTapBubbleMenu";
 import { useEffect } from "react";
+import { StylizeTextModal } from "./Components/Modals/StylizeTextModal";
 
 export const TipTapEditor = ({
   editorMode,
@@ -94,7 +95,7 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
-  const { isEditable } = useTipTapBubbleMenu();
+  const { isEditable, isModalVisible } = useTipTapBubbleMenu();
   const isTipTapEditable = editorMode && isEditable;
   const lowlight = createLowlight();
 
@@ -210,7 +211,8 @@ export const TipTapEditor = ({
 
   return (
     <RichTextEditor editor={editor}>
-      {editorMode && editor && isEditable && (
+      {editor && <StylizeTextModal editor={editor} />}
+      {editorMode && editor && (
         <RichTextEditor.Toolbar
           sticky={true}
           stickyOffset={60}
