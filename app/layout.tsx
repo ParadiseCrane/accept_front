@@ -20,6 +20,7 @@ import React from "react";
 import { theme } from "@constants/Theme";
 import { Metadata } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
+import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 
 export const metadata: Metadata = {
   title: "Accept",
@@ -56,15 +57,17 @@ export default function RootLayout({
             <WidthProvider>
               <LocaleProvider>
                 <UserProvider>
-                  <Notifications
-                    position="bottom-left"
-                    zIndex={9999}
-                    limit={5}
-                    autoClose={40000}
-                  />
-                  <BackNotificationsProvider>
-                    {children}
-                  </BackNotificationsProvider>
+                  <TipTapBubbleMenuProvider>
+                    <Notifications
+                      position="bottom-left"
+                      zIndex={9999}
+                      limit={5}
+                      autoClose={40000}
+                    />
+                    <BackNotificationsProvider>
+                      {children}
+                    </BackNotificationsProvider>
+                  </TipTapBubbleMenuProvider>
                 </UserProvider>
               </LocaleProvider>
             </WidthProvider>

@@ -1,6 +1,5 @@
 import { ICourse } from "@custom-types/data/ICourse";
 import { CourseProvider } from "@hooks/useCourse";
-import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import { fetchWrapperStaticApp } from "@utils/fetchWrapperServer";
 import { Metadata, ResolvingMetadata } from "next";
 import { cache, FC, ReactNode } from "react";
@@ -88,11 +87,9 @@ const Layout: FC<{
   const spec = (await params).course;
   const data = await getCourseData(spec);
   return (
-    <TipTapBubbleMenuProvider>
-      <CourseProvider spec={spec} initialData={data}>
-        {children}
-      </CourseProvider>
-    </TipTapBubbleMenuProvider>
+    <CourseProvider spec={spec} initialData={data}>
+      {children}
+    </CourseProvider>
   );
 };
 

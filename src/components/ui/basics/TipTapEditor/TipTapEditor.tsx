@@ -159,9 +159,6 @@ export const TipTapEditor = ({
       Blockquote,
       Link,
       Bold,
-      BubbleMenuExtension.configure({
-        element: document.querySelector(".menu") as HTMLElement,
-      }),
       BulletList,
       Code,
       CodeBlockLowlight.configure({
@@ -205,6 +202,11 @@ export const TipTapEditor = ({
 
   useEffect(() => {
     editor?.setEditable(isTipTapEditable);
+    editor?.extensionManager.extensions.push(
+      BubbleMenuExtension.configure({
+        element: document.querySelector(".menu") as HTMLElement,
+      }),
+    );
   }, [isTipTapEditable]);
 
   const outlineClass = editorMode ? "outline-tiptap" : "";
