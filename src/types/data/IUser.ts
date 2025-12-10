@@ -1,7 +1,7 @@
-import { pureCallback } from '../ui/atomic';
-import { IRole } from './atomic';
-import { IGroup } from './IGroup';
-import { ITeamBaseInfo } from './ITeam';
+import { pureCallback } from "../ui/atomic";
+import { IRole } from "./atomic";
+import { IGroup } from "./IGroup";
+import { ITeamBaseInfo } from "./ITeam";
 
 export interface Role {
   spec: number;
@@ -38,8 +38,8 @@ export interface IUserContext {
   isStudent: boolean;
   isTeacher: boolean;
   isAdmin: boolean;
-  signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
-  signOut: pureCallback<Promise<Boolean>>;
+  signIn: (_: string, __: string, ___: string) => Promise<boolean>;
+  signOut: pureCallback<Promise<boolean>>;
   refresh: pureCallback<Promise<void>>;
   refreshAccess: pureCallback<number>;
 }

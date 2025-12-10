@@ -16,7 +16,7 @@ const mapActivityToPlotData = (activity: IActivityData[]): IPlotData[] => {
     }))
     .sort((a, b) => a.date - b.date);
 
-  let full_activity = new Array();
+  let full_activity = [];
 
   full_activity.push(sorted_activity[0]);
   for (let i = 1; i < sorted_activity.length; i++) {

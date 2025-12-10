@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 import { RefObject, useEffect, useRef } from 'react';
 
 function useEventListener<K extends keyof WindowEventMap>(
