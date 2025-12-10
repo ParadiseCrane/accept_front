@@ -1,5 +1,1 @@
-npx pretty-quick --staged
-# npx eslint . --fix
-yarn lint --fix
-git add .
-yarn tsc
+npx lint-staged
