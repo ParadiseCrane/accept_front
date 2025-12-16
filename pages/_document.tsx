@@ -1,12 +1,12 @@
 // import { ServerStyles, createStylesServer } from '@mantine/next';
-import { ColorSchemeScript } from '@mantine/core';
+import { ColorSchemeScript } from "@mantine/core";
 import Document, {
   DocumentContext,
   Head,
   Html,
   Main,
   NextScript,
-} from 'next/document';
+} from "next/document";
 
 // const stylesServer = createStylesServer();
 
@@ -29,6 +29,7 @@ class MyDocument extends Document {
     return (
       <Html lang="ru" suppressHydrationWarning>
         <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link

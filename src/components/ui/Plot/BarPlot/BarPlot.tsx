@@ -33,6 +33,7 @@ const BarPlot: FC<{
   );
 
   const padding = (300 / (data.length + 1)) * PADDING;
+  // тут можно изменить ширину
   const width = (300 - padding * (data.length + 1)) / data.length;
   const height = 300 * aspectRatio;
 

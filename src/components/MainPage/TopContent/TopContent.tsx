@@ -1,10 +1,10 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
-import Image from "next/legacy/image";
 import packageInfo from "package.json";
 import { FC, memo } from "react";
 
 import styles from "./topContent.module.css";
+import Image from "next/image";
 
 const version = packageInfo.version;
 

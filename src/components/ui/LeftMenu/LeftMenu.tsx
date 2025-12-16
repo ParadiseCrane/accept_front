@@ -1,6 +1,6 @@
 "use client";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
-import { Box, NavLink } from "@mantine/core";
+import { Box, NavLink, Tabs } from "@mantine/core";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FC, ReactNode, memo, useCallback, useEffect, useState } from "react";
 import styles from "./leftMenu.module.css";
@@ -13,9 +13,11 @@ const LeftMenu: FC<{
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [initialLoad, setInitialLoad] = useState(true);
-
   const currentSection = searchParams?.get("section");
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [sectionState, setSectionState] = useState<string | null>(
+    () => currentSection ?? null,
+  );
 
   const displayPage = useCallback(() => {
     if (currentSection) {
@@ -47,24 +49,53 @@ const LeftMenu: FC<{
     }
   }, [changeParams, currentSection, initialLoad, links]);
 
+  useEffect(() => {
+    setSectionState((prev) => {
+      if (currentSection && currentSection !== prev) {
+        return currentSection;
+      }
+      return prev;
+    });
+  }, [currentSection]);
+
   return (
-    <div className={styles.wrapper}>
-      <Box p="xs" w={300}>
-        {topContent && <>{topContent}</>}
-        <>
-          {links.map((element, idx) => (
-            <NavLink
-              key={idx}
-              active={element.section === currentSection}
-              onClick={() => changeParams(links[idx].section!)}
-              label={element.title}
-              leftSection={element.icon}
-            />
-          ))}
-        </>
-      </Box>
-      <div className={styles.pageWrapper}>{displayPage()}</div>
-    </div>
+    <>
+      <div className={styles.tabletWrapper}>
+        <Tabs value={currentSection}>
+          <Tabs.List grow justify="center">
+            {links.map((e, idx) => {
+              return (
+                <Tabs.Tab value={e.section ?? ""} key={idx}>
+                  <NavLink
+                    onClick={() => changeParams(links[idx].section!)}
+                    label={e.title}
+                    leftSection={e.icon}
+                  />
+                </Tabs.Tab>
+              );
+            })}
+          </Tabs.List>
+        </Tabs>
+        <div className={styles.pageWrapper}>{displayPage()}</div>
+      </div>
+      <div className={styles.wrapper}>
+        <Box p="xs" w={300}>
+          {topContent && <>{topContent}</>}
+          <>
+            {links.map((element, idx) => (
+              <NavLink
+                key={idx}
+                active={element.section === sectionState}
+                onClick={() => changeParams(links[idx].section!)}
+                label={element.title}
+                leftSection={element.icon}
+              />
+            ))}
+          </>
+        </Box>
+        <div className={styles.pageWrapper}>{displayPage()}</div>
+      </div>
+    </>
   );
 };
 
