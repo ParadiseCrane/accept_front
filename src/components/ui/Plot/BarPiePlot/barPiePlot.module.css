@@ -23,7 +23,7 @@
 
 .barWrapper {
   width: 65.5%;
-  min-width: 500px;
+  min-width: 320px;
 }
 
 .pieWrapper {
@@ -39,5 +39,18 @@
   .wrapper {
     gap: var(--spacer-s);
     margin: 0 auto;
+  }
+
+  .barWrapper {
+    width: 100%;
+  }
+
+  .pieWrapper {
+    width: 30%;
+    min-width: 250px;
+  }
+
+  .plots {
+    justify-content: center;
   }
 }
