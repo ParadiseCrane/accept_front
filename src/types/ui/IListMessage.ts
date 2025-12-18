@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
-import { callback, setter } from './atomic';
+import { ReactNode } from "react";
+
+import { callback, setter } from "./atomic";
 
 export interface IListMessage {
   spec: string;

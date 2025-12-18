@@ -1,13 +1,15 @@
-import { FC, forwardRef, memo, useMemo } from 'react';
-import styles from './assignmentSchemaSelector.module.css';
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { Select } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
-import { Eye } from 'tabler-icons-react';
-import { ActionIcon } from '@mantine/core';
-import Link from 'next/link';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon } from "@mantine/core";
+import { Select } from "@ui/basics";
+import Link from "next/link";
+import { ComponentPropsWithoutRef, FC, forwardRef, memo, useMemo } from "react";
+import { IconEye } from "@tabler/icons-react";
 
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+import styles from "./assignmentSchemaSelector.module.css";
+
+interface ItemProps extends ComponentPropsWithoutRef<"div"> {
   value: string;
   label: string;
 }
@@ -21,7 +23,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
       <div className={styles.itemIcon}>
         <Link href={`/assignment_schema/${value}`}>
           <ActionIcon size="md">
-            <Eye color={'var(--primary)'} />
+            <IconEye color={"var(--primary)"} />
           </ActionIcon>
         </Link>
       </div>
@@ -29,7 +31,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   )
 );
 
-SelectItem.displayName = 'AssignmentSchemaSelectItem';
+SelectItem.displayName = "AssignmentSchemaSelectItem";
 
 const AssignmentSchemaSelector: FC<{
   form: any;

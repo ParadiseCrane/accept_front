@@ -1,7 +1,8 @@
-import { ReactElement } from 'react';
-import { LoginLayout } from '@layouts/LoginLayout';
-import { useUser } from '@hooks/useUser';
-import LoginForm from '@components/Auth/LoginForm';
+"use client";
+import LoginForm from "@components/Auth/LoginForm";
+import { useUser } from "@hooks/useUser";
+import { LoginLayout } from "@layouts/LoginLayout";
+import { ReactElement } from "react";
 
 function SignIn() {
   const { signIn } = useUser();
@@ -10,6 +11,6 @@ function SignIn() {
 }
 
 SignIn.getLayout = (page: ReactElement) => {
-  return <LoginLayout title={'login'}>{page}</LoginLayout>;
+  return <LoginLayout title={"login"}>{page}</LoginLayout>;
 };
 export default SignIn;

@@ -1,15 +1,17 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
-import styles from '../registrationButton.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { Helper } from '@ui/basics';
-import { AlertCircle } from 'tabler-icons-react';
-import { pureCallback } from '@custom-types/ui/atomic';
-import RegistrationModal from './RegistrationModal/RegistrationModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useUser } from '@hooks/useUser';
+"use client";
+import { ITournamentRegisterPayload } from "@custom-types/data/ITournament";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Helper } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback, useMemo, useState } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
+
+import styles from "../registrationButton.module.css";
+import RegistrationModal from "./RegistrationModal/RegistrationModal";
 
 const Register: FC<{
   spec: string;
@@ -36,10 +38,10 @@ const Register: FC<{
     (payload: ITournamentRegisterPayload) => {
       requestWithNotify<ITournamentRegisterPayload, boolean>(
         `tournament/register/${spec}`,
-        'POST',
+        "POST",
         locale.notify.tournament.registration,
         lang,
-        () => '',
+        () => "",
         payload,
         () => {
           location.reload();
@@ -77,22 +79,16 @@ const Register: FC<{
         ) : (
           <Link
             className={styles.register}
-            href={`/signin?referrer=${encodeURIComponent(
-              router.asPath
-            )}`}
+            href={`/signin?referrer=${encodeURIComponent(router.asPath)}`}
           >
             {locale.tournament.register}
           </Link>
         )}
-        <Helper
-          dropdownContent={locale.helpers.tournament.registration}
-        />
+        <Helper dropdownContent={locale.helpers.tournament.registration} />
         {!allowRegistrationAfterStart && (
           <Helper
-            dropdownContent={
-              locale.helpers.tournament.registrationWarning
-            }
-            customIcon={<AlertCircle color={'var(--negative)'} />}
+            dropdownContent={locale.helpers.tournament.registrationWarning}
+            customIcon={<IconAlertCircle color={"var(--negative)"} />}
           />
         )}
       </div>

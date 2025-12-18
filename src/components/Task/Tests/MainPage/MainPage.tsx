@@ -1,15 +1,17 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { IChecker } from '@custom-types/data/ITask';
-import { setter } from '@custom-types/ui/atomic';
-import GroupContent from './GroupContent/GroupContent';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { useLocale } from '@hooks/useLocale';
-import DeleteGroup from './DeleteGroup/DeleteGroup';
-import styles from './mainPage.module.css';
-import { Button } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
+"use client";
+import { ITaskCheckType, ITaskType } from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
+
+import DeleteGroup from "./DeleteGroup/DeleteGroup";
+import GroupContent from "./GroupContent/GroupContent";
+import styles from "./mainPage.module.css";
 
 const MainPage: FC<{
   task_spec: string;
@@ -19,6 +21,7 @@ const MainPage: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   task_spec,
   refetch,
@@ -27,6 +30,7 @@ const MainPage: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale, lang } = useLocale();
   const group_last_elements = useMemo(
@@ -41,10 +45,10 @@ const MainPage: FC<{
   const addGroup = useCallback(() => {
     requestWithNotify<undefined, boolean>(
       `test_group/${task_spec}`,
-      'POST',
+      "POST",
       locale.notify.test_group.post,
       lang,
-      () => '',
+      () => "",
       undefined,
       (response) => {
         if (response) {
@@ -60,12 +64,14 @@ const MainPage: FC<{
         {grouped_tests.map((tests, index) => (
           <div key={index} className={styles.groupWrapper}>
             <div className={styles.groupLabelWrapper}>
-              {`${locale.task.tests.group.label} #${index + 1}`}{' '}
-              <DeleteGroup
-                task_spec={task_spec}
-                index={index}
-                refetch={refetch}
-              />
+              {`${locale.task.tests.group.label} #${index + 1}`}{" "}
+              {hasWriteRights && (
+                <DeleteGroup
+                  task_spec={task_spec}
+                  index={index}
+                  refetch={refetch}
+                />
+              )}
             </div>
             <GroupContent
               group_index={index}
@@ -77,23 +83,25 @@ const MainPage: FC<{
               taskType={taskType}
               checkType={checkType}
               checker={checker}
+              hasWriteRights={hasWriteRights}
             />
           </div>
         ))}
       </div>
-      <Button
-        variant="outline"
-        kind="positive"
-        onClick={addGroup}
-        fullWidth
-        disabled={
-          grouped_tests.length == 0 ||
-          grouped_tests.at(-1)?.length == 0
-        }
-        dropdownContent={locale.helpers.taskTest.group.add}
-      >
-        {locale.task.tests.group.add}
-      </Button>
+      {hasWriteRights && (
+        <Button
+          variant="outline"
+          kind="positive"
+          onClick={addGroup}
+          fullWidth
+          disabled={
+            grouped_tests.length == 0 || grouped_tests.at(-1)?.length == 0
+          }
+          dropdownContent={locale.helpers.taskTest.group.add}
+        >
+          {locale.task.tests.group.add}
+        </Button>
+      )}
     </div>
   );
 };

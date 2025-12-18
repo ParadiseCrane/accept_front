@@ -1,9 +1,12 @@
-import { FC, memo } from 'react';
-import { CustomDraggableList } from '@ui/CustomDraggableList/CustomDraggableList';
-import { useLocale } from '@hooks/useLocale';
-import styles from './taskOrdering.module.css';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { ITaskDisplay } from '@custom-types/data/ITask';
+"use client";
+import { ITaskBaseInfo } from "@custom-types/data/ITask";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { CustomDraggableList } from "@ui/CustomDraggableList/CustomDraggableList";
+import { FC, memo } from "react";
+
+import styles from "./taskOrdering.module.css";
+import { Item } from "@custom-types/ui/atomic";
 
 const TaskOrdering: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -19,14 +22,14 @@ const TaskOrdering: FC<{ form: any }> = ({ form }) => {
           </div>
           <CustomDraggableList
             values={
-              form.values.tasks.map((task: ITaskDisplay) => ({
+              form.values.tasks.map((task: ITaskBaseInfo) => ({
                 label: task.title,
                 value: task,
-              })) || []
+              })) || ([] as Item[])
             }
-            setValues={(values) =>
+            setValues={(values: Item[]) =>
               form.setFieldValue(
-                'tasks',
+                "tasks",
                 values.map((value) => value.value)
               )
             }

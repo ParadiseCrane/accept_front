@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { env } from 'process';
-import { createTokenCookie } from '@utils/createTokenCookie';
-import { getCookieValue } from '@utils/cookies';
+import { getCookieValue } from "@utils/cookies";
+import { createTokenCookie } from "@utils/createTokenCookie";
+import { NextApiRequest, NextApiResponse } from "next";
+import { env } from "process";
 
-const url = env.API_ENDPOINT + '/api/login';
+const url = env.API_ENDPOINT + "/api/login";
 
 export default async function signIn(
   req: NextApiRequest,
@@ -21,52 +21,45 @@ export default async function signIn(
 
   try {
     const headers = {
-      cookie: req.headers.cookie || '',
+      cookie: req.headers.cookie || "",
     };
 
-    const session_id = getCookieValue(
-      req.headers.cookie || '',
-      'session_id'
-    );
+    const session_id = getCookieValue(req.headers.cookie || "", "session_id");
 
     let data = new FormData();
 
-    data.append('client_id', req.body.organization);
-    data.append('username', req.body.login);
-    data.append('password', req.body.password);
-    if (session_id) data.append('client_secret', session_id);
+    data.append("client_id", req.body.organization);
+    data.append("username", req.body.login);
+    data.append("password", req.body.password);
+    if (session_id) data.append("client_secret", session_id);
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: headers as { [key: string]: string },
       body: data,
     });
     if (response.status === 200) {
       const data = await response.json();
-      res.setHeader('Set-Cookie', [
+      res.setHeader("Set-Cookie", [
         createTokenCookie(
-          'access_token',
-          data['access_token'],
-          new Date(data['access_token_expires'])
+          "access_token",
+          data["access_token"],
+          new Date(data["access_token_expires"])
         ),
         createTokenCookie(
-          'refresh_token',
-          data['refresh_token'],
-          new Date(data['refresh_token_expires'])
+          "refresh_token",
+          data["refresh_token"],
+          new Date(data["refresh_token_expires"])
         ),
-        createTokenCookie(
-          'session_id',
-          data['session_id'],
-          undefined
-        ),
+        createTokenCookie("session_id", data["session_id"], undefined),
       ]);
-      return res.status(200).send('Success');
+      return res.status(200).send("Success");
     }
-    return res.status(401).send('error');
+    return res.status(401).send("error");
   } catch (e) {
     console.error(e);
 
-    if (e instanceof TypeError) return res.status(400).send('Error');
-    res.status(400).send('Error');
+    if (e instanceof TypeError) return res.status(400).send("Error");
+    res.status(400).send("Error");
   }
 }

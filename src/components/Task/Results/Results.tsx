@@ -1,21 +1,20 @@
-import { FC, memo, useMemo } from 'react';
-import { ITableColumn } from '@custom-types/ui/ITable';
-
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { getLocalDate } from '@utils/datetime';
-
-import tableStyles from '@styles/ui/customTable.module.css';
-
-import AttemptList from '@ui/AttemptList/AttemptList';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
-import Link from 'next/link';
+"use client";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import tableStyles from "@styles/ui/customTable.module.css";
+import AttemptList from "@ui/AttemptList/AttemptList";
+import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
+import { getLocalDate } from "@utils/datetime";
+import Link from "next/link";
+import { FC, memo, useMemo } from "react";
 
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
   result: {
     display: (
       <VerdictWrapper
+        key={attempt.spec}
         status={attempt.status}
         verdict={attempt.verdict?.verdict}
         test={attempt.verdict?.test}
@@ -31,10 +30,7 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   date: {
     display: (
-      <Link
-        className={tableStyles.link}
-        href={`/attempt/${attempt.spec}`}
-      >
+      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -49,14 +45,10 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.attempt.date,
-    key: 'date',
+    key: "date",
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.date.value > b.date.value
-        ? -1
-        : a.date.value == b.date.value
-        ? 0
-        : 1,
+      a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
     sorted: -1,
     allowMiddleState: false,
     hidable: false,
@@ -65,7 +57,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.language,
-    key: 'language',
+    key: "language",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -76,7 +68,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.result,
-    key: 'result',
+    key: "result",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -98,7 +90,7 @@ const Results: FC<{ spec: string; activeTab: string }> = ({
       url={url}
       initialColumns={initialColumns}
       refactorAttempt={refactorAttempt}
-      activeTab={activeTab === 'results'}
+      activeTab={activeTab === "results"}
     />
   );
 };

@@ -1,0 +1,76 @@
+export const tiptap = {
+  error: "An error occurred inside the editor",
+  bold: "Toggle bold",
+  italic: "Toggle italic",
+  underline: "Toggle underline",
+  striketrough: "Toggle striketrough",
+  clearFormatting: "Clear formatting",
+  fontColor: "Change font color",
+  highlightColor: "Change highlight color",
+  codeBlock: "Toggle code block",
+  latex: "Insert LaTeX expression",
+  imageFile: "Upload image as file",
+  imageURL: "Upload image from URL",
+  imageUploadFail: "Image upload failed",
+  imageAltTitle: "Uploaded image",
+  headings: "Headings",
+  heading1: "Toggle H1",
+  heading2: "Toggle H2",
+  heading3: "Toggle H3",
+  heading4: "Toggle H4",
+  callout: "Callout",
+  quote: "Toggle blockquote",
+  bulletList: "Bullet list",
+  orderedList: "Ordered list",
+  subscript: "Toggle subscript",
+  superscript: "Toggle superscript",
+  setLink: "Set link",
+  removeLink: "Remove link",
+  align: "Align",
+  alignLeft: "Align left",
+  alignCenter: "Align center",
+  alignRight: "Align right",
+  alignJustify: "Align justify",
+  undo: "Undo",
+  redo: "Redo",
+  defaultLanguage: "Default",
+  language: "Language",
+  chooseProgrammingLanguage: "Choose programming language",
+  chooseCalloutType: "Choose callout type",
+  enterCalloutTitle: "Enter callout title (optional)",
+  calloutDefaultContent: "Enter text",
+  getCalloutTitleByType: (type: string): string => {
+    switch (type) {
+      case "warning":
+        return "Warning";
+      case "tip":
+        return "Tip";
+      case "remark":
+        return "Remark";
+      case "danger":
+        return "Danger";
+      default:
+        return "Warning";
+    }
+  },
+  insert: "Insert",
+  close: "Close",
+  block: "Block",
+  inline: "Inline",
+  stylize: {
+    hint: "Stylize text",
+    label: "Apply style for current text",
+    labelSelected: "Apply style for selected text",
+    placeholder: "Describe the style",
+    error: "Text stylization error",
+    success: "Text stylized",
+    inProgress: "Stylizing text",
+  },
+  imageGeneration: {
+    title: "Image generation",
+    amountLabel: "Number of variants",
+    description: "Image description",
+    placeholder: "i.e., 'Illustration of a cat in the suit'",
+    variant: "Variant",
+  },
+};

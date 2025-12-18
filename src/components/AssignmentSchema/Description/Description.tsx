@@ -1,12 +1,15 @@
-import { FC, useEffect, useState } from 'react';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import styles from './description.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import { sendRequest } from '@requests/request';
-import TagList from '@ui/TagList/TagList';
-import { LoadingOverlay } from '@ui/basics';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
+"use client";
+import { IAssignmentSchema } from "@custom-types/data/IAssignmentSchema";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { LoadingOverlay } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
+import TagList from "@ui/TagList/TagList";
+import { FC, useEffect, useState } from "react";
+
+import styles from "./description.module.css";
 
 const Description: FC<{
   assignment: IAssignmentSchema;
@@ -24,8 +27,8 @@ const Description: FC<{
     if (assignment.tasks.length) {
       setLoading(!!preview);
       sendRequest<string[], ITaskDisplay[]>(
-        'task/list-specs',
-        'POST',
+        "task/list-specs",
+        "POST",
         assignment.tasks.map((task: any) => task.value || task.spec),
         5000
       ).then((res) => {
@@ -51,16 +54,19 @@ const Description: FC<{
         </div>
       </div>
       <div className={styles.tags}>
-        <TagList tags={assignment.tags} />
+        <TagList tags={assignment.tags} locale={locale} />
+      </div>
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={assignment.description}
+          onUpdate={() => {}}
+        />
       </div>
       <div
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: assignment.description }}
-      ></div>
-      <div
         style={{
-          position: 'relative',
-          paddingBottom: 'var(--spacer-l)',
+          position: "relative",
+          paddingBottom: "var(--spacer-l)",
         }}
       >
         <LoadingOverlay visible={loading} />

@@ -1,9 +1,9 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { ITeamDisplayWithBanned } from '@custom-types/data/ITeam';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { BanModal } from '@ui/modals';
+import { ITeamDisplayWithBanned } from "@custom-types/data/ITeam";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { BanModal } from "@ui/modals";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
 // import styles from './BunButton.module.css'
 
 const BunButton: FC<{
@@ -18,11 +18,11 @@ const BunButton: FC<{
   const handleBan = useCallback(
     (reason: string) => {
       requestWithNotify<{ spec: string; banReason: string }, boolean>(
-        `team/${ban ? 'ban' : 'unban'}/${spec}`,
-        'DELETE',
+        `team/${ban ? "ban" : "unban"}/${spec}`,
+        "DELETE",
         ban ? locale.notify.team.ban : locale.notify.team.unban,
         lang,
-        () => '',
+        () => "",
         { spec: team.spec, banReason: reason },
         () => {
           onSuccess();

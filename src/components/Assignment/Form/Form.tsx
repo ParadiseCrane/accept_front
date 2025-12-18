@@ -1,22 +1,24 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useEffect } from 'react';
-import { callback } from '@custom-types/ui/atomic';
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { IGroup } from '@custom-types/data/IGroup';
-import MainInfo from './MainInfo/MainInfo';
-import Groups from './Groups/Groups';
-import Origin from './Origin/Origin';
-import Stepper from '@ui/Stepper/Stepper';
-import { UseFormReturnType, useForm } from '@mantine/form';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { IGroup } from "@custom-types/data/IGroup";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { FC, memo, useEffect } from "react";
+
+import Groups from "./Groups/Groups";
+import MainInfo from "./MainInfo/MainInfo";
+import Origin from "./Origin/Origin";
 
 const stepFields = [
-  ['startDate', 'startTime', 'endDate', 'endTime', 'dates'],
-  ['groups'],
+  ["startDate", "startTime", "endDate", "endTime", "dates"],
+  ["groups"],
   [
-    'origin',
-    'notificationTitle',
-    'notificationDescription',
-    'notificationShortDescription',
+    "origin",
+    "notificationTitle",
+    "notificationDescription",
+    "notificationShortDescription",
   ],
 ];
 
@@ -45,9 +47,7 @@ const Form: FC<{
     initialValues,
     validate: {
       origin: (value) =>
-        value.length == 0
-          ? locale.assignment.form.validation.origin
-          : null,
+        value.length == 0 ? locale.assignment.form.validation.origin : null,
       startDate: (value) =>
         !value ? locale.assignment.form.validation.startDate : null,
       endDate: (value, values) =>
@@ -59,9 +59,7 @@ const Form: FC<{
           ? locale.assignment.form.validation.date
           : null,
       groups: (value) =>
-        value.length == 0
-          ? locale.assignment.form.validation.groups
-          : null,
+        value.length == 0 ? locale.assignment.form.validation.groups : null,
 
       notificationTitle: (value) =>
         shouldNotify && value.length == 0

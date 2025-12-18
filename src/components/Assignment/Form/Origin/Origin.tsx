@@ -1,9 +1,11 @@
-import { FC, memo } from 'react';
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { AssignmentSchemaSelector } from '@ui/selectors';
-import { useLocale } from '@hooks/useLocale';
-import { CustomEditor, Helper, TextInput } from '@ui/basics';
-import styles from './origin.module.css';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { useLocale } from "@hooks/useLocale";
+import { CustomEditor, Helper, TextInput } from "@ui/basics";
+import { AssignmentSchemaSelector } from "@ui/selectors";
+import { FC, memo } from "react";
+
+import styles from "./origin.module.css";
 
 const Origin: FC<{
   form: any;
@@ -17,7 +19,7 @@ const Origin: FC<{
       <AssignmentSchemaSelector
         key={2}
         form={form}
-        field={'origin'}
+        field={"origin"}
         schemas={assignmentSchemas}
       />
       {shouldNotify && (
@@ -25,42 +27,36 @@ const Origin: FC<{
           <div className={styles.notificationLabel}>
             <div>{locale.notification.notification}</div>
             <Helper
-              dropdownContent={
-                locale.helpers.notification.assignmentCreation
-              }
+              dropdownContent={locale.helpers.notification.assignmentCreation}
             />
           </div>
           <TextInput
             label={locale.notification.form.title}
             required
-            {...form.getInputProps('notificationTitle')}
+            {...form.getInputProps("notificationTitle")}
           />
           <TextInput
             label={locale.notification.form.shortDescription}
             helperContent={
               <div>
-                {locale.helpers.notification.shortDescription.map(
-                  (p, idx) => (
-                    <p key={idx}>{p}</p>
-                  )
-                )}
+                {locale.helpers.notification.shortDescription.map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
               </div>
             }
-            {...form.getInputProps('notificationShortDescription')}
+            {...form.getInputProps("notificationShortDescription")}
           />
           <CustomEditor
             helperContent={
               <div>
-                {locale.helpers.notification.description.map(
-                  (p, idx) => (
-                    <p key={idx}>{p}</p>
-                  )
-                )}
+                {locale.helpers.notification.description.map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
               </div>
             }
             label={locale.notification.form.description}
             form={form}
-            name={'notificationDescription'}
+            name={"notificationDescription"}
           />
         </div>
       )}

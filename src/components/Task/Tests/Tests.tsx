@@ -1,12 +1,13 @@
-import { FC, memo, useMemo } from 'react';
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { IChecker } from '@custom-types/data/ITask';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { setter } from '@custom-types/ui/atomic';
-import OrderTests from './OrderTests/OrderTests';
-import MainPage from './MainPage/MainPage';
-import { useLocale } from '@hooks/useLocale';
-import { Tabs } from '@ui/basics';
+import { ITaskCheckType, ITaskType } from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Tabs } from "@ui/basics";
+import { FC, memo, useMemo } from "react";
+
+import MainPage from "./MainPage/MainPage";
+import OrderTests from "./OrderTests/OrderTests";
 
 const Tests: FC<{
   task_spec: string;
@@ -16,6 +17,7 @@ const Tests: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   task_spec,
   refetch,
@@ -24,13 +26,14 @@ const Tests: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale } = useLocale();
 
-  const pages = useMemo(
-    () => [
+  const pages = useMemo(() => {
+    let innerPages = [
       {
-        value: 'main',
+        value: "main",
         title: locale.task.tests.page.main,
         page: () => (
           <MainPage
@@ -41,11 +44,15 @@ const Tests: FC<{
             checkType={checkType}
             taskType={taskType}
             checker={checker}
+            hasWriteRights={hasWriteRights}
           />
         ),
       },
-      {
-        value: 'order',
+    ];
+
+    if (hasWriteRights) {
+      innerPages.push({
+        value: "order",
         title: locale.task.tests.page.order,
         page: () => (
           <OrderTests
@@ -54,33 +61,34 @@ const Tests: FC<{
             grouped_tests={grouped_tests}
           />
         ),
-      },
-    ],
-    [
-      checkType,
-      checker,
-      locale,
-      refetch,
-      taskType,
-      task_spec,
-      grouped_tests,
-      truncate_limit,
-    ]
-  );
+      });
+    }
+
+    return innerPages;
+  }, [
+    checkType,
+    checker,
+    locale,
+    refetch,
+    taskType,
+    task_spec,
+    grouped_tests,
+    truncate_limit,
+    hasWriteRights,
+  ]);
 
   const testsHash = useMemo(
     () =>
       grouped_tests
         .map(
           (group) =>
-            group.length.toString() +
-            group.map((item) => item.spec.slice(3))
+            group.length.toString() + group.map((item) => item.spec.slice(3))
         )
         .join(),
     [grouped_tests]
   );
 
-  return <Tabs key={testsHash} pages={pages} defaultPage={'main'} />;
+  return <Tabs key={testsHash} pages={pages} defaultPage={"main"} />;
 };
 
 export default memo(Tests);

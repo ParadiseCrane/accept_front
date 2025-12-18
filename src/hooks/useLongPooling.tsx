@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useRefetch } from './useRefetch';
+import { useCallback, useEffect, useState } from "react";
+
+import { useRefetch } from "./useRefetch";
 
 interface IRequestData {
   loading: boolean;

@@ -1,26 +1,25 @@
-import Form from '@components/Task/Form/Form';
-import { useLocale } from '@hooks/useLocale';
-import { ReactNode, useCallback, useMemo } from 'react';
-import { ITaskEdit } from '@custom-types/data/ITask';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import { requestWithNotify } from '@utils/requestWithNotify';
+"use client";
+import Form from "@components/Task/Form/Form";
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskType,
-} from '@custom-types/data/atomic';
+} from "@custom-types/data/atomic";
+import { ITaskEdit } from "@custom-types/data/ITask";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { UseFormReturnType } from '@mantine/form';
-import { Item } from '@custom-types/ui/atomic';
-
-import Title from '@ui/Title/Title';
-import { getCookieValue } from '@utils/cookies';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function EditTask(props: {
   task: ITaskEdit;
@@ -36,13 +35,13 @@ function EditTask(props: {
       ...task,
       author: task.author,
 
-      checkType: task.checkType?.spec.toString() || '0',
-      checkerCode: task.checker?.sourceCode || '',
-      checkerLang: task.checker?.language.toString() || '0',
+      checkType: task.checkType?.spec.toString() || "0",
+      checkerCode: task.checker?.sourceCode || "",
+      checkerLang: task.checker?.language.toString() || "0",
 
       hasHint: task.hint ? true : false,
-      hintContent: task.hint?.content || '',
-      hintAlarmType: task.hint?.alarmType.spec.toString() || '0',
+      hintContent: task.hint?.content || "",
+      hintAlarmType: task.hint?.alarmType.spec.toString() || "0",
       hintAlarm: task.hint?.alarm || 0,
       shouldRestrictLanguages:
         task.allowedLanguages.length > 0 || task.allowedLanguages.length > 0,
@@ -65,9 +64,9 @@ function EditTask(props: {
         name: lang.name,
       })),
 
-      remark: task.remark || '',
+      remark: task.remark || "",
     }),
-    [task] //eslint-disable-line
+    [task]
   );
 
   const handleSubmit = useCallback(
@@ -96,8 +95,8 @@ function EditTask(props: {
       } = form.values;
       let task: any = {
         ...values,
-        checkType: +form.values['checkType'],
-        taskType: +form.values['taskType'],
+        checkType: +form.values["checkType"],
+        taskType: +form.values["taskType"],
         constraints: {
           time: constraintsTime,
           memory: constraintsMemory,
@@ -110,16 +109,16 @@ function EditTask(props: {
         task.allowedLanguages = [];
         task.forbiddenLanguages = [];
       }
-      if (form.values['checkType'] === '1') {
+      if (form.values["checkType"] === "1") {
         task.checker = {
           sourceCode: checkerCode,
           language: +checkerLang,
         };
       }
-      if (form.values['remark'].trim() === '') {
+      if (form.values["remark"].trim() === "") {
         task.remark = undefined;
       }
-      if (form.values['hasHint']) {
+      if (form.values["hasHint"]) {
         task.hint = {
           content: hintContent,
           alarmType: +hintAlarmType,
@@ -128,10 +127,10 @@ function EditTask(props: {
       }
       requestWithNotify(
         `task/edit`,
-        'POST',
+        "POST",
         locale.notify.task.edit,
         lang,
-        (_response: boolean) => '',
+        (_response: boolean) => "",
         task
       );
     },
@@ -166,22 +165,19 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/bundle/task-edit/${spec}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
 
-      'content-type': 'application/json',
+      "content-type": "application/json",
     } as { [key: string]: string },
   });
 
@@ -197,9 +193,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

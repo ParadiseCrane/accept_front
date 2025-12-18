@@ -1,17 +1,19 @@
-import { IUser } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { Badge } from '@mantine/core';
-import { FC, memo } from 'react';
-import styles from './groupsInfo.module.css';
+"use client";
+import { IUser } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { Badge } from "@mantine/core";
+import { FC, memo } from "react";
+
+import styles from "./groupsInfo.module.css";
 
 const GroupsInfo: FC<{ user: IUser }> = ({ user }) => {
   const { locale } = useLocale();
   return (
-    <div className={styles.wrapper}>
+    <div>
       {user.groups.length > 0 && (
         <div className={styles.groupSection}>
           <div className={styles.groupTitle}>
-            {' '}
+            {" "}
             {`${locale.profile.groups}:`}
           </div>
           <div className={styles.groupList}>

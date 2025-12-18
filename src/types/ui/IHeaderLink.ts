@@ -1,10 +1,11 @@
-import { accessLevels } from '@constants/protectedRoutes';
-import { ReactNode } from 'react';
-import { ILocale } from './ILocale';
+import { accessLevels } from "@constants/protectedRoutes";
+import { ReactNode } from "react";
+
+import { ILocale } from "./ILocale";
 
 export interface IHeaderLink {
   text: (_: ILocale) => string;
-  type: 'dropdown' | 'regular';
+  type: "dropdown" | "regular";
   links?: IHeaderLink[];
   href: string;
   permission?: keyof typeof accessLevels;

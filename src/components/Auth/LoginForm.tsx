@@ -1,21 +1,27 @@
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { Button, PasswordInput, Select, TextInput } from '@ui/basics';
-import Link from 'next/link';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import styles from '@styles/auth/login.module.css';
-import { useForm } from '@mantine/form';
+"use client";
+
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
+import styles from "@styles/auth/login.module.css";
+import { Button, PasswordInput, Select, TextInput, Tip } from "@ui/basics";
+import {
+  getOrganizationFromLS,
+  putOrganizationToLS,
+} from "@utils/manageLocalStorage";
 import {
   errorNotification,
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import { useRouter } from 'next/router';
-import { SelectItem } from '@custom-types/ui/atomic';
+} from "@utils/notificationFunctions";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 const LoginForm: FC<{
-  signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
+  signIn: (_: string, __: string, ___: string) => Promise<boolean>;
 }> = ({ signIn }) => {
   const { locale } = useLocale();
   const [loading, setLoading] = useState(false);
@@ -27,8 +33,8 @@ const LoginForm: FC<{
     loading: organizations_loading,
     error,
   } = useRequest<object, IOrganization[], SelectItem[]>(
-    'organization/list',
-    'GET',
+    "organization/list",
+    "GET",
     undefined,
     (organizations: IOrganization[]) =>
       organizations.map(
@@ -44,16 +50,15 @@ const LoginForm: FC<{
     () => organizations?.map((item) => item.value) || [],
     [organizations]
   );
-
   const form = useForm({
     initialValues: {
-      organization: '',
-      login: '',
-      password: '',
+      organization: "",
+      login: "",
+      password: "",
     },
     validate: {
       organization: (value) =>
-        value === ''
+        value === ""
           ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
           ? locale.auth.errors.organization.exists
@@ -66,22 +71,38 @@ const LoginForm: FC<{
     validateInputOnBlur: true,
   });
 
+  useEffect(() => {
+    const orgFromLS = getOrganizationFromLS() ?? "";
+    if (
+      orgFromLS &&
+      organizations?.filter((element) => element.value == orgFromLS)
+    ) {
+      if (form.values.organization != orgFromLS)
+        form.setFieldValue("organization", orgFromLS);
+    }
+  }, [organizations_loading, organizations]);
+
   const handleSignIn = useCallback(
     (values: { organization: string; login: string; password: string }) => {
+      putOrganizationToLS({ value: values.organization });
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
-        message: locale.loading + '...',
+        message: locale.loading + "...",
       });
       setLoading(true);
-      signIn(values.organization, values.login, values.password).then((res) => {
+      signIn(
+        values.organization,
+        values.login.trim(),
+        values.password.trim()
+      ).then((res) => {
         if (res) {
           successNotification({
             id,
             title: locale.notify.auth.signIn.success,
             autoClose: 5000,
           });
-          router.push((router.query.referrer as string) || '/');
+          router.push((router.query.referrer as string) || "/");
         } else {
           errorNotification({
             id,
@@ -102,16 +123,16 @@ const LoginForm: FC<{
   }, [toSignIn, handleSignIn, form.values]);
 
   const processKeydown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setToSignIn(true);
     }
   }, []);
 
   useEffect(() => {
     if (!window) return;
-    window.addEventListener('keydown', processKeydown);
+    window.addEventListener("keydown", processKeydown);
     return () => {
-      window.removeEventListener('keydown', processKeydown);
+      window.removeEventListener("keydown", processKeydown);
     };
   }, [processKeydown]);
 
@@ -121,15 +142,15 @@ const LoginForm: FC<{
         <Select
           required
           id="organization"
-          label={'Организация'} // TODO add locale
+          label={locale.auth.labels.organization}
           data={organizations || []}
-          disabled={!!!organizations || organizations_loading}
-          placeholder={'Выберите организацию'} // TODO add locale
+          disabled={!organizations || organizations_loading}
+          placeholder={locale.auth.placeholders.chooseOrganization}
           classNames={{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('organization')}
+          {...form.getInputProps("organization")}
         />
         <TextInput
           required
@@ -140,7 +161,7 @@ const LoginForm: FC<{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('login')}
+          {...form.getInputProps("login")}
         />
         <PasswordInput
           required
@@ -151,16 +172,28 @@ const LoginForm: FC<{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('password')}
+          {...form.getInputProps("password")}
         />
-        <Button
-          type="button"
-          onClick={(_) => handleSignIn(form.values)}
-          disabled={Object.keys(form.errors).length > 0 || loading}
-          className={styles.enterButton}
-        >
-          {locale.auth.submit}
-        </Button>
+        <div className={styles.row}>
+          <Button
+            type="button"
+            onClick={(_) => handleSignIn(form.values)}
+            disabled={Object.keys(form.errors).length > 0 || loading}
+            className={styles.enterButton}
+          >
+            {locale.auth.submit}
+          </Button>
+          <Tip label={locale.todo.title} spanStyle={styles.spanStyle}>
+            <Button
+              type="button"
+              // TODO добавить реальный запрос
+              disabled={true}
+              className={styles.enterButton}
+            >
+              {locale.auth.joinOrganization}
+            </Button>
+          </Tip>
+        </div>
       </form>
       <div className={styles.footer}>
         <div className={styles.footerLine}>

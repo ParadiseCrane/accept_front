@@ -1,25 +1,26 @@
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
+"use client";
 import {
   IAssignmentSchemaDisplay,
   IAssignmentSchemaListBundle,
-} from '@custom-types/data/IAssignmentSchema';
-import { Plus } from 'tabler-icons-react';
-import { ITag } from '@custom-types/data/ITag';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { BaseSearch } from '@custom-types/data/request';
-import { useRequest } from '@hooks/useRequest';
-import { ILocale } from '@custom-types/ui/ILocale';
-import Fuse from 'fuse.js';
-import { hasSubarray } from '@utils/hasSubarray';
-import { MultiSelect } from '@ui/basics';
-import { customTableSort } from '@utils/customTableSort';
-import Title from '@ui/Title/Title';
-import Link from 'next/link';
+} from "@custom-types/data/IAssignmentSchema";
+import { ITag } from "@custom-types/data/ITag";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect, Tip } from "@ui/basics";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Table from "@ui/Table/Table";
+import Title from "@ui/Title/Title";
+import { customTableSort } from "@utils/customTableSort";
+import { hasSubarray } from "@utils/hasSubarray";
+import Fuse from "fuse.js";
+import Link from "next/link";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
 interface Item {
   value: any;
@@ -27,7 +28,7 @@ interface Item {
 }
 
 interface IAssignmentSchemaDisplayList
-  extends Omit<IAssignmentSchemaDisplay, 'title' | 'author' | 'taskNumber'> {
+  extends Omit<IAssignmentSchemaDisplay, "title" | "author" | "taskNumber"> {
   title: Item;
   author: Item;
   taskNumber: Item;
@@ -36,7 +37,7 @@ interface IAssignmentSchemaDisplayList
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.assignmentSchema.list.title,
-    key: 'title',
+    key: "title",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.title.value > b.title.value
@@ -52,7 +53,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignmentSchema.list.author,
-    key: 'author',
+    key: "author",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.author.value > b.author.value
@@ -69,7 +70,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignmentSchema.list.taskNumber,
-    key: 'taskNumber',
+    key: "taskNumber",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.taskNumber.value > b.taskNumber.value
@@ -85,12 +86,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const processData = (
-  data: IAssignmentSchemaListBundle
-): {
-  assignment_schemas: IAssignmentSchemaDisplayList[];
-  tags: ITag[];
-} => {
+const processData = (data: IAssignmentSchemaListBundle, locale: ILocale) => {
   const assignment_schemas = data.assignment_schemas.map(
     (assignment_schema: IAssignmentSchemaDisplay): any => ({
       ...assignment_schema,
@@ -110,12 +106,33 @@ const processData = (
             </Link>
             {assignment_schema.tags.length > 0 && (
               <span className={tableStyles.tags}>
-                {assignment_schema.tags.map((tag, idx) => (
-                  <div className={tableStyles.tag} key={idx}>
-                    {tag.title +
-                      (idx == assignment_schema.tags.length - 1 ? '' : ', ')}
-                  </div>
-                ))}
+                {assignment_schema.tags.map(
+                  (tag, idx) =>
+                    tag.organization === "public" ? (
+                      <div
+                        className={`${tableStyles.tag} ${tableStyles.bold}`}
+                        key={idx}
+                      >
+                        <Tip label={locale.task.list.publicTag}>
+                          {tag.title +
+                            (idx == assignment_schema.tags.length - 1
+                              ? ""
+                              : ", ")}
+                        </Tip>
+                      </div>
+                    ) : (
+                      <div className={tableStyles.tag} key={idx}>
+                        {tag.title +
+                          (idx == assignment_schema.tags.length - 1
+                            ? ""
+                            : ", ")}
+                      </div>
+                    )
+                  // <div className={tableStyles.tag} key={idx}>
+                  //   {tag.title +
+                  //     (idx == assignment_schema.tags.length - 1 ? '' : ', ')}
+                  // </div>
+                )}
               </span>
             )}
           </div>
@@ -149,8 +166,8 @@ function AssignmentList() {
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['title.value', 'author.value'],
+      search: "",
+      keys: ["title.value", "author.value"],
     },
   });
 
@@ -175,7 +192,14 @@ function AssignmentList() {
       assignment_schemas: IAssignmentSchemaDisplayList[];
       tags: ITag[];
     }
-  >('assignment_schema/list', 'GET', undefined, processData);
+  >(
+    "assignment_schema/list",
+    "GET",
+    undefined,
+    (data: IAssignmentSchemaListBundle) => {
+      return processData(data, locale);
+    }
+  );
 
   const applyFilters = useCallback(
     (data: IAssignmentSchemaDisplayList[]) => {
@@ -186,7 +210,7 @@ function AssignmentList() {
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -264,7 +288,7 @@ function AssignmentList() {
         searchParams={searchParams}
         withSearch
         additionalSearch={
-          <div style={{ maxWidth: '300px' }}>
+          <div style={{ maxWidth: "300px" }}>
             <MultiSelect
               searchable
               data={searchTags}
@@ -279,7 +303,7 @@ function AssignmentList() {
       />
       <SingularSticky
         href={`/assignment_schema/add`}
-        icon={<Plus height={25} width={25} />}
+        icon={<IconPlus height={25} width={25} />}
         description={locale.tip.sticky.assignmentSchema.add}
       />
     </div>

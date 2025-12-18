@@ -1,8 +1,10 @@
-import { CustomEditor, NumberInput, Radio } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useMemo } from 'react';
-import styles from './descriptionInfo.module.css';
-import { IHintAlarmType } from '@custom-types/data/atomic';
+"use client";
+import { IHintAlarmType } from "@custom-types/data/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { CustomEditor, NumberInput, Radio } from "@ui/basics";
+import { FC, memo, useMemo } from "react";
+
+import styles from "./descriptionInfo.module.css";
 
 const DescriptionInfo: FC<{
   form: any;
@@ -22,46 +24,51 @@ const DescriptionInfo: FC<{
   return (
     <>
       <CustomEditor
+        key={0}
         label={locale.task.form.description}
         form={form}
-        name={'description'}
+        name={"description"}
       />
       <CustomEditor
+        key={1}
         label={locale.task.form.inputFormat}
         form={form}
-        name={'inputFormat'}
+        name={"inputFormat"}
       />
       <CustomEditor
+        key={2}
         label={locale.task.form.outputFormat}
         form={form}
-        name={'outputFormat'}
+        name={"outputFormat"}
       />
 
       <CustomEditor
+        key={3}
         label={locale.task.form.remark}
         form={form}
-        name={'remark'}
+        name={"remark"}
       />
 
-      {!form.values.isTournament && form.values['hasHint'] && (
+      {!form.values.isTournament && form.values["hasHint"] && (
         <div className={styles.hintWrapper}>
           <CustomEditor
+            key={4}
             label={locale.task.form.hint.text}
             form={form}
-            name={'hintContent'}
+            name={"hintContent"}
           />
           <Radio
             label={locale.task.form.hint.alarmType}
             form={form}
-            field={'hintAlarmType'}
+            field={"hintAlarmType"}
             items={hintAlarmTypeItems}
-            onChange={(value) => form.setFieldValue('hintAlarmType', value)}
+            onChange={(value) => form.setFieldValue("hintAlarmType", value)}
           />
           <NumberInput
             label={locale.task.form.hint.showAfter}
             hideControls
             min={0}
-            {...form.getInputProps('hintAlarm')}
+            {...form.getInputProps("hintAlarm")}
           />
         </div>
       )}

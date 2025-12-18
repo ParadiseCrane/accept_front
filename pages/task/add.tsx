@@ -1,59 +1,53 @@
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useUser } from '@hooks/useUser';
-import Form from '@components/Task/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useRequest } from '@hooks/useRequest';
-import { ITaskAddBundle } from '@custom-types/data/bundle';
-
+"use client";
+import Form from "@components/Task/Form/Form";
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskType,
-} from '@custom-types/data/atomic';
-import { Item } from '@custom-types/ui/atomic';
+} from "@custom-types/data/atomic";
+import { ITaskAddBundle } from "@custom-types/data/bundle";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { useRouter } from 'next/router';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { useRouter } from "next/router";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
 const initialValues = {
-  spec: '',
-  title: '',
+  spec: "",
+  title: "",
   tags: [],
-  author: '',
+  author: "",
   complexity: 15,
-  description: '',
+  description: "",
   constraintsTime: 1,
   constraintsMemory: 16,
-  examples: [{ inputData: '', outputData: '' }],
-  inputFormat: '',
-  outputFormat: '',
-  remark: '',
+  examples: [{ inputData: "", outputData: "" }],
+  inputFormat: "",
+  outputFormat: "",
+  remark: "",
 
   hasHint: false,
-  hintContent: '',
-  hintAlarmType: '0',
+  hintContent: "",
+  hintAlarmType: "0",
   hintAlarm: 0,
 
   allowedLanguages: [],
   forbiddenLanguages: [],
 
-  checkerLang: '0',
-  checkerCode: '',
+  checkerLang: "0",
+  checkerCode: "",
 
-  checkType: '0', //"tests" or "checker"
-  taskType: '0', //"code" or "text"
+  checkType: "0", //"tests" or "checker"
+  taskType: "0", //"code" or "text"
   shouldRestrictLanguages: false,
 };
 
@@ -61,9 +55,7 @@ function AddTask() {
   const { locale, lang } = useLocale();
   const { user } = useUser();
   const [taskTypes, setTaskTypes] = useState<ITaskType[]>([]);
-  const [taskCheckTypes, setTaskCheckTypes] = useState<
-    ITaskCheckType[]
-  >([]);
+  const [taskCheckTypes, setTaskCheckTypes] = useState<ITaskCheckType[]>([]);
 
   const router = useRouter();
 
@@ -72,13 +64,11 @@ function AddTask() {
     [router.query.tournament]
   );
 
-  const [hintAlarmTypes, setHintAlarmTypes] = useState<
-    IHintAlarmType[]
-  >([]);
+  const lesson = useMemo(() => router.query.lesson, [router.query.lesson]);
 
-  const { data, loading } = useRequest<{}, ITaskAddBundle>(
-    'bundle/task_add'
-  );
+  const [hintAlarmTypes, setHintAlarmTypes] = useState<IHintAlarmType[]>([]);
+
+  const { data, loading } = useRequest<{}, ITaskAddBundle>("bundle/task_add");
 
   useEffect(() => {
     if (data) {
@@ -114,36 +104,32 @@ function AddTask() {
       } = form.values;
       let body: any = {
         ...values,
-        author: user?.login || '',
-        checkType: +form.values['checkType'],
-        taskType: +form.values['taskType'],
+        author: user?.login || "",
+        checkType: +form.values["checkType"],
+        taskType: +form.values["taskType"],
         constraints: {
           time: constraintsTime,
           memory: constraintsMemory,
         },
-        allowedLanguages: allowedLanguages.map(
-          (lang: Item) => lang.value
-        ),
-        forbiddenLanguages: forbiddenLanguages.map(
-          (lang: Item) => lang.value
-        ),
+        allowedLanguages: allowedLanguages.map((lang: Item) => lang.value),
+        forbiddenLanguages: forbiddenLanguages.map((lang: Item) => lang.value),
         tags: tags.map((tag: Item) => tag.value),
-        hidden: !!tournament,
+        hidden: !!tournament || !!lesson,
       };
       if (!form.values.shouldRestrictLanguages) {
         body.allowedLanguages = [];
         body.forbiddenLanguages = [];
       }
-      if (form.values['checkType'] === '1') {
+      if (form.values["checkType"] === "1") {
         body.checker = {
           sourceCode: checkerCode,
           language: +checkerLang,
         };
       }
-      if (form.values['remark'].trim() === '') {
+      if (form.values["remark"].trim() === "") {
         body.remark = undefined;
       }
-      if (form.values['hasHint']) {
+      if (form.values["hasHint"]) {
         body.hint = {
           content: hintContent,
           alarmType: +hintAlarmType,
@@ -151,15 +137,19 @@ function AddTask() {
         };
       }
       requestWithNotify(
-        !tournament ? 'task/add' : `tournament/task/${tournament}`,
-        'POST',
+        !tournament
+          ? !lesson
+            ? "task/add"
+            : `lesson/task/${lesson}`
+          : `tournament/task/${tournament}`,
+        "POST",
         locale.notify.task.create,
         lang,
         (spec: string) => spec,
         body
       );
     },
-    [locale, user, lang, tournament]
+    [locale, user, lang, tournament, lesson]
   );
 
   return (
@@ -173,7 +163,7 @@ function AddTask() {
           hintAlarmTypes={hintAlarmTypes}
           handleSubmit={handleSubmit}
           buttonLabel={locale.form.create}
-        />
+        /> //////
       )}
     </>
   );

@@ -1,9 +1,11 @@
-import { Help } from 'tabler-icons-react';
-import { FC, memo } from 'react';
-import styles from './helper.module.css';
-import { Icon } from '@ui/basics';
-import { MyHelperProps } from '@custom-types/ui/basics/helper';
-import { HoverCard } from '@mantine/core';
+"use client";
+import { MyHelperProps } from "@custom-types/ui/basics/helper";
+import { HoverCard } from "@mantine/core";
+import { Icon } from "@ui/basics";
+import { FC, memo } from "react";
+import { IconHelp } from "@tabler/icons-react";
+
+import styles from "./helper.module.css";
 
 const Helper: FC<MyHelperProps> = ({
   dropdownContent,
@@ -19,22 +21,20 @@ const Helper: FC<MyHelperProps> = ({
       withArrow
       position="bottom"
       arrowSize={5}
-      transitionProps={{ transition: 'scale', duration: 300 }}
+      transitionProps={{ transition: "scale", duration: 300 }}
       withinPortal
       {...hoverCardProps}
     >
       <HoverCard.Target {...hoverCardTargetProps}>
         <div>
-          <Icon size={size || 'xs'}>
-            {customIcon || (
-              <Help color={iconColor || 'var(--dark4)'} />
-            )}
+          <Icon size={size || "xs"}>
+            {customIcon || <IconHelp color={iconColor || "var(--dark4)"} />}
           </Icon>
         </div>
       </HoverCard.Target>
       <HoverCard.Dropdown {...hoverCardDropdownProps}>
         <div className={styles.contentWrapper}>
-          {typeof dropdownContent == 'string' ? (
+          {typeof dropdownContent == "string" ? (
             dropdownContent
           ) : dropdownContent instanceof Array ? (
             <div>
@@ -43,7 +43,7 @@ const Helper: FC<MyHelperProps> = ({
               ))}
             </div>
           ) : (
-            dropdownContent || ''
+            dropdownContent || ""
           )}
         </div>
       </HoverCard.Dropdown>

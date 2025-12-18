@@ -1,12 +1,13 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { Plus } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { Icon, TextInput } from '@ui/basics';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon, TextInput } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
 const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
   refetch,
@@ -14,13 +15,13 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
 }) => {
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
-  const [title, setTitle] = useState('');
-  const [error, setError] = useState('');
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState("");
 
   const validate = useCallback(
     (title: string) => {
       if (title.length >= 3) {
-        setError('');
+        setError("");
         return true;
       }
       setError(locale.ui.tagSelector.minLength(locale.name, 3));
@@ -34,7 +35,7 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
       if (validate(title)) {
         requestWithNotify<{ title: string }, string>(
           addURL,
-          'POST',
+          "POST",
           locale.tag.add,
           lang,
           (response) => response,
@@ -55,7 +56,7 @@ const AddTag: FC<{ refetch: pureCallback<void>; addURL: string }> = ({
   return (
     <>
       <Icon onClick={() => setOpened(true)} size="sm">
-        <Plus color="var(--positive)" />
+        <IconPlus color="var(--positive)" />
       </Icon>
       <SimpleModal
         opened={opened}

@@ -1,5 +1,9 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { sendRequest } from '@requests/request';
+"use client";
+
+import { IActivity } from "@custom-types/data/atomic";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { pureCallback, setter } from "@custom-types/ui/atomic";
+import { sendRequest } from "@requests/request";
 import {
   FC,
   ReactNode,
@@ -9,10 +13,9 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { useRefetch } from './useRefetch';
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { IActivity } from '@custom-types/data/atomic';
+} from "react";
+
+import { useRefetch } from "./useRefetch";
 
 export interface IHostData {
   user: IUserDisplay;
@@ -43,8 +46,8 @@ export const ChatHostsProvider: FC<{
   const fetchInitialHosts = useCallback(() => {
     setLoading(true);
     return sendRequest<{ entity: IActivity; spec: string }, IHostData[]>(
-      'hosts/all',
-      'POST',
+      "hosts/all",
+      "POST",
       {
         entity,
         spec,

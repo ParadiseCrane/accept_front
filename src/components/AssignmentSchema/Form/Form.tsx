@@ -1,19 +1,16 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useEffect, useMemo } from 'react';
-import MainInfo from './MainInfo/MainInfo';
-import TaskAdding from './TaskAdding/TaskAdding';
-import Preview from './Preview/Preview';
-import { TaskOrdering } from './TaskOrdering/TaskOrdering';
-import { callback } from '@custom-types/ui/atomic';
-import Stepper from '@ui/Stepper/Stepper';
-import { UseFormReturnType, useForm } from '@mantine/form';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { FC, memo, useEffect, useMemo } from "react";
 
-const stepFields = [
-  ['title', 'description', 'tags'],
-  ['tasks'],
-  [],
-  [],
-];
+import MainInfo from "./MainInfo/MainInfo";
+import Preview from "./Preview/Preview";
+import TaskAdding from "./TaskAdding/TaskAdding";
+import { TaskOrdering } from "./TaskOrdering/TaskOrdering";
+
+const stepFields = [["title", "description", "tags"], ["tasks"], [], []];
 
 const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
@@ -26,17 +23,13 @@ const Form: FC<{
     initialValues,
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.assignmentSchema.form.validation.title
-          : null,
+        value.length < 5 ? locale.assignmentSchema.form.validation.title : null,
       description: (value) =>
         value.length < 20
           ? locale.assignmentSchema.form.validation.description
           : null,
       tags: (value) =>
-        value.length < 1
-          ? locale.assignmentSchema.form.validation.tags
-          : null,
+        value.length < 1 ? locale.assignmentSchema.form.validation.tags : null,
       tasks: (value) =>
         value
           ? value.length === 0
@@ -64,14 +57,10 @@ const Form: FC<{
         buttonLabel={buttonLabel}
         handleSubmit={() => handleSubmit(form)}
         pages={[
-          <MainInfo key={'0'} form={form} />,
-          <TaskAdding
-            key={'1'}
-            form={form}
-            initialTasks={initialTasks}
-          />,
-          <TaskOrdering key={'2'} form={form} />,
-          <Preview key={'3'} form={form} />,
+          <MainInfo key={"0"} form={form} />,
+          <TaskAdding key={"1"} form={form} initialTasks={initialTasks} />,
+          <TaskOrdering key={"2"} form={form} />,
+          <Preview key={"3"} form={form} />,
         ]}
         labels={locale.assignmentSchema.form.steps.labels}
         descriptions={locale.assignmentSchema.form.steps.descriptions}

@@ -1,33 +1,35 @@
-import { IUser } from '@custom-types/data/IUser';
-import { Badge } from '@mantine/core';
-import { FC, memo } from 'react';
-import styles from './mainInfo.module.css';
-import { Medal2 } from 'tabler-icons-react';
-import { UserAvatar } from '@ui/basics';
+"use client";
+import { IUser } from "@custom-types/data/IUser";
+import { Badge } from "@mantine/core";
+import { UserAvatar } from "@ui/basics";
+import { FC, memo } from "react";
+import { IconMedal2 } from "@tabler/icons-react";
+
+import styles from "./mainInfo.module.css";
 
 const getRoleColor = (accessLevel: number) => {
   switch (accessLevel) {
     case 1:
-      return '#2ea3f2';
+      return "#2ea3f2";
     case 2:
-      return '#1c7ed6';
+      return "#1c7ed6";
     case 3:
-      return '#aa00ff';
+      return "#aa00ff";
     default:
-      return '#ff5050';
+      return "#ff5050";
   }
 };
 
 const getRatingColor = (rating: number) => {
   switch (rating) {
     case 1:
-      return '#FFD700';
+      return "#FFD700";
     case 2:
-      return '#C0C0C0';
+      return "#C0C0C0";
     case 3:
-      return '#CD7f32';
+      return "#CD7f32";
     default:
-      return '';
+      return "";
   }
 };
 
@@ -37,9 +39,9 @@ const MainInfo: FC<{ user: IUser; place?: number }> = ({ user, place }) => {
       <div className={styles.avatarWrapper}>
         <UserAvatar login={user.login} size="xl" />
         {place && place < 4 && (
-          <Medal2
+          <IconMedal2
             strokeWidth={0.8}
-            size={'45px'}
+            size={"45px"}
             fill={getRatingColor(place)}
             className={styles.medal}
           />

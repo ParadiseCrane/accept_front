@@ -1,27 +1,20 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { Icon } from '@ui/basics';
-import {
-  FC,
-  MutableRefObject,
-  ReactNode,
-  memo,
-  useCallback,
-  useRef,
-} from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { Printer } from 'tabler-icons-react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { Icon } from "@ui/basics";
+import { FC, ReactNode, RefObject, memo, useCallback, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { IconPrinter } from "@tabler/icons-react";
 
 const ComponentToPDF: FC<{
   title?: string;
-  component: (
-    _: MutableRefObject<HTMLDivElement | null>
-  ) => ReactNode;
+  component: (_: RefObject<HTMLDivElement | null>) => ReactNode;
   beforeHandlePrint: pureCallback<Promise<void>>;
 }> = ({ title, component, beforeHandlePrint }) => {
-  const componentRef = useRef<HTMLDivElement | null>(null);
+  const componentRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     documentTitle: title,
-    content: () => componentRef.current,
+    // @ts-ignore
+    contentRef: componentRef,
   });
 
   const handlePrintWrapper = useCallback(async () => {
@@ -31,14 +24,10 @@ const ComponentToPDF: FC<{
 
   return (
     <div>
-      <Icon
-        size="xs"
-        color="var(--primary)"
-        onClick={handlePrintWrapper}
-      >
-        <Printer />
+      <Icon size="xs" color="var(--primary)" onClick={handlePrintWrapper}>
+        <IconPrinter />
       </Icon>
-      <div style={{ display: 'none' }}>{component(componentRef)}</div>
+      <div style={{ display: "none" }}>{component(componentRef)}</div>
     </div>
   );
 };

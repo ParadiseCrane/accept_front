@@ -102,4 +102,9 @@ export interface IActivityData {
   date: Date;
 }
 
-export type IActivity = 'assignment' | 'tournament';
+export type IActivity = "assignment" | "tournament" | "course" | "lesson";
+
+export interface IResponseErrorObject {
+  hasError: boolean;
+  errorCode: number;
+}

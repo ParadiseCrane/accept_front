@@ -1,23 +1,24 @@
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import { ReactNode, useCallback } from 'react';
-import { IGroup } from '@custom-types/data/IGroup';
-import Form from '@components/Organization/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { IUserDisplay } from '@custom-types/data/IUser';
+"use client";
+import Form from "@components/Organization/Form/Form";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { useRequest } from '@hooks/useRequest';
-import { IOrganization } from '@custom-types/data/IOrganization';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { ReactNode, useCallback } from "react";
 
 const initialValues = {
-  spec: '',
-  name: '',
-  description: '',
+  spec: "",
+  name: "",
+  description: "",
   allowRegistration: false,
 };
 
@@ -35,12 +36,15 @@ function AddOrganization() {
         });
         return;
       }
-      requestWithNotify<IOrganization, string>(
-        'organization/add',
-        'POST',
+      requestWithNotify<
+        IOrganization,
+        { admin_login: string; admin_password: string }
+      >(
+        "organization/add",
+        "POST",
         locale.notify.group.create, // TODO: Fix locale
         lang,
-        (password: string) => `Password for admin:\n${password}`,
+        (res) => `${res.admin_login}\n${res.admin_password}`,
         {
           spec: form.values.spec,
           name: form.values.name,

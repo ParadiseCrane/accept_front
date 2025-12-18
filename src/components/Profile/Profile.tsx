@@ -1,27 +1,148 @@
-import { FC, memo, useMemo } from 'react';
-import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
-import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
+"use client";
+import NotificationList from "@components/Notification/List/NotificationList";
+import AssignmentList from "@components/Profile/AssignmentList/AssignmentList";
+import AttemptListProfile from "@components/Profile/AttemptListProfile/AttemptListProfile";
+import CreateNotification from "@components/Profile/CreateNotification/CreateNotification";
+import ProfileInfo from "@components/Profile/ProfileInfo/ProfileInfo";
+import Settings from "@components/Profile/Settings/Settings";
 import {
-  AlignRight,
-  BellPlus,
-  BellRinging,
-  Chalkboard,
-  Robot,
-  Settings as SettingsIcon,
-} from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import NotificationList from '@components/Notification/List/NotificationList';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator, UserAvatar } from '@ui/basics';
-import styles from './profile.module.css';
-import Settings from '@components/Profile/Settings/Settings';
-import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
-import CreateNotification from '@components/Profile/CreateNotification/CreateNotification';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useUser } from '@hooks/useUser';
-import { useRouter } from 'next/router';
-import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
+  IAttemptInfo,
+  IFullProfileBundle,
+  IRatingInfo,
+  ITaskInfo,
+} from "@custom-types/data/IProfileInfo";
+import { IUser } from "@custom-types/data/IUser";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useBackNotifications } from "@hooks/useBackNotifications";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Indicator, UserAvatar } from "@ui/basics";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import { useRouter } from "next/router";
+import { FC, memo, useEffect, useMemo, useState } from "react";
+import {
+  IconAlignRight,
+  IconBellPlus,
+  IconBellRinging,
+  IconChalkboard,
+  IconRobot,
+  IconSettings as SettingsIcon,
+} from "@tabler/icons-react";
+
+import styles from "./profile.module.css";
+
+const getLinks = ({
+  user,
+  attempt_info,
+  task_info,
+  rating_info,
+  isTeacher,
+  locale,
+  unviewed,
+}: {
+  user: IUser;
+  attempt_info: IAttemptInfo;
+  task_info: ITaskInfo;
+  rating_info: IRatingInfo | undefined;
+  isTeacher: boolean;
+  locale: any;
+  unviewed: number;
+}) => {
+  const links: IMenuLink[] = isTeacher
+    ? [
+        {
+          page: (
+            <ProfileInfo
+              user={user}
+              attempt_info={attempt_info}
+              task_info={task_info}
+              rating_info={rating_info}
+            />
+          ),
+          icon: <IconRobot color="var(--secondary)" />,
+          title: locale.profile.profile,
+          section: "profile",
+        },
+        {
+          page: <NotificationList />,
+          icon: (
+            <Indicator disabled={unviewed <= 0} size={8}>
+              <IconBellRinging color="var(--secondary)" />
+            </Indicator>
+          ),
+          title: locale.profile.notification,
+          section: "notifications",
+        },
+        {
+          page: <AssignmentList />,
+          icon: <IconChalkboard color="var(--secondary)" />,
+          title: locale.profile.assignments,
+          section: "assignments",
+        },
+        {
+          page: <AttemptListProfile />,
+          icon: <IconAlignRight color="var(--secondary)" />,
+          title: locale.profile.attempts,
+          section: "attempts",
+        },
+        {
+          page: <CreateNotification />,
+          icon: <IconBellPlus color="var(--secondary)" />,
+          title: locale.profile.createNotification,
+          section: "create_notification",
+        },
+        {
+          page: <Settings user={user} />,
+          icon: <SettingsIcon color="var(--secondary)" />,
+          title: locale.profile.settings,
+          section: "settings",
+        },
+      ]
+    : [
+        {
+          page: (
+            <ProfileInfo
+              user={user}
+              attempt_info={attempt_info}
+              task_info={task_info}
+              rating_info={rating_info}
+            />
+          ),
+          icon: <IconRobot color="var(--secondary)" />,
+          title: locale.profile.profile,
+          section: "profile",
+        },
+        {
+          page: <NotificationList />,
+          icon: (
+            <Indicator disabled={unviewed <= 0} size={8}>
+              <IconBellRinging color="var(--secondary)" />
+            </Indicator>
+          ),
+          title: locale.profile.notification,
+          section: "notifications",
+        },
+        {
+          page: <AssignmentList />,
+          icon: <IconChalkboard color="var(--secondary)" />,
+          title: locale.profile.assignments,
+          section: "assignments",
+        },
+        {
+          page: <AttemptListProfile />,
+          icon: <IconAlignRight color="var(--secondary)" />,
+          title: locale.profile.attempts,
+          section: "attempts",
+        },
+        {
+          page: <Settings user={user} />,
+          icon: <SettingsIcon color="var(--secondary)" />,
+          title: locale.profile.settings,
+          section: "settings",
+        },
+      ];
+  return links;
+};
 
 const Profile: FC<IFullProfileBundle> = ({
   user,
@@ -30,84 +151,24 @@ const Profile: FC<IFullProfileBundle> = ({
   rating_info,
 }) => {
   const { unviewed } = useBackNotifications();
-  const router = useRouter();
 
   const { locale } = useLocale();
 
   const { isTeacher } = useUser();
 
-  const links: IMenuLink[] = useMemo(() => {
-    let globalLinks = [
-      {
-        page: (
-          <ProfileInfo
-            user={user}
-            attempt_info={attempt_info}
-            task_info={task_info}
-            rating_info={rating_info}
-          />
-        ),
-        icon: <Robot color="var(--secondary)" />,
-        title: locale.profile.profile,
-      },
-      {
-        page: <NotificationList />,
-        icon: (
-          <Indicator disabled={unviewed <= 0} size={8}>
-            <BellRinging color="var(--secondary)" />
-          </Indicator>
-        ),
-        title: locale.profile.notification,
-        section: 'notifications',
-      },
-      {
-        page: <AssignmentList />,
-        icon: <Chalkboard color="var(--secondary)" />,
-        title: locale.profile.assignments,
-        section: 'assignments',
-      },
-      {
-        page: <AttemptListProfile />,
-        icon: <AlignRight color="var(--secondary)" />,
-        title: locale.profile.attempts,
-      },
-      {
-        page: <Settings user={user} />,
-        icon: <SettingsIcon color="var(--secondary)" />,
-        title: locale.profile.settings,
-      },
-    ];
-    if (isTeacher) {
-      globalLinks.splice(4, 0, {
-        page: <CreateNotification />,
-        icon: <BellPlus color="var(--secondary)" />,
-        title: locale.profile.createNotification,
-      });
-    }
-    return globalLinks;
-  }, [
-    user,
-    attempt_info,
-    task_info,
-    rating_info,
-    locale,
-    unviewed,
-    isTeacher,
-  ]);
-
-  const initialStep = useMemo(() => {
-    let section = router.query.section as string;
-    if (!section) return 0;
-    let idx = links.findIndex(
-      (element) => element.section == section
-    );
-    return idx > 0 ? idx : 0;
-  }, [links, router.query.section]);
+  const links = getLinks({
+    attempt_info: attempt_info,
+    isTeacher: isTeacher,
+    locale: locale,
+    rating_info: rating_info,
+    task_info: task_info,
+    unviewed: unviewed,
+    user: user,
+  });
 
   return (
     <LeftMenu
       links={links}
-      initialStep={initialStep}
       topContent={
         <div className={styles.header}>
           <UserAvatar login={user.login} />

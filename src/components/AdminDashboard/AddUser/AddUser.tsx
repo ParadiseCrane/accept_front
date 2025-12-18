@@ -1,30 +1,25 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import styles from './addUser.module.css';
-import { useForm } from '@mantine/form';
-import { Button, TextInput } from '@ui/basics';
-import { GroupSelector, SingleRoleSelector } from '@ui/selectors';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IRole } from '@custom-types/data/atomic';
-import { useRequest } from '@hooks/useRequest';
-import { useLocale } from '@hooks/useLocale';
-import { requestWithNotify } from '@utils/requestWithNotify';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
+import { Button, TextInput } from "@ui/basics";
+import { GroupSelector, SingleRoleSelector } from "@ui/selectors";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-const AddUser: FC<{}> = ({}) => {
+import styles from "./addUser.module.css";
+
+const AddUser: FC<{}> = () => {
   const form = useForm({
     initialValues: {
-      login: '',
-      name: '',
-      surname: '',
-      patronymic: '',
-      password: '',
-      role: '1',
+      login: "",
+      name: "",
+      surname: "",
+      patronymic: "",
+      password: "",
+      role: "1",
       groups: [],
     },
     validate: {
@@ -33,6 +28,8 @@ const AddUser: FC<{}> = ({}) => {
           ? locale.auth.errors.login.symbols
           : null,
       password: (value) =>
+        // TODO: Check
+        // eslint-disable-next-line no-useless-escape
         !value.match(/^[a-zA-Z\d\.]+$/)
           ? locale.auth.errors.password.symbols
           : null,
@@ -48,8 +45,7 @@ const AddUser: FC<{}> = ({}) => {
         !value.match(/^[a-zA-Zа-яА-ЯЁё -]*$/)
           ? locale.auth.errors.patronymic.invalid
           : null,
-      role: (value) =>
-        value.length == 0 ? locale.auth.errors.role : null,
+      role: (value) => (value.length == 0 ? locale.auth.errors.role : null),
     },
     validateInputOnBlur: true,
   });
@@ -61,7 +57,7 @@ const AddUser: FC<{}> = ({}) => {
       groups: IGroup[];
       roles: IRole[];
     }
-  >('user/addBundle', 'GET');
+  >("user/addBundle", "GET");
 
   const groups = useMemo(() => (data ? data.groups : []), [data]);
   const roles = useMemo(() => (data ? data.roles : []), [data]);
@@ -75,11 +71,11 @@ const AddUser: FC<{}> = ({}) => {
       role: +form.values.role,
     };
     requestWithNotify<any, undefined>(
-      'user/add',
-      'POST',
+      "user/add",
+      "POST",
       locale.notify.user.add,
       lang,
-      (_) => '',
+      (_) => "",
       user
     );
   }, [form, locale, lang]);
@@ -103,29 +99,29 @@ const AddUser: FC<{}> = ({}) => {
           <TextInput
             label={locale.auth.labels.login}
             placeholder={locale.auth.placeholders.login}
-            {...form.getInputProps('login')}
+            {...form.getInputProps("login")}
           />
           <TextInput
             label={locale.auth.labels.password}
             placeholder={locale.auth.placeholders.password}
-            {...form.getInputProps('password')}
+            {...form.getInputProps("password")}
           />
         </div>
         <div className={styles.fullName}>
           <TextInput
             label={locale.auth.labels.surname}
             placeholder={locale.auth.placeholders.surname}
-            {...form.getInputProps('surname')}
+            {...form.getInputProps("surname")}
           />
           <TextInput
             label={locale.auth.labels.name}
             placeholder={locale.auth.placeholders.name}
-            {...form.getInputProps('name')}
+            {...form.getInputProps("name")}
           />
           <TextInput
             label={locale.auth.labels.patronymic}
             placeholder={locale.auth.placeholders.patronymic}
-            {...form.getInputProps('patronymic')}
+            {...form.getInputProps("patronymic")}
           />
         </div>
         {!loading && (
@@ -143,7 +139,7 @@ const AddUser: FC<{}> = ({}) => {
                 form={form}
                 groups={groups}
                 initialGroups={initialGroups}
-                width={'80%'}
+                width={"80%"}
                 field="groups"
               />
             </div>

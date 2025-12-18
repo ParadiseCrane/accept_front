@@ -1,8 +1,10 @@
-import Logo from '../Logo/Logo';
-import Links from './Links/Links';
-import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { FC, memo } from 'react';
-import styles from './header.module.css';
+"use client";
+import { IHeaderLink } from "@custom-types/ui/IHeaderLink";
+import { FC, memo } from "react";
+
+import Logo from "../Logo/Logo";
+import styles from "./header.module.css";
+import Links from "./Links/Links";
 
 const Header: FC<{
   links: IHeaderLink[];

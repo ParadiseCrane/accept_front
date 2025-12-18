@@ -1,29 +1,22 @@
+"use client";
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
-} from '@custom-types/ui/IDraggableBoard';
-import { FC, memo } from 'react';
-import {
-  Draggable,
-  Droppable,
-  DroppableProps,
-} from 'react-beautiful-dnd';
-import styles from './itemList.module.css';
-import { concatClassNames } from '@utils/concatClassNames';
+} from "@custom-types/ui/IDraggableBoard";
+import { concatClassNames } from "@utils/concatClassNames";
+import { FC, memo } from "react";
+import { Draggable, Droppable, DroppableProps } from "react-beautiful-dnd";
+
+import styles from "./itemList.module.css";
 
 interface ItemListProps
-  extends Omit<DroppableProps, 'droppableId' | 'children'> {
+  extends Omit<DroppableProps, "droppableId" | "children"> {
   id: string;
   items: IDraggableBoardItem[];
   classNames?: CustomDraggableBoardClassNames;
 }
 
-const ItemList: FC<ItemListProps> = ({
-  id,
-  items,
-  classNames,
-  ...props
-}) => {
+const ItemList: FC<ItemListProps> = ({ id, items, classNames, ...props }) => {
   return (
     <Droppable type="ITEM" droppableId={id} {...props}>
       {(dropProvided, _dropSnapshot) => (
@@ -31,6 +24,7 @@ const ItemList: FC<ItemListProps> = ({
           // isDraggingOver={dropSnapshot.isDraggingOver}
           // isDropDisabled={props.isDropDisabled}
           // isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+          ref={dropProvided.innerRef}
           {...dropProvided.droppableProps}
         >
           <div
@@ -41,11 +35,7 @@ const ItemList: FC<ItemListProps> = ({
             )}
           >
             {items.map((item: IDraggableBoardItem, index: number) => (
-              <Draggable
-                key={index}
-                draggableId={item.id}
-                index={index}
-              >
+              <Draggable key={index} draggableId={item.id} index={index}>
                 {(dragProvided) => (
                   <div
                     className={concatClassNames(

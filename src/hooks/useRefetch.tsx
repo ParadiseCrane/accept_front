@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 interface IRequestData {
   loading: boolean;
@@ -20,9 +20,7 @@ export function useRefetch(
       setLoading(true);
       func()
         .then(() => {
-          setUpdatesCounter(
-            (counter) => (counter % COUNTER_LIMIT) + 1
-          );
+          setUpdatesCounter((counter) => (counter % COUNTER_LIMIT) + 1);
           setLoading(false);
         })
         .catch(() => {});

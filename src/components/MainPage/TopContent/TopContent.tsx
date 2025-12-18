@@ -1,9 +1,10 @@
-import { FC, memo } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import styles from './topContent.module.css';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import packageInfo from "package.json";
+import { FC, memo } from "react";
 
-import packageInfo from 'package.json';
-import Image from 'next/legacy/image';
+import styles from "./topContent.module.css";
+import Image from "next/image";
 
 const version = packageInfo.version;
 
@@ -14,16 +15,11 @@ const TopContent: FC = () => {
     <div className={styles.wrapper}>
       <div className={styles.content}>
         <div className={styles.logoWrapper}>
-          <Image
-            src={'/logo.svg'}
-            width="140"
-            height="140"
-            alt="logo"
-          ></Image>
+          <Image src={"/logo.svg"} width="140" height="140" alt="logo"></Image>
         </div>
         <div className={styles.info}>
           <div className={styles.title}>{locale.accept}</div>
-          <div className={styles.version}>{'v' + version}</div>
+          <div className={styles.version}>{"v" + version}</div>
         </div>
       </div>
     </div>

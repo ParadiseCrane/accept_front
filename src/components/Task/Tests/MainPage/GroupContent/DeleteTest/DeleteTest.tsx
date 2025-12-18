@@ -1,13 +1,14 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { Icon } from '@ui/basics';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
+"use client";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteTest: FC<{
   index: number;
@@ -20,10 +21,10 @@ const DeleteTest: FC<{
   const handleSubmit = useCallback(() => {
     requestWithNotify<undefined, boolean>(
       `task_test/delete/${test.spec}`,
-      'DELETE',
+      "DELETE",
       locale.notify.task_test.delete,
       lang,
-      (_: boolean) => '',
+      (_: boolean) => "",
       undefined,
       () => {
         refetch();
@@ -40,7 +41,7 @@ const DeleteTest: FC<{
         size="xs"
         tooltipLabel={locale.ui.taskTest.delete.test}
       >
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={opened}
@@ -48,9 +49,7 @@ const DeleteTest: FC<{
         title={`${locale.ui.taskTest.delete.test} #${index + 1}`}
       >
         <div className={modalStyles.verticalContent}>
-          <div>
-            {locale.ui.taskTest.deleteConfidence.test(index + 1)}
-          </div>
+          <div>{locale.ui.taskTest.deleteConfidence.test(index + 1)}</div>
           <SimpleButtonGroup
             reversePositive
             actionButton={{

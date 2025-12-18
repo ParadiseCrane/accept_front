@@ -1,21 +1,16 @@
-import { useLocale } from '@hooks/useLocale';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import styles from './roleSelector.module.css';
-import { IRole } from '@custom-types/data/atomic';
-import { capitalize } from '@utils/capitalize';
-import inputStyles from '@styles/ui/input.module.css';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import inputStyles from "@styles/ui/input.module.css";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { capitalize } from "@utils/capitalize";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+
+import styles from "./roleSelector.module.css";
 
 const RoleSelector: FC<{
   form: any;
@@ -24,23 +19,15 @@ const RoleSelector: FC<{
   field: string;
   shrink?: boolean;
   width?: string;
-}> = ({
-  form,
-  roles: allRoles,
-  initialRoles,
-  field,
-  shrink,
-  width,
-}) => {
+}> = ({ form, roles: allRoles, initialRoles, field, shrink, width }) => {
   const { locale } = useLocale();
 
   const initialRolesInner = useMemo(() => initialRoles, []); //eslint-disable-line
-  const [roles, setRoles] =
-    useState<ICustomTransferListData>(undefined);
+  const [roles, setRoles] = useState<ICustomTransferListData>(undefined);
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
-      if (!!!data) return;
+      if (!data) return;
       form.setFieldValue(
         field,
         data[1].map((role) => role.spec)
@@ -74,7 +61,7 @@ const RoleSelector: FC<{
         <div
           key={index}
           className={`${styles.itemWrapper} ${
-            shrink ? inputStyles.shrink : ''
+            shrink ? inputStyles.shrink : ""
           }`}
           onClick={onClick}
         >
@@ -97,7 +84,7 @@ const RoleSelector: FC<{
           locale.ui.roleSelector.selected,
         ]}
         itemComponent={itemComponent}
-        searchKeys={['name']}
+        searchKeys={["name"]}
         width={width}
       />
     </div>

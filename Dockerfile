@@ -1,60 +1,106 @@
-# Install dependencies only when needed
-FROM node:20-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+# syntax=docker/dockerfile:1.4
+# Accept Frontend - Next.js Application
+# Optimized multi-stage build for production deployment
+
+ARG NODE_VERSION=20
+
+###############################################################################
+# Stage 1: Dependencies - Install packages only
+###############################################################################
+FROM node:${NODE_VERSION}-alpine AS deps
+
+# Install libc6-compat for Next.js compatibility on Alpine
 RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-COPY ckeditor5-custom ./ckeditor5-custom
-RUN yarn install --frozen-lockfile
+# Copy package manifests
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
-# If using npm with a `package-lock.json` comment out above and use below instead
-# COPY package.json package-lock.json ./
-# RUN npm ci
+# Install dependencies based on available lock file
+RUN \
+  if [ -f yarn.lock ]; then \
+    corepack enable && yarn install --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then \
+    npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then \
+    corepack enable pnpm && pnpm install --frozen-lockfile; \
+  else \
+    echo "No lock file found" && exit 1; \
+  fi
 
-# Rebuild the source code only when needed
-FROM node:20-alpine AS builder
+###############################################################################
+# Stage 2: Builder - Build Next.js application
+###############################################################################
+FROM node:${NODE_VERSION}-alpine AS builder
+
 WORKDIR /app
+
+# Copy installed dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
+
+# Copy application source
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
+# Set build-time environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG API_ENDPOINT
+ARG NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NODE_ENV=${NODE_ENV} \
+    API_ENDPOINT=${API_ENDPOINT}
 
-RUN yarn build --no-lint
+# Build Next.js application
+RUN \
+  if [ -f yarn.lock ]; then \
+    yarn build; \
+  elif [ -f package-lock.json ]; then \
+    npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then \
+    corepack enable pnpm && pnpm build; \
+  fi
 
-# If using npm comment out above and use below instead
-# RUN npm run build
+###############################################################################
+# Stage 3: Runner - Minimal production image
+###############################################################################
+FROM node:${NODE_VERSION}-alpine AS runner
 
-# Production image, copy all the files and run next
-FROM node:20-alpine AS runner
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
 WORKDIR /app
 
-ENV NODE_ENV=production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED=1
+# Set production environment
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME="0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
+# Copy public assets (if they exist)
 COPY --from=builder /app/public ./public
 
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+# Create .next directory with proper permissions
+RUN mkdir .next && chown nextjs:nodejs .next
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+# Copy built application from standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Switch to non-root user
 USER nextjs
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 EXPOSE 3000
 
-ENV PORT=3000
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
-ENV HOSTNAME="0.0.0.0"
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start Next.js server
 CMD ["node", "server.js"]

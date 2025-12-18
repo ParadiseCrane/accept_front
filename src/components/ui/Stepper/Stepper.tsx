@@ -1,11 +1,12 @@
-import { useLocale } from '@hooks/useLocale';
-import { Center } from '@mantine/core';
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Stepper as MantineStepper } from '@mantine/core';
-import { AlertCircle } from 'tabler-icons-react';
-import { Button } from '@ui/basics';
-import { UseFormReturnType } from '@mantine/form';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Center } from "@mantine/core";
+import { Stepper as MantineStepper } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button } from "@ui/basics";
+import { FC, ReactNode, memo, useCallback, useState } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
 
 const Stepper: FC<{
   form: UseFormReturnType<any>;
@@ -17,7 +18,7 @@ const Stepper: FC<{
   labels: string[];
   descriptions: string[];
   customWrapper?: boolean;
-  iconPosition?: 'right' | 'left';
+  iconPosition?: "right" | "left";
   icons?: ReactNode[];
   initialStep?: number;
   noDefault?: boolean;
@@ -109,7 +110,7 @@ const Stepper: FC<{
             ? { content: contentClass }
             : { content: stepperStyles.wrapper }
         }
-        iconPosition={iconPosition || 'right'}
+        iconPosition={iconPosition || "right"}
         active={currentStep}
         onStepClick={onStepperChange}
         // breakpoint={1000}
@@ -121,15 +122,17 @@ const Stepper: FC<{
             description={descriptions[index]}
             icon={
               getErrorsStep(index) ? (
-                <AlertCircle color={'var(--negative)'} />
+                <IconAlertCircle color={"var(--negative)"} />
               ) : icons ? (
                 icons[index]
               ) : undefined
             }
             completedIcon={
-              getErrorsStep(index) ? <AlertCircle color={'white'} /> : undefined
+              getErrorsStep(index) ? (
+                <IconAlertCircle color={"white"} />
+              ) : undefined
             }
-            color={getErrorsStep(index) ? 'red' : undefined}
+            color={getErrorsStep(index) ? "red" : undefined}
           >
             {page}
           </MantineStepper.Step>

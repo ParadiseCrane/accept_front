@@ -1,5 +1,19 @@
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import {
+  IOrganization,
+  IOrganizationList,
+} from "@custom-types/data/IOrganization";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -8,30 +22,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { BaseSearch } from '@custom-types/data/request';
-import Fuse from 'fuse.js';
-import { customTableSort } from '@utils/customTableSort';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { IOrganization } from '@custom-types/data/IOrganization';
-
-interface Item {
-  // TODO: Move somewhere
-  value: any;
-  display: string | ReactNode;
-}
-
-interface IOrganizationList
-  extends Omit<IOrganization, 'name' | 'allowRegistration'> {
-  name: Item;
-  allowRegistration: Item;
-}
-
-const DEFAULT_ON_PAGE = 10; //TODO: Move to constants
+} from "react";
 
 const OrganizationList: FC<{
   url: string;
@@ -76,7 +67,7 @@ const OrganizationList: FC<{
     {},
     IOrganization[],
     IOrganizationList[]
-  >(url, 'GET', undefined, processData);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -85,8 +76,8 @@ const OrganizationList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['spec.value'],
+      search: "",
+      keys: ["spec.value"],
     },
   });
 
@@ -99,7 +90,7 @@ const OrganizationList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)

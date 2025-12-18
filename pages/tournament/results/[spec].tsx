@@ -1,14 +1,15 @@
-import { ReactNode } from 'react';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import Results from '@components/Dashboard/Results/Results';
-import { ITournament } from '@custom-types/data/ITournament';
-import { GetServerSideProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
-import { useUser } from '@hooks/useUser';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
-import styles from '@styles/results.module.css';
-import { getCookieValue } from '@utils/cookies';
+"use client";
+import Results from "@components/Dashboard/Results/Results";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import styles from "@styles/results.module.css";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import { ReactNode } from "react";
 
 function Tournament({ tournament }: { tournament: ITournament }) {
   const { user, isTeacher } = useUser();
@@ -27,7 +28,7 @@ function Tournament({ tournament }: { tournament: ITournament }) {
         <div className={styles.resultsWrapper}>
           <Results
             spec={tournament.spec}
-            type={'tournament'}
+            type={"tournament"}
             isFinished={tournament.status.spec == 2}
             endDate={tournament.end}
             full={isTeacher || (!!user && user?.login in tournament.moderators)}
@@ -52,14 +53,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
     headers: {
@@ -77,9 +75,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

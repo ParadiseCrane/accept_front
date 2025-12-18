@@ -1,40 +1,42 @@
-import { NextConfig } from 'next';
+import { NextConfig } from "next";
+
+const prod = process.env.NODE_ENV === "production";
+// const prod = 0;
 
 const nextConfig: NextConfig = {
-  // uncomment for docker deployment
-  // output: "standalone",
+  reactStrictMode: true,
+  output: prod ? "standalone" : undefined,
   typescript: {
-    // uncomment for docker deployment
-    // ignoreBuildErrors: true
+    ignoreBuildErrors: !!prod,
   },
-  modularizeImports: {
-    '@tabler/icons': {
-      transform: '@tabler/icons/{{member}}',
-    },
-  },
+  bundlePagesRouterDependencies: true,
   expireTime: 1800, // half hour
   experimental: {
     staticGenerationRetryCount: 1,
     staticGenerationMaxConcurrency: 3,
     staticGenerationMinPagesPerWorker: 25,
-    // optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    // optimizeCss: true,
+    reactCompiler: true,
+  },
+  compiler: {
+    styledComponents: true,
   },
   async rewrites() {
     return [
       {
-        source: '/profile',
+        source: "/profile",
         destination: `/profile/me`,
       },
       {
-        source: '/edu',
+        source: "/edu",
         destination: `/task/list`,
-      },
-      {
-        source: '/api/image/:slug*',
-        destination: `${process.env.API_ENDPOINT}/api/image_temp/:slug*`, //TODO: temp!
       },
     ];
   },
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer(nextConfig);

@@ -1,0 +1,11 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xs);
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}

@@ -1,5 +1,15 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { useRequest } from '@hooks/useRequest';
+"use client";
+import DeleteModal from "@components/Organization/DeleteModal/DeleteModal";
+import { ExecutorBundle, IExecutor } from "@custom-types/data/IExecutor";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
+import tableStyles from "@styles/ui/customTable.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
 import {
   Button,
   Icon,
@@ -8,34 +18,24 @@ import {
   TextArea,
   TextInput,
   Tip,
-} from '@ui/basics';
-import tableStyles from '@styles/ui/customTable.module.css';
-
-import { useForm } from '@mantine/form';
-import { requestWithError } from '@utils/requestWithError';
-import { ExecutorBundle, IExecutor } from '@custom-types/data/IExecutor';
-import { useLocale } from '@hooks/useLocale';
+} from "@ui/basics";
+import OrganizationList from "@ui/OrganizationList/OrganizationList";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import { isJSON } from "@utils/isJSON";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import modalStyles from '@styles/ui/modal.module.css';
-import { isJSON } from '@utils/isJSON';
-import OrganizationList from '@ui/OrganizationList/OrganizationList';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { Check, Pencil, Plus, X } from 'tabler-icons-react';
-import DeleteModal from '@components/Organization/DeleteModal/DeleteModal';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { IOrganization } from '@custom-types/data/IOrganization';
+} from "@utils/notificationFunctions";
+import { requestWithError } from "@utils/requestWithError";
+import { FC, memo, useCallback, useState } from "react";
+import { IconCheck, IconPencil, IconPlus, IconX } from "@tabler/icons-react";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.organization.list.spec,
-    key: 'spec',
+    key: "spec",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.spec.value > b.spec.value ? 1 : a.spec.value == b.spec.value ? 0 : -1,
@@ -47,7 +47,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.organization.list.name,
-    key: 'name',
+    key: "name",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.name.value > b.name.value ? 1 : a.name.value == b.name.value ? 0 : -1,
@@ -59,14 +59,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.organization.list.allowRegistration,
-    key: 'allowRegistration',
+    key: "allowRegistration",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.allowRegistration.value > b.allowRegistration.value
         ? 1
         : a.allowRegistration.value == b.allowRegistration.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -84,12 +84,12 @@ const refactorOrganization = (organization: IOrganization): any => ({
     value: organization.name,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <div style={{ color: 'var(--primary)' }}>{organization.name}</div>
+        <div style={{ color: "var(--primary)" }}>{organization.name}</div>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 'var(--spacer-xs)',
+            display: "flex",
+            flexDirection: "row",
+            gap: "var(--spacer-xs)",
           }}
         >
           <Icon
@@ -97,7 +97,7 @@ const refactorOrganization = (organization: IOrganization): any => ({
             size="xs"
             href={`/organization/edit/${organization.spec}`}
           >
-            <Pencil />
+            <IconPencil />
           </Icon>
           <DeleteModal organization={organization} />
         </div>
@@ -109,23 +109,23 @@ const refactorOrganization = (organization: IOrganization): any => ({
     display: (
       <div>
         {organization.allowRegistration ? (
-          <Check color="green" />
+          <IconCheck color="green" />
         ) : (
-          <X color="red" />
+          <IconX color="red" />
         )}
       </div>
     ),
   },
 });
 
-const Organizations: FC<{}> = ({}) => {
+const Organizations: FC<{}> = () => {
   const { locale } = useLocale();
 
   return (
     <div>
       <OrganizationList
         noDefault
-        url={'organization/list'}
+        url={"organization/list"}
         refactorOrganization={refactorOrganization}
         initialColumns={initialColumns}
       />
@@ -133,7 +133,7 @@ const Organizations: FC<{}> = ({}) => {
       <SingularSticky
         color="var(--positive)"
         href={`/organization/add`}
-        icon={<Plus height={25} width={25} />}
+        icon={<IconPlus height={25} width={25} />}
         description={locale.tip.sticky.group.add}
       />
     </div>

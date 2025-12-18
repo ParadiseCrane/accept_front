@@ -1,17 +1,19 @@
-import { ActionIcon, Affix, Transition } from '@mantine/core';
-import { useClickOutside } from '@mantine/hooks';
-import { FC, ReactNode, memo, useState } from 'react';
-import ActionButton from './ActionButton/ActionButton';
-import styles from './sticky.module.css';
-import { DotsVertical, X } from 'tabler-icons-react';
-import { setter } from '@custom-types/ui/atomic';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { useWidth } from '@hooks/useWidth';
+"use client";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { pureCallback, setter } from "@custom-types/ui/atomic";
+import { useWidth } from "@hooks/useWidth";
+import { ActionIcon, Affix, Transition } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
+import { FC, ReactNode, memo, useState } from "react";
+import { IconDotsVertical, IconX } from "@tabler/icons-react";
+
+import ActionButton from "./ActionButton/ActionButton";
+import styles from "./sticky.module.css";
 
 export interface IStickyAction {
   icon: ReactNode;
   color: string;
-  onClick?: setter<any>;
+  onClick?: pureCallback;
   href?: string;
   description: string;
   hide?: boolean;
@@ -26,18 +28,14 @@ const Sticky: FC<{
   const ref = useClickOutside(() => setVisible(false));
   const { width } = useWidth();
   return (
-    <Affix
-      ref={ref}
-      zIndex={199}
-      position={{ bottom: 20, right: 20 }}
-    >
+    <Affix ref={ref} zIndex={199} position={{ bottom: 20, right: 20 }}>
       <Transition transition="slide-up" mounted={visible}>
         {(transitionStyles) => (
           <div className={styles.wrapper} style={transitionStyles}>
             {actions
               .filter((item) => !item.hide)
               .map((action, index) => (
-                <ActionButton key={index} action={action} />
+                <ActionButton key={index} action={action} sizeRatio={0.7} />
               ))}
           </div>
         )}
@@ -48,16 +46,16 @@ const Sticky: FC<{
         size={STICKY_SIZES[width]}
         className={classNames?.button}
         onClick={() => setVisible((visible) => !visible)}
-        style={{ backgroundColor: color || 'var(--secondary)' }}
+        style={{ backgroundColor: color || "var(--secondary)" }}
       >
         {!visible && (
-          <DotsVertical
+          <IconDotsVertical
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
         )}
         {visible && (
-          <X
+          <IconX
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />

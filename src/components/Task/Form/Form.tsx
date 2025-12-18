@@ -1,41 +1,50 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useEffect } from 'react';
-import Tests from '@components/Task/Form/Tests/Tests';
-import Checker from '@components/Task/Form/Checker/Checker';
-import Preview from '@components/Task/Form/Preview/Preview';
-import MainInfo from '@components/Task/Form/MainInfo/MainInfo';
-import DescriptionInfo from '@components/Task/Form/DescriptionInfo/DescriptionInfo';
-import ConstraintsInfo from '@components/Task/Form/ConstraintsInfo/ConstraintsInfo';
-import Examples from '@components/Task/Form/Examples/Examples';
-import { callback } from '@custom-types/ui/atomic';
+"use client";
+import Checker from "@components/Task/Form/Checker/Checker";
+import ConstraintsInfo from "@components/Task/Form/ConstraintsInfo/ConstraintsInfo";
+import DescriptionInfo from "@components/Task/Form/DescriptionInfo/DescriptionInfo";
+import Examples from "@components/Task/Form/Examples/Examples";
+import MainInfo from "@components/Task/Form/MainInfo/MainInfo";
+import Preview from "@components/Task/Form/Preview/Preview";
+import Tests from "@components/Task/Form/Tests/Tests";
 import {
   IHintAlarmType,
   ITaskCheckType,
   ITaskTestData,
   ITaskType,
-} from '@custom-types/data/atomic';
-import Stepper from '@ui/Stepper/Stepper';
-import { UseFormReturnType, useForm } from '@mantine/form';
+} from "@custom-types/data/atomic";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { FC, memo, useEffect } from "react";
 
 const stepFields = [
-  ['title', 'tags', 'complexity', 'taskType', 'checkType', 'hasHint'],
   [
-    'shouldRestrictLanguages',
-    'allowedLanguages',
-    'forbiddenLanguages',
-    'constraintsTime',
-    'constraintsMemory',
+    "title",
+    "tags",
+    "complexity",
+    "taskType",
+    "checkType",
+    "hasHint",
+    "training",
   ],
   [
-    'description',
-    'inputFormat',
-    'outputFormat',
-    'remark',
-    'hintAlarm',
-    'hintContent',
+    "shouldRestrictLanguages",
+    "allowedLanguages",
+    "forbiddenLanguages",
+    "constraintsTime",
+    "constraintsMemory",
   ],
-  ['examples'],
-  ['checkerLang', 'checkerCode'],
+  [
+    "description",
+    "inputFormat",
+    "outputFormat",
+    "remark",
+    "hintAlarm",
+    "hintContent",
+  ],
+  ["examples"],
+  ["checkerLang", "checkerCode"],
   [],
 ];
 
@@ -64,17 +73,11 @@ const Form: FC<{
       tags: (value) =>
         value.length < 1 ? locale.task.form.validation.tags : null,
       description: (value) =>
-        value.length < 20
-          ? locale.task.form.validation.description
-          : null,
+        value.length < 20 ? locale.task.form.validation.description : null,
       inputFormat: (value) =>
-        value.length == 0
-          ? locale.task.form.validation.inputFormat
-          : null,
+        value.length == 0 ? locale.task.form.validation.inputFormat : null,
       outputFormat: (value) =>
-        value.length == 0
-          ? locale.task.form.validation.outputFormat
-          : null,
+        value.length == 0 ? locale.task.form.validation.outputFormat : null,
       constraintsMemory: (value) =>
         value < 0 || value > 1024
           ? locale.task.form.validation.constraints.memory
@@ -99,7 +102,7 @@ const Form: FC<{
           ? locale.task.form.validation.examples.empty
           : null,
       checkerCode: (value, values) =>
-        values.checkType == '1' && value.length == 0
+        values.checkType == "1" && value.length == 0
           ? locale.task.form.validation.checkerCode
           : null,
       hintContent: (value, values) =>
@@ -140,14 +143,10 @@ const Form: FC<{
         ) : (
           <>{locale.task.form.steps.emptyStep}</>
         ),
-        <DescriptionInfo
-          key="2"
-          form={form}
-          hintAlarmTypes={hintAlarmTypes}
-        />,
+        <DescriptionInfo key="2" form={form} hintAlarmTypes={hintAlarmTypes} />,
         <Examples key="3" form={form} />,
         <>
-          {form.values.checkType === '0' ? (
+          {form.values.checkType === "0" ? (
             <Tests key="4" />
           ) : (
             <Checker key="4" form={form} />

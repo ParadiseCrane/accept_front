@@ -1,33 +1,25 @@
-import { FC } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { Button } from '@ui/basics';
-import { useUser } from '@hooks/useUser';
-import { useRouter } from 'next/router';
-import ProfileMenu from '@ui/ProfileMenu/ProfileMenu';
+"use client";
 
-const SignIn: FC = () => {
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Button } from "@ui/basics";
+import ProfileMenu from "@ui/ProfileMenu/ProfileMenu";
+import { usePathname } from "next/navigation";
+import { FC } from "react";
+
+const SignIn: FC<{ size?: "md" | "lg" }> = ({ size = "lg" }) => {
   const { locale } = useLocale();
-  const router = useRouter();
+  const path = usePathname();
   const { user } = useUser();
 
   return (
     <>
       {!user ? (
-        <Button
-          kind="header"
-          onClick={() =>
-            router.push({
-              pathname: '/signin',
-              query: {
-                referrer: router.asPath,
-              },
-            })
-          }
-        >
+        <Button kind="header" href={`/signin?referrer=${path}`}>
           {locale.mainHeaderLinks.signIn}
         </Button>
       ) : (
-        <ProfileMenu />
+        <ProfileMenu size={size} />
       )}
     </>
   );

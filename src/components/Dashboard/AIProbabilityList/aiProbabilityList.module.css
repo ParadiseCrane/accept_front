@@ -1,0 +1,39 @@
+.headerCell,
+.cell {
+  padding: var(--spacer-s);
+  border-bottom: solid 1px #3a3a3a;
+}
+
+.cell {
+  font-size: var(--font-size-s);
+}
+
+.headerCell {
+  font-size: var(--font-size-m);
+  user-select: none;
+  border-bottom: solid 2px black;
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-xxs);
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.taskLink {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.taskLink:hover {
+  color: var(--secondary);
+}
+
+.selectors {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xl);
+}
+
+.red {
+  color: var(--negative);
+}

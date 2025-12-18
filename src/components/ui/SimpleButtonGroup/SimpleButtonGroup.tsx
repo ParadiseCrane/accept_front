@@ -1,9 +1,10 @@
-import { callback } from '@custom-types/ui/atomic';
-import { MyButtonProps } from '@custom-types/ui/basics/button';
-import { useLocale } from '@hooks/useLocale';
-import { Group } from '@mantine/core';
-import { Button } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
+import { MyButtonProps } from "@custom-types/ui/basics/button";
+import { useLocale } from "@hooks/useLocale";
+import { Group } from "@mantine/core";
+import { Button } from "@ui/basics";
+import { FC, memo } from "react";
 
 interface ButtonInfo {
   label?: string;
@@ -22,7 +23,7 @@ const SimpleButtonGroup: FC<{
     <Group align="right" gap="lg">
       <Button
         variant="outline"
-        kind={reversePositive ? 'positive' : 'negative'}
+        kind={reversePositive ? "positive" : "negative"}
         shrink
         onClick={cancelButton.onClick}
         autoFocus
@@ -32,7 +33,7 @@ const SimpleButtonGroup: FC<{
       </Button>
       <Button
         variant="outline"
-        kind={reversePositive ? 'negative' : 'positive'}
+        kind={reversePositive ? "negative" : "positive"}
         shrink
         onClick={actionButton.onClick}
         {...actionButton.props}

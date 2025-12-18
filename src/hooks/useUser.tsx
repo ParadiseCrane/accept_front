@@ -1,12 +1,14 @@
-import { accessLevels } from '@constants/protectedRoutes';
+"use client";
+
+import { accessLevels } from "@constants/protectedRoutes";
 import {
   IUserContext,
   IUserOrgDisplay,
   IUserOrganization,
   IWhoAmIResponse,
-} from '@custom-types/data/IUser';
-import { isSuccessful, sendRequest } from '@requests/request';
-import { clearCookie, getCookie, setCookie } from '@utils/cookies';
+} from "@custom-types/data/IUser";
+import { isSuccessful, sendRequest } from "@requests/request";
+import { clearCookie, getCookie, setCookie } from "@utils/cookies";
 import {
   FC,
   ReactNode,
@@ -15,27 +17,26 @@ import {
   useContext,
   useEffect,
   useState,
-} from 'react';
+} from "react";
 
 const UserContext = createContext<IUserContext>(null!);
 
-export const UserProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const CHECK_INTERVAL = 1000;
+  const [token, setToken] = useState<string | null>(null);
+
   const whoAmI = useCallback(async () => {
-    const cookie_user = getCookie('user');
-    const cookie_accounts = getCookie('accounts');
+    const cookie_user = getCookie("user");
+    const cookie_accounts = getCookie("accounts");
 
     // if user is saved
     if (
-      typeof cookie_user === 'string' &&
-      typeof cookie_accounts === 'string'
+      typeof cookie_user === "string" &&
+      typeof cookie_accounts === "string"
     ) {
       try {
         const user = JSON.parse(cookie_user) as IUserOrgDisplay;
-        const accounts = JSON.parse(
-          cookie_accounts
-        ) as IUserOrganization[];
+        const accounts = JSON.parse(cookie_accounts) as IUserOrganization[];
 
         setValue((prev) => ({
           ...prev,
@@ -47,20 +48,16 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
           isStudent: user.role.accessLevel >= accessLevels.student,
           isTeacher: user.role.accessLevel >= accessLevels.teacher,
           isAdmin: user.role.accessLevel >= accessLevels.admin,
-          isDeveloper:
-            user.role.accessLevel >= accessLevels.developer,
+          isDeveloper: user.role.accessLevel >= accessLevels.developer,
         }));
       } catch (error) {
-        setCookie('user', '', { 'max-age': 0 });
+        setCookie("user", "", { "max-age": 0 });
         whoAmI();
       }
       return;
     }
     // fetch whoami
-    const res = await sendRequest<{}, IWhoAmIResponse>(
-      'auth/whoami',
-      'GET'
-    );
+    const res = await sendRequest<any, IWhoAmIResponse>("auth/whoami", "GET");
     // if error empty current data
     if (res.error) {
       setValue((prev) => ({
@@ -80,14 +77,14 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     const user = res.response.current_user;
     const accounts = res.response.users;
     const accessLevel = user.role.accessLevel;
-    setCookie('user', JSON.stringify(user), {
-      Path: '/',
-      SameSite: 'Strict',
+    setCookie("user", JSON.stringify(user), {
+      Path: "/",
+      SameSite: "Strict",
     });
 
-    setCookie('accounts', JSON.stringify(accounts), {
-      Path: '/',
-      SameSite: 'Strict',
+    setCookie("accounts", JSON.stringify(accounts), {
+      Path: "/",
+      SameSite: "Strict",
     });
 
     setValue((prev) => ({
@@ -106,7 +103,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refresh = useCallback(async () => {
-    const res = await isSuccessful('auth/refresh', 'GET');
+    const res = await isSuccessful("auth/refresh", "GET");
     if (!res.error) {
       await whoAmI();
     }
@@ -114,7 +111,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
 
   const signIn = useCallback(
     async (organization: string, login: string, password: string) => {
-      const res = await isSuccessful('auth/signin', 'POST', {
+      const res = await isSuccessful("auth/signin", "POST", {
         organization,
         login,
         password,
@@ -129,13 +126,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   );
 
   const signOut = useCallback(async () => {
-    const res = await isSuccessful('auth/signout', 'GET');
+    const res = await isSuccessful("auth/signout", "GET");
     if (!res.error) {
-      clearCookie('access_token');
-      clearCookie('refresh_token');
-      clearCookie('session_id');
-      clearCookie('accounts');
-      clearCookie('user');
+      clearCookie("access_token");
+      clearCookie("refresh_token");
+      clearCookie("session_id");
+      clearCookie("accounts");
+      clearCookie("user");
       setValue((prev) => ({
         ...prev,
         authorized: false,
@@ -154,11 +151,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const refreshAccess = useCallback(() => {
-    if (!!getCookie('access_token')) {
+    if (getCookie("access_token")) {
       whoAmI();
       return 0;
     }
-    if (!!getCookie('refresh_token')) {
+    if (getCookie("refresh_token")) {
       refresh();
       return 1;
     }
@@ -178,11 +175,11 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }, [refresh, whoAmI]);
 
   const checkTokensExpiration = useCallback(async () => {
-    if (!!!getCookie('refresh_token')) {
+    if (!getCookie("refresh_token")) {
       await whoAmI();
       return;
     }
-    if (!!!getCookie('access_token')) {
+    if (!getCookie("access_token")) {
       await refresh();
       return;
     }
@@ -212,14 +209,20 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   }));
 
   useEffect(() => {
-    refreshAccess();
-  }, [refreshAccess]);
+    const id = setInterval(() => {
+      const newValue = getCookie("access_token");
+      if (newValue !== token) {
+        setToken(newValue ?? null);
+      }
+    }, CHECK_INTERVAL);
+    return () => clearInterval(id);
+  }, [token, CHECK_INTERVAL]);
 
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
-  );
+  useEffect(() => {
+    refreshAccess();
+  }, [refreshAccess, token]);
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export function useUser() {

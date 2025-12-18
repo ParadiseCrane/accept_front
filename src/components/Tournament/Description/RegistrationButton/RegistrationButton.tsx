@@ -1,7 +1,9 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { FC, memo } from 'react';
-import CancelRegistration from './CancelRegistration/CancelRegistration';
-import Register from './Register/Register';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { FC, memo } from "react";
+
+import CancelRegistration from "./CancelRegistration/CancelRegistration";
+import Register from "./Register/Register";
 
 const RegistrationButton: FC<{
   spec: string;
@@ -36,9 +38,7 @@ const RegistrationButton: FC<{
           (status === 0 || allowRegistrationAfterStart) && (
             <Register
               spec={spec}
-              allowRegistrationAfterStart={
-                allowRegistrationAfterStart
-              }
+              allowRegistrationAfterStart={allowRegistrationAfterStart}
               onRegistration={onRegistration}
               withPin={withPin}
               maxTeamSize={maxTeamSize}

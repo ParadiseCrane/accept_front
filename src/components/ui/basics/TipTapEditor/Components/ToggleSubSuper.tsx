@@ -1,33 +1,39 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { Subscript, Superscript } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { IconSubscript, IconSuperscript } from "@tabler/icons-react";
+
+import { IconWrapper } from "./IconWrapper";
 
 export const ToggleSubscript = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('subscript') : false;
+  const isActive = editor.isFocused ? editor.isActive("subscript") : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().unsetSuperscript().toggleSubscript().run();
       }}
-      aria-label="Toggle subscript"
-      title="Toggle subscript"
+      aria-label={locale.tiptap.subscript}
+      title={locale.tiptap.subscript}
     >
-      <Subscript style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={IconSubscript} />
     </RichTextEditor.Control>
   );
 };
 
 export const ToggleSuperscript = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('superscript') : false;
+  const isActive = editor.isFocused ? editor.isActive("superscript") : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().unsetSubscript().toggleSuperscript().run();
       }}
-      aria-label="Toggle superscript"
-      title="Toggle superscript"
+      aria-label={locale.tiptap.superscript}
+      title={locale.tiptap.superscript}
     >
-      <Superscript style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={IconSuperscript} />
     </RichTextEditor.Control>
   );
 };

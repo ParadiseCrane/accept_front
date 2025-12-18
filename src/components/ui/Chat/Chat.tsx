@@ -1,15 +1,17 @@
-import { Icon } from '@ui/basics';
-import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Send } from 'tabler-icons-react';
-import styles from './chat.module.css';
-import { IChatMessage } from '@custom-types/data/IMessage';
-import { Textarea } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { getLocalDate } from '@utils/datetime';
-import { sendRequest } from '@requests/request';
-import { useLongPooling } from '@hooks/useLongPooling';
-import { getHotkeyHandler } from '@mantine/hooks';
-import { IActivity } from '@custom-types/data/atomic';
+"use client";
+import { IActivity } from "@custom-types/data/atomic";
+import { IChatMessage } from "@custom-types/data/IMessage";
+import { useLocale } from "@hooks/useLocale";
+import { useLongPooling } from "@hooks/useLongPooling";
+import { Textarea } from "@mantine/core";
+import { getHotkeyHandler } from "@mantine/hooks";
+import { sendRequest } from "@requests/request";
+import { Icon } from "@ui/basics";
+import { getLocalDate } from "@utils/datetime";
+import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
+import { IconSend } from "@tabler/icons-react";
+
+import styles from "./chat.module.css";
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -20,6 +22,7 @@ const Chat: FC<{
   host: string;
   wrapperStyles: any;
   moderator?: boolean;
+  group_spec?: any;
 }> = ({
   indicateNew,
   opened,
@@ -29,10 +32,11 @@ const Chat: FC<{
   isMessageMine,
   wrapperStyles,
   moderator,
+  group_spec,
 }) => {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<IChatMessage[]>([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const textArea = useRef<HTMLTextAreaElement>(null);
   const messagesDiv = useRef<HTMLDivElement>(null!);
@@ -62,11 +66,12 @@ const Chat: FC<{
 
   const fetchMessages = useCallback(
     (skip: boolean) => {
-      return sendRequest<{}, IChatMessage[]>(`chat/new/${skip}`, 'POST', {
+      return sendRequest<{}, IChatMessage[]>(`chat/new/${skip}`, "POST", {
         entity,
         spec,
         host,
         moderator: !!moderator,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then((res) => {
         if (!res.error) {
           appendMessages(res.response);
@@ -74,57 +79,60 @@ const Chat: FC<{
         }
       });
     },
-    [entity, spec, host, moderator, appendMessages, indicateNew]
+    [entity, spec, host, moderator, appendMessages, indicateNew, group_spec]
   );
 
   const handleSend = useCallback(() => {
-    if (message.trim() === '') return;
+    if (message.trim() === "") return;
     let localMessage = message;
-    setMessage('');
-    sendRequest<{}, IChatMessage>('chat', 'POST', {
+    setMessage("");
+    sendRequest<{}, IChatMessage>("chat", "POST", {
       entity,
       spec,
       host,
       moderator: !!moderator,
       content: localMessage,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         appendMessages([res.response]);
       }
     });
-  }, [entity, spec, host, moderator, message, appendMessages]);
+  }, [entity, spec, host, moderator, message, appendMessages, group_spec]);
 
   useEffect(() => {
     if (opened && newMessages.length > 0)
-      sendRequest<{}, boolean>('/chat/viewed', 'POST', {
+      sendRequest<{}, boolean>("/chat/viewed", "POST", {
         specs: newMessages,
         entity,
         spec,
         moderator: !!moderator,
+        additional_info: group_spec ? { group_spec: group_spec } : null,
       }).then(() => setNewMessages([]));
-  }, [opened, newMessages, entity, moderator, spec]);
+  }, [opened, newMessages, entity, moderator, spec, group_spec]);
 
   useEffect(() => {
     if (firstFetchDone || !opened) return;
     setFirstFetchDone(true);
-    sendRequest<{}, IChatMessage[]>('chat/all', 'POST', {
+    sendRequest<{}, IChatMessage[]>("chat/all", "POST", {
       entity,
       spec,
       host,
       moderator: !!moderator,
+      additional_info: group_spec ? { group_spec: group_spec } : null,
     }).then((res) => {
       if (!res.error) {
         setMessages(res.response);
         setTimeout(() => {
           if (messagesDiv.current) {
-            messagesDiv.current.style.scrollBehavior = 'auto';
+            messagesDiv.current.style.scrollBehavior = "auto";
             messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
-            messagesDiv.current.style.scrollBehavior = 'smooth';
+            messagesDiv.current.style.scrollBehavior = "smooth";
           }
         }, 100);
       }
     });
-  }, [entity, host, moderator, opened, firstFetchDone, spec]);
+  }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
   useLongPooling(fetchMessages, refetchIntervalSeconds);
 
@@ -134,7 +142,7 @@ const Chat: FC<{
         {messages.map((message, index) => (
           <div
             className={`${styles.messageWrapper} ${
-              isMessageMine(message) ? styles.own : ''
+              isMessageMine(message) ? styles.own : ""
             }`}
             key={index}
           >
@@ -153,15 +161,15 @@ const Chat: FC<{
           ref={textArea}
           styles={{
             root: {
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
               padding: 0,
             },
-            wrapper: { height: '100%' },
+            wrapper: { height: "100%" },
             input: {
-              height: '100%',
-              border: 'none',
-              fontSize: 'var(--font-size-s)',
+              height: "100%",
+              border: "none",
+              fontSize: "var(--font-size-s)",
             },
           }}
           classNames={{
@@ -172,12 +180,12 @@ const Chat: FC<{
           placeholder={locale.placeholders.chat}
           onKeyDown={getHotkeyHandler([
             [
-              'Shift+Enter',
+              "Shift+Enter",
               () => {
-                setMessage((message) => message + '\n');
+                setMessage((message) => message + "\n");
               },
             ],
-            ['Enter', handleSend],
+            ["Enter", handleSend],
           ])}
           minRows={1}
           maxRows={3}
@@ -186,11 +194,11 @@ const Chat: FC<{
         <Icon
           className={styles.button}
           onClick={handleSend}
-          size={'sm'}
+          size={"sm"}
           color="var(--primary)"
           wrapperClassName={styles.iconWrapper}
         >
-          <Send />
+          <IconSend />
         </Icon>
       </div>
     </div>

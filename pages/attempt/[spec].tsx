@@ -1,42 +1,56 @@
-import { ReactNode, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { getApiUrl } from '@utils/getServerUrl';
-import { Tabs } from '@ui/basics';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import Info from '@components/Attempt/Info/Info';
-import Code from '@components/Attempt/Code/Code';
-import Title from '@ui/Title/Title';
-import { IAttempt } from '@custom-types/data/IAttempt';
-import styles from '@styles/attempt.module.css';
-import TextAnswer from '@components/Attempt/TextAnswer/TextAnswer';
-import BanModal from '@components/Attempt/BanModals/BanModal';
-import UnbanModal from '@components/Attempt/BanModals/UnbanModal';
-import { useRequest } from '@hooks/useRequest';
-import { getCookieValue } from '@utils/cookies';
+"use client";
+import BanModal from "@components/Attempt/BanModals/BanModal";
+import UnbanModal from "@components/Attempt/BanModals/UnbanModal";
+import Code from "@components/Attempt/Code/Code";
+import Info from "@components/Attempt/Info/Info";
+import TextAnswer from "@components/Attempt/TextAnswer/TextAnswer";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import { IRightsPayload } from "@custom-types/data/rights";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import styles from "@styles/attempt.module.css";
+import { Tabs } from "@ui/basics";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import { ReactNode, useMemo } from "react";
+
+function uuidToNumber(uuid: string): number {
+  const clean = uuid.replace(/-/g, "");
+  const hashInt = parseInt(clean.slice(0, 12), 16);
+
+  return (hashInt % 14) + 3;
+}
 
 function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
 
   const { locale } = useLocale();
 
-  const { data, loading, error } = useRequest<{}, boolean>(
-    `attempt/can_ban/${attempt.spec}`,
-    'GET'
-  );
+  const {
+    data: canBan,
+    loading,
+    error,
+  } = useRequest<{}, boolean>(`rights`, "POST", {
+    entity: "attempt",
+    entity_spec: "",
+    action: "ban",
+  } as IRightsPayload);
 
   const pages = useMemo(
     () => [
       {
-        value: 'info',
+        value: "info",
         title: locale.attempt.pages.info,
         page: (_: string | null, __: setter<string | null>) => (
           <Info attempt={attempt} />
         ),
       },
       {
-        value: 'code',
+        value: "code",
         title: locale.attempt.pages.code,
         page: (_: string | null, __: setter<string | null>) => (
           <>
@@ -56,7 +70,7 @@ function Attempt(props: { attempt: IAttempt }) {
     <div className={styles.wrapper}>
       <Title title={`${locale.titles.attempt} ${attempt.author.login}`} />
 
-      {!loading && !error && data && (
+      {!loading && !error && canBan && (
         <>
           {attempt.status.spec != 3 ? (
             <BanModal attempt={attempt} />
@@ -66,7 +80,7 @@ function Attempt(props: { attempt: IAttempt }) {
         </>
       )}
 
-      <Tabs pages={pages} defaultPage={'info'} />
+      <Tabs pages={pages} defaultPage={"info"} />
     </div>
   );
 }
@@ -85,17 +99,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/attempt/${spec}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
@@ -103,14 +114,19 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   if (response.status === 200) {
-    const res = await response.json();
+    const res: IAttempt = await response.json();
     return {
       props: {
-        attempt: res,
+        attempt: {
+          ...res,
+          // TODO mocked method убрать после привязки бэка
+          ai_generated: uuidToNumber(res.spec),
+          training: true,
+        } as IAttempt,
       },
     };
   }
-  if (response.status) {
+  if (response.status && response.status !== 404) {
     return {
       redirect: {
         permanent: false,
@@ -119,9 +135,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: `/404`,
-    },
+    notFound: true,
   };
 };

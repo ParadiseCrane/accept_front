@@ -1,29 +1,28 @@
-import { FC, memo, useEffect, useState } from 'react';
-import CodeArea from '@ui/CodeArea/CodeArea';
-import { Select } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
-import styles from './checker.module.css';
-import { ILanguage } from '@custom-types/data/atomic';
-import { sendRequest } from '@requests/request';
-import Tests from '../Tests/Tests';
+"use client";
+import { ILanguage } from "@custom-types/data/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { Select } from "@ui/basics";
+import CodeArea from "@ui/CodeArea/CodeArea";
+import { FC, memo, useEffect, useState } from "react";
 
-const defaultLangSpec = '0';
+import Tests from "../Tests/Tests";
+import styles from "./checker.module.css";
+
+const defaultLangSpec = "0";
 
 const Checker: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
   const [languages, setLanguages] = useState<ILanguage[]>([]);
 
   useEffect(() => {
-    sendRequest<{}, ILanguage[]>(
-      'language',
-      'GET',
-      undefined,
-      60000
-    ).then((res) => {
-      if (!res.error) {
-        setLanguages(res.response);
+    sendRequest<{}, ILanguage[]>("language", "GET", undefined, 60000).then(
+      (res) => {
+        if (!res.error) {
+          setLanguages(res.response);
+        }
       }
-    });
+    );
   }, []);
 
   return (
@@ -37,8 +36,8 @@ const Checker: FC<{ form: any }> = ({ form }) => {
             value: lang.spec.toString(),
           }))}
           required
-          onBlur={() => form.validateField('checkerLang')}
-          {...form.getInputProps('checkerLang')}
+          onBlur={() => form.validateField("checkerLang")}
+          {...form.getInputProps("checkerLang")}
         />
         <CodeArea
           languages={languages}
@@ -51,14 +50,10 @@ const Checker: FC<{ form: any }> = ({ form }) => {
             </div>
           }
           label={locale.task.form.checker}
-          setLanguage={(value) =>
-            form.setFieldValue('checkerLang', value)
-          }
-          setCode={(value) =>
-            form.setFieldValue('checkerCode', value)
-          }
+          setLanguage={(value) => form.setFieldValue("checkerLang", value)}
+          setCode={(value) => form.setFieldValue("checkerCode", value)}
           formProps={{
-            ...form.getInputProps('checkerCode'),
+            ...form.getInputProps("checkerCode"),
           }}
           placeholder={locale.helpers.task.checkerPlaceholder}
         />

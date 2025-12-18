@@ -4,9 +4,9 @@ import {
   ILanguage,
   ITestResult,
   ITestResultDisplay,
-} from './atomic';
-import { ITaskBaseInfo } from './ITask';
-import { IUserDisplay } from './IUser';
+} from "./atomic";
+import { ITaskBaseInfo } from "./ITask";
+import { IUserDisplay } from "./IUser";
 
 export interface IAttemptDisplay {
   spec: string;
@@ -16,6 +16,8 @@ export interface IAttemptDisplay {
   verdict?: ITestResultDisplay;
   task: ITaskBaseInfo;
   author: string;
+  ai_generated?: number;
+  is_ai_generated?: boolean;
 }
 
 export interface IBanInfo {
@@ -37,4 +39,12 @@ export interface IAttempt {
   task: ITaskBaseInfo;
   author: IUserDisplay;
   banInfo?: IBanInfo;
+  ai_generated?: number;
+  is_ai_generated?: boolean;
+  training: boolean;
+}
+
+export interface IAIHint {
+  content: string;
+  is_useful?: boolean;
 }

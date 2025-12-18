@@ -1,11 +1,12 @@
-import { FC, memo } from 'react';
-import inputStyles from '@styles/ui/input.module.css';
+"use client";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
 import {
   PasswordInput as MantinePasswordInput,
   PasswordInputProps,
-} from '@mantine/core';
-import { InputLabel } from '@ui/basics';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
+} from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { InputLabel } from "@ui/basics";
+import { FC, memo } from "react";
 
 interface Props extends PasswordInputProps {
   helperContent?: IDropdownContent;

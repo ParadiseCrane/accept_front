@@ -1,9 +1,11 @@
-import { FC, memo } from 'react';
-import inputStyles from '@styles/ui/input.module.css';
-import { Textarea as MantineTextarea } from '@mantine/core';
-import { InputLabel } from '@ui/basics';
-import styles from './textArea.module.css';
-import { TextAreaProps } from '@custom-types/ui/basics/textArea';
+"use client";
+import { TextAreaProps } from "@custom-types/ui/basics/textArea";
+import { Textarea as MantineTextarea } from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { InputLabel } from "@ui/basics";
+import { FC, memo } from "react";
+
+import styles from "./textArea.module.css";
 
 const TextArea: FC<TextAreaProps> = ({
   helperContent,
@@ -16,7 +18,7 @@ const TextArea: FC<TextAreaProps> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
     >
       <InputLabel
         label={label}
@@ -24,7 +26,7 @@ const TextArea: FC<TextAreaProps> = ({
         required={required}
       />
       <MantineTextarea
-        size={shrink ? 'md' : 'lg'}
+        size={shrink ? "md" : "lg"}
         ref={inputRef}
         {...props}
         classNames={{
@@ -33,7 +35,7 @@ const TextArea: FC<TextAreaProps> = ({
           input:
             // @ts-ignore
             props?.classNames?.input +
-            (monospace ? ' ' + styles.monospace : ''),
+            (monospace ? " " + styles.monospace : ""),
         }}
         label={undefined}
       />

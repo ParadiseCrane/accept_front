@@ -1,58 +1,53 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { useRequest } from '@hooks/useRequest';
+"use client";
+import { ExecutorBundle, IExecutor } from "@custom-types/data/IExecutor";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
+import modalStyles from "@styles/ui/modal.module.css";
 import {
   Button,
   LoadingOverlay,
   Select,
   TextArea,
   TextInput,
-} from '@ui/basics';
-import { useForm } from '@mantine/form';
-import styles from './executor.module.css';
-import { requestWithError } from '@utils/requestWithError';
-import {
-  ExecutorBundle,
-  IExecutor,
-} from '@custom-types/data/IExecutor';
-import { useLocale } from '@hooks/useLocale';
+} from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { isJSON } from "@utils/isJSON";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import modalStyles from '@styles/ui/modal.module.css';
-import { isJSON } from '@utils/isJSON';
+} from "@utils/notificationFunctions";
+import { requestWithError } from "@utils/requestWithError";
+import { FC, memo, useCallback, useState } from "react";
 
-const Executor: FC<{}> = ({}) => {
-  const [response, setResponse] = useState('');
+import styles from "./executor.module.css";
+
+const Executor: FC<{}> = () => {
+  const [response, setResponse] = useState("");
   const [openedConfirmModal, setOpenedConfirmModal] = useState(false);
 
   const { locale, lang } = useLocale();
 
   const { data, loading } = useRequest<{}, ExecutorBundle>(
-    'bundle/executor',
-    'GET'
+    "bundle/executor",
+    "GET"
   );
 
   const form = useForm({
     initialValues: {
-      collection: '',
-      action: '',
-      query: '{\n\t\n}',
-      body: '[\n\t{\n\t\n\t}\n]',
-      params: '{\n\t\n}',
-      spec_field: '',
+      collection: "",
+      action: "",
+      query: "{\n\t\n}",
+      body: "[\n\t{\n\t\n\t}\n]",
+      params: "{\n\t\n}",
+      spec_field: "",
     },
     validate: {
       collection: (value) =>
-        value == undefined
-          ? locale.executor.form.validation.collection
-          : null,
+        value == undefined ? locale.executor.form.validation.collection : null,
       action: (value) =>
-        value == undefined
-          ? locale.executor.form.validation.action
-          : null,
+        value == undefined ? locale.executor.form.validation.action : null,
       query: (value) =>
         value.length < 2
           ? locale.executor.form.validation.query
@@ -62,7 +57,7 @@ const Executor: FC<{}> = ({}) => {
       body: (value) =>
         value.length < 4
           ? locale.executor.form.validation.body.len
-          : value[0] != '[' || value[value.length - 1] != ']'
+          : value[0] != "[" || value[value.length - 1] != "]"
           ? locale.executor.form.validation.body.array
           : !isJSON(value)
           ? locale.jsonValidationError
@@ -88,7 +83,7 @@ const Executor: FC<{}> = ({}) => {
         params: JSON.parse(form.values.params),
       };
       if (form.values.spec_field.length != 0) {
-        body['spec_field'] = form.values.spec_field;
+        body["spec_field"] = form.values.spec_field;
       }
     } catch {
       const id = newNotification({});
@@ -100,8 +95,8 @@ const Executor: FC<{}> = ({}) => {
       return;
     }
     requestWithError<IExecutor, any>(
-      'executor',
-      'POST',
+      "executor",
+      "POST",
       locale.notify.executor.send,
       lang,
       body,
@@ -116,7 +111,7 @@ const Executor: FC<{}> = ({}) => {
     if (!form.isValid()) {
       return;
     }
-    if (form.values.action == 'find') {
+    if (form.values.action == "find") {
       handleSend();
     } else {
       setOpenedConfirmModal(true);
@@ -155,36 +150,36 @@ const Executor: FC<{}> = ({}) => {
           data={data?.collections.sort() || []}
           label={locale.executor.form.collection}
           searchable
-          {...form.getInputProps('collection')}
+          {...form.getInputProps("collection")}
         />
         <Select
           data={data?.actions || []}
           label={locale.executor.form.action}
           searchable
-          {...form.getInputProps('action')}
+          {...form.getInputProps("action")}
         />
         <TextArea
           maxRows={15}
           minRows={5}
           label={locale.executor.form.query}
-          {...form.getInputProps('query')}
+          {...form.getInputProps("query")}
         />
         <TextArea
           maxRows={15}
           minRows={5}
           label={locale.executor.form.body}
-          {...form.getInputProps('body')}
+          {...form.getInputProps("body")}
         />
         <TextArea
           minRows={5}
           maxRows={15}
           label={locale.executor.form.params}
-          {...form.getInputProps('params')}
+          {...form.getInputProps("params")}
         />
         <TextInput
           helperContent={locale.executor.form.helper.spec_field}
           label={locale.executor.form.spec_field}
-          {...form.getInputProps('spec_field')}
+          {...form.getInputProps("spec_field")}
         />
         <Button disabled={!form.isValid()} onClick={handleSendClick}>
           {locale.send}

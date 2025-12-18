@@ -1,12 +1,13 @@
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { setter } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { Icon } from '@ui/basics';
+"use client";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteGroup: FC<{
   task_spec: string;
@@ -19,10 +20,10 @@ const DeleteGroup: FC<{
   const handleSubmit = useCallback(() => {
     requestWithNotify<undefined, boolean>(
       `test_group/${task_spec}/${index}`,
-      'DELETE',
+      "DELETE",
       locale.notify.test_group.delete,
       lang,
-      (_: boolean) => '',
+      (_: boolean) => "",
       undefined,
       () => {
         refetch(false);
@@ -39,7 +40,7 @@ const DeleteGroup: FC<{
         size="xs"
         tooltipLabel={locale.ui.taskTest.delete.group}
       >
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={opened}
@@ -47,9 +48,7 @@ const DeleteGroup: FC<{
         title={`${locale.ui.taskTest.delete.group} #${index + 1}`}
       >
         <div className={modalStyles.verticalContent}>
-          <div>
-            {locale.ui.taskTest.deleteConfidence.group(index + 1)}
-          </div>
+          <div>{locale.ui.taskTest.deleteConfidence.group(index + 1)}</div>
           <SimpleButtonGroup
             reversePositive
             actionButton={{

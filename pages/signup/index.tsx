@@ -1,29 +1,34 @@
-import { LoginLayout } from '@layouts/LoginLayout';
-import { ReactElement, useCallback, useMemo } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { useRouter } from 'next/router';
-import { useForm } from '@mantine/form';
-import styles from '@styles/auth/login.module.css';
-import Link from 'next/link';
+"use client";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { IRegUser } from "@custom-types/data/IUser";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { LoginLayout } from "@layouts/LoginLayout";
+import { rem } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { sendRequest } from "@requests/request";
+import styles from "@styles/auth/login.module.css";
+import { PasswordInput, Select, TextInput } from "@ui/basics";
+import Stepper from "@ui/Stepper/Stepper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { IRegUser } from '@custom-types/data/IUser';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { sendRequest } from '@requests/request';
-import { AlignJustified, LetterCase, ShieldLock } from 'tabler-icons-react';
-import { PasswordInput, Select, TextInput } from '@ui/basics';
-import Stepper from '@ui/Stepper/Stepper';
-import { rem } from '@mantine/core';
-import { useRequest } from '@hooks/useRequest';
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { SelectItem } from '@custom-types/ui/atomic';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactElement, useCallback, useMemo } from "react";
+import {
+  IconAlignJustified,
+  IconLetterCase,
+  IconShieldLock,
+} from "@tabler/icons-react";
 
 const stepFields = [
-  ['login'],
-  ['password', 'confirmPassword'],
-  ['name', 'email'],
+  ["login"],
+  ["password", "confirmPassword"],
+  ["name", "email"],
 ];
 
 function SignUp() {
@@ -35,8 +40,8 @@ function SignUp() {
     loading: organizations_loading,
     error,
   } = useRequest<object, IOrganization[], SelectItem[]>(
-    'organization/registration',
-    'GET',
+    "organization/registration",
+    "GET",
     undefined,
     (organizations: IOrganization[]) =>
       organizations.map(
@@ -55,16 +60,16 @@ function SignUp() {
 
   const form = useForm({
     initialValues: {
-      organization: '',
-      login: '',
-      password: '',
-      email: '',
-      name: '',
-      confirmPassword: '',
+      organization: "",
+      login: "",
+      password: "",
+      email: "",
+      name: "",
+      confirmPassword: "",
     },
     validate: {
       organization: (value) =>
-        value === ''
+        value === ""
           ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
           ? locale.auth.errors.organization.exists
@@ -73,14 +78,16 @@ function SignUp() {
         value.length < 5
           ? locale.auth.errors.login.len
           : !value.match(/^[a-zA-Z][a-zA-Z_]+$/)
-            ? locale.auth.errors.login.symbols
-            : null,
+          ? locale.auth.errors.login.symbols
+          : null,
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
-          : !value.match(/^[a-zA-Z\d\.]+$/)
-            ? locale.auth.errors.password.symbols
-            : null,
+          : // TODO: Check
+          // eslint-disable-next-line no-useless-escape
+          !value.match(/^[a-zA-Z\d\.]+$/)
+          ? locale.auth.errors.password.symbols
+          : null,
       confirmPassword: (value, values) =>
         value !== values.password ? locale.auth.errors.confirm : null,
       email: (value) =>
@@ -92,20 +99,20 @@ function SignUp() {
       name: (value) =>
         value.length > 50
           ? locale.auth.errors.name.len
-          : value.trim().split(' ').length < 2
-            ? locale.auth.errors.name.surname
-            : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-              ? locale.auth.errors.name.invalid
-              : null,
+          : value.trim().split(" ").length < 2
+          ? locale.auth.errors.name.surname
+          : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
+          ? locale.auth.errors.name.invalid
+          : null,
     },
     validateInputOnBlur: true,
   });
 
   const onLoginBlur = useCallback(() => {
-    if (!form.validateField('login').hasError) {
+    if (!form.validateField("login").hasError) {
       sendRequest<{ organization: string; login: string }, boolean>(
-        'auth/validateLogin',
-        'POST',
+        "auth/validateLogin",
+        "POST",
         {
           organization: form.values.organization,
           login: form.values.login,
@@ -113,7 +120,7 @@ function SignUp() {
         60000
       ).then((res) => {
         form.setFieldError(
-          'login',
+          "login",
           res.error || !res.response ? locale.auth.errors.login.used : null
         );
       });
@@ -130,24 +137,24 @@ function SignUp() {
       });
       return;
     }
-    const name = form.values.name.split(' ');
+    const name = form.values.name.split(" ");
     const user: IRegUser = {
       organization: form.values.organization,
 
-      login: form.values.login,
-      password: form.values.password,
-      email: form.values.email || '',
+      login: form.values.login.trim(),
+      password: form.values.password.trim(),
+      email: form.values.email.trim() || "",
       name: name[1],
       surname: name[0],
-      patronymic: name.length > 2 ? name[2] : '',
+      patronymic: name.length > 2 ? name[2] : "",
     };
 
     requestWithNotify<IRegUser, boolean>(
-      'auth/signup',
-      'POST',
+      "auth/signup",
+      "POST",
       locale.notify.auth.signUp,
       lang,
-      (_) => '',
+      (_) => "",
       user,
       () => router.push(`/signin?referrer=${router.query.referrer}`)
     );
@@ -164,14 +171,20 @@ function SignUp() {
         form={form}
         stepFields={stepFields}
         icons={[
-          <LetterCase key={0} style={{ width: rem(24), height: rem(24) }} />,
-          <ShieldLock key={1} style={{ width: rem(24), height: rem(24) }} />,
-          <AlignJustified
+          <IconLetterCase
+            key={0}
+            style={{ width: rem(24), height: rem(24) }}
+          />,
+          <IconShieldLock
+            key={1}
+            style={{ width: rem(24), height: rem(24) }}
+          />,
+          <IconAlignJustified
             key={2}
             style={{ width: rem(24), height: rem(24) }}
           />,
         ]}
-        descriptions={['', '', '']}
+        descriptions={["", "", ""]}
         labels={locale.auth.steps.labels}
         pages={[
           <>
@@ -180,13 +193,13 @@ function SignUp() {
               id="organization"
               label={locale.auth.labels.organization}
               data={organizations || []}
-              disabled={!!!organizations || organizations_loading}
+              disabled={!organizations || organizations_loading}
               placeholder={locale.auth.placeholders.organization}
               classNames={{
                 label: styles.label,
               }}
               size="lg"
-              {...form.getInputProps('organization')}
+              {...form.getInputProps("organization")}
             />
             <TextInput
               id="login"
@@ -204,7 +217,7 @@ function SignUp() {
                 </div>
               }
               size="lg"
-              {...form.getInputProps('login')}
+              {...form.getInputProps("login")}
               onBlur={onLoginBlur}
             />
           </>,
@@ -225,10 +238,10 @@ function SignUp() {
                   ))}
                 </div>
               }
-              {...form.getInputProps('password')}
+              {...form.getInputProps("password")}
               onBlur={() => {
-                form.validateField('password');
-                form.validateField('confirmPassword');
+                form.validateField("password");
+                form.validateField("confirmPassword");
               }}
             />
             <PasswordInput
@@ -240,7 +253,7 @@ function SignUp() {
                 label: styles.label,
               }}
               size="lg"
-              {...form.getInputProps('confirmPassword')}
+              {...form.getInputProps("confirmPassword")}
             />
           </>,
           <>
@@ -253,7 +266,7 @@ function SignUp() {
                 label: styles.label,
               }}
               size="lg"
-              {...form.getInputProps('name')}
+              {...form.getInputProps("name")}
             />
             <TextInput
               id="email"
@@ -263,7 +276,7 @@ function SignUp() {
                 label: styles.label,
               }}
               size="lg"
-              {...form.getInputProps('email')}
+              {...form.getInputProps("email")}
             />
           </>,
         ]}
@@ -294,6 +307,6 @@ function SignUp() {
 }
 
 SignUp.getLayout = (page: ReactElement) => {
-  return <LoginLayout title={'registration'}>{page}</LoginLayout>;
+  return <LoginLayout title={"registration"}>{page}</LoginLayout>;
 };
 export default SignUp;

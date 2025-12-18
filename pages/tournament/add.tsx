@@ -1,34 +1,34 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { useLocale } from '@hooks/useLocale';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
+"use client";
+import Form from "@components/Tournament/Form/Form";
 import {
   ITournamentAdd,
   ITournamentAddBundle,
-} from '@custom-types/data/ITournament';
-import Form from '@components/Tournament/Form/Form';
-import { useRequest } from '@hooks/useRequest';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { Item } from '@custom-types/ui/atomic';
-
-import { getCookieValue } from '@utils/cookies';
+} from "@custom-types/data/ITournament";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form/lib/types";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function TournamentAdd(props: ITournamentAddBundle) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
 
   const { data: users } = useRequest<{}, IUserDisplay[]>(
-    'user/list-display',
-    'GET',
+    "user/list-display",
+    "GET",
     undefined,
     undefined,
     undefined,
@@ -36,13 +36,13 @@ function TournamentAdd(props: ITournamentAddBundle) {
     20000
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialValues = useMemo(
     () => ({
-      spec: '',
-      author: user?.login || '',
-      title: '',
-      description: '',
+      spec: "",
+      public: false,
+      author: user?.login || "",
+      title: "",
+      description: "",
       tasks: [],
       tags: [] as Item[],
       status: 0,
@@ -52,12 +52,12 @@ function TournamentAdd(props: ITournamentAddBundle) {
       frozeResults: new Date(),
 
       moderators: [],
-      assessmentType: '0',
+      assessmentType: "0",
 
       shouldPenalizeAttempt: true,
       allowRegistrationAfterStart: false,
       banned: [],
-      security: '0',
+      security: "0",
       maxTeamSize: 1,
     }),
     [user?.login]
@@ -76,8 +76,10 @@ function TournamentAdd(props: ITournamentAddBundle) {
       }
 
       const tournament: ITournamentAdd = {
-        spec: '',
-        author: user?.login || '',
+        spec: "",
+        organization: "",
+        public: form.values.public,
+        author: user?.login || "",
         title: form.values.title,
         description: form.values.description,
         tasks: form.values.tasks,
@@ -95,8 +97,8 @@ function TournamentAdd(props: ITournamentAddBundle) {
       };
 
       requestWithNotify<ITournamentAdd, string>(
-        'tournament/add',
-        'POST',
+        "tournament/add",
+        "POST",
         locale.notify.tournament.create,
         lang,
         (response) => response,
@@ -132,10 +134,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   query: _,
   req,
 }) => {
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/bundle/tournament-add`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
@@ -153,9 +155,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

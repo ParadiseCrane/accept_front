@@ -1,21 +1,22 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
+"use client";
+import Form from "@components/Assignment/Form/Form";
 import {
   IAssignmentAdd,
   IAssignmentEditBundle,
-} from '@custom-types/data/IAssignment';
-import Form from '@components/Assignment/Form/Form';
-import { UseFormReturnType } from '@mantine/form';
-import { useLocale } from '@hooks/useLocale';
+} from "@custom-types/data/IAssignment";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
+import { timezoneDate } from "@utils/datetime";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { timezoneDate } from '@utils/datetime';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function AssignmentEdit(props: IAssignmentEditBundle) {
   const { locale, lang } = useLocale();
@@ -25,9 +26,9 @@ function AssignmentEdit(props: IAssignmentEditBundle) {
       ...props.assignment,
       startDate: timezoneDate(props.assignment.start),
       endDate: timezoneDate(props.assignment.end),
-      notificationTitle: '',
-      notificationDescription: '',
-      notificationShortDescription: '',
+      notificationTitle: "",
+      notificationDescription: "",
+      notificationShortDescription: "",
     }),
     [props]
   );
@@ -57,7 +58,7 @@ function AssignmentEdit(props: IAssignmentEditBundle) {
 
       requestWithNotify<IAssignmentAdd, IAssignmentAdd>(
         `assignment/edit`,
-        'POST',
+        "POST",
         locale.notify.assignment.edit,
         lang,
         (response: IAssignmentAdd) => response.spec,
@@ -93,10 +94,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
 
@@ -116,9 +114,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

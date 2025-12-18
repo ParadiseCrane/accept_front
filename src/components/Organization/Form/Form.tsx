@@ -1,14 +1,15 @@
-import { callback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { FC, useCallback, useEffect, useMemo } from 'react';
-import styles from './form.module.css';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { Button, CustomEditor, Helper, Switch, TextInput } from '@ui/basics';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button, CustomEditor, Helper, Switch, TextInput } from "@ui/basics";
+import { UserSelector } from "@ui/selectors";
+import { FC, useCallback, useEffect, useMemo } from "react";
 
-import { UserSelector } from '@ui/selectors';
-import { useUser } from '@hooks/useUser';
-import { UseFormReturnType, useForm } from '@mantine/form';
+import styles from "./form.module.css";
 
 const Form: FC<{
   buttonText: string;
@@ -22,9 +23,9 @@ const Form: FC<{
     initialValues,
     validate: {
       spec: (value) =>
-        value.length < 3 ? locale.organization.form.validation.spec : null,
+        value.length < 3 ? locale.organization.form.validation.spec(3) : null,
       name: (value) =>
-        value.length < 3 ? locale.organization.form.validation.name : null,
+        value.length < 3 ? locale.organization.form.validation.name(3) : null,
       description: (value) =>
         value.length == 0
           ? locale.organization.form.validation.description
@@ -43,25 +44,25 @@ const Form: FC<{
       <TextInput
         label={locale.organization.spec}
         required
-        {...form.getInputProps('spec')}
+        {...form.getInputProps("spec")}
       />
 
       <TextInput
         label={locale.organization.name}
         required
-        {...form.getInputProps('name')}
+        {...form.getInputProps("name")}
       />
 
       <CustomEditor
         form={form}
         label={locale.organization.description}
-        name={'description'}
+        name={"description"}
       />
 
       <div className={styles.readOnlySwitch}>
         <Switch
           label={locale.organization.allowRegistration}
-          {...form.getInputProps('allowRegistration', { type: 'checkbox' })}
+          {...form.getInputProps("allowRegistration", { type: "checkbox" })}
         />
       </div>
 

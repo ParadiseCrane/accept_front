@@ -1,9 +1,10 @@
-import { FC, memo, useEffect, useState } from 'react';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { sendRequest } from '@requests/request';
-import { UserSelect } from '@ui/selectors';
-import { useLocale } from '@hooks/useLocale';
-import { IActivity } from '@custom-types/data/atomic';
+"use client";
+import { IActivity } from "@custom-types/data/atomic";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { UserSelect } from "@ui/selectors";
+import { FC, memo, useEffect, useState } from "react";
 
 const MemberSelector: FC<{
   spec: string;
@@ -12,24 +13,25 @@ const MemberSelector: FC<{
   exclude: string[];
   form: any;
   field: string;
+  customRequest?: string;
   // select: (_: IUserDisplay) => void;
   // onChange: () => any;
-}> = ({ entity, spec, opened, exclude, form, field }) => {
+}> = ({ entity, spec, opened, exclude, form, field, customRequest }) => {
   const { locale } = useLocale();
   const [users, setUsers] = useState<IUserDisplay[]>([]);
 
   useEffect(() => {
     if (!opened) return;
     sendRequest<{ exclude: string[] }, IUserDisplay[]>(
-      `${entity}/participants/${spec}`,
-      'POST',
+      customRequest ?? `${entity}/participants/${spec}`,
+      "POST",
       { exclude }
     ).then((res) => {
       if (!res.error) {
         setUsers(res.response);
       }
     });
-  }, [opened, spec, entity, exclude]);
+  }, [opened, spec, entity, exclude, customRequest]);
 
   return (
     <>
@@ -39,7 +41,7 @@ const MemberSelector: FC<{
         nothingFound={locale.dashboard.chat.userModal.user.nothingFound}
         users={users}
         select={(users: IUserDisplay[] | undefined) => {
-          if (users) form.setFieldValue('user', users[0].login.trim());
+          if (users) form.setFieldValue("user", users[0].login.trim());
         }}
         additionalProps={form.getInputProps(field)}
       />

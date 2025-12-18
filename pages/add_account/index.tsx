@@ -1,9 +1,10 @@
-import LoginForm from '@components/Auth/LoginForm';
-import { useUser } from '@hooks/useUser';
-import { LoginLayout } from '@layouts/LoginLayout';
-import { sendRequest } from '@requests/request';
-import { clearCookie } from '@utils/cookies';
-import { ReactElement, useCallback } from 'react';
+"use client";
+import LoginForm from "@components/Auth/LoginForm";
+import { useUser } from "@hooks/useUser";
+import { LoginLayout } from "@layouts/LoginLayout";
+import { sendRequest } from "@requests/request";
+import { clearCookie } from "@utils/cookies";
+import { ReactElement, useCallback } from "react";
 
 function AddAccount() {
   const { refreshAccess } = useUser();
@@ -16,23 +17,23 @@ function AddAccount() {
           password: string;
         },
         boolean
-      >('/auth/add_account', 'POST', {
+      >("/auth/add_account", "POST", {
         organization: org,
         login,
         password,
       }).then(async (res) => {
         if (!res || res.error) return false;
 
-        clearCookie('accounts');
+        clearCookie("accounts");
         refreshAccess();
         return res.response;
       }),
-    []
+    [refreshAccess]
   );
   return <LoginForm signIn={signIn} />;
 }
 
 AddAccount.getLayout = (page: ReactElement) => {
-  return <LoginLayout title={'login'}>{page}</LoginLayout>;
+  return <LoginLayout title={"login"}>{page}</LoginLayout>;
 };
 export default AddAccount;

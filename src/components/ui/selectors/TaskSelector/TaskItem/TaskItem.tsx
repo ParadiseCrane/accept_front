@@ -1,9 +1,10 @@
-import { Item } from '@custom-types/ui/atomic';
+"use client";
+import { Item } from "@custom-types/ui/atomic";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { FC } from "react";
 
-import { FC } from 'react';
-import OpenTask from './OpenTask/OpenTask';
-import styles from './taskItem.module.css';
-import { pureCallback } from '@custom-types/ui/atomic';
+import OpenTask from "./OpenTask/OpenTask";
+import styles from "./taskItem.module.css";
 
 export const TaskItem: FC<{
   item: Item;

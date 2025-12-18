@@ -6,7 +6,7 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.format": "explicit"
   },
-  "cSpell.words": ["dropzone", "Tabler", "Unban"],
+  "cSpell.words": ["dropzone", "lowlight", "Tabler", "Unban"],
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
@@ -16,5 +16,19 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
-  ]
+  ],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.husky": true,
+    "**/.yarn": true,
+    "**/*.tsbuildinfo": true,
+    "**/.CI": true,
+    "**/next-env.d.ts": true,
+    "**/.vscode": true
+  }
 }

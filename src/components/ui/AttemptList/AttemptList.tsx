@@ -1,3 +1,19 @@
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { BaseSearch, UserTaskSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRefetch } from "@hooks/useRefetch";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
 import {
   FC,
   ReactNode,
@@ -6,26 +22,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useUser } from '@hooks/useUser';
-import {
-  BaseSearch,
-  UserTaskSearch,
-} from '@custom-types/data/request';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
-import { sendRequest } from '@requests/request';
-import { useRefetch } from '@hooks/useRefetch';
-
-const DEFAULT_ON_PAGE = 10;
+} from "react";
 
 interface PagerResponse {
   data: IAttemptDisplay[];
@@ -89,9 +86,9 @@ const AttemptList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'date', order: -1 }],
+    sort_by: [{ field: "date", order: -1 }],
     search_params: {
-      search: '',
+      search: "",
       keys: [],
     },
   });
@@ -123,7 +120,7 @@ const AttemptList: FC<{
     [locale.notify.errors.unauthorized, refreshAccess]
   );
   const fetch_data = useCallback(() => {
-    return sendRequest<UserTaskSearch, PagerResponse>(url, 'POST', {
+    return sendRequest<UserTaskSearch, PagerResponse>(url, "POST", {
       ...searchParams,
       toDate,
       users: userSearch,
@@ -136,29 +133,26 @@ const AttemptList: FC<{
         setLoading(false);
       })
       .catch(onError);
-  }, [
-    onError,
-    processData,
-    searchParams,
-    taskSearch,
-    toDate,
-    url,
-    userSearch,
-  ]);
+  }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
 
   const refetch = useCallback(() => {
-    if (activeTab && !shouldNotRefetch && needRefetch)
-      return fetch_data();
-    return new Promise<void>((res) => {
-      res();
-    });
+    if (activeTab && !shouldNotRefetch && needRefetch) return fetch_data();
+    return new Promise<void>(() => {});
   }, [activeTab, fetch_data, needRefetch, shouldNotRefetch]);
 
   useEffect(() => {
     fetch_data();
   }, [fetch_data]);
 
-  const {} = useRefetch(refetch, 2);
+  useEffect(() => {
+    if (activeTab && !shouldNotRefetch) {
+      const intervalId = setInterval(() => {
+        refetch();
+      }, 2000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [activeTab, refetch, shouldNotRefetch]);
 
   return (
     <div>

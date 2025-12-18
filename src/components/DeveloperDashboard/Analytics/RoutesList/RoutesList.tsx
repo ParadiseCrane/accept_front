@@ -1,28 +1,21 @@
-import { useRouter } from 'next/router';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import Table from '@ui/Table/Table';
-import {
-  FC,
-  memo,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { sendRequest } from '@requests/request';
-import {
-  IAnalyticsData,
-  IAnalyticsResponse,
-} from '@custom-types/data/atomic';
-import tableStyles from '@styles/ui/customTable.module.css';
-import styles from '../analytics.module.css';
+"use client";
+import { IAnalyticsData, IAnalyticsResponse } from "@custom-types/data/atomic";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { useRouter } from "next/router";
+import { FC, memo, useEffect, useMemo, useState } from "react";
+
+import styles from "../analytics.module.css";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.dashboard.developer.analytics.table.method,
-    key: 'method',
+    key: "method",
     sortable: true,
     sortFunction: () => 0,
     sorted: 0,
@@ -33,7 +26,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.dashboard.developer.analytics.table.path,
-    key: 'path',
+    key: "path",
     sortable: false,
     sortFunction: () => 0,
     sorted: 0,
@@ -44,7 +37,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.dashboard.developer.analytics.table.average,
-    key: 'average_time',
+    key: "average_time",
     sortable: true,
     sortFunction: () => 0,
     sorted: 0,
@@ -55,7 +48,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.dashboard.developer.analytics.table.count,
-    key: 'count',
+    key: "count",
     sortable: true,
     sortFunction: () => 0,
     sorted: 0,
@@ -66,7 +59,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const RoutesList: FC<{}> = ({}) => {
+const RoutesList: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const router = useRouter();
   const columns: ITableColumn[] = useMemo(
@@ -81,7 +74,7 @@ const RoutesList: FC<{}> = ({}) => {
     },
     sort_by: [],
     search_params: {
-      search: '',
+      search: "",
       keys: [],
     },
   });
@@ -93,8 +86,8 @@ const RoutesList: FC<{}> = ({}) => {
   useEffect(() => {
     setLoading(true);
     sendRequest<BaseSearch, IAnalyticsResponse>(
-      'analytics/search',
-      'POST',
+      "analytics/search",
+      "POST",
       searchParams
     ).then((res) => {
       if (!res.error) {

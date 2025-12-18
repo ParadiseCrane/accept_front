@@ -1,13 +1,14 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
-import { callback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { ITeam } from '@custom-types/data/ITeam';
+"use client";
+import { ITeam } from "@custom-types/data/ITeam";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
 
 const DeleteModal: FC<{
   active: boolean;
@@ -20,10 +21,10 @@ const DeleteModal: FC<{
   const handleDelete = useCallback(() => {
     requestWithNotify(
       `team/delete/${team.spec}`,
-      'POST',
+      "POST",
       locale.notify.team.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       undefined,
       () => setToList(true),
       { autoClose: 8000 }

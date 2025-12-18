@@ -1,15 +1,16 @@
-import { ReactNode } from 'react';
 import {
   HoverCardDropdownProps,
   HoverCardProps,
   HoverCardTargetProps,
   TooltipProps,
-} from '@mantine/core';
-import { IconSizes } from './icon';
+} from "@mantine/core";
+import { ReactNode } from "react";
+
+import { IconSizes } from "./icon";
 
 export type MyHelperProps = {
   hoverCardProps?: HoverCardProps;
-  hoverCardDropdownProps?: Omit<HoverCardDropdownProps, 'children'>;
+  hoverCardDropdownProps?: Omit<HoverCardDropdownProps, "children">;
   hoverCardTargetProps?: HoverCardTargetProps;
   dropdownContent?: IDropdownContent;
   customIcon?: ReactNode;
@@ -17,8 +18,7 @@ export type MyHelperProps = {
   size?: IconSizes;
 };
 
-export interface MyHelperTipProps
-  extends Omit<TooltipProps, 'children'> {
+export interface MyHelperTipProps extends Omit<TooltipProps, "children"> {
   customIcon?: ReactNode;
   iconColor?: string;
   size?: IconSizes;

@@ -1,30 +1,32 @@
-import { FC, memo, useEffect } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { callback } from '@custom-types/ui/atomic';
-import Stepper from '@ui/Stepper/Stepper';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import MainInfo from './MainInfo/MainInfo';
-import { IAssessmentType } from '@custom-types/data/atomic';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import Dates from './Dates/Dates';
-import TaskOrdering from './TaskOrdering/TaskOrdering';
-import Moderators from './Moderators/Moderators';
-import Preview from './Preview/Preview';
-import { ISecurity } from '@custom-types/data/ITournament';
-import AdditionalInfo from './AdditionalInfo/AdditionalInfo';
-import { UTCDate } from '@utils/datetime';
+"use client";
+import { IAssessmentType } from "@custom-types/data/atomic";
+import { ISecurity } from "@custom-types/data/ITournament";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { UTCDate } from "@utils/datetime";
+import { FC, memo, useEffect } from "react";
+
+import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
+import Dates from "./Dates/Dates";
+import MainInfo from "./MainInfo/MainInfo";
+import Moderators from "./Moderators/Moderators";
+import Preview from "./Preview/Preview";
+import TaskOrdering from "./TaskOrdering/TaskOrdering";
 
 const stepFields: string[][] = [
-  ['title', 'description', 'tags'],
+  ["title", "description", "tags", "public"],
   [
-    'assessmentType',
-    'security',
-    'allowRegistrationAfterStart',
-    'shouldPenalizeAttempt',
+    "assessmentType",
+    "security",
+    "allowRegistrationAfterStart",
+    "shouldPenalizeAttempt",
   ],
-  ['start', 'end', 'frozeResults'],
+  ["start", "end", "frozeResults"],
   [], // task ordering
-  ['moderators'],
+  ["moderators"],
   [], // preview
 ];
 
@@ -53,9 +55,7 @@ const Form: FC<{
     initialValues,
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.tournament.form.validation.title
-          : null,
+        value.length < 5 ? locale.tournament.form.validation.title : null,
       description: (value) =>
         value.length < 20
           ? locale.tournament.form.validation.description
@@ -87,21 +87,21 @@ const Form: FC<{
         stepFields={stepFields}
         pages={[
           <MainInfo
-            key={'0'}
+            key={"0"}
             form={form}
             initialMaxTeamSize={initialValues.maxTeamSize}
           />,
           <AdditionalInfo
-            key={'1'}
+            key={"1"}
             form={form}
             assessmentTypes={assessmentTypes}
             securities={securities}
           />,
-          <Dates key={'2'} form={form} />,
-          <TaskOrdering key={'3'} form={form} />,
-          <Moderators key={'4'} form={form} users={users} />,
+          <Dates key={"2"} form={form} />,
+          <TaskOrdering key={"3"} form={form} />,
+          <Moderators key={"4"} form={form} users={users} />,
           <Preview
-            key={'5'}
+            key={"5"}
             tournament={{
               ...form.values,
               start: UTCDate(form.values.start),

@@ -1,44 +1,48 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import {
-  AddressBook,
-  AlignRight,
-  Ban,
-  BellPlus,
-  Messages,
-  Pencil,
-  Puzzle,
-  Settings as SettingsIcon,
-  Table,
-  Trash,
-  Users,
-  Vocabulary,
-} from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
+"use client";
+import AttemptsList from "@components/Dashboard/AttemptsList/AttemptsList";
+import TimeInfo from "@components/Dashboard/TimeInfo/TimeInfo";
+import DeleteModal from "@components/Tournament/DeleteModal/DeleteModal";
+import { STICKY_SIZES } from "@constants/Sizes";
 import {
   ITournament,
   ITournamentResponse,
-} from '@custom-types/data/ITournament';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { STICKY_SIZES } from '@constants/Sizes';
-import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { useRequest } from '@hooks/useRequest';
-import { useInterval } from '@mantine/hooks';
-import { Indicator } from '@ui/basics';
-import TimeInfo from '@components/Dashboard/TimeInfo/TimeInfo';
-import TaskList from './TaskList/TaskList';
-import AttemptsList from '@components/Dashboard/AttemptsList/AttemptsList';
-import CreateNotification from './CreateNotification/CreateNotification';
-import Results from './Results/Results';
-import ParticipantsListWithBan from './ParticipantsList/ParticipantsListWithBan';
-import ChatPage from './ChatPage/ChatPage';
-import RegistrationManagement from './RegistrationManagement/RegistrationManagement';
-import Settings from './Settings/Settings';
-import { useChatHosts } from '@hooks/useChatHosts';
-import TeamList from './TeamList/TeamList';
+} from "@custom-types/data/ITournament";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useChatHosts } from "@hooks/useChatHosts";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { useInterval } from "@mantine/hooks";
+import { Indicator } from "@ui/basics";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import { FC, memo, useEffect, useMemo, useState } from "react";
+import {
+  IconAddressBook,
+  IconAlignRight,
+  IconBan,
+  IconBellPlus,
+  IconMessages,
+  IconPencil,
+  IconPuzzle,
+  IconSettings as SettingsIcon,
+  IconTable,
+  IconTrash,
+  IconUsers,
+  IconVocabulary,
+} from "@tabler/icons-react";
+
+import ChatPage from "./ChatPage/ChatPage";
+import CreateNotification from "./CreateNotification/CreateNotification";
+import ParticipantsListWithBan from "./ParticipantsList/ParticipantsListWithBan";
+import RegistrationManagement from "./RegistrationManagement/RegistrationManagement";
+import Results from "./Results/Results";
+import Settings from "./Settings/Settings";
+import TaskList from "./TaskList/TaskList";
+import TeamList from "./TeamList/TeamList";
+import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
+import { IconRobot } from "@tabler/icons-react";
 
 const TournamentDashboard: FC<{
   spec: string;
@@ -49,7 +53,12 @@ const TournamentDashboard: FC<{
 
   const { data, refetch } = useRequest<undefined, ITournamentResponse>(
     `tournament/${spec}`,
-    'GET'
+    "GET"
+  );
+
+  const { data: aiCount } = useRequest<undefined, number>(
+    `tournament/attempts/ai/count/${spec}`,
+    "GET"
   );
 
   const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
@@ -70,7 +79,7 @@ const TournamentDashboard: FC<{
       {
         page: tournament && (
           <TimeInfo
-            type={'tournament'}
+            type={"tournament"}
             entity={{
               title: tournament.title,
               spec: tournament.spec,
@@ -85,17 +94,19 @@ const TournamentDashboard: FC<{
             refetch={() => refetch(false)}
           />
         ),
-        icon: <Vocabulary color="var(--secondary)" />,
+        icon: <IconVocabulary color="var(--secondary)" />,
         title: locale.dashboard.tournament.mainInfo,
+        section: "tournament",
       },
       {
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
           <Indicator size={10} disabled={!hasNewMessages} blink>
-            <Messages color="var(--secondary)" />{' '}
+            <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
         title: locale.dashboard.tournament.chat,
+        section: "chat",
       },
       {
         page: tournament && (
@@ -103,43 +114,70 @@ const TournamentDashboard: FC<{
             spec={spec}
             isFinished={tournament.status.spec == 2}
             endDate={tournament.end}
-            type={'tournament'}
+            type={"tournament"}
             full
             is_team={tournament.maxTeamSize != 1}
           />
         ),
-        icon: <Table color="var(--secondary)" />,
+        icon: <IconTable color="var(--secondary)" />,
         title: locale.dashboard.tournament.results,
+        section: "results",
       },
       {
         page: tournament && (
           <AttemptsList
-            key={'all'}
-            type={'tournament'}
+            key={"all"}
+            type={"tournament"}
             spec={tournament.spec}
             shouldNotRefetch={tournament.status.spec != 1}
             isFinished={tournament.status.spec == 2}
             endDate={tournament.end}
           />
         ),
-        icon: <AlignRight color="var(--secondary)" />,
+        icon: <IconAlignRight color="var(--secondary)" />,
         title: locale.dashboard.tournament.attempts,
+        section: "attempts",
+      },
+      {
+        page: tournament && (
+          <AIProbabilityList
+            key={"all"}
+            type={"tournament"}
+            spec={tournament.spec}
+            shouldNotRefetch={tournament.status.spec != 1}
+          />
+        ),
+        icon: (
+          <Indicator
+            size={"lg"}
+            label={aiCount}
+            disabled={!aiCount}
+            inline
+            position="top-start"
+          >
+            <IconRobot color="var(--secondary)" />
+          </Indicator>
+        ),
+        title: locale.dashboard.tournament.aiProbability,
+        section: "ai_probability",
       },
       {
         page: (
           <ParticipantsListWithBan
-            type={'tournament'}
+            type={"tournament"}
             team={tournament?.maxTeamSize != 1}
             spec={spec}
           />
         ),
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.tournament.participants,
+        section: "participants",
       },
       {
-        page: <TaskList type={'tournament'} spec={spec} />,
-        icon: <Puzzle color="var(--secondary)" />,
+        page: <TaskList type={"tournament"} spec={spec} />,
+        icon: <IconPuzzle color="var(--secondary)" />,
         title: locale.dashboard.tournament.tasks,
+        section: "tasks",
       },
       {
         page: (
@@ -148,21 +186,23 @@ const TournamentDashboard: FC<{
             maxTeamSize={tournament?.maxTeamSize || 1}
           />
         ),
-        icon: <AddressBook color="var(--secondary)" />,
+        icon: <IconAddressBook color="var(--secondary)" />,
         title: locale.dashboard.tournament.registrationManagement,
+        section: "registration",
       },
       {
         page: tournament && (
           <CreateNotification spec={tournament.spec} type="tournament" />
         ),
-        icon: <BellPlus color="var(--secondary)" />,
+        icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.tournament.createNotification,
+        section: "create_notification",
       },
       {
         page: tournament && (
           <AttemptsList
-            key={'banned'}
-            type={'tournament'}
+            key={"banned"}
+            type={"tournament"}
             banned
             spec={tournament.spec}
             shouldNotRefetch={tournament.status.spec != 1}
@@ -170,26 +210,29 @@ const TournamentDashboard: FC<{
             endDate={tournament.end}
           />
         ),
-        icon: <Ban color="var(--secondary)" />,
+        icon: <IconBan color="var(--secondary)" />,
         title: locale.dashboard.tournament.bannedAttempts,
+        section: "banned_attempts",
       },
       {
         page: tournament && <Settings tournament={tournament} />,
         icon: <SettingsIcon color="var(--secondary)" />,
         title: locale.dashboard.tournament.settings.self,
+        section: "settings",
       },
     ];
 
     if (tournament?.maxTeamSize != 1) {
       links.splice(4, 0, {
         page: <TeamList spec={spec} />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.tournament.teams,
+        section: "teams",
       });
     }
 
     return links;
-  }, [tournament, hasNewMessages, locale, refetch, spec]);
+  }, [tournament, hasNewMessages, locale, refetch, spec, aiCount]);
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -198,9 +241,9 @@ const TournamentDashboard: FC<{
 
   const actions: IStickyAction[] = [
     {
-      color: 'green',
+      color: "green",
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -209,9 +252,9 @@ const TournamentDashboard: FC<{
       description: locale.tip.sticky.tournament.edit,
     },
     {
-      color: 'red',
+      color: "red",
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

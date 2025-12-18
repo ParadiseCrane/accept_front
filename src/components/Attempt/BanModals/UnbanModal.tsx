@@ -1,14 +1,16 @@
-import { FC, memo, useCallback, useState } from 'react';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { HeartPlus } from 'tabler-icons-react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { IAttempt } from '@custom-types/data/IAttempt';
-import { useLocale } from '@hooks/useLocale';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { getLocalDate } from '@utils/datetime';
-import styles from './banModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+"use client";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import { getLocalDate } from "@utils/datetime";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconHeartPlus } from "@tabler/icons-react";
+
+import styles from "./banModal.module.css";
 
 const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, setOpened] = useState(false);
@@ -17,10 +19,10 @@ const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const handleUnban = useCallback(() => {
     requestWithNotify(
       `attempt/unban/${attempt.spec}`,
-      'GET',
+      "GET",
       locale.attempt.unban.request,
       lang,
-      () => '',
+      () => "",
       undefined,
       () => window.location.reload()
     );
@@ -29,7 +31,7 @@ const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   return (
     <>
       <SingularSticky
-        icon={<HeartPlus width={32} height={32} />}
+        icon={<IconHeartPlus width={32} height={32} />}
         color="green"
         onClick={() => setOpened(true)}
         description={locale.tip.sticky.attempt.unban}
@@ -49,16 +51,16 @@ const UnbanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         <div className={modalStyles.verticalContent}>
           <div className={styles.rowsWrapper}>
             <div>
-              {locale.attempt.unban.previousBanDate}{' '}
+              {locale.attempt.unban.previousBanDate}{" "}
               {`${getLocalDate(attempt.banInfo?.date || new Date())}`}
             </div>
             <div>
-              {locale.attempt.unban.previousBanRequester}{' '}
-              {attempt.banInfo?.requester || ''}
+              {locale.attempt.unban.previousBanRequester}{" "}
+              {attempt.banInfo?.requester || ""}
             </div>
             <div>
-              {locale.attempt.unban.previousBanReason}{' '}
-              {attempt.banInfo?.reason || ''}
+              {locale.attempt.unban.previousBanReason}{" "}
+              {attempt.banInfo?.reason || ""}
             </div>
           </div>
           <SimpleButtonGroup

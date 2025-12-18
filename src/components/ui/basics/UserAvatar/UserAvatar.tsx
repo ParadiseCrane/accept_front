@@ -1,23 +1,18 @@
-import { link } from '@constants/Avatar';
-import { useUser } from '@hooks/useUser';
+import { link } from "@constants/Avatar";
+import { useUser } from "@hooks/useUser";
 import {
   Avatar as MantineAvatar,
   AvatarProps as MantineAvatarProps,
-} from '@mantine/core';
-import { FC, memo } from 'react';
+} from "@mantine/core";
+import { FC, memo } from "react";
 // import styles from './UserAvatar.module.css'
 
 interface AvatarProps extends MantineAvatarProps {
   login?: string;
   organization?: string;
 }
-// TODO продолжить добавление организаций
 
-const UserAvatar: FC<AvatarProps> = ({
-  login,
-  organization,
-  ...props
-}) => {
+const UserAvatar: FC<AvatarProps> = ({ login, organization, ...props }) => {
   const { user } = useUser();
   const organizationLocal = organization ?? user?.organization;
   return (

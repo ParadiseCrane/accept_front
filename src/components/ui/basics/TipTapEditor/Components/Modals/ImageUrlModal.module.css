@@ -1,0 +1,5 @@
+.image_url_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

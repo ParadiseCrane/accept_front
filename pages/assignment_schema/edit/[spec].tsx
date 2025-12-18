@@ -1,19 +1,20 @@
-import { useLocale } from '@hooks/useLocale';
-import { ReactNode, useCallback, useMemo } from 'react';
-import { UseFormReturnType } from '@mantine/form';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { Item } from '@custom-types/ui/atomic';
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import Form from '@components/AssignmentSchema/Form/Form';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { GetServerSideProps } from 'next';
+"use client";
+import Form from "@components/AssignmentSchema/Form/Form";
+import { IAssignmentSchema } from "@custom-types/data/IAssignmentSchema";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function EditAssignmentSchema({
   assignment_schema,
@@ -51,12 +52,12 @@ function EditAssignmentSchema({
       }
       let body: any = {
         ...form.values,
-        tasks: form.values['tasks'].map((task: Item) => task.value),
-        tags: form.values['tags'].map((tag: Item) => tag.value),
+        tasks: form.values["tasks"].map((task: Item) => task.value),
+        tags: form.values["tags"].map((tag: Item) => tag.value),
       };
       requestWithNotify(
         `assignment_schema/edit`,
-        'POST',
+        "POST",
         locale.notify.assignmentSchema.edit,
         lang,
         (response: IAssignmentSchema) => response.spec,
@@ -92,13 +93,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: "/",
       },
     };
   }
 
   const assignmentSchemaResponse = await fetchWrapperStatic({
-    url: `assignment_schema/${query.spec}`,
+    url: `assignment_schema_edit/${query.spec}`,
     req,
   });
 
@@ -113,9 +114,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

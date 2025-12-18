@@ -1,25 +1,27 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { IChecker } from '@custom-types/data/ITask';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Tests from '@components/Task/Tests/Tests';
+"use client";
+import Tests from "@components/Task/Tests/Tests";
+import { ITaskCheckType, ITaskType } from "@custom-types/data/atomic";
+import { ITaskTestData } from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
 import {
   ITaskTestsPayload,
   ITruncatedTaskTest,
-} from '@custom-types/data/ITaskTest';
-import { ITaskTestData } from '@custom-types/data/atomic';
-import { requestWithError } from '@utils/requestWithError';
-import { Loader } from '@mantine/core';
-import { Download } from 'tabler-icons-react';
-import { getApiUrl } from '@utils/getServerUrl';
-import { useRequest } from '@hooks/useRequest';
-import { getCookieValue } from '@utils/cookies';
-function TestsPage(props: { spec: string }) {
+} from "@custom-types/data/ITaskTest";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { Loader } from "@mantine/core";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { requestWithError } from "@utils/requestWithError";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo, useState } from "react";
+import { IconDownload } from "@tabler/icons-react";
+function TestsPage(props: { spec: string; has_write_rights: boolean }) {
   const task_spec = props.spec;
+  const hasWriteRights = props.has_write_rights;
 
   const { locale, lang } = useLocale();
   const [loading, setLoading] = useState(false);
@@ -37,14 +39,14 @@ function TestsPage(props: { spec: string }) {
       task_check_type: ITaskCheckType;
       checker?: IChecker;
     }
-  >(`task/tests/${task_spec}`, 'GET');
+  >(`task/tests/${task_spec}`, "GET");
 
   const downloadTests = useCallback(async () => {
     setLoading(true);
     let tests: ITaskTestData[] = [];
     await requestWithError<ITaskTestsPayload, { tests_data: ITaskTestData[] }>(
       `task_test/full/${task_spec}`,
-      'GET',
+      "GET",
       locale.notify.task.tests,
       lang,
       undefined,
@@ -54,7 +56,7 @@ function TestsPage(props: { spec: string }) {
           setLoading(false);
           return;
         }
-        const { downloadZip } = await import('client-zip');
+        const { downloadZip } = await import("client-zip");
         const files: { name: string; input: string }[] = [];
         tests.forEach((test, index) => {
           files.push({
@@ -67,7 +69,7 @@ function TestsPage(props: { spec: string }) {
           });
         });
         const blob = await downloadZip(files).blob();
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         const href = URL.createObjectURL(blob);
         link.href = href;
         link.download = `${task_spec}_tests.zip`;
@@ -83,7 +85,7 @@ function TestsPage(props: { spec: string }) {
     () =>
       data?.grouped_tests
         .map((tests) => tests.map((item) => item.spec.slice(3)))
-        .join() || '',
+        .join() || "",
     [data?.grouped_tests]
   );
 
@@ -97,7 +99,7 @@ function TestsPage(props: { spec: string }) {
           loading ? (
             <Loader color="white.0" variant="dots" size="md" />
           ) : (
-            <Download />
+            <IconDownload />
           )
         }
         description={locale.tip.sticky.tests.download}
@@ -112,6 +114,7 @@ function TestsPage(props: { spec: string }) {
           checkType={data.task_check_type}
           taskType={data.task_type}
           checker={data.checker}
+          hasWriteRights={hasWriteRights}
         />
       )}
     </>
@@ -132,33 +135,33 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
-  const response = await fetch(`${API_URL}/api/task/exists/${spec}`, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
+  const response = await fetch(
+    `${API_URL}/api/task/write_tests_rights/${spec}`,
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
 
-      cookie: req.headers.cookie,
-    } as { [key: string]: string },
-  });
+        cookie: req.headers.cookie,
+      } as { [key: string]: string },
+    }
+  );
   if (response.status === 200) {
+    const response_json = await response.json();
+
     return {
       props: {
         spec,
+        has_write_rights: response_json,
       },
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

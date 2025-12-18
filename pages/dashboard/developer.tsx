@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import DeveloperDashboard from '@components/DeveloperDashboard/DeveloperDashboard';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
+"use client";
+import DeveloperDashboard from "@components/DeveloperDashboard/DeveloperDashboard";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import Title from "@ui/Title/Title";
+import { ReactNode } from "react";
 
 function DeveloperDashboardPage() {
   const { locale } = useLocale();

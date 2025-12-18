@@ -1,42 +1,43 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
-import { FC, memo } from 'react';
-
-import { ILanguage } from '@custom-types/data/atomic';
-import styles from './code.module.css';
+"use client";
+import { ILanguage } from "@custom-types/data/atomic";
+import { IAttempt } from "@custom-types/data/IAttempt";
 // @ts-ignore
-import { useLocale } from '@hooks/useLocale';
-import { CodeHighlight } from '@mantine/code-highlight';
+import { useLocale } from "@hooks/useLocale";
+import { CodeHighlight } from "@mantine/code-highlight";
+import { FC, memo } from "react";
+
+import styles from "./code.module.css";
 
 const getLang = (language: ILanguage): any => {
   switch (language.shortName) {
-    case 'cpp':
-      return 'cpp';
-    case 'python':
-      return 'python';
-    case 'pypy':
-      return 'python';
-    case 'java':
-      return 'java';
-    case 'pascal':
-      return 'pascal';
-    case 'rust':
-      return 'rust';
-    case 'go':
-      return 'go';
-    case 'nodejs':
-      return 'javascript';
-    case 'cobol':
-      return 'cobol';
-    case 'fortran':
-      return 'fortran';
-    case 'csharp':
-      return 'csharp';
-    case 'haskell':
-      return 'haskell';
-    case 'lua':
-      return 'lua';
+    case "cpp":
+      return "cpp";
+    case "python":
+      return "python";
+    case "pypy":
+      return "python";
+    case "java":
+      return "java";
+    case "pascal":
+      return "pascal";
+    case "rust":
+      return "rust";
+    case "go":
+      return "go";
+    case "nodejs":
+      return "javascript";
+    case "cobol":
+      return "cobol";
+    case "fortran":
+      return "fortran";
+    case "csharp":
+      return "csharp";
+    case "haskell":
+      return "haskell";
+    case "lua":
+      return "lua";
     default:
-      return '';
+      return "";
   }
 };
 

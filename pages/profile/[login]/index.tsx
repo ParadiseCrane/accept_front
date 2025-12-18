@@ -1,13 +1,14 @@
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { GetServerSideProps } from 'next';
-import { ReactNode } from 'react';
-import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
-import styles from '@styles/profile/login.module.css';
-import { useUser } from '@hooks/useUser';
-import Title from '@ui/Title/Title';
-import ProfileSticky from '@components/Profile/ProfileSticky/ProfileSticky';
-import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
+"use client";
+import ProfileInfo from "@components/Profile/ProfileInfo/ProfileInfo";
+import ProfileSticky from "@components/Profile/ProfileSticky/ProfileSticky";
+import { IFullProfileBundle } from "@custom-types/data/IProfileInfo";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import styles from "@styles/profile/login.module.css";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import { GetServerSideProps } from "next";
+import { ReactNode } from "react";
 
 function UserProfile(props: IFullProfileBundle) {
   const { isAdmin, accessLevel } = useUser();
@@ -36,10 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.login)
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
 
   const response = await fetchWrapperStatic({
@@ -51,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       redirect: {
         permanent: false,
-        destination: '/profile/me',
+        destination: "/profile/me",
       },
     };
   }
@@ -68,9 +66,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

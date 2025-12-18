@@ -1,5 +1,4 @@
 .wrapper {
-  max-width: 800px;
   display: flex;
   flex-direction: column;
   gap: var(--spacer-s);
@@ -14,8 +13,6 @@
 
 .attemptInfo div {
   border-radius: 30px;
-  width: 300px;
-  padding: 0 var(--spacer-l) 0 0;
 }
 
 .ratingInfo {
@@ -26,10 +23,14 @@
 
 .ratingInfo div {
   border-radius: 30px;
-  width: 300px;
-  padding: 0 var(--spacer-l) 0 0;
 }
 
 .value {
   color: var(--primary);
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    align-items: center;
+  }
 }

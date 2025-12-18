@@ -1,4 +1,6 @@
 export const userSelector = {
-  selected: 'Selected users',
-  unselected: 'Users',
+  selected: "Selected users",
+  unselected: "Users",
+  selectedGroupMembers: "Selected members",
+  unselectedGroupMembers: "Group members",
 };

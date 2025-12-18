@@ -1,14 +1,15 @@
-import { FC, memo, useCallback, useState } from 'react';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { HeartBroken } from 'tabler-icons-react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { IAttempt } from '@custom-types/data/IAttempt';
-import { useLocale } from '@hooks/useLocale';
-import { TextInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useForm } from '@mantine/form';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import modalStyles from '@styles/ui/modal.module.css';
+"use client";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import { useLocale } from "@hooks/useLocale";
+import { useForm } from "@mantine/form";
+import modalStyles from "@styles/ui/modal.module.css";
+import { TextInput } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconHeartBroken } from "@tabler/icons-react";
 
 const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const [opened, setOpened] = useState(false);
@@ -16,13 +17,11 @@ const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
 
   const form = useForm({
     initialValues: {
-      reason: '',
+      reason: "",
     },
     validate: {
       reason: (value) =>
-        value.length < 5
-          ? locale.attempt.ban.validation.reason.tooShort
-          : null,
+        value.length < 5 ? locale.attempt.ban.validation.reason.tooShort : null,
     },
     validateInputOnChange: true,
   });
@@ -30,10 +29,10 @@ const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const handleBan = useCallback(() => {
     requestWithNotify(
       `attempt/ban/${attempt.spec}`,
-      'POST',
+      "POST",
       locale.attempt.ban.request,
       lang,
-      () => '',
+      () => "",
       { reason: form.values.reason },
       () => window.location.reload()
     );
@@ -42,7 +41,7 @@ const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   return (
     <>
       <SingularSticky
-        icon={<HeartBroken width={32} height={32} />}
+        icon={<IconHeartBroken width={32} height={32} />}
         color="red"
         onClick={() => setOpened(true)}
         description={locale.tip.sticky.attempt.ban}
@@ -64,7 +63,7 @@ const BanModal: FC<{ attempt: IAttempt }> = ({ attempt }) => {
             label={locale.attempt.ban.reason}
             shrink
             required
-            {...form.getInputProps('reason')}
+            {...form.getInputProps("reason")}
           />
 
           <SimpleButtonGroup

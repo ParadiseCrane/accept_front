@@ -1,4 +1,14 @@
-import { Button, Select } from '@ui/basics';
+"use client";
+import { MAX_CODE_LENGTH } from "@constants/Limits";
+import { ILanguage } from "@custom-types/data/atomic";
+import { setter } from "@custom-types/ui/atomic";
+import { MyHoverCardDropdownProps } from "@custom-types/ui/basics/button";
+import { useLocale } from "@hooks/useLocale";
+import { useLocalStorage } from "@mantine/hooks";
+import { Button, Select } from "@ui/basics";
+import CodeArea from "@ui/CodeArea/CodeArea";
+import { capitalize } from "@utils/capitalize";
+import { requestWithNotify } from "@utils/requestWithNotify";
 import {
   FC,
   ReactNode,
@@ -7,18 +17,10 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { useLocale } from '@hooks/useLocale';
-import CodeArea from '@ui/CodeArea/CodeArea';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { capitalize } from '@utils/capitalize';
-import { setter } from '@custom-types/ui/atomic';
-import styles from './send.module.css';
-import { Send as SendPlane } from 'tabler-icons-react';
-import { ILanguage } from '@custom-types/data/atomic';
-import { useLocalStorage } from '@mantine/hooks';
-import { MAX_CODE_LENGTH } from '@constants/Limits';
-import { MyHoverCardDropdownProps } from '@custom-types/ui/basics/button';
+} from "react";
+import { IconSend as SendPlane } from "@tabler/icons-react";
+
+import styles from "./send.module.css";
 
 const Send: FC<{
   spec: string;
@@ -36,8 +38,8 @@ const Send: FC<{
   const { locale, lang } = useLocale();
 
   const [language, setLanguage] = useLocalStorage<string>({
-    key: 'previous_program_lang',
-    defaultValue: languages.length > 0 ? languages[0].spec.toString() : '1',
+    key: "previous_program_lang",
+    defaultValue: "1",
   });
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const Send: FC<{
     }
   }, [language, languages, setLanguage]);
 
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
 
   const handleSubmit = useCallback(() => {
     const body = {
@@ -56,17 +58,17 @@ const Send: FC<{
       textAnswers: [],
     };
     requestWithNotify(
-      'attempt/submit',
-      'POST',
+      "attempt/submit",
+      "POST",
       locale.notify.attempt.send,
       lang,
-      (_: {}) => '',
+      (_: {}) => "",
       body,
       () => {},
       { autoClose: 5000 }
     );
-    setCode('');
-    setActiveTab('results');
+    setCode("");
+    setActiveTab("results");
   }, [language, code, spec, locale, lang, setActiveTab]);
 
   const onLangSelect = useCallback(
@@ -116,14 +118,14 @@ const Send: FC<{
           }
           hoverCardDropdownProps={buttonDropdownProps}
           leftSection={
-            <SendPlane color={!isValid ? 'black' : 'var(--primary)'} />
+            <SendPlane color={!isValid ? "black" : "var(--primary)"} />
           }
         >
           {locale.task.submit}
         </Button>
       </div>
       <CodeArea
-        label={''}
+        label={""}
         languages={languages}
         setLanguage={setLanguage}
         setCode={setCode}

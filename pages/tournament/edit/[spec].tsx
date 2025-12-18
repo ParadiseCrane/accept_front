@@ -1,31 +1,34 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { GetServerSideProps } from 'next';
-import { getApiUrl } from '@utils/getServerUrl';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { useLocale } from '@hooks/useLocale';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { UseFormReturnType } from '@mantine/form/lib/types';
-import Title from '@ui/Title/Title';
+"use client";
+import Form from "@components/Tournament/Form/Form";
 import {
   ITournamentAdd,
   ITournamentEditBundle,
-} from '@custom-types/data/ITournament';
-import { timezoneDate } from '@utils/datetime';
-import Form from '@components/Tournament/Form/Form';
-import { useRequest } from '@hooks/useRequest';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { getCookieValue } from '@utils/cookies';
+} from "@custom-types/data/ITournament";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form/lib/types";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { timezoneDate } from "@utils/datetime";
+import { getApiUrl } from "@utils/getServerUrl";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function TournamentEdit(props: ITournamentEditBundle) {
   const { locale, lang } = useLocale();
+  const tournament = props.tournament;
 
   const { data: users } = useRequest<{}, IUserDisplay[]>(
-    'user/list-display',
-    'GET',
+    "user/list-display",
+    "GET",
     undefined,
     undefined,
     undefined,
@@ -35,19 +38,27 @@ function TournamentEdit(props: ITournamentEditBundle) {
 
   const initialValues = useMemo(
     () => ({
-      ...props.tournament,
+      ...tournament,
 
-      tags: props.tournament.tags.map((tag) => ({
-        value: tag.spec,
-        label: tag.title,
-      })),
-      assessmentType: props.tournament.assessmentType.spec.toString(),
-      security: props.tournament.security.toString(),
-      start: timezoneDate(props.tournament.start),
-      end: timezoneDate(props.tournament.end),
-      frozeResults: timezoneDate(props.tournament.frozeResults),
+      tags: tournament.tags.map((spec) => {
+        const tag = props.tags.find((elem) => elem.spec == spec);
+
+        if (!tag) {
+          // TODO: Any ideas to write in normal way?
+          return;
+        }
+        return {
+          value: tag.spec,
+          label: tag.title,
+        };
+      }),
+      assessmentType: tournament.assessmentType.toString(),
+      security: tournament.security.toString(),
+      start: timezoneDate(tournament.start),
+      end: timezoneDate(tournament.end),
+      frozeResults: timezoneDate(tournament.frozeResults),
     }),
-    [props.tournament]
+    [tournament, props.tags]
   );
 
   const handleSubmit = useCallback(
@@ -64,13 +75,15 @@ function TournamentEdit(props: ITournamentEditBundle) {
 
       const tournament = {
         spec: form.values.spec,
+        organization: form.values.organization,
+        public: form.values.public,
         author: form.values.author,
         title: form.values.title,
         description: form.values.description,
         tasks: form.values.tasks.map((task) => task.spec),
         // @ts-ignore-line
         tags: form.values.tags.map((tag) => tag.value),
-        status: form.values.status.spec,
+        status: form.values.status,
         moderators: form.values.moderators,
         assessmentType: +form.values.assessmentType,
         shouldPenalizeAttempt: form.values.shouldPenalizeAttempt,
@@ -83,8 +96,8 @@ function TournamentEdit(props: ITournamentEditBundle) {
       } as ITournamentAdd;
 
       requestWithNotify<ITournamentAdd, string>(
-        'tournament/edit',
-        'POST',
+        "tournament/edit",
+        "POST",
         locale.notify.tournament.edit,
         lang,
         (response) => response,
@@ -122,14 +135,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(
     `${API_URL}/api/bundle/tournament-edit/${spec}`,
@@ -153,9 +163,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

@@ -1,12 +1,13 @@
-import { ReactNode } from 'react';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import AssignmentDashboard from '@components/Dashboard/AssignmentDashboard';
-import { useLocale } from '@hooks/useLocale';
-import Title from '@ui/Title/Title';
-import { ChatHostsProvider } from '@hooks/useChatHosts';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
+"use client";
+import AssignmentDashboard from "@components/Dashboard/AssignmentDashboard";
+import { REVALIDATION_TIME } from "@constants/PageRevalidation";
+import { ChatHostsProvider } from "@hooks/useChatHosts";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
+import { ReactNode } from "react";
 
 function AssignmentDashboardPage(props: { spec: string }) {
   const { locale } = useLocale();
@@ -17,7 +18,7 @@ function AssignmentDashboardPage(props: { spec: string }) {
       <Title title={locale.titles.dashboard.assignment} />
       <ChatHostsProvider
         spec={props.spec}
-        entity={'assignment'}
+        entity={"assignment"}
         updateIntervalSeconds={refetchIntervalSeconds}
       >
         <AssignmentDashboard spec={props.spec} />
@@ -35,10 +36,7 @@ export default AssignmentDashboardPage;
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params || !params.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   return {
@@ -50,6 +48,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };

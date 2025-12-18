@@ -1,33 +1,39 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { List, ListNumbers } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { IconList, IconListNumbers } from "@tabler/icons-react";
+
+import { IconWrapper } from "./IconWrapper";
 
 export const ToggleBulletList = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('bulletList') : false;
+  const isActive = editor.isFocused ? editor.isActive("bulletList") : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().toggleBulletList().run();
       }}
-      aria-label="Bullet list"
-      title="Bullet list"
+      aria-label={locale.tiptap.bulletList}
+      title={locale.tiptap.bulletList}
     >
-      <List style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={IconList} />
     </RichTextEditor.Control>
   );
 };
 
 export const ToggleOrderedList = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('orderedList') : false;
+  const isActive = editor.isFocused ? editor.isActive("orderedList") : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
         editor.chain().toggleOrderedList().run();
       }}
-      aria-label="Ordered list"
-      title="Ordered list"
+      aria-label={locale.tiptap.orderedList}
+      title={locale.tiptap.orderedList}
     >
-      <ListNumbers style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={IconListNumbers} />
     </RichTextEditor.Control>
   );
 };

@@ -1,16 +1,18 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { FC, memo } from 'react';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Helper } from '@ui/basics';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import dynamic from 'next/dynamic';
-import { ModalProps } from '@mantine/core';
+"use client";
+
+import { pureCallback } from "@custom-types/ui/atomic";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
+import { ModalProps } from "@mantine/core";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Helper } from "@ui/basics";
+import dynamic from "next/dynamic";
+import { FC, memo } from "react";
 
 const DynamicModal = dynamic<ModalProps>(() =>
-  import('@mantine/core').then((res) => res.Modal)
+  import("@mantine/core").then((res) => res.Modal)
 );
 
-interface SimpleModalProps extends Omit<ModalProps, 'onClose'> {
+interface SimpleModalProps extends Omit<ModalProps, "onClose"> {
   helperContent?: IDropdownContent;
   close?: pureCallback<void>;
   hideCloseButton?: boolean;
@@ -27,11 +29,11 @@ const SimpleModal: FC<SimpleModalProps> = ({
   return (
     <DynamicModal
       transitionProps={{
-        transition: 'fade',
+        transition: "fade",
         duration: 450,
-        timingFunction: 'ease',
+        timingFunction: "ease",
       }}
-      withCloseButton={!!!hideCloseButton}
+      withCloseButton={!hideCloseButton}
       title={
         <div className={modalStyles.titleWrapper}>
           <div className={modalStyles.title}>{title}</div>

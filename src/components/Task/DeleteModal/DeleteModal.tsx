@@ -1,16 +1,17 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import Link from 'next/link';
-import { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
-import { callback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import Link from "next/link";
+import { FC, Fragment, memo, useCallback, useEffect, useState } from "react";
 
 const DeleteModal: FC<{
   active: boolean;
@@ -29,7 +30,7 @@ const DeleteModal: FC<{
 
     sendRequest<{}, IAssignmentSchemaDisplay[]>(
       `/task/connected_assignments/${task.spec}`,
-      'POST',
+      "POST",
       undefined,
       60000
     ).then((res) => {
@@ -48,11 +49,11 @@ const DeleteModal: FC<{
       spec: task.spec,
     };
     requestWithNotify(
-      'task/delete',
-      'POST',
+      "task/delete",
+      "POST",
       locale.notify.task.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       body,
       () => setToList(true),
       { autoClose: 8000 }

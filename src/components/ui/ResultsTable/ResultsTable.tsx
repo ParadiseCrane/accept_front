@@ -1,9 +1,11 @@
-import { FC, ReactNode, memo } from 'react';
-import styles from './resultsTable.module.css';
-import DropdownList from './DropdownList/DropdownList';
-import { setter } from '@custom-types/ui/atomic';
-import { Icon } from '@ui/basics';
-import { RefreshDot } from 'tabler-icons-react';
+"use client";
+import { setter } from "@custom-types/ui/atomic";
+import { Icon } from "@ui/basics";
+import { FC, ReactNode, memo } from "react";
+import { IconRefreshDot } from "@tabler/icons-react";
+
+import DropdownList from "./DropdownList/DropdownList";
+import styles from "./resultsTable.module.css";
 
 export type ILabel = ReactNode;
 
@@ -29,7 +31,7 @@ const ResultsTable: FC<{
                 <tr>
                   <th>
                     <Icon size="sm" onClick={() => refetch(true)}>
-                      <RefreshDot color="var(--secondary)" />
+                      <IconRefreshDot color="var(--secondary)" />
                     </Icon>
                   </th>
                 </tr>
@@ -63,7 +65,7 @@ const ResultsTable: FC<{
                           : undefined
                       )
                       .map((cell, idx) => (
-                        <td key={idx} style={{ cursor: 'pointer' }}>
+                        <td key={idx} style={{ cursor: "pointer" }}>
                           <DropdownList cell={cell} />
                         </td>
                       ))}
@@ -88,7 +90,7 @@ const ResultsTable: FC<{
                       {data[index]
                         .slice(-fixedRightColumns.length)
                         .map((cell, idx) => (
-                          <td key={idx} style={{ cursor: 'pointer' }}>
+                          <td key={idx} style={{ cursor: "pointer" }}>
                             <DropdownList cell={cell} />
                           </td>
                         ))}

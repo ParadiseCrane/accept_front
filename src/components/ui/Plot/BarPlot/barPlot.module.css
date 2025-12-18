@@ -18,6 +18,7 @@
 }
 
 .legendWrapper {
+  padding: 0 10px;
   display: flex;
   max-width: 100%;
   flex-wrap: wrap;

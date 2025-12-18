@@ -1,0 +1,23 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 5fr 2fr 1fr;
+  align-items: center;
+}
+
+.info_row {
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}

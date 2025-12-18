@@ -6,6 +6,9 @@
 .buttons {
   margin: 0;
   padding: var(--spacer-m) 0 var(--spacer-l) 0;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
 }
 
 .wrapper {

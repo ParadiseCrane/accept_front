@@ -1,11 +1,13 @@
-import { FC, memo, useMemo } from 'react';
-import { getColor } from '@constants/Colors';
-import { IAttemptInfo } from '@custom-types/data/IProfileInfo';
-import { BarPiePlot } from '@ui/Plot';
-import { IPlotData } from '@custom-types/ui/IPlot';
-import styles from './attemptInfo.module.css';
-import { useLocale } from '@hooks/useLocale';
-import DefaultCentralText from '@ui/Plot/PiePlot/DefaultCentralText/DefaultCentralText';
+"use client";
+import { getColor } from "@constants/Colors";
+import { IAttemptInfo } from "@custom-types/data/IProfileInfo";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { useLocale } from "@hooks/useLocale";
+import { BarPiePlot } from "@ui/Plot";
+import DefaultCentralText from "@ui/Plot/PiePlot/DefaultCentralText/DefaultCentralText";
+import { FC, memo, useMemo } from "react";
+
+import styles from "./attemptInfo.module.css";
 
 const AttemptInfo: FC<IAttemptInfo> = ({
   total,
@@ -48,7 +50,7 @@ const AttemptInfo: FC<IAttemptInfo> = ({
           ({
             label: item.name,
             amount: item.amount,
-            color: item.name === 'OK' ? '#37B24D' : '#FA5252',
+            color: item.name === "OK" ? "#37B24D" : "#FA5252",
           } as IPlotData)
       ),
     [verdict_distribution]
@@ -67,13 +69,11 @@ const AttemptInfo: FC<IAttemptInfo> = ({
             >
               {centerText.label}
             </div>
-            <div className={styles.langAmount}>
-              {centerText.amount}
-            </div>
+            <div className={styles.langAmount}>{centerText.amount}</div>
           </div>
         )}
         defaultText={{
-          color: '',
+          color: "",
           label: locale.total,
           amount: total,
         }}
@@ -90,13 +90,11 @@ const AttemptInfo: FC<IAttemptInfo> = ({
             >
               {centerText.label}
             </div>
-            <div className={styles.langAmount}>
-              {centerText.amount}
-            </div>
+            <div className={styles.langAmount}>{centerText.amount}</div>
           </div>
         )}
         defaultText={{
-          color: '',
+          color: "",
           label: locale.total,
           amount: total,
         }}
@@ -110,7 +108,7 @@ const AttemptInfo: FC<IAttemptInfo> = ({
         defaultText={{
           label: locale.total,
           amount: total,
-          color: '',
+          color: "",
         }}
       />
     </div>

@@ -1,17 +1,19 @@
-import { FC, ReactNode, memo, useCallback, useRef } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import styles from './codeArea.module.css';
-import { callback } from '@custom-types/ui/atomic';
+"use client";
+import { ILanguage } from "@custom-types/data/atomic";
+import { callback } from "@custom-types/ui/atomic";
+import { MyButtonProps } from "@custom-types/ui/basics/button";
+import { useLocale } from "@hooks/useLocale";
+import { getHotkeyHandler } from "@mantine/hooks";
+import { Dropzone, TextArea } from "@ui/basics";
+import { extensionValidator } from "@utils/extensionValidator";
 import {
   errorNotification,
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import { ILanguage } from '@custom-types/data/atomic';
-import { extensionValidator } from '@utils/extensionValidator';
-import { Dropzone, TextArea } from '@ui/basics';
-import { MyButtonProps } from '@custom-types/ui/basics/button';
-import { getHotkeyHandler } from '@mantine/hooks';
+} from "@utils/notificationFunctions";
+import { FC, ReactNode, memo, useCallback, useRef } from "react";
+
+import styles from "./codeArea.module.css";
 
 const get_selection = (ref: HTMLTextAreaElement) => {
   let start = ref.selectionStart;
@@ -20,8 +22,8 @@ const get_selection = (ref: HTMLTextAreaElement) => {
 };
 
 const find_selected_lines = (value: string, start: number, end: number) => {
-  value = value.trimEnd() + '\n'; // for last line to work properly in case of not having \n at the end
-  let rows = value.split('\n');
+  value = value.trimEnd() + "\n"; // for last line to work properly in case of not having \n at the end
+  let rows = value.split("\n");
   let acc_len = 0;
   let row_bounds = [];
   let prev_index = 0;
@@ -209,7 +211,7 @@ const CodeArea: FC<{
       <Dropzone
         onDrop={onDrop}
         title={locale.ui.codeArea.dragFiles}
-        description={''}
+        description={""}
         showButton
         buttonProps={buttonProps}
       >
@@ -223,13 +225,13 @@ const CodeArea: FC<{
             onChange={(e) => setCode(e.target.value)}
             minRows={minRows}
             onKeyDown={getHotkeyHandler([
-              ['Tab', tab],
-              ['mod+Enter', send_keyboard],
-              ['shift+BracketLeft', brackets('{', '}')],
-              ['shift+Digit9', brackets('(', ')')],
-              ['BracketLeft', brackets('[', ']')],
-              ['alt+ArrowUp', row_swap_up],
-              ['alt+ArrowDown', row_swap_down],
+              ["Tab", tab],
+              ["mod+Enter", send_keyboard],
+              ["shift+BracketLeft", brackets("{", "}")],
+              ["shift+Digit9", brackets("(", ")")],
+              ["BracketLeft", brackets("[", "]")],
+              ["alt+ArrowUp", row_swap_up],
+              ["alt+ArrowDown", row_swap_down],
             ])}
             {...formProps}
           />

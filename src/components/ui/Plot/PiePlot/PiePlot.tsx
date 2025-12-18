@@ -1,7 +1,9 @@
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import Arc from './Arc/Arc';
-import styles from './piePlot.module.css';
+"use client";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { FC, memo, useEffect, useMemo, useState } from "react";
+
+import Arc from "./Arc/Arc";
+import styles from "./piePlot.module.css";
 
 const INNER_RADIUS = 25;
 const OUTER_RADIUS = 50;
@@ -28,10 +30,7 @@ const PiePlot: FC<{
   const accumulated = useMemo(
     () =>
       processedData.reduce(
-        (prev, item) => [
-          ...prev,
-          prev[prev.length - 1] + item.amount,
-        ],
+        (prev, item) => [...prev, prev[prev.length - 1] + item.amount],
         [0]
       ),
     [processedData]
@@ -53,11 +52,7 @@ const PiePlot: FC<{
   return (
     <div className={styles.wrapper}>
       {title && <div className={styles.title}>{title}</div>}
-      <svg
-        viewBox={`0 0 ${100 * INCREASE_RATIO} ${
-          100 * INCREASE_RATIO
-        }`}
-      >
+      <svg viewBox={`0 0 ${100 * INCREASE_RATIO} ${100 * INCREASE_RATIO}`}>
         <g
           transform={`translate(${50 * INCREASE_RATIO}, ${
             50 * INCREASE_RATIO
@@ -84,9 +79,11 @@ const PiePlot: FC<{
               width={2 * INNER_RADIUS * sinQuarterPi}
               height={2 * INNER_RADIUS * sinQuarterPi}
             >
-              {centerText
-                ? centralLabel(centerText)
-                : centralLabel(defaultText)}
+              <>
+                {centerText
+                  ? centralLabel(centerText)
+                  : centralLabel(defaultText)}
+              </>
             </foreignObject>
           )}
         </g>

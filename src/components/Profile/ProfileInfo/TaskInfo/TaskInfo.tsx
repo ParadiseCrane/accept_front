@@ -1,11 +1,13 @@
-import { getColor } from '@constants/Colors';
-import { ITaskInfo } from '@custom-types/data/IProfileInfo';
-import { IPlotData } from '@custom-types/ui/IPlot';
-import { useLocale } from '@hooks/useLocale';
-import { BarPiePlot } from '@ui/Plot';
-import { FC, memo, useMemo } from 'react';
-import DefaultCentralText from '@ui/Plot/PiePlot/DefaultCentralText/DefaultCentralText';
-import styles from './taskInfo.module.css';
+"use client";
+import { getColor } from "@constants/Colors";
+import { ITaskInfo } from "@custom-types/data/IProfileInfo";
+import { IPlotData } from "@custom-types/ui/IPlot";
+import { useLocale } from "@hooks/useLocale";
+import { BarPiePlot } from "@ui/Plot";
+import DefaultCentralText from "@ui/Plot/PiePlot/DefaultCentralText/DefaultCentralText";
+import { FC, memo, useMemo } from "react";
+
+import styles from "./taskInfo.module.css";
 
 const TaskInfo: FC<ITaskInfo> = ({
   total_tried,
@@ -35,7 +37,7 @@ const TaskInfo: FC<ITaskInfo> = ({
           ({
             label: item.name,
             amount: item.amount,
-            color: item.name === 'OK' ? '#37B24D' : '#FA5252',
+            color: item.name === "OK" ? "#37B24D" : "#FA5252",
           } as IPlotData)
       ),
     [verdict_distribution]
@@ -49,7 +51,7 @@ const TaskInfo: FC<ITaskInfo> = ({
           data={complexity_data}
           centralLabel={(props) => <DefaultCentralText {...props} />}
           defaultText={{
-            color: '',
+            color: "",
             label: locale.total,
             amount: total_solved,
           }}
@@ -63,7 +65,7 @@ const TaskInfo: FC<ITaskInfo> = ({
           defaultText={{
             label: locale.total,
             amount: total_tried,
-            color: '',
+            color: "",
           }}
         />
       )}

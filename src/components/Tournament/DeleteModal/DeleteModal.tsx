@@ -1,13 +1,14 @@
-import { ITournament } from '@custom-types/data/ITournament';
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
-import { callback } from '@custom-types/ui/atomic';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
+"use client";
+import { ITournament } from "@custom-types/data/ITournament";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
 
 const DeleteModal: FC<{
   active: boolean;
@@ -23,10 +24,10 @@ const DeleteModal: FC<{
     };
     requestWithNotify(
       `tournament/delete`,
-      'POST',
+      "POST",
       locale.notify.tournament.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       body,
       () => setToList(true),
       { autoClose: 8000 }
@@ -43,8 +44,7 @@ const DeleteModal: FC<{
       >
         <div className={modalStyles.verticalContent}>
           <div>
-            {locale.tournament.modals.delete +
-              ` '${tournament.title}' ?`}
+            {locale.tournament.modals.delete + ` '${tournament.title}' ?`}
           </div>
 
           {!toList ? (

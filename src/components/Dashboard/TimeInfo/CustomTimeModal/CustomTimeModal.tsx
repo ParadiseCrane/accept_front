@@ -1,9 +1,11 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Button } from '@ui/basics';
-import IncrementalInput from './IncrementalInput';
-import styles from './customTimeModal.module.css';
-import { useLocale } from '@hooks/useLocale';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Button } from "@ui/basics";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { FC, memo, useCallback, useMemo, useState } from "react";
+
+import styles from "./customTimeModal.module.css";
+import IncrementalInput from "./IncrementalInput";
 
 const CustomTimeModal: FC<{ handleTime: (_: number) => void }> = ({
   handleTime,
@@ -23,12 +25,12 @@ const CustomTimeModal: FC<{ handleTime: (_: number) => void }> = ({
   return (
     <div>
       <Button
-        targetWrapperStyle={{ width: '100%' }}
-        buttonWrapperStyle={{ width: '100%' }}
+        targetWrapperStyle={{ width: "100%" }}
+        buttonWrapperStyle={{ width: "100%" }}
         style={{
-          borderLeft: 'none',
+          borderLeft: "none",
           borderRadius: 0,
-          fontSize: 'var(--font-size-s)',
+          fontSize: "var(--font-size-s)",
         }}
         fullWidth
         onClick={() => setOpened(true)}

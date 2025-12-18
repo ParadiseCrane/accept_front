@@ -1,5 +1,20 @@
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IParticipantListBundle, IUser } from "@custom-types/data/IUser";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect } from "@ui/basics";
+import Table from "@ui/Table/Table";
+import { capitalize } from "@utils/capitalize";
+import { customTableSort } from "@utils/customTableSort";
+import { hasSubarray } from "@utils/hasSubarray";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -8,35 +23,20 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { BaseSearch } from '@custom-types/data/request';
-import { useRequest } from '@hooks/useRequest';
-import { ILocale } from '@custom-types/ui/ILocale';
-import Fuse from 'fuse.js';
-import { hasSubarray } from '@utils/hasSubarray';
-import { customTableSort } from '@utils/customTableSort';
-import { IParticipantListBundle, IUser } from '@custom-types/data/IUser';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IRole } from '@custom-types/data/atomic';
-import { capitalize } from '@utils/capitalize';
-import { MultiSelect } from '@ui/basics';
+} from "react";
 
 interface Item<T = any> {
   value: T;
   display: string | ReactNode;
 }
 
-interface IUserDisplayList extends Omit<IUser, 'login' | 'shortName' | 'role'> {
+interface IUserDisplayList extends Omit<IUser, "login" | "shortName" | "role"> {
   login: Item<string>;
   shortName: Item<string>;
   role: Item<IRole>;
   banned: Item<boolean>;
   banReason?: Item<string>;
 }
-
-const DEFAULT_ON_PAGE = 10;
 
 const UsersList: FC<{
   url: string;
@@ -98,7 +98,7 @@ const UsersList: FC<{
       groups: IGroup[];
       roles: IRole[];
     }
-  >(url, 'GET', undefined, processData);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
@@ -107,8 +107,8 @@ const UsersList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['login.value', 'shortName.value', 'name'],
+      search: "",
+      keys: ["login.value", "shortName.value", "name"],
     },
   });
 
@@ -138,7 +138,7 @@ const UsersList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -230,10 +230,10 @@ const UsersList: FC<{
         additionalSearch={
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 'var(--spacer-l)',
-              width: '100%',
+              display: "flex",
+              flexDirection: "row",
+              gap: "var(--spacer-l)",
+              width: "100%",
             }}
           >
             <MultiSelect

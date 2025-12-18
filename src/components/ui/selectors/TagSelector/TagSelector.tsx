@@ -1,22 +1,16 @@
-import { useLocale } from '@hooks/useLocale';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { sendRequest } from '@requests/request';
-import { ITag } from '@custom-types/data/ITag';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { TagItem } from './TagItem/TagItem';
-import { Item, setter } from '@custom-types/ui/atomic';
+import { ITag } from "@custom-types/data/ITag";
+import { Item, setter } from "@custom-types/ui/atomic";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import AddTag from './AddTag/AddTag';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+
+import AddTag from "./AddTag/AddTag";
+import { TagItem } from "./TagItem/TagItem";
 
 const TagSelector: FC<{
   initialTags: Item[];
@@ -43,14 +37,13 @@ const TagSelector: FC<{
 }) => {
   const { locale } = useLocale();
   const initialTagsInner = useMemo(() => initialTags, []); //eslint-disable-line
-  const [tags, setTags] =
-    useState<ICustomTransferListData>(undefined);
+  const [tags, setTags] = useState<ICustomTransferListData>(undefined);
   const [allTags, setAllTags] = useState<ITag[]>([]);
   const [loading, setLoading] = useState(true);
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
-      if (!!!data) return;
+      if (!data) return;
       setUsed(data[1]);
       setTags(data);
     },
@@ -78,7 +71,7 @@ const TagSelector: FC<{
 
   const refetch = useCallback(async () => {
     setLoading(true);
-    sendRequest<{}, ITag[]>(fetchURL, 'GET').then((res) => {
+    sendRequest<{}, ITag[]>(fetchURL, "GET").then((res) => {
       if (res.error) return;
       setAllTags(res.response);
       setLoading(false);
@@ -109,21 +102,19 @@ const TagSelector: FC<{
   return (
     <CustomTransferList
       loading={loading}
-      titles={[
-        locale.ui.tagSelector.available,
-        locale.ui.tagSelector.used,
-      ]}
+      titles={[locale.ui.tagSelector.available, locale.ui.tagSelector.used]}
       itemComponent={itemComponent}
       extraActions={[
         [<AddTag key={1} addURL={addURL} refetch={refetch} />],
         [],
       ]}
       shrink={shrink}
-      searchKeys={['title']}
+      searchKeys={["title"]}
       {...form.getInputProps(field)}
       value={tags}
       onChange={onChange}
       width={width}
+      height={allTags.length === 0 ? "min-content" : undefined}
     />
   );
 };

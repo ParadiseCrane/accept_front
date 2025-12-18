@@ -1,29 +1,31 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import ListItem from '@ui/ListItem/ListItem';
+"use client";
+import { MAX_TEST_LENGTH } from "@constants/Limits";
 import {
   ITaskCheckType,
   ITaskTestData,
   ITaskType,
-} from '@custom-types/data/atomic';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { IChecker } from '@custom-types/data/ITask';
-import { Dropzone, Helper, HelperTip } from '@ui/basics';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import OpenTestInNewTab from '@ui/OpenTestInNewTab/OpenTestInNewTab';
-import AddModal from './AddModal/AddModal';
-import EditTest from './EditTest/EditTest';
-import DeleteTest from './DeleteTest/DeleteTest';
-import { useLocale } from '@hooks/useLocale';
+} from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Dropzone, Helper, HelperTip } from "@ui/basics";
+import ListItem from "@ui/ListItem/ListItem";
+import OpenTestInNewTab from "@ui/OpenTestInNewTab/OpenTestInNewTab";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { setter } from '@custom-types/ui/atomic';
-import styles from './groupContent.module.css';
-import { MAX_TEST_LENGTH } from '@constants/Limits';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
 
-const filterNonDigits = (s: string) => s.match(/\d/g)?.join('') || '0';
+import AddModal from "./AddModal/AddModal";
+import DeleteTest from "./DeleteTest/DeleteTest";
+import EditTest from "./EditTest/EditTest";
+import styles from "./groupContent.module.css";
+
+const filterNonDigits = (s: string) => s.match(/\d/g)?.join("") || "0";
 
 const GroupContent: FC<{
   group_index: number;
@@ -35,6 +37,7 @@ const GroupContent: FC<{
   taskType: ITaskType;
   checkType: ITaskCheckType;
   checker?: IChecker;
+  hasWriteRights: boolean;
 }> = ({
   group_index,
   test_offset,
@@ -45,16 +48,17 @@ const GroupContent: FC<{
   taskType,
   checkType,
   checker,
+  hasWriteRights,
 }) => {
   const { locale, lang } = useLocale();
   const addTests = useCallback(
     async (tests_to_add: ITaskTestData[]) => {
       requestWithNotify<ITaskTestData[], boolean>(
         `task_test/post/${task_spec}/${group_index}`,
-        'POST',
+        "POST",
         locale.notify.task_test.post,
         lang,
-        () => '',
+        () => "",
         tests_to_add,
         (response) => {
           if (response) {
@@ -77,20 +81,20 @@ const GroupContent: FC<{
       }[] = [];
       for (let i = 0; i < length; i++) {
         const file = files[i];
-        const name = file.name.startsWith('i')
-          ? 'input'
-          : file.name.startsWith('o')
-          ? 'output'
-          : '';
+        const name = file.name.startsWith("i")
+          ? "input"
+          : file.name.startsWith("o")
+          ? "output"
+          : "";
         switch (name) {
-          case 'input':
+          case "input":
             inputs.push({
               index: +filterNonDigits(file.name),
               content: await files[i].text(),
             });
             break;
 
-          case 'output':
+          case "output":
             outputs.push({
               index: +filterNonDigits(file.name),
               content: await files[i].text(),
@@ -117,7 +121,7 @@ const GroupContent: FC<{
         // text task
         for (let i = 0; i < outputs.length; i++) {
           tests.push({
-            inputData: '',
+            inputData: "",
             outputData: outputs[i].content.trimEnd(),
           });
         }
@@ -126,7 +130,7 @@ const GroupContent: FC<{
         for (let i = 0; i < inputs.length; i++) {
           tests.push({
             inputData: inputs[i].content.trimEnd(),
-            outputData: '',
+            outputData: "",
           });
         }
       }
@@ -184,15 +188,16 @@ const GroupContent: FC<{
 
   return (
     <Dropzone
+      disabled={!hasWriteRights}
       onDrop={onDrop}
       title={locale.ui.codeArea.dragFiles}
-      description={''}
+      description={""}
       showButton
       plural
       maxSize={MAX_TEST_LENGTH * 2} // amount of symbols * average utf-8 symbol size
       buttonProps={{
         style: {
-          width: '100%',
+          width: "100%",
         },
         dropdownContent: helperContent,
       }}
@@ -211,14 +216,14 @@ const GroupContent: FC<{
                 readonly
                 values={tests.map((item) => ({
                   inputData: item.isInputTruncated
-                    ? item.inputData + '...'
+                    ? item.inputData + "..."
                     : item.inputData,
                   outputData: item.isOutputTruncated
-                    ? item.outputData + '...'
+                    ? item.outputData + "..."
                     : item.outputData,
                 }))}
                 label={
-                  locale.task.tests.test + ' #' + (test_offset + index + 1)
+                  locale.task.tests.test + " #" + (test_offset + index + 1)
                 }
                 inLabel={locale.task.form.inputTest}
                 outLabel={locale.task.form.outputTest}
@@ -228,20 +233,24 @@ const GroupContent: FC<{
                 maxRows={7}
                 minRows={7}
                 openInputNewTab={
-                  <OpenTestInNewTab spec={test.spec} field={'input'} />
+                  <OpenTestInNewTab spec={test.spec} field={"input"} />
                 }
                 openOutputNewTab={
-                  <OpenTestInNewTab spec={test.spec} field={'output'} />
+                  <OpenTestInNewTab spec={test.spec} field={"output"} />
                 }
-                additionalActions={[
-                  <DeleteTest
-                    key={index * 2}
-                    index={index}
-                    test={test}
-                    refetch={() => refetch(false)}
-                  />,
-                  EditAction(test, index),
-                ]}
+                additionalActions={
+                  hasWriteRights
+                    ? [
+                        <DeleteTest
+                          key={index * 2}
+                          index={index}
+                          test={test}
+                          refetch={() => refetch(false)}
+                        />,
+                        EditAction(test, index),
+                      ]
+                    : []
+                }
               />
               {(test.isInputTruncated || test.isOutputTruncated) && (
                 <div className={styles.truncationNote}>
@@ -250,11 +259,13 @@ const GroupContent: FC<{
               )}
             </div>
           ))}
-        <AddModal
-          addTests={addTests}
-          hideInput={hideInput}
-          hideOutput={hideOutput}
-        />
+        {hasWriteRights && (
+          <AddModal
+            addTests={addTests}
+            hideInput={hideInput}
+            hideOutput={hideOutput}
+          />
+        )}
       </div>
     </Dropzone>
   );

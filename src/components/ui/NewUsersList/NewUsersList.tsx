@@ -1,3 +1,14 @@
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IStudentAdd } from "@custom-types/data/IStudent";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -6,19 +17,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import Table from '@ui/Table/Table';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { BaseSearch } from '@custom-types/data/request';
-
-import Fuse from 'fuse.js';
-import { customTableSort } from '@utils/customTableSort';
-import { IStudentAdd } from '@custom-types/data/IStudent';
-
-const DEFAULT_ON_PAGE = 10;
+} from "react";
 
 const NewUsersList: FC<{
   data: IStudentAdd[];
@@ -59,8 +58,8 @@ const NewUsersList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['fullName', 'login'],
+      search: "",
+      keys: ["fullName", "login"],
     },
   });
 
@@ -73,7 +72,7 @@ const NewUsersList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)

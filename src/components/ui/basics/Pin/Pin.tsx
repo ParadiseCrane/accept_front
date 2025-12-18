@@ -1,13 +1,15 @@
-import { FC, ReactNode, memo } from 'react';
+"use client";
+import { PIN_LENGTH } from "@constants/TournamentSecurity";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
 import {
   PinInput as MantinePin,
   PinInputProps as MantinePinProps,
-} from '@mantine/core';
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import InputWrapper from '../InputWrapper/InputWrapper';
-import { PIN_LENGTH } from '@constants/TournamentSecurity';
-import styles from './pin.module.css';
-import { concatClassNames } from '@utils/concatClassNames';
+} from "@mantine/core";
+import { concatClassNames } from "@utils/concatClassNames";
+import { FC, ReactNode, memo } from "react";
+
+import InputWrapper from "../InputWrapper/InputWrapper";
+import styles from "./pin.module.css";
 
 interface Props extends MantinePinProps {
   label?: ReactNode;
@@ -25,7 +27,7 @@ const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {
       <div
         className={concatClassNames(styles.inputWrapper, classNames?.wrapper)}
       >
-        <MantinePin length={PIN_LENGTH} size={'xl'} {...props} />
+        <MantinePin length={PIN_LENGTH} size={"xl"} {...props} />
         {rightSection}
       </div>
     </InputWrapper>

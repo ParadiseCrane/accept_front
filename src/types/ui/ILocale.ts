@@ -1,6 +1,7 @@
-import en from '@locale/en';
-import ru from '@locale/ru';
-import { setter } from './atomic';
+import en from "@locale/en";
+import ru from "@locale/ru";
+
+import { setter } from "./atomic";
 
 export const locales = {
   ru,
@@ -19,4 +20,4 @@ export interface ILocaleContext {
 export type IAvailableLang = keyof typeof locales;
 
 export type ILocale = typeof ru;
-export const defaultLocaleName = 'ru';
+export const defaultLocaleName = "ru";

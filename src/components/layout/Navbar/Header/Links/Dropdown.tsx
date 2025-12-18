@@ -1,8 +1,9 @@
-import { MantineTransition, Menu } from '@mantine/core';
+"use client";
+import { MantineTransition, Menu } from "@mantine/core";
+import Link from "next/link";
+import { FC, ReactNode, memo } from "react";
 
-import { FC, ReactNode, memo } from 'react';
-import styles from './dropdown.module.css';
-import Link from 'next/link';
+import styles from "./dropdown.module.css";
 
 interface Item {
   label: string;
@@ -20,7 +21,7 @@ const Dropdown: FC<{
       position="bottom-start"
       offset={8}
       trigger="hover"
-      zIndex={1000}
+      // zIndex={1000}
       openDelay={200}
       closeDelay={200}
       transitionProps={

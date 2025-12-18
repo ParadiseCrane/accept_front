@@ -1,18 +1,21 @@
-import { FC, memo, useState } from 'react';
-import { Menu } from '@mantine/core';
-import { useUser } from '@hooks/useUser';
-import { useLocale } from '@hooks/useLocale';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { Indicator, UserAvatar } from '@ui/basics';
-import styles from './profileMenu.module.css';
-import { Logout, Plus } from 'tabler-icons-react';
-import { accessLevels } from '@constants/protectedRoutes';
-import { menuLinks } from '@constants/ProfileMenuLinks';
-import Link from 'next/link';
-import AccountsMenu from './AccountsMenu/AccountsMenu';
-import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
+"use client";
+import { menuLinks } from "@constants/ProfileMenuLinks";
+import { accessLevels } from "@constants/protectedRoutes";
+import { useBackNotifications } from "@hooks/useBackNotifications";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Menu } from "@mantine/core";
+import { Indicator, UserAvatar } from "@ui/basics";
+import ConfirmLogoutModal from "@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal";
+import { putOrganizationToLS } from "@utils/manageLocalStorage";
+import Link from "next/link";
+import { FC, memo, useState } from "react";
+import { IconLogout, IconPlus } from "@tabler/icons-react";
 
-const ProfileMenu: FC<{}> = ({}) => {
+import AccountsMenu from "./AccountsMenu/AccountsMenu";
+import styles from "./profileMenu.module.css";
+
+const ProfileMenu: FC<{ size: "md" | "lg" }> = ({ size }) => {
   const { locale } = useLocale();
   const { user, signOut, accessLevel, accounts } = useUser();
 
@@ -26,15 +29,17 @@ const ProfileMenu: FC<{}> = ({}) => {
         opened={showMenu}
         trigger="hover"
         zIndex={100}
-        transitionProps={{ transition: 'scale-y', duration: 150 }}
+        transitionProps={{ transition: "scale-y", duration: 150 }}
       >
         <Menu.Target>
           <div>
             <Indicator label={unviewed} disabled={unviewed <= 0}>
               <UserAvatar
                 login={user?.login}
+                size={size}
+                radius={size}
                 organization={user?.organization}
-                alt={'User avatar'}
+                alt={"User avatar"}
                 classNames={{ root: styles.avatar }}
               />
             </Indicator>
@@ -42,7 +47,7 @@ const ProfileMenu: FC<{}> = ({}) => {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label className={styles.label}>
-            {user?.shortName || ''}
+            {user?.shortName || ""}
           </Menu.Label>
 
           <Menu.Divider />
@@ -65,9 +70,9 @@ const ProfileMenu: FC<{}> = ({}) => {
 
           <Menu.Item
             component={Link}
-            href={'/add_account'}
-            leftSection={<Plus color="var(--secondary)" size={20} />}
-            style={{ display: accounts.length == 1 ? '' : 'none' }}
+            href={"/add_account"}
+            leftSection={<IconPlus color="var(--secondary)" size={20} />}
+            style={{ display: accounts.length == 1 ? "" : "none" }}
           >
             {locale.accounts.addAccount}
           </Menu.Item>
@@ -80,12 +85,15 @@ const ProfileMenu: FC<{}> = ({}) => {
             closeMenu={() => {
               toggleMenu(undefined);
             }}
-            confirm={signOut}
+            confirm={() => {
+              putOrganizationToLS({ value: user?.organization });
+              signOut();
+            }}
             title={locale.accounts.sessionLogout}
             modalText={locale.accounts.confirmSessionLogout}
           >
             <Menu.Item
-              leftSection={<Logout color="var(--secondary)" size={20} />}
+              leftSection={<IconLogout color="var(--secondary)" size={20} />}
             >
               {locale.mainHeaderLinks.profileLinks.signOut}
             </Menu.Item>

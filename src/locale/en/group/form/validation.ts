@@ -1,4 +1,6 @@
 export const validation = {
-  name: 'Название группы должно состоять должно содержать хотя бы 5 символов',
-  members: 'Группа должна включать хотя бы 2 участника', // TODO: Fix locale
+  name: (number: number) =>
+    `Minimum length of group name is ${number} characters`,
+  members: (number: number) =>
+    `Minimum number of participants in a group is ${number} participants`,
 };

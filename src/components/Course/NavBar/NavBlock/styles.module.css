@@ -1,0 +1,32 @@
+.box_wrapper {
+  padding-left: 10px;
+  width: 100%;
+  height: 50px;
+}
+
+.box_wrapper:hover {
+  cursor: pointer;
+}
+
+.box {
+  flex-grow: 1;
+  padding: 0px 10px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.box span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.box a {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

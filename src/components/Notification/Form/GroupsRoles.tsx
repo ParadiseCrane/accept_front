@@ -1,9 +1,10 @@
-import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
-import { GroupSelector, RoleSelector } from '@ui/selectors';
-import { FC, memo, useMemo } from 'react';
-import { Overlay, Switch } from '@ui/basics';
-import { useLocale } from '@hooks/useLocale';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
+import { IGroup } from "@custom-types/data/IGroup";
+import { useLocale } from "@hooks/useLocale";
+import { Overlay, Switch } from "@ui/basics";
+import { GroupSelector, RoleSelector } from "@ui/selectors";
+import { FC, memo, useMemo } from "react";
 
 const GroupsRoles: FC<{
   form: any;
@@ -26,21 +27,21 @@ const GroupsRoles: FC<{
             ))}
           </div>
         }
-        {...form.getInputProps('broadcast', { type: 'checkbox' })}
+        {...form.getInputProps("broadcast", { type: "checkbox" })}
       />
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         {form.values.broadcast && <Overlay />}
         <RoleSelector
           form={form}
           roles={roles}
           initialRoles={initialRoles}
-          field={'roles'}
+          field={"roles"}
         />
         <GroupSelector
           form={form}
           groups={groups}
           initialGroups={initialGroups}
-          field={'groups'}
+          field={"groups"}
         />
       </div>
     </>

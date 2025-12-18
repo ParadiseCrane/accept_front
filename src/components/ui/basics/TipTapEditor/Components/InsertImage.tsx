@@ -1,73 +1,63 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
-import styles from '../TipTapEditor.module.css';
-import { useState } from 'react';
-import { ImageUrlModal } from './ImageUrlModal';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { useId, useState } from "react";
+import { IconPhotoSearch, IconPhotoUp } from "@tabler/icons-react";
 
-const loadImageAsFile = ({
-  files,
-  editor,
-}: {
-  files: FileList | null;
-  editor: Editor;
-}) => {
-  const reader = new FileReader();
-  reader.onload = function () {
-    if (typeof reader.result === 'string') {
-      // return reader.result;
-      editor?.chain().focus().setImage({ src: reader.result }).run();
-    }
-    return '';
-  };
-  if (files !== null) {
-    reader.readAsDataURL(files[0]);
-  }
-};
-
-// const loadImageFromUrl = ({ src, editor }: { src: string; editor: Editor }) => {
-//   editor
-//     .chain()
-//     .setImage({ src: src, alt: 'Uploaded image', title: 'Uploaded image' })
-//     .run();
-// };
+import styles from "../TipTapEditor.module.css";
+import { IconWrapper } from "./IconWrapper";
+import { ImageUrlModal } from "./Modals/ImageUrlModal";
+import { uploadImageAsFile } from "@utils/image";
 
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
+  const { locale } = useLocale();
+  const id = useId();
   return (
-    <RichTextEditor.Control aria-label="Upload image" title="Upload image">
-      <input
-        type="file"
-        accept={'image/*'}
-        className="Input__input"
-        onChange={(e) =>
-          loadImageAsFile({ files: e.target.files, editor: editor })
-        }
-        style={{ display: 'none' }}
-        id="upload-image-as-file"
-      />
+    <RichTextEditor.Control
+      aria-label={locale.tiptap.imageFile}
+      title={locale.tiptap.imageFile}
+    >
       <label
-        htmlFor="upload-image-as-file"
-        style={{ display: 'flex', flexDirection: 'column' }}
+        htmlFor={id}
+        style={{ display: "flex", flexDirection: "column" }}
         className={styles.upload_image}
       >
-        <PhotoUp size={'1rem'} />
+        <IconWrapper isActive={false} IconChild={IconPhotoUp} />
       </label>
+      <input
+        type="file"
+        accept={"image/*"}
+        className="Input__input"
+        onChange={(e) => {
+          uploadImageAsFile({
+            files: e.target.files,
+            editor: editor,
+            timeout: 4000,
+            locale: locale,
+            width: "300px",
+          });
+        }}
+        style={{ display: "none" }}
+        id={id}
+      />
     </RichTextEditor.Control>
   );
 };
 
 export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
   const [show, setShow] = useState(false);
+  const { locale } = useLocale();
   return (
     <>
       <RichTextEditor.Control
         onClick={() => {
           setShow(true);
         }}
-        aria-label="Upload image from URL"
-        title="Upload image from URL"
+        aria-label={locale.tiptap.imageURL}
+        title={locale.tiptap.imageURL}
       >
-        <PhotoSearch size={'1rem'} />
+        <IconWrapper isActive={false} IconChild={IconPhotoSearch} />
       </RichTextEditor.Control>
       {show && (
         <ImageUrlModal

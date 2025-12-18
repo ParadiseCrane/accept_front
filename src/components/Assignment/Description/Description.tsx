@@ -1,19 +1,20 @@
-import { FC, memo, useEffect, useState } from 'react';
-import styles from './description.module.css';
-import { IAssignment } from '@custom-types/data/IAssignment';
-import { getLocalDate } from '@utils/datetime';
-import { useLocale } from '@hooks/useLocale';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { sendRequest } from '@requests/request';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { letterFromIndex } from '@utils/letterFromIndex';
+"use client";
+import { IAssignment } from "@custom-types/data/IAssignment";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
+import { getLocalDate } from "@utils/datetime";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import { FC, memo, useEffect, useState } from "react";
 
-const Description: FC<{ assignment: IAssignment }> = ({
-  assignment,
-}) => {
+import styles from "./description.module.css";
+
+const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
   const { locale } = useLocale();
-  const [startDate, setStartDate] = useState('-');
-  const [endDate, setEndDate] = useState('-');
+  const [startDate, setStartDate] = useState("-");
+  const [endDate, setEndDate] = useState("-");
 
   const [tasks, setTasks] = useState(assignment.tasks);
 
@@ -26,8 +27,8 @@ const Description: FC<{ assignment: IAssignment }> = ({
     let cleanUp = false;
     if (assignment.tasks.length) {
       sendRequest<string[], ITaskDisplay[]>(
-        'task/list-specs',
-        'POST',
+        "task/list-specs",
+        "POST",
         assignment.tasks.map((task: any) => task.value || task.spec),
         5000
       ).then((res) => {
@@ -75,10 +76,14 @@ const Description: FC<{ assignment: IAssignment }> = ({
           )}
         </div>
       </div>
-      <div
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: assignment.description }}
-      />
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={assignment.description}
+          onUpdate={() => {}}
+        />
+      </div>
+
       <div className={styles.tasksWrapper}>
         <PrimitiveTaskTable
           tasks={tasks}

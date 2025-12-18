@@ -1,6 +1,6 @@
 export const withPrefix = (path: string) => `/api/${path}`;
 
-export type availableMethods = 'GET' | 'PUT' | 'POST' | 'DELETE';
+export type availableMethods = "GET" | "PUT" | "POST" | "DELETE";
 
 export interface IResponse<T> {
   error: boolean;
@@ -18,8 +18,8 @@ const processServerError = (e: any) => {
     error: true,
     detail: {
       description: {
-        ru: 'Ошибка сети',
-        en: 'Network error',
+        ru: "Ошибка сети",
+        en: "Network error",
       },
     },
   };
@@ -39,11 +39,16 @@ export const sendRequest = <ISend, IReceive>(
   }
 
   let options: any = {
-    credentials: 'include',
+    credentials: "include",
     method,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
   };
-  if (body) {
+  if (body instanceof FormData) {
+    delete options.headers["Content-Type"]; // Let fetch set correct boundary
+    options.body = body;
+  } else if (body) {
     options.body = JSON.stringify(body);
   }
 
@@ -81,9 +86,9 @@ export const isSuccessful = <ISend>(
   body?: ISend extends object ? ISend : object
 ): Promise<IPureResponse> => {
   let options: any = {
-    credentials: 'include',
+    credentials: "include",
     method,
-    headers: { 'content-type': 'application/json' },
+    headers: { "content-type": "application/json" },
   };
   if (body) {
     options.body = JSON.stringify(body);
@@ -91,7 +96,7 @@ export const isSuccessful = <ISend>(
   return fetch(withPrefix(path), options)
     .then((res) =>
       res.status === 200
-        ? { error: false, detail: '' }
+        ? { error: false, detail: "" }
         : res.json().then((res) => ({ error: true, detail: res.detail }))
     )
     .catch(processServerError);

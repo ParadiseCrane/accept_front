@@ -1,20 +1,22 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { PIN_LENGTH } from '@constants/TournamentSecurity';
-import { CopyIcon, Icon, Pin } from '@ui/basics';
-import { Refresh } from 'tabler-icons-react';
-import styles from './pinCode.module.css';
+"use client";
+import { PIN_LENGTH } from "@constants/TournamentSecurity";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { CopyIcon, Icon, Pin } from "@ui/basics";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+import { IconRefresh } from "@tabler/icons-react";
+
+import styles from "./pinCode.module.css";
 
 const PinCode: FC<{ origin: string; classNames?: object }> = ({
   origin,
   classNames,
 }) => {
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState("");
   const { locale } = useLocale();
 
   const fetchPin = useCallback(() => {
-    sendRequest<undefined, string>(`pin_code/${origin}`, 'GET').then((res) => {
+    sendRequest<undefined, string>(`pin_code/${origin}`, "GET").then((res) => {
       if (!res.error) {
         setPin(res.response);
       }
@@ -26,7 +28,7 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
   }, [fetchPin]);
 
   const refreshPin = useCallback(() => {
-    sendRequest<undefined, string>(`pin_code/${origin}`, 'PUT').then((res) => {
+    sendRequest<undefined, string>(`pin_code/${origin}`, "PUT").then((res) => {
       if (!res.error) {
         setPin(res.response);
       }
@@ -47,8 +49,8 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
             iconProps={{
               tooltipLabel: locale.helpers.pin.copy,
               tooltipProps: { offset: 10 },
-              size: 'xs',
-              color: 'var(--primary)',
+              size: "xs",
+              color: "var(--primary)",
             }}
           />
           <Icon
@@ -58,7 +60,7 @@ const PinCode: FC<{ origin: string; classNames?: object }> = ({
             color="var(--primary)"
             onClick={refreshPin}
           >
-            <Refresh />
+            <IconRefresh />
           </Icon>
         </div>
       }

@@ -1,18 +1,23 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { Bold } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { IconBold } from "@tabler/icons-react";
+
+import { IconWrapper } from "./IconWrapper";
 
 export const ToggleBold = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('bold') : false;
+  const isActive = editor.isFocused ? editor.isActive("bold") : false;
+  const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().toggleMark('bold').run();
+        editor.chain().toggleMark("bold").run();
       }}
-      aria-label="Toggle bold"
-      title="Toggle bold"
+      aria-label={locale.tiptap.bold}
+      title={locale.tiptap.bold}
     >
-      <Bold style={isActive ? { stroke: 'red' } : {}} size={'1rem'} />
+      <IconWrapper isActive={isActive} IconChild={IconBold} />
     </RichTextEditor.Control>
   );
 };

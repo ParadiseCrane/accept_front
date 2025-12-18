@@ -1,16 +1,19 @@
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import styles from './description.module.css';
-import { ITournament } from '@custom-types/data/ITournament';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { getLocalDate } from '@utils/datetime';
-import { useLocale } from '@hooks/useLocale';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { useUser } from '@hooks/useUser';
-import { Overlay } from '@ui/basics';
-import { sendRequest } from '@requests/request';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
-import RegistrationButton from './RegistrationButton/RegistrationButton';
+"use client";
+import PrintTasks from "@components/Task/PrintTasks/PrintTasks";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import { Overlay } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
+import { getLocalDate } from "@utils/datetime";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import { FC, memo, useEffect, useMemo, useState } from "react";
+
+import styles from "./description.module.css";
+import RegistrationButton from "./RegistrationButton/RegistrationButton";
 
 const Description: FC<{
   tournament: ITournament;
@@ -30,13 +33,12 @@ const Description: FC<{
       title: `${letterFromIndex(index)}. ${task.title}`,
     }))
   );
-  const [successfullyRegistered, setSuccessfullyRegistered] =
-    useState(false);
+  const [successfullyRegistered, setSuccessfullyRegistered] = useState(false);
 
   const special = useMemo(
     () =>
       isAdmin ||
-      tournament.moderators.includes(user?.login || '') ||
+      tournament.moderators.includes(user?.login || "") ||
       tournament.author == user?.login,
     [isAdmin, tournament.author, tournament.moderators, user?.login]
   );
@@ -51,12 +53,20 @@ const Description: FC<{
     [user, tournament.banned]
   );
 
+  const showTasks = useMemo(
+    () =>
+      special ||
+      (registered && tournament.status.spec != 0) ||
+      tournament.status.spec == 2,
+    [registered, special, tournament.status?.spec]
+  );
+
   useEffect(() => {
     let cleanUp = false;
     if (tournament.tasks.length && !isPreview) {
       sendRequest<string[], ITaskDisplay[]>(
         `task/list-specs`,
-        'POST',
+        "POST",
         tournament.tasks.map((task: any) => task.value || task.spec),
         5000
       ).then((res) => {
@@ -81,18 +91,18 @@ const Description: FC<{
         <div className={styles.title}>
           {tournament.title}
           <PrintTasks
-            title={
-              <div className={styles.title}>{tournament.title}</div>
-            }
+            title={<div className={styles.title}>{tournament.title}</div>}
             description={
-              <div
-                className={styles.description}
-                dangerouslySetInnerHTML={{
-                  __html: tournament.description,
-                }}
-              />
+              <div className={styles.description}>
+                <TipTapEditor
+                  editorMode={false}
+                  content={tournament.description}
+                  onUpdate={() => {}}
+                />
+              </div>
             }
-            tasks={tasks.map((task) => task.spec)}
+            tasks={showTasks ? tasks.map((task) => task.spec) : []}
+            // tasks={tasks.map((task) => task.spec)}
           />
         </div>
         <div className={styles.info}>
@@ -104,20 +114,23 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startDate}:{' '}
+              {locale.tournament.form.startDate}:{" "}
               {getLocalDate(tournament.start)}
             </div>
             <div className={styles.duration}>
-              {locale.tournament.form.endDate}:{' '}
-              {getLocalDate(tournament.end)}
+              {locale.tournament.form.endDate}: {getLocalDate(tournament.end)}
             </div>
           </div>
         </div>
       </div>
-      <div
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: tournament.description }}
-      />
+      <div className={styles.description}>
+        <TipTapEditor
+          editorMode={false}
+          content={tournament.description}
+          onUpdate={() => {}}
+        />
+      </div>
+
       {!loading && (
         <>
           {banned ? (
@@ -125,11 +138,7 @@ const Description: FC<{
               {locale.tournament.banned}!
             </div>
           ) : (
-            !(
-              tournament.status.spec === 2 ||
-              isPreview ||
-              special
-            ) && (
+            !(isPreview || tournament.status.spec === 2 || special) && (
               <RegistrationButton
                 spec={tournament.spec}
                 withPin={tournament.security == 1}
@@ -146,10 +155,7 @@ const Description: FC<{
           )}
 
           <div className={styles.tasksWrapper}>
-            {((!registered && tournament.status.spec != 2) ||
-              (!special && tournament.status.spec == 0)) && (
-              <Overlay />
-            )}
+            {!showTasks && <Overlay />}
             <PrimitiveTaskTable
               tasks={tasks}
               linkQuery={`tournament=${tournament.spec}`}
@@ -157,8 +163,10 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                    ? locale.tournament.emptyTasks
-                    : locale.tournament.needRegistration
+                  ? tournament.status.spec === 0
+                    ? locale.tournament.tournamentHasNotStarted
+                    : locale.tournament.emptyTasks
+                  : locale.tournament.needRegistration
               }
             />
           </div>

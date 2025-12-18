@@ -1,17 +1,19 @@
-import { FC, memo, useState } from 'react';
-import styles from './attemptListProfile.module.css';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import AttemptList from '@ui/AttemptList/AttemptList';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { getLocalDate } from '@utils/datetime';
-import Link from 'next/link';
-import { useLocale } from '@hooks/useLocale';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
-import { TaskSelect } from '@ui/selectors';
-import { useRequest } from '@hooks/useRequest';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
+"use client";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { ITaskBaseInfo } from "@custom-types/data/ITask";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import AttemptList from "@ui/AttemptList/AttemptList";
+import { TaskSelect } from "@ui/selectors";
+import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
+import { getLocalDate } from "@utils/datetime";
+import Link from "next/link";
+import { FC, memo, useState } from "react";
+
+import styles from "./attemptListProfile.module.css";
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
   result: {
@@ -54,7 +56,7 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.attempt.date,
-    key: 'date',
+    key: "date",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
@@ -66,7 +68,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.task,
-    key: 'task',
+    key: "task",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -77,7 +79,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.language,
-    key: 'language',
+    key: "language",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -88,7 +90,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.result,
-    key: 'result',
+    key: "result",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -99,11 +101,11 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const AttemptListProfile: FC<{}> = ({}) => {
+const AttemptListProfile: FC<{}> = () => {
   const { locale } = useLocale();
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
 
-  const { data } = useRequest<{}, ITaskBaseInfo[]>(`task/my`, 'GET');
+  const { data } = useRequest<{}, ITaskBaseInfo[]>(`task/my`, "GET");
 
   return (
     <div>

@@ -1,0 +1,38 @@
+.box {
+  position: relative;
+}
+
+.input {
+  background-color: #0c9af213;
+}
+
+.delete svg {
+  stroke: var(--mantine-color-gray-5);
+}
+
+.delete:hover svg {
+  stroke: red;
+}
+
+.box:hover .delete {
+  display: block;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 5px;
+}
+
+.group {
+  padding-left: 5px;
+  display: flex;
+  gap: 5px;
+}

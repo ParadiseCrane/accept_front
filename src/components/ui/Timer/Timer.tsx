@@ -1,23 +1,18 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import styles from './timer.module.css';
-import { Icon } from '@ui/basics';
-import { Alarm } from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { timerDate, timezoneDate } from '@utils/datetime';
-import { useInterval } from '@mantine/hooks';
-import { useRequest } from '@hooks/useRequest';
-import { IResponse } from '@requests/request';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useInterval } from "@mantine/hooks";
+import { IResponse } from "@requests/request";
+import { Icon } from "@ui/basics";
+import { timerDate, timezoneDate } from "@utils/datetime";
 import {
   infoNotification,
   newNotification,
-} from '@utils/notificationFunctions';
+} from "@utils/notificationFunctions";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { IconAlarm } from "@tabler/icons-react";
+
+import styles from "./timer.module.css";
 
 const RED_TIME_S = 900;
 
@@ -36,38 +31,36 @@ const Timer: FC<{ url: string }> = ({ url }: { url: string }) => {
   const [showTimer, setShowTimer] = useState(false);
   const { locale } = useLocale();
 
-  const { data, loading, refetch } = useRequest<
-    {},
-    BaseTimeInfo,
-    TimeInfo
-  >(url, 'GET', undefined, (data) => ({
-    start: data.start,
-    end: data.end,
-    infinite: data.infinite || false,
-    status: data.status,
-  }));
+  const { data, loading, refetch } = useRequest<{}, BaseTimeInfo, TimeInfo>(
+    url,
+    "GET",
+    undefined,
+    (data) => ({
+      start: data.start,
+      end: data.end,
+      infinite: data.infinite || false,
+      status: data.status,
+    })
+  );
   const refetchTimer = useInterval(() => refetch(false), 15000);
 
-  const [days, setDays] = useState('01');
-  const [hours, setHours] = useState('00');
-  const [minutes, setMinutes] = useState('00');
-  const [seconds, setSeconds] = useState('00');
+  const [days, setDays] = useState("01");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
 
   const tick = useCallback(() => {
     let date = 0;
-    if (!loading && (data?.infinite || data?.status == 2))
-      refetchTimer.stop();
+    if (!loading && (data?.infinite || data?.status == 2)) refetchTimer.stop();
     if (data && !data.infinite) {
       switch (data.status) {
         case 0:
           date =
-            timezoneDate(new Date(data.start)).getTime() -
-            new Date().getTime();
+            timezoneDate(new Date(data.start)).getTime() - new Date().getTime();
           break;
         case 1:
           date =
-            timezoneDate(new Date(data.end)).getTime() -
-            new Date().getTime();
+            timezoneDate(new Date(data.end)).getTime() - new Date().getTime();
           break;
         default:
           date = 0;
@@ -141,44 +134,40 @@ const Timer: FC<{ url: string }> = ({ url }: { url: string }) => {
         <div
           className={
             styles.wrapper +
-            ' ' +
-            (showTimer ? styles.show : '') +
-            ' ' +
-            (almostDone ? styles.almostDone : '') +
-            ' ' +
-            (almostStarted ? styles.almostStarted : '')
+            " " +
+            (showTimer ? styles.show : "") +
+            " " +
+            (almostDone ? styles.almostDone : "") +
+            " " +
+            (almostStarted ? styles.almostStarted : "")
           }
           onClick={() => {
             setShowTimer((value) => !value);
           }}
         >
           <Icon
-            size={'sm'}
+            size={"sm"}
             className={styles.iconRoot}
             wrapperClassName={
               styles.iconWrapper +
-              ' ' +
-              (almostDone || almostStarted
-                ? styles.almostDoneIcon
-                : '')
+              " " +
+              (almostDone || almostStarted ? styles.almostDoneIcon : "")
             }
           >
-            <Alarm
+            <IconAlarm
               color={
                 almostDone
-                  ? 'var(--negative)'
+                  ? "var(--negative)"
                   : almostStarted
-                  ? 'var(--positive)'
-                  : 'var(--primary)'
+                  ? "var(--positive)"
+                  : "var(--primary)"
               }
             />
           </Icon>
           <div className={styles.timerWrapper}>
             <div
               className={
-                styles.before +
-                ' ' +
-                (data.status === 2 ? styles.finished : '')
+                styles.before + " " + (data.status === 2 ? styles.finished : "")
               }
             >
               {data.status != 2

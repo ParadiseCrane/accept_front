@@ -1,12 +1,14 @@
-import React, { FC, ReactNode, memo } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+"use client";
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
-} from '@custom-types/ui/IDraggableBoard';
-import ItemList from '../ItemList/ItemList';
-import styles from './boardColumn.module.css';
-import { concatClassNames } from '@utils/concatClassNames';
+} from "@custom-types/ui/IDraggableBoard";
+import { concatClassNames } from "@utils/concatClassNames";
+import React, { FC, ReactNode, memo } from "react";
+import { Draggable } from "react-beautiful-dnd";
+
+import ItemList from "../ItemList/ItemList";
+import styles from "./boardColumn.module.css";
 
 const BoardColumn: FC<{
   label: ReactNode;
@@ -28,7 +30,7 @@ const BoardColumn: FC<{
                   styles.draggingWrapper,
                   classNames?.columnWrapperDragging
                 )
-              : ''
+              : ""
           }`}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -46,7 +48,7 @@ const BoardColumn: FC<{
                       styles.draggingLabel,
                       classNames?.columnLabelDragging
                     )
-                  : ''
+                  : ""
               }`}
             >
               {label}

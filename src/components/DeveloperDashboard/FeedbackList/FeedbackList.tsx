@@ -1,42 +1,42 @@
-import { FC, memo, useCallback, useMemo } from 'react';
-import { IFeedbackMessage } from '@custom-types/data/IFeedbackMessage';
-import MessageList from '@ui/MessageList/MessageList';
-import {
-  IListAction,
-  IListMessage,
-} from '@custom-types/ui/IListMessage';
-import { shrinkText } from '@utils/shrinkText';
-import { Badge } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { MailOpened, Trash } from 'tabler-icons-react';
-import { requestWithError } from '@utils/requestWithError';
-import { setter } from '@custom-types/ui/atomic';
-import styles from './feedbackList.module.css';
-import { useRequest } from '@hooks/useRequest';
+"use client";
+import { IFeedbackMessage } from "@custom-types/data/IFeedbackMessage";
+import { setter } from "@custom-types/ui/atomic";
+import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { Badge } from "@mantine/core";
+import MessageList from "@ui/MessageList/MessageList";
+import { requestWithError } from "@utils/requestWithError";
+import { shrinkText } from "@utils/shrinkText";
+import { FC, memo, useCallback, useMemo } from "react";
+import { IconMailOpened, IconTrash } from "@tabler/icons-react";
 
-const FeedbackList: FC<{}> = ({}) => {
+import styles from "./feedbackList.module.css";
+
+const FeedbackList: FC<{}> = () => {
   const { locale, lang } = useLocale();
 
   const processFeedbackMessages = useCallback(
     (messages: IFeedbackMessage[]) => {
       return messages.sort(
-        (a, b) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     },
     []
   );
 
-  const { data, loading, refetch } = useRequest<
-    {},
-    IFeedbackMessage[]
-  >('feedback', 'GET', undefined, processFeedbackMessages);
+  const { data, loading, refetch } = useRequest<{}, IFeedbackMessage[]>(
+    "feedback",
+    "GET",
+    undefined,
+    processFeedbackMessages
+  );
 
   const handleDelete = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {
       requestWithError<string[], boolean>(
-        'feedback/delete',
-        'DELETE',
+        "feedback/delete",
+        "DELETE",
         locale.feedback.list.requestDelete,
         lang,
         selected,
@@ -52,8 +52,8 @@ const FeedbackList: FC<{}> = ({}) => {
   const sendViewed = useCallback(
     (viewed: string[], callback: () => void) => {
       requestWithError<string[], boolean>(
-        'feedback/reviewed',
-        'POST',
+        "feedback/reviewed",
+        "POST",
         locale.feedback.list.requestViewed,
         lang,
         viewed,
@@ -100,12 +100,12 @@ const FeedbackList: FC<{}> = ({}) => {
   const actions: IListAction[] = useMemo(
     () => [
       {
-        icon: <MailOpened />,
+        icon: <IconMailOpened />,
         tooltipLabel: locale.notification.list.viewed,
         onClick: handleView,
       },
       {
-        icon: <Trash />,
+        icon: <IconTrash />,
         tooltipLabel: locale.notification.list.delete,
         onClick: handleDelete,
       },
@@ -128,16 +128,14 @@ const FeedbackList: FC<{}> = ({}) => {
             {shrinkText(feedback.title, 48)}
             {
               //@ts-ignore
-              !feedback.reviewed && (
-                <Badge color="green">{locale.new}</Badge>
-              )
+              !feedback.reviewed && <Badge color="green">{locale.new}</Badge>
             }
           </>
         );
       }}
       rowClassName={(feedback: IListMessage) =>
         //@ts-ignore
-        feedback.reviewed ? styles.old : ''
+        feedback.reviewed ? styles.old : ""
       }
       refetch={refetch}
       emptyMessage={locale.profile.empty.notification}

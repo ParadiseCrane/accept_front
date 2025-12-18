@@ -1,16 +1,17 @@
 export const assignment = {
-  mainInfo: 'Главная',
-  results: 'Таблица результатов',
-  attempts: 'Попытки',
-  participants: 'Участники',
-  tasks: 'Задачи',
-  createNotification: 'Создать уведомление',
+  mainInfo: "Главная",
+  results: "Таблица результатов",
+  attempts: "Попытки",
+  aiProbability: "Вероятность AI",
+  participants: "Участники",
+  tasks: "Задачи",
+  createNotification: "Создать уведомление",
   timeInfo: {
-    enterManually: 'Ввести вручную',
-    addTimeToEnd: 'Добавить время к дате окончания',
+    enterManually: "Ввести вручную",
+    addTimeToEnd: "Добавить время к дате окончания",
   },
   toDate: {
-    actual: 'Текущие',
-    end: 'По окончании',
+    actual: "Текущие",
+    end: "По окончании",
   },
 };

@@ -1,13 +1,15 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import styles from './groupSelector.module.css';
-import { IGroup } from '@custom-types/data/IGroup';
-import inputStyles from '@styles/ui/input.module.css';
+"use client";
+import { IGroup } from "@custom-types/data/IGroup";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import inputStyles from "@styles/ui/input.module.css";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+
+import styles from "./groupSelector.module.css";
 
 const GroupSelector: FC<{
   form: any;
@@ -16,17 +18,9 @@ const GroupSelector: FC<{
   field: string;
   shrink?: boolean;
   width?: string;
-}> = ({
-  form,
-  groups: allGroups,
-  initialGroups,
-  field,
-  shrink,
-  width,
-}) => {
+}> = ({ form, groups: allGroups, initialGroups, field, shrink, width }) => {
   const { locale } = useLocale();
-  const [groups, setGroups] =
-    useState<ICustomTransferListData>(undefined);
+  const [groups, setGroups] = useState<ICustomTransferListData>(undefined);
 
   useEffect(() => {
     let data: ICustomTransferListData = [[], []];
@@ -53,7 +47,7 @@ const GroupSelector: FC<{
         <div
           key={index}
           className={`${styles.itemWrapper} ${
-            shrink ? inputStyles.shrink : ''
+            shrink ? inputStyles.shrink : ""
           }`}
           onClick={onClick}
         >
@@ -66,7 +60,7 @@ const GroupSelector: FC<{
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
-      if (!!!data) return;
+      if (!data) return;
       form.setFieldValue(
         field,
         data[1].map((item) => item.spec)
@@ -88,7 +82,7 @@ const GroupSelector: FC<{
           locale.ui.groupSelector.selected,
         ]}
         itemComponent={itemComponent}
-        searchKeys={['name']}
+        searchKeys={["name"]}
         shrink={shrink}
       />
     </div>

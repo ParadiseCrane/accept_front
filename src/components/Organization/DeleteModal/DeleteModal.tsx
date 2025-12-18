@@ -1,13 +1,14 @@
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo, useCallback, useState } from 'react';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { Icon } from '@ui/basics';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { Trash } from 'tabler-icons-react';
-import modalStyles from '@styles/ui/modal.module.css';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import { IOrganization } from '@custom-types/data/IOrganization';
+"use client";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteModal: FC<{
   organization: IOrganization;
@@ -18,7 +19,7 @@ const DeleteModal: FC<{
   const [active, setActive] = useState(false);
 
   const handleDelete = useCallback(() => {
-    console.log('Lol it is just a Mock!');
+    console.log("Lol it is just a Mock!");
     // requestWithNotify(
     //   `organization/delete/${organization.spec}`,
     //   'DELETE',
@@ -28,12 +29,12 @@ const DeleteModal: FC<{
     //   undefined,
     //   () => setActive(false)
     // );
-  }, [organization.spec, locale, lang]);
+  }, []);
 
   return (
     <>
       <Icon color="red" size="xs" onClick={() => setActive(true)}>
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={active}

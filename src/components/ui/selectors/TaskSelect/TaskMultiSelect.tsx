@@ -1,9 +1,11 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
-import { MultiSelect } from '@ui/basics';
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem } from '@mantine/core';
+"use client";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem } from "@mantine/core";
+import { MultiSelect } from "@ui/basics";
+import React, { FC, memo, useCallback, useMemo } from "react";
+
+import { TaskItemProps, TaskSelectProps } from "./TaskSelect";
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
   label,
@@ -11,7 +13,7 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
   tasks,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple,
   additionalProps,
 }) => {
   const data = useMemo(

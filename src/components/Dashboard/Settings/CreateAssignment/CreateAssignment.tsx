@@ -1,14 +1,13 @@
-import { FC, memo, useCallback } from 'react';
-import { ITournament } from '@custom-types/data/ITournament';
-import { useForm } from '@mantine/form';
-import { Button, TextInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { useLocale } from '@hooks/useLocale';
+"use client";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useForm } from "@mantine/form";
+import { Button, TextInput } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 // import styles from './createAssignment.module.css'
 
-const CreateAssignment: FC<{ tournament: ITournament }> = ({
-  tournament,
-}) => {
+const CreateAssignment: FC<{ tournament: ITournament }> = ({ tournament }) => {
   const { locale, lang } = useLocale();
   const form = useForm({
     initialValues: {
@@ -16,35 +15,25 @@ const CreateAssignment: FC<{ tournament: ITournament }> = ({
     },
     validate: {
       title: (value) =>
-        value.length < 5
-          ? locale.assignmentSchema.form.validation.title
-          : null,
+        value.length < 5 ? locale.assignmentSchema.form.validation.title : null,
     },
   });
 
   const createAssignmentSchema = useCallback(() => {
     if (!form.isValid()) return;
-    requestWithNotify<
-      { title: string; tournament_spec: string },
-      boolean
-    >(
+    requestWithNotify<{ title: string; tournament_spec: string }, boolean>(
       `assignment_schema/from-tournament`,
-      'POST',
+      "POST",
       locale.notify.assignmentSchema.create,
       lang,
-      () => '',
+      () => "",
       { title: form.values.title, tournament_spec: tournament.spec }
     );
-  }, [
-    form,
-    locale.notify.assignmentSchema.create,
-    lang,
-    tournament.spec,
-  ]);
+  }, [form, locale.notify.assignmentSchema.create, lang, tournament.spec]);
 
   return (
     <>
-      <TextInput {...form.getInputProps('title')} />
+      <TextInput {...form.getInputProps("title")} />
       <Button
         variant="outline"
         onClick={createAssignmentSchema}

@@ -1,12 +1,15 @@
-import React, { FC, forwardRef, memo, useCallback, useMemo } from 'react';
-import { ComboboxItem, Text } from '@mantine/core';
-import { MultiSelect, UserAvatar } from '@ui/basics';
-import { Eye } from 'tabler-icons-react';
-import styles from './userSelect.module.css';
-import Link from 'next/link';
-import { UserItemProps, UserSelectProps } from './UserSelect';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { SelectItem } from '@custom-types/ui/atomic';
+"use client";
+import { IParticipant, IUserDisplay } from "@custom-types/data/IUser";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem, Group, SelectProps, Text } from "@mantine/core";
+import { MultiSelect, UserAvatar } from "@ui/basics";
+import Link from "next/link";
+import React, { FC, forwardRef, memo, useCallback, useMemo } from "react";
+import { IconEye } from "@tabler/icons-react";
+
+import { UserItemProps, UserSelectProps } from "./UserSelect";
+import styles from "./userSelect.module.css";
+import { IconCheck } from "@tabler/icons-react";
 
 const UserMultiSelect: FC<UserSelectProps> = ({
   label,
@@ -14,8 +17,9 @@ const UserMultiSelect: FC<UserSelectProps> = ({
   users,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple,
   additionalProps,
+  renderOption,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
     ({ login, label, value, ...others }: UserItemProps, ref) => (
@@ -29,7 +33,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
             radius="md"
             size="md"
             login={login}
-            alt={'User`s avatar'}
+            alt={"User`s avatar"}
           />
           <div>
             <Text size="sm">{label}</Text>
@@ -40,13 +44,13 @@ const UserMultiSelect: FC<UserSelectProps> = ({
         </div>
         <div className={styles.itemIcon}>
           <Link href={`/profile/${value}`}>
-            <Eye color={'var(--primary)'} />
+            <IconEye color={"var(--primary)"} />
           </Link>
         </div>
       </div>
     )
   );
-  SelectItem.displayName = 'SelectItem';
+  SelectItem.displayName = "SelectItem";
 
   const data = useMemo(
     () =>
@@ -57,6 +61,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
             label: item.shortName,
             value: item.login,
             role: item.role.name,
+            // disabled: 'banned' in item ? item.banned : undefined,
           } as UserItemProps)
       ),
     [users]
@@ -70,7 +75,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
       }
       const map = new Map(users.map((item) => [item.login, item]));
 
-      select(logins.map((item) => map.get(item) as IUserDisplay));
+      select(logins.map((item) => map.get(item) as IParticipant));
     },
     [select, users]
   );
@@ -98,6 +103,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
           onSelect(logins);
           additionalProps?.onChange(logins);
         }}
+        renderOption={renderOption}
       />
     </>
   );

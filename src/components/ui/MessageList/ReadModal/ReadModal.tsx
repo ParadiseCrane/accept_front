@@ -1,10 +1,13 @@
-import { Button, LoadingOverlay, Modal } from '@ui/basics';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import styles from './readModal.module.css';
-import { Group } from '@mantine/core';
-import { useLocale } from '@hooks/useLocale';
-import { getLocalDate } from '@utils/datetime';
-import { IListMessage } from '@custom-types/ui/IListMessage';
+"use client";
+import { IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { Group } from "@mantine/core";
+import { Button, LoadingOverlay, Modal } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import { getLocalDate } from "@utils/datetime";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+
+import styles from "./readModal.module.css";
 
 const ReadModal: FC<{
   opened: boolean;
@@ -94,11 +97,13 @@ const ReadModal: FC<{
         <LoadingOverlay visible={!notLoading && loading} />
         {message && (
           <>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: message.message,
-              }}
-            />
+            <div>
+              <TipTapEditor
+                editorMode={false}
+                content={message.message}
+                onUpdate={() => {}}
+              />
+            </div>
           </>
         )}
         <Group align="center" mt="xl" pb="md">

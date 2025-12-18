@@ -1,14 +1,14 @@
-import { page } from './page';
-import { modals } from './modals';
+import { modals } from "./modals";
+import { page } from "./page";
 
 export const team = {
-  self: 'Команда',
+  self: "Команда",
   modals,
   page,
   list: {
-    name: 'Название',
-    capitan: 'Капитан',
-    size: 'Размер',
-    banned: 'Забанить',
+    name: "Название",
+    capitan: "Капитан",
+    size: "Размер",
+    banned: "Забанить",
   },
 };

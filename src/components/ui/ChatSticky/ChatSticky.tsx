@@ -1,19 +1,22 @@
-import { FC, memo, useCallback, useState } from 'react';
-import styles from './chatSticky.module.css';
-import { Affix } from '@mantine/core';
-import { Icon, Indicator } from '@ui/basics';
-import Chat from '@ui/Chat/Chat';
-import { MessageCircle2 } from 'tabler-icons-react';
-import { useClickOutside } from '@mantine/hooks';
-import { IChatMessage } from '@custom-types/data/IMessage';
-import { useUser } from '@hooks/useUser';
-import { IActivity } from '@custom-types/data/atomic';
+"use client";
+import { IActivity } from "@custom-types/data/atomic";
+import { IChatMessage } from "@custom-types/data/IMessage";
+import { useUser } from "@hooks/useUser";
+import { Affix } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
+import { Icon, Indicator } from "@ui/basics";
+import Chat from "@ui/Chat/Chat";
+import { FC, memo, useCallback, useState } from "react";
+import { IconMessageCircle2 } from "@tabler/icons-react";
 
-const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
-  spec,
-  entity,
-  host,
-}) => {
+import styles from "./chatSticky.module.css";
+
+const ChatSticky: FC<{
+  spec: string;
+  entity: IActivity;
+  host: string;
+  group_spec?: string;
+}> = ({ spec, entity, host, group_spec }) => {
   const [showChat, setShowChat] = useState(false);
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
@@ -26,8 +29,8 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
 
   return (
     <>
-      <Affix ref={ref} position={{ bottom: 0, right: '200px' }} zIndex={100}>
-        <div style={{ visibility: showChat ? 'visible' : 'hidden' }}>
+      <Affix ref={ref} position={{ bottom: 0, right: "200px" }} zIndex={100}>
+        <div style={{ visibility: showChat ? "visible" : "hidden" }}>
           {window && (
             <Chat
               entity={entity}
@@ -39,6 +42,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
                 !!user && message.author == user?.login
               }
               wrapperStyles={styles.chatWrapper}
+              group_spec={group_spec}
             />
           )}
         </div>
@@ -47,7 +51,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
             setShowChat((value) => !value);
             setHasNew(false);
           }}
-          size={'xs'}
+          size={"xs"}
           className={styles.iconRoot}
           wrapperClassName={styles.iconWrapper}
         >
@@ -59,7 +63,7 @@ const ChatSticky: FC<{ spec: string; entity: IActivity; host: string }> = ({
             zIndex={100}
             blink
           >
-            <MessageCircle2 color="white" />
+            <IconMessageCircle2 color="white" />
           </Indicator>
         </Icon>
       </Affix>

@@ -1,10 +1,14 @@
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { useState } from 'react';
-import { Math } from 'tabler-icons-react';
-import { LatexModal } from './LatexModal';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { useState } from "react";
+import { IconMath } from "@tabler/icons-react";
 
-export const insertLatexFunction = ({
+import { IconWrapper } from "./IconWrapper";
+import { LatexModal } from "./Modals/LatexModal";
+
+const insertLatexFunction = ({
   editor,
   expression,
   inline,
@@ -13,11 +17,10 @@ export const insertLatexFunction = ({
   expression: string;
   inline: boolean;
 }) => {
-  const characterFilter = expression.replaceAll('$', '');
-  const dataDisplay = inline ? 'no' : 'yes';
+  const characterFilter = expression.replaceAll("$", "");
+  const dataDisplay = inline ? "no" : "yes";
   editor
     ?.chain()
-    .clearContent()
     .insertContent(
       `<span data-latex="${characterFilter}" data-evaluate="no" data-display="${dataDisplay}" data-type="inlineMath">${expression}</span>`
     )
@@ -26,19 +29,17 @@ export const insertLatexFunction = ({
 
 export const InsertLatexExpression = ({ editor }: { editor: Editor }) => {
   const [showModal, setShowModal] = useState(false);
+  const { locale } = useLocale();
   return (
     <>
       <RichTextEditor.Control
-        aria-label="Insert LaTeX expression"
-        title="Insert LaTeX expression"
+        aria-label={locale.tiptap.latex}
+        title={locale.tiptap.latex}
+        onClick={() => {
+          setShowModal(true);
+        }}
       >
-        <Math
-          stroke={'black'}
-          size={'1rem'}
-          onClick={() => {
-            setShowModal(true);
-          }}
-        />
+        <IconWrapper isActive={false} IconChild={IconMath} />
       </RichTextEditor.Control>
       <LatexModal
         isOpened={showModal}

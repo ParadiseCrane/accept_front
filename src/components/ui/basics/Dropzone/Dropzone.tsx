@@ -1,3 +1,14 @@
+"use client";
+
+import { MyButtonProps } from "@custom-types/ui/basics/button";
+import { useLocale } from "@hooks/useLocale";
+import { Group, Text } from "@mantine/core";
+import { Dropzone as MantineDropzone } from "@mantine/dropzone";
+import { Button, Helper } from "@ui/basics";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
 import {
   FC,
   ReactNode,
@@ -6,23 +17,15 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { Group, Text } from '@mantine/core';
-import { Dropzone as MantineDropzone } from '@mantine/dropzone';
+} from "react";
 import {
-  AlertCircle,
-  CircleX,
-  FileUpload,
-  Photo,
-} from 'tabler-icons-react';
-import { useLocale } from '@hooks/useLocale';
-import { Button, Helper } from '@ui/basics';
-import { MyButtonProps } from '@custom-types/ui/basics/button';
-import styles from './dropzone.module.css';
-import {
-  errorNotification,
-  newNotification,
-} from '@utils/notificationFunctions';
+  IconAlertCircle,
+  IconCircleX,
+  IconFileUpload,
+  IconPhoto,
+} from "@tabler/icons-react";
+
+import styles from "./dropzone.module.css";
 
 const Dropzone: FC<{
   children: ReactNode;
@@ -37,6 +40,7 @@ const Dropzone: FC<{
 
   showButton?: boolean;
   buttonProps?: MyButtonProps;
+  disabled?: boolean;
 }> = ({
   children,
   onDrop,
@@ -50,6 +54,7 @@ const Dropzone: FC<{
 
   showButton,
   buttonProps,
+  disabled,
 }) => {
   const { locale } = useLocale();
 
@@ -66,22 +71,22 @@ const Dropzone: FC<{
   useEffect(() => {
     const current = draggable.current;
     if (current) {
-      current.addEventListener('dragenter', dragStart);
-      current.addEventListener('dragleave', dragEnd);
+      current.addEventListener("dragenter", dragStart);
+      current.addEventListener("dragleave", dragEnd);
     }
     return () => {
       if (current) {
-        current.removeEventListener('dragenter', dragStart);
-        current.removeEventListener('dragleave', dragEnd);
+        current.removeEventListener("dragenter", dragStart);
+        current.removeEventListener("dragleave", dragEnd);
       }
     };
   }, [draggable, dragStart, dragEnd]);
 
   return (
-    <div ref={draggable} style={{ position: 'relative' }}>
+    <div ref={draggable} style={{ position: "relative" }}>
       <MantineDropzone
         openRef={openRef}
-        disabled={false}
+        disabled={disabled}
         accept={accept}
         maxSize={maxSize}
         onDrop={(files) => {
@@ -89,13 +94,13 @@ const Dropzone: FC<{
           onDrop(files);
         }}
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           bottom: 0,
           left: 0,
           right: 0,
           zIndex: 5,
-          visibility: drag > 0 ? 'visible' : 'hidden',
+          visibility: drag > 0 ? "visible" : "hidden",
         }}
         onReject={(e) => {
           dragEnd();
@@ -103,14 +108,11 @@ const Dropzone: FC<{
             const id = newNotification({});
             const errorCode = item.errors[0]
               .code as keyof typeof locale.ui.dropzone.errors;
-            const filename = item.file?.name || '';
+            const filename = item.file?.name || "";
             errorNotification({
               id,
               title: locale.ui.dropzone.errors[errorCode].title,
-              message:
-                locale.ui.dropzone.errors[errorCode].message(
-                  filename
-                ),
+              message: locale.ui.dropzone.errors[errorCode].message(filename),
               autoClose: 5000,
             });
           });
@@ -120,32 +122,32 @@ const Dropzone: FC<{
         <Group
           align="center"
           gap="xl"
-          style={{ minHeight: 220, pointerEvents: 'none' }}
+          style={{ minHeight: 220, pointerEvents: "none" }}
         >
           <MantineDropzone.Accept>
-            <FileUpload
+            <IconFileUpload
               style={{
                 width: 80,
                 height: 80,
-                color: 'white',
+                color: "white",
               }}
             />
           </MantineDropzone.Accept>
           <MantineDropzone.Reject>
-            <CircleX
+            <IconCircleX
               style={{
                 width: 80,
                 height: 80,
-                color: 'white',
+                color: "white",
               }}
             />
           </MantineDropzone.Reject>
           <MantineDropzone.Idle>
-            <Photo
+            <IconPhoto
               style={{
                 width: 80,
                 height: 80,
-                color: 'white',
+                color: "white",
               }}
             />
           </MantineDropzone.Idle>
@@ -161,13 +163,13 @@ const Dropzone: FC<{
         </Group>
       </MantineDropzone>
 
-      {showButton && (
+      {!disabled && showButton && (
         <div className={styles.buttons}>
           <Button
             variant="outline"
             onClick={() => openRef.current()}
             targetWrapperStyle={{
-              display: drag > 0 ? 'none' : 'block',
+              display: drag > 0 ? "none" : "block",
             }}
             {...buttonProps}
           >
@@ -184,7 +186,7 @@ const Dropzone: FC<{
                   ))}
                 </div>
               }
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={"var(--negative)"} />}
             />
           )}
           {additionalButtons}

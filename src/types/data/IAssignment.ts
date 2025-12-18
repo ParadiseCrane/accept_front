@@ -1,11 +1,11 @@
+import { IAssignmentStatus } from "./atomic";
 import {
   IAssignmentSchema,
   IAssignmentSchemaDisplay,
-} from './IAssignmentSchema';
-import { IAssignmentStatus } from './atomic';
-import { IGroup } from './IGroup';
-import { IAttemptDisplay } from './IAttempt';
-import { ITag } from './ITag';
+} from "./IAssignmentSchema";
+import { IAttemptDisplay } from "./IAttempt";
+import { IGroup } from "./IGroup";
+import { ITag } from "./ITag";
 export interface IAssignment extends IAssignmentSchema {
   origin: string;
   starter: string;
