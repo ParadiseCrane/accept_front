@@ -163,7 +163,9 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                    ? locale.tournament.emptyTasks
+                    ? tournament.status.spec === 0
+                      ? locale.tournament.tournamentHasNotStarted
+                      : locale.tournament.emptyTasks
                     : locale.tournament.needRegistration
               }
             />

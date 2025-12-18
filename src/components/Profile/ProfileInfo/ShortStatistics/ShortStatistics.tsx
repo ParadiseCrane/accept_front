@@ -21,13 +21,13 @@ const ShortStatistics: FC<{
   return (
     <div className={styles.wrapper}>
       <div className={styles.attemptInfo}>
-        <div className={styles.total}>
-          <span>{locale.profile.info.shortStatistics.allAttempts}</span>
+        <div>
+          {locale.profile.info.shortStatistics.allAttempts}
           {" - "}
           <span className={styles.value}>{attemptInfo.total}</span>
         </div>
         <div className={styles.successfulTotal}>
-          <span>{locale.profile.info.shortStatistics.okAttempts}</span>
+          {locale.profile.info.shortStatistics.okAttempts}
           {" - "}
           <span className={styles.value}>{okAttempts}</span>
         </div>
@@ -35,12 +35,12 @@ const ShortStatistics: FC<{
       {ratingInfo && (
         <div className={styles.ratingInfo}>
           <div>
-            <span>{locale.profile.info.shortStatistics.totalScore}</span>
+            {locale.profile.info.shortStatistics.totalScore}
             {" - "}
             <span className={styles.value}>{ratingInfo.score}</span>
           </div>
           <div>
-            <span>{locale.profile.info.shortStatistics.ratingPlace}</span>
+            {locale.profile.info.shortStatistics.ratingPlace}
             {" - "}
             <span className={styles.value}>{ratingInfo.place}</span>
           </div>

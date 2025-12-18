@@ -14,24 +14,24 @@ import { useLocale } from "@hooks/useLocale";
 import { IAttempt } from "@custom-types/data/IAttempt";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 
-const maxRowsInTable = 10;
-const maxTables = 3;
+const MAX_ROWS_IN_TABLE = 10;
+const MAX_TABLES = 3;
 
 const distributeRows = (rows: IRowItem[]): Array<Array<IRowItem>> => {
   const length = rows.length;
-  const threshold = maxTables * maxRowsInTable;
+  const threshold = MAX_TABLES * MAX_ROWS_IN_TABLE;
   let counts: number[] = [];
 
   if (length <= threshold) {
-    for (let i = 0; i < maxTables; i++) {
-      const alreadyAllocated = maxRowsInTable * i;
+    for (let i = 0; i < MAX_TABLES; i++) {
+      const alreadyAllocated = MAX_ROWS_IN_TABLE * i;
       const remaining = Math.max(length - alreadyAllocated, 0);
-      counts[i] = Math.min(remaining, maxRowsInTable);
+      counts[i] = Math.min(remaining, MAX_ROWS_IN_TABLE);
     }
   } else {
-    const base = Math.floor(length / maxTables);
-    const remaining = length % maxTables;
-    for (let i = 0; i < maxTables; i++) {
+    const base = Math.floor(length / MAX_TABLES);
+    const remaining = length % MAX_TABLES;
+    for (let i = 0; i < MAX_TABLES; i++) {
       counts[i] = base + (i < remaining ? 1 : 0);
     }
   }

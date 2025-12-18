@@ -33,8 +33,9 @@ const Results: FC<{
   endDate: Date;
   full?: boolean;
   is_team?: boolean;
+  groupSpec?: string;
   type: "assignment" | "tournament" | "lesson";
-}> = ({ spec, isFinished, endDate, type, full, is_team }) => {
+}> = ({ spec, isFinished, endDate, type, full, is_team, groupSpec }) => {
   const { locale } = useLocale();
 
   const [fetchDate, setFetchDate] = useState<"actual" | "end">(
@@ -50,15 +51,20 @@ const Results: FC<{
   );
 
   const { data, loading, refetch } = useRequest<
-    { toDate?: Date },
+    { toDate?: Date; group_spec?: string },
     IActivityResults
   >(url, "POST", {
     toDate: innerToDate,
+    group_spec: groupSpec,
   });
 
   useEffect(() => {
     if (!loading) refetch(true);
-  }, [fetchDate]); // eslint-disable-line
+  }, [fetchDate]);
+
+  useEffect(() => {
+    if (!loading && groupSpec) refetch(true);
+  }, [groupSpec]);
 
   const resultComponent = useCallback(
     (item: IResult, index: number) => (
@@ -151,7 +157,7 @@ const Results: FC<{
   return (
     <div className={styles.wrapper}>
       <div className={styles.controls}>
-        {full && isFinished && (
+        {full && isFinished && !groupSpec && (
           <SegmentedControl
             data={[
               {

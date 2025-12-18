@@ -1,5 +1,6 @@
 .wrapper {
-  width: 80%;
+  width: 100%;
+  max-width: 768px;
   display: flex;
   flex-direction: column;
   gap: var(--spacer-m);
@@ -7,7 +8,6 @@
 
 .title {
   width: 100%;
-  /* text-align: center; */
   font-size: var(--font-size-m);
 }
 
@@ -18,14 +18,39 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  overflow-x: scroll;
 }
 
 .barWrapper {
   width: 65.5%;
-  min-width: 500px;
+  min-width: 320px;
 }
 
 .pieWrapper {
   width: 27.5%;
   min-width: 150px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    text-align: center;
+  }
+
+  .wrapper {
+    gap: var(--spacer-s);
+    margin: 0 auto;
+  }
+
+  .barWrapper {
+    width: 100%;
+  }
+
+  .pieWrapper {
+    width: 30%;
+    min-width: 250px;
+  }
+
+  .plots {
+    justify-content: center;
+  }
 }

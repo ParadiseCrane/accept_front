@@ -20,12 +20,14 @@ import React from "react";
 import { theme } from "@constants/Theme";
 import { Metadata } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
+import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 
 export const metadata: Metadata = {
   title: "Accept",
   description:
     "централизованная платформа, ориентированная на автоматизацию обучения программированию и повышение эффективности работы преподавателей с применением AI, а именно: проверка AI-плагиата, персонализированные подсказки об ошибках в коде, стилизация условий задач (для преподавателей), персонализированные рекомендации задач пользователям. ",
   creator: "Accept Team",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 const exo2 = Exo_2({
@@ -56,15 +58,17 @@ export default function RootLayout({
             <WidthProvider>
               <LocaleProvider>
                 <UserProvider>
-                  <Notifications
-                    position="bottom-left"
-                    zIndex={9999}
-                    limit={5}
-                    autoClose={40000}
-                  />
-                  <BackNotificationsProvider>
-                    {children}
-                  </BackNotificationsProvider>
+                  <TipTapBubbleMenuProvider>
+                    <Notifications
+                      position="bottom-left"
+                      zIndex={9999}
+                      limit={5}
+                      autoClose={40000}
+                    />
+                    <BackNotificationsProvider>
+                      {children}
+                    </BackNotificationsProvider>
+                  </TipTapBubbleMenuProvider>
                 </UserProvider>
               </LocaleProvider>
             </WidthProvider>

@@ -1,7 +1,3 @@
-.wrapper {
-  max-width: 800px;
-}
-
 .groupSection {
   margin-top: var(--spacer-s);
   display: flex;
@@ -15,4 +11,16 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacer-s);
+}
+
+@media screen and (max-width: 768px) {
+  .groupSection {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .groupList {
+    justify-content: center;
+    padding: 0 25px;
+  }
 }

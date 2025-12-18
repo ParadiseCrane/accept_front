@@ -1,3 +1,17 @@
 .wrapper {
   font-size: var(--font-size-l);
 }
+
+.sidebarWrapper {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    display: none;
+  }
+
+  .sidebarWrapper {
+    display: block;
+  }
+}

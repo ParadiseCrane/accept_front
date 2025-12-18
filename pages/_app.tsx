@@ -22,6 +22,7 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { theme } from "@constants/Theme";
+import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -56,20 +57,22 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
         <WidthProvider>
           <LocaleProvider>
             <UserProvider>
-              <Notifications
-                position="bottom-left"
-                zIndex={9999}
-                limit={5}
-                autoClose={40000}
-              />
-              <BackNotificationsProvider>
-                <div
-                  className={`${styles.spinner} ${
-                    loading ? styles.active : ""
-                  }`}
+              <TipTapBubbleMenuProvider>
+                <Notifications
+                  position="bottom-left"
+                  zIndex={9999}
+                  limit={5}
+                  autoClose={40000}
                 />
-                {getLayout(<Component {...pageProps} />)}
-              </BackNotificationsProvider>
+                <BackNotificationsProvider>
+                  <div
+                    className={`${styles.spinner} ${
+                      loading ? styles.active : ""
+                    }`}
+                  />
+                  {getLayout(<Component {...pageProps} />)}
+                </BackNotificationsProvider>
+              </TipTapBubbleMenuProvider>
             </UserProvider>
           </LocaleProvider>
         </WidthProvider>

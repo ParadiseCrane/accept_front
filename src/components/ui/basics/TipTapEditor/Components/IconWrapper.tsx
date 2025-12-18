@@ -1,4 +1,3 @@
-"use client";
 import { Icon } from "@tabler/icons-react";
 
 import styles from "./IconWrapper.module.css";
@@ -7,8 +6,8 @@ export const IconWrapper = ({
   isActive,
   IconChild,
 }: {
-  isActive: boolean;
   IconChild: Icon;
+  isActive?: boolean;
 }) => {
   return (
     <div

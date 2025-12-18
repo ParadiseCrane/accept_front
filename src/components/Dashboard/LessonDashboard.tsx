@@ -5,8 +5,8 @@ import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
 import { Indicator, Tip } from "@ui/basics";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
-import { FC, memo, useMemo } from "react";
-import { IconMessages, IconUsers } from "@tabler/icons-react";
+import { FC, memo, useEffect, useMemo } from "react";
+import { IconMessages, IconTable, IconUsers } from "@tabler/icons-react";
 import {
   IconArticle,
   IconList,
@@ -24,7 +24,8 @@ import styles from "./dashboard.module.css";
 import LessonMain from "./LessonMain/LessonMain";
 import Moderators from "./Moderators/Moderators";
 import { useCourse } from "@hooks/useCourse";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Results from "./Results/Results";
 
 const LessonDashboard: FC<{
   lesson: ILesson;
@@ -32,6 +33,9 @@ const LessonDashboard: FC<{
   const { locale } = useLocale();
   const { course, isAuthor } = useCourse();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const groupSpec = searchParams?.get("group") ?? undefined;
+  const endDatePlaceholder = useMemo(() => new Date(2099, 1, 1), []);
 
   const { hasNewMessages } = useChatHosts();
 
@@ -60,6 +64,22 @@ const LessonDashboard: FC<{
       },
       {
         page: (
+          <Results
+            spec={lesson.spec}
+            isFinished={false}
+            endDate={endDatePlaceholder}
+            type={"lesson"}
+            full
+            is_team={false}
+            groupSpec={groupSpec}
+          />
+        ),
+        icon: <IconTable color="var(--secondary)" />,
+        title: locale.dashboard.course.results,
+        section: "results",
+      },
+      {
+        page: (
           <Moderators type={"course"} spec={course.spec} isAuthor={isAuthor} />
         ),
         icon: <IconUserCog color="var(--secondary)" />,
@@ -81,7 +101,7 @@ const LessonDashboard: FC<{
     ];
 
     if (isAuthor) {
-      links.splice(2, 0, {
+      links.splice(3, 0, {
         page: (
           <CourseParticipants
             type={"course"}
@@ -96,7 +116,7 @@ const LessonDashboard: FC<{
     }
 
     return links;
-  }, [lesson, locale, hasNewMessages, course, isAuthor]);
+  }, [lesson, locale, hasNewMessages, course, isAuthor, groupSpec]);
 
   if (!course) return null;
 

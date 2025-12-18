@@ -21,6 +21,7 @@ function CourseEditPage(props: { course: ICourse; depth: number }) {
     children: props.course.children ?? [],
     image: props.course.image,
     kind: props.course.kind,
+    is_public: props.course.public,
   });
 
   const router = useRouter();

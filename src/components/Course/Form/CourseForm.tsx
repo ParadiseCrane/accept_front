@@ -4,7 +4,7 @@ import { callback } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
 import { Group, Stack } from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
-import { Button, CustomEditor } from "@ui/basics";
+import { Button, CustomEditor, Switch } from "@ui/basics";
 import { CourseTree } from "@ui/CourseTree/CourseTree";
 import ImageSelector from "@ui/ImageSelector/ImageSelector";
 import { FC, memo } from "react";
@@ -21,6 +21,7 @@ const CourseForm: FC<{
   const form = useForm<ICourseAddEdit | IUnitAddEdit>({
     initialValues: initialValues,
   });
+
   return (
     <Stack m={"xl"} className={styles.form}>
       <Group grow align="flex-start">
@@ -50,6 +51,12 @@ const CourseForm: FC<{
         form={form}
         name="description"
         editorMinHeight="60px"
+      />
+      <Switch
+        label={locale.tournament.form.public}
+        {...form.getInputProps("public", {
+          type: "checkbox",
+        })}
       />
       <Button
         onClick={() => {

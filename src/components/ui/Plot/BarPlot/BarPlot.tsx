@@ -28,11 +28,13 @@ const BarPlot: FC<{
   aspectRatio = 0.5,
   hoverLabel,
 }) => {
+  const ADAPTIVE_DIVIDER = 1;
   const [toolTipLabel, setToolTipLabel] = useState<ReactNode | undefined>(
     undefined,
   );
 
   const padding = (300 / (data.length + 1)) * PADDING;
+  // тут можно изменить ширину
   const width = (300 - padding * (data.length + 1)) / data.length;
   const height = 300 * aspectRatio;
 
@@ -116,6 +118,7 @@ const BarPlot: FC<{
             hideLabels={hideLabels}
             hideRowLabels={hideRowLabels}
             hoverLabel={hoverLabel}
+            adaptiveDivider={ADAPTIVE_DIVIDER}
           />
         ))}
       </svg>

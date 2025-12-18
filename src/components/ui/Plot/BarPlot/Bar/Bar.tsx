@@ -17,6 +17,7 @@ const Bar: FC<{
   hideRowLabels?: boolean;
   totalHeight: number;
   hoverLabel?: callback<IPlotData, ReactNode>;
+  adaptiveDivider: number;
 }> = ({
   index,
   data,
@@ -29,6 +30,7 @@ const Bar: FC<{
   hideRowLabels = false,
   totalHeight,
   hoverLabel = (item) => item.amount,
+  adaptiveDivider,
 }) => {
   const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
@@ -49,15 +51,18 @@ const Bar: FC<{
       >
         <rect
           className={styles.bar}
-          x={left_padding + index * width + padding * (index + 1)}
-          width={width}
+          x={
+            (left_padding + index * width + padding * (index + 1)) /
+            adaptiveDivider
+          }
+          width={width / adaptiveDivider}
           y={totalHeight + 5 - height}
           height={2 + height}
           fill={data.color}
         />
         <rect
-          x={left_padding + index * (300 / length)}
-          width={300 / length}
+          x={(left_padding + index * (300 / length)) / adaptiveDivider}
+          width={300 / length / adaptiveDivider}
           y={totalHeight + 5}
           height={10}
           fill="white"
@@ -65,7 +70,13 @@ const Bar: FC<{
         {!hideLabels && (
           <text
             className={styles.labels}
-            x={left_padding + width * index + padding * (index + 1) + width / 2}
+            x={
+              (left_padding +
+                width * index +
+                padding * (index + 1) +
+                width / 2) /
+              adaptiveDivider
+            }
             y={totalHeight + 12}
             textAnchor="middle"
           >

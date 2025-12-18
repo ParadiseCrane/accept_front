@@ -60,6 +60,7 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
         kind: "course",
         spec,
         title: "",
+        public: course?.public ?? false,
       });
     }
     setLoading(false);

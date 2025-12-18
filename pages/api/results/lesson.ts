@@ -5,7 +5,7 @@ export default async function AssignmentTaskResults(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // TODO такого запроса на бэке нет
+  // TODO mocked method
   await fetchWrapper({
     req: req,
     res: res,

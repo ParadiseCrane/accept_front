@@ -2,12 +2,11 @@
 import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
-import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import { useCallback, useState } from "react";
 
-import { imageInsertFunction } from "../../TipTapEditor";
 import styles from "./ImageUrlModal.module.css";
 import { Modal, TextInput } from "@ui/basics";
+import { imageInsertFunctionTipTap } from "@utils/image";
 
 const loadImageFromUrl = ({
   src,
@@ -23,7 +22,7 @@ const loadImageFromUrl = ({
   editor
     .chain()
     .insertContent(
-      imageInsertFunction({
+      imageInsertFunctionTipTap({
         src: src,
         alt: locale.tiptap.imageAltTitle,
         width: width,
