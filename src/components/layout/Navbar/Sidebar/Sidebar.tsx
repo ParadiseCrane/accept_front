@@ -1,11 +1,9 @@
 "use client";
-import { IHeaderLink } from "@custom-types/ui/IHeaderLink";
-import { useLocale } from "@hooks/useLocale";
 import { Burger, Drawer } from "@mantine/core";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import Logo from "../Logo/Logo";
-import styles from "./SideBar.module.css";
+import styles from "./sideBar.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import SignIn from "../SignIn/SignIn";
 import { Content } from "./Content";
