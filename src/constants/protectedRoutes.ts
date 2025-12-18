@@ -1,4 +1,5 @@
-import { checkWrapper } from '@utils/checkAccess';
+import { IResponseErrorObject } from "@custom-types/data/atomic";
+import { checkWrapper } from "@utils/checkAccess";
 
 // TODO: Somehow remove
 export const accessLevels = {
@@ -16,100 +17,132 @@ export const protectedRoutesInfo: {
     _access_token: string | undefined,
     _pathname: string,
     _searchParams?: URLSearchParams
-  ) => Promise<string | boolean>;
+  ) => Promise<string | boolean | IResponseErrorObject>;
 } = {
   // TODO: Check rights
-  '/tournament': checkWrapper('read', 'tournament', accessLevels['anyone']),
-  '/tournament/add': checkWrapper('add', 'tournament', accessLevels['teacher']),
-  '/tournament/edit': checkWrapper(
-    'write',
-    'tournament',
-    accessLevels['teacher']
+  "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
+  "/tournament/add": checkWrapper(
+    "add",
+    "tournament",
+    accessLevels["teacher"],
+    true
   ),
-  '/assignment_schema/add': checkWrapper(
-    'add',
-    'assignment_schema',
-    accessLevels['teacher']
+  "/tournament/edit": checkWrapper(
+    "write",
+    "tournament",
+    accessLevels["teacher"]
   ),
-  '/assignment_schema/edit': checkWrapper(
-    'write',
-    'assignment_schema',
-    accessLevels['teacher']
+  "/assignment_schema/add": checkWrapper(
+    "add",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true
   ),
-  '/assignment_schema/list': checkWrapper(
-    'read_list',
-    'assignment_schema',
-    accessLevels['teacher']
+  "/assignment_schema/edit": checkWrapper(
+    "write",
+    "assignment_schema",
+    accessLevels["teacher"]
   ),
-  '/assignment_schema': checkWrapper(
-    'read',
-    'assignment_schema',
-    accessLevels['teacher']
+  "/assignment_schema/list": checkWrapper(
+    "read_list",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true
   ),
-  '/assignment': checkWrapper('read', 'assignment', accessLevels['teacher']),
-  '/assignment/add': checkWrapper('add', 'assignment', accessLevels['teacher']),
-  '/assignment/edit': checkWrapper(
-    'write',
-    'assignment',
-    accessLevels['teacher']
+  "/assignment_schema": checkWrapper(
+    "read",
+    "assignment_schema",
+    accessLevels["teacher"],
+    true
   ),
-  '/organization/add': checkWrapper(
-    'moderate',
-    'organization',
-    accessLevels['developer']
+  "/assignment": checkWrapper("read", "assignment", accessLevels["teacher"]),
+  "/assignment/add": checkWrapper(
+    "add",
+    "assignment",
+    accessLevels["teacher"],
+    true
   ),
-  '/organization/edit': checkWrapper(
-    'moderate',
-    'organization',
-    accessLevels['developer']
+  "/assignment/edit": checkWrapper(
+    "write",
+    "assignment",
+    accessLevels["teacher"]
   ),
-  '/group/add': checkWrapper('add', 'group', accessLevels['teacher']),
-  '/group/edit': checkWrapper('write', 'assignment', accessLevels['teacher']),
-  '/group/list': checkWrapper('read_list', 'group', accessLevels['teacher']),
-  '/notification/add': checkWrapper(
-    'add',
-    'notification',
-    accessLevels['teacher'] // Is it true??
+  "/organization/add": checkWrapper(
+    "moderate",
+    "organization",
+    accessLevels["developer"],
+    true
   ),
-  '/task/add': (_, access_token, pathname, searchParams) => {
-    const tournament_spec = searchParams?.get('tournament');
+  "/organization/edit": checkWrapper(
+    "moderate",
+    "organization",
+    accessLevels["admin"],
+    true
+  ),
+  "/group/add": checkWrapper("add", "group", accessLevels["teacher"], true),
+  "/group/edit": checkWrapper(
+    "write",
+    "assignment",
+    accessLevels["teacher"],
+    true
+  ),
+  "/group/list": checkWrapper(
+    "read_list",
+    "group",
+    accessLevels["teacher"],
+    true
+  ),
+  "/notification/add": checkWrapper(
+    "add",
+    "notification",
+    accessLevels["teacher"] // Is it true??
+  ),
+  "/task/add": (_, access_token, pathname, searchParams) => {
+    const tournament_spec = searchParams?.get("tournament");
     if (!tournament_spec)
-      return checkWrapper('add', 'task', accessLevels['teacher'])(
+      return checkWrapper("add", "task", accessLevels["teacher"], true)(
         undefined,
         access_token,
         pathname,
         searchParams
       );
-    return checkWrapper('moderate', 'tournament', accessLevels['admin'])(
+    return checkWrapper("moderate", "tournament", accessLevels["admin"])(
       tournament_spec,
       access_token,
       pathname,
       searchParams
     );
   },
-  '/user/list': checkWrapper('read_list', 'user', accessLevels['teacher']),
-  '/task': checkWrapper('read', 'task', accessLevels['teacher']),
-  '/task/edit': checkWrapper('write', 'task', accessLevels['teacher']),
-  '/task/tests': checkWrapper('read_tests', 'task', accessLevels['teacher']),
-  '/dashboard/admin': checkWrapper(
-    'read',
-    'admin_dashboard',
-    accessLevels['admin']
+  "/user/list": checkWrapper(
+    "read_list",
+    "user",
+    accessLevels["teacher"],
+    true
   ),
-  '/dashboard/assignment': checkWrapper(
-    'moderate',
-    'assignment',
-    accessLevels['teacher']
+  "/task": checkWrapper("read", "task", accessLevels["admin"]),
+  "/task/edit": checkWrapper("write", "task", accessLevels["admin"]),
+  "/task/tests": checkWrapper("read_tests", "task", accessLevels["admin"]),
+  "/dashboard/admin": checkWrapper(
+    "read",
+    "admin_dashboard",
+    accessLevels["admin"]
   ),
-  '/dashboard/developer': checkWrapper(
-    'read',
-    'developer_dashboard',
-    accessLevels['developer']
+  "/dashboard/assignment": checkWrapper(
+    "moderate",
+    "assignment",
+    accessLevels["teacher"],
+    true
   ),
-  '/dashboard/tournament': checkWrapper(
-    'moderate',
-    'tournament',
-    accessLevels['admin']
+  "/dashboard/developer": checkWrapper(
+    "read",
+    "developer_dashboard",
+    accessLevels["developer"],
+    true
   ),
-  '/attempt': checkWrapper('read', 'attempt', accessLevels['teacher']),
+  "/dashboard/tournament": checkWrapper(
+    "moderate",
+    "tournament",
+    accessLevels["admin"]
+  ),
+  "/attempt": checkWrapper("read", "attempt", accessLevels["teacher"]),
 };

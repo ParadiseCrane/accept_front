@@ -1,12 +1,13 @@
-import { ICON_SIZES } from '@constants/Sizes';
-import { IProjectCard } from '@custom-types/ui/IProjectCard';
-import { useLocale } from '@hooks/useLocale';
-import { useWidth } from '@hooks/useWidth';
-import { Button } from '@ui/basics';
-import { FC } from 'react';
-import { ChevronRight } from 'tabler-icons-react';
+"use client";
+import { ICON_SIZES } from "@constants/Sizes";
+import { IProjectCard } from "@custom-types/ui/IProjectCard";
+import { useLocale } from "@hooks/useLocale";
+import { useWidth } from "@hooks/useWidth";
+import { Button } from "@ui/basics";
+import { FC } from "react";
+import { IconChevronRight } from "@tabler/icons-react";
 
-import styles from './projectCard.module.css';
+import styles from "./projectCard.module.css";
 
 export const ProjectCard: FC<{
   left: boolean;
@@ -35,9 +36,9 @@ export const ProjectCard: FC<{
             variant="outline"
             href={card.href}
             rightSection={
-              <ChevronRight
+              <IconChevronRight
                 color="var(--primary)"
-                size={ICON_SIZES['md'][width]}
+                size={ICON_SIZES["md"][width]}
               />
             }
           >

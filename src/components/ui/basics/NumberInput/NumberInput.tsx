@@ -1,11 +1,12 @@
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
+"use client";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
 import {
   NumberInput as MantineNumberInput,
   NumberInputProps,
-} from '@mantine/core';
-import inputStyles from '@styles/ui/input.module.css';
-import { InputLabel } from '@ui/basics';
-import { FC, memo } from 'react';
+} from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { InputLabel } from "@ui/basics";
+import { FC, memo } from "react";
 
 interface Props extends NumberInputProps {
   helperContent?: IDropdownContent;
@@ -23,7 +24,7 @@ const NumberInput: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
     >
       <InputLabel
         label={label}
@@ -31,7 +32,7 @@ const NumberInput: FC<Props> = ({
         required={required}
       />
       <MantineNumberInput
-        size={shrink ? 'sm' : 'md'}
+        size={shrink ? "sm" : "md"}
         {...props}
         classNames={{
           error: props.classNames?.error || inputStyles.error,

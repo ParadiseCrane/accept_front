@@ -1,8 +1,8 @@
-import { IImagePreset } from '@custom-types/data/IImagePreset';
-import { useLocale } from '@hooks/useLocale';
-import { ComboboxItem } from '@mantine/core';
-import { Select } from '@ui/basics';
-import React, { FC, memo } from 'react';
+import { IImagePreset } from "@custom-types/data/IImagePreset";
+import { useLocale } from "@hooks/useLocale";
+import { ComboboxItem } from "@mantine/core";
+import { Select } from "@ui/basics";
+import React, { FC, memo } from "react";
 
 export interface PresetSelectProps {
   label: string;
@@ -17,17 +17,18 @@ const PresetSingleSelect: FC<PresetSelectProps> = ({
   currentPreset,
   select,
 }) => {
+  const { locale } = useLocale();
   const data = presets.map(
     (item) =>
       ({
-        label: item.name,
+        label: locale.course.presentNameToLocale(item.name),
         value: item.name,
-      }) as ComboboxItem
+      } as ComboboxItem)
   );
-  const { locale } = useLocale();
+
   return (
     <Select
-      defaultValue={data.length > 0 ? data[0].value : ''}
+      defaultValue={data.length > 0 ? data[0].value : ""}
       searchable
       data={data}
       value={currentPreset ? currentPreset.name : null}

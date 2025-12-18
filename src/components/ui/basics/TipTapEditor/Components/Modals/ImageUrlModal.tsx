@@ -1,12 +1,12 @@
-import { useLocale } from '@hooks/useLocale';
-import { Editor } from '@tiptap/react';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { useCallback, useState } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Editor } from "@tiptap/react";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import { useCallback, useState } from "react";
 
-import { imageInsertFunction } from '../../TipTapEditor';
-import styles from './ImageUrlModal.module.css';
-import { Modal, TextInput } from '@ui/basics';
+import styles from "./ImageUrlModal.module.css";
+import { Modal, TextInput } from "@ui/basics";
+import { imageInsertFunctionTipTap } from "@utils/image";
 
 const loadImageFromUrl = ({
   src,
@@ -22,7 +22,7 @@ const loadImageFromUrl = ({
   editor
     .chain()
     .insertContent(
-      imageInsertFunction({
+      imageInsertFunctionTipTap({
         src: src,
         alt: locale.tiptap.imageAltTitle,
         width: width,
@@ -40,11 +40,11 @@ export const ImageUrlModal = ({
   close: any;
   editor: Editor;
 }) => {
-  const [src, setSrc] = useState('');
+  const [src, setSrc] = useState("");
   const { locale } = useLocale();
 
   const onClose = useCallback(() => {
-    setSrc('');
+    setSrc("");
     close();
   }, [setSrc, close]);
 
@@ -61,12 +61,12 @@ export const ImageUrlModal = ({
           reversePositive={false}
           actionButton={{
             onClick: () => {
-              if (src.includes('http')) {
+              if (src.includes("http")) {
                 loadImageFromUrl({
                   editor: editor,
                   src: src,
                   locale: locale,
-                  width: '300px',
+                  width: "300px",
                 });
                 onClose();
               }

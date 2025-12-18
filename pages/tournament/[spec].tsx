@@ -1,30 +1,31 @@
-import DeleteModal from '@components/Tournament/DeleteModal/DeleteModal';
-import Description from '@components/Tournament/Description/Description';
-import PinModal from '@components/Tournament/PinModal/PinModal';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { ITournament } from '@custom-types/data/ITournament';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import ChatSticky from '@ui/ChatSticky/ChatSticky';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import Timer from '@ui/Timer/Timer';
-import Title from '@ui/Title/Title';
-import { getCookieValue } from '@utils/cookies';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+"use client";
+import DeleteModal from "@components/Tournament/DeleteModal/DeleteModal";
+import Description from "@components/Tournament/Description/Description";
+import PinModal from "@components/Tournament/PinModal/PinModal";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import ChatSticky from "@ui/ChatSticky/ChatSticky";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import Timer from "@ui/Timer/Timer";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import {
-  Dashboard,
-  Key,
-  Pencil,
-  PlaylistAdd,
-  ReportAnalytics,
-  ShirtSport,
-  Trash,
-} from 'tabler-icons-react';
+  IconDashboard,
+  IconKey,
+  IconPencil,
+  IconPlaylistAdd,
+  IconReportAnalytics,
+  IconShirtSport,
+  IconTrash,
+} from "@tabler/icons-react";
 
 function Tournament(props: {
   tournament: ITournament;
@@ -44,7 +45,7 @@ function Tournament(props: {
   const special = useMemo(
     () =>
       isAdmin ||
-      tournament.moderators.includes(user?.login || '') ||
+      tournament.moderators.includes(user?.login || "") ||
       tournament.author == user?.login,
     [isAdmin, tournament.author, tournament.moderators, user?.login]
   );
@@ -52,9 +53,9 @@ function Tournament(props: {
   const actions: IStickyAction[] = useMemo(
     () => [
       {
-        color: 'grape',
+        color: "grape",
         icon: (
-          <Dashboard
+          <IconDashboard
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -63,9 +64,9 @@ function Tournament(props: {
         description: locale.tip.sticky.tournament.dashboard,
       },
       {
-        color: 'blue',
+        color: "blue",
         icon: (
-          <Key
+          <IconKey
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -75,9 +76,9 @@ function Tournament(props: {
         hide: tournament.security != 1,
       },
       {
-        color: 'green',
+        color: "green",
         icon: (
-          <PlaylistAdd
+          <IconPlaylistAdd
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -87,9 +88,9 @@ function Tournament(props: {
       },
 
       {
-        color: 'green',
+        color: "green",
         icon: (
-          <Pencil
+          <IconPencil
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -99,9 +100,9 @@ function Tournament(props: {
       },
 
       {
-        color: 'red',
+        color: "red",
         icon: (
-          <Trash
+          <IconTrash
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -138,9 +139,9 @@ function Tournament(props: {
         <Sticky
           actions={[
             {
-              color: 'green',
+              color: "green",
               icon: (
-                <ReportAnalytics
+                <IconReportAnalytics
                   width={STICKY_SIZES[width] / 3}
                   height={STICKY_SIZES[width] / 3}
                 />
@@ -149,9 +150,9 @@ function Tournament(props: {
               description: locale.tip.sticky.tournament.results,
             },
             {
-              color: 'blue',
+              color: "blue",
               icon: (
-                <ShirtSport
+                <IconShirtSport
                   width={STICKY_SIZES[width] / 3}
                   height={STICKY_SIZES[width] / 3}
                 />
@@ -166,7 +167,7 @@ function Tournament(props: {
       return (
         <SingularSticky
           icon={
-            <ReportAnalytics
+            <IconReportAnalytics
               width={STICKY_SIZES[width] / 2}
               height={STICKY_SIZES[width] / 2}
             />
@@ -195,7 +196,7 @@ function Tournament(props: {
       {getSticky()}
       {user && (special || is_participant) && (
         <ChatSticky
-          entity={'tournament'}
+          entity={"tournament"}
           spec={tournament.spec}
           host={user.login}
         />
@@ -220,14 +221,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
     headers: {
@@ -248,9 +246,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

@@ -1,0 +1,77 @@
+.infoWrapper {
+  margin: var(--spacer-l) var(--spacer-l) var(--spacer-huge) var(--spacer-l);
+  font-size: var(--font-size-m);
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  /* gap: var(--spacer-s); */
+}
+
+.link {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.leftWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: var(--spacer-s);
+  word-break: break-all;
+  width: max-content;
+}
+
+.right {
+  margin: 0 var(--spacer-m);
+  min-width: 200px;
+  font-size: var(--font-size-s);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-s);
+}
+
+.column {
+  margin-right: auto;
+  padding: var(--spacer-xxs) var(--spacer-xs);
+}
+
+.cell {
+  font-size: var(--font-size-s) !important;
+  min-width: var(--spacer-huge) !important;
+  padding: var(--spacer-xs) var(--spacer-s) !important;
+}
+
+.tableWrapper {
+  white-space: nowrap;
+  max-height: 60vh;
+  overflow: scroll;
+  flex: 1;
+}
+
+.tableWrapper table thead {
+  background-color: white;
+  position: sticky;
+  top: 0;
+}
+
+.tableWrapper table thead tr {
+  padding-bottom: var(--spacer-xxs);
+}
+
+.tableWrapper::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tableWrapper::-webkit-scrollbar:horizontal {
+  width: 0px;
+  height: 0px;
+}
+
+.smallButton {
+  --font-size: var(--font-size-btn-s);
+}

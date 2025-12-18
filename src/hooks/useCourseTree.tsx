@@ -1,24 +1,24 @@
-import { COURSE_TREE_MAX_DEPTH as depthConstant } from '@constants/Limits';
+import { COURSE_TREE_MAX_DEPTH as depthConstant } from "@constants/Limits";
 import {
   ICourseAddEdit,
   IGroupOpenness,
   ITreeUnit,
-  IUnit,
-} from '@custom-types/data/ICourse';
-import { UseFormReturnType } from '@mantine/form';
+  IBaseTreeUnit,
+} from "@custom-types/data/ICourse";
+import { UseFormReturnType } from "@mantine/form";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useLocale } from './useLocale';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { sendRequest } from '@requests/request';
+} from "@utils/notificationFunctions";
+import { Dispatch, SetStateAction, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useLocale } from "./useLocale";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { sendRequest } from "@requests/request";
 
 let COURSE_TREE_MAX_DEPTH = depthConstant;
 
-type UpOrDown = 'UP' | 'DOWN';
+type UpOrDown = "UP" | "DOWN";
 
 interface UnitLocale {
   unit: string;
@@ -26,11 +26,11 @@ interface UnitLocale {
 }
 
 interface ConversionOutput {
-  elementList: IUnit[];
+  elementList: IBaseTreeUnit[];
   title: string;
 }
 
-export type ElementType = 'unit' | 'lesson';
+export type ElementType = "unit" | "lesson";
 
 const getMaxDepthFromList = ({
   listToCheck,
@@ -49,7 +49,7 @@ const getMaxDepthFromList = ({
 // высчитываем значение поля
 const getOrderAsNumber = ({ order }: { order: string }): number => {
   let orderAsNumber = 0;
-  let orderAsList = order.split('|');
+  let orderAsList = order.split("|");
   const numOfIterations =
     orderAsList.length >= COURSE_TREE_MAX_DEPTH
       ? COURSE_TREE_MAX_DEPTH
@@ -67,15 +67,15 @@ const getParentSpec = ({
   courseUnit,
   courseUnitList,
 }: {
-  courseUnit: IUnit;
-  courseUnitList: IUnit[];
+  courseUnit: IBaseTreeUnit;
+  courseUnitList: IBaseTreeUnit[];
 }): string => {
-  if (courseUnit.order.split('|').length === 1) {
+  if (courseUnit.order.split("|").length === 1) {
     return [...courseUnitList][0].spec;
   } else {
     return courseUnitList.filter(
       (element) =>
-        element.order === courseUnit.order.split('|').slice(0, -1).join('|')
+        element.order === courseUnit.order.split("|").slice(0, -1).join("|")
     )[0].spec;
   }
 };
@@ -88,17 +88,17 @@ const getParent = ({
   courseUnit: ITreeUnit;
   courseUnitList: ITreeUnit[];
 }): ITreeUnit => {
-  if (courseUnit.order.split('|').length === 1) {
+  if (courseUnit.order.split("|").length === 1) {
     return [...courseUnitList][0];
   } else {
     return courseUnitList.filter(
       (element) =>
-        element.order === courseUnit.order.split('|').slice(0, -1).join('|')
+        element.order === courseUnit.order.split("|").slice(0, -1).join("|")
     )[0];
   }
 };
 
-// создаем объект типа ITreeUnit из IUnit
+// создаем объект типа ITreeUnit из IBaseTreeUnit
 const createTreeUnit = ({
   courseUnit,
   courseUnitList,
@@ -108,20 +108,20 @@ const createTreeUnit = ({
   visible,
   childrenVisible,
 }: {
-  courseUnit: IUnit;
-  courseUnitList: IUnit[];
+  courseUnit: IBaseTreeUnit;
+  courseUnitList: IBaseTreeUnit[];
   index: number;
   editMode: boolean;
   isOpen: boolean;
   visible?: boolean;
   childrenVisible?: boolean;
 }): ITreeUnit => {
-  let parentSpec = '';
-  if (courseUnit.order === '0') {
-    parentSpec = 'none';
+  let parentSpec = "";
+  if (courseUnit.order === "0") {
+    parentSpec = "none";
   } else {
-    if (courseUnit.order.split('|').length === 1) {
-      parentSpec = 'spec0';
+    if (courseUnit.order.split("|").length === 1) {
+      parentSpec = "spec0";
     } else {
       parentSpec = getParentSpec({
         courseUnit: courseUnit,
@@ -132,7 +132,7 @@ const createTreeUnit = ({
   return {
     ...courseUnit,
     orderAsNumber: getOrderAsNumber({ order: courseUnit.order }),
-    depth: courseUnit.order === '0' ? 0 : courseUnit.order.split('|').length,
+    depth: courseUnit.order === "0" ? 0 : courseUnit.order.split("|").length,
     index: index,
     parentSpec: editMode
       ? parentSpec
@@ -140,10 +140,8 @@ const createTreeUnit = ({
           courseUnit: courseUnit,
           courseUnitList: courseUnitList,
         }),
-    visible:
-      (visible ?? courseUnit.order.split('|').length === 1) ? true : false,
-    childrenVisible:
-      (childrenVisible ?? courseUnit.order === '0') ? true : false,
+    visible: visible ?? courseUnit.order.split("|").length === 1 ? true : false,
+    childrenVisible: childrenVisible ?? courseUnit.order === "0" ? true : false,
     isOpen,
   };
 };
@@ -167,7 +165,7 @@ const createTreeUnitList = ({
   form,
   editMode,
 }: {
-  courseUnitList: IUnit[];
+  courseUnitList: IBaseTreeUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
@@ -175,14 +173,14 @@ const createTreeUnitList = ({
   editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
-    spec: 'spec0',
-    kind: 'course',
+    spec: "spec0",
+    kind: "course",
     childrenVisible: form.values.children.length !== 0,
     depth: 0,
     index: 0,
-    order: '0',
+    order: "0",
     orderAsNumber: 0,
-    parentSpec: 'none',
+    parentSpec: "none",
     title: form.values.title,
     visible: true,
     isOpen: false,
@@ -207,19 +205,19 @@ const createTreeUnitListCourseShow = ({
   children,
   editMode,
 }: {
-  course: IUnit;
-  children: IUnit[];
+  course: IBaseTreeUnit;
+  children: IBaseTreeUnit[];
   editMode: boolean;
 }): ITreeUnit[] => {
   const courseElement: ITreeUnit = {
     spec: course.spec,
-    kind: 'course',
+    kind: "course",
     childrenVisible: children.length !== 0,
     depth: 0,
     index: 0,
-    order: '0',
+    order: "0",
     orderAsNumber: 0,
-    parentSpec: 'none',
+    parentSpec: "none",
     title: course.title,
     visible: true,
     isOpen: false,
@@ -245,8 +243,8 @@ const createTreeUnitListGroupOpenness = ({
   groupOpennessList,
   editMode,
 }: {
-  course: IUnit;
-  allChildren: IUnit[];
+  course: IBaseTreeUnit;
+  allChildren: IBaseTreeUnit[];
   groupOpennessList: IGroupOpenness[];
   editMode: boolean;
 }): ITreeUnit[] => {
@@ -255,13 +253,13 @@ const createTreeUnitListGroupOpenness = ({
     .map((element) => element.spec);
   const courseElement: ITreeUnit = {
     spec: course.spec,
-    kind: 'course',
+    kind: "course",
     childrenVisible: allChildren.length !== 0,
     depth: 0,
     index: 0,
-    order: '0',
+    order: "0",
     orderAsNumber: 0,
-    parentSpec: 'none',
+    parentSpec: "none",
     title: course.title,
     visible: true,
     isOpen: specList.includes(course.spec),
@@ -288,13 +286,13 @@ const convertToCourseUnitList = ({
 }: {
   treeUnitList: ITreeUnit[];
 }): ConversionOutput => {
-  const list: IUnit[] = [];
+  const list: IBaseTreeUnit[] = [];
   const courseElement = treeUnitList[0];
   if (treeUnitList.length > 1) {
     for (let i = 0; i < treeUnitList.length; i++) {
-      if (treeUnitList[i].kind !== 'course') {
+      if (treeUnitList[i].kind !== "course") {
         list.push({
-          kind: treeUnitList[i].kind === 'unit' ? 'unit' : 'lesson',
+          kind: treeUnitList[i].kind === "unit" ? "unit" : "lesson",
           order: treeUnitList[i].order,
           spec: treeUnitList[i].spec,
           // spec: treeUnitList[i].spec.includes('newElement')
@@ -380,7 +378,7 @@ const findElementSibling = ({
     return currentElement;
   }
   // проверяем, есть ли родственник одного уровня выше текущего элемента
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     // если индекс родственника меньше индекса текущего элемента
     // значит, элемент выше существует
     if (directChildren[0].index < currentElement.index) {
@@ -410,7 +408,7 @@ const findClosestSiblingSameDepth = ({
   treeUnitList: ITreeUnit[];
   upOrDown: UpOrDown;
 }): ITreeUnit => {
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     const allSiblings = treeUnitList.filter(
       (element) =>
         element.index < currentElement.index &&
@@ -436,12 +434,12 @@ const findClosestUnitSiblingSameDepth = ({
   treeUnitList: ITreeUnit[];
   upOrDown: UpOrDown;
 }): ITreeUnit => {
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     const allSiblings = treeUnitList.filter(
       (element) =>
         element.index < currentElement.index &&
         element.depth === currentElement.depth &&
-        element.kind === 'unit'
+        element.kind === "unit"
     );
     return allSiblings.length > 0 ? allSiblings.pop()! : currentElement;
   } else {
@@ -449,7 +447,7 @@ const findClosestUnitSiblingSameDepth = ({
       (element) =>
         element.depth === currentElement.depth &&
         element.index > currentElement.index &&
-        element.kind === 'unit'
+        element.kind === "unit"
     );
     return allSiblings.length > 0 ? allSiblings[0] : currentElement;
   }
@@ -479,17 +477,17 @@ const replaceOrder = ({
   newOrderStart: string;
   upOrDown?: UpOrDown;
 }): string => {
-  let numberOfElementsToReplace: number = newOrderStart.split('|').length;
-  if (upOrDown === 'UP') {
+  let numberOfElementsToReplace: number = newOrderStart.split("|").length;
+  if (upOrDown === "UP") {
     numberOfElementsToReplace++;
   }
-  if (upOrDown === 'DOWN') {
+  if (upOrDown === "DOWN") {
     numberOfElementsToReplace--;
   }
   const newOrderList = [
-    ...newOrderStart.split('|'),
-    ...oldOrder.split('|').slice(numberOfElementsToReplace, undefined),
-  ].join('|');
+    ...newOrderStart.split("|"),
+    ...oldOrder.split("|").slice(numberOfElementsToReplace, undefined),
+  ].join("|");
   return newOrderList;
 };
 
@@ -571,18 +569,18 @@ const moveChildrenOneStepForUpDownParentChange = ({
   // будет заканчиваться на 2
   const localChildren = [...children];
   const list: ITreeUnit[] = [];
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     const depth = localChildren[0].depth;
     const childrenToIterate = [...children].filter(
       (element) => element.depth === depth
     );
     for (let i = 0; i < childrenToIterate.length; i++) {
       const parent = childrenToIterate[i];
-      const lastDigit = Number(parent.order.split('|').pop()!) - 1;
+      const lastDigit = Number(parent.order.split("|").pop()!) - 1;
       const newOrder = [
-        ...parent.order.split('|').slice(0, -1),
+        ...parent.order.split("|").slice(0, -1),
         lastDigit,
-      ].join('|');
+      ].join("|");
       const newParent: ITreeUnit = {
         ...parent,
         order: newOrder,
@@ -613,11 +611,11 @@ const moveChildrenOneStepForUpDownParentChange = ({
     );
     for (let i = 0; i < childrenToIterate.length; i++) {
       const parent = childrenToIterate[i];
-      const lastDigit = Number(parent.order.split('|').pop()!) + 1;
+      const lastDigit = Number(parent.order.split("|").pop()!) + 1;
       const newOrder = [
-        ...parent.order.split('|').slice(0, -1),
+        ...parent.order.split("|").slice(0, -1),
         lastDigit,
-      ].join('|');
+      ].join("|");
       const newParent = {
         ...parent,
         order: newOrder,
@@ -658,7 +656,7 @@ const moveChildrenOneStepForDepthUpDown = ({
   fromWhichElement: ITreeUnit;
   upOrDown: UpOrDown;
 }): ITreeUnit[] => {
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     const parentChildrenAllLevels = findChildrenAllLevels({
       parent,
       treeUnitList,
@@ -667,7 +665,7 @@ const moveChildrenOneStepForDepthUpDown = ({
     const sibling = findElementSibling({
       currentElement: fromWhichElement,
       treeUnitList: treeUnitList,
-      upOrDown: 'DOWN',
+      upOrDown: "DOWN",
     });
     if (sibling.spec === fromWhichElement.spec) {
       return [];
@@ -682,11 +680,11 @@ const moveChildrenOneStepForDepthUpDown = ({
     const list: ITreeUnit[] = [];
     for (let i = 0; i < listToIterate.length; i++) {
       const orderLastDigit =
-        Number(listToIterate[i].order.split('|').pop()!) - 1;
+        Number(listToIterate[i].order.split("|").pop()!) - 1;
       const newOrder = [
-        ...listToIterate[i].order.split('|').slice(0, -1),
+        ...listToIterate[i].order.split("|").slice(0, -1),
         orderLastDigit.toString(),
-      ].join('|');
+      ].join("|");
       list.push({
         ...listToIterate[i],
         order: newOrder,
@@ -718,7 +716,7 @@ const moveChildrenOneStepForDepthUpDown = ({
     const sibling = findElementSibling({
       currentElement: fromWhichElement,
       treeUnitList: treeUnitList,
-      upOrDown: 'DOWN',
+      upOrDown: "DOWN",
     });
     if (sibling.spec === fromWhichElement.spec) {
       return [];
@@ -733,11 +731,11 @@ const moveChildrenOneStepForDepthUpDown = ({
     const list: ITreeUnit[] = [];
     for (let i = 0; i < listToIterate.length; i++) {
       const orderLastDigit =
-        Number(listToIterate[i].order.split('|').pop()!) + 1;
+        Number(listToIterate[i].order.split("|").pop()!) + 1;
       const newOrder = [
-        ...listToIterate[i].order.split('|').slice(0, -1),
+        ...listToIterate[i].order.split("|").slice(0, -1),
         orderLastDigit.toString(),
-      ].join('|');
+      ].join("|");
       list.push({
         ...listToIterate[i],
         order: newOrder,
@@ -780,17 +778,17 @@ const getMovedElementsForUpDownParentChange = (
     treeUnitList: data.treeUnitList,
   });
   const sibling = [...parentSiblingChildrenDirect].pop();
-  let newOrder = '';
+  let newOrder = "";
   if (sibling) {
     newOrder =
-      upOrDown === 'UP'
+      upOrDown === "UP"
         ? [
-            ...parentSibling.order.split('|'),
-            (Number(sibling.order.split('|').pop()!) + 1).toString(),
-          ].join('|')
-        : [...parentSibling.order.split('|'), '1'].join('|');
+            ...parentSibling.order.split("|"),
+            (Number(sibling.order.split("|").pop()!) + 1).toString(),
+          ].join("|")
+        : [...parentSibling.order.split("|"), "1"].join("|");
   } else {
-    newOrder = [...parentSibling.order.split('|'), '1'].join('|');
+    newOrder = [...parentSibling.order.split("|"), "1"].join("|");
   }
 
   const newCurrentElement: ITreeUnit = {
@@ -823,7 +821,7 @@ const getMovedElementsForDepthUpDown = (
   data: ILocalMethodInput,
   upOrDown: UpOrDown
 ): ITreeUnit[] => {
-  if (upOrDown === 'UP') {
+  if (upOrDown === "UP") {
     const parent = data.treeUnitList.filter(
       (element) => element.spec === data.currentUnit.parentSpec
     )[0];
@@ -832,9 +830,9 @@ const getMovedElementsForDepthUpDown = (
       treeUnitList: data.treeUnitList,
     });
     const newOrder = [
-      ...parent.order.split('|').slice(0, -1),
-      Number(parent.order.split('|').pop()!) + 1,
-    ].join('|');
+      ...parent.order.split("|").slice(0, -1),
+      Number(parent.order.split("|").pop()!) + 1,
+    ].join("|");
     const newCurrentElement: ITreeUnit = {
       ...data.currentUnit,
       order: newOrder,
@@ -863,7 +861,7 @@ const getMovedElementsForDepthUpDown = (
       ...findElementSibling({
         currentElement: data.currentUnit,
         treeUnitList: data.treeUnitList,
-        upOrDown: 'UP',
+        upOrDown: "UP",
       }),
       childrenVisible: true,
     };
@@ -878,8 +876,8 @@ const getMovedElementsForDepthUpDown = (
     const newOrderLastDigit: number =
       siblingChildrenDirect.length === 0
         ? 1
-        : Number([...siblingChildrenDirect].pop()!.order.split('|').pop()!) + 1;
-    const newOrder = [...sibling.order.split('|'), newOrderLastDigit].join('|');
+        : Number([...siblingChildrenDirect].pop()!.order.split("|").pop()!) + 1;
+    const newOrder = [...sibling.order.split("|"), newOrderLastDigit].join("|");
     const newCurrentElement: ITreeUnit = {
       ...data.currentUnit,
       parentSpec: sibling.spec,
@@ -1048,13 +1046,13 @@ const localAddTreeUnitFirstLevel = (
       : Number(
           [...children.filter((element) => element.depth === parent.depth + 1)]
             .pop()!
-            .order.split('|')
+            .order.split("|")
             .pop()!
         );
   const newElement: ITreeUnit = {
     spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}`,
     kind: elementType,
-    title: elementType === 'lesson' ? locale.lesson : locale.unit,
+    title: elementType === "lesson" ? locale.lesson : locale.unit,
     order: `${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${lastChildOrderLastDigit + 1}`,
@@ -1105,11 +1103,11 @@ const localAddTreeUnit = (
   let lastChildOrderLastDigit =
     lastChildIndex === 0
       ? 0
-      : Number([...children].pop()!.order.split('|').pop()!);
+      : Number([...children].pop()!.order.split("|").pop()!);
   const newElement: ITreeUnit = {
     spec: `${parent.spec}newElement${lastChildOrderLastDigit + 1}${uuidv4()}`,
     kind: elementType,
-    title: elementType === 'lesson' ? locale.lesson : locale.unit,
+    title: elementType === "lesson" ? locale.lesson : locale.unit,
     order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
     orderAsNumber: getOrderAsNumber({
       order: `${parent.order}|${lastChildOrderLastDigit + 1}`,
@@ -1178,7 +1176,7 @@ const localDeleteTreeUnit = (data: ILocalMethodInput): ITreeUnit[] => {
         elements: [...stationaryElements, ...deletedElements],
         list: data.treeUnitList,
       }),
-      upOrDown: 'UP',
+      upOrDown: "UP",
     });
   }
 
@@ -1198,7 +1196,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
   // если у элемента order заканчивается на 1 и мы нажимаем вверх
   // то родитель меняется
   const parentChanges =
-    Number({ ...data.currentUnit }.order.split('|').pop()!) === 1;
+    Number({ ...data.currentUnit }.order.split("|").pop()!) === 1;
   // какие элементы необходимо отобразить
   let elementsToShow: ITreeUnit[] = [];
   if (parentChanges) {
@@ -1207,7 +1205,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
       ...findClosestUnitSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
-        upOrDown: 'UP',
+        upOrDown: "UP",
       }),
       childrenVisible: true,
       visible: true,
@@ -1231,7 +1229,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
     const movedElements = getMovedElementsForUpDownParentChange(
       data,
       parent,
-      'UP'
+      "UP"
     );
     // нужны все children от parent
     const children = findChildrenAllLevels({
@@ -1249,7 +1247,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
         ? []
         : moveChildrenOneStepForUpDownParentChange({
             children: childrenToMove,
-            upOrDown: 'UP',
+            upOrDown: "UP",
           });
     const exclude: ITreeUnit[] = [
       ...movedElements,
@@ -1274,7 +1272,7 @@ const localMoveUp = (data: ILocalMethodInput): ITreeUnit[] => {
     const sibling = findElementSibling({
       currentElement: data.currentUnit,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
+      upOrDown: "UP",
     });
     return setNewIndexValues({
       treeUnitList: moveUpDownSameParent({
@@ -1296,10 +1294,10 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
   // последнего прямого дочернего компонента и мы нажимаем вверх
   // то родитель меняется
   const parentChanges =
-    data.currentUnit.order.split('|').pop()! ===
+    data.currentUnit.order.split("|").pop()! ===
     findChildrenDirect({ parent, treeUnitList: data.treeUnitList })
       .pop()!
-      .order.split('|')
+      .order.split("|")
       .pop()!;
   let elementsToShow: ITreeUnit[] = [];
   if (parentChanges) {
@@ -1307,14 +1305,14 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     const movedElements = getMovedElementsForUpDownParentChange(
       data,
       parent,
-      'DOWN'
+      "DOWN"
     );
     // мне нужны все children от parentSibling
     const parentSibling: ITreeUnit = {
       ...findClosestUnitSiblingSameDepth({
         currentElement: parent,
         treeUnitList: data.treeUnitList,
-        upOrDown: 'DOWN',
+        upOrDown: "DOWN",
       }),
       childrenVisible: true,
       visible: true,
@@ -1335,7 +1333,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
         ? []
         : moveChildrenOneStepForUpDownParentChange({
             children: childrenToMove,
-            upOrDown: 'DOWN',
+            upOrDown: "DOWN",
           });
     const exclude: ITreeUnit[] = [
       ...movedElements,
@@ -1358,7 +1356,7 @@ const localMoveDown = (data: ILocalMethodInput): ITreeUnit[] => {
     const sibling = findElementSibling({
       currentElement: data.currentUnit,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'DOWN',
+      upOrDown: "DOWN",
     });
     return setNewIndexValues({
       treeUnitList: moveUpDownSameParent({
@@ -1382,20 +1380,20 @@ const localMoveDepthUp = (data: ILocalMethodInput): ITreeUnit[] => {
   )[0];
   // элементы, которые перемещаются в результате нажатия кнопки
   // (текущий элемент и его дочерние элементы)
-  const movedElements = getMovedElementsForDepthUpDown(data, 'UP');
+  const movedElements = getMovedElementsForDepthUpDown(data, "UP");
   // перемещенные элементы старого родителя
   const oldParentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: oldParent,
     treeUnitList: data.treeUnitList,
     fromWhichElement: data.currentUnit,
-    upOrDown: 'UP',
+    upOrDown: "UP",
   });
   // перемещенные элементы нового родителя
   const newParentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: newParent,
     treeUnitList: data.treeUnitList,
     fromWhichElement: oldParent,
-    upOrDown: 'DOWN',
+    upOrDown: "DOWN",
   });
   // какие элементы исключаем из общего списка (избегаем дублирования)
   const exclude = [
@@ -1425,14 +1423,14 @@ const localMoveDepthDown = (data: ILocalMethodInput): ITreeUnit[] => {
   // + элементы, которые видимость которых необходимо включить при перемещении
   const movedElementsAndShowUpElements = getMovedElementsForDepthUpDown(
     { currentUnit: data.currentUnit, treeUnitList: data.treeUnitList },
-    'DOWN'
+    "DOWN"
   );
   // оставшиеся элементы сдвигаем вверх на 1
   const parentMovedChildren = moveChildrenOneStepForDepthUpDown({
     parent: parent,
     treeUnitList: data.treeUnitList,
     fromWhichElement: data.currentUnit,
-    upOrDown: 'UP',
+    upOrDown: "UP",
   });
   // какие элементы исключаем из общего списка (избегаем дублирования)
   const exclude = [...parentMovedChildren, ...movedElementsAndShowUpElements];
@@ -1458,7 +1456,7 @@ const localCanToggleChildrenVisibility = (data: ILocalMethodInput): boolean => {
   ) {
     return false;
   }
-  if (data.currentUnit.kind === 'lesson') {
+  if (data.currentUnit.kind === "lesson") {
     return false;
   }
   return true;
@@ -1470,7 +1468,7 @@ const localCanAddNewUnit = (data: ILocalMethodInput): boolean => {
 };
 
 const localCanDeleteTreeUnit = (data: ILocalMethodInput): boolean => {
-  if (data.currentUnit.kind === 'course') {
+  if (data.currentUnit.kind === "course") {
     return false;
   }
   return true;
@@ -1483,7 +1481,7 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
     findElementSibling({
       currentElement: data.currentUnit,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
+      upOrDown: "UP",
     }).spec
   ) {
     return true;
@@ -1500,7 +1498,7 @@ const localCanMoveUp = (data: ILocalMethodInput): boolean => {
     findClosestUnitSiblingSameDepth({
       currentElement: parent,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
+      upOrDown: "UP",
     }).spec !== parent.spec;
   if (isFirstDirectChild && parentHasUnitSibling) {
     return true;
@@ -1515,7 +1513,7 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
     findElementSibling({
       currentElement: data.currentUnit,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'DOWN',
+      upOrDown: "DOWN",
     }).spec
   ) {
     return true;
@@ -1533,7 +1531,7 @@ const localCanMoveDown = (data: ILocalMethodInput): boolean => {
     findClosestUnitSiblingSameDepth({
       currentElement: parent,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'DOWN',
+      upOrDown: "DOWN",
     }).spec !== parent.spec;
   if (isLastDirectChild && parentHasUnitSibling) {
     return true;
@@ -1554,13 +1552,13 @@ const localCanMoveDepthDown = (data: ILocalMethodInput): boolean => {
       findElementSibling({
         currentElement: data.currentUnit,
         treeUnitList: data.treeUnitList,
-        upOrDown: 'UP',
+        upOrDown: "UP",
       }).spec &&
     findElementSibling({
       currentElement: data.currentUnit,
       treeUnitList: data.treeUnitList,
-      upOrDown: 'UP',
-    }).kind === 'unit' &&
+      upOrDown: "UP",
+    }).kind === "unit" &&
     getMaxDepthFromList({
       listToCheck: findChildrenAllLevels({
         parent: data.currentUnit,
@@ -1604,7 +1602,7 @@ const localToggleRoot = ({
   }
   sendRequest<{}, IGroupOpenness[]>(
     `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
-    'PUT'
+    "PUT"
   ).catch(() => {
     // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
     // и отображаем сообщение об ошибке
@@ -1618,7 +1616,7 @@ const localToggleRoot = ({
   });
 };
 
-const localCloseElementAndChildren = ({
+const localCloseElementAndChildrenWithGroups = ({
   currentUnit,
   groupSpec,
   treeUnitList,
@@ -1646,7 +1644,57 @@ const localCloseElementAndChildren = ({
   // в параллель делаем запрос на бэк с изменением видимости элемента для группы
   sendRequest<{}, IGroupOpenness[]>(
     `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
-    'PUT'
+    "PUT"
+  ).catch(() => {
+    // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
+    // и отображаем сообщение об ошибке
+    setTreeUnitList(treeUnitList);
+    const id = newNotification({});
+    errorNotification({
+      id,
+      title: locale.dashboard.course.groupOpennessRequestFail,
+      autoClose: 5000,
+    });
+  });
+};
+
+const localOpenElementAndParentsWithGroups = ({
+  currentUnit,
+  groupSpec,
+  locale,
+  setTreeUnitList,
+  treeUnitList,
+}: ILocalOpennessMethodInput): void => {
+  const parentSpecList: string[] = [currentUnit.spec];
+  let parent = getParent({
+    courseUnit: currentUnit,
+    courseUnitList: treeUnitList,
+  });
+  // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
+  while (parent.depth > 0) {
+    parentSpecList.push(parent.spec);
+    parent = getParent({
+      courseUnit: parent,
+      courseUnitList: treeUnitList,
+    });
+  }
+  // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
+  setTreeUnitList(
+    treeUnitList.map((unit) => {
+      if (parentSpecList.includes(unit.spec) || unit.kind === "course") {
+        return {
+          ...unit,
+          isOpen: true,
+        };
+      } else {
+        return unit;
+      }
+    })
+  );
+  // в параллель делаем запрос на бэк с изменением видимости элемента для группы
+  sendRequest<{}, IGroupOpenness[]>(
+    `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
+    "PUT"
   ).catch(() => {
     // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
     // и отображаем сообщение об ошибке
@@ -1662,51 +1710,55 @@ const localCloseElementAndChildren = ({
 
 const localOpenElementAndParents = ({
   currentUnit,
-  groupSpec,
-  locale,
-  setTreeUnitList,
   treeUnitList,
-}: ILocalOpennessMethodInput): void => {
-  const parentSpecList: string[] = [currentUnit.spec];
+}: ILocalMethodInput): ITreeUnit[] => {
+  const parentSpecList: string[] = [];
   let parent = getParent({
     courseUnit: currentUnit,
     courseUnitList: treeUnitList,
   });
   // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
-  while (parent.depth >= 0) {
+  while (parent.depth > 0) {
     parentSpecList.push(parent.spec);
     parent = getParent({
       courseUnit: parent,
       courseUnitList: treeUnitList,
     });
   }
-  // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
-  setTreeUnitList(
-    treeUnitList.map((unit) => {
-      if (parentSpecList.includes(unit.spec)) {
-        return {
-          ...unit,
+  // нужно сделать так, чтобы все родители были visible и isOpen
+  const parentList = treeUnitList
+    .filter((unit) => parentSpecList.includes(unit.spec))
+    .map(
+      (e) =>
+        ({
+          ...e,
+          visible: true,
           isOpen: true,
-        };
-      } else {
-        return unit;
-      }
-    })
-  );
-  // в параллель делаем запрос на бэк с изменением видимости элемента для группы
-  sendRequest<{}, IGroupOpenness[]>(
-    `course/toggle_group_openness/${currentUnit.spec}/${groupSpec}`,
-    'PUT'
-  ).catch(() => {
-    // если была ошибка в процессе отправки запроса на бэк, то делаем откат на клиенте
-    // и отображаем сообщение об ошибке
-    setTreeUnitList(treeUnitList);
-    const id = newNotification({});
-    errorNotification({
-      id,
-      title: locale.dashboard.course.groupOpennessRequestFail,
-      autoClose: 5000,
-    });
+          childrenVisible: true,
+        } as ITreeUnit)
+    );
+  // и все children всех родителей были visible
+  let allChildren: ITreeUnit[] = [];
+  for (let i = 0; i < parentList.length; i++) {
+    allChildren = [
+      ...allChildren,
+      ...findChildrenDirect({ parent: parentList[i], treeUnitList }),
+    ];
+  }
+  // нужно, чтобы дочерние элементы сами не были родителями, которые уже есть в списке родителей
+  allChildren = allChildren
+    .filter((e) => !parentSpecList.includes(e.spec))
+    .map((e) => ({ ...e, visible: true }));
+  const elementsToExclude = [...parentList, ...allChildren];
+  const remainingElements = excludeElementsFromList({
+    elements: elementsToExclude,
+    list: treeUnitList,
+  });
+  // объединяем два массива
+  return setNewIndexValues({
+    treeUnitList: [...remainingElements, ...elementsToExclude].sort(
+      (a, b) => a.orderAsNumber - b.orderAsNumber
+    ),
   });
 };
 
@@ -1758,7 +1810,7 @@ export interface ICourseAddTreeCheckers {
 }
 
 interface IUseCourseAddTreeProps {
-  courseUnitList: IUnit[];
+  courseUnitList: IBaseTreeUnit[];
   form: UseFormReturnType<
     ICourseAddEdit,
     (values: ICourseAddEdit) => ICourseAddEdit
@@ -1779,6 +1831,11 @@ export interface ICourseShowTreeActions {
   }: {
     currentUnit: ITreeUnit;
   }) => void;
+  openElementAndParents: ({
+    currentUnit,
+  }: {
+    currentUnit: IBaseTreeUnit;
+  }) => void;
 }
 
 export interface ICourseShowTreeCheckers {
@@ -1790,13 +1847,27 @@ export interface ICourseShowTreeCheckers {
 }
 
 interface IUseCourseShowTreeProps {
-  course: IUnit;
-  children: IUnit[];
+  course: IBaseTreeUnit;
+  children: IBaseTreeUnit[];
+}
+
+interface IUseCourseShowContentsTreeProps {
+  courseSpec: string;
+  currentUnitSpec: string;
+  children: IBaseTreeUnit[];
+}
+
+export interface ICourseGroupOpennessTreeActions {
+  toggleChildrenVisibility: ({
+    currentUnit,
+  }: {
+    currentUnit: ITreeUnit;
+  }) => void;
 }
 
 interface IUseCourseGroupOpennessTreeProps {
-  course: IUnit;
-  allChildren: IUnit[];
+  course: IBaseTreeUnit;
+  allChildren: IBaseTreeUnit[];
   groupOpennessList: IGroupOpenness[];
   groupSpec: string;
 }
@@ -2048,6 +2119,20 @@ export const useCourseShowTree = ({
     setTreeUnitList(newList);
   };
 
+  const openElementAndParents = ({
+    currentUnit,
+  }: {
+    currentUnit: IBaseTreeUnit;
+  }) => {
+    if (treeUnitList.length > 0) {
+      const newList = localOpenElementAndParents({
+        currentUnit: treeUnitList.find((e) => e.spec === currentUnit.spec)!,
+        treeUnitList,
+      });
+      setTreeUnitList(newList);
+    }
+  };
+
   const canToggleChildrenVisibility = ({
     currentUnit,
   }: {
@@ -2058,7 +2143,7 @@ export const useCourseShowTree = ({
 
   return {
     treeUnitList,
-    actions: { toggleChildrenVisibility },
+    actions: { toggleChildrenVisibility, openElementAndParents },
     checkers: {
       canToggleChildrenVisibility,
     },
@@ -2108,14 +2193,14 @@ export const useCourseGroupOpennessTree = ({
       });
     } else {
       currentUnit.isOpen
-        ? localCloseElementAndChildren({
+        ? localCloseElementAndChildrenWithGroups({
             currentUnit,
             groupSpec,
             treeUnitList,
             locale,
             setTreeUnitList,
           })
-        : localOpenElementAndParents({
+        : localOpenElementAndParentsWithGroups({
             currentUnit,
             groupSpec,
             treeUnitList,
@@ -2139,5 +2224,24 @@ export const useCourseGroupOpennessTree = ({
     checkers: {
       canToggleChildrenVisibility,
     },
+  };
+};
+
+export const useCourseContentsTree = ({
+  children,
+  currentUnitSpec,
+  courseSpec,
+}: IUseCourseShowContentsTreeProps) => {
+  const treeUnitList = createTreeUnitListCourseShow({
+    course: children.find((e) => e.spec === courseSpec) ?? children[0],
+    children,
+    editMode: false,
+  }).map((e) => ({ ...e, visible: true, childrenVisible: true }));
+
+  return {
+    treeUnitList: findChildrenAllLevels({
+      parent: treeUnitList.find((e) => e.spec === currentUnitSpec)!,
+      treeUnitList,
+    }).filter((e) => e.spec !== courseSpec),
   };
 };

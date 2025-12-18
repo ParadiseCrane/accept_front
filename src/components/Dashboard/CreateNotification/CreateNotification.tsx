@@ -1,13 +1,14 @@
-import { INewNotification } from '@custom-types/data/notification';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Group } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { Button, CustomEditor, Helper, TextInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { INewNotification } from "@custom-types/data/notification";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Group } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Button, CustomEditor, Helper, TextInput } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
-import styles from './createNotification.module.css';
+import styles from "./createNotification.module.css";
 
 const CreateNotification: FC<{
   spec: string;
@@ -18,9 +19,9 @@ const CreateNotification: FC<{
 
   const form = useForm({
     initialValues: {
-      notificationTitle: '',
-      notificationShortDescription: '',
-      notificationDescription: '',
+      notificationTitle: "",
+      notificationShortDescription: "",
+      notificationDescription: "",
     },
     validate: {
       notificationTitle: (value) =>
@@ -34,23 +35,23 @@ const CreateNotification: FC<{
 
   const handleSubmit = useCallback(() => {
     const notification: INewNotification = {
-      spec: '',
+      spec: "",
       title: form.values.notificationTitle,
       shortDescription: form.values.notificationShortDescription,
       description: form.values.notificationDescription,
       logins: [],
       groups: [],
       roles: [],
-      author: user?.login || '',
+      author: user?.login || "",
       broadcast: false,
     };
 
     requestWithNotify<INewNotification, string>(
       `${type}/add-notification/${spec}`,
-      'POST',
+      "POST",
       locale.notify.notification.create,
       lang,
-      (_: string) => '',
+      (_: string) => "",
       notification
     );
   }, [type, spec, form.values, user?.login, locale, lang]);
@@ -67,7 +68,7 @@ const CreateNotification: FC<{
         <TextInput
           label={locale.notification.form.title}
           required
-          {...form.getInputProps('notificationTitle')}
+          {...form.getInputProps("notificationTitle")}
         />
         <TextInput
           label={locale.notification.form.shortDescription}
@@ -78,7 +79,7 @@ const CreateNotification: FC<{
               ))}
             </div>
           }
-          {...form.getInputProps('notificationShortDescription')}
+          {...form.getInputProps("notificationShortDescription")}
         />
         <CustomEditor
           helperContent={
@@ -90,7 +91,7 @@ const CreateNotification: FC<{
           }
           label={locale.notification.form.description}
           form={form}
-          name={'notificationDescription'}
+          name={"notificationDescription"}
         />
       </div>
       <Group align="center">

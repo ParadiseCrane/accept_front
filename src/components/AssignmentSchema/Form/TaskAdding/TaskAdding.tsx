@@ -1,13 +1,14 @@
-import { Item } from '@custom-types/ui/atomic';
-import { TaskSelector } from '@ui/selectors';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { Item } from "@custom-types/ui/atomic";
+import { TaskSelector } from "@ui/selectors";
+import { FC, memo, useCallback } from "react";
 
 const TaskAdding: FC<{ form: any; initialTasks: Item[] }> = ({
   form,
   initialTasks,
 }) => {
   const setUsed = useCallback(
-    (tasks: Item[]) => form.setFieldValue('tasks', tasks),
+    (tasks: Item[]) => form.setFieldValue("tasks", tasks),
     [form.setFieldValue] // eslint-disable-line
   );
   return (
@@ -15,7 +16,7 @@ const TaskAdding: FC<{ form: any; initialTasks: Item[] }> = ({
       <TaskSelector
         initialTasks={initialTasks}
         setUsed={setUsed}
-        {...form.getInputProps('tasks')}
+        {...form.getInputProps("tasks")}
       />
     </>
   );

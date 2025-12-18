@@ -1,16 +1,16 @@
-import { ITag } from '@custom-types/data/ITag';
-import { Item, setter } from '@custom-types/ui/atomic';
+import { ITag } from "@custom-types/data/ITag";
+import { Item, setter } from "@custom-types/ui/atomic";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import AddTag from './AddTag/AddTag';
-import { TagItem } from './TagItem/TagItem';
+import AddTag from "./AddTag/AddTag";
+import { TagItem } from "./TagItem/TagItem";
 
 const TagSelector: FC<{
   initialTags: Item[];
@@ -71,7 +71,7 @@ const TagSelector: FC<{
 
   const refetch = useCallback(async () => {
     setLoading(true);
-    sendRequest<{}, ITag[]>(fetchURL, 'GET').then((res) => {
+    sendRequest<{}, ITag[]>(fetchURL, "GET").then((res) => {
       if (res.error) return;
       setAllTags(res.response);
       setLoading(false);
@@ -109,11 +109,12 @@ const TagSelector: FC<{
         [],
       ]}
       shrink={shrink}
-      searchKeys={['title']}
+      searchKeys={["title"]}
       {...form.getInputProps(field)}
       value={tags}
       onChange={onChange}
       width={width}
+      height={allTags.length === 0 ? "min-content" : undefined}
     />
   );
 };

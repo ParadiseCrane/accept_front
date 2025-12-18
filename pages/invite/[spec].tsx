@@ -1,14 +1,15 @@
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { Button } from '@ui/basics';
-import { getCookieValue } from '@utils/cookies';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import Head from 'next/head';
-import { ReactNode } from 'react';
-import styles from '@styles/error.module.css';
-import Link from 'next/link';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { Button } from "@ui/basics";
+import { getCookieValue } from "@utils/cookies";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
+import { ReactNode } from "react";
+import styles from "@styles/error.module.css";
+import Link from "next/link";
 
 interface InvitePageProps {
   success: boolean;
@@ -35,10 +36,10 @@ function InvitePage(props: InvitePageProps) {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingTop: '150px',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "150px",
       }}
     >
       <Head>
@@ -67,10 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   if (!query.spec) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
+      notFound: true,
     };
   }
   const spec = query.spec;
@@ -81,8 +79,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       return {
         props: {
           success: true,
-          entity_type: response_json['entity_type'],
-          entity_spec: response_json['entity_spec'],
+          entity_type: response_json["entity_type"],
+          entity_spec: response_json["entity_spec"],
         } as InvitePageProps,
       };
     }
@@ -94,10 +92,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       };
     default:
       return {
-        redirect: {
-          permanent: false,
-          destination: '/404',
-        },
+        notFound: true,
       };
   }
 };

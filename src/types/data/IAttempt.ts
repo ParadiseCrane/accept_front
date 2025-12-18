@@ -4,9 +4,9 @@ import {
   ILanguage,
   ITestResult,
   ITestResultDisplay,
-} from './atomic';
-import { ITaskBaseInfo } from './ITask';
-import { IUserDisplay } from './IUser';
+} from "./atomic";
+import { ITaskBaseInfo } from "./ITask";
+import { IUserDisplay } from "./IUser";
 
 export interface IAttemptDisplay {
   spec: string;
@@ -42,4 +42,9 @@ export interface IAttempt {
   ai_generated?: number;
   is_ai_generated?: boolean;
   training: boolean;
+}
+
+export interface IAIHint {
+  content: string;
+  is_useful?: boolean;
 }

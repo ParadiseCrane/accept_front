@@ -1,20 +1,17 @@
-import { IGroup } from './IGroup';
-import { ITask } from './ITask';
-import { IUserBaseInfo } from './IUser';
+import { IAssessmentType, ILanguage } from "./atomic";
+import { IGroup } from "./IGroup";
+import { ITag } from "./ITag";
+import { ITaskDisplay } from "./ITask";
+import { IUserBaseInfo } from "./IUser";
 
-export interface ICourseResponse {
-  title: string;
-  description: string;
-  kind: 'course' | 'unit' | 'lesson';
-  image: string;
-  children: IUnit[];
-}
-
-export interface ITreeUnit {
+export interface IBaseTreeUnit {
   spec: string;
-  kind: 'course' | 'unit' | 'lesson';
+  kind: "course" | "lesson" | "unit";
   title: string;
   order: string;
+}
+
+export interface ITreeUnit extends IBaseTreeUnit {
   orderAsNumber: number;
   depth: number;
   index: number;
@@ -27,50 +24,69 @@ export interface ITreeUnit {
 export interface ICourseAddEdit {
   title: string;
   description: string;
-  kind: 'course' | 'unit';
+  kind: "course";
   image: string;
-  children: IUnit[];
+  public: boolean;
+  children: IBaseTreeUnit[];
 }
 
-export interface ICourseModel {
-  spec: string;
+export interface IUnitAddEdit {
   title: string;
   description: string;
-  kind: 'course';
-  image: string;
-  author: string;
-  children: IUnit[];
+  kind: "unit";
+  children: IBaseTreeUnit[];
+  image: "";
 }
 
 export interface ICourse {
   spec: string;
-  kind: 'course' | 'unit' | 'lesson';
   title: string;
   description: string;
-  // image только для course
+  kind: "course";
   image: string;
-  children: ICourse[] | ITask[];
+  author: string;
+  public: boolean;
+  children: IBaseTreeUnit[];
 }
 
 export interface IUnit {
   spec: string;
-  kind: 'course' | 'lesson' | 'unit';
+  kind: "unit";
   title: string;
-  order: string;
+  description: string;
+  children: IBaseTreeUnit[];
 }
 
-export interface ICourseDisplay {
+export interface ILesson extends Omit<IUnit, "kind"> {
+  kind: "lesson";
+  tasks: ITaskDisplay[];
+}
+
+export interface ILessonEditBundle {
+  allowedLanguages: ILanguage[];
+  forbiddenLanguages: ILanguage[];
+  lesson: ILesson;
+  tags: ITag[];
+  assessment_types: IAssessmentType[];
+}
+
+export interface ILessonEditSend {
   spec: string;
   title: string;
-  readonly: boolean;
+  description: string;
+  tasks: string[];
+  tags: string[];
+  allowedLanguages: string[];
+  forbiddenLanguages: string[];
 }
 
 export interface ICourseListItem {
   author: string;
   spec: string;
   title: string;
-  date: Date;
-  numOfModules: number;
+  last_update: Date;
+  dateFormatted: string;
+  amount: number;
 }
 
 export interface ICourseGroupPair {
@@ -78,20 +94,20 @@ export interface ICourseGroupPair {
   groupSpec: string;
 }
 
-export interface ICourseMain {
+export interface IModeratorGroupPair {
+  moderator: IUserBaseInfo;
+  group: IGroup;
+}
+
+export interface ICourseDashboardMain {
   title: string;
   description: string;
   image: string;
   invite?: string;
 }
 
-export interface ICourseModeratorGroup {
-  moderator: IUserBaseInfo;
-  group: IGroup;
-}
-
 export interface IGroupOpenness {
   group: string;
   spec: string;
-  opened: true;
+  opened: boolean;
 }

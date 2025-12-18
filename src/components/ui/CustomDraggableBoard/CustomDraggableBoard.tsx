@@ -1,21 +1,22 @@
-import { callback } from '@custom-types/ui/atomic';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardColumn,
-} from '@custom-types/ui/IDraggableBoard';
-import { concatClassNames } from '@utils/concatClassNames';
-import { reorderColumns } from '@utils/reorderCustomBoard';
-import { reorderList } from '@utils/reorderList';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/ui/IDraggableBoard";
+import { concatClassNames } from "@utils/concatClassNames";
+import { reorderColumns } from "@utils/reorderCustomBoard";
+import { reorderList } from "@utils/reorderList";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   DragDropContext,
   DropResult,
   Droppable,
   DroppableProps,
-} from 'react-beautiful-dnd';
+} from "react-beautiful-dnd";
 
-import BoardColumn from './BoardColumn/BoardColumn';
-import styles from './customDraggableBoard.module.css';
+import BoardColumn from "./BoardColumn/BoardColumn";
+import styles from "./customDraggableBoard.module.css";
 
 const CustomDraggableBoard: FC<{
   columns: IDraggableBoardColumn[];
@@ -52,7 +53,7 @@ const CustomDraggableBoard: FC<{
       }
 
       // reordering column
-      if (result.type === 'COLUMN') {
+      if (result.type === "COLUMN") {
         setColumns((columns) =>
           reorderList<IDraggableBoardColumn>(
             columns,
@@ -80,7 +81,7 @@ const CustomDraggableBoard: FC<{
     () =>
       columns
         .map((column) => column.values.map((item) => item.id).join())
-        .join('|'),
+        .join("|"),
     [columns]
   );
 
@@ -94,13 +95,13 @@ const CustomDraggableBoard: FC<{
           <Droppable
             type="COLUMN"
             droppableId="board"
-            direction={horizontal ? 'horizontal' : 'vertical'}
+            direction={horizontal ? "horizontal" : "vertical"}
             {...droppableProps}
           >
             {(provided) => (
               <div
                 style={{
-                  flexDirection: horizontal ? 'row' : 'column',
+                  flexDirection: horizontal ? "row" : "column",
                 }}
                 className={concatClassNames(
                   styles.columnsWrapper,

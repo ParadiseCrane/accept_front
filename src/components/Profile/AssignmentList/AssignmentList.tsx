@@ -1,27 +1,28 @@
+"use client";
 import {
   IAssignmentDisplay,
   IAssignmentListBundle,
-} from '@custom-types/data/IAssignment';
-import { IGroup } from '@custom-types/data/IGroup';
-import { ITag } from '@custom-types/data/ITag';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { useUser } from '@hooks/useUser';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
-import { Tip } from '@ui/basics';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import Table from '@ui/Table/Table';
-import { colorGenerator } from '@utils/consistentColorGenerator';
-import { customTableSort } from '@utils/customTableSort';
-import { getLocalDate } from '@utils/datetime';
-import { hasSubarray } from '@utils/hasSubarray';
-import { mapAssignmentStatus } from '@utils/mapStatus';
-import Fuse from 'fuse.js';
-import Link from 'next/link';
+} from "@custom-types/data/IAssignment";
+import { IGroup } from "@custom-types/data/IGroup";
+import { ITag } from "@custom-types/data/ITag";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useUser } from "@hooks/useUser";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect } from "@ui/basics";
+import { Tip } from "@ui/basics";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import Table from "@ui/Table/Table";
+import { colorGenerator } from "@utils/consistentColorGenerator";
+import { customTableSort } from "@utils/customTableSort";
+import { getLocalDate } from "@utils/datetime";
+import { hasSubarray } from "@utils/hasSubarray";
+import { mapAssignmentStatus } from "@utils/mapStatus";
+import Fuse from "fuse.js";
+import Link from "next/link";
 import {
   FC,
   ReactNode,
@@ -30,16 +31,16 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 import {
-  Clock,
-  Confetti,
-  Infinity as InfinityIcon,
-  Plus,
-  Run,
-} from 'tabler-icons-react';
+  IconClock,
+  IconConfetti,
+  IconInfinity as InfinityIcon,
+  IconPlus,
+  IconRun,
+} from "@tabler/icons-react";
 
-import styles from './assignmentList.module.css';
+import styles from "./assignmentList.module.css";
 
 interface Item {
   value: any;
@@ -49,7 +50,7 @@ interface Item {
 interface IAssignmentDisplayList
   extends Omit<
     IAssignmentDisplay,
-    'title' | 'author' | 'taskNumber' | 'start' | 'end' | 'groups'
+    "title" | "author" | "taskNumber" | "start" | "end" | "groups"
   > {
   title: Item;
   author: Item;
@@ -74,15 +75,15 @@ const getSortValue = (assignment: any): number => {
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
-    label: '',
-    key: 'state',
+    label: "",
+    key: "state",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.state.value > b.state.value
         ? 1
         : a.state.value == b.state.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -91,14 +92,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.title,
-    key: 'title',
+    key: "title",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.title.value > b.title.value
         ? 1
         : a.title.value == b.title.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -107,14 +108,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.groups,
-    key: 'groups',
+    key: "groups",
     sortable: false,
     sortFunction: (a: any, b: any) =>
       a.groups.value > b.groups.value
         ? 1
         : a.groups.value == b.groups.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -123,14 +124,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.author,
-    key: 'author',
+    key: "author",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.author.value > b.author.value
         ? 1
         : a.author.value == b.author.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -139,14 +140,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.start,
-    key: 'start',
+    key: "start",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.start.value > b.start.value
         ? 1
         : a.start.value == b.start.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -156,14 +157,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.end,
-    key: 'end',
+    key: "end",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.infinite || a.end.value > b.end.value
         ? 1
         : a.end.value == b.end.value
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -173,14 +174,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.assignment.list.taskNumber,
-    key: 'taskNumber',
+    key: "taskNumber",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.taskNumber.value > b.taskNumber.value
         ? 1
         : a.taskNumber.value == b.taskNumber.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -196,7 +197,7 @@ const getAssignmentIcon = (
   if (assignment.status.spec === 0) {
     return (
       <Tip position="bottom" label={locale.tip.status.pending}>
-        <Clock color="orange" />
+        <IconClock color="orange" />
       </Tip>
     );
   }
@@ -210,13 +211,13 @@ const getAssignmentIcon = (
     }
     return (
       <Tip position="bottom" label={locale.tip.status.running}>
-        <Run color="var(--positive)" />
+        <IconRun color="var(--positive)" />
       </Tip>
     );
   }
   return (
     <Tip position="bottom" label={locale.tip.status.finished}>
-      <Confetti color="black" />
+      <IconConfetti color="black" />
     </Tip>
   );
 };
@@ -252,7 +253,7 @@ const processData = (
                 {assignment.tags.map((tag, idx) => (
                   <div className={tableStyles.tag} key={idx}>
                     {tag.title +
-                      (idx == assignment.tags.length - 1 ? '' : ', ')}
+                      (idx == assignment.tags.length - 1 ? "" : ", ")}
                   </div>
                 ))}
               </span>
@@ -307,7 +308,7 @@ const processData = (
 
 const defaultOnPage = 10;
 
-const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
+const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
   const { locale } = useLocale();
   const [list, setList] = useState<IAssignmentDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
@@ -324,11 +325,11 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'state', order: -1 }],
+    sort_by: [{ field: "state", order: -1 }],
     // sort_by: [],
     search_params: {
-      search: '',
-      keys: ['title.value', 'author.value'],
+      search: "",
+      keys: ["title.value", "author.value"],
     },
   });
 
@@ -363,7 +364,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       tags: ITag[];
       groups: IGroup[];
     }
-  >(url, 'GET', undefined, (data) => processData(data, locale));
+  >(url, "GET", undefined, (data) => processData(data, locale));
 
   const applyFilters = useCallback(
     (data: IAssignmentDisplayList[]) => {
@@ -374,7 +375,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -427,7 +428,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
 
   return (
     <>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <Table
           columns={columns}
           rows={list}
@@ -473,9 +474,9 @@ const AssignmentList: FC<{ url?: string }> = ({ url = 'assignment/my' }) => {
       </div>
       {isTeacher && (
         <SingularSticky
-          color={'var(--positive)'}
-          href={'/assignment/add'}
-          icon={<Plus height={20} width={20} />}
+          color={"var(--positive)"}
+          href={"/assignment/add"}
+          icon={<IconPlus height={20} width={20} />}
           description={locale.tip.sticky.assignment.add}
         />
       )}

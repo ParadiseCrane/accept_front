@@ -43,6 +43,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set build-time environment variables
+ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_ENDPOINT
 ARG NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1 \

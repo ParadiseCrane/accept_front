@@ -1,16 +1,17 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { Button } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { FC, ReactNode, memo, useCallback, useState } from 'react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { FC, ReactNode, memo, useCallback, useState } from "react";
 
-import styles from './confirmModal.module.css';
+import styles from "./confirmModal.module.css";
 
 const ConfirmModal: FC<{
   buttonText: string;
   confirm: pureCallback<void>;
-  kind?: 'positive' | 'negative';
+  kind?: "positive" | "negative";
   onClose?: pureCallback<void>;
   disabled?: boolean;
   children?: ReactNode;

@@ -6,8 +6,8 @@ import {
   ITaskTestData,
   ITaskType,
   IVerdict,
-} from './atomic';
-import { ITag } from './ITag';
+} from "./atomic";
+import { ITag } from "./ITag";
 
 export interface IHint {
   content: string;

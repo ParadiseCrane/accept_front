@@ -1,23 +1,24 @@
-import Form from '@components/Organization/Form/Form';
-import { IGroup } from '@custom-types/data/IGroup';
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import Title from '@ui/Title/Title';
+"use client";
+import Form from "@components/Organization/Form/Form";
+import { IGroup } from "@custom-types/data/IGroup";
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ReactNode, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { ReactNode, useCallback } from "react";
 
 const initialValues = {
-  spec: '',
-  name: '',
-  description: '',
+  spec: "",
+  name: "",
+  description: "",
   allowRegistration: false,
 };
 
@@ -39,8 +40,8 @@ function AddOrganization() {
         IOrganization,
         { admin_login: string; admin_password: string }
       >(
-        'organization/add',
-        'POST',
+        "organization/add",
+        "POST",
         locale.notify.group.create, // TODO: Fix locale
         lang,
         (res) => `${res.admin_login}\n${res.admin_password}`,

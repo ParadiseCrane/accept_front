@@ -1,17 +1,18 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
+"use client";
+import { ITreeUnit } from "@custom-types/data/ICourse";
 import {
   ICourseAddTreeActions,
   ICourseAddTreeCheckers,
-} from '@hooks/useCourseTree';
-import { ActionIcon, Box, Group, TextInput } from '@mantine/core';
-import { useDebouncedCallback } from '@mantine/hooks';
-import React, { useState } from 'react';
+} from "@hooks/useCourseTree";
+import { ActionIcon, Box, Group, TextInput } from "@mantine/core";
+import { useDebouncedCallback } from "@mantine/hooks";
+import React, { useState } from "react";
 
-import { AddButtons } from '../Buttons/AddButton/AddButton';
-import { DeleteButton } from '../Buttons/DeleteButton/DeleteButton';
-import { MovementButton } from '../Buttons/MovementButton/MovementButton';
-import { ToggleVisibilityButton } from '../Buttons/ToggleVisibilityButton/ToggleVisibilityButton';
-import styles from './styles.module.css';
+import { AddButtons } from "../Buttons/AddButton/AddButton";
+import { DeleteButton } from "../Buttons/DeleteButton/DeleteButton";
+import { MovementButton } from "../Buttons/MovementButton/MovementButton";
+import { ToggleVisibilityButton } from "../Buttons/ToggleVisibilityButton/ToggleVisibilityButton";
+import styles from "./styles.module.css";
 
 export const CourseUnitDisplay = ({
   currentUnit,
@@ -32,13 +33,13 @@ export const CourseUnitDisplay = ({
     return new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  if (currentUnit.kind === 'course') {
+  if (currentUnit.kind === "course") {
     return (
       <Box
-        mt={'xs'}
-        mb={'xs'}
+        mt={"xs"}
+        mb={"xs"}
         style={{
-          display: currentUnit.visible ? '' : 'none',
+          display: currentUnit.visible ? "" : "none",
         }}
         className={styles.box}
       >
@@ -68,12 +69,12 @@ export const CourseUnitDisplay = ({
     );
   }
 
-  if (currentUnit.kind === 'unit') {
+  if (currentUnit.kind === "unit") {
     return (
       <Box
         className={styles.box}
-        mt={'xs'}
-        mb={'xs'}
+        mt={"xs"}
+        mb={"xs"}
         style={{
           paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
         }}
@@ -121,15 +122,15 @@ export const CourseUnitDisplay = ({
 
   return (
     <Box
-      mt={'xs'}
-      mb={'xs'}
+      mt={"xs"}
+      mb={"xs"}
       style={{
         paddingLeft: `calc(1.375rem * ${currentUnit.depth})`,
       }}
       className={styles.box}
     >
       <Group gap={0}>
-        <div style={{ width: '1.375rem' }} />
+        <div style={{ width: "1.375rem" }} />
         <TextInput
           defaultValue={currentUnit.title}
           onChange={(element) => {

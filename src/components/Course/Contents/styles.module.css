@@ -1,0 +1,26 @@
+.contents {
+  padding: 40px 16px 16px;
+}
+
+.itemWrapper {
+  padding: 5px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.content:hover {
+  cursor: pointer;
+}
+
+.unit {
+  /* font-weight: bold; */
+  margin: 0;
+}
+
+.lesson {
+  margin: 0;
+  /* font-weight: normal; */
+}

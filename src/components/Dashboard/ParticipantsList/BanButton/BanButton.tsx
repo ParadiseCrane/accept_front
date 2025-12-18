@@ -1,8 +1,9 @@
-import { IParticipant } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { BanModal } from '@ui/modals';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+"use client";
+import { IParticipant } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { BanModal } from "@ui/modals";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
 const BanButton: FC<{
   user: IParticipant;
@@ -17,13 +18,13 @@ const BanButton: FC<{
   const handleBan = useCallback(
     (banReason: string) => {
       requestWithNotify(
-        `tournament/participants/${ban ? 'ban' : 'unban'}/${spec}`,
-        'POST',
+        `tournament/participants/${ban ? "ban" : "unban"}/${spec}`,
+        "POST",
         ban
           ? locale.notify.tournament.banUser
           : locale.notify.tournament.unbanUser,
         lang,
-        () => '',
+        () => "",
         {
           login: user.login,
           banReason,

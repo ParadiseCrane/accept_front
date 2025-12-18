@@ -1,15 +1,16 @@
-import { IUser } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useForm } from '@mantine/form';
-import { Button, PasswordInput, TextInput } from '@ui/basics';
+"use client";
+import { IUser } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useForm } from "@mantine/form";
+import { Button, PasswordInput, TextInput } from "@ui/basics";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
-import styles from './settings.module.css';
+import styles from "./settings.module.css";
 
 const Settings: FC<{ user: IUser }> = ({ user }) => {
   const { locale, lang } = useLocale();
@@ -19,7 +20,7 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
       name: user.name,
       surname: user.surname,
       patronymic: user.patronymic,
-      email: user.email || '',
+      email: user.email || "",
     },
     validate: {
       email: (value: any) =>
@@ -33,14 +34,14 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
         value.length < 2
           ? locale.auth.errors.name.short
           : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-            ? locale.auth.errors.name.invalid
-            : null,
+          ? locale.auth.errors.name.invalid
+          : null,
       surname: (value) =>
         value.length < 2
           ? locale.auth.errors.surname.short
           : !value.match(/^[a-zA-Zа-яА-ЯЁё -]+$/)
-            ? locale.auth.errors.surname.invalid
-            : null,
+          ? locale.auth.errors.surname.invalid
+          : null,
       patronymic: (value) =>
         !value.match(/^[a-zA-Zа-яА-ЯЁё -]*$/)
           ? locale.auth.errors.patronymic.invalid
@@ -51,18 +52,18 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
 
   const password_form = useForm({
     initialValues: {
-      password: '',
-      confirmPassword: '',
+      password: "",
+      confirmPassword: "",
     },
     validate: {
       password: (value) =>
         value.length < 5
           ? locale.auth.errors.password.len
           : //TODO: Check
-            // eslint-disable-next-line no-useless-escape
-            !value.match(/^[a-zA-Z\d\.]+$/)
-            ? locale.auth.errors.password.symbols
-            : null,
+          // eslint-disable-next-line no-useless-escape
+          !value.match(/^[a-zA-Z\d\.]+$/)
+          ? locale.auth.errors.password.symbols
+          : null,
       confirmPassword: (value, values) =>
         value !== values.password ? locale.auth.errors.confirm : null,
     },
@@ -92,11 +93,11 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
       },
       {}
     >(
-      'profile/edit',
-      'POST',
+      "profile/edit",
+      "POST",
       locale.notify.profile.main,
       lang,
-      (_) => '',
+      (_) => "",
       body,
       () => window.location.reload()
     );
@@ -117,11 +118,11 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
     }
     const body = { password: password_form.values.password };
     requestWithNotify<{ password: string }, {}>(
-      'profile/password',
-      'POST',
+      "profile/password",
+      "POST",
       locale.notify.profile.password,
       lang,
-      (_) => '',
+      (_) => "",
       body
     );
   }, [password_form, lang, locale]);
@@ -131,22 +132,22 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
       <div className={styles.main}>
         <TextInput
           label={locale.auth.labels.name}
-          {...main_form.getInputProps('name')}
+          {...main_form.getInputProps("name")}
         />
         <TextInput
           label={locale.auth.labels.surname}
           classNames={{
             label: styles.label,
           }}
-          {...main_form.getInputProps('surname')}
+          {...main_form.getInputProps("surname")}
         />
         <TextInput
           label={locale.auth.labels.patronymic}
-          {...main_form.getInputProps('patronymic')}
+          {...main_form.getInputProps("patronymic")}
         />
         <TextInput
           label={locale.auth.labels.email}
-          {...main_form.getInputProps('email')}
+          {...main_form.getInputProps("email")}
         />
         <div className={styles.button}>
           <Button
@@ -170,15 +171,15 @@ const Settings: FC<{ user: IUser }> = ({ user }) => {
             </div>
           }
           onBlur={() => {
-            password_form.validateField('password');
-            password_form.validateField('confirmPassword');
+            password_form.validateField("password");
+            password_form.validateField("confirmPassword");
           }}
-          {...password_form.getInputProps('password')}
+          {...password_form.getInputProps("password")}
         />
         <PasswordInput
           label={locale.auth.labels.confirmPassword}
           placeholder={locale.auth.placeholders.password}
-          {...password_form.getInputProps('confirmPassword')}
+          {...password_form.getInputProps("confirmPassword")}
         />
         <div className={styles.button}>
           <Button

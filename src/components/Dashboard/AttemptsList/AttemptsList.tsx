@@ -1,27 +1,28 @@
-import { ITasksUsersBundle } from '@custom-types/data/bundle';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
+"use client";
+import { ITasksUsersBundle } from "@custom-types/data/bundle";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { ITaskBaseInfo } from "@custom-types/data/ITask";
 import {
   IParticipant,
   IParticipantListBundle,
   IUserDisplay,
-} from '@custom-types/data/IUser';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { default as AttemptListUI } from '@ui/AttemptList/AttemptList';
-import { SegmentedControl } from '@ui/basics';
-import { TaskSelect, UserSelect } from '@ui/selectors';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
-import { getLocalDate } from '@utils/datetime';
-import Link from 'next/link';
-import { FC, memo, useCallback, useState } from 'react';
+} from "@custom-types/data/IUser";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { default as AttemptListUI } from "@ui/AttemptList/AttemptList";
+import { SegmentedControl } from "@ui/basics";
+import { TaskSelect, UserSelect } from "@ui/selectors";
+import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
+import { getLocalDate } from "@utils/datetime";
+import Link from "next/link";
+import { FC, memo, useCallback, useState } from "react";
 
-import styles from './attemptsList.module.css';
-import { Group, SelectProps } from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
+import styles from "./attemptsList.module.css";
+import { Group, SelectProps } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -41,8 +42,8 @@ const refactorAttempt = (
       attempt.status.spec == 2
         ? attempt.verdict?.verdict.spec
         : attempt.status.spec == 3
-          ? attempt.status.spec - 20
-          : attempt.status.spec - 10,
+        ? attempt.status.spec - 20
+        : attempt.status.spec - 10,
   },
   date: {
     display: (
@@ -82,7 +83,7 @@ const refactorAttempt = (
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.attempt.date,
-    key: 'date',
+    key: "date",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
@@ -94,7 +95,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.author,
-    key: 'author',
+    key: "author",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -105,7 +106,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.task,
-    key: 'task',
+    key: "task",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -116,7 +117,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.language,
-    key: 'language',
+    key: "language",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -127,7 +128,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.attempt.result,
-    key: 'result',
+    key: "result",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -143,15 +144,15 @@ const AttemptList: FC<{
   shouldNotRefetch: boolean;
   isFinished: boolean;
   endDate: Date;
-  type: 'assignment' | 'tournament' | 'current' | 'all';
+  type: "assignment" | "tournament" | "current" | "all";
   banned?: boolean;
 }> = ({ spec, shouldNotRefetch, isFinished, endDate, type, banned }) => {
   const { locale } = useLocale();
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
 
-  const [fetchDate, setFetchDate] = useState<'actual' | 'end'>(
-    isFinished ? 'end' : 'actual'
+  const [fetchDate, setFetchDate] = useState<"actual" | "end">(
+    isFinished ? "end" : "actual"
   );
   const refactor = useCallback(
     (attempt: IAttemptDisplay) => refactorAttempt(attempt, type, spec),
@@ -160,24 +161,24 @@ const AttemptList: FC<{
 
   const { data } = useRequest<{}, ITasksUsersBundle>(
     `${type}/bundle/tasks-users/${spec}`,
-    'GET',
+    "GET",
     undefined
   );
 
   const { data: userData } = useRequest<{}, IParticipantListBundle>(
     `${type}/bundle-participants/${spec}`,
-    'GET',
+    "GET",
     undefined
   );
 
   const iconProps = {
     stroke: 1.5,
-    color: 'currentColor',
+    color: "currentColor",
     opacity: 0.6,
     size: 18,
   };
 
-  const renderSelectOption: SelectProps['renderOption'] = ({
+  const renderSelectOption: SelectProps["renderOption"] = ({
     option,
     checked,
   }) => {
@@ -185,13 +186,13 @@ const AttemptList: FC<{
       <Group flex="1" gap="xs">
         <span
           style={{
-            color: option.value.includes('banned') ? 'grey' : undefined,
+            color: option.value.includes("banned") ? "grey" : undefined,
           }}
         >
           {option.label}
         </span>
         {checked && (
-          <IconCheck style={{ marginInlineStart: 'auto' }} {...iconProps} />
+          <IconCheck style={{ marginInlineStart: "auto" }} {...iconProps} />
         )}
       </Group>
     );
@@ -204,15 +205,15 @@ const AttemptList: FC<{
           data={[
             {
               label: locale.dashboard.assignment.toDate.end,
-              value: 'end',
+              value: "end",
             },
             {
               label: locale.dashboard.assignment.toDate.actual,
-              value: 'actual',
+              value: "actual",
             },
           ]}
           value={fetchDate}
-          onChange={(value) => setFetchDate(value as 'actual' | 'end')}
+          onChange={(value) => setFetchDate(value as "actual" | "end")}
         />
       )}
       <div className={styles.selectors}>
@@ -237,7 +238,7 @@ const AttemptList: FC<{
           select={(users: IUserDisplay[] | undefined) => {
             if (users)
               setUserSearch(
-                users.map((user) => user.login.replace('banned', ''))
+                users.map((user) => user.login.replace("banned", ""))
               );
             else setUserSearch([]);
           }}
@@ -259,16 +260,16 @@ const AttemptList: FC<{
       <AttemptListUI
         key={userSearch.toString() + taskSearch.toString()}
         url={
-          type == 'current'
-            ? 'attempt/current-list'
-            : type == 'all'
-              ? 'attempt/all'
-              : `${type}/attempts${banned ? '-banned' : ''}/${spec}`
+          type == "current"
+            ? "attempt/current-list"
+            : type == "all"
+            ? "attempt/all"
+            : `${type}/attempts${banned ? "-banned" : ""}/${spec}`
         }
         activeTab
         initialColumns={initialColumns}
         refactorAttempt={refactor}
-        toDate={fetchDate == 'end' ? endDate : undefined}
+        toDate={fetchDate == "end" ? endDate : undefined}
         empty={<>{locale.dashboard.attemptsList.empty}</>}
         noDefault
         shouldNotRefetch={shouldNotRefetch}

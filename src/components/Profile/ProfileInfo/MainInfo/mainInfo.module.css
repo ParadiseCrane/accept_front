@@ -36,3 +36,30 @@
   bottom: -17px;
   right: -17px;
 }
+
+@media screen and (max-width: 768px) {
+  .main {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .nameWrapper {
+    flex-direction: column;
+  }
+
+  .fullName {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .login {
+    text-align: center;
+  }
+}

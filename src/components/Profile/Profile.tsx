@@ -1,34 +1,35 @@
-import NotificationList from '@components/Notification/List/NotificationList';
-import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
-import AttemptListProfile from '@components/Profile/AttemptListProfile/AttemptListProfile';
-import CreateNotification from '@components/Profile/CreateNotification/CreateNotification';
-import ProfileInfo from '@components/Profile/ProfileInfo/ProfileInfo';
-import Settings from '@components/Profile/Settings/Settings';
+"use client";
+import NotificationList from "@components/Notification/List/NotificationList";
+import AssignmentList from "@components/Profile/AssignmentList/AssignmentList";
+import AttemptListProfile from "@components/Profile/AttemptListProfile/AttemptListProfile";
+import CreateNotification from "@components/Profile/CreateNotification/CreateNotification";
+import ProfileInfo from "@components/Profile/ProfileInfo/ProfileInfo";
+import Settings from "@components/Profile/Settings/Settings";
 import {
   IAttemptInfo,
   IFullProfileBundle,
   IRatingInfo,
   ITaskInfo,
-} from '@custom-types/data/IProfileInfo';
-import { IUser } from '@custom-types/data/IUser';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { Indicator, UserAvatar } from '@ui/basics';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { useRouter } from 'next/router';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/data/IProfileInfo";
+import { IUser } from "@custom-types/data/IUser";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useBackNotifications } from "@hooks/useBackNotifications";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { Indicator, UserAvatar } from "@ui/basics";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import { useRouter } from "next/router";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import {
-  AlignRight,
-  BellPlus,
-  BellRinging,
-  Chalkboard,
-  Robot,
-  Settings as SettingsIcon,
-} from 'tabler-icons-react';
+  IconAlignRight,
+  IconBellPlus,
+  IconBellRinging,
+  IconChalkboard,
+  IconRobot,
+  IconSettings as SettingsIcon,
+} from "@tabler/icons-react";
 
-import styles from './profile.module.css';
+import styles from "./profile.module.css";
 
 const getLinks = ({
   user,
@@ -58,43 +59,43 @@ const getLinks = ({
               rating_info={rating_info}
             />
           ),
-          icon: <Robot color="var(--secondary)" />,
+          icon: <IconRobot color="var(--secondary)" />,
           title: locale.profile.profile,
-          section: 'profile',
+          section: "profile",
         },
         {
           page: <NotificationList />,
           icon: (
             <Indicator disabled={unviewed <= 0} size={8}>
-              <BellRinging color="var(--secondary)" />
+              <IconBellRinging color="var(--secondary)" />
             </Indicator>
           ),
           title: locale.profile.notification,
-          section: 'notifications',
+          section: "notifications",
         },
         {
           page: <AssignmentList />,
-          icon: <Chalkboard color="var(--secondary)" />,
+          icon: <IconChalkboard color="var(--secondary)" />,
           title: locale.profile.assignments,
-          section: 'assignments',
+          section: "assignments",
         },
         {
           page: <AttemptListProfile />,
-          icon: <AlignRight color="var(--secondary)" />,
+          icon: <IconAlignRight color="var(--secondary)" />,
           title: locale.profile.attempts,
-          section: 'attempts',
+          section: "attempts",
         },
         {
           page: <CreateNotification />,
-          icon: <BellPlus color="var(--secondary)" />,
+          icon: <IconBellPlus color="var(--secondary)" />,
           title: locale.profile.createNotification,
-          section: 'create_notification',
+          section: "create_notification",
         },
         {
           page: <Settings user={user} />,
           icon: <SettingsIcon color="var(--secondary)" />,
           title: locale.profile.settings,
-          section: 'settings',
+          section: "settings",
         },
       ]
     : [
@@ -107,37 +108,37 @@ const getLinks = ({
               rating_info={rating_info}
             />
           ),
-          icon: <Robot color="var(--secondary)" />,
+          icon: <IconRobot color="var(--secondary)" />,
           title: locale.profile.profile,
-          section: 'profile',
+          section: "profile",
         },
         {
           page: <NotificationList />,
           icon: (
             <Indicator disabled={unviewed <= 0} size={8}>
-              <BellRinging color="var(--secondary)" />
+              <IconBellRinging color="var(--secondary)" />
             </Indicator>
           ),
           title: locale.profile.notification,
-          section: 'notifications',
+          section: "notifications",
         },
         {
           page: <AssignmentList />,
-          icon: <Chalkboard color="var(--secondary)" />,
+          icon: <IconChalkboard color="var(--secondary)" />,
           title: locale.profile.assignments,
-          section: 'assignments',
+          section: "assignments",
         },
         {
           page: <AttemptListProfile />,
-          icon: <AlignRight color="var(--secondary)" />,
+          icon: <IconAlignRight color="var(--secondary)" />,
           title: locale.profile.attempts,
-          section: 'attempts',
+          section: "attempts",
         },
         {
           page: <Settings user={user} />,
           icon: <SettingsIcon color="var(--secondary)" />,
           title: locale.profile.settings,
-          section: 'settings',
+          section: "settings",
         },
       ];
   return links;

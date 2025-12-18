@@ -1,75 +1,14 @@
-import { useLocale } from '@hooks/useLocale';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { getCookie } from '@utils/cookies';
-import { useId, useState } from 'react';
-import { PhotoSearch, PhotoUp } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { useId, useState } from "react";
+import { IconPhotoSearch, IconPhotoUp } from "@tabler/icons-react";
 
-import { imageInsertFunction } from '../TipTapEditor';
-import styles from '../TipTapEditor.module.css';
-import { IconWrapper } from './IconWrapper';
-import { ImageUrlModal } from './Modals/ImageUrlModal';
-
-const loadImageAsFile = async ({
-  files,
-  editor,
-  timeout,
-  locale,
-  width,
-}: {
-  files: FileList | null;
-  editor: Editor;
-  timeout: number;
-  locale: any;
-  width: string;
-}) => {
-  if (files && files[0]) {
-    const formData = new FormData();
-    formData.append('upload', files[0]);
-    try {
-      const access_token = getCookie('access_token');
-      const response: Response | any = await Promise.race([
-        fetch('/api/image', {
-          method: 'POST',
-          body: formData,
-          credentials: 'include',
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          } as { [key: string]: string },
-        }),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('timeout')), timeout)
-        ),
-      ]);
-      const json = await response.json();
-      const src: string = json['url'];
-
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunction({
-            src: src,
-            alt: locale.tiptap.imageAltTitle,
-            width: width,
-          })
-        )
-        .run();
-    } catch (error) {
-      // TODO: Create error notification
-      const src = '/media/placeholder.jpg';
-      editor
-        .chain()
-        .insertContent(
-          imageInsertFunction({
-            src: src,
-            alt: locale.tiptap.imageUploadFail,
-            width: width,
-          })
-        )
-        .run();
-    }
-  }
-};
+import styles from "../TipTapEditor.module.css";
+import { IconWrapper } from "./IconWrapper";
+import { ImageUrlModal } from "./Modals/ImageUrlModal";
+import { uploadImageAsFile } from "@utils/image";
 
 export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
   const { locale } = useLocale();
@@ -81,25 +20,25 @@ export const InsertImageAsFile = ({ editor }: { editor: Editor }) => {
     >
       <label
         htmlFor={id}
-        style={{ display: 'flex', flexDirection: 'column' }}
+        style={{ display: "flex", flexDirection: "column" }}
         className={styles.upload_image}
       >
-        <IconWrapper isActive={false} IconChild={PhotoUp} />
+        <IconWrapper isActive={false} IconChild={IconPhotoUp} />
       </label>
       <input
         type="file"
-        accept={'image/*'}
+        accept={"image/*"}
         className="Input__input"
         onChange={(e) => {
-          loadImageAsFile({
+          uploadImageAsFile({
             files: e.target.files,
             editor: editor,
             timeout: 4000,
             locale: locale,
-            width: '300px',
+            width: "300px",
           });
         }}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         id={id}
       />
     </RichTextEditor.Control>
@@ -118,7 +57,7 @@ export const InsertImageAsUrl = ({ editor }: { editor: Editor }) => {
         aria-label={locale.tiptap.imageURL}
         title={locale.tiptap.imageURL}
       >
-        <IconWrapper isActive={false} IconChild={PhotoSearch} />
+        <IconWrapper isActive={false} IconChild={IconPhotoSearch} />
       </RichTextEditor.Control>
       {show && (
         <ImageUrlModal

@@ -1,25 +1,25 @@
-'use client';
-import { TogglerValue } from '@components/Dashboard/AIProbabilityList/AIProbabilityList';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
+"use client";
+import { TogglerValue } from "@components/Dashboard/AIProbabilityList/AIProbabilityList";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
 import {
   AIGenSearch,
   AIGenUserTaskSearch,
   BaseSearch,
   UserTaskSearch,
-} from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRefetch } from '@hooks/useRefetch';
-import { useUser } from '@hooks/useUser';
-import { sendRequest } from '@requests/request';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
+} from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRefetch } from "@hooks/useRefetch";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
+} from "@utils/notificationFunctions";
 import {
   FC,
   ReactNode,
@@ -28,7 +28,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface PagerResponse {
   data: IAttemptDisplay[];
@@ -95,14 +95,12 @@ const AIProbabilityList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'ai_generated', order: -1 }],
+    sort_by: [{ field: "ai_generated", order: -1 }],
     search_params: {
-      search: '',
+      search: "",
       keys: [],
     },
   });
-
-  console.log('searchParams', searchParams);
 
   const processData = useCallback(
     (response: PagerResponse): TableData => ({
@@ -131,7 +129,7 @@ const AIProbabilityList: FC<{
     [locale.notify.errors.unauthorized, refreshAccess]
   );
   const fetch_data = useCallback(() => {
-    return sendRequest<AIGenUserTaskSearch, PagerResponse>(url, 'POST', {
+    return sendRequest<AIGenUserTaskSearch, PagerResponse>(url, "POST", {
       ...searchParams,
       users: userSearch,
       tasks: taskSearch,
@@ -184,7 +182,7 @@ const AIProbabilityList: FC<{
         });
       }
     },
-    [setSearchParams, toggler]
+    [setSearchParams, setToggler]
   );
 
   useEffect(() => {

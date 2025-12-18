@@ -1,9 +1,10 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { FC, memo, useMemo } from "react";
 
-import Column from '../Column/Column';
-import Row from '../Row/Row';
-import { v4 } from 'uuid';
+import Column from "../Column/Column";
+import Row from "../Row/Row";
+import { v4 } from "uuid";
 
 const InnerTable: FC<{
   columns: ITableColumn[];
@@ -21,7 +22,7 @@ const InnerTable: FC<{
     });
     return {
       gridTemplateColumns:
-        columns.map((column) => (column.size / total) * 100).join('% ') + '%',
+        columns.map((column) => (column.size / total) * 100).join("% ") + "%",
     };
   }, [columns]);
 

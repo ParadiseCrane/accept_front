@@ -1,23 +1,24 @@
-import DeleteModal from '@components/Team/DeleteModal/DeleteModal';
-import MemberItem from '@components/Team/MemberItem/MemberItem';
-import TitleInput from '@components/Team/TitleInput/TitleInput';
-import PinModal from '@components/Tournament/PinModal/PinModal';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { ITeam } from '@custom-types/data/ITeam';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { useWidth } from '@hooks/useWidth';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import styles from '@styles/team.module.css';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import Title from '@ui/Title/Title';
-import { getCookieValue } from '@utils/cookies';
-import { UTCDate } from '@utils/datetime';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import Link from 'next/link';
-import { ReactNode, useMemo, useState } from 'react';
-import { Key, Trash } from 'tabler-icons-react';
+"use client";
+import DeleteModal from "@components/Team/DeleteModal/DeleteModal";
+import MemberItem from "@components/Team/MemberItem/MemberItem";
+import TitleInput from "@components/Team/TitleInput/TitleInput";
+import PinModal from "@components/Tournament/PinModal/PinModal";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { ITeam } from "@custom-types/data/ITeam";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { useWidth } from "@hooks/useWidth";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import styles from "@styles/team.module.css";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { UTCDate } from "@utils/datetime";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { ReactNode, useMemo, useState } from "react";
+import { IconKey, IconTrash } from "@tabler/icons-react";
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -38,9 +39,9 @@ function TeamProfile(props: { team: ITeam }) {
     () => [
       {
         onClick: () => setOpenedDeleteModal(true),
-        color: 'red',
+        color: "red",
         icon: (
-          <Trash
+          <IconTrash
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -49,9 +50,9 @@ function TeamProfile(props: { team: ITeam }) {
       },
       {
         onClick: () => setOpenedModal(true),
-        color: 'var(--secondary)',
+        color: "var(--secondary)",
         icon: (
-          <Key
+          <IconKey
             width={STICKY_SIZES[width] / 3}
             height={STICKY_SIZES[width] / 3}
           />
@@ -84,7 +85,7 @@ function TeamProfile(props: { team: ITeam }) {
         <TitleInput special={special} spec={team.spec} title={team.name} />
         <div className={styles.info}>
           <div className={styles.date}>
-            {locale.team.page.registrationDate}{' '}
+            {locale.team.page.registrationDate}{" "}
             {UTCDate(new Date(team.date)).toLocaleString()}
           </div>
 
@@ -134,23 +135,23 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
 }) => {
-  if (!query || typeof query?.spec !== 'string') {
+  if (!query || typeof query?.spec !== "string") {
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: "/",
       },
     };
   }
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/team/${query.spec}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
 
-      'content-type': 'application/json',
+      "content-type": "application/json",
     } as { [key: string]: string },
   });
   if (response.status === 307) {
@@ -172,9 +173,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

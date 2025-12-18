@@ -1,35 +1,40 @@
+"use client";
 import {
-  ICourseModel,
+  ICourse,
   IGroupOpenness,
-  IUnit,
-} from '@custom-types/data/ICourse';
-import { sendRequest } from '@requests/request';
-import { LoadingOverlay } from '@ui/basics';
-import { useSearchParams } from 'next/navigation';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import GroupOpennessTree from './GroupOpennessTree/GroupOpennessTree';
-import { useLocale } from '@hooks/useLocale';
-import styles from './styles.module.css';
+  IBaseTreeUnit,
+} from "@custom-types/data/ICourse";
+import { sendRequest } from "@requests/request";
+import { LoadingOverlay } from "@ui/basics";
+import { useSearchParams } from "next/navigation";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+import GroupOpennessTree from "./GroupOpennessTree/GroupOpennessTree";
+import { useLocale } from "@hooks/useLocale";
+import styles from "./styles.module.css";
 
 const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
-  const [course, setCourse] = useState<ICourseModel | null>(null);
+  const [course, setCourse] = useState<ICourse | null>(null);
   const [groupOpennessList, setGroupOpennessList] = useState<
     IGroupOpenness[] | null
   >(null);
   const [loading, setLoading] = useState(false);
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const { locale } = useLocale();
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    if (params.get('group') && params.get('group') !== 'all') {
+    if (
+      searchParams &&
+      searchParams.get("group") &&
+      searchParams.get("group") !== "all"
+    ) {
       const groupOpennessListResponse = await sendRequest<{}, IGroupOpenness[]>(
-        `course/course_openness_list/${spec}/${params.get('group')}`,
-        'GET'
+        `course/course_openness_list/${spec}/${searchParams.get("group")}`,
+        "GET"
       );
-      const courseNavigationTreeResponse = await sendRequest<{}, ICourseModel>(
+      const courseNavigationTreeResponse = await sendRequest<{}, ICourse>(
         `course/course_navigation_tree/${spec}`,
-        'GET'
+        "GET"
       );
       if (
         !groupOpennessListResponse.error &&
@@ -41,49 +46,64 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
         });
         setGroupOpennessList(groupOpennessListResponse.response);
       }
-    } else if (params.get('group') && params.get('group') === 'all') {
+    } else if (
+      searchParams &&
+      searchParams.get("group") &&
+      searchParams.get("group") === "all"
+    ) {
       setGroupOpennessList([]);
       setCourse({
-        author: '',
+        author: "",
         children: [],
-        description: '',
-        image: '',
-        kind: 'course',
+        description: "",
+        image: "",
+        kind: "course",
         spec,
-        title: '',
+        title: "",
+        public: course?.public ?? false,
       });
     }
     setLoading(false);
-  }, [spec, params]);
+  }, [spec, searchParams]);
 
-  const toggleGroupOpennessList = useCallback(async (spec: string) => {
-    setLoading(true);
-    const response = await sendRequest<{}, IGroupOpenness[]>(
-      `course/toggle_group_openness/${spec}/${params.get('group')}`,
-      'PUT'
-    );
-    if (!response.error) {
-      setGroupOpennessList(response.response);
-    }
-    setLoading(false);
-  }, []);
+  const toggleGroupOpennessList = useCallback(
+    async (spec: string) => {
+      if (!searchParams) {
+        throw Error("searchParams are undefined");
+      }
+      // TODO: handle error
+      setLoading(true);
+      const response = await sendRequest<{}, IGroupOpenness[]>(
+        `course/toggle_group_openness/${spec}/${searchParams?.get("group")}`,
+        "PUT"
+      );
+      if (!response.error) {
+        setGroupOpennessList(response.response);
+      }
+      setLoading(false);
+    },
+    [searchParams]
+  );
 
   useEffect(() => {
     fetchData();
-  }, [spec, params]);
+  }, [fetchData]);
 
   if (!course || !groupOpennessList || loading)
     return (
-      <div style={{ position: 'relative', height: '100%' }}>
+      <div style={{ position: "relative", height: "100%" }}>
         <LoadingOverlay
           visible={!course || !groupOpennessList || loading}
-          loaderProps={{ radius: 'lg' }}
+          loaderProps={{ radius: "lg" }}
         />
       </div>
     );
 
-  if (params && params.get('group') && params.get('group') === 'all') {
-    // TODO добавить надпись, что группа не выбрана
+  if (
+    searchParams &&
+    searchParams.get("group") &&
+    searchParams.get("group") === "all"
+  ) {
     return (
       <div className={styles.wrapper}>
         <div className={styles.emptyMessageWrapper}>

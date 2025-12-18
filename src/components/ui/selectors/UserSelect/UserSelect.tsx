@@ -1,11 +1,11 @@
-import { IParticipant, IUserDisplay } from '@custom-types/data/IUser';
-import React, { ComponentPropsWithoutRef, FC, memo, ReactNode } from 'react';
+import { IParticipant, IUserDisplay } from "@custom-types/data/IUser";
+import React, { ComponentPropsWithoutRef, FC, memo, ReactNode } from "react";
 
-import UserMultiSelect from './UserMultiSelect';
-import UserSingleSelect from './UserSingleSelect';
-import { ComboboxItem, ComboboxLikeRenderOptionInput } from '@mantine/core';
+import UserMultiSelect from "./UserMultiSelect";
+import UserSingleSelect from "./UserSingleSelect";
+import { ComboboxItem, ComboboxLikeRenderOptionInput } from "@mantine/core";
 
-export interface UserItemProps extends ComponentPropsWithoutRef<'div'> {
+export interface UserItemProps extends ComponentPropsWithoutRef<"div"> {
   login: string;
   label: string;
   role: string;

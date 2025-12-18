@@ -19,5 +19,16 @@
   ],
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.husky": true,
+    "**/.yarn": true,
+    "**/*.tsbuildinfo": true,
+    "**/.CI": true,
+    "**/next-env.d.ts": true,
+    "**/.vscode": true
   }
 }

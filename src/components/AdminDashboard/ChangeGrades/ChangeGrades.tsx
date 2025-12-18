@@ -1,34 +1,35 @@
+"use client";
 import {
   IGradeChange,
   IGradeChangeResponse,
-} from '@custom-types/data/IStudent';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { Button, Dropzone, Helper, SegmentedControl } from '@ui/basics';
+} from "@custom-types/data/IStudent";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { Button, Dropzone, Helper, SegmentedControl } from "@ui/basics";
 import ChangeGradeErrorList, {
   IGradeChangeResponseTable,
-} from '@ui/ChangeGradeErrorList/ChangeGradeErrorList';
-import ChangeGradeList from '@ui/ChangeGradeList/ChangeGradeList';
+} from "@ui/ChangeGradeErrorList/ChangeGradeErrorList";
+import ChangeGradeList from "@ui/ChangeGradeList/ChangeGradeList";
 import {
   errorNotification,
   newNotification,
   successNotification,
   warningNotification,
-} from '@utils/notificationFunctions';
-import { getAddUserData } from '@utils/readExcel';
-import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+} from "@utils/notificationFunctions";
+import { getAddUserData } from "@utils/readExcel";
+import { FC, memo, useCallback, useState } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
 
-import styles from './changeGrades.module.css';
+import styles from "./changeGrades.module.css";
 
 const USERS_AT_ONCE = 50;
 
 const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.users.list.login,
-    key: 'login',
+    key: "login",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login > b.login ? 1 : a.login == b.login ? 0 : -1,
@@ -40,16 +41,16 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.grade,
-    key: 'grade',
+    key: "grade",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-          ? a.grade[-1] > b.grade[-1]
-            ? 1
-            : 0
-          : -1,
+        ? a.grade[-1] > b.grade[-1]
+          ? 1
+          : 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -59,16 +60,16 @@ const usersInitialColumns = (locale: ILocale): ITableColumn[] => [
 ];
 
 const compKind = (a: any, b: any) =>
-  a.error.value === 'error' && b.error.value !== 'error'
+  a.error.value === "error" && b.error.value !== "error"
     ? 1
-    : a.error.value !== 'error' && b.error.value === 'error'
-      ? -1
-      : 0;
+    : a.error.value !== "error" && b.error.value === "error"
+    ? -1
+    : 0;
 
 const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.users.list.login,
-    key: 'login',
+    key: "login",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login > b.login ? 1 : a.login == b.login ? 0 : -1,
@@ -80,16 +81,16 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.grade,
-    key: 'grade',
+    key: "grade",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       +a.grade.slice(0, -1) > +b.grade.slice(0, -1)
         ? 1
         : +a.grade.slice(0, -1) == +b.grade.slice(0, -1)
-          ? a.grade[-1] > b.grade[-1]
-            ? 1
-            : 0
-          : -1,
+        ? a.grade[-1] > b.grade[-1]
+          ? 1
+          : 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
@@ -98,7 +99,7 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.users.list.error,
-    key: 'error',
+    key: "error",
     sortable: true,
     sortFunction: compKind,
     sorted: -1,
@@ -110,28 +111,28 @@ const errorsInitialColumns = (locale: ILocale): ITableColumn[] => [
 ];
 
 const ACCEPTED = [
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.ms-excel',
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel",
 ];
 
 const ChangeGrades: FC<{}> = () => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IGradeChange[]>([]);
   const [errors, setErrors] = useState<IGradeChangeResponseTable[]>([]);
-  const [table, setTable] = useState<'users' | 'errors'>('users');
+  const [table, setTable] = useState<"users" | "errors">("users");
 
   const onDrop = useCallback(async (files: any[]) => {
     const file = await files[0].arrayBuffer();
-    const data = getAddUserData(file);
+    const data = await getAddUserData(file);
     setUsers(data as IGradeChange[]);
     setErrors([]);
-    setTable('users');
+    setTable("users");
   }, []);
 
   const sendUsers = useCallback(async (users: IGradeChange[]) => {
     return await sendRequest<IGradeChange[], IGradeChangeResponse[]>(
-      'grades/change',
-      'POST',
+      "grades/change",
+      "POST",
       users
     );
   }, []);
@@ -142,7 +143,7 @@ const ChangeGrades: FC<{}> = () => {
       autoClose: false,
     });
 
-    await sendRequest<{}, {}>('grades/start-change', 'GET');
+    await sendRequest<{}, {}>("grades/start-change", "GET");
     for (let idx = 0; idx < users.length / USERS_AT_ONCE; idx++) {
       await sendUsers(
         users.slice(
@@ -156,8 +157,8 @@ const ChangeGrades: FC<{}> = () => {
     let wrong_grades: IGradeChangeResponse[] = [];
 
     await sendRequest<{}, IGradeChangeResponse[]>(
-      'grades/end-change',
-      'GET'
+      "grades/end-change",
+      "GET"
     ).then((res) => {
       if (res.error) {
         errorNotification({
@@ -181,9 +182,9 @@ const ChangeGrades: FC<{}> = () => {
                 className={styles.error}
                 style={{
                   color:
-                    item.message.kind == 'error'
-                      ? 'var(--negative)'
-                      : 'var(--neutral)',
+                    item.message.kind == "error"
+                      ? "var(--negative)"
+                      : "var(--neutral)",
                 }}
               >
                 {locale.student.errors[item.message.kind]}
@@ -192,9 +193,9 @@ const ChangeGrades: FC<{}> = () => {
                 hoverCardProps={{ arrowSize: 15 }}
                 dropdownContent={item.message.text[lang]}
                 iconColor={
-                  item.message.kind == 'error'
-                    ? 'var(--negative)'
-                    : 'var(--neutral)'
+                  item.message.kind == "error"
+                    ? "var(--negative)"
+                    : "var(--neutral)"
                 }
               />
             </div>
@@ -202,7 +203,7 @@ const ChangeGrades: FC<{}> = () => {
         },
       }))
     );
-    setTable('errors');
+    setTable("errors");
 
     if (wrong_grades.length != 0) {
       warningNotification({
@@ -223,21 +224,21 @@ const ChangeGrades: FC<{}> = () => {
     <>
       <Dropzone
         onDrop={onDrop}
-        title={''}
-        description={''}
+        title={""}
+        description={""}
         accept={ACCEPTED}
         showButton
         additionalButtons={
           <>
             {users.length > 0 && (
-              <Button onClick={handleSend} color={'var(--positive)'}>
+              <Button onClick={handleSend} color={"var(--positive)"}>
                 {locale.edit}
               </Button>
             )}
             <Helper dropdownContent={locale.helpers.grade.tableFormat} />
             <Helper
               dropdownContent={locale.helpers.grade.attention}
-              customIcon={<AlertCircle color={'var(--negative)'} />}
+              customIcon={<IconAlertCircle color={"var(--negative)"} />}
             />
           </>
         }
@@ -247,15 +248,15 @@ const ChangeGrades: FC<{}> = () => {
             <div className={styles.segmentControl}>
               <SegmentedControl
                 value={table}
-                onChange={(value) => setTable(value as 'users' | 'errors')}
+                onChange={(value) => setTable(value as "users" | "errors")}
                 data={[
                   {
                     label: locale.student.segments.users,
-                    value: 'users',
+                    value: "users",
                   },
                   {
                     label: locale.student.segments.errors,
-                    value: 'errors',
+                    value: "errors",
                   },
                 ]}
               />
@@ -265,7 +266,7 @@ const ChangeGrades: FC<{}> = () => {
               />
             </div>
           )}
-          {table != 'errors' && (
+          {table != "errors" && (
             <ChangeGradeList
               data={users}
               initialColumns={usersInitialColumns}
@@ -273,7 +274,7 @@ const ChangeGrades: FC<{}> = () => {
               noDefault
             />
           )}
-          {table == 'errors' && (
+          {table == "errors" && (
             <ChangeGradeErrorList
               data={errors}
               initialColumns={errorsInitialColumns}

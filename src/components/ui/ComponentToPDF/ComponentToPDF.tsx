@@ -1,8 +1,9 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { Icon } from '@ui/basics';
-import { FC, ReactNode, RefObject, memo, useCallback, useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { Printer } from 'tabler-icons-react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { Icon } from "@ui/basics";
+import { FC, ReactNode, RefObject, memo, useCallback, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { IconPrinter } from "@tabler/icons-react";
 
 const ComponentToPDF: FC<{
   title?: string;
@@ -24,9 +25,9 @@ const ComponentToPDF: FC<{
   return (
     <div>
       <Icon size="xs" color="var(--primary)" onClick={handlePrintWrapper}>
-        <Printer />
+        <IconPrinter />
       </Icon>
-      <div style={{ display: 'none' }}>{component(componentRef)}</div>
+      <div style={{ display: "none" }}>{component(componentRef)}</div>
     </div>
   );
 };

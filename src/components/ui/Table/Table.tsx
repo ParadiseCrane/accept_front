@@ -1,8 +1,9 @@
-import { BaseSearch } from '@custom-types/data/request';
-import { setter } from '@custom-types/ui/atomic';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { LoadingOverlay, MultiSelect, TextInput } from '@ui/basics';
+"use client";
+import { BaseSearch } from "@custom-types/data/request";
+import { setter } from "@custom-types/ui/atomic";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { LoadingOverlay, MultiSelect, TextInput } from "@ui/basics";
 import {
   FC,
   ReactNode,
@@ -11,13 +12,13 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { Search } from 'tabler-icons-react';
+} from "react";
+import { IconSearch } from "@tabler/icons-react";
 
-import InnerTable from './InnerTable/InnerTable';
-import PageNavigation from './PageNavigation';
-import styles from './table.module.css';
-import EmptyTablePlaceholder from '@ui/basics/EmptyTablePlaceholder/EmptyTablePlaceholder';
+import InnerTable from "./InnerTable/InnerTable";
+import PageNavigation from "./PageNavigation";
+import styles from "./table.module.css";
+import EmptyTablePlaceholder from "@ui/basics/EmptyTablePlaceholder/EmptyTablePlaceholder";
 
 const Table: FC<{
   columns: ITableColumn[];
@@ -35,7 +36,7 @@ const Table: FC<{
   empty?: ReactNode;
   isEmpty?: boolean;
   nothingFound?: ReactNode;
-  emptyTableButton?: ReactNode;
+  emptyTableComponent?: ReactNode;
   customSort?: (key: string, order: -1 | 0 | 1) => void;
 }> = ({
   columns,
@@ -53,7 +54,7 @@ const Table: FC<{
   empty,
   isEmpty,
   nothingFound,
-  emptyTableButton,
+  emptyTableComponent,
   customSort,
 }) => {
   const { locale } = useLocale();
@@ -69,7 +70,7 @@ const Table: FC<{
     () => searchParams.pager.limit,
     [searchParams.pager.limit]
   );
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [localColumns, setLocalColumns] = useState(
     columns.filter((column) => !column.hidden)
   );
@@ -205,19 +206,19 @@ const Table: FC<{
 
   return (
     <div
-      className={styles.wrapper + ' ' + classNames.wrapper}
+      className={styles.wrapper + " " + classNames.wrapper}
       style={
         noDefault
           ? {}
           : {
-              width: '80vw',
-              margin: 'var(--spacer-s) 10vw 10vh 10vw',
+              width: "80vw",
+              margin: "var(--spacer-s) 10vw 10vh 10vw",
             }
       }
     >
       {!loading && empty && isEmpty ? (
         <div>
-          <EmptyTablePlaceholder button={emptyTableButton} />
+          <EmptyTablePlaceholder component={emptyTableComponent} />
         </div>
       ) : (
         <div className={styles.main}>
@@ -225,7 +226,7 @@ const Table: FC<{
             {withSearch && (
               <div className={styles.search}>
                 <TextInput
-                  leftSection={<Search />}
+                  leftSection={<IconSearch />}
                   classNames={{
                     input: styles.inputElem,
                   }}
@@ -250,17 +251,17 @@ const Table: FC<{
           {!loading && total == 0 && nothingFound ? (
             <div
               className={`${styles.nothingFoundMessage} ${
-                classNames?.nothingFoundMessage || ''
+                classNames?.nothingFoundMessage || ""
               }`}
             >
               {nothingFound}
             </div>
           ) : (
             <>
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <LoadingOverlay
                   visible={loading}
-                  loaderProps={{ radius: 'lg' }}
+                  loaderProps={{ radius: "lg" }}
                 />
                 <InnerTable
                   columns={localColumns}

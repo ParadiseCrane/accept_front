@@ -1,6 +1,7 @@
-import React, { FC, memo } from 'react';
+"use client";
+import React, { FC, memo } from "react";
 
-import styles from './userLoginOrganization.module.css';
+import styles from "./userLoginOrganization.module.css";
 
 const UserLoginOrganization: FC<{
   login: string;

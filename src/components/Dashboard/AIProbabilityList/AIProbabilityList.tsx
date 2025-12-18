@@ -1,35 +1,40 @@
-import { ITasksUsersBundle } from '@custom-types/data/bundle';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
+"use client";
+import { ITasksUsersBundle } from "@custom-types/data/bundle";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { ITaskBaseInfo } from "@custom-types/data/ITask";
 import {
   IParticipant,
   IParticipantListBundle,
   IUserDisplay,
-} from '@custom-types/data/IUser';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { default as AIProbabilityListUI } from '@ui/AIProbabilityList/AIProbabilityList';
-import { SegmentedControl } from '@ui/basics';
-import { TaskSelect, UserSelect } from '@ui/selectors';
-import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
-import { getLocalDate } from '@utils/datetime';
-import Link from 'next/link';
-import { FC, memo, useCallback, useState } from 'react';
+} from "@custom-types/data/IUser";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { default as AIProbabilityListUI } from "@ui/AIProbabilityList/AIProbabilityList";
+import { SegmentedControl } from "@ui/basics";
+import { TaskSelect, UserSelect } from "@ui/selectors";
+import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
+import { getLocalDate } from "@utils/datetime";
+import Link from "next/link";
+import { FC, memo, useCallback, useState } from "react";
 
-import styles from './aiProbabilityList.module.css';
-import { Group, SelectProps } from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
+import styles from "./aiProbabilityList.module.css";
+import { Group, SelectProps } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 
-export type TogglerValue = 'date' | 'ai_generated';
+export type TogglerValue = "date" | "ai_generated";
 
-export type PercentageValue = '70' | '90';
+export type PercentageValue = "0.7" | "0.9";
 
 const shouldPaint = (value: number, aiPercentage: string): boolean => {
-  const percentileValue = 100 - (100 - parseInt(aiPercentage)) / 4;
+  const percentileValue = 100 - (100 - parseFloat(aiPercentage) * 100) / 4;
   return value >= percentileValue;
+};
+
+const percentageParse = (value: number): string => {
+  return (value * 100).toFixed(1);
 };
 
 const refactorAttempt = (
@@ -76,10 +81,10 @@ const refactorAttempt = (
     display: (
       <div
         className={`${tableStyles.titleWrapper} ${
-          shouldPaint(attempt.ai_generated!, aiPercentage) && styles.red
+          shouldPaint(attempt.ai_generated! * 100, aiPercentage) && styles.red
         }`}
       >
-        {attempt.ai_generated}%
+        {percentageParse(attempt.ai_generated!)}%
       </div>
     ),
     value: attempt.ai_generated,
@@ -92,19 +97,19 @@ const initialColumns = (
 ): ITableColumn[] => [
   {
     label: locale.attempt.date,
-    key: 'date',
+    key: "date",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
-    sorted: toggler !== 'date' ? 0 : 1,
-    allowMiddleState: toggler !== 'date',
+    sorted: toggler !== "date" ? 0 : 1,
+    allowMiddleState: toggler !== "date",
     hidable: false,
     hidden: false,
     size: 3,
   },
   {
     label: locale.attempt.author,
-    key: 'author',
+    key: "author",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -115,7 +120,7 @@ const initialColumns = (
   },
   {
     label: locale.attempt.task,
-    key: 'task',
+    key: "task",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -126,23 +131,23 @@ const initialColumns = (
   },
   {
     label: locale.attempt.aiProbability,
-    key: 'ai_generated',
+    key: "ai_generated",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.ai_generated.value > b.ai_generated.value
         ? 1
         : a.ai_generated.value == b.ai_generated.value
-          ? 0
-          : -1,
-    sorted: toggler !== 'ai_generated' ? 0 : 1,
-    allowMiddleState: toggler !== 'ai_generated',
+        ? 0
+        : -1,
+    sorted: toggler !== "ai_generated" ? 0 : 1,
+    allowMiddleState: toggler !== "ai_generated",
     hidable: false,
     hidden: false,
     size: 3,
   },
   {
     label: locale.attempt.language,
-    key: 'language',
+    key: "language",
     sortable: false,
     sortFunction: (_: any, __: any) => 0,
     sorted: 0,
@@ -156,13 +161,13 @@ const initialColumns = (
 const AIProbabilityList: FC<{
   spec: string;
   shouldNotRefetch: boolean;
-  type: 'assignment' | 'tournament';
+  type: "assignment" | "tournament";
 }> = ({ spec, shouldNotRefetch, type }) => {
   const { locale } = useLocale();
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
-  const [toggler, setToggler] = useState<TogglerValue>('ai_generated');
-  const [aiPercentage, setAIPercentage] = useState<PercentageValue>('70');
+  const [toggler, setToggler] = useState<TogglerValue>("ai_generated");
+  const [aiPercentage, setAIPercentage] = useState<PercentageValue>("0.7");
   const refactor = useCallback(
     (attempt: IAttemptDisplay) =>
       refactorAttempt(attempt, type, spec, aiPercentage),
@@ -171,24 +176,24 @@ const AIProbabilityList: FC<{
 
   const { data } = useRequest<{}, ITasksUsersBundle>(
     `${type}/bundle/tasks-users/${spec}`,
-    'GET',
+    "GET",
     undefined
   );
 
   const { data: userData } = useRequest<{}, IParticipantListBundle>(
     `${type}/bundle-participants/${spec}`,
-    'GET',
+    "GET",
     undefined
   );
 
   const iconProps = {
     stroke: 1.5,
-    color: 'currentColor',
+    color: "currentColor",
     opacity: 0.6,
     size: 18,
   };
 
-  const renderSelectOption: SelectProps['renderOption'] = ({
+  const renderSelectOption: SelectProps["renderOption"] = ({
     option,
     checked,
   }) => {
@@ -196,13 +201,13 @@ const AIProbabilityList: FC<{
       <Group flex="1" gap="xs">
         <span
           style={{
-            color: option.value.includes('banned') ? 'grey' : undefined,
+            color: option.value.includes("banned") ? "grey" : undefined,
           }}
         >
           {option.label}
         </span>
         {checked && (
-          <IconCheck style={{ marginInlineStart: 'auto' }} {...iconProps} />
+          <IconCheck style={{ marginInlineStart: "auto" }} {...iconProps} />
         )}
       </Group>
     );
@@ -213,12 +218,14 @@ const AIProbabilityList: FC<{
       <SegmentedControl
         data={[
           {
-            label: '70%',
-            value: '70',
+            label: "70%",
+            // value: '70',
+            value: "0.7",
           },
           {
-            label: '90%',
-            value: '90',
+            label: "90%",
+            // value: '90',
+            value: "0.9",
           },
         ]}
         value={aiPercentage}
@@ -248,7 +255,7 @@ const AIProbabilityList: FC<{
           select={(users: IUserDisplay[] | undefined) => {
             if (users)
               setUserSearch(
-                users.map((user) => user.login.replace('banned', ''))
+                users.map((user) => user.login.replace("banned", ""))
               );
             else setUserSearch([]);
           }}
@@ -269,7 +276,7 @@ const AIProbabilityList: FC<{
       </div>
       <AIProbabilityListUI
         key={userSearch.toString() + taskSearch.toString()}
-        url={`${type}/attempts/ai_generated/${spec}`}
+        url={`${type}/attempts/ai/${spec}`}
         activeTab
         initialColumns={initialColumns}
         refactorAttempt={refactor}

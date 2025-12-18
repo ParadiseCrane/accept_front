@@ -1,9 +1,10 @@
-import { Item } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { CustomEditor, TextInput } from '@ui/basics';
-import { TagSelector } from '@ui/selectors';
-import { FC, memo, useMemo } from 'react';
-import { useCallback } from 'react';
+"use client";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { CustomEditor, TextInput } from "@ui/basics";
+import { TagSelector } from "@ui/selectors";
+import { FC, memo, useMemo } from "react";
+import { useCallback } from "react";
 
 const MainInfo: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -16,7 +17,7 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
   );
 
   const setUsed = useCallback(
-    (value: Item[]) => form.setFieldValue('tags', value),
+    (value: Item[]) => form.setFieldValue("tags", value),
     [form.setFieldValue] // eslint-disable-line
   );
 
@@ -25,22 +26,22 @@ const MainInfo: FC<{ form: any }> = ({ form }) => {
       <TextInput
         label={locale.assignmentSchema.form.title}
         required
-        {...form.getInputProps('title')}
+        {...form.getInputProps("title")}
       />
       <CustomEditor
         label={locale.task.form.description}
         form={form}
-        name={'description'}
+        name={"description"}
       />
       <TagSelector
         initialTags={initialTags}
         setUsed={setUsed}
-        fetchURL={'assignment_tag/list'}
-        addURL={'assignment_tag/add'}
-        updateURL={'assignment_tag/edit'}
-        deleteURL={'assignment_tag/delete'}
+        fetchURL={"assignment_tag/list"}
+        addURL={"assignment_tag/add"}
+        updateURL={"assignment_tag/edit"}
+        deleteURL={"assignment_tag/delete"}
         form={form}
-        field={'tags'}
+        field={"tags"}
       />
     </>
   );

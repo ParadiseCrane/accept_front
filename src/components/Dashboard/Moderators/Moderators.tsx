@@ -1,34 +1,32 @@
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Link from 'next/link';
-import { FC, memo, useCallback, useState } from 'react';
+"use client";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Link from "next/link";
+import { FC, memo, useCallback } from "react";
 
-import styles from './style.module.css';
-import { useSearchParams } from 'next/navigation';
+import styles from "./style.module.css";
 import GroupModeratorList, {
   ICourseModeratorGroupItem,
-} from '@ui/GroupModeratorList/GroupModeratorList';
-import { ICourseModeratorGroup } from '@custom-types/data/ICourse';
-import { Trash } from 'tabler-icons-react';
-import { Button, Icon, Tip } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { IUserBaseInfo } from '@custom-types/data/IUser';
-import { sendRequest } from '@requests/request';
-import { AddModeratorModal } from './AddModeratorModal/AddModeratorModal';
+} from "@ui/GroupModeratorList/GroupModeratorList";
+import { IModeratorGroupPair } from "@custom-types/data/ICourse";
+import { IconTrash } from "@tabler/icons-react";
+import { Icon, Tip } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { IUserBaseInfo } from "@custom-types/data/IUser";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.dashboard.course.group,
-    key: 'group',
+    key: "group",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.group.value.name > b.group.value.name
         ? 1
         : a.group.value.name == b.group.value.name
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -37,14 +35,14 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
   {
     label: locale.dashboard.course.moderator,
-    key: 'moderator',
+    key: "moderator",
     sortable: true,
     sortFunction: (a: any, b: any) => {
       return a.moderator.value.shortName > b.moderator.value.shortName
         ? 1
         : a.moderator.value.shortName == b.moderator.value.shortName
-          ? 0
-          : -1;
+        ? 0
+        : -1;
     },
     sorted: 0,
     allowMiddleState: true,
@@ -61,7 +59,7 @@ const refactorPair = ({
   isAuthor,
   locale,
 }: {
-  pair: ICourseModeratorGroup;
+  pair: IModeratorGroupPair;
   fetchData: () => Promise<void>;
   isAuthor: boolean;
   locale: ILocale;
@@ -104,7 +102,7 @@ const refactorPair = ({
               variant="transparent"
               size="xs"
             >
-              <Trash />
+              <IconTrash />
             </Icon>
           </Tip>
         )}
@@ -114,7 +112,7 @@ const refactorPair = ({
 });
 
 const Moderators: FC<{
-  type: 'course';
+  type: "course";
   spec: string;
   isAuthor: boolean;
 }> = ({ spec, isAuthor }) => {
@@ -124,10 +122,10 @@ const Moderators: FC<{
     (moderator: IUserBaseInfo, fetchData: () => Promise<void>) => {
       requestWithNotify(
         `course_moderator/${spec}/${moderator.login}`,
-        'DELETE',
+        "DELETE",
         locale.notify.moderator.delete,
         lang,
-        (_: any) => '',
+        (_: any) => "",
         {},
         fetchData,
         { autoClose: 8000 }
@@ -140,11 +138,12 @@ const Moderators: FC<{
     <div className={styles.wrapper}>
       <GroupModeratorList
         url={`course/moderator_group/${spec}`}
+        isAuthor={isAuthor}
         refactorPair={({
           pair,
           fetchData,
         }: {
-          pair: ICourseModeratorGroup;
+          pair: IModeratorGroupPair;
           fetchData: () => Promise<void>;
         }) => refactorPair({ pair, fetchData, isAuthor, locale, handleDelete })}
         initialColumns={initialColumns}

@@ -1,17 +1,18 @@
-import { ITask } from '@custom-types/data/ITask';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { Group, Table, Title } from '@mantine/core';
-import { sendRequest } from '@requests/request';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import CopyButton from '@ui/CopyButton/CopyButton';
-import TagList from '@ui/TagList/TagList';
-import { FC, memo, useEffect } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+"use client";
+import { ITask } from "@custom-types/data/ITask";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Group, Table, Title } from "@mantine/core";
+import { sendRequest } from "@requests/request";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import CopyButton from "@ui/CopyButton/CopyButton";
+import TagList from "@ui/TagList/TagList";
+import { FC, memo, useEffect } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
 
-import styles from './description.module.css';
-import { IconUsersGroup } from '@tabler/icons-react';
-import { Tip } from '@ui/basics';
+import styles from "./description.module.css";
+import { IconUsersGroup } from "@tabler/icons-react";
+import { Tip } from "@ui/basics";
 
 const Description: FC<{
   task: ITask;
@@ -25,7 +26,7 @@ const Description: FC<{
     if (preview) return;
     sendRequest<{}, boolean>(
       `task/should_show_hint/${task.spec}`,
-      'GET',
+      "GET",
       undefined,
       5000
     ).then((res) => {
@@ -37,9 +38,9 @@ const Description: FC<{
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
         <div className={styles.title}>{task.title}</div>
-        {task.organization === 'public' && (
+        {task.organization === "public" && (
           <Tip label={locale.task.list.public}>
-            <IconUsersGroup style={{ marginRight: '10px' }} />
+            <IconUsersGroup style={{ marginRight: "10px" }} />
           </Tip>
         )}
         <div
@@ -67,7 +68,7 @@ const Description: FC<{
 
       {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
-          <AlertCircle color={'var(--negative)'} />
+          <IconAlertCircle color={"var(--negative)"} />
 
           <div className={styles.alert}>
             {locale.task.description.languagesRestrictions}
@@ -133,7 +134,7 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
-                    style={{ whiteSpace: 'pre-line' }}
+                    style={{ whiteSpace: "pre-line" }}
                   >
                     {example.inputData}
                     <CopyButton toCopy={example.inputData} />
@@ -144,7 +145,7 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
-                    style={{ whiteSpace: 'pre-line' }}
+                    style={{ whiteSpace: "pre-line" }}
                   >
                     {example.outputData}
                     <CopyButton toCopy={example.outputData} />

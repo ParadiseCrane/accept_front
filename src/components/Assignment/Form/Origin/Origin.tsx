@@ -1,10 +1,11 @@
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { useLocale } from '@hooks/useLocale';
-import { CustomEditor, Helper, TextInput } from '@ui/basics';
-import { AssignmentSchemaSelector } from '@ui/selectors';
-import { FC, memo } from 'react';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { useLocale } from "@hooks/useLocale";
+import { CustomEditor, Helper, TextInput } from "@ui/basics";
+import { AssignmentSchemaSelector } from "@ui/selectors";
+import { FC, memo } from "react";
 
-import styles from './origin.module.css';
+import styles from "./origin.module.css";
 
 const Origin: FC<{
   form: any;
@@ -18,7 +19,7 @@ const Origin: FC<{
       <AssignmentSchemaSelector
         key={2}
         form={form}
-        field={'origin'}
+        field={"origin"}
         schemas={assignmentSchemas}
       />
       {shouldNotify && (
@@ -32,7 +33,7 @@ const Origin: FC<{
           <TextInput
             label={locale.notification.form.title}
             required
-            {...form.getInputProps('notificationTitle')}
+            {...form.getInputProps("notificationTitle")}
           />
           <TextInput
             label={locale.notification.form.shortDescription}
@@ -43,7 +44,7 @@ const Origin: FC<{
                 ))}
               </div>
             }
-            {...form.getInputProps('notificationShortDescription')}
+            {...form.getInputProps("notificationShortDescription")}
           />
           <CustomEditor
             helperContent={
@@ -55,7 +56,7 @@ const Origin: FC<{
             }
             label={locale.notification.form.description}
             form={form}
-            name={'notificationDescription'}
+            name={"notificationDescription"}
           />
         </div>
       )}

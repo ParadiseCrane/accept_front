@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from "react";
 
 function useEventListener<K extends keyof WindowEventMap>(
   _eventName: K,
@@ -7,7 +6,7 @@ function useEventListener<K extends keyof WindowEventMap>(
 ): void;
 function useEventListener<
   K extends keyof HTMLElementEventMap,
-  T extends HTMLElement = HTMLDivElement,
+  T extends HTMLElement = HTMLDivElement
 >(
   _eventName: K,
   _handler: (_event: HTMLElementEventMap[K]) => void,
@@ -17,7 +16,7 @@ function useEventListener<
 function useEventListener<
   KW extends keyof WindowEventMap,
   KH extends keyof HTMLElementEventMap,
-  T extends HTMLElement | void = void,
+  T extends HTMLElement | void = void
 >(
   eventName: KW | KH,
   handler: (

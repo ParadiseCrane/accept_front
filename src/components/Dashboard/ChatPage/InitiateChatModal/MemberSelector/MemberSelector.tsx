@@ -1,9 +1,10 @@
-import { IActivity } from '@custom-types/data/atomic';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { UserSelect } from '@ui/selectors';
-import { FC, memo, useEffect, useState } from 'react';
+"use client";
+import { IActivity } from "@custom-types/data/atomic";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { UserSelect } from "@ui/selectors";
+import { FC, memo, useEffect, useState } from "react";
 
 const MemberSelector: FC<{
   spec: string;
@@ -23,14 +24,14 @@ const MemberSelector: FC<{
     if (!opened) return;
     sendRequest<{ exclude: string[] }, IUserDisplay[]>(
       customRequest ?? `${entity}/participants/${spec}`,
-      'POST',
+      "POST",
       { exclude }
     ).then((res) => {
       if (!res.error) {
         setUsers(res.response);
       }
     });
-  }, [opened, spec, entity, exclude]);
+  }, [opened, spec, entity, exclude, customRequest]);
 
   return (
     <>
@@ -40,7 +41,7 @@ const MemberSelector: FC<{
         nothingFound={locale.dashboard.chat.userModal.user.nothingFound}
         users={users}
         select={(users: IUserDisplay[] | undefined) => {
-          if (users) form.setFieldValue('user', users[0].login.trim());
+          if (users) form.setFieldValue("user", users[0].login.trim());
         }}
         additionalProps={form.getInputProps(field)}
       />

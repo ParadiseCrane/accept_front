@@ -1,3 +1,4 @@
+"use client";
 import React, {
   createContext,
   ReactNode,
@@ -5,7 +6,7 @@ import React, {
   useContext,
   useRef,
   useSyncExternalStore,
-} from 'react';
+} from "react";
 
 export default function createFastContext<Store>(initialState: Store) {
   function useStoreData(): {
@@ -53,7 +54,7 @@ export default function createFastContext<Store>(initialState: Store) {
   ): [SelectorOutput, (_: Partial<Store>) => void] {
     const store = useContext(StoreContext);
     if (!store) {
-      throw new Error('Store not found');
+      throw new Error("Store not found");
     }
 
     const state = useSyncExternalStore(

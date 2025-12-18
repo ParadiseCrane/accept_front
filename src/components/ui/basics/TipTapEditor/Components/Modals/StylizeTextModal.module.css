@@ -1,0 +1,19 @@
+.modalWrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+}
+
+.invisible {
+  height: 0 !important;
+  overflow: hidden;
+}
+
+.modal {
+  background-color: white;
+  box-shadow: 3px 3px 9px 0px #626262;
+}

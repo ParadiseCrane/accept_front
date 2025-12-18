@@ -1,22 +1,23 @@
-import Form from '@components/AssignmentSchema/Form/Form';
-import { Item } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import { UseFormReturnType } from '@mantine/form';
-import Title from '@ui/Title/Title';
+"use client";
+import Form from "@components/AssignmentSchema/Form/Form";
+import { Item } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { UseFormReturnType } from "@mantine/form";
+import Title from "@ui/Title/Title";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ReactNode, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { ReactNode, useCallback } from "react";
 
 const initialValues = {
-  spec: '',
-  title: '',
-  description: '',
-  author: '',
+  spec: "",
+  title: "",
+  description: "",
+  author: "",
   tasks: [],
   tags: [],
 };
@@ -38,13 +39,13 @@ function AddAssignmentSchema() {
       }
       let body: any = {
         ...form.values,
-        author: user?.login || '',
-        tasks: form.values['tasks'].map((task: Item) => task.value),
-        tags: form.values['tags'].map((tag: Item) => tag.value),
+        author: user?.login || "",
+        tasks: form.values["tasks"].map((task: Item) => task.value),
+        tags: form.values["tags"].map((tag: Item) => tag.value),
       };
       requestWithNotify(
-        'assignment_schema/add',
-        'POST',
+        "assignment_schema/add",
+        "POST",
         locale.notify.assignmentSchema.create,
         lang,
         (response: string) => response,

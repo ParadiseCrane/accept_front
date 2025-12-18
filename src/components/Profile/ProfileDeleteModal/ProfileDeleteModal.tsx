@@ -1,13 +1,14 @@
-import { IUser } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import { Button } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
+"use client";
+import { IUser } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
 
-import styles from './profileDeleteModal.module.css';
+import styles from "./profileDeleteModal.module.css";
 
 const ProfileDeleteModal: FC<{
   user: IUser;
@@ -22,10 +23,10 @@ const ProfileDeleteModal: FC<{
   const handleSubmit = useCallback(() => {
     requestWithNotify(
       `user/delete/${user.login}`,
-      'DELETE',
+      "DELETE",
       locale.notify.user.delete,
       lang,
-      () => '',
+      () => "",
       undefined,
       () => setToList(true),
       { autoClose: 8000 }

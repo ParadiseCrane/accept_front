@@ -1,17 +1,18 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ITaskListBundle } from '@custom-types/data/bundle';
-import { ITag } from '@custom-types/data/ITag';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import { MultiSelect } from '@ui/basics';
-import Table from '@ui/Table/Table';
-import { customTableSort } from '@utils/customTableSort';
-import { hasSubarray } from '@utils/hasSubarray';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { ITaskListBundle } from "@custom-types/data/bundle";
+import { ITag } from "@custom-types/data/ITag";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import { MultiSelect } from "@ui/basics";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import { hasSubarray } from "@utils/hasSubarray";
 import {
   FC,
   ReactNode,
@@ -20,7 +21,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item {
   value: any;
@@ -28,7 +29,7 @@ interface Item {
 }
 
 interface ITaskDisplayList
-  extends Omit<ITaskDisplay, 'title' | 'author' | 'verdict' | 'complexity'> {
+  extends Omit<ITaskDisplay, "title" | "author" | "verdict" | "complexity"> {
   title: Item;
   author: Item;
   verdict: Item;
@@ -85,17 +86,17 @@ const TaskList: FC<{
     {},
     ITaskListBundle,
     { tasks: ITaskDisplayList[]; tags: ITag[] }
-  >(url, 'GET', undefined, processData);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: sortByPublic ? [{ field: 'public', order: -1 }] : [],
+    sort_by: sortByPublic ? [{ field: "public", order: -1 }] : [],
     search_params: {
-      search: '',
-      keys: ['title.value', 'author.value', 'verdict.value.shortText'],
+      search: "",
+      keys: ["title.value", "author.value", "verdict.value.shortText"],
     },
   });
 
@@ -111,14 +112,14 @@ const TaskList: FC<{
   const applyFilters = useCallback(
     async (data: ITaskDisplayList[]) => {
       var list = [...data];
-      const Fuse = (await import('fuse.js')).default;
+      const Fuse = (await import("fuse.js")).default;
       const fuse = new Fuse(list, {
         keys: searchParams.search_params.keys,
         findAllMatches: true,
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)
@@ -199,7 +200,7 @@ const TaskList: FC<{
         setSearchParams={setSearchParams}
         searchParams={searchParams}
         additionalSearch={
-          <div style={{ maxWidth: '300px' }}>
+          <div style={{ maxWidth: "300px" }}>
             <MultiSelect
               searchable
               data={searchTags}

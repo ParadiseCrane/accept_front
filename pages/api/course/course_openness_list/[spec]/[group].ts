@@ -1,5 +1,5 @@
-import { fetchWrapper } from '@utils/fetchWrapper';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { fetchWrapper } from "@utils/fetchWrapper";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function CourseOpennessList(
   req: NextApiRequest,

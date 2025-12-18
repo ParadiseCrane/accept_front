@@ -1,41 +1,38 @@
-import { IProfileMenuLink } from '@custom-types/ui/IHeaderLink';
-import NotificationIcon from '@ui/NotificationIcon/NotificationIcon';
+import { IProfileMenuLink } from "@custom-types/ui/IHeaderLink";
+import NotificationIcon from "@ui/NotificationIcon/NotificationIcon";
 import {
-  Crown,
-  GlassFull,
-  MailOpened,
-  Robot,
-} from 'tabler-icons-react';
+  IconCrown,
+  IconGlassFull,
+  IconMailOpened,
+  IconRobot,
+} from "@tabler/icons-react";
 
 export const menuLinks: IProfileMenuLink[] = [
   {
     text: (locale) => locale.mainHeaderLinks.profileLinks.profile,
-    icon: <Robot color="var(--secondary)" size={20} />,
-    href: '/profile/me',
+    icon: <IconRobot color="var(--secondary)" size={20} />,
+    href: "/profile/me",
   },
   {
-    text: (locale) =>
-      locale.mainHeaderLinks.profileLinks.notifications,
+    text: (locale) => locale.mainHeaderLinks.profileLinks.notifications,
     icon: <NotificationIcon />,
-    href: '/profile/me?section=notifications',
+    href: "/profile/me?section=notifications",
   },
   {
-    text: (locale) =>
-      locale.mainHeaderLinks.profileLinks.adminDashboard,
-    icon: <Crown color="var(--secondary)" size={20} />,
-    href: '/dashboard/admin',
-    permission: 'admin',
+    text: (locale) => locale.mainHeaderLinks.profileLinks.adminDashboard,
+    icon: <IconCrown color="var(--secondary)" size={20} />,
+    href: "/dashboard/admin",
+    permission: "admin",
   },
   {
-    text: (locale) =>
-      locale.mainHeaderLinks.profileLinks.developerDashboard,
-    icon: <GlassFull color="var(--secondary)" size={20} />,
-    href: '/dashboard/developer',
-    permission: 'developer',
+    text: (locale) => locale.mainHeaderLinks.profileLinks.developerDashboard,
+    icon: <IconGlassFull color="var(--secondary)" size={20} />,
+    href: "/dashboard/developer",
+    permission: "developer",
   },
   {
     text: (locale) => locale.mainHeaderLinks.profileLinks.feedback,
-    icon: <MailOpened color="var(--secondary)" size={20} />,
-    href: '/feedback',
+    icon: <IconMailOpened color="var(--secondary)" size={20} />,
+    href: "/feedback",
   },
 ];

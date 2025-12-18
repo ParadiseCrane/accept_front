@@ -1,15 +1,16 @@
-import { IRole } from '@custom-types/data/atomic';
+"use client";
+import { IRole } from "@custom-types/data/atomic";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { useLocale } from '@hooks/useLocale';
-import inputStyles from '@styles/ui/input.module.css';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { capitalize } from '@utils/capitalize';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import inputStyles from "@styles/ui/input.module.css";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { capitalize } from "@utils/capitalize";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import styles from './roleSelector.module.css';
+import styles from "./roleSelector.module.css";
 
 const RoleSelector: FC<{
   form: any;
@@ -60,7 +61,7 @@ const RoleSelector: FC<{
         <div
           key={index}
           className={`${styles.itemWrapper} ${
-            shrink ? inputStyles.shrink : ''
+            shrink ? inputStyles.shrink : ""
           }`}
           onClick={onClick}
         >
@@ -83,7 +84,7 @@ const RoleSelector: FC<{
           locale.ui.roleSelector.selected,
         ]}
         itemComponent={itemComponent}
-        searchKeys={['name']}
+        searchKeys={["name"]}
         width={width}
       />
     </div>

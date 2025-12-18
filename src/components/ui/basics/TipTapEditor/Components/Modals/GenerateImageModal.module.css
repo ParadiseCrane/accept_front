@@ -1,0 +1,29 @@
+.latex_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: large;
+}
+
+.input_with_editor {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkbox_area {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.checkbox_with_label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}

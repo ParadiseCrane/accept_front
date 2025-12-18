@@ -4,6 +4,10 @@
   height: 50px;
 }
 
+.box_wrapper:hover {
+  cursor: pointer;
+}
+
 .box {
   flex-grow: 1;
   padding: 0px 10px;

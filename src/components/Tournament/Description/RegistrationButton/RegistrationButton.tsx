@@ -1,8 +1,9 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { FC, memo } from 'react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { FC, memo } from "react";
 
-import CancelRegistration from './CancelRegistration/CancelRegistration';
-import Register from './Register/Register';
+import CancelRegistration from "./CancelRegistration/CancelRegistration";
+import Register from "./Register/Register";
 
 const RegistrationButton: FC<{
   spec: string;

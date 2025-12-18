@@ -1,12 +1,13 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { FC, ReactNode, memo, useMemo, useState } from 'react';
-import styles from './style.module.css';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { BaseSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { FC, ReactNode, memo, useMemo, useState } from "react";
+import styles from "./style.module.css";
 
 interface IEmptyItem {
   content: {
@@ -20,7 +21,7 @@ const fillList = (numOfRows: number): IEmptyItem[] => {
   for (let i = 0; i < numOfRows; i++) {
     list.push({
       content: {
-        value: '',
+        value: "",
         display: <div className={tableStyles.titleWrapper} />,
       },
     });
@@ -31,14 +32,14 @@ const fillList = (numOfRows: number): IEmptyItem[] => {
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
     label: locale.ui.table.emptyTableTitle,
-    key: 'content',
+    key: "content",
     sortable: true,
     sortFunction: (a: any, b: any) =>
       a.login.value > b.login.value
         ? 1
         : a.login.value == b.login.value
-          ? 0
-          : -1,
+        ? 0
+        : -1,
     sorted: 0,
     allowMiddleState: true,
     hidable: false,
@@ -47,13 +48,13 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
+const EmptyTablePlaceholder: FC<{ component: ReactNode }> = ({ component }) => {
   const { locale } = useLocale();
   const defaultOnPage = useMemo(() => DEFAULT_ON_PAGE, []);
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [initialColumns, locale]
+    [locale]
   );
 
   const numOfRows = 6;
@@ -66,8 +67,8 @@ const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['content.value'],
+      search: "",
+      keys: ["content.value"],
     },
   });
 
@@ -75,8 +76,7 @@ const EmptyTablePlaceholder: FC<{ button?: ReactNode }> = ({ button }) => {
     <div className={styles.parent}>
       <div className={styles.blurWrapper}>
         <div className={styles.titleButtonWrapper}>
-          {locale.ui.table.emptyTableMessage}
-          {button}
+          {component || <>{locale.ui.table.emptyTableMessage}</>}
         </div>
       </div>
       <div className={styles.tablePadding}>

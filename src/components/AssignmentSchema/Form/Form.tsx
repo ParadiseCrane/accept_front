@@ -1,15 +1,16 @@
-import { callback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import Stepper from '@ui/Stepper/Stepper';
-import { FC, memo, useEffect, useMemo } from 'react';
+"use client";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { FC, memo, useEffect, useMemo } from "react";
 
-import MainInfo from './MainInfo/MainInfo';
-import Preview from './Preview/Preview';
-import TaskAdding from './TaskAdding/TaskAdding';
-import { TaskOrdering } from './TaskOrdering/TaskOrdering';
+import MainInfo from "./MainInfo/MainInfo";
+import Preview from "./Preview/Preview";
+import TaskAdding from "./TaskAdding/TaskAdding";
+import { TaskOrdering } from "./TaskOrdering/TaskOrdering";
 
-const stepFields = [['title', 'description', 'tags'], ['tasks'], [], []];
+const stepFields = [["title", "description", "tags"], ["tasks"], [], []];
 
 const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
@@ -56,10 +57,10 @@ const Form: FC<{
         buttonLabel={buttonLabel}
         handleSubmit={() => handleSubmit(form)}
         pages={[
-          <MainInfo key={'0'} form={form} />,
-          <TaskAdding key={'1'} form={form} initialTasks={initialTasks} />,
-          <TaskOrdering key={'2'} form={form} />,
-          <Preview key={'3'} form={form} />,
+          <MainInfo key={"0"} form={form} />,
+          <TaskAdding key={"1"} form={form} initialTasks={initialTasks} />,
+          <TaskOrdering key={"2"} form={form} />,
+          <Preview key={"3"} form={form} />,
         ]}
         labels={locale.assignmentSchema.form.steps.labels}
         descriptions={locale.assignmentSchema.form.steps.descriptions}

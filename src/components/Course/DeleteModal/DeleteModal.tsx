@@ -1,19 +1,20 @@
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import { ICourseModel } from '@custom-types/data/ICourse';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Button } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
+"use client";
+
+import { ICourse } from "@custom-types/data/ICourse";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
 
 const DeleteModal: FC<{
   active: boolean;
   setActive: setter<boolean>;
-  course: ICourseModel;
+  course: ICourse;
 }> = ({ active, setActive, course }) => {
   const { locale, lang } = useLocale();
 
@@ -24,11 +25,11 @@ const DeleteModal: FC<{
       spec: course.spec,
     };
     requestWithNotify(
-      'course/delete',
-      'POST',
+      "course/delete",
+      "POST",
       locale.notify.course.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       body,
       () => setToList(true)
     );
@@ -43,7 +44,11 @@ const DeleteModal: FC<{
         title={locale.course.modals.deletion}
       >
         <div className={modalStyles.verticalContent}>
-          <div>{locale.course.modals.delete + ` '${course.title}'?`}</div>
+          {!toList ? (
+            <div>{locale.course.modals.delete + ` '${course.title}'?`}</div>
+          ) : (
+            <div>{locale.course.modals.deletionComplete(course.title)}</div>
+          )}
 
           {!toList ? (
             <>

@@ -1,13 +1,14 @@
-import { IGroup } from '@custom-types/data/IGroup';
-import { useLocale } from '@hooks/useLocale';
-import { Button, Icon, MultiSelect, NumberInput } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+"use client";
+import { IGroup } from "@custom-types/data/IGroup";
+import { useLocale } from "@hooks/useLocale";
+import { Button, Icon, MultiSelect, NumberInput } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
-import styles from './addGrades.module.css';
+import styles from "./addGrades.module.css";
 
-const allowedLetters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З'];
+const allowedLetters = ["А", "Б", "В", "Г", "Д", "Е", "Ж", "З"];
 const initialLetters = allowedLetters.slice(0, 5);
 
 const AddGrades: FC<{}> = () => {
@@ -65,14 +66,14 @@ const AddGrades: FC<{}> = () => {
       grade.letters.forEach((letter) => {
         if (grade.number > 0 && grade.number < 12)
           requestWithNotify<{ group: IGroup; members: string[] }, boolean>(
-            'group/add',
-            'POST',
+            "group/add",
+            "POST",
             locale.notify.group.create,
             lang,
-            (_: boolean) => '',
+            (_: boolean) => "",
             {
               group: {
-                spec: '',
+                spec: "",
                 name: `${grade.number} ${letter}`,
                 readonly: true,
               },
@@ -100,13 +101,13 @@ const AddGrades: FC<{}> = () => {
               onChange={setLetters(index)}
             />
             <Icon onClick={onDelete(index)} size="xs">
-              <Trash color="var(--negative)" />
+              <IconTrash color="var(--negative)" />
             </Icon>
           </div>
         ))}
       </div>
       <Button
-        hoverCardDropdownProps={{ style: { width: '100%' } }}
+        hoverCardDropdownProps={{ style: { width: "100%" } }}
         size="lg"
         className={styles.addButton}
         color="var(--primary)"

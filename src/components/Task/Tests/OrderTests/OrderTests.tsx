@@ -1,20 +1,21 @@
-import { HORIZONTAL_TESTS_DRAG_LIMIT } from '@constants/Limits';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { setter } from '@custom-types/ui/atomic';
+"use client";
+import { HORIZONTAL_TESTS_DRAG_LIMIT } from "@constants/Limits";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
 import {
   IDraggableBoardColumn,
   IDraggableBoardItem,
-} from '@custom-types/ui/IDraggableBoard';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useLocale } from '@hooks/useLocale';
-import { useWidth } from '@hooks/useWidth';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Button } from '@ui/basics';
-import CustomDraggableBoard from '@ui/CustomDraggableBoard/CustomDraggableBoard';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/ui/IDraggableBoard";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { useLocale } from "@hooks/useLocale";
+import { useWidth } from "@hooks/useWidth";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button } from "@ui/basics";
+import CustomDraggableBoard from "@ui/CustomDraggableBoard/CustomDraggableBoard";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import styles from './orderTests.module.css';
+import styles from "./orderTests.module.css";
 
 const intoColumns = (
   grouped_tests: ITruncatedTaskTest[][],
@@ -37,9 +38,9 @@ const intoColumns = (
               label: `${locale.task.tests.test} #${
                 specIndexMap[item.spec] + 1
               }`,
-            }) as IDraggableBoardItem
+            } as IDraggableBoardItem)
         ),
-      }) as IDraggableBoardColumn
+      } as IDraggableBoardColumn)
   );
 };
 const fromColumns = (columns: IDraggableBoardColumn[]): string[][] => {
@@ -67,10 +68,10 @@ const OrderTests: FC<{
   const onSubmit = useCallback(() => {
     requestWithNotify<string[][], boolean>(
       `task/tests-reorder/${task_spec}`,
-      'POST',
+      "POST",
       locale.notify.task_test.reorder,
       lang,
-      () => '',
+      () => "",
       fromColumns(localColumns),
       () => {
         refetch(false);
@@ -104,8 +105,8 @@ const OrderTests: FC<{
   const boardDirection = useMemo(
     () =>
       !is768 || localColumns.length > HORIZONTAL_TESTS_DRAG_LIMIT
-        ? 'vertical'
-        : 'horizontal',
+        ? "vertical"
+        : "horizontal",
     [is768, localColumns]
   );
 
@@ -114,7 +115,7 @@ const OrderTests: FC<{
       <CustomDraggableBoard
         columns={localColumns}
         setColumns={setLocalColumns}
-        horizontal={boardDirection == 'horizontal'}
+        horizontal={boardDirection == "horizontal"}
       />
       <div className={styles.buttonsWrapper}>
         <Button

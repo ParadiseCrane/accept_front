@@ -1,9 +1,10 @@
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { Icon } from '@ui/basics';
-import { FC, memo, useCallback, useState } from 'react';
-import { Triangle, TriangleInverted } from 'tabler-icons-react';
+"use client";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { Icon } from "@ui/basics";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTriangle, IconTriangleInverted } from "@tabler/icons-react";
 
-import styles from './column.module.css';
+import styles from "./column.module.css";
 
 const getCurrentOrder = (
   currentOrder: number,
@@ -44,9 +45,9 @@ const Column: FC<{
     <th
       className={
         styles.header +
-        ' ' +
+        " " +
         classNames[column.key] +
-        ' ' +
+        " " +
         classNames.headerCell
       }
       onClick={column.sortable ? nextOrder : () => {}}
@@ -56,11 +57,11 @@ const Column: FC<{
         <div className={styles.sortIcon}>
           {currentOrder === -1 ? (
             <Icon size="xs">
-              <TriangleInverted color="black" />
+              <IconTriangleInverted color="black" />
             </Icon>
           ) : currentOrder === 1 ? (
             <Icon size="xs">
-              <Triangle color="black" />
+              <IconTriangle color="black" />
             </Icon>
           ) : (
             <></>

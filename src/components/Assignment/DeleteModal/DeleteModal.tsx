@@ -1,13 +1,14 @@
-import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
-import { callback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import deleteModalStyles from '@styles/ui/deleteModal.module.css';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Button } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
+"use client";
+import { IAssignmentDisplay } from "@custom-types/data/IAssignment";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import deleteModalStyles from "@styles/ui/deleteModal.module.css";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
 
 const DeleteModal: FC<{
   active: boolean;
@@ -22,11 +23,11 @@ const DeleteModal: FC<{
       spec: assignment.spec,
     };
     requestWithNotify(
-      'assignment/delete',
-      'POST',
+      "assignment/delete",
+      "POST",
       locale.notify.assignment.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       body,
       () => setToList(true),
       { autoClose: 8000 }

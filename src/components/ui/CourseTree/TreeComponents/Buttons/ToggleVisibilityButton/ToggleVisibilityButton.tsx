@@ -1,9 +1,10 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon } from '@mantine/core';
-import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
-import { Tip } from '@ui/basics';
-import { FC } from 'react';
+"use client";
+import { ITreeUnit } from "@custom-types/data/ICourse";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon } from "@mantine/core";
+import { IconCaretDown, IconCaretRight } from "@tabler/icons-react";
+import { Tip } from "@ui/basics";
+import { FC } from "react";
 
 interface IToggleVisibilityButtonProps {
   currentUnit: ITreeUnit;
@@ -36,12 +37,12 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
       >
         <ActionIcon
           variant="transparent"
-          size={'sm'}
+          size={"sm"}
           onClick={() => {
             toggleChildrenVisibility({ currentUnit });
           }}
           style={{
-            display: canToggleChildrenVisibility({ currentUnit }) ? '' : 'none',
+            display: canToggleChildrenVisibility({ currentUnit }) ? "" : "none",
           }}
         >
           {currentUnit.childrenVisible ? (
@@ -55,7 +56,7 @@ export const ToggleVisibilityButton: FC<IToggleVisibilityButtonProps> = ({
   }
 
   return (
-    <ActionIcon variant="transparent" size={'sm'} disabled>
+    <ActionIcon variant="transparent" size={"sm"} disabled>
       <IconCaretRight stroke={1.5} />
     </ActionIcon>
   );

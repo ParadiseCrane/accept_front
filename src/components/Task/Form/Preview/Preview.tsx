@@ -1,19 +1,20 @@
-import Description from '@components/Task/Description/Description';
-import { STICKY_SIZES } from '@constants/Sizes';
-import { useLocale } from '@hooks/useLocale';
-import { useWidth } from '@hooks/useWidth';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import SingularSticky from '@ui/Sticky/SingularSticky';
-import { FC, memo, useState } from 'react';
-import { Eye } from 'tabler-icons-react';
+"use client";
+import Description from "@components/Task/Description/Description";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { useLocale } from "@hooks/useLocale";
+import { useWidth } from "@hooks/useWidth";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import SingularSticky from "@ui/Sticky/SingularSticky";
+import { FC, memo, useState } from "react";
+import { IconEye } from "@tabler/icons-react";
 
 const Preview: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
   const [openedHint, setOpenedHint] = useState(false);
   const { width } = useWidth();
   return (
-    <div style={{ zoom: '80%' }}>
+    <div style={{ zoom: "80%" }}>
       {form.values.hasHint && (
         <SimpleModal
           title={locale.task.form.hint.title}
@@ -44,7 +45,7 @@ const Preview: FC<{ form: any }> = ({ form }) => {
         <SingularSticky
           color="var(--accent)"
           icon={
-            <Eye
+            <IconEye
               width={STICKY_SIZES[width] / 3}
               height={STICKY_SIZES[width] / 3}
             />

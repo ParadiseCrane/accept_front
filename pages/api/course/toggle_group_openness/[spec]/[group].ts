@@ -1,5 +1,5 @@
-import { fetchWrapper } from '@utils/fetchWrapper';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { fetchWrapper } from "@utils/fetchWrapper";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function CourseToggleGroupOpenness(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default async function CourseToggleGroupOpenness(
     req: req,
     res: res,
     url: `api/course/toggle_group_openness/${req.query.spec}/${req.query.group}`,
-    method: 'PUT',
+    method: "PUT",
   });
 }

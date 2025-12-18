@@ -1,15 +1,15 @@
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { ICourseDisplay, ICourseListItem } from '@custom-types/data/ICourse';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { BaseSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
-import { customTableSort } from '@utils/customTableSort';
-import Fuse from 'fuse.js';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { ICourseListItem } from "@custom-types/data/ICourse";
+import { BaseSearch } from "@custom-types/data/request";
+import { IAvailableLang, ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
+import { customTableSort } from "@utils/customTableSort";
+import Fuse from "fuse.js";
 import {
   FC,
   ReactNode,
@@ -18,17 +18,28 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface Item {
   value: any;
   display: string | ReactNode;
 }
 
-interface ICourseItem extends Omit<ICourseListItem, 'title' | 'readonly'> {
+interface ICourseItem extends Omit<ICourseListItem, "title" | "readonly"> {
   title: Item;
   readonly: Item;
 }
+
+const refactorData = (
+  course: ICourseListItem,
+  lang: IAvailableLang
+): string => {
+  const dayMonth = new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "en-US", {
+    day: "numeric",
+    month: "long",
+  }).format(new Date(course.last_update));
+  return `${dayMonth} ${new Date(course.last_update).getFullYear()}`;
+};
 
 const CourseList: FC<{
   url: string;
@@ -47,7 +58,7 @@ const CourseList: FC<{
   empty,
   defaultRowsOnPage,
 }) => {
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
 
   const [total, setTotal] = useState(0);
 
@@ -64,14 +75,23 @@ const CourseList: FC<{
   const [courses, setCourses] = useState<ICourseItem[]>([]);
 
   const processData = useCallback(
-    (response: ICourseListItem[]): ICourseItem[] =>
-      response.map((item) => refactorCourse(item)),
-    [refactorCourse]
+    (response: ICourseListItem[]): ICourseItem[] => {
+      return response
+        .map(
+          (item) =>
+            ({
+              ...item,
+              dateFormatted: refactorData(item, lang),
+            } as ICourseListItem)
+        )
+        .map((item) => refactorCourse(item));
+    },
+    [lang, refactorCourse]
   );
 
   const { data, loading } = useRequest<{}, ICourseListItem[], ICourseItem[]>(
     url,
-    'GET',
+    "GET",
     undefined,
     processData
   );
@@ -83,8 +103,8 @@ const CourseList: FC<{
     },
     sort_by: [],
     search_params: {
-      search: '',
-      keys: ['name.value'],
+      search: "",
+      keys: ["name.value"],
     },
   });
 
@@ -97,7 +117,7 @@ const CourseList: FC<{
       });
 
       const searched =
-        searchParams.search_params.search == ''
+        searchParams.search_params.search == ""
           ? list
           : fuse
               .search(searchParams.search_params.search)

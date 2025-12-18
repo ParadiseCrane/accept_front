@@ -1,13 +1,14 @@
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Icon } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+"use client";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteTest: FC<{
   index: number;
@@ -20,10 +21,10 @@ const DeleteTest: FC<{
   const handleSubmit = useCallback(() => {
     requestWithNotify<undefined, boolean>(
       `task_test/delete/${test.spec}`,
-      'DELETE',
+      "DELETE",
       locale.notify.task_test.delete,
       lang,
-      (_: boolean) => '',
+      (_: boolean) => "",
       undefined,
       () => {
         refetch();
@@ -40,7 +41,7 @@ const DeleteTest: FC<{
         size="xs"
         tooltipLabel={locale.ui.taskTest.delete.test}
       >
-        <Trash />
+        <IconTrash />
       </Icon>
       <SimpleModal
         opened={opened}

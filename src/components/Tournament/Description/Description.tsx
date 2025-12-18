@@ -1,18 +1,19 @@
-import PrintTasks from '@components/Task/PrintTasks/PrintTasks';
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { ITournament } from '@custom-types/data/ITournament';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { sendRequest } from '@requests/request';
-import { Overlay } from '@ui/basics';
-import { TipTapEditor } from '@ui/basics/TipTapEditor/TipTapEditor';
-import PrimitiveTaskTable from '@ui/PrimitiveTaskTable/PrimitiveTaskTable';
-import { getLocalDate } from '@utils/datetime';
-import { letterFromIndex } from '@utils/letterFromIndex';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+"use client";
+import PrintTasks from "@components/Task/PrintTasks/PrintTasks";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { ITournament } from "@custom-types/data/ITournament";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import { Overlay } from "@ui/basics";
+import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
+import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
+import { getLocalDate } from "@utils/datetime";
+import { letterFromIndex } from "@utils/letterFromIndex";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 
-import styles from './description.module.css';
-import RegistrationButton from './RegistrationButton/RegistrationButton';
+import styles from "./description.module.css";
+import RegistrationButton from "./RegistrationButton/RegistrationButton";
 
 const Description: FC<{
   tournament: ITournament;
@@ -37,7 +38,7 @@ const Description: FC<{
   const special = useMemo(
     () =>
       isAdmin ||
-      tournament.moderators.includes(user?.login || '') ||
+      tournament.moderators.includes(user?.login || "") ||
       tournament.author == user?.login,
     [isAdmin, tournament.author, tournament.moderators, user?.login]
   );
@@ -65,7 +66,7 @@ const Description: FC<{
     if (tournament.tasks.length && !isPreview) {
       sendRequest<string[], ITaskDisplay[]>(
         `task/list-specs`,
-        'POST',
+        "POST",
         tournament.tasks.map((task: any) => task.value || task.spec),
         5000
       ).then((res) => {
@@ -113,7 +114,7 @@ const Description: FC<{
 
           <div>
             <div className={styles.duration}>
-              {locale.tournament.form.startDate}:{' '}
+              {locale.tournament.form.startDate}:{" "}
               {getLocalDate(tournament.start)}
             </div>
             <div className={styles.duration}>
@@ -162,8 +163,10 @@ const Description: FC<{
                 special && !isPreview
                   ? locale.tournament.addTasks
                   : registered || tournament.status.spec == 2
-                    ? locale.tournament.emptyTasks
-                    : locale.tournament.needRegistration
+                  ? tournament.status.spec === 0
+                    ? locale.tournament.tournamentHasNotStarted
+                    : locale.tournament.emptyTasks
+                  : locale.tournament.needRegistration
               }
             />
           </div>

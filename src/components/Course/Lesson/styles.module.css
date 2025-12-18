@@ -1,0 +1,22 @@
+.wrapper {
+  padding: 0 var(--spacer-xl) var(--spacer-huge) var(--spacer-xl);
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--primary);
+  font-size: var(--font-size-huge);
+}
+
+.description {
+  margin-top: var(--spacer-l);
+  max-width: 1000px;
+}
+
+.tasksWrapper {
+  margin: var(--spacer-l) auto;
+}

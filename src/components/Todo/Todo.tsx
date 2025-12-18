@@ -1,7 +1,8 @@
-import { useLocale } from '@hooks/useLocale';
-import styles from '@styles/error.module.css';
-import Link from 'next/link';
-import { FC } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import styles from "@styles/error.module.css";
+import Link from "next/link";
+import { FC } from "react";
 
 const Todo: FC<{}> = () => {
   const { locale } = useLocale();

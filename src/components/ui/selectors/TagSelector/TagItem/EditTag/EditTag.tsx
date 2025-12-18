@@ -1,14 +1,15 @@
-import { ITag } from '@custom-types/data/ITag';
-import { Item } from '@custom-types/ui/atomic';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Icon, TextInput } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { Pencil } from 'tabler-icons-react';
+"use client";
+import { ITag } from "@custom-types/data/ITag";
+import { Item } from "@custom-types/ui/atomic";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon, TextInput } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconPencil } from "@tabler/icons-react";
 
 const EditTag: FC<{
   item: Item;
@@ -19,7 +20,7 @@ const EditTag: FC<{
   const [opened, setOpened] = useState(false);
   const { locale, lang } = useLocale();
   const [title, setTitle] = useState(item.title);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const validate = useCallback((title: string) => {
     if (title.length >= 3) {
@@ -31,7 +32,7 @@ const EditTag: FC<{
   const onBlur = useCallback(
     (title: string) => {
       if (validate(title)) {
-        return setError('');
+        return setError("");
       }
       return setError(locale.ui.tagSelector.minLength(locale.name, 3));
     },
@@ -43,10 +44,10 @@ const EditTag: FC<{
       if (validate(title)) {
         requestWithNotify<ITag, boolean>(
           updateURL,
-          'POST',
+          "POST",
           locale.tag.edit,
           lang,
-          (_: boolean) => '',
+          (_: boolean) => "",
           {
             spec: item.spec,
             title: title,
@@ -60,7 +61,7 @@ const EditTag: FC<{
         );
       }
     },
-    [validate, updateURL, locale.tag.edit, lang, item.spec, refetch]
+    [validate, updateURL, locale, lang, item, refetch]
   );
 
   return (
@@ -71,7 +72,7 @@ const EditTag: FC<{
         color="var(--primary)"
         size="xs"
       >
-        <Pencil />
+        <IconPencil color="var(--primary)" />
       </Icon>
       <SimpleModal
         opened={opened}

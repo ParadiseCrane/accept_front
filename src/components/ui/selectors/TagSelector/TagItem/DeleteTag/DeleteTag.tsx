@@ -1,13 +1,14 @@
-import { Item } from '@custom-types/ui/atomic';
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Icon } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { Trash } from 'tabler-icons-react';
+"use client";
+import { Item } from "@custom-types/ui/atomic";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Icon } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteTag: FC<{
   item: Item;
@@ -21,10 +22,10 @@ const DeleteTag: FC<{
   const handleSubmit = useCallback(() => {
     requestWithNotify<{ spec: string }, any>(
       deleteURL,
-      'POST',
+      "POST",
       locale.tag.delete,
       lang,
-      (_: any) => '',
+      (_: any) => "",
       {
         spec: item.spec,
       },
@@ -44,7 +45,7 @@ const DeleteTag: FC<{
         color="red"
         size="xs"
       >
-        <Trash />
+        <IconTrash color="red" />
       </Icon>
       <SimpleModal
         opened={opened}

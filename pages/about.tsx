@@ -1,8 +1,9 @@
-import About from '@components/About/About';
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import Title from '@ui/Title/Title';
-import { ReactElement } from 'react';
+"use client";
+import About from "@components/About/About";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import Title from "@ui/Title/Title";
+import { ReactElement } from "react";
 
 function AboutPage() {
   const { locale } = useLocale();

@@ -1,16 +1,17 @@
-import { useLocale } from '@hooks/useLocale';
-import { HoverCard } from '@mantine/core';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { HoverCard } from "@mantine/core";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
 import {
-  AlignCenter as AlignCenterIcon,
-  AlignJustified as AlignJustifyIcon,
-  AlignLeft as AlignLeftIcon,
-  AlignRight as AlignRightIcon,
-  ChevronDown,
-} from 'tabler-icons-react';
+  IconAlignCenter as AlignCenterIcon,
+  IconAlignJustified as AlignJustifyIcon,
+  IconAlignLeft as AlignLeftIcon,
+  IconAlignRight as AlignRightIcon,
+  IconChevronDown,
+} from "@tabler/icons-react";
 
-import { IconWrapper } from './IconWrapper';
+import { IconWrapper } from "./IconWrapper";
 
 export const AlignGroupSeparate = ({
   editor,
@@ -43,15 +44,15 @@ export const AlignGroupCollapsed = ({
         shadow="md"
         position="bottom-start"
         withArrow
-        styles={{ dropdown: { padding: '3px' } }}
+        styles={{ dropdown: { padding: "3px" } }}
       >
         <HoverCard.Target>
           <RichTextEditor.Control
             aria-label={locale.tiptap.align}
             title={locale.tiptap.align}
           >
-            <AlignLeftIcon size={'1.2rem'} style={{ stroke: '#444746' }} />
-            <ChevronDown size={'1.2rem'} style={{ stroke: '#444746' }} />
+            <AlignLeftIcon size={"1.2rem"} style={{ stroke: "#444746" }} />
+            <IconChevronDown size={"1.2rem"} style={{ stroke: "#444746" }} />
           </RichTextEditor.Control>
         </HoverCard.Target>
         <HoverCard.Dropdown>
@@ -67,13 +68,13 @@ export const AlignGroupCollapsed = ({
 
 const AlignLeftButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
-    ? editor.isActive({ textAlign: 'left' })
+    ? editor.isActive({ textAlign: "left" })
     : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('left').run();
+        editor.chain().setTextAlign("left").run();
       }}
       aria-label={locale.tiptap.alignLeft}
       title={locale.tiptap.alignLeft}
@@ -85,13 +86,13 @@ const AlignLeftButton = ({ editor }: { editor: Editor }) => {
 
 const AlignCenterButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
-    ? editor.isActive({ textAlign: 'center' })
+    ? editor.isActive({ textAlign: "center" })
     : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('center').run();
+        editor.chain().setTextAlign("center").run();
       }}
       aria-label={locale.tiptap.alignCenter}
       title={locale.tiptap.alignCenter}
@@ -103,13 +104,13 @@ const AlignCenterButton = ({ editor }: { editor: Editor }) => {
 
 const AlignRightButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
-    ? editor.isActive({ textAlign: 'right' })
+    ? editor.isActive({ textAlign: "right" })
     : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('right').run();
+        editor.chain().setTextAlign("right").run();
       }}
       aria-label={locale.tiptap.alignRight}
       title={locale.tiptap.alignRight}
@@ -121,13 +122,13 @@ const AlignRightButton = ({ editor }: { editor: Editor }) => {
 
 const AlignJustifyButton = ({ editor }: { editor: Editor }) => {
   const isActive = editor.isFocused
-    ? editor.isActive({ textAlign: 'justify' })
+    ? editor.isActive({ textAlign: "justify" })
     : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
       onClick={() => {
-        editor.chain().setTextAlign('justify').run();
+        editor.chain().setTextAlign("justify").run();
       }}
       aria-label={locale.tiptap.alignJustify}
       title={locale.tiptap.alignJustify}

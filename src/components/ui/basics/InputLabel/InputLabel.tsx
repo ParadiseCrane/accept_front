@@ -1,8 +1,9 @@
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import inputStyles from '@styles/ui/input.module.css';
-import { FC, ReactNode, memo } from 'react';
+"use client";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
+import inputStyles from "@styles/ui/input.module.css";
+import { FC, ReactNode, memo } from "react";
 
-import Helper from '../Helper/Helper';
+import Helper from "../Helper/Helper";
 
 const InputLabel: FC<{
   label?: ReactNode;

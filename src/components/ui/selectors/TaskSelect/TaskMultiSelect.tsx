@@ -1,10 +1,11 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { SelectItem } from '@custom-types/ui/atomic';
-import { ComboboxItem } from '@mantine/core';
-import { MultiSelect } from '@ui/basics';
-import React, { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { ComboboxItem } from "@mantine/core";
+import { MultiSelect } from "@ui/basics";
+import React, { FC, memo, useCallback, useMemo } from "react";
 
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
+import { TaskItemProps, TaskSelectProps } from "./TaskSelect";
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
   label,
@@ -22,7 +23,7 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
           ({
             label: item.title,
             value: item.spec,
-          }) as TaskItemProps
+          } as TaskItemProps)
       ),
     [tasks]
   );

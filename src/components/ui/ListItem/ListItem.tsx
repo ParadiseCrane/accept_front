@@ -1,12 +1,13 @@
-import { ITaskTestData } from '@custom-types/data/atomic';
-import { callback } from '@custom-types/ui/atomic';
-import inputStyles from '@styles/ui/input.module.css';
-import { Icon } from '@ui/basics';
-import TestArea from '@ui/TestArea/TestArea';
-import { ChangeEvent, FC, ReactNode, memo } from 'react';
-import { Trash } from 'tabler-icons-react';
+"use client";
+import { ITaskTestData } from "@custom-types/data/atomic";
+import { callback } from "@custom-types/ui/atomic";
+import inputStyles from "@styles/ui/input.module.css";
+import { Icon } from "@ui/basics";
+import TestArea from "@ui/TestArea/TestArea";
+import { ChangeEvent, FC, ReactNode, memo } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
-import styles from './listItem.module.css';
+import styles from "./listItem.module.css";
 
 const ListItem: FC<{
   label: string;
@@ -38,7 +39,7 @@ const ListItem: FC<{
   index,
   onDelete,
   form,
-  field = '',
+  field = "",
   readonly,
   additionalActions,
   classNames,
@@ -48,7 +49,7 @@ const ListItem: FC<{
   values,
 }) => {
   return (
-    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ''}`}>
+    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ""}`}>
       <div className={`${styles.label} ${inputStyles.label}`}>
         {label}
         <div className={styles.actions}>
@@ -59,7 +60,7 @@ const ListItem: FC<{
               variant="transparent"
               size="xs"
             >
-              <Trash />
+              <IconTrash />
             </Icon>
           )}
           {!!additionalActions &&
@@ -83,11 +84,11 @@ const ListItem: FC<{
             value={
               readonly && values
                 ? values[index].inputData
-                : form.values[field][index]['inputData']
+                : form.values[field][index]["inputData"]
             }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               if (!readonly) {
-                form.values[field][index]['inputData'] = e.target.value;
+                form.values[field][index]["inputData"] = e.target.value;
                 form.setFieldValue(field, form.values[field]);
               }
             }}
@@ -112,11 +113,11 @@ const ListItem: FC<{
             value={
               readonly && values
                 ? values[index].outputData
-                : form.values[field][index]['outputData']
+                : form.values[field][index]["outputData"]
             }
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               if (!readonly) {
-                form.values[field][index]['outputData'] = e.target.value;
+                form.values[field][index]["outputData"] = e.target.value;
                 form.setFieldValue(field, form.values[field]);
               }
             }}

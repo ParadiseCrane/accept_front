@@ -1,7 +1,8 @@
-import { ActionIcon } from '@mantine/core';
-import Link from 'next/link';
-import { FC, memo } from 'react';
-import { Eye } from 'tabler-icons-react';
+"use client";
+import { ActionIcon } from "@mantine/core";
+import Link from "next/link";
+import { FC, memo } from "react";
+import { IconEye } from "@tabler/icons-react";
 
 const OpenTask: FC<{ spec: string }> = ({ spec }) => {
   return (
@@ -14,7 +15,7 @@ const OpenTask: FC<{ spec: string }> = ({ spec }) => {
       variant="transparent"
       size="lg"
     >
-      <Eye width={20} height={20} />
+      <IconEye width={20} height={20} />
     </ActionIcon>
   );
 };

@@ -1,19 +1,21 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import styles from './style.module.css';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { IGroupInvite } from '@custom-types/data/IGroup';
-import { Icon, Tip } from '@ui/basics';
-import { Pencil, Plus, Trash } from 'tabler-icons-react';
-import { ActionIcon, Divider, LoadingOverlay } from '@mantine/core';
-import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
-import CopyButton from '@ui/CopyButton/CopyButton';
-import { LinkCopy } from '@ui/LinkCopy/LinkCopy';
-import { sendRequest } from '@requests/request';
+"use client";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+import styles from "./style.module.css";
+import { useLocale } from "@hooks/useLocale";
+import { IGroupInvite } from "@custom-types/data/IGroup";
+import { Icon, Tip } from "@ui/basics";
+import { IconPencil, IconPlus } from "@tabler/icons-react";
+import { Divider, LoadingOverlay } from "@mantine/core";
+import DeleteModal from "@components/Group/DeleteModal/DeleteModal";
+import CopyButton from "@ui/CopyButton/CopyButton";
+import { LinkCopy } from "@ui/LinkCopy/LinkCopy";
+import { sendRequest } from "@requests/request";
+import { useCourse } from "@hooks/useCourse";
 
 const Groups: FC<{
   course_spec: string;
 }> = ({ course_spec }) => {
+  const { onGroupDelete } = useCourse();
   const { locale } = useLocale();
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState<IGroupInvite[]>([]);
@@ -22,13 +24,21 @@ const Groups: FC<{
     setLoading(true);
     const response = await sendRequest<{}, IGroupInvite[]>(
       `invite/${course_spec}/all`,
-      'GET'
+      "GET"
     );
     if (!response.error) {
       setGroups(response.response);
     }
     setLoading(false);
   }, [course_spec]);
+
+  const onDelete = useCallback(
+    async (spec: string) => {
+      await fetchData();
+      onGroupDelete(spec);
+    },
+    [fetchData, onGroupDelete]
+  );
 
   useEffect(() => {
     fetchData();
@@ -37,18 +47,18 @@ const Groups: FC<{
   const regenerateLink = async (groupSpec: string) => {
     const response = await sendRequest<{}, string>(
       `invite/${course_spec}/${groupSpec}`,
-      'POST'
+      "POST"
     );
     if (!response.error) {
       return response.response;
     }
-    return '';
+    return "";
   };
 
   if (loading) {
     return (
-      <div style={{ position: 'relative', height: '100%' }}>
-        <LoadingOverlay visible={loading} loaderProps={{ radius: 'lg' }} />
+      <div style={{ position: "relative", height: "100%" }}>
+        <LoadingOverlay visible={loading} loaderProps={{ radius: "lg" }} />
       </div>
     );
   }
@@ -81,7 +91,7 @@ const Groups: FC<{
                   tooltipLabel={locale.dashboard.course.editGroup}
                   href={`/group/edit/${group.group.spec}`}
                 >
-                  <Pencil color="var(--primary)" />
+                  <IconPencil color="var(--primary)" />
                 </Icon>
                 <DeleteModal
                   group={{
@@ -90,14 +100,14 @@ const Groups: FC<{
                     readonly: group.group.readonly,
                     spec: group.group.spec,
                   }}
-                  refetchData={fetchData}
+                  onDelete={onDelete}
                 />
               </div>
             </div>
             {index === groups.length - 1 ? (
-              <Divider my={'md'} size={0} />
+              <Divider my={"md"} size={0} />
             ) : (
-              <Divider my={'md'} />
+              <Divider my={"md"} />
             )}
           </div>
         );
@@ -105,13 +115,13 @@ const Groups: FC<{
       <Tip label={locale.group.add}>
         <Icon
           href={`/group/add?course=${course_spec}`}
-          w={'100%'}
-          h={'50px'}
+          w={"100%"}
+          h={"50px"}
           variant="outline"
           color="green"
           size="sm"
         >
-          <Plus />
+          <IconPlus />
         </Icon>
       </Tip>
     </div>

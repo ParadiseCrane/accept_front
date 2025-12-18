@@ -1,22 +1,22 @@
-import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
-import { IMenuLink } from '@custom-types/ui/IMenuLink';
-import { useLocale } from '@hooks/useLocale';
-import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { FC, memo, useMemo } from 'react';
+import AssignmentList from "@components/Profile/AssignmentList/AssignmentList";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { useLocale } from "@hooks/useLocale";
+import LeftMenu from "@ui/LeftMenu/LeftMenu";
+import { FC, memo, useMemo } from "react";
 import {
-  AB2,
-  AlphabetCyrillic,
-  Chalkboard,
-  PlaylistAdd,
-  UserPlus,
-  Users,
-} from 'tabler-icons-react';
+  IconAB2,
+  IconAlphabetCyrillic,
+  IconChalkboard,
+  IconPlaylistAdd,
+  IconUserPlus,
+  IconUsers,
+} from "@tabler/icons-react";
 
-import AddGrade from './AddGrade/AddGrade';
-import AddGrades from './AddGrades/AddGrades';
-import AddUser from './AddUser/AddUser';
-import AddUsers from './AddUsers/AddUsers';
-import ChangeGrades from './ChangeGrades/ChangeGrades';
+import AddGrade from "./AddGrade/AddGrade";
+import AddGrades from "./AddGrades/AddGrades";
+import AddUser from "./AddUser/AddUser";
+import AddUsers from "./AddUsers/AddUsers";
+import ChangeGrades from "./ChangeGrades/ChangeGrades";
 
 const AdminDashboard: FC<{}> = () => {
   const { locale } = useLocale();
@@ -25,39 +25,39 @@ const AdminDashboard: FC<{}> = () => {
     () => [
       {
         page: <AssignmentList url="assignment/list" />,
-        icon: <Chalkboard color="var(--secondary)" />,
+        icon: <IconChalkboard color="var(--secondary)" />,
         title: locale.dashboard.admin.assignmentList,
-        section: 'assignments',
+        section: "assignments",
       },
       {
         page: <AddUsers />,
-        icon: <Users color="var(--secondary)" />,
+        icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.admin.addUsers,
-        section: 'add_users',
+        section: "add_users",
       },
       {
         page: <AddUser />,
-        icon: <UserPlus color="var(--secondary)" />,
+        icon: <IconUserPlus color="var(--secondary)" />,
         title: locale.dashboard.admin.addUser,
-        section: 'add_user',
+        section: "add_user",
       },
       {
         page: <AddGrade />,
-        icon: <AlphabetCyrillic color="var(--secondary)" />,
+        icon: <IconAlphabetCyrillic color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrade,
-        section: 'add_grade',
+        section: "add_grade",
       },
       {
         page: <AddGrades />,
-        icon: <PlaylistAdd color="var(--secondary)" />,
+        icon: <IconPlaylistAdd color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrades,
-        section: 'add_grades',
+        section: "add_grades",
       },
       {
         page: <ChangeGrades />,
-        icon: <AB2 color="var(--secondary)" />,
+        icon: <IconAB2 color="var(--secondary)" />,
         title: locale.dashboard.admin.changeGrades,
-        section: 'change_grades',
+        section: "change_grades",
       },
     ],
     [locale]

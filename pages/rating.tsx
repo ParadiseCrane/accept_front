@@ -1,17 +1,18 @@
-import { REVALIDATION_TIME } from '@constants/PageRevalidation';
-import { IRatingInfo } from '@custom-types/data/IRatingInfo';
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import styles from '@styles/rating.module.css';
-import tableStyles from '@styles/ui/primitiveTable.module.css';
-import PrimitiveTable from '@ui/PrimitiveTable/PrimitiveTable';
-import Title from '@ui/Title/Title';
-import { getCookieValue } from '@utils/cookies';
-import { getApiUrl } from '@utils/getServerUrl';
-import { GetServerSideProps } from 'next';
-import Link from 'next/link';
-import { ReactElement, useCallback } from 'react';
-import { Crown, Trophy } from 'tabler-icons-react';
+"use client";
+import { REVALIDATION_TIME } from "@constants/PageRevalidation";
+import { IRatingInfo } from "@custom-types/data/IRatingInfo";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import styles from "@styles/rating.module.css";
+import tableStyles from "@styles/ui/primitiveTable.module.css";
+import PrimitiveTable from "@ui/PrimitiveTable/PrimitiveTable";
+import Title from "@ui/Title/Title";
+import { getCookieValue } from "@utils/cookies";
+import { getApiUrl } from "@utils/getServerUrl";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { ReactElement, useCallback } from "react";
+import { IconCrown, IconTrophy } from "@tabler/icons-react";
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -21,7 +22,7 @@ interface IndexedRatingInfo extends IRatingInfo {
 function Rating(props: { users: IRatingInfo[] }) {
   const { locale } = useLocale();
   const users = props.users.map(
-    (item, index) => ({ ...item, index }) as IndexedRatingInfo
+    (item, index) => ({ ...item, index } as IndexedRatingInfo)
   );
   const best_score = users.length > 0 ? users[0].score : 0;
 
@@ -30,11 +31,11 @@ function Rating(props: { users: IRatingInfo[] }) {
       <>
         <td>
           {item.score == best_score ? (
-            <Crown
+            <IconCrown
               strokeWidth={1.3}
-              fill={'#FFD700'}
+              fill={"#FFD700"}
               className={styles.crown}
-              style={{ marginLeft: '-5px' }}
+              style={{ marginLeft: "-5px" }}
             />
           ) : (
             item.index + 1
@@ -57,7 +58,7 @@ function Rating(props: { users: IRatingInfo[] }) {
       <Title title={locale.titles.rating} />
       <div className={styles.wrapper}>
         <div className={styles.info}>
-          <Trophy size={40} strokeWidth={1} fill={'#FFD700'} />
+          <IconTrophy size={40} strokeWidth={1} fill={"#FFD700"} />
           {locale.rating.info(LIMIT)}
         </div>
         <PrimitiveTable
@@ -94,20 +95,20 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   ..._
 }) => {
-  const access_token = getCookieValue(req.headers.cookie || '', 'access_token');
+  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
   const response = await fetch(`${API_URL}/api/rating/${LIMIT}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       Authorization: `Bearer ${access_token}`,
       cookie: req.headers.cookie,
 
-      'content-type': 'application/json',
+      "content-type": "application/json",
     } as { [key: string]: string },
   });
   if (response.status === 200) {
     res.setHeader(
-      'Cache-Control',
+      "Cache-Control",
       `public, s-maxage=10, stale-while-revalidate=${REVALIDATION_TIME.rating}`
     );
     const response_json = await response.json();
@@ -118,9 +119,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

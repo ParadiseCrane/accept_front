@@ -1,10 +1,11 @@
-import { pureCallback, setter } from '@custom-types/ui/atomic';
-import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
-import { useLocale } from '@hooks/useLocale';
-import { Center, Pagination, Tooltip } from '@mantine/core';
-import { Checkbox, Icon, LoadingOverlay } from '@ui/basics';
-import { getLocalDate } from '@utils/datetime';
-import { shrinkText } from '@utils/shrinkText';
+"use client";
+import { pureCallback, setter } from "@custom-types/ui/atomic";
+import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
+import { useLocale } from "@hooks/useLocale";
+import { Center, Pagination, Tooltip } from "@mantine/core";
+import { Checkbox, Icon, LoadingOverlay } from "@ui/basics";
+import { getLocalDate } from "@utils/datetime";
+import { shrinkText } from "@utils/shrinkText";
 import {
   ChangeEvent,
   FC,
@@ -14,10 +15,10 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
-import styles from './messageList.module.css';
-import ReadModal from './ReadModal/ReadModal';
+import styles from "./messageList.module.css";
+import ReadModal from "./ReadModal/ReadModal";
 
 const ON_PAGE = 10;
 

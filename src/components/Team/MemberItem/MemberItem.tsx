@@ -1,14 +1,15 @@
-import { ITeam } from '@custom-types/data/ITeam';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { Icon, UserAvatar } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FC, memo, useCallback } from 'react';
-import { CircleMinus } from 'tabler-icons-react';
+"use client";
+import { ITeam } from "@custom-types/data/ITeam";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { Icon, UserAvatar } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback } from "react";
+import { IconCircleMinus } from "@tabler/icons-react";
 
-import styles from './memberItem.module.css';
+import styles from "./memberItem.module.css";
 
 const MemberItem: FC<{
   team: ITeam;
@@ -21,10 +22,10 @@ const MemberItem: FC<{
   const deleteUser = useCallback(() => {
     requestWithNotify(
       `team/removeParticipants/${team.spec}`,
-      'POST',
+      "POST",
       locale.notify.team.kickParticipant,
       lang,
-      () => '',
+      () => "",
       [participant.login]
     ).then((res) => {
       if (!res.error) {
@@ -47,7 +48,7 @@ const MemberItem: FC<{
           color="red"
           tooltipLabel={locale.tip.team.kickParticipant}
         >
-          <CircleMinus />
+          <IconCircleMinus />
         </Icon>
       )}
     </div>

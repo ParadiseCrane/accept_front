@@ -1,17 +1,18 @@
-import { form } from './form';
-import { list } from './list';
-import { modals } from './modals';
-import { registration } from './registration';
+import { form } from "./form";
+import { list } from "./list";
+import { modals } from "./modals";
+import { registration } from "./registration";
 
 export const tournament = {
-  emptyTasks: 'Задач пока нет',
-  addTasks: 'Добавьте задачи',
-  needRegistration: 'Требуется регистрация',
-  register: 'Зарегистрироваться',
-  refuse: 'Отменить регистрацию',
-  banned: 'Вы забанены',
-  enterPin: 'Введите пин-код',
-  join: 'Присоединиться',
+  emptyTasks: "Задач пока нет",
+  tournamentHasNotStarted: "Турнир еще не начался",
+  addTasks: "Добавьте задачи",
+  needRegistration: "Требуется регистрация",
+  register: "Зарегистрироваться",
+  refuse: "Отменить регистрацию",
+  banned: "Вы забанены",
+  enterPin: "Введите пин-код",
+  join: "Присоединиться",
   form,
   list,
   modals,

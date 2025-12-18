@@ -1,10 +1,12 @@
+"use client";
+
 import {
   IAvailableLang,
   ILocale,
   ILocaleContext,
   locales,
-} from '@custom-types/ui/ILocale';
-import { useLocalStorage } from '@mantine/hooks';
+} from "@custom-types/ui/ILocale";
+import { useLocalStorage } from "@mantine/hooks";
 import {
   FC,
   ReactNode,
@@ -12,13 +14,13 @@ import {
   useCallback,
   useContext,
   useMemo,
-} from 'react';
+} from "react";
 
 const langList = Object.keys(locales) as IAvailableLang[];
 
 const LocaleContext = createContext<ILocaleContext>(null!);
 
-const defaultLang = 'ru';
+const defaultLang = "ru";
 
 function getWeekDays(locale: ILocale) {
   return [
@@ -51,7 +53,7 @@ function getMonths(locale: ILocale) {
 
 export const LocaleProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [lang, setLang] = useLocalStorage<IAvailableLang>({
-    key: 'accept_locale',
+    key: "accept_locale",
     defaultValue: defaultLang,
   });
   const set = useCallback(

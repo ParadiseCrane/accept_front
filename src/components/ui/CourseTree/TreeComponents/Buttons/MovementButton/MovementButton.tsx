@@ -1,19 +1,20 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
+"use client";
+import { ITreeUnit } from "@custom-types/data/ICourse";
 import {
   ICourseAddTreeActions,
   ICourseAddTreeCheckers,
-} from '@hooks/useCourseTree';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon, Popover } from '@mantine/core';
+} from "@hooks/useCourseTree";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon, Popover } from "@mantine/core";
 import {
   IconArrowsMove,
   IconArrowBigDownLine,
   IconArrowBigLeftLine,
   IconArrowBigRightLine,
   IconArrowBigUpLine,
-} from '@tabler/icons-react';
-import { Tip } from '@ui/basics';
-import { FC } from 'react';
+} from "@tabler/icons-react";
+import { Tip } from "@ui/basics";
+import { FC } from "react";
 
 interface IMovementButtonProps {
   currentUnit: ITreeUnit;
@@ -41,7 +42,7 @@ export const MovementButton: FC<IMovementButtonProps> = ({
           label={locale.ui.courseTree.moveElement}
           spanStyle={styles.iconWrapper}
         >
-          <ActionIcon variant="transparent" size={'sm'}>
+          <ActionIcon variant="transparent" size={"sm"}>
             <IconArrowsMove stroke={1.5} />
           </ActionIcon>
         </Tip>
@@ -49,7 +50,7 @@ export const MovementButton: FC<IMovementButtonProps> = ({
       <Popover.Dropdown>
         <>
           <ActionIcon
-            size={'sm'}
+            size={"sm"}
             onClick={() => {
               actions.moveUp({ currentUnit });
             }}
@@ -59,7 +60,7 @@ export const MovementButton: FC<IMovementButtonProps> = ({
           </ActionIcon>
 
           <ActionIcon
-            size={'sm'}
+            size={"sm"}
             onClick={() => {
               actions.moveDown({ currentUnit });
             }}
@@ -69,7 +70,7 @@ export const MovementButton: FC<IMovementButtonProps> = ({
           </ActionIcon>
 
           <ActionIcon
-            size={'sm'}
+            size={"sm"}
             onClick={() => {
               actions.moveDepthUp({ currentUnit });
             }}
@@ -79,7 +80,7 @@ export const MovementButton: FC<IMovementButtonProps> = ({
           </ActionIcon>
 
           <ActionIcon
-            size={'sm'}
+            size={"sm"}
             onClick={() => {
               actions.moveDepthDown({ currentUnit });
             }}

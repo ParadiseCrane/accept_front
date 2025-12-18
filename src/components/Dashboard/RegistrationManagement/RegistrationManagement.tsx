@@ -1,10 +1,11 @@
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { useRequest } from '@hooks/useRequest';
-import { FC, memo, useMemo } from 'react';
+"use client";
+import { IUserDisplay } from "@custom-types/data/IUser";
+import { useRequest } from "@hooks/useRequest";
+import { FC, memo, useMemo } from "react";
 
-import styles from './registrationManagement.module.css';
-import Solo from './Solo/Solo';
-import Team from './Team/Team';
+import styles from "./registrationManagement.module.css";
+import Solo from "./Solo/Solo";
+import Team from "./Team/Team";
 
 const RegistrationManagement: FC<{
   spec: string;
@@ -13,7 +14,7 @@ const RegistrationManagement: FC<{
   const { data, refetch, loading } = useRequest<
     {},
     { users: IUserDisplay[]; participants: string[] }
-  >(`tournament/registration-management/${spec}`, 'GET');
+  >(`tournament/registration-management/${spec}`, "GET");
 
   const users = useMemo(() => (data ? [...(data?.users || [])] : []), [data]);
   const participants = useMemo(

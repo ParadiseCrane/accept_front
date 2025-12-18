@@ -1,9 +1,10 @@
-import { cardContent } from '@constants/ContactCards';
-import { useLocale } from '@hooks/useLocale';
-import { FC, memo } from 'react';
+"use client";
+import { cardContent } from "@constants/ContactCards";
+import { useLocale } from "@hooks/useLocale";
+import { FC, memo } from "react";
 
-import ContactCard from './ContactCard/ContactCard';
-import styles from './contacts.module.css';
+import ContactCard from "./ContactCard/ContactCard";
+import styles from "./contacts.module.css";
 
 const Contacts: FC<{}> = () => {
   const { locale } = useLocale();

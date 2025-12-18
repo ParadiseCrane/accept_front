@@ -1,6 +1,7 @@
-import { FC, ReactNode, memo, useCallback, useEffect, useState } from 'react';
+"use client";
+import { FC, ReactNode, memo, useCallback, useEffect, useState } from "react";
 
-import styles from './plotTooltip.module.css';
+import styles from "./plotTooltip.module.css";
 
 const PlotTooltip: FC<{ children?: ReactNode }> = ({ children }) => {
   const [coords, setCoords] = useState([0, 0]);
@@ -10,16 +11,16 @@ const PlotTooltip: FC<{ children?: ReactNode }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('mousemove', processMouseEvent);
+    window.addEventListener("mousemove", processMouseEvent);
     return () => {
-      window.removeEventListener('mousemove', processMouseEvent);
+      window.removeEventListener("mousemove", processMouseEvent);
     };
   }, [processMouseEvent]);
   return (
     <div
       className={styles.wrapper}
       style={{
-        display: children === undefined ? 'none' : 'block',
+        display: children === undefined ? "none" : "block",
         left: coords[0],
         top: coords[1],
       }}

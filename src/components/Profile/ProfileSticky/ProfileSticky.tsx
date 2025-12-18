@@ -1,13 +1,14 @@
-import { STICKY_SIZES } from '@constants/Sizes';
-import { IUser } from '@custom-types/data/IUser';
-import { useLocale } from '@hooks/useLocale';
-import { useWidth } from '@hooks/useWidth';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import { FC, memo, useState } from 'react';
-import { Pencil, Trash } from 'tabler-icons-react';
+"use client";
+import { STICKY_SIZES } from "@constants/Sizes";
+import { IUser } from "@custom-types/data/IUser";
+import { useLocale } from "@hooks/useLocale";
+import { useWidth } from "@hooks/useWidth";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import { FC, memo, useState } from "react";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
 
-import ProfileDeleteModal from '../ProfileDeleteModal/ProfileDeleteModal';
-import ProfileEditModal from '../ProfileEditModal/ProfileEditModal';
+import ProfileDeleteModal from "../ProfileDeleteModal/ProfileDeleteModal";
+import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 
 const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
   const { width } = useWidth();
@@ -17,9 +18,9 @@ const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
 
   const actions: IStickyAction[] = [
     {
-      color: 'green',
+      color: "green",
       icon: (
-        <Pencil
+        <IconPencil
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />
@@ -28,9 +29,9 @@ const ProfileSticky: FC<{ user: IUser }> = ({ user }) => {
       description: locale.tip.sticky.user.edit,
     },
     {
-      color: 'red',
+      color: "red",
       icon: (
-        <Trash
+        <IconTrash
           width={STICKY_SIZES[width] / 3}
           height={STICKY_SIZES[width] / 3}
         />

@@ -1,13 +1,14 @@
-import { useLocale } from '@hooks/useLocale';
-import { Center } from '@mantine/core';
-import styles from '@styles/layouts/login.module.css';
-import Title from '@ui/Title/Title';
-import Image from 'next/legacy/image';
-import logo from 'public/logo.svg';
-import { FC, ReactNode } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { Center } from "@mantine/core";
+import styles from "@styles/layouts/login.module.css";
+import Title from "@ui/Title/Title";
+import Image from "next/legacy/image";
+import logo from "public/logo.svg";
+import { FC, ReactNode } from "react";
 
 export const LoginLayout: FC<{
-  title: 'login' | 'registration';
+  title: "login" | "registration";
   children: ReactNode;
 }> = ({ title, children }) => {
   const { locale } = useLocale();

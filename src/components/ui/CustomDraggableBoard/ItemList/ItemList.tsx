@@ -1,15 +1,16 @@
+"use client";
 import {
   CustomDraggableBoardClassNames,
   IDraggableBoardItem,
-} from '@custom-types/ui/IDraggableBoard';
-import { concatClassNames } from '@utils/concatClassNames';
-import { FC, memo } from 'react';
-import { Draggable, Droppable, DroppableProps } from 'react-beautiful-dnd';
+} from "@custom-types/ui/IDraggableBoard";
+import { concatClassNames } from "@utils/concatClassNames";
+import { FC, memo } from "react";
+import { Draggable, Droppable, DroppableProps } from "react-beautiful-dnd";
 
-import styles from './itemList.module.css';
+import styles from "./itemList.module.css";
 
 interface ItemListProps
-  extends Omit<DroppableProps, 'droppableId' | 'children'> {
+  extends Omit<DroppableProps, "droppableId" | "children"> {
   id: string;
   items: IDraggableBoardItem[];
   classNames?: CustomDraggableBoardClassNames;

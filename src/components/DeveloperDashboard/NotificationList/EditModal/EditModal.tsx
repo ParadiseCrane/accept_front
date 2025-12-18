@@ -1,24 +1,25 @@
-import DescriptionInfo from '@components/Notification/Form/DescriptionInfo';
-import MainInfo from '@components/Notification/Form/MainInfo';
-import { INotificationWithRefs } from '@custom-types/data/notification';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import { useForm } from '@mantine/form';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import Stepper from '@ui/Stepper/Stepper';
-import { getLocalDate } from '@utils/datetime';
+"use client";
+import DescriptionInfo from "@components/Notification/Form/DescriptionInfo";
+import MainInfo from "@components/Notification/Form/MainInfo";
+import { INotificationWithRefs } from "@custom-types/data/notification";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import { useForm } from "@mantine/form";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import Stepper from "@ui/Stepper/Stepper";
+import { getLocalDate } from "@utils/datetime";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback } from 'react';
+} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback } from "react";
 
-import styles from './editModal.module.css';
+import styles from "./editModal.module.css";
 
 const stepFields = [
-  ['title', 'author'],
-  ['shortDescription', 'description'],
+  ["title", "author"],
+  ["shortDescription", "description"],
 ];
 
 const EditModal: FC<{
@@ -61,14 +62,14 @@ const EditModal: FC<{
       ...notification,
       ...form.values,
       author:
-        form.values.author.length > 0 ? form.values.author : user?.login || '',
+        form.values.author.length > 0 ? form.values.author : user?.login || "",
     };
     requestWithNotify<INotificationWithRefs, string>(
-      'notification/dev/edit',
-      'POST',
+      "notification/dev/edit",
+      "POST",
       locale.notify.notification.edit,
       lang,
-      (_: string) => '',
+      (_: string) => "",
       body,
       () => {
         setTimeout(() => close(true), 100);
@@ -80,7 +81,7 @@ const EditModal: FC<{
     <SimpleModal
       opened={opened}
       close={() => close(false)}
-      size={'80%'}
+      size={"80%"}
       hideCloseButton
       title={locale.notification.modals.update}
     >

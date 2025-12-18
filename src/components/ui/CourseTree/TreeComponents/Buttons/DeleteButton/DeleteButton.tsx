@@ -1,9 +1,10 @@
-import { ITreeUnit } from '@custom-types/data/ICourse';
-import { useLocale } from '@hooks/useLocale';
-import { ActionIcon } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
-import { Tip } from '@ui/basics';
-import { FC } from 'react';
+"use client";
+import { ITreeUnit } from "@custom-types/data/ICourse";
+import { useLocale } from "@hooks/useLocale";
+import { ActionIcon } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
+import { Tip } from "@ui/basics";
+import { FC } from "react";
 
 interface IDeleteButtonProps {
   styles: any;

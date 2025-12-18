@@ -1,6 +1,7 @@
-import { useLocale } from '@hooks/useLocale';
-import { CustomEditor, TextInput } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { CustomEditor, TextInput } from "@ui/basics";
+import { FC, memo } from "react";
 
 const DescriptionInfo: FC<{ form: any }> = ({ form }) => {
   const { locale } = useLocale();
@@ -15,7 +16,7 @@ const DescriptionInfo: FC<{ form: any }> = ({ form }) => {
             ))}
           </div>
         }
-        {...form.getInputProps('shortDescription')}
+        {...form.getInputProps("shortDescription")}
       />
       <CustomEditor
         helperContent={
@@ -27,7 +28,7 @@ const DescriptionInfo: FC<{ form: any }> = ({ form }) => {
         }
         label={locale.notification.form.description}
         form={form}
-        name={'description'}
+        name={"description"}
       />
     </>
   );

@@ -1,10 +1,11 @@
+"use client";
 import {
   ActionIcon,
   Group,
   NumberInput,
   NumberInputHandlers,
-} from '@mantine/core';
-import { FC, memo, useRef, useState } from 'react';
+} from "@mantine/core";
+import { FC, memo, useRef, useState } from "react";
 
 const IncrementalInput: FC<{
   initialValue: number;
@@ -33,7 +34,7 @@ const IncrementalInput: FC<{
             onChange(+val || 0);
           }}
           handlersRef={handlers}
-          styles={{ input: { width: 60, textAlign: 'center' } }}
+          styles={{ input: { width: 60, textAlign: "center" } }}
         />
 
         <ActionIcon

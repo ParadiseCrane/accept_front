@@ -1,16 +1,17 @@
-import { ITaskDisplay } from '@custom-types/data/ITask';
-import { Item, setter } from '@custom-types/ui/atomic';
+"use client";
+import { ITaskDisplay } from "@custom-types/data/ITask";
+import { Item, setter } from "@custom-types/ui/atomic";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import { TaskItem } from './TaskItem/TaskItem';
-import styles from './taskSelector.module.css';
+import { TaskItem } from "./TaskItem/TaskItem";
+import styles from "./taskSelector.module.css";
 
 const TaskSelector: FC<{
   initialTasks: Item[];
@@ -57,7 +58,7 @@ const TaskSelector: FC<{
 
   const refetch = useCallback(async () => {
     setLoading(true);
-    sendRequest<{}, ITaskDisplay[]>('task/list', 'GET', undefined, 3000).then(
+    sendRequest<{}, ITaskDisplay[]>("task/list", "GET", undefined, 3000).then(
       (res) => {
         if (res.error) return;
         setAllTasks(res.response);
@@ -83,7 +84,7 @@ const TaskSelector: FC<{
         loading={loading}
         value={tasks}
         onChange={onChange}
-        searchKeys={['title']}
+        searchKeys={["title"]}
         titles={[
           locale.assignmentSchema.form.taskSelector.available,
           locale.assignmentSchema.form.taskSelector.used,

@@ -1,8 +1,9 @@
-import { IContactCard } from '@custom-types/ui/IContactCard';
-import Link from 'next/link';
-import { FC, memo } from 'react';
+"use client";
+import { IContactCard } from "@custom-types/ui/IContactCard";
+import Link from "next/link";
+import { FC, memo } from "react";
 
-import styles from './contactCard.module.css';
+import styles from "./contactCard.module.css";
 
 const ContactCard: FC<{ card: IContactCard }> = ({ card }) => {
   return (

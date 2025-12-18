@@ -1,12 +1,13 @@
-import { useLocale } from '@hooks/useLocale';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { Italic } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { IconItalic } from "@tabler/icons-react";
 
-import { IconWrapper } from './IconWrapper';
+import { IconWrapper } from "./IconWrapper";
 
 export const ToggleItalic = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('italic') : false;
+  const isActive = editor.isFocused ? editor.isActive("italic") : false;
   const { locale } = useLocale();
   return (
     <RichTextEditor.Control
@@ -16,7 +17,7 @@ export const ToggleItalic = ({ editor }: { editor: Editor }) => {
       aria-label={locale.tiptap.italic}
       title={locale.tiptap.italic}
     >
-      <IconWrapper isActive={isActive} IconChild={Italic} />
+      <IconWrapper isActive={isActive} IconChild={IconItalic} />
     </RichTextEditor.Control>
   );
 };

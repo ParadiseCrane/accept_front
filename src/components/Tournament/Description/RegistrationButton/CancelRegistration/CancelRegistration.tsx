@@ -1,14 +1,15 @@
-import { pureCallback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import modalStyles from '@styles/ui/modal.module.css';
-import { Helper } from '@ui/basics';
-import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
-import SimpleModal from '@ui/SimpleModal/SimpleModal';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useState } from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+"use client";
+import { pureCallback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Helper } from "@ui/basics";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useState } from "react";
+import { IconAlertCircle } from "@tabler/icons-react";
 
-import styles from '../registrationButton.module.css';
+import styles from "../registrationButton.module.css";
 
 const CancelRegistration: FC<{
   spec: string;
@@ -22,10 +23,10 @@ const CancelRegistration: FC<{
   const handleRefusal = useCallback(() => {
     requestWithNotify<{}, boolean>(
       `tournament/refusal/${spec}`,
-      'GET',
+      "GET",
       locale.notify.tournament.refusal,
       lang,
-      () => '',
+      () => "",
       undefined,
       () => {
         location.reload();
@@ -73,7 +74,7 @@ const CancelRegistration: FC<{
         {status == 1 && !allowRegistrationAfterStart && (
           <Helper
             dropdownContent={locale.helpers.tournament.refusalWarning}
-            customIcon={<AlertCircle color={'var(--negative)'} />}
+            customIcon={<IconAlertCircle color={"var(--negative)"} />}
           />
         )}
       </div>

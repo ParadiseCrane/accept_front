@@ -1,17 +1,18 @@
-import { INotification } from '@custom-types/data/notification';
-import { setter } from '@custom-types/ui/atomic';
-import { IListAction, IListMessage } from '@custom-types/ui/IListMessage';
-import { useBackNotifications } from '@hooks/useBackNotifications';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { Badge } from '@mantine/core';
-import MessageList from '@ui/MessageList/MessageList';
-import { requestWithError } from '@utils/requestWithError';
-import { shrinkText } from '@utils/shrinkText';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { MailOpened, Trash } from 'tabler-icons-react';
+"use client";
+import { INotification } from "@custom-types/data/notification";
+import { setter } from "@custom-types/ui/atomic";
+import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
+import { useBackNotifications } from "@hooks/useBackNotifications";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { Badge } from "@mantine/core";
+import MessageList from "@ui/MessageList/MessageList";
+import { requestWithError } from "@utils/requestWithError";
+import { shrinkText } from "@utils/shrinkText";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { IconMailOpened, IconTrash } from "@tabler/icons-react";
 
-import styles from './notificationList.module.css';
+import styles from "./notificationList.module.css";
 
 const NotificationList: FC<{}> = (s) => {
   const { locale, lang } = useLocale();
@@ -33,13 +34,13 @@ const NotificationList: FC<{}> = (s) => {
     {},
     INotification[],
     void
-  >('notification/list', 'GET', undefined, processNotifications);
+  >("notification/list", "GET", undefined, processNotifications);
 
   const handleDelete = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {
       requestWithError<string[], boolean>(
-        'notification/delete',
-        'POST',
+        "notification/delete",
+        "POST",
         locale.notification.list.requestDelete,
         lang,
         selected,
@@ -79,12 +80,12 @@ const NotificationList: FC<{}> = (s) => {
   const actions: IListAction[] = useMemo(
     () => [
       {
-        icon: <MailOpened />,
+        icon: <IconMailOpened />,
         tooltipLabel: locale.notification.list.viewed,
         onClick: handleView,
       },
       {
-        icon: <Trash />,
+        icon: <IconTrash />,
         tooltipLabel: locale.notification.list.delete,
         onClick: handleDelete,
       },
@@ -105,7 +106,7 @@ const NotificationList: FC<{}> = (s) => {
             ...item,
             subject: item.shortDescription,
             message: item.description,
-          }) as IListMessage
+          } as IListMessage)
       ),
     [notifications]
   );
@@ -127,7 +128,7 @@ const NotificationList: FC<{}> = (s) => {
       }}
       rowClassName={(notification: IListMessage) =>
         //@ts-ignore
-        notification.viewed ? styles.old : ''
+        notification.viewed ? styles.old : ""
       }
       refetch={refetchNotifications}
       emptyMessage={locale.profile.empty.notification}

@@ -1,14 +1,15 @@
-import DeleteModal from '@components/AssignmentSchema/DeleteModal/DeleteModal';
-import Description from '@components/AssignmentSchema/Description/Description';
-import { IAssignmentSchema } from '@custom-types/data/IAssignmentSchema';
-import { useLocale } from '@hooks/useLocale';
-import { DefaultLayout } from '@layouts/DefaultLayout';
-import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
-import Title from '@ui/Title/Title';
-import { fetchWrapperStatic } from '@utils/fetchWrapper';
-import { GetServerSideProps } from 'next';
-import { ReactNode, useMemo, useState } from 'react';
-import { Pencil, Trash } from 'tabler-icons-react';
+"use client";
+import DeleteModal from "@components/AssignmentSchema/DeleteModal/DeleteModal";
+import Description from "@components/AssignmentSchema/Description/Description";
+import { IAssignmentSchema } from "@custom-types/data/IAssignmentSchema";
+import { useLocale } from "@hooks/useLocale";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import { GetServerSideProps } from "next";
+import { ReactNode, useMemo, useState } from "react";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
 
 function AssignmentSchema(props: {
   schema: IAssignmentSchema;
@@ -25,23 +26,23 @@ function AssignmentSchema(props: {
       hasWriteRights
         ? [
             {
-              color: 'green',
+              color: "green",
               href: `/assignment_schema/edit/${assignmentSchema.spec}`,
-              icon: <Pencil height={20} width={20} />,
+              icon: <IconPencil height={20} width={20} />,
               description: locale.tip.sticky.assignmentSchema.edit,
             },
             {
-              color: 'red',
+              color: "red",
               onClick: () => {
                 setOpenModal(true);
               },
-              icon: <Trash height={20} width={20} />,
+              icon: <IconTrash height={20} width={20} />,
               description: locale.tip.sticky.assignmentSchema.delete,
             },
           ]
         : [],
 
-    [hasWriteRights]
+    [hasWriteRights, assignmentSchema, locale]
   );
 
   return (
@@ -74,7 +75,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: "/",
       },
     };
   }
@@ -95,9 +96,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
   return {
-    redirect: {
-      permanent: false,
-      destination: '/404',
-    },
+    notFound: true,
   };
 };

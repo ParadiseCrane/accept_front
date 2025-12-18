@@ -1,8 +1,9 @@
+"use client";
 import {
   ColorSwatch as ColorSwatchCheckbox,
   ColorSwatchProps,
-} from '@mantine/core';
-import { FC, memo } from 'react';
+} from "@mantine/core";
+import { FC, memo } from "react";
 interface Props extends ColorSwatchProps {
   shrink?: boolean;
 }

@@ -1,10 +1,11 @@
-import { ITournamentRegisterPayload } from '@custom-types/data/ITournament';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { Button, Pin } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { ITournamentRegisterPayload } from "@custom-types/data/ITournament";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { Button, Pin } from "@ui/basics";
+import { FC, memo } from "react";
 
-import styles from './enterPinCode.module.css';
+import styles from "./enterPinCode.module.css";
 
 const EnterPinCode: FC<{
   form: any;
@@ -21,7 +22,7 @@ const EnterPinCode: FC<{
           ? locale.tournament.registration.enterPinCode.teamPin
           : locale.tournament.registration.enterPinCode.tournamentPin}
       </div>
-      <Pin {...form.getInputProps('pin')} />
+      <Pin {...form.getInputProps("pin")} />
       <Button
         variant="outline"
         disabled={!form.isValid()}

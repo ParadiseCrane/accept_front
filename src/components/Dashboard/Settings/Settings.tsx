@@ -1,22 +1,23 @@
+"use client";
 import {
   ITournament,
   ITournamentSettingsBundle,
-} from '@custom-types/data/ITournament';
+} from "@custom-types/data/ITournament";
 import {
   ICustomTransferListData,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { useLocale } from '@hooks/useLocale';
-import { sendRequest } from '@requests/request';
-import { Button, Helper, Switch } from '@ui/basics';
-import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import PinCode from '@ui/PinCode/PinCode';
-import { TaskItem } from '@ui/selectors/TaskSelector/TaskItem/TaskItem';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+} from "@custom-types/ui/basics/customTransferList";
+import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
+import { Button, Helper, Switch } from "@ui/basics";
+import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
+import PinCode from "@ui/PinCode/PinCode";
+import { TaskItem } from "@ui/selectors/TaskSelector/TaskItem/TaskItem";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { ChangeEvent, FC, memo, useCallback, useEffect, useState } from "react";
 
-import CreateAssignment from './CreateAssignment/CreateAssignment';
-import styles from './settings.module.css';
+import CreateAssignment from "./CreateAssignment/CreateAssignment";
+import styles from "./settings.module.css";
 
 const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
   const { locale, lang } = useLocale();
@@ -32,7 +33,7 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
     if (tournament.spec) {
       sendRequest<undefined, ITournamentSettingsBundle>(
         `tournament/settings/${tournament.spec}`,
-        'GET'
+        "GET"
       ).then((res) => {
         if (!cleanUp && !res.error) {
           setSettings(res.response);
@@ -64,10 +65,10 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
     if (!tasks) return;
     requestWithNotify<string[], boolean>(
       `tournament/settings/changePublic/${tournament.spec}`,
-      'POST',
+      "POST",
       locale.notify.tournament.settings.changePublic,
       lang,
-      (_: boolean) => '',
+      (_: boolean) => "",
       tasks[1].map((item) => item.spec)
     );
   }, [lang, locale, tasks, tournament.spec]);
@@ -76,10 +77,10 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
     (newValue: boolean) => {
       requestWithNotify<{ allowRegistrationAfterStart: boolean }, boolean>(
         `tournament/settings/allowRegistrationAfterStart/${tournament.spec}`,
-        'POST',
+        "POST",
         locale.notify.tournament.settings.allowRegistrationAfterStart,
         lang,
-        (_: boolean) => '',
+        (_: boolean) => "",
         { allowRegistrationAfterStart: newValue }
       );
     },
@@ -133,7 +134,7 @@ const Settings: FC<{ tournament: ITournament }> = ({ tournament }) => {
           itemComponent={itemComponent}
           value={tasks}
           onChange={setTasks}
-          searchKeys={['title']}
+          searchKeys={["title"]}
           height="400px"
           width="70%"
         />

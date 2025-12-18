@@ -1,9 +1,10 @@
-import { IAttempt } from '@custom-types/data/IAttempt';
-import { useLocale } from '@hooks/useLocale';
-import { TextArea } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { IAttempt } from "@custom-types/data/IAttempt";
+import { useLocale } from "@hooks/useLocale";
+import { TextArea } from "@ui/basics";
+import { FC, memo } from "react";
 
-import styles from './textAnswer.module.css';
+import styles from "./textAnswer.module.css";
 
 const TextAnswer: FC<{ attempt: IAttempt }> = ({ attempt }) => {
   const { locale } = useLocale();

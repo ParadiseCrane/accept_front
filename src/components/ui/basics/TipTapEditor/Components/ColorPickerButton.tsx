@@ -1,14 +1,15 @@
-import { useLocale } from '@hooks/useLocale';
-import { HoverCard } from '@mantine/core';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { ColorPicker as ColorPickerIcon } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { HoverCard } from "@mantine/core";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { IconColorPicker as ColorPickerIcon } from "@tabler/icons-react";
 
-import { IconWrapper } from './IconWrapper';
-import { ColorPickerModal } from './Modals/ColorPickerModal';
+import { IconWrapper } from "./IconWrapper";
+import { ColorPickerModal } from "./Modals/ColorPickerModal";
 
 export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
-  const initialColor = editor.getAttributes('textStyle')['color'] ?? '#000000';
+  const initialColor = editor.getAttributes("textStyle")["color"] ?? "#000000";
   const { locale } = useLocale();
 
   const changeColor = (color: string) => {
@@ -20,7 +21,7 @@ export const ColorPickerButton = ({ editor }: { editor: Editor }) => {
       shadow="md"
       position="bottom-start"
       withArrow
-      styles={{ dropdown: { padding: '0px' } }}
+      styles={{ dropdown: { padding: "0px" } }}
     >
       <HoverCard.Target>
         <RichTextEditor.Control

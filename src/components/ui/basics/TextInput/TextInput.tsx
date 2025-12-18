@@ -1,8 +1,9 @@
-import { IDropdownContent } from '@custom-types/ui/basics/helper';
-import { TextInput as MantineInput, TextInputProps } from '@mantine/core';
-import inputStyles from '@styles/ui/input.module.css';
-import { InputLabel } from '@ui/basics';
-import { FC, memo } from 'react';
+"use client";
+import { IDropdownContent } from "@custom-types/ui/basics/helper";
+import { TextInput as MantineInput, TextInputProps } from "@mantine/core";
+import inputStyles from "@styles/ui/input.module.css";
+import { InputLabel } from "@ui/basics";
+import { FC, memo } from "react";
 
 interface Props extends TextInputProps {
   helperContent?: IDropdownContent;
@@ -20,7 +21,7 @@ const TextInput: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ''}`}
+      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
       {...inputWrapperProps}
     >
       <InputLabel
@@ -29,7 +30,7 @@ const TextInput: FC<Props> = ({
         required={required}
       />
       <MantineInput
-        size={shrink ? 'sm' : 'md'}
+        size={shrink ? "sm" : "md"}
         {...props}
         classNames={{
           error: inputStyles.error,

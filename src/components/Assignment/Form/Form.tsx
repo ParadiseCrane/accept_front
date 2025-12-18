@@ -1,23 +1,24 @@
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { IGroup } from '@custom-types/data/IGroup';
-import { callback } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { UseFormReturnType, useForm } from '@mantine/form';
-import Stepper from '@ui/Stepper/Stepper';
-import { FC, memo, useEffect } from 'react';
+"use client";
+import { IAssignmentSchemaDisplay } from "@custom-types/data/IAssignmentSchema";
+import { IGroup } from "@custom-types/data/IGroup";
+import { callback } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import Stepper from "@ui/Stepper/Stepper";
+import { FC, memo, useEffect } from "react";
 
-import Groups from './Groups/Groups';
-import MainInfo from './MainInfo/MainInfo';
-import Origin from './Origin/Origin';
+import Groups from "./Groups/Groups";
+import MainInfo from "./MainInfo/MainInfo";
+import Origin from "./Origin/Origin";
 
 const stepFields = [
-  ['startDate', 'startTime', 'endDate', 'endTime', 'dates'],
-  ['groups'],
+  ["startDate", "startTime", "endDate", "endTime", "dates"],
+  ["groups"],
   [
-    'origin',
-    'notificationTitle',
-    'notificationDescription',
-    'notificationShortDescription',
+    "origin",
+    "notificationTitle",
+    "notificationDescription",
+    "notificationShortDescription",
   ],
 ];
 
@@ -53,10 +54,10 @@ const Form: FC<{
         values.infinite
           ? null
           : !value
-            ? locale.assignment.form.validation.endDate
-            : !!values.startDate && values.startDate >= value
-              ? locale.assignment.form.validation.date
-              : null,
+          ? locale.assignment.form.validation.endDate
+          : !!values.startDate && values.startDate >= value
+          ? locale.assignment.form.validation.date
+          : null,
       groups: (value) =>
         value.length == 0 ? locale.assignment.form.validation.groups : null,
 

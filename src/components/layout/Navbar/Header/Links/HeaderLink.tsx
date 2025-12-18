@@ -1,13 +1,14 @@
-import { accessLevels } from '@constants/protectedRoutes';
-import { IHeaderLink } from '@custom-types/ui/IHeaderLink';
-import { useLocale } from '@hooks/useLocale';
-import { useUser } from '@hooks/useUser';
-import linkStyles from '@styles/ui/link.module.css';
-import { Button } from '@ui/basics';
-import Link from 'next/link';
-import React, { FC } from 'react';
+"use client";
+import { accessLevels } from "@constants/protectedRoutes";
+import { IHeaderLink } from "@custom-types/ui/IHeaderLink";
+import { useLocale } from "@hooks/useLocale";
+import { useUser } from "@hooks/useUser";
+import linkStyles from "@styles/ui/link.module.css";
+import { Button } from "@ui/basics";
+import Link from "next/link";
+import React, { FC } from "react";
 
-import Dropdown from './Dropdown';
+import Dropdown from "./Dropdown";
 
 export const HeaderLink: FC<{
   link: IHeaderLink;
@@ -18,7 +19,7 @@ export const HeaderLink: FC<{
   const { accessLevel } = useUser();
   return (
     <div className={additionalClass}>
-      {link.type == 'dropdown' && link.links ? (
+      {link.type == "dropdown" && link.links ? (
         <Dropdown
           items={link.links
             .filter(
@@ -29,7 +30,7 @@ export const HeaderLink: FC<{
               href: dropdownLink.href,
               label: dropdownLink.text(locale),
             }))}
-          transition={'scale-y'}
+          transition={"scale-y"}
           transitionDuration={link.links.length * 50}
         >
           <Button kind="header">{link.text(locale)}</Button>

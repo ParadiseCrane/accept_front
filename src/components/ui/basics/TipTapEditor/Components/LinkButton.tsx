@@ -1,14 +1,18 @@
-import { useLocale } from '@hooks/useLocale';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Editor } from '@tiptap/react';
-import { useState } from 'react';
-import { Link as LinkIcon, Unlink as UnlinkIcon } from 'tabler-icons-react';
+"use client";
+import { useLocale } from "@hooks/useLocale";
+import { RichTextEditor } from "@mantine/tiptap";
+import { Editor } from "@tiptap/react";
+import { useState } from "react";
+import {
+  IconLink as LinkIcon,
+  IconUnlink as UnlinkIcon,
+} from "@tabler/icons-react";
 
-import { IconWrapper } from './IconWrapper';
-import { LinkModal } from './Modals/LinkModal';
+import { IconWrapper } from "./IconWrapper";
+import { LinkModal } from "./Modals/LinkModal";
 
 export const LinkButton = ({ editor }: { editor: Editor }) => {
-  const isActive = editor.isFocused ? editor.isActive('link') : false;
+  const isActive = editor.isFocused ? editor.isActive("link") : false;
   const [show, setShow] = useState(false);
   const { locale } = useLocale();
 
@@ -17,6 +21,7 @@ export const LinkButton = ({ editor }: { editor: Editor }) => {
       <RichTextEditor.Control
         onClick={() => {
           if (isActive) {
+            // TODO: Check what this is
             // console.log('link is', editor.getAttributes('link')['href']);
           } else {
             setShow(true);

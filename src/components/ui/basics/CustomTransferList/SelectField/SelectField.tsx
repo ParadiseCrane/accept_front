@@ -1,12 +1,14 @@
-import { callback, pureCallback } from '@custom-types/ui/atomic';
+"use client";
+
+import { callback, pureCallback } from "@custom-types/ui/atomic";
 import {
   ICustomTransferListItem,
   ICustomTransferListItemComponent,
-} from '@custom-types/ui/basics/customTransferList';
-import { MyIconProps } from '@custom-types/ui/basics/icon';
-import { useLocale } from '@hooks/useLocale';
-import { Icon, TextInput } from '@ui/basics';
-import Fuse from 'fuse.js';
+} from "@custom-types/ui/basics/customTransferList";
+import { MyIconProps } from "@custom-types/ui/basics/icon";
+import { useLocale } from "@hooks/useLocale";
+import { Icon, TextInput } from "@ui/basics";
+import Fuse from "fuse.js";
 import {
   ChangeEvent,
   FC,
@@ -15,11 +17,11 @@ import {
   useCallback,
   useMemo,
   useState,
-} from 'react';
-import useVirtual from 'react-cool-virtual';
-import { ChevronsLeft, ChevronsRight } from 'tabler-icons-react';
+} from "react";
+import useVirtual from "react-cool-virtual";
+import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 
-import styles from './selectField.module.css';
+import styles from "./selectField.module.css";
 
 export interface Props {
   title: string;
@@ -41,7 +43,7 @@ const defaultClassNames = {
 };
 
 const inputStyles: any = {
-  icon: { pointerEvents: 'unset' },
+  icon: { pointerEvents: "unset" },
 };
 
 const SelectFieldComponent: FC<Props> = ({
@@ -57,7 +59,7 @@ const SelectFieldComponent: FC<Props> = ({
 }) => {
   const { locale } = useLocale();
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const classNames = useMemo(
     () => ({ ...defaultClassNames, ...classNamesProp }),
@@ -81,8 +83,8 @@ const SelectFieldComponent: FC<Props> = ({
 
   const iconProps: MyIconProps = useMemo(
     () => ({
-      size: 'sm',
-      color: 'var(--primary)',
+      size: "sm",
+      color: "var(--primary)",
       onClick: selectItems([]),
     }),
     [selectItems]
@@ -92,7 +94,7 @@ const SelectFieldComponent: FC<Props> = ({
     () =>
       withLeftSection && (
         <Icon {...iconProps}>
-          <ChevronsLeft />
+          <IconChevronsLeft />
         </Icon>
       ),
     [iconProps, withLeftSection]
@@ -102,7 +104,7 @@ const SelectFieldComponent: FC<Props> = ({
     () =>
       withRightSection && (
         <Icon {...iconProps}>
-          <ChevronsRight />
+          <IconChevronsRight />
         </Icon>
       ),
     [iconProps, withRightSection]

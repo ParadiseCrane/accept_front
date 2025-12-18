@@ -11,7 +11,7 @@
 }
 
 .content::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -10;
   left: -10;
@@ -42,4 +42,15 @@
 .logoWrapper {
   margin: var(--spacer-l) 0 var(--spacer-xs) 0 !important;
   user-select: none;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 4em;
+  }
+
+  .content {
+    min-height: 0;
+    padding: 20px;
+  }
 }

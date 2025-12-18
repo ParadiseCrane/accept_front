@@ -1,14 +1,15 @@
-import CustomTimeModal from '@components/Dashboard/TimeInfo/CustomTimeModal/CustomTimeModal';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { useLocale } from '@hooks/useLocale';
-import { useInterval } from '@mantine/hooks';
-import { sendRequest } from '@requests/request';
-import { Button } from '@ui/basics';
-import { getLocalDate, timerDate, timezoneDate } from '@utils/datetime';
-import Link from 'next/link';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+"use client";
+import CustomTimeModal from "@components/Dashboard/TimeInfo/CustomTimeModal/CustomTimeModal";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { useLocale } from "@hooks/useLocale";
+import { useInterval } from "@mantine/hooks";
+import { sendRequest } from "@requests/request";
+import { Button } from "@ui/basics";
+import { getLocalDate, timerDate, timezoneDate } from "@utils/datetime";
+import Link from "next/link";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
-import styles from './timeInfo.module.css';
+import styles from "./timeInfo.module.css";
 
 interface BaseTimeInfo {
   start: Date;
@@ -61,16 +62,16 @@ interface BaseEntity {
 }
 
 const TimeInfo: FC<{
-  type: 'tournament' | 'assignment' | 'course';
+  type: "tournament" | "assignment" | "course";
   timeInfo: BaseTimeInfo;
   refetch: () => void;
   entity: BaseEntity;
 }> = ({ type, timeInfo, refetch, entity }) => {
   const { locale } = useLocale();
 
-  const [seconds, setSeconds] = useState('00');
-  const [minutes, setMinutes] = useState('00');
-  const [hours, setHours] = useState('00');
+  const [seconds, setSeconds] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [hours, setHours] = useState("00");
 
   const [days, setDays] = useState(0);
   const [months, setMonths] = useState(0);
@@ -117,7 +118,7 @@ const TimeInfo: FC<{
     (time: number) => {
       sendRequest<{ amount: number }, { end: Date; status: TimeInfo }>(
         `${type}/time/${entity.spec}`,
-        'POST',
+        "POST",
         {
           amount: time,
         }
@@ -137,20 +138,20 @@ const TimeInfo: FC<{
           <div className={styles.title}>
             <Link href={`/${type}/${entity.spec}`}>{entity.title}</Link>
             <div className={styles.status}>
-              {locale.assignment.form.status.text}:{' '}
+              {locale.assignment.form.status.text}:{" "}
               {locale.assignment.form.status[timeInfo.status]}
             </div>
           </div>
           <div className={styles.starter}>
             {locale.assignment.form.creator}
-            {': '}
+            {": "}
             {entity.creator}
           </div>
         </div>
         <div className={styles.time}>
           <div className={styles.start}>
             {locale.assignment.form.startTime}
-            {': '}
+            {": "}
             {isBrowser && getLocalDate(timeInfo.start)}
           </div>
           <div className={styles.end}>
@@ -159,7 +160,7 @@ const TimeInfo: FC<{
             ) : (
               <>
                 {locale.assignment.form.endTime}
-                {': '}
+                {": "}
                 {isBrowser && getLocalDate(timeInfo.end)}
               </>
             )}
@@ -168,7 +169,7 @@ const TimeInfo: FC<{
           {timeInfo.froze && (
             <div className={styles.froze}>
               {locale.assignment.form.frozeTime}
-              {': '}
+              {": "}
               {isBrowser && getLocalDate(timeInfo.froze)}
             </div>
           )}
@@ -231,12 +232,12 @@ const TimeInfo: FC<{
             {DECREASE_TIME.map((buttonObject, idx) => (
               <Button
                 key={idx}
-                targetWrapperStyle={{ width: '100%' }}
-                buttonWrapperStyle={{ width: '100%' }}
+                targetWrapperStyle={{ width: "100%" }}
+                buttonWrapperStyle={{ width: "100%" }}
                 style={{
-                  borderLeft: idx == 0 ? undefined : 'none',
+                  borderLeft: idx == 0 ? undefined : "none",
                   borderRadius: 0,
-                  fontSize: 'var(--font-size-s)',
+                  fontSize: "var(--font-size-s)",
                 }}
                 fullWidth
                 variant="outline"
@@ -258,12 +259,12 @@ const TimeInfo: FC<{
             {INCREASE_TIME.map((buttonObject, idx) => (
               <Button
                 key={idx}
-                targetWrapperStyle={{ width: '100%' }}
-                buttonWrapperStyle={{ width: '100%' }}
+                targetWrapperStyle={{ width: "100%" }}
+                buttonWrapperStyle={{ width: "100%" }}
                 style={{
-                  borderLeft: 'none',
+                  borderLeft: "none",
                   borderRadius: 0,
-                  fontSize: 'var(--font-size-s)',
+                  fontSize: "var(--font-size-s)",
                 }}
                 fullWidth
                 variant="outline"

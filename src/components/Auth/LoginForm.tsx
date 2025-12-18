@@ -1,24 +1,27 @@
-'use client';
+"use client";
 
-import { IOrganization } from '@custom-types/data/IOrganization';
-import { SelectItem } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import { useRequest } from '@hooks/useRequest';
-import { useForm } from '@mantine/form';
-import styles from '@styles/auth/login.module.css';
-import { Button, PasswordInput, Select, TextInput, Tip } from '@ui/basics';
-import { getOrganizationFromLS } from '@utils/manageLocalStorage';
+import { IOrganization } from "@custom-types/data/IOrganization";
+import { SelectItem } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
+import styles from "@styles/auth/login.module.css";
+import { Button, PasswordInput, Select, TextInput, Tip } from "@ui/basics";
+import {
+  getOrganizationFromLS,
+  putOrganizationToLS,
+} from "@utils/manageLocalStorage";
 import {
   errorNotification,
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+} from "@utils/notificationFunctions";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 const LoginForm: FC<{
-  signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
+  signIn: (_: string, __: string, ___: string) => Promise<boolean>;
 }> = ({ signIn }) => {
   const { locale } = useLocale();
   const [loading, setLoading] = useState(false);
@@ -30,8 +33,8 @@ const LoginForm: FC<{
     loading: organizations_loading,
     error,
   } = useRequest<object, IOrganization[], SelectItem[]>(
-    'organization/list',
-    'GET',
+    "organization/list",
+    "GET",
     undefined,
     (organizations: IOrganization[]) =>
       organizations.map(
@@ -39,7 +42,7 @@ const LoginForm: FC<{
           ({
             value: organization.spec,
             label: organization.name,
-          }) as SelectItem
+          } as SelectItem)
       )
   );
 
@@ -47,30 +50,19 @@ const LoginForm: FC<{
     () => organizations?.map((item) => item.value) || [],
     [organizations]
   );
-
-  useEffect(() => {
-    const orgFromLS = getOrganizationFromLS() ?? '';
-    if (
-      orgFromLS &&
-      organizations?.filter((element) => element.value == orgFromLS)
-    ) {
-      form.setFieldValue('organization', orgFromLS);
-    }
-  }, [organizations_loading]);
-
   const form = useForm({
     initialValues: {
-      organization: '',
-      login: '',
-      password: '',
+      organization: "",
+      login: "",
+      password: "",
     },
     validate: {
       organization: (value) =>
-        value === ''
+        value === ""
           ? locale.auth.errors.organization.notSelected
           : !valid_organizations.includes(value)
-            ? locale.auth.errors.organization.exists
-            : null,
+          ? locale.auth.errors.organization.exists
+          : null,
       login: (value) =>
         value.length == 0 ? locale.auth.errors.login.exists : null,
       password: (value) =>
@@ -79,12 +71,24 @@ const LoginForm: FC<{
     validateInputOnBlur: true,
   });
 
+  useEffect(() => {
+    const orgFromLS = getOrganizationFromLS() ?? "";
+    if (
+      orgFromLS &&
+      organizations?.filter((element) => element.value == orgFromLS)
+    ) {
+      if (form.values.organization != orgFromLS)
+        form.setFieldValue("organization", orgFromLS);
+    }
+  }, [organizations_loading, organizations]);
+
   const handleSignIn = useCallback(
     (values: { organization: string; login: string; password: string }) => {
+      putOrganizationToLS({ value: values.organization });
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
-        message: locale.loading + '...',
+        message: locale.loading + "...",
       });
       setLoading(true);
       signIn(
@@ -98,7 +102,7 @@ const LoginForm: FC<{
             title: locale.notify.auth.signIn.success,
             autoClose: 5000,
           });
-          router.push((router.query.referrer as string) || '/');
+          router.push((router.query.referrer as string) || "/");
         } else {
           errorNotification({
             id,
@@ -119,16 +123,16 @@ const LoginForm: FC<{
   }, [toSignIn, handleSignIn, form.values]);
 
   const processKeydown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setToSignIn(true);
     }
   }, []);
 
   useEffect(() => {
     if (!window) return;
-    window.addEventListener('keydown', processKeydown);
+    window.addEventListener("keydown", processKeydown);
     return () => {
-      window.removeEventListener('keydown', processKeydown);
+      window.removeEventListener("keydown", processKeydown);
     };
   }, [processKeydown]);
 
@@ -146,7 +150,7 @@ const LoginForm: FC<{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('organization')}
+          {...form.getInputProps("organization")}
         />
         <TextInput
           required
@@ -157,7 +161,7 @@ const LoginForm: FC<{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('login')}
+          {...form.getInputProps("login")}
         />
         <PasswordInput
           required
@@ -168,7 +172,7 @@ const LoginForm: FC<{
             label: styles.label,
           }}
           size="lg"
-          {...form.getInputProps('password')}
+          {...form.getInputProps("password")}
         />
         <div className={styles.row}>
           <Button

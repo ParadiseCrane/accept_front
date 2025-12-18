@@ -1,16 +1,17 @@
-import tableStyles from '@styles/ui/customTable.module.css';
-import styles from './styles.module.css';
-import { useClipboard } from '@mantine/hooks';
+"use client";
+import tableStyles from "@styles/ui/customTable.module.css";
+import styles from "./styles.module.css";
+import { useClipboard } from "@mantine/hooks";
 import {
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
-import { useLocale } from '@hooks/useLocale';
-import { FC, useCallback, useState } from 'react';
-import { sendRequest } from '@requests/request';
-import { Icon, Tip } from '@ui/basics';
-import { IconRefresh } from '@tabler/icons-react';
-import { Skeleton } from '@mantine/core';
+} from "@utils/notificationFunctions";
+import { useLocale } from "@hooks/useLocale";
+import { FC, useCallback, useState } from "react";
+import { sendRequest } from "@requests/request";
+import { Icon, Tip } from "@ui/basics";
+import { IconRefresh } from "@tabler/icons-react";
+import { Skeleton } from "@mantine/core";
 
 export const LinkCopy: FC<{
   inviteSpec: string;
@@ -43,13 +44,13 @@ export const LinkCopy: FC<{
         autoClose: 5000,
       });
     },
-    [invite]
+    [clipboard, locale]
   );
 
   return (
     <div
       className={`${tableStyles.titleWrapper} ${styles.link_with_refresh}`}
-      style={{ flexWrap: 'nowrap' }}
+      style={{ flexWrap: "nowrap" }}
     >
       <Tip label={locale.link.copyLink}>
         <Skeleton visible={loading}>

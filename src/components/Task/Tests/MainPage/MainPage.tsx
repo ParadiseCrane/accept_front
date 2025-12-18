@@ -1,16 +1,17 @@
-import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
-import { IChecker } from '@custom-types/data/ITask';
-import { ITruncatedTaskTest } from '@custom-types/data/ITaskTest';
-import { setter } from '@custom-types/ui/atomic';
-import { useLocale } from '@hooks/useLocale';
-import stepperStyles from '@styles/ui/stepper.module.css';
-import { Button } from '@ui/basics';
-import { requestWithNotify } from '@utils/requestWithNotify';
-import { FC, memo, useCallback, useMemo } from 'react';
+"use client";
+import { ITaskCheckType, ITaskType } from "@custom-types/data/atomic";
+import { IChecker } from "@custom-types/data/ITask";
+import { ITruncatedTaskTest } from "@custom-types/data/ITaskTest";
+import { setter } from "@custom-types/ui/atomic";
+import { useLocale } from "@hooks/useLocale";
+import stepperStyles from "@styles/ui/stepper.module.css";
+import { Button } from "@ui/basics";
+import { requestWithNotify } from "@utils/requestWithNotify";
+import { FC, memo, useCallback, useMemo } from "react";
 
-import DeleteGroup from './DeleteGroup/DeleteGroup';
-import GroupContent from './GroupContent/GroupContent';
-import styles from './mainPage.module.css';
+import DeleteGroup from "./DeleteGroup/DeleteGroup";
+import GroupContent from "./GroupContent/GroupContent";
+import styles from "./mainPage.module.css";
 
 const MainPage: FC<{
   task_spec: string;
@@ -44,10 +45,10 @@ const MainPage: FC<{
   const addGroup = useCallback(() => {
     requestWithNotify<undefined, boolean>(
       `test_group/${task_spec}`,
-      'POST',
+      "POST",
       locale.notify.test_group.post,
       lang,
-      () => '',
+      () => "",
       undefined,
       (response) => {
         if (response) {
@@ -63,7 +64,7 @@ const MainPage: FC<{
         {grouped_tests.map((tests, index) => (
           <div key={index} className={styles.groupWrapper}>
             <div className={styles.groupLabelWrapper}>
-              {`${locale.task.tests.group.label} #${index + 1}`}{' '}
+              {`${locale.task.tests.group.label} #${index + 1}`}{" "}
               {hasWriteRights && (
                 <DeleteGroup
                   task_spec={task_spec}
