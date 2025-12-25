@@ -1,0 +1,16 @@
+.stepperWrapper {
+  padding: 0 10px;
+  margin: var(--spacer-xl) auto;
+}
+
+@media (min-width: 420px) {
+  .stepperWrapper {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 500px) {
+  .stepperWrapper {
+    padding: 0 30px;
+  }
+}

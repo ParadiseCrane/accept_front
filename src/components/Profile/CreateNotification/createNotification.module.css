@@ -1,0 +1,13 @@
+.wrapper {
+  position: relative;
+  min-height: 300px;
+  margin: var(--spacer-xl) var(--spacer-l);
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    position: relative;
+    min-height: 300px;
+    margin: 15px;
+  }
+}

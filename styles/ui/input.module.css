@@ -20,7 +20,7 @@
   font-size: var(--font-size-label-m);
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .labelRequired {
@@ -36,7 +36,7 @@
   font-size: var(--font-size-label-s);
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .selectInput {

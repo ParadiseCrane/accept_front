@@ -139,7 +139,11 @@ const CustomTransferList: FC<Props> = ({
   }, [height]);
 
   return (
-    <InputWrapper styles={inputStyles} {...props}>
+    <InputWrapper
+      styles={inputStyles}
+      style={{ overflowX: "scroll", overflowY: "hidden" }}
+      {...props}
+    >
       <div
         style={{ ...inputStyles.root, maxWidth: width, width }}
         className={classNames ? classNames.wrapper : styles.wrapper}

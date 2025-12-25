@@ -109,17 +109,20 @@ const AttemptListProfile: FC<{}> = () => {
 
   return (
     <div>
-      <TaskSelect
-        label={locale.dashboard.attemptsList.task.label}
-        placeholder={locale.dashboard.attemptsList.task.placeholder}
-        nothingFound={locale.dashboard.attemptsList.task.nothingFound}
-        tasks={data || []}
-        select={(tasks: ITaskBaseInfo[] | undefined) => {
-          if (tasks) setTaskSearch(tasks.map((task) => task.spec));
-          else setTaskSearch([]);
-        }}
-        multiple
-      ></TaskSelect>
+      <div className={styles.topSectionWrapper}>
+        <TaskSelect
+          label={locale.dashboard.attemptsList.task.label}
+          placeholder={locale.dashboard.attemptsList.task.placeholder}
+          nothingFound={locale.dashboard.attemptsList.task.nothingFound}
+          tasks={data || []}
+          select={(tasks: ITaskBaseInfo[] | undefined) => {
+            if (tasks) setTaskSearch(tasks.map((task) => task.spec));
+            else setTaskSearch([]);
+          }}
+          additionalProps={{}}
+          multiple
+        ></TaskSelect>
+      </div>
       <AttemptList
         key={taskSearch.toString()}
         url={`attempt/my`}

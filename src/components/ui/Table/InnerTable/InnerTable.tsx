@@ -22,7 +22,19 @@ const InnerTable: FC<{
     });
     return {
       gridTemplateColumns:
-        columns.map((column) => (column.size / total) * 100).join("% ") + "%",
+        columns
+          .map((column) => {
+            const percent = (column.size / total) * 100;
+            return Math.ceil(percent);
+          })
+          .join("fr ") + "fr",
+      minWidth: `${
+        columns
+          .filter((el) => !!el.minWidth)
+          .reduce((prev, cur) => prev + (cur.minWidth ?? 0), 0) +
+        columns.filter((el) => !el.hidden).reduce((prev, cur) => prev + 1, 0) *
+          50
+      }px`,
     };
   }, [columns]);
 

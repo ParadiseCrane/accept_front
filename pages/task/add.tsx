@@ -163,7 +163,7 @@ function AddTask() {
           hintAlarmTypes={hintAlarmTypes}
           handleSubmit={handleSubmit}
           buttonLabel={locale.form.create}
-        /> //////
+        />
       )}
     </>
   );

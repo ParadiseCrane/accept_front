@@ -22,6 +22,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import styles from "./taskList.module.css";
+import clsx from "clsx";
 
 interface Item {
   value: any;
@@ -179,7 +181,7 @@ const TaskList: FC<{
             ? classNames
             : {
                 wrapper: tableStyles.wrapper,
-                table: tableStyles.table,
+                table: clsx(tableStyles.table, styles.table),
                 author: tableStyles.author,
                 grade: tableStyles.grade,
                 verdict: tableStyles.verdict,

@@ -6,6 +6,7 @@ import { IUserDisplay } from "@custom-types/data/IUser";
 import { useRequest } from "@hooks/useRequest";
 import { LoadingOverlay } from "@ui/basics";
 import { FC, memo, useMemo } from "react";
+import styles from "./createNotification.module.css";
 
 const CrateNotification: FC<{}> = () => {
   const { data, loading } = useRequest<
@@ -23,13 +24,7 @@ const CrateNotification: FC<{}> = () => {
   const roles = useMemo(() => (data ? data.roles : []), [data]);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        minHeight: "300px",
-        margin: "var(--spacer-xl) var(--spacer-l) 0 0",
-      }}
-    >
+    <div className={styles.wrapper}>
       <LoadingOverlay visible={loading} />
       {!loading && (
         <Form users={users} groups={groups} roles={roles} noDefault />

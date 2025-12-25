@@ -1,0 +1,5 @@
+.table {
+  & .cell {
+    min-width: calc(7.5rem * var(--mantine-scale)) !important;
+  }
+}

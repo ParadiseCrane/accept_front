@@ -258,7 +258,12 @@ const Table: FC<{
             </div>
           ) : (
             <>
-              <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  position: "relative",
+                  overflowX: loading ? "hidden" : "scroll",
+                }}
+              >
                 <LoadingOverlay
                   visible={loading}
                   loaderProps={{ radius: "lg" }}

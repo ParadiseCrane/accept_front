@@ -1,5 +1,6 @@
 .wrapper {
-  padding: 0 var(--spacer-xl) var(--spacer-huge) var(--spacer-xl);
+  padding: 0 10px var(--spacer-xl);
+  overflow: hidden;
 }
 
 .titleWrapper {
@@ -32,4 +33,26 @@
 
 .tasksWrapper {
   margin: var(--spacer-l) auto;
+  overflow-x: scroll;
+}
+
+@media (min-width: 420px) {
+  .wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: 500px) {
+  .wrapper {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    padding-left: var(--spacer-xl);
+    padding-right: var(--spacer-xl);
+  }
 }

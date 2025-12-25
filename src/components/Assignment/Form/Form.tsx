@@ -10,6 +10,7 @@ import { FC, memo, useEffect } from "react";
 import Groups from "./Groups/Groups";
 import MainInfo from "./MainInfo/MainInfo";
 import Origin from "./Origin/Origin";
+import styles from "./form.module.css";
 
 const stepFields = [
   ["startDate", "startTime", "endDate", "endTime", "dates"],
@@ -73,7 +74,7 @@ const Form: FC<{
   });
 
   return (
-    <>
+    <div className={styles.stepperWrapper}>
       <Stepper
         buttonLabel={buttonLabel}
         form={form}
@@ -91,8 +92,9 @@ const Form: FC<{
         ]}
         labels={locale.assignment.form.steps.labels}
         descriptions={locale.assignment.form.steps.descriptions}
+        noDefault
       />
-    </>
+    </div>
   );
 };
 

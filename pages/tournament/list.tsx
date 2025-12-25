@@ -402,6 +402,7 @@ function TournamentList() {
     <div>
       <Title title={locale.titles.tournament.list} />
       <Table
+        noDefault
         columns={columns}
         rows={list}
         classNames={{
@@ -439,7 +440,6 @@ function TournamentList() {
           </div>
         }
       />
-      \
       {isTeacher && (
         <SingularSticky
           href={`/tournament/add`}

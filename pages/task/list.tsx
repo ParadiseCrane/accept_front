@@ -48,6 +48,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     hidable: false,
     hidden: false,
     size: 9,
+    minWidth: 250,
   },
   {
     label: locale.task.list.author,
@@ -179,6 +180,7 @@ function TaskListPage() {
         refactorTask={(_) => refactorTask(_, locale)}
         initialColumns={initialColumns}
         sortByPublic={true}
+        noDefault
       />
       {isTeacher && (
         <SingularSticky
