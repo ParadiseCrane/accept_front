@@ -27,7 +27,7 @@
 }
 
 .content {
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 .content:focus {

@@ -49,6 +49,12 @@
     font-size: calc(1.2 * var(--mantine-font-size-md));
   }
 
+  p:has(span.latex) {
+    padding-top: var(--table-scroll-height);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
   code {
     font-size: 1rem;
   }
@@ -187,6 +193,7 @@
 
 .starlight-aside__title-wrapper {
   width: 100%;
+  overflow-x: hidden;
 }
 
 .starlight-aside__content {
