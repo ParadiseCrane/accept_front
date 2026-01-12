@@ -2,7 +2,7 @@
   position: fixed;
   right: 0;
   width: var(--spacer-xl);
-  z-index: 950;
+  z-index: 200;
   top: 10rem;
   display: inline-flex;
   transition: width 0.5s;

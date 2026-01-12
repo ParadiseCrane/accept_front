@@ -1,4 +1,13 @@
-.chatWrapper {
+.affix {
+  display: none;
+}
+
+.affixMobile {
+  display: block;
+}
+
+.chatWrapper,
+.chatWrapperMobile {
   position: absolute;
   z-index: 100;
   bottom: 0;
@@ -17,6 +26,11 @@
   padding-top: var(--spacer-xxs);
 }
 
+.chatWrapperMobile {
+  left: 5px;
+  bottom: 50px;
+}
+
 .iconWrapper {
   width: 4rem;
   height: 2.5rem;
@@ -32,4 +46,14 @@
   border-bottom: 0;
   width: 100%;
   height: 100%;
+}
+
+@media (min-width: 768px) {
+  .affixMobile {
+    display: none;
+  }
+
+  .affix {
+    display: block;
+  }
 }

@@ -27,7 +27,7 @@
 }
 
 .content {
-  /* padding: 0px 5px; */
+  overflow-x: auto;
 }
 
 .content:focus {
