@@ -42,7 +42,7 @@ const ChatSticky: FC<{
     <>
       <Affix
         ref={refMobile}
-        position={{ bottom: 0, left: 0 }}
+        position={{ bottom: 50, left: 0 }}
         zIndex={200}
         className={styles.affixMobile}
       >
@@ -68,8 +68,8 @@ const ChatSticky: FC<{
             setHasNew(false);
           }}
           size={"xs"}
-          className={styles.iconRoot}
-          wrapperClassName={styles.iconWrapper}
+          className={styles.iconRootMobile}
+          wrapperClassName={styles.iconWrapperMobile}
         >
           <Indicator
             inline

@@ -13,6 +13,7 @@
 .title {
   display: inline-block;
   font-size: var(--font-size-huge);
+  word-break: break-all;
 }
 
 .complexity {
@@ -104,7 +105,7 @@
 .exampleData {
   white-space: pre-wrap;
 
-  font-family: 'Red Hat Mono', monospace !important;
+  font-family: "Red Hat Mono", monospace !important;
 }
 
 @media screen and (max-width: 480px) {
@@ -126,6 +127,7 @@
   .table {
     break-inside: avoid;
   }
+
   /*
   .tbody tr {
     width: 50px;

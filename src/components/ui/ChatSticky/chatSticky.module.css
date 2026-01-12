@@ -28,7 +28,9 @@
 
 .chatWrapperMobile {
   left: 5px;
-  bottom: 50px;
+  bottom: 70px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .iconWrapper {
@@ -36,16 +38,27 @@
   height: 2.5rem;
 }
 
-.iconRoot:hover {
+.iconWrapperMobile {
+  height: 4rem;
+  width: 2.5rem;
+}
+
+.iconRoot:hover,
+.iconRootMobile:hover {
   background-color: var(--secondary);
 }
 
-.iconRoot {
+.iconRoot,
+.iconRootMobile {
   background-color: var(--secondary);
   border-radius: 10px 10px 0 0;
   border-bottom: 0;
   width: 100%;
   height: 100%;
+}
+
+.iconRootMobile {
+  border-radius: 0 10px 10px 0;
 }
 
 @media (min-width: 768px) {
