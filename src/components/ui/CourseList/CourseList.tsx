@@ -7,8 +7,10 @@ import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
+import styles from "./courseList.module.css";
 import Table from "@ui/Table/Table";
 import { customTableSort } from "@utils/customTableSort";
+import clsx from "clsx";
 import Fuse from "fuse.js";
 import {
   FC,
@@ -152,22 +154,15 @@ const CourseList: FC<{
         withSearch
         columns={columns}
         rows={courses}
-        classNames={
-          classNames
-            ? classNames
-            : {
-                wrapper: tableStyles.wrapper,
-                table: tableStyles.table,
-                author: tableStyles.author,
-                grade: tableStyles.grade,
-                verdict: tableStyles.verdict,
-                headerCell: tableStyles.headerCell,
-                cell: tableStyles.cell,
-                even: tableStyles.even,
-                odd: tableStyles.odd,
-              }
-        }
-        noDefault={noDefault}
+        classNames={{
+          wrapper: clsx(tableStyles.wrapper, styles.wrapper),
+          table: tableStyles.table,
+          headerCell: styles.headerCell,
+          cell: styles.cell,
+          even: tableStyles.even,
+          odd: tableStyles.odd,
+        }}
+        noDefault
         defaultOnPage={defaultOnPage}
         onPage={[5, defaultOnPage]}
         total={total}
