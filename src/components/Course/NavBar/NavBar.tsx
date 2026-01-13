@@ -13,6 +13,7 @@ import { tooltipOpenDelay } from "@constants/Duration";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { ImageComponent } from "@ui/ImageSelector/ImageComponent/ImageComponent";
 import Link from "next/link";
+import clsx from "clsx";
 
 const NavBar: FC<{
   units: IBaseTreeUnit[];
@@ -21,7 +22,8 @@ const NavBar: FC<{
   prev: () => void;
   next: () => void;
   select: (_: IBaseTreeUnit) => void;
-}> = ({ units, hookUnit, image, prev, next, select }) => {
+  navbarOpened: boolean;
+}> = ({ units, hookUnit, image, prev, next, select, navbarOpened }) => {
   const course: IBaseTreeUnit = units[0];
   const children: IBaseTreeUnit[] =
     units.length > 1 ? [...units].slice(1, undefined) : [];
@@ -45,7 +47,9 @@ const NavBar: FC<{
   }, [prevUnit, hookUnit, actions, treeUnitList, course]);
 
   return (
-    <AppShell.Navbar className={styles.navbar}>
+    <AppShell.Navbar
+      className={clsx(styles.navbar, navbarOpened && styles.shadow)}
+    >
       <Link href={"/course/list"}>
         <Tip
           label={locale.course.backToCoursesTip}
