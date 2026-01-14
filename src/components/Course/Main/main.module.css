@@ -15,5 +15,5 @@
 }
 
 .content {
-  height: 100%;
+  padding-bottom: var(--app-shell-header-height);
 }

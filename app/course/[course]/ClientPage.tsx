@@ -140,7 +140,6 @@ export default function CourseClient({
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
-      padding="md"
     >
       <Header opened={opened} toggle={toggle} />
       <NavBar

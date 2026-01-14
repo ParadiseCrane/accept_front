@@ -9,10 +9,20 @@
 .content {
   display: flex;
   align-items: center;
+  gap: 5px;
+
+  svg {
+    flex-shrink: 0;
+  }
 }
 
 .content:hover {
   cursor: pointer;
+
+  h3,
+  h4 {
+    text-decoration: underline;
+  }
 }
 
 .unit {
