@@ -20,9 +20,10 @@ interface Props {
   units: IBaseTreeUnit[];
   courseSpec: string;
   select: (_: IBaseTreeUnit) => void;
+  closeNavbar: () => void;
 }
 
-const Main: FC<Props> = ({ units, courseSpec, select }) => {
+const Main: FC<Props> = ({ units, courseSpec, select, closeNavbar }) => {
   const [entity, setEntity] = useState<ICourse | IUnit | ILesson | null>(null);
   const searchParams = useSearchParams();
   const spec = searchParams?.get("item");
@@ -32,6 +33,7 @@ const Main: FC<Props> = ({ units, courseSpec, select }) => {
       sendRequest<any, any>(`course/${spec}`, "GET", undefined, undefined).then(
         (res) => {
           setEntity(res.response as ICourse | IUnit | ILesson);
+          closeNavbar();
         },
       );
     }
@@ -41,53 +43,49 @@ const Main: FC<Props> = ({ units, courseSpec, select }) => {
 
   return (
     <AppShell.Main classNames={{ main: styles.main }}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.content}>
-          {"tasks" in entity ? (
-            <Lesson lesson={entity} />
-          ) : (
-            <>
-              {entity.kind === "course" && (
-                <ImageComponent
-                  index={0}
-                  item={entity.image}
-                  active={false}
-                  animate
-                  height={240}
-                  radius="md"
-                  imageStyle={{
-                    width: "100%",
-                    height: "auto",
-                    maxHeight: 240,
-                    objectFit: "cover",
-                  }}
-                  cover
-                />
-              )}
-              <Center mt={"md"} mb={"md"}>
-                <Title order={1} ta={"center"}>
-                  {entity.title}
-                </Title>
-              </Center>
-              <Box ml={"xl"} mr={"xl"}>
-                <TipTapEditor
-                  key={entity.spec}
-                  editorMode={false}
-                  content={entity.description}
-                  onUpdate={() => {}}
-                />
-              </Box>
-              {units.length > 0 && (
-                <Contents
-                  units={units}
-                  currentUnit={entity}
-                  courseSpec={courseSpec}
-                  select={select}
-                />
-              )}
-            </>
-          )}
-        </div>
+      <div className={styles.content}>
+        {"tasks" in entity ? (
+          <Lesson lesson={entity} />
+        ) : (
+          <>
+            {entity.kind === "course" && (
+              <ImageComponent
+                index={0}
+                item={entity.image}
+                active={false}
+                animate
+                height={240}
+                radius="md"
+                imageStyle={{
+                  width: "100%",
+                  height: "auto",
+                  maxHeight: 240,
+                  objectFit: "cover",
+                }}
+                cover
+              />
+            )}
+            <Center mt={"md"} mb={"md"}>
+              <Title order={1} ta={"center"} className={styles.title}>
+                {entity.title}
+              </Title>
+            </Center>
+            <TipTapEditor
+              key={entity.spec}
+              editorMode={false}
+              content={entity.description}
+              onUpdate={() => {}}
+            />
+            {units.length > 0 && (
+              <Contents
+                units={units}
+                currentUnit={entity}
+                courseSpec={courseSpec}
+                select={select}
+              />
+            )}
+          </>
+        )}
       </div>
     </AppShell.Main>
   );

@@ -40,7 +40,7 @@ const Component: FC<Props> = ({ units, currentUnit, courseSpec, select }) => {
 
   return (
     <div className={styles.contents}>
-      <Title order={2} ta={"center"}>
+      <Title order={2} ta={"center"} className={styles.title}>
         {locale.course.contents(currentUnit.kind as "unit" | "course")}
       </Title>
       {treeUnitList.map((e) => {

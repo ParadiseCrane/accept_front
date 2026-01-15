@@ -1,5 +1,5 @@
 .contents {
-  padding: 40px 16px 16px;
+  padding: 40px 0 16px;
 }
 
 .itemWrapper {
@@ -33,4 +33,8 @@
 .lesson {
   margin: 0;
   /* font-weight: normal; */
+}
+
+.title {
+  color: var(--primary);
 }

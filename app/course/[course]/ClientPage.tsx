@@ -146,27 +146,16 @@ export default function CourseClient({
         units={units}
         hookUnit={currentUnit}
         image={course?.image}
-        prev={() => {
-          handlers.prev();
-          close();
-        }}
-        next={() => {
-          handlers.next();
-          close();
-        }}
-        select={(e) => {
-          handlers.current(e);
-          close();
-        }}
+        prev={handlers.prev}
+        next={handlers.next}
+        select={handlers.current}
         navbarOpened={opened}
       />
       <Main
         units={units}
         courseSpec={course.spec}
-        select={(e) => {
-          handlers.current(e);
-          close();
-        }}
+        select={handlers.current}
+        closeNavbar={close}
       />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
