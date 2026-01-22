@@ -37,7 +37,6 @@
 
 .message {
   width: 100%;
-  min-width: 768px;
   border-bottom: 1px solid var(--dark5);
   display: flex;
   flex-direction: row;
@@ -53,7 +52,7 @@
 .messageWrapper {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   cursor: pointer;
 }
 
@@ -75,6 +74,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacer-xxs);
+  padding-bottom: var(--spacer-xxs);
 }
 
 .subject {
@@ -84,19 +84,36 @@
 }
 
 .author {
-  width: 10%;
+  /* width: 10%; */
   font-size: var(--font-size-s);
-  margin: auto var(--spacer-xs);
+  /* margin: auto var(--spacer-xs); */
 }
 
 .date {
   display: flex;
   align-items: center;
-  width: 15%;
+  /* width: 15%; */
 }
 
 .emptyMessage {
   margin: var(--spacer-huge) auto;
   width: fit-content;
   font-size: var(--font-size-l);
+}
+
+.authorDateWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .messageWrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .authorDateWrapper {
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }

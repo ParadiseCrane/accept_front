@@ -30,14 +30,14 @@ const Component: FC<Props> = ({ item, select, isDirectChild }) => {
           <>
             <IconBook size={16} />
             <Title order={3} className={styles.unit}>
-              {item.title}
+              {item.title} ›
             </Title>
           </>
         ) : (
           <>
             <IconFileText size={16} />
             <Title order={4} className={styles.lesson}>
-              {item.title}
+              {item.title} ›
             </Title>
           </>
         )}

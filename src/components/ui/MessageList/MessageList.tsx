@@ -182,11 +182,13 @@ const MessageList: FC<{
                       {shrinkText(message.subject, 80)}
                     </div>
                   </div>
-                  <div className={styles.author}>
-                    {shrinkText(message.author, 12)}
-                  </div>
-                  <div className={styles.date}>
-                    {getLocalDate(message.date)}
+                  <div className={styles.authorDateWrapper}>
+                    <div className={styles.author}>
+                      {shrinkText(message.author, 12)}
+                    </div>
+                    <div className={styles.date}>
+                      {getLocalDate(message.date)}
+                    </div>
                   </div>
                 </div>
               </div>

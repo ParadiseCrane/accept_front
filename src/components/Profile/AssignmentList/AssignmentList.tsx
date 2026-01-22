@@ -41,6 +41,7 @@ import {
 } from "@tabler/icons-react";
 
 import styles from "./assignmentList.module.css";
+import { useViewportSize } from "@mantine/hooks";
 
 interface Item {
   value: any;
@@ -73,122 +74,126 @@ const getSortValue = (assignment: any): number => {
   }
 };
 
-const initialColumns = (locale: ILocale): ITableColumn[] => [
-  {
-    label: "",
-    key: "state",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.state.value > b.state.value
-        ? 1
-        : a.state.value == b.state.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 1,
-  },
-  {
-    label: locale.assignment.list.title,
-    key: "title",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.title.value > b.title.value
-        ? 1
-        : a.title.value == b.title.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 8,
-  },
-  {
-    label: locale.assignment.list.groups,
-    key: "groups",
-    sortable: false,
-    sortFunction: (a: any, b: any) =>
-      a.groups.value > b.groups.value
-        ? 1
-        : a.groups.value == b.groups.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 5,
-  },
-  {
-    label: locale.assignment.list.author,
-    key: "author",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.author.value > b.author.value
-        ? 1
-        : a.author.value == b.author.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: true,
-    size: 2,
-  },
-  {
-    label: locale.assignment.list.start,
-    key: "start",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.start.value > b.start.value
-        ? 1
-        : a.start.value == b.start.value
-          ? 0
-          : -1;
+const initialColumns = (locale: ILocale, width: number): ITableColumn[] => {
+  if (width === 0) return [];
+
+  return [
+    {
+      label: "",
+      key: "state",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.state.value > b.state.value
+          ? 1
+          : a.state.value == b.state.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: false,
+      hidden: false,
+      size: 1,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 3,
-  },
-  {
-    label: locale.assignment.list.end,
-    key: "end",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.infinite || a.end.value > b.end.value
-        ? 1
-        : a.end.value == b.end.value
-          ? 0
-          : -1;
+    {
+      label: locale.assignment.list.title,
+      key: "title",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.title.value > b.title.value
+          ? 1
+          : a.title.value == b.title.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: false,
+      hidden: false,
+      size: 8,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 3,
-  },
-  {
-    label: locale.assignment.list.taskNumber,
-    key: "taskNumber",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.taskNumber.value > b.taskNumber.value
-        ? 1
-        : a.taskNumber.value == b.taskNumber.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: true,
-    size: 3,
-  },
-];
+    {
+      label: locale.assignment.list.groups,
+      key: "groups",
+      sortable: false,
+      sortFunction: (a: any, b: any) =>
+        a.groups.value > b.groups.value
+          ? 1
+          : a.groups.value == b.groups.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: width <= 768,
+      size: 5,
+    },
+    {
+      label: locale.assignment.list.author,
+      key: "author",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.author.value > b.author.value
+          ? 1
+          : a.author.value == b.author.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: true,
+      size: 2,
+    },
+    {
+      label: locale.assignment.list.start,
+      key: "start",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.start.value > b.start.value
+          ? 1
+          : a.start.value == b.start.value
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: width <= 1024,
+      size: 3,
+    },
+    {
+      label: locale.assignment.list.end,
+      key: "end",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.infinite || a.end.value > b.end.value
+          ? 1
+          : a.end.value == b.end.value
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: false,
+      size: 3,
+    },
+    {
+      label: locale.assignment.list.taskNumber,
+      key: "taskNumber",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.taskNumber.value > b.taskNumber.value
+          ? 1
+          : a.taskNumber.value == b.taskNumber.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: true,
+      size: 3,
+    },
+  ];
+};
 
 const getAssignmentIcon = (
   assignment: IAssignmentDisplay,
@@ -309,6 +314,7 @@ const processData = (
 const defaultOnPage = 10;
 
 const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
+  const { width } = useViewportSize();
   const { locale } = useLocale();
   const [list, setList] = useState<IAssignmentDisplayList[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
@@ -334,8 +340,8 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
   });
 
   const columns: ITableColumn[] = useMemo(
-    () => initialColumns(locale),
-    [locale],
+    () => initialColumns(locale, width),
+    [locale, width],
   );
 
   const searchTags = useMemo(
@@ -419,12 +425,14 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && width > 0 && columns.length > 0) {
       applyFilters(data.assignments);
       setTags(data.tags);
       setGroups(data.groups);
     }
   }, [data, applyFilters]);
+
+  if (width === 0 || columns.length === 0) return <></>;
 
   return (
     <>
@@ -447,7 +455,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
           onPage={[5, 10]}
           noDefault
           total={total}
-          loading={loading}
+          loading={loading || width === 0}
           setSearchParams={setSearchParams}
           searchParams={searchParams}
           withSearch

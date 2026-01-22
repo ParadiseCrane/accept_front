@@ -11,6 +11,8 @@
   padding-bottom: var(--spacer-s);
   border-bottom: solid var(--dark4) 2px;
   gap: var(--spacer-s);
+  height: min-content;
+  margin-top: auto;
 }
 
 .messages::-webkit-scrollbar {
@@ -29,8 +31,7 @@
   min-width: 200px;
   border-radius: inherit;
   background-color: var(--chat-message-color);
-  padding: var(--spacer-xs) var(--spacer-s) var(--spacer-xxs)
-    var(--spacer-s);
+  padding: var(--spacer-xs) var(--spacer-s) var(--spacer-xxs) var(--spacer-s);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -42,20 +43,20 @@
 }
 
 .date {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-s);
   color: var(--dark3);
   margin-left: auto;
 }
 
 .content {
-  font-size: var(--font-size-s);
+  font-size: var(--font-size-l);
   align-self: flex-start;
   overflow-wrap: anywhere;
   white-space: pre-line;
 }
 
 .user {
-  font-size: var(--font-size-s);
+  font-size: var(--font-size-l);
   color: var(--secondary);
 }
 
@@ -80,7 +81,7 @@
 }
 
 .messageWrapper:after {
-  content: '';
+  content: "";
   width: 0;
   height: 0;
   position: absolute;
@@ -99,8 +100,33 @@
 
 .textInput {
   min-height: var(--spacer-l);
+  font-size: var(--font-size-l);
 }
 
 .textInput::-webkit-scrollbar {
   width: 2px;
+}
+
+@media (min-width: 768px) {
+  .date {
+    font-size: var(--font-size-xs);
+    color: var(--dark3);
+    margin-left: auto;
+  }
+
+  .content {
+    font-size: var(--font-size-s);
+    align-self: flex-start;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+  }
+
+  .user {
+    font-size: var(--font-size-s);
+    color: var(--secondary);
+  }
+
+  .textInput {
+    font-size: var(--font-size-s);
+  }
 }
