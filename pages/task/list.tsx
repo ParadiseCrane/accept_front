@@ -13,10 +13,11 @@ import TaskList from "@ui/TaskList/TaskList";
 import Title from "@ui/Title/Title";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { IconPlus } from "@tabler/icons-react";
+import { useViewportSize } from "@mantine/hooks";
 
-const initialColumns = (locale: ILocale): ITableColumn[] => [
+const initialColumns = (locale: ILocale, width: number): ITableColumn[] => [
   {
     label: "",
     key: "public",
@@ -31,7 +32,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 1.2,
+    size: 1,
   },
   {
     label: locale.task.list.title,
@@ -48,7 +49,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     hidable: false,
     hidden: false,
     size: 9,
-    minWidth: 250,
+    minWidth: 20,
   },
   {
     label: locale.task.list.author,
@@ -79,7 +80,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
-    hidden: false,
+    hidden: width <= 425,
     size: 3,
   },
   {
@@ -170,15 +171,21 @@ const refactorTask = (task: ITaskDisplay, locale: ILocale): any => ({
 });
 
 function TaskListPage() {
+  const { width } = useViewportSize();
   const { isTeacher } = useUser();
   const { locale } = useLocale();
+  const columns: ITableColumn[] = useMemo(
+    () => initialColumns(locale, width),
+    [locale, width],
+  );
+
   return (
     <div>
       <Title title={locale.titles.task.list} />
       <TaskList
         url={"bundle/task_list"}
         refactorTask={(_) => refactorTask(_, locale)}
-        initialColumns={initialColumns}
+        initialColumns={(_) => columns}
         sortByPublic={true}
         noDefault
       />

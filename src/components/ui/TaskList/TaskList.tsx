@@ -170,6 +170,8 @@ const TaskList: FC<{
     }));
   }, []);
 
+  // if (columns.length === 0) return <></>;
+
   return (
     <div>
       <Table
@@ -198,7 +200,7 @@ const TaskList: FC<{
         defaultOnPage={defaultOnPage}
         onPage={[5, defaultOnPage]}
         total={total}
-        loading={loading}
+        loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
         additionalSearch={

@@ -30,6 +30,7 @@ import {
   IconPlus,
   IconRun,
 } from "@tabler/icons-react";
+import { useViewportSize } from "@mantine/hooks";
 
 interface Item {
   value: any;
@@ -92,105 +93,109 @@ const sortByStartEnd = ({
   }
 };
 
-const initialColumns = (locale: ILocale): ITableColumn[] => [
-  {
-    label: "",
-    key: "status",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.status.value > b.status.value
-        ? 1
-        : a.status.value == b.status.value
-          ? 0
-          : -1;
+const initialColumns = (locale: ILocale, width: number): ITableColumn[] => {
+  if (width === 0) return [];
+
+  return [
+    {
+      label: "",
+      key: "status",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.status.value > b.status.value
+          ? 1
+          : a.status.value == b.status.value
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: false,
+      hidden: false,
+      size: 1,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 1,
-  },
-  {
-    label: locale.tournament.list.title,
-    key: "title",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.title.value > b.title.value
-        ? 1
-        : a.title.value == b.title.value
-          ? 0
-          : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 6,
-  },
-  {
-    label: locale.tournament.list.author,
-    key: "author",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.author > b.author ? 1 : a.author == b.author ? 0 : -1;
+    {
+      label: locale.tournament.list.title,
+      key: "title",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.title.value > b.title.value
+          ? 1
+          : a.title.value == b.title.value
+            ? 0
+            : -1,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: false,
+      hidden: false,
+      size: 6,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 2,
-  },
-  {
-    label: locale.tournament.list.start,
-    key: "start",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.start.value > b.start.value
-        ? 1
-        : a.start.value == b.start.value
-          ? 0
-          : -1;
+    {
+      label: locale.tournament.list.author,
+      key: "author",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.author > b.author ? 1 : a.author == b.author ? 0 : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: width <= 768,
+      size: 2,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 3,
-  },
-  {
-    label: locale.tournament.list.end,
-    key: "end",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.end.value > b.end.value
-        ? 1
-        : a.end.value == b.end.value
-          ? 0
-          : -1;
+    {
+      label: locale.tournament.list.start,
+      key: "start",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.start.value > b.start.value
+          ? 1
+          : a.start.value == b.start.value
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: false,
+      size: 3,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 3,
-  },
-  {
-    label: locale.tournament.list.maxTeamSize,
-    key: "maxTeamSize",
-    sortable: true,
-    sortFunction: (a: any, b: any) => {
-      return a.maxTeamSize > b.maxTeamSize
-        ? 1
-        : a.maxTeamSize == b.maxTeamSize
-          ? 0
-          : -1;
+    {
+      label: locale.tournament.list.end,
+      key: "end",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.end.value > b.end.value
+          ? 1
+          : a.end.value == b.end.value
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: false,
+      size: 3,
     },
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 3,
-  },
-];
+    {
+      label: locale.tournament.list.maxTeamSize,
+      key: "maxTeamSize",
+      sortable: true,
+      sortFunction: (a: any, b: any) => {
+        return a.maxTeamSize > b.maxTeamSize
+          ? 1
+          : a.maxTeamSize == b.maxTeamSize
+            ? 0
+            : -1;
+      },
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: width <= 768,
+      size: 3,
+    },
+  ];
+};
 
 const getTournamentIcon = (
   tournament: ITournamentDisplay,
@@ -287,6 +292,7 @@ const processData = (
 const defaultOnPage = 10;
 
 function TournamentList() {
+  const { width } = useViewportSize();
   const { locale } = useLocale();
   const { isTeacher } = useUser();
 
@@ -310,8 +316,8 @@ function TournamentList() {
   });
 
   const columns: ITableColumn[] = useMemo(
-    () => initialColumns(locale),
-    [locale],
+    () => initialColumns(locale, width),
+    [locale, width],
   );
 
   const searchTags = useMemo(
@@ -382,11 +388,11 @@ function TournamentList() {
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && columns.length > 0) {
       applyFilters(data.tournaments);
       setTags(data.tags);
     }
-  }, [data, applyFilters]);
+  }, [data, applyFilters, columns]);
 
   const resetPage = useCallback(() => {
     setSearchParams((searchParams: BaseSearch) => ({
@@ -397,6 +403,8 @@ function TournamentList() {
       },
     }));
   }, []);
+
+  if (columns.length === 0) return <></>;
 
   return (
     <div>
@@ -422,7 +430,7 @@ function TournamentList() {
         empty={<>{locale.ui.table.emptyMessage}</>}
         isEmpty={data?.tournaments.length == 0}
         nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
-        loading={loading}
+        loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
         withSearch

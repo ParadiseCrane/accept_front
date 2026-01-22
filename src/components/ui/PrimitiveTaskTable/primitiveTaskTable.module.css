@@ -1,0 +1,8 @@
+.title {
+  height: auto;
+  padding-bottom: var(--spacer-xs);
+}
+
+.table {
+  min-width: auto;
+}

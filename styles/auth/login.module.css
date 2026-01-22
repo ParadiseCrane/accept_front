@@ -26,6 +26,7 @@
 .footerLine {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--spacer-xxs);
   font-size: var(--font-size-m);
 }
@@ -46,5 +47,6 @@
 .row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 15px;
 }

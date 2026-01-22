@@ -1,11 +1,11 @@
 .titleWrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   column-gap: 2em;
   padding-right: 5%;
   flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .title {
@@ -54,5 +54,26 @@
   padding-right: var(--spacer-m);
   word-wrap: break-word;
   font-size: var(--font-size-s);
-  word-break: break-all;
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .titleWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 5%;
+    flex-wrap: wrap;
+    gap: 0;
+
+    & a {
+      width: 48%;
+    }
+
+    & span {
+      width: 48%;
+      justify-content: flex-end;
+    }
+  }
 }

@@ -19,6 +19,7 @@ import InnerTable from "./InnerTable/InnerTable";
 import PageNavigation from "./PageNavigation";
 import styles from "./table.module.css";
 import EmptyTablePlaceholder from "@ui/basics/EmptyTablePlaceholder/EmptyTablePlaceholder";
+import clsx from "clsx";
 
 const Table: FC<{
   columns: ITableColumn[];
@@ -222,7 +223,7 @@ const Table: FC<{
         </div>
       ) : (
         <div className={styles.main}>
-          <div className={styles.searchWrapper}>
+          <div className={clsx(styles.searchWrapper, classNames.searchWrapper)}>
             {withSearch && (
               <div className={styles.search}>
                 <TextInput
@@ -237,7 +238,9 @@ const Table: FC<{
               </div>
             )}
             {availableColumns.length > 0 && (
-              <div className={styles.columnSelect}>
+              <div
+                className={clsx(styles.columnSelect, classNames.columnSelect)}
+              >
                 <MultiSelect
                   data={availableColumns}
                   value={selectedColumns}

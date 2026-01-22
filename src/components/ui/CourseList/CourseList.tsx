@@ -249,9 +249,9 @@ const CourseList: FC<{
         onPage={[5, defaultOnPage]}
         total={total}
         empty={<>{locale.ui.table.emptyMessage}</>}
-        isEmpty={data?.length == 0 || columns.length === 0}
+        isEmpty={data?.length == 0}
         nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
-        loading={loading}
+        loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
       />

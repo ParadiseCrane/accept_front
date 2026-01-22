@@ -7,6 +7,8 @@ import PrimitiveTable from "@ui/PrimitiveTable/PrimitiveTable";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import Link from "next/link";
 import { FC, ReactNode, memo } from "react";
+import styles from "./primitiveTaskTable.module.css";
+import clsx from "clsx";
 
 const PrimitiveTaskTable: FC<{
   tasks: ITaskDisplay[];
@@ -14,6 +16,11 @@ const PrimitiveTaskTable: FC<{
   empty?: ReactNode;
 }> = ({ tasks, linkQuery, empty }) => {
   const { locale } = useLocale();
+  // const newTasks: ITaskDisplay[] = tasks.map((task) => ({
+  //   ...task,
+  //   author: "Lorem ipsum dolor",
+  //   title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  // }));
 
   return (
     <PrimitiveTable
@@ -22,7 +29,7 @@ const PrimitiveTaskTable: FC<{
         locale.task.list.author,
         locale.task.list.verdict,
       ]}
-      columnSizes={[4, 1, 1]}
+      columnSizes={[5, 2, 1]}
       rows={tasks}
       empty={empty}
       rowComponent={(row: any) => {
@@ -31,7 +38,7 @@ const PrimitiveTaskTable: FC<{
             <td className={tableStyles.titleWrapper}>
               <Link
                 href={`/task/${row.spec}${linkQuery ? "?" + linkQuery : ""}`}
-                className={tableStyles.title}
+                className={clsx(tableStyles.title, styles.title)}
               >
                 {row.title}
               </Link>
@@ -55,7 +62,7 @@ const PrimitiveTaskTable: FC<{
       classNames={{
         column: tableStyles.column,
         row: tableStyles.row,
-        table: tableStyles.table,
+        table: clsx(tableStyles.table, styles.table),
         even: tableStyles.even,
       }}
     />

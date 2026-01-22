@@ -26,7 +26,7 @@
 
 .headerCell,
 .cell {
-  padding: var(--spacer-m);
+  padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: solid 1px #3a3a3a;
   word-wrap: break-word;
 }
@@ -129,4 +129,11 @@
 
 .title:hover {
   color: initial;
+}
+
+@media (min-width: 1024px) {
+  .headerCell,
+  .cell {
+    padding: var(--spacer-m);
+  }
 }
