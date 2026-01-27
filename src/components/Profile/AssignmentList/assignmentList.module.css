@@ -1,6 +1,6 @@
 .headerCell,
 .cell {
-  padding: var(--spacer-s);
+  padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: solid 1px #3a3a3a;
   word-wrap: break-word;
   min-width: calc(7.5rem * var(--mantine-scale)) !important;
