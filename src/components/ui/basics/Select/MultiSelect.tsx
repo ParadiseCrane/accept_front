@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { FC, memo, useEffect } from "react";
 
 import InputLabel from "../InputLabel/InputLabel";
+import clsx from "clsx";
 
 interface Props extends MultiSelectProps {
   helperContent?: IDropdownContent;
@@ -27,7 +28,9 @@ const MultiSelect: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${inputStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
+      className={`${clsx(inputStyles.wrapper, props.classNames?.wrapper)} ${
+        shrink ? inputStyles.shrink : ""
+      }`}
     >
       <InputLabel
         label={label}

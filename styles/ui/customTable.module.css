@@ -48,9 +48,9 @@
 
 .titleWrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   column-gap: 2em;
   row-gap: var(--spacer-xs);
   padding-right: 5%;
@@ -97,10 +97,10 @@
 .tags {
   font-size: var(--font-size-xs);
   display: flex;
-  gap: var(--spacer-xxs);
+  column-gap: var(--spacer-xxs);
   flex-direction: row;
   flex-wrap: wrap;
-  text-align: right;
+  /* text-align: right; */
   color: grey;
 }
 
@@ -129,6 +129,23 @@
 
 .title:hover {
   color: initial;
+}
+
+.updatedWrapper {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .updatedWrapper {
+    width: 80vw;
+    margin: var(--spacer-s) 10vw 10vh 10vw;
+  }
+
+  .titleWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacer-m);
+  }
 }
 
 @media (min-width: 1024px) {

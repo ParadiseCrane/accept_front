@@ -109,6 +109,7 @@ function GroupListPage() {
         url={"group/list"}
         refactorGroup={refactorGroup}
         initialColumns={initialColumns}
+        noDefault
       />
       {isTeacher && (
         <SingularSticky

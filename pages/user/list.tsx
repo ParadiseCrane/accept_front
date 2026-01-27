@@ -87,7 +87,7 @@ const refactorUser = (user: IUser): any => ({
   },
   shortName: {
     value: user.shortName,
-    display: user.shortName,
+    display: <div style={{ minWidth: "80px" }}>{user.shortName}</div>,
   },
   role: {
     value: user.role,
@@ -98,6 +98,7 @@ const refactorUser = (user: IUser): any => ({
             user.role.accessLevel >= accessLevels.admin
               ? "var(--accent)"
               : "black",
+          minWidth: "70px",
         }}
       >
         {capitalize(user.role.name)}
@@ -115,6 +116,7 @@ function UsersListPage() {
         url={"user/listBundle"}
         refactorUser={refactorUser}
         initialColumns={initialColumns}
+        noDefault
       />
     </>
   );

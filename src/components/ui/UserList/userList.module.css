@@ -1,0 +1,11 @@
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  column-gap: var(--spacer-l);
+  row-gap: var(--spacer-xs);
+  flex-wrap: wrap;
+}
+
+.input {
+  width: auto;
+}

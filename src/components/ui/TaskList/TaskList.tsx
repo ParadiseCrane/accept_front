@@ -182,7 +182,7 @@ const TaskList: FC<{
           classNames
             ? classNames
             : {
-                wrapper: tableStyles.wrapper,
+                wrapper: clsx(tableStyles.wrapper, styles.wrapper),
                 table: clsx(tableStyles.table, styles.table),
                 author: tableStyles.author,
                 grade: tableStyles.grade,

@@ -9,6 +9,7 @@ import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import Table from "@ui/Table/Table";
 import { customTableSort } from "@utils/customTableSort";
+import clsx from "clsx";
 import Fuse from "fuse.js";
 import {
   FC,
@@ -137,7 +138,7 @@ const GroupsList: FC<{
           classNames
             ? classNames
             : {
-                wrapper: tableStyles.wrapper,
+                wrapper: clsx(tableStyles.wrapper, tableStyles.updatedWrapper),
                 table: tableStyles.table,
                 author: tableStyles.author,
                 grade: tableStyles.grade,
