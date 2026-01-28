@@ -13,6 +13,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { ReactElement, useCallback } from "react";
 import { IconCrown, IconTrophy } from "@tabler/icons-react";
+import clsx from "clsx";
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -29,7 +30,7 @@ function Rating(props: { users: IRatingInfo[] }) {
   const rowComponent = useCallback(
     (item: IndexedRatingInfo) => (
       <>
-        <td>
+        <td className={styles.icon}>
           {item.score == best_score ? (
             <IconCrown
               strokeWidth={1.3}
@@ -41,13 +42,13 @@ function Rating(props: { users: IRatingInfo[] }) {
             item.index + 1
           )}
         </td>
-        <td>
+        <td className={styles.login}>
           <Link href={`/profile/${item.user.login}`} className={styles.link}>
             {item.user.login}
           </Link>
         </td>
-        <td>{item.user.shortName}</td>
-        <td>{item.score}</td>
+        <td className={styles.shortname}>{item.user.shortName}</td>
+        <td className={styles.score}>{item.score}</td>
       </>
     ),
     [best_score],
@@ -70,13 +71,14 @@ function Rating(props: { users: IRatingInfo[] }) {
             locale.rating.shortName,
             locale.rating.score,
           ]}
-          columnSizes={[1, 5, 10, 2]}
+          columnSizes={[1, 5, 7, 2]}
           classNames={{
             column: tableStyles.column,
             row: tableStyles.row,
-            table: tableStyles.table,
+            table: clsx(tableStyles.table, styles.table),
             even: tableStyles.even,
           }}
+          empty={<>{locale.ui.table.emptyMessage}</>}
         />
       </div>
     </>
@@ -106,15 +108,42 @@ export const getServerSideProps: GetServerSideProps = async ({
       "content-type": "application/json",
     } as { [key: string]: string },
   });
+
   if (response.status === 200) {
     res.setHeader(
       "Cache-Control",
       `public, s-maxage=10, stale-while-revalidate=${REVALIDATION_TIME.rating}`,
     );
     const response_json = await response.json();
+
+    // const mockedList: IRatingInfo[] = [
+    //   {
+    //     user: {
+    //       login: "vasya_pupkin_vasya",
+    //       shortName: "Вася Пупкиновововов",
+    //     },
+    //     score: 228,
+    //   },
+    //   {
+    //     user: {
+    //       login: "patya_petrov_petya",
+    //       shortName: "Петя Петрововововов",
+    //     },
+    //     score: 123,
+    //   },
+    //   {
+    //     user: {
+    //       login: "vanya_ivanov_vanya",
+    //       shortName: "Ваня Иванововововов",
+    //     },
+    //     score: 321,
+    //   },
+    // ];
+
     return {
       props: {
         users: response_json,
+        // users: mockedList,
       },
     };
   }

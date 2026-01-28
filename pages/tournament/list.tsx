@@ -31,6 +31,7 @@ import {
   IconRun,
 } from "@tabler/icons-react";
 import { useViewportSize } from "@mantine/hooks";
+import clsx from "clsx";
 
 interface Item {
   value: any;
@@ -414,7 +415,7 @@ function TournamentList() {
         columns={columns}
         rows={list}
         classNames={{
-          wrapper: tableStyles.wrapper,
+          wrapper: clsx(tableStyles.wrapper, tableStyles.updatedWrapper),
           table: tableStyles.table,
           author: tableStyles.author,
           grade: tableStyles.grade,

@@ -22,7 +22,7 @@
 
 .row {
   font-size: var(--font-size-m);
-  padding: var(--spacer-m);
+  padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: 1px solid black;
 }
 
@@ -75,5 +75,11 @@
       width: 48%;
       justify-content: flex-end;
     }
+  }
+}
+
+@media (min-width: 1024px) {
+  .row {
+    padding: var(--spacer-m);
   }
 }

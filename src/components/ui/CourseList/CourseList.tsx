@@ -106,7 +106,7 @@ const initialColumns = (locale: ILocale, width: number): ITableColumn[] => {
       sorted: 0,
       allowMiddleState: true,
       hidable: false,
-      hidden: false,
+      hidden: width <= 480,
       size: 2,
     },
   ];
