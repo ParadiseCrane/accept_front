@@ -10,7 +10,6 @@ import { useWidth } from "@hooks/useWidth";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import TaskLayout from "@layouts/TaskLayout";
 import { sendRequest } from "@requests/request";
-import { Kbd } from "@ui/basics";
 import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import ChatSticky from "@ui/ChatSticky/ChatSticky";
 import SimpleModal from "@ui/SimpleModal/SimpleModal";
@@ -26,6 +25,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { IconEye, IconNotes, IconPencil, IconTrash } from "@tabler/icons-react";
+import { Kbd } from "@mantine/core";
 
 const DynamicSend = dynamic(() => import("@components/Task/Send/Send"), {
   ssr: false,

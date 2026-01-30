@@ -5,8 +5,9 @@ import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { useCallback, useState } from "react";
 
 import styles from "./ImageUrlModal.module.css";
-import { Modal, TextInput } from "@ui/basics";
+import { TextInput } from "@ui/basics";
 import { imageInsertFunctionTipTap } from "@utils/image";
+import { Modal } from "@mantine/core";
 
 const loadImageFromUrl = ({
   src,

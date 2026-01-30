@@ -25,7 +25,7 @@ const PasswordInput: FC<Props> = ({
         helperContent={helperContent}
         required={required}
       />
-      <MantinePasswordInput size="lg" {...props} label={undefined} />
+      <MantinePasswordInput {...props} label={undefined} />
     </div>
   );
 };

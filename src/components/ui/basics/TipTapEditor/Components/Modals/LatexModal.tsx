@@ -9,12 +9,12 @@ import { Text } from "@tiptap/extension-text";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Editor, useEditor } from "@tiptap/react";
-import { Checkbox, Modal, TextInput } from "@ui/basics";
+import { Checkbox, TextInput } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
-import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import { useEffect, useState } from "react";
 
 import styles from "./LatexModal.module.css";
+import { Modal } from "@mantine/core";
 
 const insertLatexFunction = ({
   editor,

@@ -5,7 +5,6 @@ import { ITournament } from "@custom-types/data/ITournament";
 import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
 import { sendRequest } from "@requests/request";
-import { Overlay } from "@ui/basics";
 import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
 import { getLocalDate } from "@utils/datetime";
@@ -14,6 +13,7 @@ import { FC, memo, useEffect, useMemo, useState } from "react";
 
 import styles from "./description.module.css";
 import RegistrationButton from "./RegistrationButton/RegistrationButton";
+import { Overlay } from "@mantine/core";
 
 const Description: FC<{
   tournament: ITournament;

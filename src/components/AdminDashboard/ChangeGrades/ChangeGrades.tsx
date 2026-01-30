@@ -7,7 +7,7 @@ import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
 import { sendRequest } from "@requests/request";
-import { Button, Dropzone, Helper, SegmentedControl } from "@ui/basics";
+import { Button, Dropzone, Helper } from "@ui/basics";
 import ChangeGradeErrorList, {
   IGradeChangeResponseTable,
 } from "@ui/ChangeGradeErrorList/ChangeGradeErrorList";
@@ -23,6 +23,7 @@ import { FC, memo, useCallback, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 import styles from "./changeGrades.module.css";
+import { SegmentedControl } from "@mantine/core";
 
 const USERS_AT_ONCE = 50;
 

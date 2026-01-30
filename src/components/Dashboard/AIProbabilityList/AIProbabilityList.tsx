@@ -13,7 +13,6 @@ import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { default as AIProbabilityListUI } from "@ui/AIProbabilityList/AIProbabilityList";
-import { SegmentedControl } from "@ui/basics";
 import { TaskSelect, UserSelect } from "@ui/selectors";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
@@ -21,7 +20,7 @@ import Link from "next/link";
 import { FC, memo, useCallback, useState } from "react";
 
 import styles from "./aiProbabilityList.module.css";
-import { Group, SelectProps } from "@mantine/core";
+import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 
 export type TogglerValue = "date" | "ai_generated";

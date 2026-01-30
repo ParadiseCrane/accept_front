@@ -4,9 +4,9 @@ import { IRole } from "@custom-types/data/atomic";
 import { IGroup } from "@custom-types/data/IGroup";
 import { IUserDisplay } from "@custom-types/data/IUser";
 import { useRequest } from "@hooks/useRequest";
-import { LoadingOverlay } from "@ui/basics";
 import { FC, memo, useMemo } from "react";
 import styles from "./createNotification.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const CrateNotification: FC<{}> = () => {
   const { data, loading } = useRequest<

@@ -5,13 +5,14 @@ import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { useUser } from "@hooks/useUser";
 import { useForm } from "@mantine/form";
-import { LoadingOverlay, Select, TextInput } from "@ui/basics";
+import { Select, TextInput } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback } from "react";
 
 import styles from "./profileEditModal.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const ProfileEditModal: FC<{
   user: IUser;

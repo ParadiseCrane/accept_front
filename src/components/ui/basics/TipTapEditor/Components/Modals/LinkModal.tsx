@@ -2,11 +2,11 @@
 import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
-import SimpleModal from "@ui/SimpleModal/SimpleModal";
-import { useState } from "react";
 
 import styles from "./LinkModal.module.css";
-import { Modal, TextInput } from "@ui/basics";
+import { TextInput } from "@ui/basics";
+import { Modal } from "@mantine/core";
+import { useState } from "react";
 
 export const LinkModal = ({
   isOpened,

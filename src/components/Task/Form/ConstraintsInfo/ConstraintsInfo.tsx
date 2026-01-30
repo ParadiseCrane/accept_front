@@ -1,8 +1,8 @@
 "use client";
 import { Item } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
-import { Box } from "@mantine/core";
-import { NumberInput, Overlay, SegmentedControl, Switch } from "@ui/basics";
+import { Box, Overlay, SegmentedControl } from "@mantine/core";
+import { NumberInput, Switch } from "@ui/basics";
 import LanguageSelector from "@ui/selectors/LanguageSelector/LanguageSelector";
 import { FC, memo, useCallback, useMemo, useState } from "react";
 

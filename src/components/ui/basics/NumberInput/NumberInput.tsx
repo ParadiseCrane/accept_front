@@ -6,6 +6,7 @@ import {
 } from "@mantine/core";
 import inputStyles from "@styles/ui/input.module.css";
 import { InputLabel } from "@ui/basics";
+import clsx from "clsx";
 import { FC, memo } from "react";
 
 interface Props extends NumberInputProps {
@@ -35,7 +36,6 @@ const NumberInput: FC<Props> = ({
         size={shrink ? "sm" : "md"}
         {...props}
         classNames={{
-          error: props.classNames?.error || inputStyles.error,
           ...props.classNames,
         }}
         label={undefined}

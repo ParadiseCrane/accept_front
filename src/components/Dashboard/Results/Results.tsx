@@ -7,13 +7,14 @@ import {
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { sendRequest } from "@requests/request";
-import { LoadingOverlay, SegmentedControl, Tip } from "@ui/basics";
+import { Tip } from "@ui/basics";
 import ResultsTable, { IData, ILabel } from "@ui/ResultsTable/ResultsTable";
 import { letterFromIndex } from "@utils/letterFromIndex";
 import Link from "next/link";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import styles from "./results.module.css";
+import { LoadingOverlay, SegmentedControl } from "@mantine/core";
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined

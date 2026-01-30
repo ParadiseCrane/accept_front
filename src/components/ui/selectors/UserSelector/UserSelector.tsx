@@ -7,12 +7,13 @@ import {
 import { ILocale } from "@custom-types/ui/ILocale";
 import { useLocale } from "@hooks/useLocale";
 import inputStyles from "@styles/ui/input.module.css";
-import { Icon, SegmentedControl } from "@ui/basics";
+import { Icon } from "@ui/basics";
 import CustomTransferList from "@ui/basics/CustomTransferList/CustomTransferList";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 
 import styles from "./userSelector.module.css";
+import { SegmentedControl } from "@mantine/core";
 
 const UserSelector: FC<{
   setFieldValue: (_: string[]) => void;

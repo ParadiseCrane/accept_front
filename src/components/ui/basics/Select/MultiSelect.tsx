@@ -5,8 +5,6 @@ import {
   MultiSelectProps,
 } from "@mantine/core";
 import inputStyles from "@styles/ui/input.module.css";
-import { concatClassNames } from "@utils/concatClassNames";
-import dynamic from "next/dynamic";
 import { FC, memo, useEffect } from "react";
 
 import InputLabel from "../InputLabel/InputLabel";
@@ -39,17 +37,13 @@ const MultiSelect: FC<Props> = ({
       />
       <MantineMultiSelect
         size={shrink ? "sm" : "md"}
-        clearable={false}
-        // label={undefined}
         {...props}
         placeholder={props.placeholder}
         classNames={{
           ...props.classNames,
-          error: props.classNames?.error || inputStyles.error,
           value: props.classNames?.value || inputStyles.selectValue,
-          input: props.classNames?.input || inputStyles.selectInput,
-          root: concatClassNames(props.classNames?.root, inputStyles.root),
         }}
+        label={undefined}
       />
     </div>
   );

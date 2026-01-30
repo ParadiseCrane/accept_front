@@ -67,6 +67,7 @@ export const tiptap = {
     inProgress: "Стилизуем текст",
   },
   imageGeneration: {
+    hint: "Сгенерировать изображение",
     title: "Генерация картинки",
     amountLabel: "Количество вариантов",
     description: "Описание картинки",

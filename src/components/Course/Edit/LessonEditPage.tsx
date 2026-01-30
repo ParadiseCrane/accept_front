@@ -8,7 +8,6 @@ import { useLocale } from "@hooks/useLocale";
 import { memo, useCallback, useMemo, useState } from "react";
 import Form from "./LessonEditForm/Form";
 import { useRequest } from "@hooks/useRequest";
-import { LoadingOverlay } from "@ui/basics";
 import { requestWithNotify } from "@utils/requestWithNotify";
 import { UseFormReturnType } from "@mantine/form";
 import {
@@ -16,6 +15,7 @@ import {
   newNotification,
 } from "@utils/notificationFunctions";
 import { useRouter } from "next/navigation";
+import { LoadingOverlay } from "@mantine/core";
 
 function LessonEditPage(props: { lesson: ILesson; depth: number }) {
   const { locale } = useLocale();

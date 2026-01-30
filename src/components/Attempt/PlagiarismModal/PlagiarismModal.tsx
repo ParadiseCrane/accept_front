@@ -1,8 +1,5 @@
 "use client";
-import { callback } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
-import { useForm } from "@mantine/form";
-import { Modal, TextInput } from "@ui/basics";
 import {
   Dispatch,
   FC,
@@ -15,6 +12,7 @@ import {
 import styles from "./styles.module.css";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { sendRequest } from "@requests/request";
+import { Modal } from "@mantine/core";
 
 const PlagiarismModal: FC<{
   setIsAIGen: Dispatch<SetStateAction<boolean>>;

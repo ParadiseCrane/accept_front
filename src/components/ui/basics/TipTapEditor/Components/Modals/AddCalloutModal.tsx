@@ -1,12 +1,12 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
-import { Modal, Select, TextInput } from "@ui/basics";
+import { Select, TextInput } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { useState } from "react";
 
 import styles from "./AddCalloutModal.module.css";
-import { ComboboxItem } from "@mantine/core";
+import { ComboboxItem, Modal } from "@mantine/core";
 import { ILocale } from "@custom-types/ui/ILocale";
 
 const insertCallout = ({
