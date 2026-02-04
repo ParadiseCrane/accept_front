@@ -4,7 +4,7 @@ import { fetchWrapperStaticApp } from "@utils/fetchWrapperServer";
 import { Metadata, ResolvingMetadata } from "next";
 import { cache, FC, ReactNode } from "react";
 
-const getCourse = async (spec: string): Promise<ICourse> => {
+const getCourse = cache(async (spec: string): Promise<ICourse> => {
   const courseResponse = await fetchWrapperStaticApp({ url: `course/${spec}` });
   if (!courseResponse.ok) {
     throw new Error(
@@ -24,13 +24,14 @@ const getCourse = async (spec: string): Promise<ICourse> => {
     );
   }
   return course;
-};
+});
 
 const getCourseData = async (spec: string) => {
-  const navResponse = await fetchWrapperStaticApp({
-    url: `course/course_navigation_tree/${spec}`,
-  });
-  const course = await getCourse(spec);
+  const [navResponse, course] = await Promise.all([
+    fetchWrapperStaticApp({ url: `course/course_navigation_tree/${spec}` }),
+    getCourse(spec),
+  ]);
+
   const hasModerateRightsResponse = await fetchWrapperStaticApp({
     url: "rights",
     method: "POST",
@@ -69,13 +70,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const spec = (await params).course;
   const parentMetadata = await parent;
-  // const course = await getCourse(spec);
+  const course = await getCourse(spec);
 
   // TODO решить что делать с тайтлом
   return {
-    title: `${parentMetadata.title?.absolute} | Курс  "курс"`,
+    title: `${parentMetadata.title?.absolute} | Курс  "${course.title}"`,
     description: parentMetadata.description,
-    creator: null,
+    creator: course.author,
   };
 }
 

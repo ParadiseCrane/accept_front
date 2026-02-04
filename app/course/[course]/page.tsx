@@ -10,13 +10,13 @@ export default async function CoursePage(props: {
   const searchParams = await props.searchParams;
   const currentSpec = searchParams["item"];
 
-  // const current = await fetchWrapperStaticApp({
-  //   url: `course/${currentSpec || params.course}`,
-  //   method: "GET",
-  //   cacheTags: [`course-${currentSpec}`], // for future migrations of api routes to app router
-  // });
-  // if (current.ok) {
-  // const item = (await current.json()) as ICourse | IUnit | ILesson;
-  return <ClientPage spec={params.course} />;
-  // }
+  const current = await fetchWrapperStaticApp({
+    url: `course/${currentSpec || params.course}`,
+    method: "GET",
+    cacheTags: [`course-${currentSpec}`], // for future migrations of api routes to app router
+  });
+  if (current.ok) {
+    const item = (await current.json()) as ICourse | IUnit | ILesson;
+    return <ClientPage spec={params.course} item={item} />;
+  }
 }
