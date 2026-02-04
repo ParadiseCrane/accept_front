@@ -46,10 +46,10 @@ const flattenCourse = ({
 
 export default function CourseClient({
   spec,
-  item,
-}: {
+}: // item,
+{
   spec: string;
-  item: ICourse | IUnit | ILesson;
+  // item: ICourse | IUnit | ILesson;
 }) {
   const { user } = useUser();
   const { locale } = useLocale();
@@ -76,7 +76,7 @@ export default function CourseClient({
   );
 
   const [currentUnit, handlers] = useMoveThroughArray(
-    units.findIndex((unit) => unit.spec == item.spec),
+    units.findIndex((unit) => unit.spec == course?.spec),
     units,
     (item1, item2) => item1.spec == item2.spec,
     changeHash,

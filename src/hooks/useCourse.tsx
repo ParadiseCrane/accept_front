@@ -65,33 +65,33 @@ export function CourseProvider({
   const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
   const searchParams = useSearchParams();
 
-  const fetchData = useCallback(async () => {
-    if (spec !== course?.spec) {
-      try {
-        setIsLoading(true);
-        const [navigation, course, hasModerateRights] = await Promise.all([
-          sendRequest(`course/course_navigation_tree/${spec}`, "GET"), // TODO Save navigation info as well
-          sendRequest<undefined, ICourse>(`course/${spec}`, "GET"),
-          sendRequest<any, boolean>("rights", "POST", {
-            action: "moderate",
-            entity_spec: spec,
-            entity: "course",
-          }),
-        ]);
+  // const fetchData = useCallback(async () => {
+  //   if (spec !== course?.spec) {
+  //     try {
+  //       setIsLoading(true);
+  //       const [navigation, course, hasModerateRights] = await Promise.all([
+  //         sendRequest(`course/course_navigation_tree/${spec}`, "GET"), // TODO Save navigation info as well
+  //         sendRequest<undefined, ICourse>(`course/${spec}`, "GET"),
+  //         sendRequest<any, boolean>("rights", "POST", {
+  //           action: "moderate",
+  //           entity_spec: spec,
+  //           entity: "course",
+  //         }),
+  //       ]);
 
-        if (navigation.error || course.error || hasModerateRights.error) {
-          throw Error("Failed to fetch context");
-          // TODO use proper handling
-        }
-        setCourse(course.response);
-        setIsModerator(hasModerateRights.response);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  }, [spec, course?.spec]);
+  //       if (navigation.error || course.error || hasModerateRights.error) {
+  //         throw Error("Failed to fetch context");
+  //         // TODO use proper handling
+  //       }
+  //       setCourse(course.response);
+  //       setIsModerator(hasModerateRights.response);
+  //     } catch (err) {
+  //       setError(err instanceof Error ? err.message : "Unknown error");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // }, [spec, course?.spec]);
 
   const fetchGroups = useCallback(async () => {
     try {
@@ -109,11 +109,11 @@ export function CourseProvider({
     setGroups((prev) => prev.filter((e) => e.spec !== spec));
   }, []);
 
-  useEffect(() => {
-    if (!initialData) {
-      fetchData();
-    }
-  }, [initialData, fetchData]);
+  // useEffect(() => {
+  //   if (!initialData) {
+  //     fetchData();
+  //   }
+  // }, [initialData, fetchData]);
 
   useEffect(() => {
     fetchGroups();
@@ -126,7 +126,7 @@ export function CourseProvider({
         isLoading,
         error,
         isModerator,
-        refetch: fetchData,
+        refetch: () => {},
         isAuthor: (course && user && course.author === user.login) || isAdmin,
         item: searchParams?.get("item") || course?.spec,
         fetchGroups,
@@ -136,7 +136,7 @@ export function CourseProvider({
     [
       course,
       error,
-      fetchData,
+      // fetchData,
       isLoading,
       isModerator,
       searchParams,
