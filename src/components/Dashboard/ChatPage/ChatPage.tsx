@@ -3,13 +3,7 @@ import { IActivity } from "@custom-types/data/atomic";
 import { IChatMessage } from "@custom-types/data/IMessage";
 import { IHostData, useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
-import {
-  Icon,
-  Indicator,
-  LoadingOverlay,
-  TextInput,
-  UserAvatar,
-} from "@ui/basics";
+import { Icon, Indicator, TextInput, UserAvatar } from "@ui/basics";
 import Chat from "@ui/Chat/Chat";
 import Fuse from "fuse.js";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -17,6 +11,7 @@ import { IconEye, IconSearch } from "@tabler/icons-react";
 
 import styles from "./chatPage.module.css";
 import InitiateChatModal from "./InitiateChatModal/InitiateChatModal";
+import { LoadingOverlay } from "@mantine/core";
 
 const ChatPage: FC<{
   spec: string;

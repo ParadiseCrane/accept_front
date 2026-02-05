@@ -72,6 +72,10 @@ function CourseEditPage(props: { course: ICourse; depth: number }) {
         kind: props.course.kind,
       };
 
+      debugger;
+
+      console.log("courseToSend", courseToSend);
+
       requestWithNotify<ICourseAddEdit, string>(
         `course/put/${props.course.spec}`,
         "PUT",

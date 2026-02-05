@@ -6,6 +6,7 @@ export const link = {
   inviteLinkChooseGroup: "Выберите группу, чтобы получить ссылку-приглашение",
   invitePage: "Страница приглашения",
   alreadyGroupMember: "Вы уже участник этой группы",
+  authorizationRequired: "Вам необходимо войти в аккаунт",
   groupJoinSuccess: "Вы успешно добавлены в группу",
   goToCourse: "Перейти к курсу",
   goToMain: "На главную",
