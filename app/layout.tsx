@@ -21,6 +21,7 @@ import { theme } from "@constants/Theme";
 import { Metadata } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Accept",
@@ -51,6 +52,11 @@ export default function RootLayout({
     >
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="05d82b05-8d63-46e3-98d4-4366e22b0e65"
+        />
       </head>
       <body>
         <MantineProvider theme={theme}>

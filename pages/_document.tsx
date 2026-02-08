@@ -45,6 +45,11 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap"
             rel="stylesheet"
           />
+          <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="05d82b05-8d63-46e3-98d4-4366e22b0e65"
+          ></script>
           <ColorSchemeScript defaultColorScheme="auto" />
         </Head>
         <body>
