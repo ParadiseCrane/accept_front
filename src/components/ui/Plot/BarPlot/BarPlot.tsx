@@ -30,7 +30,7 @@ const BarPlot: FC<{
 }) => {
   const ADAPTIVE_DIVIDER = 1;
   const [toolTipLabel, setToolTipLabel] = useState<ReactNode | undefined>(
-    undefined
+    undefined,
   );
 
   const padding = (300 / (data.length + 1)) * PADDING;
@@ -41,9 +41,9 @@ const BarPlot: FC<{
   const upperBound = useMemo(
     () =>
       Math.round(
-        Math.max(...data.map((item) => item.amount)) / ROW_LINES + 0.75
+        Math.max(...data.map((item) => item.amount)) / ROW_LINES + 0.75,
       ) * ROW_LINES,
-    [data]
+    [data],
   );
 
   return (

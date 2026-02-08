@@ -259,7 +259,7 @@ function applyAuthCookies(res: NextResponse, ensured: EnsureResult) {
    6) middleware: старая логика и новая ветка разделены
    ========================= */
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Ранний выход для статики

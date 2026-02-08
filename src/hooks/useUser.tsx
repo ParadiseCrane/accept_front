@@ -57,7 +57,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
       return;
     }
     // fetch whoami
-    const res = await sendRequest<{}, IWhoAmIResponse>("auth/whoami", "GET");
+    const res = await sendRequest<any, IWhoAmIResponse>("auth/whoami", "GET");
     // if error empty current data
     if (res.error) {
       setValue((prev) => ({

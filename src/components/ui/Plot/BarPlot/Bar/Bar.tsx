@@ -35,11 +35,11 @@ const Bar: FC<{
   const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
     () => setTooltipLabel(hoverLabel(data)),
-    [setTooltipLabel, data, hoverLabel]
+    [setTooltipLabel, data, hoverLabel],
   );
   const onLeave = useCallback(
     () => setTooltipLabel(undefined),
-    [setTooltipLabel]
+    [setTooltipLabel],
   );
   return (
     <>

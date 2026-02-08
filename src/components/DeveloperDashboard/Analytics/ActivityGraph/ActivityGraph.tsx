@@ -16,12 +16,12 @@ const mapActivityToPlotData = (activity: IActivityData[]): IPlotData[] => {
     }))
     .sort((a, b) => a.date - b.date);
 
-  let full_activity = new Array();
+  let full_activity = [];
 
   full_activity.push(sorted_activity[0]);
   for (let i = 1; i < sorted_activity.length; i++) {
     const current = sorted_activity[i];
-    let last = full_activity[full_activity.length - 1];
+    let last: any = full_activity[full_activity.length - 1];
     while (current.date - last.date > HOUR) {
       full_activity.push({
         count: 0,

@@ -34,12 +34,13 @@ export const fetchWrapperStatic = async ({
 
   const fetch_data = {
     method: method,
-    // eslint-disable-next-line no-undef
+
     credentials: "include" as RequestCredentials,
     body:
       !["GET", "DELETE"].includes(method) && body ? JSON.stringify(body) : null,
     headers: {
       "content-type": "application/json",
+      // cookie: req.headers.cookie,
       Authorization: `Bearer ${access_token}`,
     } as { [key: string]: string },
   };
@@ -54,7 +55,7 @@ export const fetchWrapper = async (props: FetchWrapperProps) => {
   const access_token = getCookieValue(req.headers.cookie || "", "access_token");
   const fetch_data = {
     method: fetchMethod,
-    // eslint-disable-next-line no-undef
+
     credentials: "include" as RequestCredentials,
     body:
       fetchMethod == "GET"

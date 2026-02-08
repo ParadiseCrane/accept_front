@@ -67,6 +67,7 @@ export const tiptap = {
     inProgress: "Stylizing text",
   },
   imageGeneration: {
+    hint: "Generate image",
     title: "Image generation",
     amountLabel: "Number of variants",
     description: "Image description",

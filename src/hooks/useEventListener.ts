@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from "react";
 
 function useEventListener<K extends keyof WindowEventMap>(
   _eventName: K,
-  _handler: (_event: WindowEventMap[K]) => void
+  _handler: (_event: WindowEventMap[K]) => void,
 ): void;
 function useEventListener<
   K extends keyof HTMLElementEventMap,
@@ -11,7 +10,7 @@ function useEventListener<
 >(
   _eventName: K,
   _handler: (_event: HTMLElementEventMap[K]) => void,
-  _element: RefObject<T>
+  _element: RefObject<T>,
 ): void;
 
 function useEventListener<
@@ -21,9 +20,9 @@ function useEventListener<
 >(
   eventName: KW | KH,
   handler: (
-    _event: WindowEventMap[KW] | HTMLElementEventMap[KH] | Event
+    _event: WindowEventMap[KW] | HTMLElementEventMap[KH] | Event,
   ) => void,
-  element?: RefObject<T>
+  element?: RefObject<T>,
 ) {
   // Create a ref that stores handler
   const savedHandler = useRef<typeof handler>(null!);

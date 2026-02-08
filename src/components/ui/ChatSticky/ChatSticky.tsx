@@ -22,13 +22,13 @@ const ChatSticky: FC<{
   const { user } = useUser();
 
   const refMobile = useClickOutside(() => {
-    const { height } = refMobile?.current?.getBoundingClientRect();
+    const { height } = refMobile.current.getBoundingClientRect();
     if (height) {
       setShowChat(false);
     }
   });
   const ref = useClickOutside(() => {
-    const { height } = ref?.current?.getBoundingClientRect();
+    const { height } = ref.current.getBoundingClientRect();
     if (height) {
       setShowChat(false);
     }

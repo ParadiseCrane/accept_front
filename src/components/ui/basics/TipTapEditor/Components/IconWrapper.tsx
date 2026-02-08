@@ -11,7 +11,7 @@ export const IconWrapper = ({
 }) => {
   return (
     <div
-      className={!!isActive ? styles.icon_wrapper_active : styles.icon_wrapper}
+      className={isActive ? styles.icon_wrapper_active : styles.icon_wrapper}
     >
       <IconChild
         size={"1.2rem"}

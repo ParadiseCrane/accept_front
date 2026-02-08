@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 const LoginForm: FC<{
-  signIn: (_: string, __: string, ___: string) => Promise<Boolean>;
+  signIn: (_: string, __: string, ___: string) => Promise<boolean>;
 }> = ({ signIn }) => {
   const { locale } = useLocale();
   const [loading, setLoading] = useState(false);

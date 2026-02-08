@@ -59,7 +59,9 @@ const processStream = async (response: any) => {
           if (data.content) {
             fullStory += data.content;
           }
-        } catch {}
+        } catch {
+          continue;
+        }
       }
     }
   }
@@ -130,10 +132,10 @@ export const TipTapBubbleMenuProvider = ({
       } finally {
         setIsEditable(true);
         setModalVisible(false);
-        return value;
       }
+      return value;
     },
-    [setModalVisible, setIsEditable],
+    [setModalVisible, setIsEditable, locale],
   );
 
   return (
@@ -152,7 +154,6 @@ export const TipTapBubbleMenuProvider = ({
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useTipTapBubbleMenu = () => {
   const context = useContext(TipTapBubbleMenuContext);
   if (!context) {
