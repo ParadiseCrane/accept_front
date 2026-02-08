@@ -2,8 +2,8 @@
 import { pureCallback, setter } from "@custom-types/ui/atomic";
 import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
 import { useLocale } from "@hooks/useLocale";
-import { Center, Pagination, Tooltip } from "@mantine/core";
-import { Checkbox, Icon, LoadingOverlay } from "@ui/basics";
+import { Center, LoadingOverlay, Pagination, Tooltip } from "@mantine/core";
+import { Checkbox, Icon } from "@ui/basics";
 import { getLocalDate } from "@utils/datetime";
 import { shrinkText } from "@utils/shrinkText";
 import {
@@ -182,11 +182,13 @@ const MessageList: FC<{
                       {shrinkText(message.subject, 80)}
                     </div>
                   </div>
-                  <div className={styles.author}>
-                    {shrinkText(message.author, 12)}
-                  </div>
-                  <div className={styles.date}>
-                    {getLocalDate(message.date)}
+                  <div className={styles.authorDateWrapper}>
+                    <div className={styles.author}>
+                      {shrinkText(message.author, 12)}
+                    </div>
+                    <div className={styles.date}>
+                      {getLocalDate(message.date)}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -14,7 +14,6 @@ const Checkbox: FC<Props> = ({ shrink, ...props }) => {
         classNames={{
           ...props.classNames,
         }}
-        styles={{ input: { cursor: "pointer" } }}
       />
     </div>
   );

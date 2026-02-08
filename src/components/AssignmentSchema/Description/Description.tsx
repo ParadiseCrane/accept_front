@@ -3,13 +3,13 @@ import { IAssignmentSchema } from "@custom-types/data/IAssignmentSchema";
 import { ITaskDisplay } from "@custom-types/data/ITask";
 import { useLocale } from "@hooks/useLocale";
 import { sendRequest } from "@requests/request";
-import { LoadingOverlay } from "@ui/basics";
 import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
 import TagList from "@ui/TagList/TagList";
 import { FC, useEffect, useState } from "react";
 
 import styles from "./description.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const Description: FC<{
   assignment: IAssignmentSchema;

@@ -3,11 +3,13 @@ import { IAttemptDisplay } from "@custom-types/data/IAttempt";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import tableStyles from "@styles/ui/customTable.module.css";
+import styles from "./results.module.css";
 import AttemptList from "@ui/AttemptList/AttemptList";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
 import Link from "next/link";
 import { FC, memo, useMemo } from "react";
+import clsx from "clsx";
 
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
@@ -86,11 +88,20 @@ const Results: FC<{ spec: string; activeTab: string }> = ({
   const url = useMemo(() => `task/attempts/${spec}`, [spec]);
   return (
     <AttemptList
+      noDefault
       key={url}
       url={url}
       initialColumns={initialColumns}
       refactorAttempt={refactorAttempt}
       activeTab={activeTab === "results"}
+      classNames={{
+        wrapper: clsx(tableStyles.wrapper, styles.wrapper),
+        table: tableStyles.table,
+        headerCell: styles.headerCell,
+        cell: styles.cell,
+        even: tableStyles.even,
+        odd: tableStyles.odd,
+      }}
     />
   );
 };

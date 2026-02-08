@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: var(--spacer-m);
+  min-width: 500px;
 }
 
 .defaultItemWrapper {

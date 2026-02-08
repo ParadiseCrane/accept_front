@@ -1,12 +1,12 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
 import { Editor } from "@tiptap/react";
-import { Modal, Select } from "@ui/basics";
+import { Select } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { useState } from "react";
 
 import styles from "./CodeBlockModal.module.css";
-import { ComboboxItem } from "@mantine/core";
+import { ComboboxItem, Modal } from "@mantine/core";
 
 const insertCodeBlock = ({
   editor,

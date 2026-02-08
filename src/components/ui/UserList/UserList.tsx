@@ -14,6 +14,7 @@ import Table from "@ui/Table/Table";
 import { capitalize } from "@utils/capitalize";
 import { customTableSort } from "@utils/customTableSort";
 import { hasSubarray } from "@utils/hasSubarray";
+import clsx from "clsx";
 import Fuse from "fuse.js";
 import {
   FC,
@@ -24,6 +25,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import styles from "./userList.module.css";
 
 interface Item<T = any> {
   value: T;
@@ -205,7 +207,7 @@ const UsersList: FC<{
           classNames
             ? classNames
             : {
-                wrapper: tableStyles.wrapper,
+                wrapper: clsx(tableStyles.wrapper, tableStyles.updatedWrapper),
                 table: tableStyles.table,
                 author: tableStyles.author,
                 grade: tableStyles.grade,
@@ -228,14 +230,7 @@ const UsersList: FC<{
         searchParams={searchParams}
         withSearch
         additionalSearch={
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "var(--spacer-l)",
-              width: "100%",
-            }}
-          >
+          <div className={styles.inputWrapper}>
             <MultiSelect
               searchable
               data={searchGroups}
@@ -244,6 +239,9 @@ const UsersList: FC<{
                 setCurrentGroups(value);
               }}
               placeholder={locale.placeholders.selectGroups}
+              classNames={{
+                wrapper: styles.input,
+              }}
             />
             <MultiSelect
               searchable
@@ -253,6 +251,9 @@ const UsersList: FC<{
                 setCurrentRoles(value);
               }}
               placeholder={locale.placeholders.selectRoles}
+              classNames={{
+                wrapper: styles.input,
+              }}
             />
           </div>
         }

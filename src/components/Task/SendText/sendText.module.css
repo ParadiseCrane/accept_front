@@ -1,5 +1,6 @@
 .wrapper {
-  padding: var(--spacer-m);
+  padding: var(--spacer-s) var(--spacer-l);
+  margin-bottom: var(--spacer-xl);
 }
 
 .buttonWrapper {
@@ -15,4 +16,10 @@
 
 .itemTitle {
   font-size: var(--font-size-m);
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: var(--spacer-xs) var(--spacer-s);
+  }
 }

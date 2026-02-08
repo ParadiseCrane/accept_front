@@ -14,7 +14,7 @@ import { useCourse } from "@hooks/useCourse";
 import { useLocale } from "@hooks/useLocale";
 import { useMoveThroughArray } from "@hooks/useStateHistory";
 import { useUser } from "@hooks/useUser";
-import { AppShell } from "@mantine/core";
+import { Affix, AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import ChatSticky from "@ui/ChatSticky/ChatSticky";
 import SingularSticky from "@ui/Sticky/SingularSticky";
@@ -57,7 +57,7 @@ export default function CourseClient({
   let { course, isModerator, isAuthor } = useCourse();
 
   const [openModal, setOpenModal] = useState(false);
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
 
   const units = useMemo(
     () =>
@@ -140,9 +140,6 @@ export default function CourseClient({
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
-      footer={{ offset: true, height: 60 }}
-      padding="md"
-      layout="alt"
     >
       <Header opened={opened} toggle={toggle} />
       <NavBar
@@ -152,8 +149,14 @@ export default function CourseClient({
         prev={handlers.prev}
         next={handlers.next}
         select={handlers.current}
+        navbarOpened={opened}
       />
-      <Main units={units} courseSpec={course.spec} select={handlers.current} />
+      <Main
+        units={units}
+        courseSpec={course.spec}
+        select={handlers.current}
+        closeNavbar={close}
+      />
       {actions.length > 0 && isAuthor && <Sticky actions={actions} />}
       {isModerator && !isAuthor && (
         <SingularSticky

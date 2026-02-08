@@ -2,6 +2,8 @@
 .cell {
   padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: solid 1px #3a3a3a;
+  word-wrap: break-word;
+  min-width: calc(7.5rem * var(--mantine-scale)) !important;
 }
 
 .cell {
@@ -19,21 +21,13 @@
   cursor: pointer;
 }
 
-.taskLink {
-  text-decoration: none;
-  color: var(--primary);
+.wrapper {
+  margin: 0;
 }
 
-.taskLink:hover {
-  color: var(--secondary);
-}
-
-.selectors {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacer-xl);
-}
-
-.red {
-  color: var(--negative);
+@media (min-width: 768px) {
+  .wrapper {
+    width: 80vw;
+    margin: var(--spacer-s) 10vw 10vh 10vw;
+  }
 }

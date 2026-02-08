@@ -21,7 +21,18 @@ const ChatSticky: FC<{
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
 
-  const ref = useClickOutside(() => setShowChat(false));
+  const refMobile = useClickOutside(() => {
+    const { height } = refMobile.current.getBoundingClientRect();
+    if (height) {
+      setShowChat(false);
+    }
+  });
+  const ref = useClickOutside(() => {
+    const { height } = ref.current.getBoundingClientRect();
+    if (height) {
+      setShowChat(false);
+    }
+  });
 
   const indicateNew = useCallback(() => {
     if (!showChat) setHasNew(true);
@@ -29,7 +40,55 @@ const ChatSticky: FC<{
 
   return (
     <>
-      <Affix ref={ref} position={{ bottom: 0, right: "200px" }} zIndex={100}>
+      <Affix
+        ref={refMobile}
+        position={{ bottom: 50, left: 0 }}
+        zIndex={200}
+        className={styles.affixMobile}
+      >
+        <div style={{ visibility: showChat ? "visible" : "hidden" }}>
+          {window && (
+            <Chat
+              entity={entity}
+              spec={spec}
+              host={host}
+              indicateNew={indicateNew}
+              opened={showChat}
+              isMessageMine={(message: IChatMessage) =>
+                !!user && message.author == user?.login
+              }
+              wrapperStyles={styles.chatWrapperMobile}
+              group_spec={group_spec}
+            />
+          )}
+        </div>
+        <Icon
+          onClick={() => {
+            setShowChat((value) => !value);
+            setHasNew(false);
+          }}
+          size={"xs"}
+          className={styles.iconRootMobile}
+          wrapperClassName={styles.iconWrapperMobile}
+        >
+          <Indicator
+            inline
+            disabled={!hasNew}
+            size={10}
+            offset={0}
+            zIndex={100}
+            blink
+          >
+            <IconMessageCircle2 color="white" />
+          </Indicator>
+        </Icon>
+      </Affix>
+      <Affix
+        ref={ref}
+        position={{ bottom: 0, right: "200px" }}
+        zIndex={100}
+        className={styles.affix}
+      >
         <div style={{ visibility: showChat ? "visible" : "hidden" }}>
           {window && (
             <Chat

@@ -65,12 +65,12 @@ const LeftMenu: FC<{
           <Tabs.List grow justify="center">
             {links.map((e, idx) => {
               return (
-                <Tabs.Tab value={e.section ?? ""} key={idx}>
-                  <NavLink
-                    onClick={() => changeParams(links[idx].section!)}
-                    label={e.title}
-                    leftSection={e.icon}
-                  />
+                <Tabs.Tab
+                  value={e.section ?? ""}
+                  key={idx}
+                  onClick={() => changeParams(links[idx].section!)}
+                >
+                  <NavLink label={e.title} leftSection={e.icon} />
                 </Tabs.Tab>
               );
             })}

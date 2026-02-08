@@ -22,6 +22,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import styles from "./taskList.module.css";
+import clsx from "clsx";
 
 interface Item {
   value: any;
@@ -168,6 +170,8 @@ const TaskList: FC<{
     }));
   }, []);
 
+  // if (columns.length === 0) return <></>;
+
   return (
     <div>
       <Table
@@ -178,8 +182,8 @@ const TaskList: FC<{
           classNames
             ? classNames
             : {
-                wrapper: tableStyles.wrapper,
-                table: tableStyles.table,
+                wrapper: clsx(tableStyles.wrapper, styles.wrapper),
+                table: clsx(tableStyles.table, styles.table),
                 author: tableStyles.author,
                 grade: tableStyles.grade,
                 verdict: tableStyles.verdict,
@@ -196,7 +200,7 @@ const TaskList: FC<{
         defaultOnPage={defaultOnPage}
         onPage={[5, defaultOnPage]}
         total={total}
-        loading={loading}
+        loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
         additionalSearch={

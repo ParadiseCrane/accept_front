@@ -1,11 +1,11 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
-import { Button, Modal, Select } from "@ui/basics";
+import { Button, Select } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import { useCallback, useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
-import { ComboboxItem } from "@mantine/core";
+import { ComboboxItem, Modal } from "@mantine/core";
 import { useParams } from "next/navigation";
 import { sendRequest } from "@requests/request";
 import { IUserDisplay } from "@custom-types/data/IUser";

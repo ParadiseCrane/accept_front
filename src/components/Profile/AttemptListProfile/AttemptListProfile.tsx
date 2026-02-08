@@ -11,9 +11,11 @@ import { TaskSelect } from "@ui/selectors";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
 import Link from "next/link";
-import { FC, memo, useState } from "react";
+import { FC, memo, useMemo, useState } from "react";
 
 import styles from "./attemptListProfile.module.css";
+import { useViewportSize } from "@mantine/hooks";
+import clsx from "clsx";
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
   result: {
@@ -53,82 +55,96 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
 });
 
-const initialColumns = (locale: ILocale): ITableColumn[] => [
-  {
-    label: locale.attempt.date,
-    key: "date",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
-    sorted: -1,
-    allowMiddleState: false,
-    hidable: false,
-    hidden: false,
-    size: 2,
-  },
-  {
-    label: locale.attempt.task,
-    key: "task",
-    sortable: false,
-    sortFunction: (_: any, __: any) => 0,
-    sorted: 0,
-    allowMiddleState: false,
-    hidable: false,
-    hidden: false,
-    size: 5,
-  },
-  {
-    label: locale.attempt.language,
-    key: "language",
-    sortable: false,
-    sortFunction: (_: any, __: any) => 0,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 2,
-  },
-  {
-    label: locale.attempt.result,
-    key: "result",
-    sortable: false,
-    sortFunction: (_: any, __: any) => 0,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: false,
-    hidden: false,
-    size: 2,
-  },
-];
+const initialColumns = (locale: ILocale, width: number): ITableColumn[] => {
+  if (width === 0) return [];
+
+  return [
+    {
+      label: locale.attempt.date,
+      key: "date",
+      sortable: true,
+      sortFunction: (a: any, b: any) =>
+        a.date.value > b.date.value ? -1 : a.date.value == b.date.value ? 0 : 1,
+      sorted: -1,
+      allowMiddleState: false,
+      hidable: false,
+      hidden: false,
+      size: 2,
+    },
+    {
+      label: locale.attempt.task,
+      key: "task",
+      sortable: false,
+      sortFunction: (_: any, __: any) => 0,
+      sorted: 0,
+      allowMiddleState: false,
+      hidable: false,
+      hidden: false,
+      size: 5,
+    },
+    {
+      label: locale.attempt.language,
+      key: "language",
+      sortable: false,
+      sortFunction: (_: any, __: any) => 0,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: true,
+      hidden: width <= 425,
+      size: 2,
+    },
+    {
+      label: locale.attempt.result,
+      key: "result",
+      sortable: false,
+      sortFunction: (_: any, __: any) => 0,
+      sorted: 0,
+      allowMiddleState: true,
+      hidable: false,
+      hidden: false,
+      size: 2,
+    },
+  ];
+};
 
 const AttemptListProfile: FC<{}> = () => {
   const { locale } = useLocale();
+  const { width } = useViewportSize();
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
+  const columns: ITableColumn[] = useMemo(
+    () => initialColumns(locale, width),
+    [locale, width],
+  );
 
   const { data } = useRequest<{}, ITaskBaseInfo[]>(`task/my`, "GET");
 
   return (
     <div>
-      <TaskSelect
-        label={locale.dashboard.attemptsList.task.label}
-        placeholder={locale.dashboard.attemptsList.task.placeholder}
-        nothingFound={locale.dashboard.attemptsList.task.nothingFound}
-        tasks={data || []}
-        select={(tasks: ITaskBaseInfo[] | undefined) => {
-          if (tasks) setTaskSearch(tasks.map((task) => task.spec));
-          else setTaskSearch([]);
-        }}
-        multiple
-      ></TaskSelect>
+      <div className={styles.topSectionWrapper}>
+        <TaskSelect
+          label={locale.dashboard.attemptsList.task.label}
+          placeholder={locale.dashboard.attemptsList.task.placeholder}
+          nothingFound={locale.dashboard.attemptsList.task.nothingFound}
+          tasks={data || []}
+          select={(tasks: ITaskBaseInfo[] | undefined) => {
+            if (tasks) setTaskSearch(tasks.map((task) => task.spec));
+            else setTaskSearch([]);
+          }}
+          additionalProps={{}}
+          multiple
+        ></TaskSelect>
+      </div>
       <AttemptList
         key={taskSearch.toString()}
         url={`attempt/my`}
         activeTab
-        initialColumns={initialColumns}
+        initialColumns={(_) => columns}
         refactorAttempt={refactorAttempt}
         empty={<>{locale.profile.empty.attempts}</>}
         noDefault
         classNames={{
+          columnSelect: styles.columnSelect,
+          searchWrapper: styles.searchWrapper,
           wrapper: tableStyles.wrapper,
           table: tableStyles.table,
           headerCell: styles.headerCell,

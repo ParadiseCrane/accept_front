@@ -6,14 +6,26 @@
   background-color: #00000008;
 }
 
-.contentWrapper {
+.content {
   width: min(calc(3.5 * calc(18.75rem * var(--mantine-scale))), 100%);
+  padding-left: 16px;
+  padding-right: 16px;
   padding-top: var(--app-shell-header-offset);
-  padding-bottom: var(--app-shell-padding);
+  padding-bottom: var(--app-shell-header-height);
   background-color: white;
   box-shadow: 0px 0px 11px 3px #0000001f;
 }
 
-.content {
-  height: 100%;
+.title {
+  width: 100%;
+  overflow-wrap: break-word;
+  color: var(--primary);
+  font-size: var(--font-size-huge);
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }

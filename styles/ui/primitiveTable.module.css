@@ -1,12 +1,11 @@
 .titleWrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   column-gap: 2em;
-  row-gap: var(--spacer-xs);
   padding-right: 5%;
   flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .title {
@@ -23,12 +22,13 @@
 
 .row {
   font-size: var(--font-size-m);
-  padding: var(--spacer-m);
+  padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: 1px solid black;
 }
 
 .table {
   width: 100%;
+  min-width: 500px;
   border-spacing: 0px !important;
 }
 
@@ -54,5 +54,32 @@
   padding-right: var(--spacer-m);
   word-wrap: break-word;
   font-size: var(--font-size-s);
-  word-break: break-all;
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .titleWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 5%;
+    flex-wrap: wrap;
+    gap: 0;
+
+    & a {
+      width: 48%;
+    }
+
+    & span {
+      width: 48%;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .row {
+    padding: var(--spacer-m);
+  }
 }

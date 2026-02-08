@@ -15,3 +15,15 @@
   flex-direction: column;
   gap: var(--spacer-m);
 }
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .wrapper {
+    padding: 0 10px;
+  }
+}

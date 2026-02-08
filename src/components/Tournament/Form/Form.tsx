@@ -15,6 +15,8 @@ import MainInfo from "./MainInfo/MainInfo";
 import Moderators from "./Moderators/Moderators";
 import Preview from "./Preview/Preview";
 import TaskOrdering from "./TaskOrdering/TaskOrdering";
+import { stylesToString } from "@mantine/core";
+import styles from "./form.module.css";
 
 const stepFields: string[][] = [
   ["title", "description", "tags", "public"],
@@ -79,8 +81,9 @@ const Form: FC<{
   });
 
   return (
-    <>
+    <div className={styles.stepperWrapper}>
       <Stepper
+        noDefault
         buttonLabel={buttonLabel}
         form={form}
         handleSubmit={() => handleSubmit(form)}
@@ -112,7 +115,7 @@ const Form: FC<{
         labels={locale.tournament.form.steps.labels}
         descriptions={locale.tournament.form.steps.descriptions}
       />
-    </>
+    </div>
   );
 };
 

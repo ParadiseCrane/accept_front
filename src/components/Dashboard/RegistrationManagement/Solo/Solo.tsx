@@ -3,12 +3,13 @@ import { IUserDisplay } from "@custom-types/data/IUser";
 import { setter } from "@custom-types/ui/atomic";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { useLocale } from "@hooks/useLocale";
-import { Button, LoadingOverlay } from "@ui/basics";
+import { Button } from "@ui/basics";
 import { UserSelector } from "@ui/selectors";
 import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 
 import styles from "../registrationManagement.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const Solo: FC<{
   spec: string;

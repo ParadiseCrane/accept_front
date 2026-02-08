@@ -27,6 +27,7 @@ export const Callout = ({ node }: CalloutProps) => {
     <NodeViewWrapper
       as="aside"
       className={`starlight-aside ${type}`}
+      style={{ marginBottom: "20px" }}
       data-drag-handle
     >
       <div className={`${type} callout_wrapper`}>

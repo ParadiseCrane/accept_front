@@ -5,12 +5,12 @@ import {
   IBaseTreeUnit,
 } from "@custom-types/data/ICourse";
 import { sendRequest } from "@requests/request";
-import { LoadingOverlay } from "@ui/basics";
 import { useSearchParams } from "next/navigation";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 import GroupOpennessTree from "./GroupOpennessTree/GroupOpennessTree";
 import { useLocale } from "@hooks/useLocale";
 import styles from "./styles.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
   const [course, setCourse] = useState<ICourse | null>(null);

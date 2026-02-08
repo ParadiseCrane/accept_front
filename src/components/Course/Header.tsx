@@ -9,7 +9,7 @@ const Header: FC<{ opened: boolean; toggle: () => void }> = ({
   toggle,
 }) => {
   return (
-    <AppShell.Header p={"sm"}>
+    <AppShell.Header p={"sm"} zIndex={301}>
       <Group justify="space-between">
         <Group>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />

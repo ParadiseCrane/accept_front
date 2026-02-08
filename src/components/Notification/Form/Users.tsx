@@ -1,6 +1,6 @@
 "use client";
 import { IUserDisplay } from "@custom-types/data/IUser";
-import { Overlay } from "@ui/basics";
+import { Overlay } from "@mantine/core";
 import { UserSelector } from "@ui/selectors";
 import { FC, memo, useCallback, useMemo } from "react";
 

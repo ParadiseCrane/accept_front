@@ -13,15 +13,44 @@ import Link from "next/link";
 
 interface InvitePageProps {
   success: boolean;
+  unauthorized?: boolean;
   entity_type: string;
   entity_spec: string;
 }
 
 function InvitePage(props: InvitePageProps) {
   const { locale } = useLocale();
+  if (props.unauthorized)
+    return (
+      <div
+        style={{
+          paddingTop: "100px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Head>
+          <title>{locale.link.invitePage}</title>
+        </Head>
+        <div className={styles.description}>
+          {locale.link.authorizationRequired}
+        </div>
+        <Link href="/" className={styles.returnReversed}>
+          {locale.link.goToMain}
+        </Link>
+      </div>
+    );
   if (!props.success)
     return (
-      <div>
+      <div
+        style={{
+          paddingTop: "100px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Head>
           <title>{locale.link.invitePage}</title>
         </Head>
@@ -90,6 +119,13 @@ export const getServerSideProps: GetServerSideProps = async ({
           success: false,
         } as InvitePageProps,
       };
+    case 401: {
+      return {
+        props: {
+          unauthorized: true,
+        } as InvitePageProps,
+      };
+    }
     default:
       return {
         notFound: true,

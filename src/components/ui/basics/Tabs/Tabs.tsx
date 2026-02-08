@@ -18,17 +18,8 @@ const Tabs: FC<Props> = ({ pages, defaultPage, ...props }) => {
   const [activeTab, setActiveTab] = useState<string | null>(defaultPage);
 
   return (
-    <MantineTabs
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
-      styles={{ tabLabel: { fontSize: "var(--font-size-s)" } }}
-      value={activeTab}
-      onChange={setActiveTab}
-      {...props}
-    >
-      <MantineTabs.List grow>
+    <MantineTabs value={activeTab} onChange={setActiveTab} {...props}>
+      <MantineTabs.List>
         {pages.map((page, idx) => (
           <MantineTabs.Tab key={idx} value={page.value}>
             {page.title}
@@ -37,7 +28,7 @@ const Tabs: FC<Props> = ({ pages, defaultPage, ...props }) => {
       </MantineTabs.List>
 
       {pages.map((page, idx) => (
-        <MantineTabs.Panel key={idx} value={page.value} pt="xs">
+        <MantineTabs.Panel key={idx} value={page.value}>
           {page.page(activeTab, setActiveTab)}
         </MantineTabs.Panel>
       ))}

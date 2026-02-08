@@ -1,8 +1,9 @@
 .headerCell,
 .cell {
-  padding: var(--spacer-s);
+  padding: var(--spacer-s) var(--spacer-xs);
   border-bottom: solid 1px #3a3a3a;
   word-wrap: break-word;
+  min-width: calc(7.5rem * var(--mantine-scale)) !important;
 }
 
 .cell {
@@ -28,4 +29,41 @@
 
 .taskLink:hover {
   color: var(--secondary);
+}
+
+.searchWrapper {
+  padding: 0;
+}
+
+.columnSelect {
+  padding: 0;
+  width: 100%;
+}
+
+.topSectionWrapper {
+  padding-bottom: var(--spacer-xs);
+}
+
+@media (min-width: 320px) {
+  .topSectionWrapper,
+  .columnSelect {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (min-width: 420px) {
+  .topSectionWrapper,
+  .columnSelect {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .topSectionWrapper,
+  .columnSelect {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

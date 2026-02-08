@@ -169,7 +169,7 @@ const Chat: FC<{
             input: {
               height: "100%",
               border: "none",
-              fontSize: "var(--font-size-s)",
+              // fontSize: "var(--font-size-s)",
             },
           }}
           classNames={{

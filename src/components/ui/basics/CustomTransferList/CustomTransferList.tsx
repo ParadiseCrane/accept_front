@@ -6,7 +6,6 @@ import {
   ICustomTransferListItemComponentProps,
 } from "@custom-types/ui/basics/customTransferList";
 import { MyInputWrapperProps } from "@custom-types/ui/basics/inputWrapper";
-import { LoadingOverlay } from "@ui/basics";
 import InputWrapper from "@ui/basics/InputWrapper/InputWrapper";
 import { FC, ReactNode, memo, useCallback, useMemo } from "react";
 
@@ -15,6 +14,7 @@ import {
   Props as DefaultSelectFieldProps,
   SelectField,
 } from "./SelectField/SelectField";
+import { LoadingOverlay } from "@mantine/core";
 
 interface Props
   extends Omit<
@@ -139,7 +139,11 @@ const CustomTransferList: FC<Props> = ({
   }, [height]);
 
   return (
-    <InputWrapper styles={inputStyles} {...props}>
+    <InputWrapper
+      styles={inputStyles}
+      style={{ overflowX: "scroll", overflowY: "hidden" }}
+      {...props}
+    >
       <div
         style={{ ...inputStyles.root, maxWidth: width, width }}
         className={classNames ? classNames.wrapper : styles.wrapper}

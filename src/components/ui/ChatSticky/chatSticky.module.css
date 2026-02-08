@@ -1,4 +1,13 @@
-.chatWrapper {
+.affix {
+  display: none;
+}
+
+.affixMobile {
+  display: block;
+}
+
+.chatWrapper,
+.chatWrapperMobile {
   position: absolute;
   z-index: 100;
   bottom: 0;
@@ -17,19 +26,48 @@
   padding-top: var(--spacer-xxs);
 }
 
+.chatWrapperMobile {
+  left: 5px;
+  bottom: 70px;
+  border-radius: 10px;
+  overflow: hidden;
+  width: calc(100vw - 20px);
+}
+
 .iconWrapper {
   width: 4rem;
   height: 2.5rem;
 }
 
-.iconRoot:hover {
+.iconWrapperMobile {
+  height: 4rem;
+  width: 2.5rem;
+}
+
+.iconRoot:hover,
+.iconRootMobile:hover {
   background-color: var(--secondary);
 }
 
-.iconRoot {
+.iconRoot,
+.iconRootMobile {
   background-color: var(--secondary);
   border-radius: 10px 10px 0 0;
   border-bottom: 0;
   width: 100%;
   height: 100%;
+}
+
+.iconRootMobile {
+  border-radius: 0 10px 10px 0;
+}
+
+@media (min-width: 768px) {
+  .affixMobile {
+    display: none;
+  }
+
+  .affix {
+    display: block;
+  }
 }

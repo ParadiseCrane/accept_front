@@ -1668,23 +1668,28 @@ const localOpenElementAndParentsWithGroups = ({
   setTreeUnitList,
   treeUnitList,
 }: ILocalOpennessMethodInput): void => {
-  const parentSpecList: string[] = [currentUnit.spec];
+  let unitsToOpenSpecList: string[] = [currentUnit.spec];
   let parent = getParent({
     courseUnit: currentUnit,
     courseUnitList: treeUnitList,
   });
   // для всех родителей по возрастанию (но не для курса) делаем isOpen: true
   while (parent.depth > 0) {
-    parentSpecList.push(parent.spec);
+    unitsToOpenSpecList.push(parent.spec);
     parent = getParent({
       courseUnit: parent,
       courseUnitList: treeUnitList,
     });
   }
+  const childrenAllLevelsSpecList: string[] = findChildrenAllLevels({
+    parent: currentUnit,
+    treeUnitList,
+  }).map((e) => e.spec);
+  unitsToOpenSpecList = unitsToOpenSpecList.concat(childrenAllLevelsSpecList);
   // если элемент в списке родителей, то делаем isOpen: true, иначе оставляем как есть
   setTreeUnitList(
     treeUnitList.map((unit) => {
-      if (parentSpecList.includes(unit.spec) || unit.kind === "course") {
+      if (unitsToOpenSpecList.includes(unit.spec) || unit.kind === "course") {
         return {
           ...unit,
           isOpen: true,

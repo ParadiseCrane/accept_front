@@ -10,15 +10,7 @@ import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
 import tableStyles from "@styles/ui/customTable.module.css";
 import modalStyles from "@styles/ui/modal.module.css";
-import {
-  Button,
-  Icon,
-  LoadingOverlay,
-  Select,
-  TextArea,
-  TextInput,
-  Tip,
-} from "@ui/basics";
+import { Button, Icon, Select, TextArea, TextInput, Tip } from "@ui/basics";
 import OrganizationList from "@ui/OrganizationList/OrganizationList";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import SimpleModal from "@ui/SimpleModal/SimpleModal";

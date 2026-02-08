@@ -27,8 +27,8 @@ const ProfileMenu: FC<{ size: "md" | "lg" }> = ({ size }) => {
     <div className={styles.wrapper}>
       <Menu
         opened={showMenu}
-        trigger="hover"
-        zIndex={100}
+        trigger={"click-hover"}
+        zIndex={200}
         transitionProps={{ transition: "scale-y", duration: 150 }}
       >
         <Menu.Target>

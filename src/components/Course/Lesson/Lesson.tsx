@@ -7,6 +7,7 @@ import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import { useLocale } from "@hooks/useLocale";
 import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
 import { useCourse } from "@hooks/useCourse";
+import { Title } from "@mantine/core";
 
 interface Props {
   lesson: ILesson;
@@ -21,7 +22,15 @@ const Lesson: FC<Props> = ({ lesson }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
-        <div className={styles.title}>{lesson.title}</div>
+        <Title
+          order={1}
+          ta={"center"}
+          mt={"md"}
+          mb={"md"}
+          className={styles.title}
+        >
+          {lesson.title}
+        </Title>
       </div>
       <div className={styles.description}>
         <TipTapEditor
@@ -35,7 +44,11 @@ const Lesson: FC<Props> = ({ lesson }) => {
         <PrimitiveTaskTable
           tasks={lesson.tasks}
           linkQuery={`course=${course.spec}&lesson=${lesson.spec}`}
-          empty={locale.tournament.emptyTasks}
+          empty={
+            <Title order={2} ta={"center"} className={styles.empty}>
+              {locale.tournament.emptyTasks}
+            </Title>
+          }
         />
       </div>
     </div>

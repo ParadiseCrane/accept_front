@@ -14,8 +14,8 @@ export const GenerateImage = ({ editor }: { editor: Editor }) => {
   return (
     <>
       <RichTextEditor.Control
-        aria-label={locale.tiptap.latex}
-        title={locale.tiptap.latex}
+        aria-label={locale.tiptap.imageGeneration.hint}
+        title={locale.tiptap.imageGeneration.hint}
         onClick={() => {
           setOpened(true);
         }}

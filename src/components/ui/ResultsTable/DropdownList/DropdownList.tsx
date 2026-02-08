@@ -1,6 +1,5 @@
 "use client";
-import { Menu } from "@mantine/core";
-import { LoadingOverlay } from "@ui/basics";
+import { LoadingOverlay, Menu } from "@mantine/core";
 import { FC, memo, useCallback, useState } from "react";
 
 import { IData, ILabel } from "../ResultsTable";

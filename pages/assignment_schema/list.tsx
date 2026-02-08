@@ -21,6 +21,7 @@ import Fuse from "fuse.js";
 import Link from "next/link";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
+import clsx from "clsx";
 
 interface Item {
   value: any;
@@ -267,7 +268,7 @@ function AssignmentList() {
         columns={columns}
         rows={list}
         classNames={{
-          wrapper: tableStyles.wrapper,
+          wrapper: clsx(tableStyles.wrapper, tableStyles.updatedWrapper),
           table: tableStyles.table,
           author: tableStyles.author,
           grade: tableStyles.grade,
@@ -300,6 +301,7 @@ function AssignmentList() {
             />
           </div>
         }
+        noDefault
       />
       <SingularSticky
         href={`/assignment_schema/add`}

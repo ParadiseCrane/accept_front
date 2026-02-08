@@ -1,0 +1,16 @@
+.table {
+  & .cell {
+    min-width: calc(7.5rem * var(--mantine-scale)) !important;
+  }
+}
+
+.wrapper {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    width: 80vw;
+    margin: var(--spacer-s) 10vw 10vh 10vw;
+  }
+}

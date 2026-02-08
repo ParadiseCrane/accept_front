@@ -4,7 +4,7 @@ import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
 import { sendRequest } from "@requests/request";
-import { Button, Dropzone, Helper, SegmentedControl } from "@ui/basics";
+import { Button, Dropzone, Helper } from "@ui/basics";
 import NewUsersList from "@ui/NewUsersList/NewUsersList";
 import StudentErrorList, {
   IStudentAddResponseTable,
@@ -20,6 +20,7 @@ import { FC, memo, useCallback, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 import styles from "./addUsers.module.css";
+import { SegmentedControl } from "@mantine/core";
 
 const USERS_AT_ONCE = 50;
 const ERRORS_AT_ONCE = 8;

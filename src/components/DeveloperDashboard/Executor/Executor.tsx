@@ -4,13 +4,7 @@ import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
 import modalStyles from "@styles/ui/modal.module.css";
-import {
-  Button,
-  LoadingOverlay,
-  Select,
-  TextArea,
-  TextInput,
-} from "@ui/basics";
+import { Button, Select, TextArea, TextInput } from "@ui/basics";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import { isJSON } from "@utils/isJSON";
@@ -22,6 +16,7 @@ import { requestWithError } from "@utils/requestWithError";
 import { FC, memo, useCallback, useState } from "react";
 
 import styles from "./executor.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const Executor: FC<{}> = () => {
   const [response, setResponse] = useState("");

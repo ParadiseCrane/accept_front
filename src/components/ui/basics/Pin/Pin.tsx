@@ -27,7 +27,7 @@ const Pin: FC<Props> = ({ rightSection, classNames, ...props }) => {
       <div
         className={concatClassNames(styles.inputWrapper, classNames?.wrapper)}
       >
-        <MantinePin length={PIN_LENGTH} size={"xl"} {...props} />
+        <MantinePin {...props} />
         {rightSection}
       </div>
     </InputWrapper>

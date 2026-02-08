@@ -5,12 +5,13 @@ import { setter } from "@custom-types/ui/atomic";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { useLocale } from "@hooks/useLocale";
 import { useForm } from "@mantine/form";
-import { Button, LoadingOverlay, TextInput } from "@ui/basics";
+import { Button, TextInput } from "@ui/basics";
 import { UserSelect, UserSelector } from "@ui/selectors";
 import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback, useEffect, useMemo } from "react";
 
 import styles from "../registrationManagement.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const Team: FC<{
   spec: string;

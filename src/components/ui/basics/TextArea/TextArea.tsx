@@ -6,6 +6,7 @@ import { InputLabel } from "@ui/basics";
 import { FC, memo } from "react";
 
 import styles from "./textArea.module.css";
+import clsx from "clsx";
 
 const TextArea: FC<TextAreaProps> = ({
   helperContent,
@@ -32,10 +33,8 @@ const TextArea: FC<TextAreaProps> = ({
         classNames={{
           ...props.classNames,
           // TODO: fix types
-          input:
-            // @ts-ignore
-            props?.classNames?.input +
-            (monospace ? " " + styles.monospace : ""),
+          // @ts-ignore
+          input: clsx(props?.classNames?.input, monospace && styles.monospace),
         }}
         label={undefined}
       />

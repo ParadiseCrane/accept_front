@@ -5,7 +5,7 @@ import { FC, memo } from "react";
 
 import styles from "./styles.module.css";
 import { Title } from "@mantine/core";
-import { IconPoint } from "@tabler/icons-react";
+import { IconBook, IconFileText } from "@tabler/icons-react";
 
 interface Props {
   item: ITreeUnit;
@@ -26,15 +26,20 @@ const Component: FC<Props> = ({ item, select, isDirectChild }) => {
         onClick={onClick}
         style={{ paddingLeft: `calc(${item.depth} * ${PADDING_LEFT})` }}
       >
-        {isDirectChild || <IconPoint size={16} />}
         {isUnit ? (
-          <Title order={3} className={styles.unit}>
-            {item.title}
-          </Title>
+          <>
+            <IconBook size={16} />
+            <Title order={3} className={styles.unit}>
+              {item.title} ›
+            </Title>
+          </>
         ) : (
-          <Title order={4} className={styles.lesson}>
-            {item.title}
-          </Title>
+          <>
+            <IconFileText size={16} />
+            <Title order={4} className={styles.lesson}>
+              {item.title} ›
+            </Title>
+          </>
         )}
       </div>
     </div>

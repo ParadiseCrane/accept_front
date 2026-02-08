@@ -95,7 +95,7 @@ export const TipTapEditor = ({
   onUpdate: (editor: Editor) => void;
   onBlur?: any;
 }) => {
-  const { isEditable, isModalVisible } = useTipTapBubbleMenu();
+  const { isEditable } = useTipTapBubbleMenu();
   const isTipTapEditable = editorMode && isEditable;
   const lowlight = createLowlight();
 
@@ -249,7 +249,6 @@ export const TipTapEditor = ({
           </RichTextEditor.ControlsGroup>
           <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
-            <ToolbarDivider />
             <AddCalloutButton editor={editor} types={calloutTypes} />
             <ToggleBlockquote editor={editor} />
             <ToggleBulletList editor={editor} />

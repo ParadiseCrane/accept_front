@@ -1,5 +1,6 @@
 .wrapper {
-  padding: var(--spacer-l);
+  padding: var(--spacer-s) var(--spacer-l);
+  margin-bottom: var(--spacer-xl);
 }
 
 .top {
@@ -27,5 +28,11 @@
     align-items: flex-end;
     gap: 0;
     justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: var(--spacer-xs) var(--spacer-s);
   }
 }

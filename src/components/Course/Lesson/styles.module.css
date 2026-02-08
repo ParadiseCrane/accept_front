@@ -1,5 +1,5 @@
 .wrapper {
-  padding: 0 var(--spacer-xl) var(--spacer-huge) var(--spacer-xl);
+  /* padding: 0 var(--spacer-xl) var(--spacer-huge) var(--spacer-xl); */
 }
 
 .titleWrapper {
@@ -9,7 +9,7 @@
 
 .title {
   color: var(--primary);
-  font-size: var(--font-size-huge);
+  overflow-wrap: break-word;
 }
 
 .description {
@@ -19,4 +19,9 @@
 
 .tasksWrapper {
   margin: var(--spacer-l) auto;
+  overflow-x: auto;
+}
+
+.empty {
+  color: var(--primary);
 }

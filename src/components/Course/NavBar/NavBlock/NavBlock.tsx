@@ -43,7 +43,7 @@ export const NavBlock: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
           >
-            <div>{currentUnit.title}</div>
+            {currentUnit.title}
           </Tip>
         </div>
       </div>
@@ -66,7 +66,7 @@ export const NavBlock: FC<{
             openDelay={tooltipOpenDelay}
             position="top"
           >
-            <div className={styles.title}>{currentUnit.title}</div>
+            {currentUnit.title}
           </Tip>
           <ToggleVisibilityButton
             currentUnit={currentUnit}
@@ -93,7 +93,7 @@ export const NavBlock: FC<{
           openDelay={tooltipOpenDelay}
           position="top"
         >
-          <div className={styles.title}>{currentUnit.title}</div>
+          {currentUnit.title}
         </Tip>
       </div>
     </div>

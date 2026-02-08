@@ -18,9 +18,7 @@ export const fetchWrapperStaticApp = async ({
 }) => {
   const cookieStore = await cookies();
 
-  const access_token = auth
-    ? cookieStore.get("access_token")?.value
-    : undefined;
+  let access_token = auth ? cookieStore.get("access_token")?.value : undefined;
 
   const headersObj: Record<string, string> = {
     "Content-Type": "application/json",
@@ -50,8 +48,10 @@ export const fetchWrapperStaticApp = async ({
     };
   }
 
-  // Get API base URL
-  const apiUrl = getApiUrl();
+  const fetchUrl = `${getApiUrl()}/api/${url}`;
 
-  return await fetch(`${apiUrl}/api/${url}`, fetchOptions);
+  // Get API base URL
+  let res = await fetch(fetchUrl, fetchOptions);
+
+  return res;
 };

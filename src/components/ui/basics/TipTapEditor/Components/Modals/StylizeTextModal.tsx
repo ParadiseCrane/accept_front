@@ -1,11 +1,10 @@
 import clsx from "clsx";
-import { Group, Button } from "@mantine/core";
+import { Group, Button, Overlay } from "@mantine/core";
 import { Editor } from "@tiptap/react";
 import { useCallback, useState } from "react";
 import { useTipTapBubbleMenu } from "@hooks/useTipTapBubbleMenu";
 import TextArea from "@ui/basics/TextArea/TextArea";
 import { useLocale } from "@hooks/useLocale";
-import Overlay from "@ui/basics/Overlay/Overlay";
 import styles from "./StylizeTextModal.module.css";
 import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
 
@@ -41,9 +40,6 @@ export const StylizeTextModal = ({ editor }: Props) => {
   return (
     <>
       <Overlay
-        color="#000"
-        backgroundOpacity={0.35}
-        blur={25}
         classNames={{
           root: clsx(!isModalVisible && styles.invisible),
         }}

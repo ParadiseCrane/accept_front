@@ -1,19 +1,19 @@
-'use client';
-import { DEFAULT_ON_PAGE } from '@constants/Defaults';
-import { IAttemptDisplay } from '@custom-types/data/IAttempt';
-import { BaseSearch, UserTaskSearch } from '@custom-types/data/request';
-import { ILocale } from '@custom-types/ui/ILocale';
-import { ITableColumn } from '@custom-types/ui/ITable';
-import { useLocale } from '@hooks/useLocale';
-import { useRefetch } from '@hooks/useRefetch';
-import { useUser } from '@hooks/useUser';
-import { sendRequest } from '@requests/request';
-import tableStyles from '@styles/ui/customTable.module.css';
-import Table from '@ui/Table/Table';
+"use client";
+import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { IAttemptDisplay } from "@custom-types/data/IAttempt";
+import { BaseSearch, UserTaskSearch } from "@custom-types/data/request";
+import { ILocale } from "@custom-types/ui/ILocale";
+import { ITableColumn } from "@custom-types/ui/ITable";
+import { useLocale } from "@hooks/useLocale";
+import { useRefetch } from "@hooks/useRefetch";
+import { useUser } from "@hooks/useUser";
+import { sendRequest } from "@requests/request";
+import tableStyles from "@styles/ui/customTable.module.css";
+import Table from "@ui/Table/Table";
 import {
   errorNotification,
   newNotification,
-} from '@utils/notificationFunctions';
+} from "@utils/notificationFunctions";
 import {
   FC,
   ReactNode,
@@ -22,7 +22,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 interface PagerResponse {
   data: IAttemptDisplay[];
@@ -66,12 +66,12 @@ const AttemptList: FC<{
   const { refreshAccess } = useUser();
   const defaultOnPage = useMemo(
     () => defaultRowsOnPage || DEFAULT_ON_PAGE,
-    [defaultRowsOnPage]
+    [defaultRowsOnPage],
   );
 
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale),
-    [locale, initialColumns]
+    [locale, initialColumns],
   );
 
   const [loading, setLoading] = useState(true);
@@ -86,9 +86,9 @@ const AttemptList: FC<{
       skip: 0,
       limit: defaultOnPage,
     },
-    sort_by: [{ field: 'date', order: -1 }],
+    sort_by: [{ field: "date", order: -1 }],
     search_params: {
-      search: '',
+      search: "",
       keys: [],
     },
   });
@@ -98,7 +98,7 @@ const AttemptList: FC<{
       data: response.data.map((item) => refactorAttempt(item)),
       total: response.total,
     }),
-    [refactorAttempt]
+    [refactorAttempt],
   );
 
   const onError = useCallback(
@@ -117,10 +117,10 @@ const AttemptList: FC<{
       }
       setLoading(false);
     },
-    [locale.notify.errors.unauthorized, refreshAccess]
+    [locale.notify.errors.unauthorized, refreshAccess],
   );
   const fetch_data = useCallback(() => {
-    return sendRequest<UserTaskSearch, PagerResponse>(url, 'POST', {
+    return sendRequest<UserTaskSearch, PagerResponse>(url, "POST", {
       ...searchParams,
       toDate,
       users: userSearch,
@@ -154,13 +154,15 @@ const AttemptList: FC<{
     }
   }, [activeTab, refetch, shouldNotRefetch]);
 
+  if (columns.length === 0) return <></>;
+
   return (
     <div>
       <Table
         columns={columns}
         rows={tableData.data}
         total={tableData.total}
-        loading={loading}
+        loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}
         searchParams={searchParams}
         noDefault={noDefault}

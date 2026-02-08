@@ -5,7 +5,7 @@ import inputStyles from "@styles/ui/input.module.css";
 import { Helper } from "@ui/basics";
 import { FC, memo } from "react";
 
-import styles from "./switch.module.css";
+import switchStyles from "@styles/ui/switch.module.css";
 
 interface Props extends SwitchProps {
   helperContent?: IDropdownContent;
@@ -14,17 +14,10 @@ interface Props extends SwitchProps {
 
 const Switch: FC<Props> = ({ helperContent, shrink, ...props }) => {
   return (
-    <div className={`${styles.wrapper} ${shrink ? inputStyles.shrink : ""}`}>
-      <MantineSwitch
-        classNames={{
-          input: styles.input,
-          root: styles.switchWrapper,
-          body: styles.switchBody,
-        }}
-        size={shrink ? "sm" : "md"}
-        {...props}
-        label={undefined}
-      />
+    <div
+      className={`${switchStyles.wrapper} ${shrink ? inputStyles.shrink : ""}`}
+    >
+      <MantineSwitch size={shrink ? "sm" : "md"} {...props} label={undefined} />
       <div className={inputStyles.labelWrapper}>
         <div className={inputStyles.label}>{props.label}</div>
         {helperContent && <Helper dropdownContent={helperContent} />}

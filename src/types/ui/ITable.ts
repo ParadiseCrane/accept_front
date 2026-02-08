@@ -8,4 +8,5 @@ export interface ITableColumn {
   hidable: boolean;
   hidden: boolean;
   size: number;
+  minWidth?: number;
 }

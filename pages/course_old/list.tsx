@@ -111,8 +111,8 @@ function CourseListPage() {
       <Title title={locale.titles.course.list} />
       <CourseList
         url={"/course"}
-        refactorCourse={refactorCourse}
-        initialColumns={initialColumns}
+        // refactorCourse={refactorCourse}
+        // initialColumns={initialColumns}
       />
       {isTeacher && (
         <SingularSticky
