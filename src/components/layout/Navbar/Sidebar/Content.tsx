@@ -22,6 +22,7 @@ export const Content = () => {
                 href={e.href}
                 label={e.text(locale)}
                 classNames={{ label: styles.title }}
+                data-umami-event={e.eventName}
               />
             ))}
         </NavLink>

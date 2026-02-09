@@ -5,16 +5,19 @@ const projectLinks: IHeaderLink[] = [
     text: (locale) => locale.projects.education.title,
     type: "regular",
     href: "/edu",
+    eventName: "Переход на страницу списка задач",
   },
   {
     text: (locale) => locale.projects.tournaments.title,
     type: "regular",
     href: "/tournament/list",
+    eventName: "Переход на страницу списка турниров",
   },
   {
     text: (locale) => locale.projects.courses.title,
     type: "regular",
     href: "/course/list",
+    eventName: "Переход на страницу списка курсов",
   },
 ];
 
@@ -23,6 +26,7 @@ const listLinks: IHeaderLink[] = [
     text: (locale) => locale.mainHeaderLinks.listLinks.tasks,
     type: "regular",
     href: "/task/list",
+    eventName: "Переход на страницу списка задач",
   },
   {
     text: (locale) => locale.mainHeaderLinks.listLinks.assignments,

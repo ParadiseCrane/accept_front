@@ -6,7 +6,7 @@ import { useUser } from "@hooks/useUser";
 import linkStyles from "@styles/ui/link.module.css";
 import { Button } from "@ui/basics";
 import Link from "next/link";
-import React, { FC } from "react";
+import { FC } from "react";
 
 import Dropdown from "./Dropdown";
 
@@ -30,6 +30,7 @@ export const HeaderLink: FC<{
             .map((dropdownLink) => ({
               href: dropdownLink.href,
               label: dropdownLink.text(locale),
+              eventName: dropdownLink.eventName,
             }))}
           transition={"scale-y"}
           transitionDuration={link.links.length * 50}
@@ -38,7 +39,11 @@ export const HeaderLink: FC<{
         </Dropdown>
       ) : (
         (!link.permission || accessLevel >= accessLevels[link.permission]) && (
-          <Link href={link.href} className={linkStyles.headerLink}>
+          <Link
+            href={link.href}
+            className={linkStyles.headerLink}
+            data-umami-event={link.eventName}
+          >
             {link.text(locale)}
           </Link>
         )

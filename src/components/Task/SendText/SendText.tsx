@@ -87,6 +87,7 @@ const SendText: FC<{
           leftSection={
             <SendPlane color={!form.isValid() ? "black" : "var(--primary)"} />
           }
+          data-umami-event={"Отправка задачи"}
         >
           {locale.task.submit}
         </Button>

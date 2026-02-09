@@ -203,6 +203,7 @@ const LoginForm: FC<{
           <Link
             href={`/signup?referrer=${router.query.referrer}`}
             className={styles.footerLink}
+            data-umami-event={"Переход на страницу регистрации"}
           >
             {locale.auth.footer.register}
           </Link>

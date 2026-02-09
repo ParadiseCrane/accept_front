@@ -24,6 +24,7 @@ import {
   IconLetterCase,
   IconShieldLock,
 } from "@tabler/icons-react";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 const stepFields = [
   ["login"],
@@ -34,6 +35,7 @@ const stepFields = [
 function SignUp() {
   const { locale, lang } = useLocale();
   const router = useRouter();
+  const analytics = useAnalytics();
 
   const {
     data: organizations,
@@ -156,9 +158,12 @@ function SignUp() {
       lang,
       (_) => "",
       user,
-      () => router.push(`/signin?referrer=${router.query.referrer}`),
+      () => {
+        analytics?.track("Завершение регистрации");
+        router.push(`/signin?referrer=${router.query.referrer}`);
+      },
     );
-  }, [locale, lang, form, router]);
+  }, [locale, lang, form, router, analytics]);
 
   return (
     <>

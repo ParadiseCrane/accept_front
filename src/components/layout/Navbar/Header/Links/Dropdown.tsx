@@ -8,6 +8,7 @@ import styles from "./dropdown.module.css";
 interface Item {
   label: string;
   href: string;
+  eventName?: string;
 }
 
 const Dropdown: FC<{
@@ -41,6 +42,7 @@ const Dropdown: FC<{
             key={index}
             component={Link}
             href={item.href}
+            data-umami-event={item.eventName}
           >
             {item.label}
           </Menu.Item>
