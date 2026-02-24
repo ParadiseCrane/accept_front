@@ -29,7 +29,6 @@ class MyDocument extends Document {
     return (
       <Html lang="ru" suppressHydrationWarning>
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="shortcut" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link

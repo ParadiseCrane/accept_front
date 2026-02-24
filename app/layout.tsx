@@ -18,7 +18,7 @@ import { Notifications } from "@mantine/notifications";
 import { ColorSchemeScript } from "@mantine/core";
 import React from "react";
 import { theme } from "@constants/Theme";
-import { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import Script from "next/script";
@@ -28,7 +28,11 @@ export const metadata: Metadata = {
   description:
     "централизованная платформа, ориентированная на автоматизацию обучения программированию и повышение эффективности работы преподавателей с применением AI, а именно: проверка AI-плагиата, персонализированные подсказки об ошибках в коде, стилизация условий задач (для преподавателей), персонализированные рекомендации задач пользователям. ",
   creator: "Accept Team",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 const exo2 = Exo_2({
