@@ -50,3 +50,11 @@
   flex-wrap: wrap;
   gap: 15px;
 }
+
+.organizationButton {
+  font-size: var(--font-size-l);
+  height: unset;
+  padding: var(--spacer-s);
+  font-weight: 100;
+  line-height: normal;
+}

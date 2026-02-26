@@ -188,7 +188,7 @@ const LoginForm: FC<{
               type="button"
               // TODO добавить реальный запрос
               disabled={true}
-              className={styles.enterButton}
+              className={styles.organizationButton}
             >
               {locale.auth.joinOrganization}
             </Button>
