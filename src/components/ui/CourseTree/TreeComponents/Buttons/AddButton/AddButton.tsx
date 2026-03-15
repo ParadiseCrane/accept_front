@@ -39,6 +39,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
           <Tip label={locale.ui.courseTree.addUnit}>
             <div
               className={styles.icon_pair}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 addTreeUnit({ currentUnit, elementType: "unit" });
               }}
@@ -53,6 +54,7 @@ export const AddButtons: FC<IAddButtonProps> = ({
         <Tip label={locale.ui.courseTree.addLesson}>
           <div
             className={styles.icon_pair}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
               addTreeUnit({ currentUnit, elementType: "lesson" });
             }}

@@ -1042,9 +1042,8 @@ const localAddTreeUnitFirstLevel = (
     parent,
     treeUnitList: data.treeUnitList,
   });
-  let lastChildIndex = [...children].pop()?.index ?? 0;
   let lastChildOrderLastDigit =
-    lastChildIndex === 0
+    children.length === 0
       ? 0
       : Number(
           [...children.filter((element) => element.depth === parent.depth + 1)]
@@ -1099,12 +1098,10 @@ const localAddTreeUnit = (
     parent,
     treeUnitList: data.treeUnitList,
   });
-  // находим индекс последнего дочернего элемента
-  let lastChildIndex = [...children].pop()?.index ?? 0;
   // если есть дочерние элементы
   // находим последнее число в поле order для последнего дочернего элемента
   let lastChildOrderLastDigit =
-    lastChildIndex === 0
+    children.length === 0
       ? 0
       : Number([...children].pop()!.order.split("|").pop()!);
   const newElement: ITreeUnit = {
