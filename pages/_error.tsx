@@ -12,7 +12,9 @@ const Error: NextPage<{ statusCode?: number }> = ({ statusCode }) => {
     <div className={styles.wrapper}>
       <Title title={statusCode?.toString() || locale.error} />
       <div className={styles.statusCode}>{statusCode}</div>
-      <div className={styles.description}>{locale.errorPage.description}</div>
+      <div className={styles.description}>
+        {locale.errorPage.getTitle(statusCode ?? 404)}
+      </div>
       <Link href="/" className={styles.return}>
         {locale.errorPage.returnToMain}
       </Link>

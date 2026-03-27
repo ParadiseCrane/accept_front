@@ -274,8 +274,13 @@ export async function proxy(request: NextRequest) {
   // Новая ветка: любые /course пути
   // Тут "soft" режим: нет валидной сессии, пропускаем как гостя.
   if (COURSE_SEGMENT.test(pathname)) {
-    const ensured = await ensureAuth(request, "soft");
-    const res = NextResponse.next({ request: { headers: ensured.headers } });
+    const ensured = await ensureAuth(request, "hard");
+    let res = NextResponse.next({ request: { headers: ensured.headers } });
+    if (ensured.failed) {
+      res = NextResponse.rewrite(new URL("/401", request.url), {
+        request: { headers: ensured.headers },
+      });
+    }
     applyAuthCookies(res, ensured);
     return res;
   }
