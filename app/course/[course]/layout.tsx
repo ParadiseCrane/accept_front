@@ -68,7 +68,7 @@ export async function generateMetadata(
 
   if ("errorStatus" in course) {
     return {
-      title: `${course.errorStatus}`,
+      title: `${course.errorStatus} | Accept`,
     };
   }
 

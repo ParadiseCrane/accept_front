@@ -39,7 +39,7 @@ const Error: NextPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Title title={"401"} />
+      <Title title={"401 | Accept"} />
       <div className={styles.statusCode}>{401}</div>
       <div className={styles.description}>{locale.errorPage.signInTitle}</div>
       <Link href={buttonLink} className={styles.return}>

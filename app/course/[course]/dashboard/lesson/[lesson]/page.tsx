@@ -40,7 +40,7 @@ export async function generateMetadata(
 
   if ("errorStatus" in lesson) {
     return {
-      title: `${lesson.errorStatus}`,
+      title: `${lesson.errorStatus} | Accept`,
     };
   }
 

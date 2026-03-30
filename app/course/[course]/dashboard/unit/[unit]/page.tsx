@@ -49,7 +49,7 @@ export async function generateMetadata(
 
   if ("errorStatus" in unit) {
     return {
-      title: `${unit.errorStatus}`,
+      title: `${unit.errorStatus} | Accept`,
     };
   }
 
