@@ -3,7 +3,7 @@
   "private": true,
   "version": "2.4.0",
   "scripts": {
-    "debug": "cross-env NODE_OPTIONS=\"--inspect=9229 --enable-source-maps\" next dev --turbopack -p 8080",
+    "debug": "NODE_OPTIONS='--inspect' next dev --turbopack -p 8080",
     "dev": "next dev --turbopack -p 8080",
     "build": "next build",
     "start": "next start",

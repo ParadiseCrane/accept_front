@@ -3,34 +3,27 @@ import ClientPage from "./ClientPage";
 import { Metadata, ResolvingMetadata } from "next";
 import { cache } from "react";
 import { ILesson } from "@custom-types/data/ICourse";
+import { ErrorScreenAppDirectories } from "@ui/ErrorScreen/ErrorScreen";
 
-const getLesson = cache(async (lesson_spec: string): Promise<ILesson> => {
-  const lessonResponse = await fetchWrapperStaticApp({
-    url: `course/${lesson_spec}`,
-  });
+const getLesson = cache(
+  async (lesson_spec: string): Promise<ILesson | { errorStatus: number }> => {
+    const lessonResponse = await fetchWrapperStaticApp({
+      url: `course/${lesson_spec}`,
+    });
 
-  if (!lessonResponse.ok) {
-    throw new Error(
-      JSON.stringify({
-        code: 404,
-        message: `Failed to fetch data`,
-      }),
-    );
-  }
+    if (!lessonResponse.ok) {
+      return { errorStatus: lessonResponse.status };
+    }
 
-  const lesson = (await lessonResponse.json()) as ILesson;
+    const lesson = (await lessonResponse.json()) as ILesson;
 
-  if (lesson.kind !== "lesson") {
-    throw new Error(
-      JSON.stringify({
-        code: 404,
-        message: `Failed to fetch data`,
-      }),
-    );
-  }
+    if (lesson.kind !== "lesson") {
+      return { errorStatus: 404 };
+    }
 
-  return lesson;
-});
+    return lesson;
+  },
+);
 
 type PageProps = {
   params: Promise<{ course: string; lesson: string }>;
@@ -45,6 +38,12 @@ export async function generateMetadata(
 
   const lesson = await getLesson(spec);
 
+  if ("errorStatus" in lesson) {
+    return {
+      title: `${lesson.errorStatus} | Accept`,
+    };
+  }
+
   // TODO решить что делать с тайтлом
   return {
     title: `Accept | Управление "${lesson.title}"`,
@@ -54,6 +53,10 @@ export async function generateMetadata(
 export default async function LessonDashboardPage(props: PageProps) {
   const params = await props.params;
   const lesson = await getLesson(params.lesson);
+
+  if ("errorStatus" in lesson) {
+    return <ErrorScreenAppDirectories statusCode={lesson.errorStatus} />;
+  }
 
   return <ClientPage lesson={lesson} />;
 }

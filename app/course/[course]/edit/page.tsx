@@ -3,24 +3,23 @@ import { ICourse, ILesson, IUnit } from "@custom-types/data/ICourse";
 import UnitEditPage from "@components/Course/Edit/UnitEditPage";
 import LessonEditPage from "@components/Course/Edit/LessonEditPage";
 import CourseEditPage from "@components/Course/Edit/CourseEditPage";
+import { ErrorScreenAppDirectories } from "@ui/ErrorScreen/ErrorScreen";
 
 const getCourseData = async (
   spec: string,
-): Promise<{
-  course: ICourse | IUnit | ILesson;
-  depth: number;
-}> => {
+): Promise<
+  | {
+      course: ICourse | IUnit | ILesson;
+      depth: number;
+    }
+  | { errorStatus: number }
+> => {
   const response = await fetchWrapperStaticApp({
     url: `course-edit/${spec}`,
   });
 
   if (!response.ok) {
-    throw new Error(
-      JSON.stringify({
-        code: 404,
-        message: `Failed to fetch data`,
-      }),
-    );
+    return { errorStatus: response.status };
   }
 
   const entity: { course: ICourse | IUnit | ILesson; depth: number } =
@@ -39,6 +38,10 @@ export default async function Page({
 }) {
   const params = await params_promise;
   const data = await getCourseData(params.item ?? params.course);
+
+  if ("errorStatus" in data) {
+    return <ErrorScreenAppDirectories statusCode={data.errorStatus} />;
+  }
 
   if (data.course.kind === "course")
     return <CourseEditPage course={data.course} depth={data.depth} />;

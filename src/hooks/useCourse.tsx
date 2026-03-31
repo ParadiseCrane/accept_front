@@ -80,7 +80,8 @@ export function CourseProvider({
         ]);
 
         if (navigation.error || course.error || hasModerateRights.error) {
-          throw Error("Failed to fetch context");
+          // throw Error("Failed to fetch context");
+          setError("Failed to fetch context");
           // TODO use proper handling
         }
         setCourse(course.response);
@@ -100,8 +101,8 @@ export function CourseProvider({
         "GET",
       );
       if (!res.error) setGroups(res.response);
-    } catch {
-      throw Error("Failed to fetch groups");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
     }
   }, [spec]);
 

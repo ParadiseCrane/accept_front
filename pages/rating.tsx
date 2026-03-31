@@ -20,7 +20,12 @@ interface IndexedRatingInfo extends IRatingInfo {
   index: number;
 }
 
-function Rating(props: { users: IRatingInfo[] }) {
+interface Props {
+  users: IRatingInfo[];
+  notAllowed?: boolean;
+}
+
+function Rating(props: Props) {
   const { locale } = useLocale();
   const users = props.users.map(
     (item, index) => ({ ...item, index }) as IndexedRatingInfo,
@@ -116,37 +121,19 @@ export const getServerSideProps: GetServerSideProps = async ({
     );
     const response_json = await response.json();
 
-    // const mockedList: IRatingInfo[] = [
-    //   {
-    //     user: {
-    //       login: "vasya_pupkin_vasya",
-    //       shortName: "Вася Пупкиновововов",
-    //     },
-    //     score: 228,
-    //   },
-    //   {
-    //     user: {
-    //       login: "patya_petrov_petya",
-    //       shortName: "Петя Петрововововов",
-    //     },
-    //     score: 123,
-    //   },
-    //   {
-    //     user: {
-    //       login: "vanya_ivanov_vanya",
-    //       shortName: "Ваня Иванововововов",
-    //     },
-    //     score: 321,
-    //   },
-    // ];
-
     return {
       props: {
         users: response_json,
-        // users: mockedList,
       },
     };
   }
+
+  if (response.status === 401 || response.status === 403) {
+    return {
+      props: { errorCode: response.status },
+    };
+  }
+
   return {
     notFound: true,
   };
