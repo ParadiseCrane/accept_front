@@ -41,8 +41,6 @@ import Results from "./Results/Results";
 import Settings from "./Settings/Settings";
 import TaskList from "./TaskList/TaskList";
 import TeamList from "./TeamList/TeamList";
-import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
-import { IconRobot } from "@tabler/icons-react";
 
 const TournamentDashboard: FC<{
   spec: string;
@@ -56,10 +54,11 @@ const TournamentDashboard: FC<{
     "GET",
   );
 
-  const { data: aiCount } = useRequest<undefined, number>(
-    `tournament/attempts/ai/count/${spec}`,
-    "GET",
-  );
+  // AI-FEATURE FLAG
+  // const { data: aiCount } = useRequest<undefined, number>(
+  //   `tournament/attempts/ai/count/${spec}`,
+  //   "GET",
+  // );
 
   const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
 
@@ -138,29 +137,30 @@ const TournamentDashboard: FC<{
         title: locale.dashboard.tournament.attempts,
         section: "attempts",
       },
-      {
-        page: tournament && (
-          <AIProbabilityList
-            key={"all"}
-            type={"tournament"}
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-          />
-        ),
-        icon: (
-          <Indicator
-            size={"lg"}
-            label={aiCount}
-            disabled={!aiCount}
-            inline
-            position="top-start"
-          >
-            <IconRobot color="var(--secondary)" />
-          </Indicator>
-        ),
-        title: locale.dashboard.tournament.aiProbability,
-        section: "ai_probability",
-      },
+      // AI-FEATURE FLAG
+      // {
+      //   page: tournament && (
+      //     <AIProbabilityList
+      //       key={"all"}
+      //       type={"tournament"}
+      //       spec={tournament.spec}
+      //       shouldNotRefetch={tournament.status.spec != 1}
+      //     />
+      //   ),
+      //   icon: (
+      //     <Indicator
+      //       size={"lg"}
+      //       label={aiCount}
+      //       disabled={!aiCount}
+      //       inline
+      //       position="top-start"
+      //     >
+      //       <IconRobot color="var(--secondary)" />
+      //     </Indicator>
+      //   ),
+      //   title: locale.dashboard.tournament.aiProbability,
+      //   section: "ai_probability",
+      // },
       {
         page: (
           <ParticipantsListWithBan
@@ -232,7 +232,7 @@ const TournamentDashboard: FC<{
     }
 
     return links;
-  }, [tournament, hasNewMessages, locale, refetch, spec, aiCount]);
+  }, [tournament, hasNewMessages, locale, refetch, spec]);
 
   const [activeModal, setActiveModal] = useState(false);
 

@@ -2,7 +2,7 @@ export const assignment = {
   mainInfo: "Main Info",
   results: "Results Table",
   attempts: "Attempts",
-  aiProbability: "Вероятность AI",
+  aiProbability: "AI probability",
   participants: "Participants",
   tasks: "Tasks",
   createNotification: "Create notification",
