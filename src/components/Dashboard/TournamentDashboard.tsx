@@ -41,8 +41,6 @@ import Results from "./Results/Results";
 import Settings from "./Settings/Settings";
 import TaskList from "./TaskList/TaskList";
 import TeamList from "./TeamList/TeamList";
-import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
-import { IconRobot } from "@tabler/icons-react";
 
 const TournamentDashboard: FC<{
   spec: string;

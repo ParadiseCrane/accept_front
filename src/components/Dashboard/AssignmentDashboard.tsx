@@ -32,8 +32,6 @@ import {
 import ChatPage from "./ChatPage/ChatPage";
 import CreateNotification from "./CreateNotification/CreateNotification";
 import TaskList from "./TaskList/TaskList";
-import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
-import { IconRobot } from "@tabler/icons-react";
 
 const AssignmentDashboard: FC<{
   spec: string;
