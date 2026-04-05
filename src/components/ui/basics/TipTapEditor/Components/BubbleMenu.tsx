@@ -16,7 +16,9 @@ export const BubbleMenuComponent = ({ editor }: { editor: Editor }) => {
   return (
     <TipTapBubbleMenu
       editor={editor}
-      className={clsx(isModalVisible && styles.invisible)}
+      // AI-FEATURE FLAG: hide bubble menu for now
+      // className={clsx(isModalVisible && styles.invisible)}
+      className={clsx(styles.invisible)}
     >
       <MantineButton
         variant="default"
