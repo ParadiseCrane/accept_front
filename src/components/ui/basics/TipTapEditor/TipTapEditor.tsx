@@ -277,7 +277,7 @@ export const TipTapEditor = ({
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
           </RichTextEditor.ControlsGroup>
-          {/* // AI-FEATURE FLAG: hide text and image gen for now */}
+          {/* AI-FEATURE FLAG: hide text and image gen for now */}
           {/* <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
             <StylizeText editor={editor} />
