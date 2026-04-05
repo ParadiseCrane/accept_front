@@ -8,7 +8,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { LeftComponent } from "./Left";
 import { RightComponent } from "./Right";
 import { useStream } from "@hooks/useStream";
-import AIHintButton from "../AIHintCollapse/AIHintButton";
 import { Divider, Grid, GridCol } from "@mantine/core";
 import {
   errorNotification,
@@ -50,14 +49,15 @@ const Info: FC<{ attempt: IAttempt }> = ({ attempt }) => {
         />
       </GridCol>
       <Divider orientation="vertical" />
-      <GridCol span={4} mx={"xl"}>
+      {/* AI-FEATURE FLAG: hide ai hint */}
+      {/* <GridCol span={4} mx={"xl"}>
         <AIHintButton
           customStyle={styles.smallButton}
           onClick={startStream}
           loading={loading || streaming}
         />
         <AIHintMarkdown key={hint.length} hint={hint} />
-      </GridCol>
+      </GridCol> */}
       <Divider orientation="vertical" />
       <GridCol span="auto" my={"xl"}>
         <RightComponent attempt={attempt} syncScroll={false} />
