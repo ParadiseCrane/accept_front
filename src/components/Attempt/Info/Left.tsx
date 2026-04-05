@@ -77,7 +77,8 @@ const Left: FC<Props> = ({ attempt }) => {
           {"MB"}
         </span>
       </div>
-      {attempt.ai_generated && (
+      {/* AI-FEATURE FLAG */}
+      {/* {attempt.ai_generated && (
         <>
           <Divider size={"sm"} />
           <div>
@@ -93,7 +94,7 @@ const Left: FC<Props> = ({ attempt }) => {
             customStyle={styles.smallButton}
           />
         </>
-      )}
+      )} */}
     </div>
   );
 };

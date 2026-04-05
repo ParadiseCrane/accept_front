@@ -128,22 +128,23 @@ const initialColumns = (
     hidden: false,
     size: 6,
   },
-  {
-    label: locale.attempt.aiProbability,
-    key: "ai_generated",
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.ai_generated.value > b.ai_generated.value
-        ? 1
-        : a.ai_generated.value == b.ai_generated.value
-          ? 0
-          : -1,
-    sorted: toggler !== "ai_generated" ? 0 : 1,
-    allowMiddleState: toggler !== "ai_generated",
-    hidable: false,
-    hidden: false,
-    size: 3,
-  },
+  // AI-FEATURE FLAG
+  // {
+  //   label: locale.attempt.aiProbability,
+  //   key: "ai_generated",
+  //   sortable: true,
+  //   sortFunction: (a: any, b: any) =>
+  //     a.ai_generated.value > b.ai_generated.value
+  //       ? 1
+  //       : a.ai_generated.value == b.ai_generated.value
+  //         ? 0
+  //         : -1,
+  //   sorted: toggler !== "ai_generated" ? 0 : 1,
+  //   allowMiddleState: toggler !== "ai_generated",
+  //   hidable: false,
+  //   hidden: false,
+  //   size: 3,
+  // },
   {
     label: locale.attempt.language,
     key: "language",

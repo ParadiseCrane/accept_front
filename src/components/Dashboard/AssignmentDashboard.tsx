@@ -32,8 +32,6 @@ import {
 import ChatPage from "./ChatPage/ChatPage";
 import CreateNotification from "./CreateNotification/CreateNotification";
 import TaskList from "./TaskList/TaskList";
-import AIProbabilityList from "./AIProbabilityList/AIProbabilityList";
-import { IconRobot } from "@tabler/icons-react";
 
 const AssignmentDashboard: FC<{
   spec: string;
@@ -47,10 +45,11 @@ const AssignmentDashboard: FC<{
     "GET",
   );
 
-  const { data: aiCount } = useRequest<undefined, number>(
-    `assignment/attempts/ai/count/${spec}`,
-    "GET",
-  );
+  // AI-FEATURE FLAG
+  // const { data: aiCount } = useRequest<undefined, number>(
+  //   `assignment/attempts/ai/count/${spec}`,
+  //   "GET",
+  // );
 
   const refetchAssignment = useInterval(() => refetch(false), 60 * 1000);
 
@@ -128,28 +127,29 @@ const AssignmentDashboard: FC<{
         title: locale.dashboard.assignment.attempts,
         section: "attempts",
       },
-      {
-        page: assignment && (
-          <AIProbabilityList
-            type={"assignment"}
-            spec={assignment.spec}
-            shouldNotRefetch={assignment.status.spec != 1}
-          />
-        ),
-        icon: (
-          <Indicator
-            size={"lg"}
-            label={aiCount}
-            disabled={!aiCount}
-            inline
-            position="top-start"
-          >
-            <IconRobot color="var(--secondary)" />
-          </Indicator>
-        ),
-        title: locale.dashboard.assignment.aiProbability,
-        section: "ai_probability",
-      },
+      // AI-FEATURE FLAG
+      // {
+      //   page: assignment && (
+      //     <AIProbabilityList
+      //       type={"assignment"}
+      //       spec={assignment.spec}
+      //       shouldNotRefetch={assignment.status.spec != 1}
+      //     />
+      //   ),
+      //   icon: (
+      //     <Indicator
+      //       size={"lg"}
+      //       label={aiCount}
+      //       disabled={!aiCount}
+      //       inline
+      //       position="top-start"
+      //     >
+      //       <IconRobot color="var(--secondary)" />
+      //     </Indicator>
+      //   ),
+      //   title: locale.dashboard.assignment.aiProbability,
+      //   section: "ai_probability",
+      // },
       {
         page: <ParticipantsList type={"assignment"} spec={spec} />,
         icon: <IconUsers color="var(--secondary)" />,
@@ -171,7 +171,7 @@ const AssignmentDashboard: FC<{
         section: "create_notifications",
       },
     ],
-    [assignment, hasNewMessages, locale, refetch, spec, aiCount],
+    [assignment, hasNewMessages, locale, refetch, spec],
   );
 
   const [activeModal, setActiveModal] = useState(false);
