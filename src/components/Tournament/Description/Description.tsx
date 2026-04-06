@@ -28,10 +28,12 @@ const Description: FC<{
   }, []);
 
   const [tasks, setTasks] = useState(
-    tournament.tasks.map((task, index) => ({
-      ...task,
-      title: `${letterFromIndex(index)}. ${task.title}`,
-    })),
+    tournament.tasks.length
+      ? []
+      : tournament.tasks.map((task, index) => ({
+          ...task,
+          title: `${letterFromIndex(index)}. ${task.title}`,
+        })),
   );
   const [successfullyRegistered, setSuccessfullyRegistered] = useState(false);
 

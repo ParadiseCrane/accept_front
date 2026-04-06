@@ -13,9 +13,8 @@ import SingularSticky from "@ui/Sticky/SingularSticky";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
 import Timer from "@ui/Timer/Timer";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
 import { getApiUrl } from "@utils/getServerUrl";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import {
   IconDashboard,
@@ -220,6 +219,7 @@ const API_URL = getApiUrl();
 export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: [], fallback: "blocking" };
 };
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const spec = params?.spec as string;
   // Static tournament data (no auth)

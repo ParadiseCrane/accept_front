@@ -19,8 +19,8 @@ export const protectedRoutesInfo: {
     _searchParams?: URLSearchParams,
   ) => Promise<string | boolean | IResponseErrorObject>;
 } = {
-  // TODO: Check rights
-  "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
+  // TODO: Check rights, rework checkWrapper allowed logic
+  // "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
   "/tournament/add": checkWrapper(
     "add",
     "tournament",
