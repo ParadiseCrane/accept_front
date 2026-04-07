@@ -31,6 +31,8 @@ export const protectedRoutesInfo: {
     "write",
     "tournament",
     accessLevels["teacher"],
+    false,
+    true,
   ),
   "/assignment_schema/add": checkWrapper(
     "add",
