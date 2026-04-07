@@ -34,6 +34,8 @@ interface TableData {
   total: number;
 }
 
+const REFETCH_INTERVAL = 15000;
+
 const AttemptList: FC<{
   url: string;
   activeTab: boolean;
@@ -148,7 +150,7 @@ const AttemptList: FC<{
     if (activeTab && !shouldNotRefetch) {
       const intervalId = setInterval(() => {
         refetch();
-      }, 2000);
+      }, REFETCH_INTERVAL);
 
       return () => clearInterval(intervalId);
     }

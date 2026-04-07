@@ -52,7 +52,9 @@ const VerdictWrapper: FC<{
         <Tip
           label={
             <span style={{ color: verdictColor }}>
-              {`${verdict?.fullText}${verdictTestString}`}
+              {status && status.spec !== 2
+                ? locale.attempt.statuses[status.spec]
+                : `${verdict?.fullText}${verdictTestString}`}
             </span>
           }
           openDelay={200}
@@ -69,7 +71,7 @@ const VerdictWrapper: FC<{
             <span style={{ color: verdictColor }}>
               {status && status.spec !== 2
                 ? locale.attempt.statuses[status.spec]
-                : `${verdict?.fullText}${verdictTestString}`}
+                : `${verdictShortText}${verdictTestString}`}
             </span>
           }
           openDelay={200}
