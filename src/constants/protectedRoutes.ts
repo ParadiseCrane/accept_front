@@ -147,4 +147,5 @@ export const protectedRoutesInfo: {
     accessLevels["admin"],
   ),
   "/attempt": checkWrapper("read", "attempt", accessLevels["teacher"]),
+  "/rating": checkWrapper("read", "user", accessLevels["user"]),
 };

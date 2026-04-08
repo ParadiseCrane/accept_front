@@ -16,15 +16,36 @@ const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
   const [startDate, setStartDate] = useState("-");
   const [endDate, setEndDate] = useState("-");
 
-  const tasks = assignment.tasks.map((task, index) => ({
-    ...task,
-    title: `${letterFromIndex(index)}. ${task.title}`,
-  }));
+  const [tasks, setTasks] = useState(assignment.tasks);
 
   useEffect(() => {
     setStartDate(getLocalDate(assignment.start));
     setEndDate(getLocalDate(assignment.end));
   }, [assignment.end, assignment.start]);
+
+  useEffect(() => {
+    let cleanUp = false;
+    if (assignment.tasks.length) {
+      sendRequest<string[], ITaskDisplay[]>(
+        "task/list-specs",
+        "POST",
+        assignment.tasks.map((task: any) => task.value || task.spec),
+        5000,
+      ).then((res) => {
+        if (!cleanUp && !res.error) {
+          setTasks(
+            res.response.map((task, index) => ({
+              ...task,
+              title: `${letterFromIndex(index)}. ${task.title}`,
+            })),
+          );
+        }
+      });
+    }
+    return () => {
+      cleanUp = true;
+    };
+  }, [assignment.tasks]);
 
   return (
     <div className={styles.wrapper}>

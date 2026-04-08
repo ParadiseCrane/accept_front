@@ -1,10 +1,12 @@
 "use client";
 import { IAssignmentSchema } from "@custom-types/data/IAssignmentSchema";
+import { ITaskDisplay } from "@custom-types/data/ITask";
 import { useLocale } from "@hooks/useLocale";
+import { sendRequest } from "@requests/request";
 import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import PrimitiveTaskTable from "@ui/PrimitiveTaskTable/PrimitiveTaskTable";
 import TagList from "@ui/TagList/TagList";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import styles from "./description.module.css";
 import { LoadingOverlay } from "@mantine/core";
@@ -15,8 +17,31 @@ const Description: FC<{
 }> = ({ assignment, preview }) => {
   const { locale } = useLocale();
 
-  const tasks = preview ? [] : assignment.tasks;
-  const loading = false;
+  const [tasks, setTasks] = useState<ITaskDisplay[]>(
+    preview ? [] : assignment.tasks,
+  );
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let cleanUp = false;
+    if (assignment.tasks.length) {
+      setLoading(!!preview);
+      sendRequest<string[], ITaskDisplay[]>(
+        "task/list-specs",
+        "POST",
+        assignment.tasks.map((task: any) => task.value || task.spec),
+        5000,
+      ).then((res) => {
+        if (!cleanUp && !res.error) {
+          setTasks(res.response);
+          setLoading(false);
+        }
+      });
+    }
+    return () => {
+      cleanUp = true;
+    };
+  }, [assignment.tasks, preview]);
 
   return (
     <div className={styles.wrapper}>

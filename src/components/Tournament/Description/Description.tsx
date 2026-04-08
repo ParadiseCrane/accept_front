@@ -27,14 +27,14 @@ const Description: FC<{
     setLoading(false);
   }, []);
 
-  const tasks =
-    tournament.tasks.length === 0
+  const [tasks, setTasks] = useState(
+    tournament.tasks.length
       ? []
       : tournament.tasks.map((task, index) => ({
           ...task,
           title: `${letterFromIndex(index)}. ${task.title}`,
-        }));
-
+        })),
+  );
   const [successfullyRegistered, setSuccessfullyRegistered] = useState(false);
 
   const special = useMemo(
@@ -63,29 +63,29 @@ const Description: FC<{
     [registered, special, tournament.status?.spec],
   );
 
-  // useEffect(() => {
-  //   let cleanUp = false;
-  //   if (tournament.tasks.length && !isPreview) {
-  //     sendRequest<string[], ITaskDisplay[]>(
-  //       `task/list-specs`,
-  //       "POST",
-  //       tournament.tasks.map((task: any) => task.value || task.spec),
-  //       5000,
-  //     ).then((res) => {
-  //       if (!cleanUp && !res.error) {
-  //         setTasks(
-  //           res.response.map((task, index) => ({
-  //             ...task,
-  //             title: `${letterFromIndex(index)}. ${task.title}`,
-  //           })),
-  //         );
-  //       }
-  //     });
-  //   }
-  //   return () => {
-  //     cleanUp = true;
-  //   };
-  // }, [tournament.spec, tournament.tasks, isPreview]);
+  useEffect(() => {
+    let cleanUp = false;
+    if (tournament.tasks.length && !isPreview) {
+      sendRequest<string[], ITaskDisplay[]>(
+        `task/list-specs`,
+        "POST",
+        tournament.tasks.map((task: any) => task.value || task.spec),
+        5000,
+      ).then((res) => {
+        if (!cleanUp && !res.error) {
+          setTasks(
+            res.response.map((task, index) => ({
+              ...task,
+              title: `${letterFromIndex(index)}. ${task.title}`,
+            })),
+          );
+        }
+      });
+    }
+    return () => {
+      cleanUp = true;
+    };
+  }, [tournament.spec, tournament.tasks, isPreview]);
 
   return (
     <div className={styles.wrapper}>
