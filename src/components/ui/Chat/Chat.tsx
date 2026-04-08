@@ -2,7 +2,7 @@
 import { IActivity } from "@custom-types/data/atomic";
 import { IChatMessage } from "@custom-types/data/IMessage";
 import { useLocale } from "@hooks/useLocale";
-import { useLongPooling } from "@hooks/useLongPooling";
+import { useLongPolling } from "@hooks/useLongPolling";
 import { Textarea } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { sendRequest } from "@requests/request";
@@ -134,7 +134,7 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
-  useLongPooling(fetchMessages, refetchIntervalSeconds);
+  useLongPolling(fetchMessages, refetchIntervalSeconds);
 
   return (
     <div className={wrapperStyles}>

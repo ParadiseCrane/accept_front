@@ -35,7 +35,7 @@ export default async function handler(
       res.status(response.status);
       res.setHeader(
         "Cache-Control",
-        `private, max-age=${IMAGE_CACHE_MAX_AGE}}, mutable`,
+        `private, max-age=${IMAGE_CACHE_MAX_AGE}, mutable`,
       );
       response.body.pipe(res);
       return;
@@ -44,7 +44,7 @@ export default async function handler(
     const data = await response.json();
     res.setHeader(
       "Cache-Control",
-      `private, max-age=${IMAGE_CACHE_MAX_AGE}}, immutable`,
+      `private, max-age=${IMAGE_CACHE_MAX_AGE}, immutable`,
     );
     res.status(response.status).json(data);
   } catch (error) {

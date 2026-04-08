@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-import { useRefetch } from './useRefetch';
+import { useRefetch } from "./useRefetch";
 
 interface IRequestData {
   loading: boolean;
@@ -8,20 +8,20 @@ interface IRequestData {
   updatesCounter: number;
 }
 
-export function useLongPooling(
+export function useLongPolling(
   func: (_: boolean) => Promise<any>,
-  updateIntervalSeconds: number
+  updateIntervalSeconds: number,
 ): IRequestData {
   const [firstLoad, setFirstLoad] = useState(true);
-  const longPooling = useCallback(() => func(false), [func]);
+  const longPolling = useCallback(() => func(false), [func]);
 
   useEffect(() => {
     func(true).then(() => setFirstLoad(false));
   }, [func]);
 
   const { loading, updatesCounter } = useRefetch(
-    longPooling,
-    updateIntervalSeconds
+    longPolling,
+    updateIntervalSeconds,
   );
 
   return { updatesCounter, loading, firstLoad };
