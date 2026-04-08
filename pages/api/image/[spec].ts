@@ -1,3 +1,4 @@
+import { IMAGE_CACHE_MAX_AGE } from "@constants/Limits";
 import { getCookieValue } from "@utils/cookies";
 import { getApiUrl } from "@utils/getServerUrl";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -32,11 +33,19 @@ export default async function handler(
 
     if (response.body) {
       res.status(response.status);
+      res.setHeader(
+        "Cache-Control",
+        `private, max-age=${IMAGE_CACHE_MAX_AGE}}, mutable`,
+      );
       response.body.pipe(res);
       return;
     }
 
     const data = await response.json();
+    res.setHeader(
+      "Cache-Control",
+      `private, max-age=${IMAGE_CACHE_MAX_AGE}}, immutable`,
+    );
     res.status(response.status).json(data);
   } catch (error) {
     console.error("Proxy error:", error);
