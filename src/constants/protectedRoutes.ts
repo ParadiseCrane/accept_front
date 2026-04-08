@@ -146,6 +146,12 @@ export const protectedRoutesInfo: {
     "tournament",
     accessLevels["admin"],
   ),
-  "/attempt": checkWrapper("read", "attempt", accessLevels["teacher"]),
+  "/attempt": checkWrapper(
+    "read",
+    "attempt",
+    accessLevels["teacher"],
+    true,
+    true,
+  ),
   "/rating": checkWrapper("read", "user", accessLevels["user"]),
 };
