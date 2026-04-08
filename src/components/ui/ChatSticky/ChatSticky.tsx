@@ -77,7 +77,8 @@ const ChatSticky: FC<{
             size={10}
             offset={0}
             zIndex={100}
-            blink
+            processing
+            color="var(--accent)"
           >
             <IconMessageCircle2 color="white" />
           </Indicator>
@@ -120,7 +121,8 @@ const ChatSticky: FC<{
             size={10}
             offset={0}
             zIndex={100}
-            blink
+            processing
+            color="var(--accent)"
           >
             <IconMessageCircle2 color="white" />
           </Indicator>

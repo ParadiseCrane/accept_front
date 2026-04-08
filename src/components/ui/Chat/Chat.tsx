@@ -2,7 +2,6 @@
 import { IActivity } from "@custom-types/data/atomic";
 import { IChatMessage } from "@custom-types/data/IMessage";
 import { useLocale } from "@hooks/useLocale";
-import { useLongPolling } from "@hooks/useLongPolling";
 import { Textarea } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { sendRequest } from "@requests/request";
@@ -12,6 +11,7 @@ import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
 import { IconSend } from "@tabler/icons-react";
 
 import styles from "./chat.module.css";
+import { useLongPolling } from "@hooks/useLongPolling";
 
 const Chat: FC<{
   indicateNew?: () => void;
