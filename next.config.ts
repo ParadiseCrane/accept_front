@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    minimumCacheTTL: 14400, // 4 hours
+  },
   async rewrites() {
     return [
       {
