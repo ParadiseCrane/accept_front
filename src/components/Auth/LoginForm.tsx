@@ -201,7 +201,7 @@ const LoginForm: FC<{
             {locale.auth.footer.noAccount}
           </span>
           <Link
-            href={`/signup?referrer=${router.query.referrer}`}
+            href={`/signup?referrer=${router.query.referrer ?? "/"}`}
             className={styles.footerLink}
             data-umami-event={"Переход на страницу регистрации"}
           >

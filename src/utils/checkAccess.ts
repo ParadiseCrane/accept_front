@@ -4,7 +4,7 @@ import {
   IRulesAction,
   IRulesEntity,
 } from "@custom-types/data/rights";
-import { jwtVerify, type JWTPayload } from "jose";
+import { jwtVerify } from "jose";
 
 const requestRights = async <T>(
   payload: IRightsPayload,
@@ -67,6 +67,7 @@ export const checkWrapper =
     entity: IRulesEntity,
     access_requirements: number,
     strict: boolean = false,
+    checkAnyway: boolean = false,
   ) =>
   async (
     entity_spec: string | undefined,
@@ -74,7 +75,7 @@ export const checkWrapper =
     pathname: string,
     _searchParams?: any,
   ) => {
-    if (access_token !== undefined) {
+    if (access_token !== undefined && !checkAnyway) {
       // return true;
       let data = await get_access_level(access_token);
       let access_level = data || 0;

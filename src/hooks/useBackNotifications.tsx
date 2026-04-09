@@ -18,7 +18,7 @@ import {
 } from "react";
 
 import { useLocale } from "./useLocale";
-import { useLongPooling } from "./useLongPooling";
+import { useLongPolling } from "./useLongPolling";
 import { useUser } from "./useUser";
 
 interface INotificationContext {
@@ -79,7 +79,7 @@ export const BackNotificationsProvider: FC<{
     [user],
   );
 
-  const { loading: fetching } = useLongPooling(fetchNotifications, 2);
+  const { loading: fetching } = useLongPolling(fetchNotifications, 2);
 
   const sendViewed = useCallback(
     (

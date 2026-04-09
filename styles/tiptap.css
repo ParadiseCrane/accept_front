@@ -213,3 +213,9 @@
     max-height: none;
   }
 }
+
+@media print {
+  .tiptap pre {
+    max-height: none;
+  }
+}

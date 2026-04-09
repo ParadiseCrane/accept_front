@@ -17,15 +17,20 @@ import SingularSticky from "@ui/Sticky/SingularSticky";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
 import TasksBar from "@ui/TasksBar/TasksBar";
 import Timer from "@ui/Timer/Timer";
-import { getCookieValue } from "@utils/cookies";
 import { getApiUrl } from "@utils/getServerUrl";
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { IconEye, IconNotes, IconPencil, IconTrash } from "@tabler/icons-react";
 import { Kbd } from "@mantine/core";
+import { useRequest } from "@hooks/useRequest";
+
+interface TaskRights {
+  has_write_rights: boolean;
+  has_read_tests_rights: boolean;
+}
 
 const DynamicSend = dynamic(() => import("@components/Task/Send/Send"), {
   ssr: false,
@@ -39,17 +44,9 @@ const DynamicResults = dynamic(
   { ssr: false },
 );
 
-function Task(props: {
-  task: ITask;
-  languages: ILanguage[];
-  has_write_rights: boolean;
-  has_read_tests_rights: boolean;
-  homeHref: string | null;
-}) {
+function Task(props: { task: ITask; languages: ILanguage[] }) {
   const task = props.task;
   const languages = props.languages;
-  const hasWriteRights = props.has_write_rights;
-  const hasReadTestsRights = props.has_read_tests_rights;
   const [activeModal, setActiveModal] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [openedHint, setOpenedHint] = useState(false);
@@ -61,6 +58,24 @@ function Task(props: {
   const { width } = useWidth();
 
   const router = useRouter();
+
+  const { data: rights } = useRequest<{}, TaskRights>(
+    `/task/rights/${task.spec}`,
+    "GET",
+  );
+
+  const hasWriteRights = rights?.has_write_rights || false;
+  const hasReadTestsRights = rights?.has_read_tests_rights || false;
+
+  // Compute homeHref from query (client‑side)
+  const { assignment, tournament, lesson, course } = router.query;
+  const homeHref = assignment
+    ? `/assignment/${assignment}`
+    : tournament
+      ? `/tournament/${tournament}`
+      : lesson && course
+        ? `/course/${course}?item=${lesson}`
+        : null;
 
   const type = useMemo(
     () =>
@@ -130,6 +145,7 @@ function Task(props: {
         description: locale.tip.sticky.task.hint,
       });
     }
+
     if (hasReadTestsRights) {
       inner_actions.push({
         color: "blue",
@@ -192,7 +208,7 @@ function Task(props: {
           <TasksBar
             currentTask={task.spec}
             tasks={tasks}
-            homeHref={props.homeHref ?? `/${type}/${querySpec}`}
+            homeHref={homeHref ?? `/${type}/${querySpec}`}
             taskQuery={`${type}=${querySpec}`}
           />
           {user && (
@@ -283,43 +299,24 @@ export default Task;
 
 const API_URL = getApiUrl();
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req,
-}) => {
-  if (!query.spec) {
-    return {
-      notFound: true,
-    };
-  }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Optionally pre‑render popular tasks
+  return { paths: [], fallback: "blocking" };
+};
 
-  const response = await fetch(`${API_URL}/api/bundle/task-page/${spec}`, {
-    method: "GET",
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-      "content-type": "application/json",
-    } as { [key: string]: string },
-  });
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const spec = params?.spec as string;
+
+  const response = await fetch(`${API_URL}/api/bundle/task-static/${spec}`);
   if (response.status === 200) {
     const response_json = await response.json();
-
-    let homeHref = null;
-
-    if (query.course && query.lesson) {
-      homeHref = `/course/${query.course}?item=${query.lesson}`;
-    }
 
     return {
       props: {
         task: response_json.task,
         languages: response_json.languages,
-        has_write_rights: response_json.has_write_rights,
-        has_read_tests_rights: response_json.has_read_tests_rights,
-        homeHref,
       },
+      revalidate: 60,
     };
   }
   return {

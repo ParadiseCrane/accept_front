@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     const payload = await response.json();
     return {
       props: {
-        tournament: payload.tournament,
+        tournament: payload,
       },
     };
   }

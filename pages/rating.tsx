@@ -128,12 +128,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  if (response.status === 401 || response.status === 403) {
-    return {
-      props: { errorCode: response.status },
-    };
-  }
-
   return {
     notFound: true,
   };

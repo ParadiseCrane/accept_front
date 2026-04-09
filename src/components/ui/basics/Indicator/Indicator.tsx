@@ -16,7 +16,7 @@ const SIZES: {
 interface CustomIndicatorProps extends Omit<IndicatorProps, "label"> {
   scale?: keyof typeof SIZES;
   blink?: boolean;
-  label?: number;
+  label?: number | string;
 }
 
 const Indicator: FC<CustomIndicatorProps> = ({
@@ -28,15 +28,17 @@ const Indicator: FC<CustomIndicatorProps> = ({
 }) => {
   const { size_px, font_size } = SIZES[scale];
 
-  const displayLabel = useMemo(
-    () =>
-      label
+  const displayLabel = useMemo(() => {
+    if (typeof label === "number") {
+      return label
         ? label > OVERFLOW_COUNT
           ? `${OVERFLOW_COUNT}+`
           : label.toString()
-        : undefined,
-    [label],
-  );
+        : undefined;
+    } else {
+      return label;
+    }
+  }, [label]);
 
   return (
     <MantineIndicator

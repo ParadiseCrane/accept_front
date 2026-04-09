@@ -3,10 +3,7 @@ import AttemptsList from "@components/Dashboard/AttemptsList/AttemptsList";
 import TimeInfo from "@components/Dashboard/TimeInfo/TimeInfo";
 import DeleteModal from "@components/Tournament/DeleteModal/DeleteModal";
 import { STICKY_SIZES } from "@constants/Sizes";
-import {
-  ITournament,
-  ITournamentResponse,
-} from "@custom-types/data/ITournament";
+import { ITournament } from "@custom-types/data/ITournament";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
 import { useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
@@ -49,7 +46,7 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data, refetch } = useRequest<undefined, ITournamentResponse>(
+  const { data, refetch } = useRequest<undefined, ITournament>(
     `tournament/${spec}`,
     "GET",
   );
@@ -68,7 +65,7 @@ const TournamentDashboard: FC<{
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if (data) setTournament(data.tournament);
+    if (data) setTournament(data);
   }, [data]);
 
   const { hasNewMessages } = useChatHosts();
@@ -100,7 +97,16 @@ const TournamentDashboard: FC<{
       {
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator
+            disabled={!hasNewMessages}
+            size={20}
+            inline
+            offset={0}
+            zIndex={100}
+            processing
+            color="var(--accent)"
+            label={"New"}
+          >
             <IconMessages color="var(--secondary)" />
           </Indicator>
         ),

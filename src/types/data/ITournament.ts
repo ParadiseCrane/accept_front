@@ -1,10 +1,10 @@
-import { IAssessmentType, ITournamentStatus } from './atomic';
-import { ITag } from './ITag';
-import { ITaskBaseInfo, ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
+import { IAssessmentType, ITournamentStatus } from "./atomic";
+import { ITag } from "./ITag";
+import { ITaskBaseInfo, ITaskDisplay, ITaskDisplayWithPublic } from "./ITask";
 
 export interface ISecurity {
   spec: number;
-  name: 'tournament' | 'basic';
+  name: "tournament" | "basic";
 }
 
 export interface ITournamentDisplay {
@@ -29,7 +29,7 @@ export interface ITournamentBaseInfo {
   status: ITournamentStatus;
 }
 
-export interface ITournament extends Omit<ITournamentDisplay, 'teamsNumber'> {
+export interface ITournament extends Omit<ITournamentDisplay, "teamsNumber"> {
   description: string;
   tasks: ITaskDisplay[];
 
@@ -62,7 +62,7 @@ export interface ITournamentEditBundle {
 export interface ITournamentAdd
   extends Omit<
     ITournament,
-    'tasks' | 'status' | 'tags' | 'teamsNumber' | 'banned'
+    "tasks" | "status" | "tags" | "teamsNumber" | "banned"
   > {
   public: boolean;
   tasks: string[];
@@ -76,7 +76,7 @@ export interface ITournamentAdd
   shouldPenalizeAttempt: boolean;
 }
 
-export interface ITournamentEdit extends Omit<ITournamentAdd, 'tasks'> {
+export interface ITournamentEdit extends Omit<ITournamentAdd, "tasks"> {
   tasks: ITaskDisplay[];
 }
 

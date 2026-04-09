@@ -19,8 +19,8 @@ export const protectedRoutesInfo: {
     _searchParams?: URLSearchParams,
   ) => Promise<string | boolean | IResponseErrorObject>;
 } = {
-  // TODO: Check rights
-  "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
+  // TODO: Check rights, rework checkWrapper allowed logic
+  // "/tournament": checkWrapper("read", "tournament", accessLevels["anyone"]),
   "/tournament/add": checkWrapper(
     "add",
     "tournament",
@@ -31,6 +31,8 @@ export const protectedRoutesInfo: {
     "write",
     "tournament",
     accessLevels["teacher"],
+    false,
+    true,
   ),
   "/assignment_schema/add": checkWrapper(
     "add",
@@ -144,5 +146,12 @@ export const protectedRoutesInfo: {
     "tournament",
     accessLevels["admin"],
   ),
-  "/attempt": checkWrapper("read", "attempt", accessLevels["teacher"]),
+  "/attempt": checkWrapper(
+    "read",
+    "attempt",
+    accessLevels["teacher"],
+    true,
+    true,
+  ),
+  "/rating": checkWrapper("read", "user", accessLevels["user"]),
 };

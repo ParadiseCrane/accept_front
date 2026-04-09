@@ -1,5 +1,6 @@
 "use client";
 import { DEFAULT_ON_PAGE } from "@constants/Defaults";
+import { ATTEMPTS_LIST_REFETCH_INTERVAL } from "@constants/Limits";
 import { IAttemptDisplay } from "@custom-types/data/IAttempt";
 import { BaseSearch, UserTaskSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
@@ -148,7 +149,7 @@ const AttemptList: FC<{
     if (activeTab && !shouldNotRefetch) {
       const intervalId = setInterval(() => {
         refetch();
-      }, 2000);
+      }, ATTEMPTS_LIST_REFETCH_INTERVAL);
 
       return () => clearInterval(intervalId);
     }

@@ -24,7 +24,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ARG API_ENDPOINT
 ENV API_ENDPOINT=${API_ENDPOINT}
 
-RUN yarn build --no-lint
+RUN yarn build
 
 # If using npm comment out above and use below instead
 # RUN npm run build

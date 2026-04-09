@@ -160,7 +160,7 @@ function SignUp() {
       user,
       () => {
         analytics?.track("Завершение регистрации");
-        router.push(`/signin?referrer=${router.query.referrer}`);
+        router.push(`/signin?referrer=${router.query.referrer ?? "/"}`);
       },
     );
   }, [locale, lang, form, router, analytics]);
@@ -292,7 +292,7 @@ function SignUp() {
             {locale.auth.footer.hasAccount}
           </span>
           <Link
-            href={`/signin?referrer=${router.query.referrer}`}
+            href={`/signin?referrer=${router.query.referrer ?? "/"}`}
             className={styles.footerLink}
           >
             {locale.auth.footer.login}

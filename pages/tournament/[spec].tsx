@@ -13,9 +13,8 @@ import SingularSticky from "@ui/Sticky/SingularSticky";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
 import Timer from "@ui/Timer/Timer";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
 import { getApiUrl } from "@utils/getServerUrl";
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import {
   IconDashboard,
@@ -26,29 +25,31 @@ import {
   IconShirtSport,
   IconTrash,
 } from "@tabler/icons-react";
+import { useRequest } from "@hooks/useRequest";
 
-function Tournament(props: {
-  tournament: ITournament;
+interface UserState {
   is_participant: boolean;
   team_spec?: string;
-}) {
+  special: boolean;
+}
+
+function Tournament(props: { tournament: ITournament }) {
   const tournament = props.tournament;
-  const is_participant = props.is_participant;
-  const team_spec = props.team_spec;
   const [activeDeleteModal, setActiveDeleteModal] = useState(false);
   const [activePinModal, setActivePinModal] = useState(false);
   const { locale } = useLocale();
 
-  const { isAdmin, user } = useUser();
+  const { user } = useUser();
   const { width } = useWidth();
 
-  const special = useMemo(
-    () =>
-      isAdmin ||
-      tournament.moderators.includes(user?.login || "") ||
-      tournament.author == user?.login,
-    [isAdmin, tournament.author, tournament.moderators, user?.login],
+  const { data: userState } = useRequest<{}, UserState>(
+    `/tournament/user-state/${tournament.spec}`,
+    "GET",
   );
+
+  const is_participant = userState?.is_participant || false;
+  const team_spec = userState?.team_spec;
+  const special = userState?.special || false;
 
   const actions: IStickyAction[] = useMemo(
     () => [
@@ -215,37 +216,19 @@ export default Tournament;
 
 const API_URL = getApiUrl();
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  query,
-}) => {
-  if (!query.spec) {
-    return {
-      notFound: true,
-    };
-  }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: "blocking" };
+};
 
-  const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
-  });
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const spec = params?.spec as string;
+  // Static tournament data (no auth)
+  const res = await fetch(`${API_URL}/api/tournament/${spec}`);
+  if (!res.ok) return { notFound: true };
+  const tournament = await res.json();
 
-  if (response.status === 200) {
-    const resp = await response.json();
-
-    return {
-      props: {
-        tournament: resp.tournament,
-        is_participant: resp.is_participant,
-        team_spec: resp.team_spec,
-      },
-    };
-  }
   return {
-    notFound: true,
+    props: { tournament },
+    revalidate: 60,
   };
 };

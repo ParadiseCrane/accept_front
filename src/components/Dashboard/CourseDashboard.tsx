@@ -53,18 +53,22 @@ const CourseDashboard: FC<{
     links = [
       {
         page: <CourseMain course={course} />,
-        icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
-            <IconArticle color="var(--secondary)" />
-          </Indicator>
-        ),
+        icon: <IconArticle color="var(--secondary)" />,
         title: locale.dashboard.course.main,
         section: "main",
       },
       {
         page: <CourseChatPage spec={course.spec} />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator
+            size={20}
+            disabled={false}
+            offset={0}
+            zIndex={100}
+            processing
+            color="var(--accent)"
+            label={"New"}
+          >
             <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
