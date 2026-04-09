@@ -12,6 +12,7 @@ import { IconSend } from "@tabler/icons-react";
 
 import styles from "./chat.module.css";
 import { useLongPolling } from "@hooks/useLongPolling";
+import { LONG_POLLING_REFETCH_INTERVAL } from "@constants/Limits";
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -42,8 +43,6 @@ const Chat: FC<{
   const messagesDiv = useRef<HTMLDivElement>(null!);
   const [firstFetchDone, setFirstFetchDone] = useState(false);
   const [newMessages, setNewMessages] = useState<string[]>([]);
-
-  const refetchIntervalSeconds = 2;
 
   const appendMessages = useCallback((messages: IChatMessage[]) => {
     setMessages((oldMessages) => {
@@ -134,7 +133,7 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
-  useLongPolling(fetchMessages, refetchIntervalSeconds);
+  useLongPolling(fetchMessages, LONG_POLLING_REFETCH_INTERVAL);
 
   return (
     <div className={wrapperStyles}>

@@ -20,6 +20,7 @@ import {
 import { useLocale } from "./useLocale";
 import { useLongPolling } from "./useLongPolling";
 import { useUser } from "./useUser";
+import { LONG_POLLING_REFETCH_INTERVAL } from "@constants/Limits";
 
 interface INotificationContext {
   unviewed: number;
@@ -79,7 +80,10 @@ export const BackNotificationsProvider: FC<{
     [user],
   );
 
-  const { loading: fetching } = useLongPolling(fetchNotifications, 2);
+  const { loading: fetching } = useLongPolling(
+    fetchNotifications,
+    LONG_POLLING_REFETCH_INTERVAL,
+  );
 
   const sendViewed = useCallback(
     (

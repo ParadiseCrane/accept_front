@@ -44,7 +44,7 @@ function EditTask(props: {
       hintAlarmType: task.hint?.alarmType.spec.toString() || "0",
       hintAlarm: task.hint?.alarm || 0,
       shouldRestrictLanguages:
-        task.allowedLanguages.length > 0 || task.allowedLanguages.length > 0,
+        task.allowedLanguages.length > 0 || task.forbiddenLanguages.length > 0,
 
       taskType: task.taskType.spec.toString(),
 
