@@ -28,7 +28,7 @@ const Description: FC<{
   }, []);
 
   const [tasks, setTasks] = useState(
-    tournament.tasks.length
+    tournament.tasks.length === 0
       ? []
       : tournament.tasks.map((task, index) => ({
           ...task,
