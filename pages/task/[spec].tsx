@@ -26,15 +26,13 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { IconEye, IconNotes, IconPencil, IconTrash } from "@tabler/icons-react";
 import { Kbd } from "@mantine/core";
 import { useRequest } from "@hooks/useRequest";
+import SendTab from "@components/Task/Send/Send";
 
 interface TaskRights {
   has_write_rights: boolean;
   has_read_tests_rights: boolean;
 }
 
-const DynamicSend = dynamic(() => import("@components/Task/Send/Send"), {
-  ssr: false,
-});
 const DynamicSendText = dynamic(
   () => import("@components/Task/SendText/SendText"),
   { ssr: false },
@@ -265,7 +263,7 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
         send={(set) =>
           isUser &&
           (task.taskType.spec == 0 ? (
-            <DynamicSend
+            <SendTab
               spec={task.spec}
               setActiveTab={set}
               languages={languages}
