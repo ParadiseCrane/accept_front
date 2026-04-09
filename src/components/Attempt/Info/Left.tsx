@@ -48,7 +48,9 @@ const Left: FC<Props> = ({ attempt }) => {
       <div>
         {locale.attempt.status}
         {": "}
-        <span>{locale.attempt.statuses[attempt.status.spec]}</span>
+        <span>
+          <b>{locale.attempt.statuses[attempt.status.spec]}</b>
+        </span>
       </div>
       {attempt.status.spec == 3 && attempt.banInfo && (
         <div>

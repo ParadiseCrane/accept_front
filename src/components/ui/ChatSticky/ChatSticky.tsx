@@ -116,13 +116,14 @@ const ChatSticky: FC<{
           wrapperClassName={styles.iconWrapper}
         >
           <Indicator
+            size={20}
             inline
             disabled={!hasNew}
-            size={10}
             offset={0}
             zIndex={100}
             processing
             color="var(--accent)"
+            label={"New"}
           >
             <IconMessageCircle2 color="white" />
           </Indicator>

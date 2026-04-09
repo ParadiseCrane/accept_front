@@ -97,7 +97,16 @@ const TournamentDashboard: FC<{
       {
         page: <ChatPage spec={spec} entity="tournament" />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator
+            disabled={!hasNewMessages}
+            size={20}
+            inline
+            offset={0}
+            zIndex={100}
+            processing
+            color="var(--accent)"
+            label={"New"}
+          >
             <IconMessages color="var(--secondary)" />
           </Indicator>
         ),

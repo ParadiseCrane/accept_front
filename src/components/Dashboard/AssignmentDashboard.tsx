@@ -91,7 +91,16 @@ const AssignmentDashboard: FC<{
       {
         page: <ChatPage entity={"assignment"} spec={spec} />,
         icon: (
-          <Indicator size={10} disabled={!hasNewMessages} blink>
+          <Indicator
+            disabled={!hasNewMessages}
+            size={20}
+            inline
+            offset={0}
+            zIndex={100}
+            processing
+            color="var(--accent)"
+            label={"New"}
+          >
             <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
