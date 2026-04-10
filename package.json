@@ -1,7 +1,7 @@
 {
   "name": "accept_front",
   "private": true,
-  "version": "2.4.0",
+  "version": "2.5.0",
   "scripts": {
     "debug": "NODE_OPTIONS='--inspect' next dev --turbopack -p 8080",
     "dev": "next dev --turbopack -p 8080",

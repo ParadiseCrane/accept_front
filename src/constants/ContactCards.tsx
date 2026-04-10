@@ -33,12 +33,12 @@ export const cardContent: (_: ILocale) => IContactCard[] = (locale) => [
       {
         icon: <IconBrandTelegram size={iconSize} />,
         text: "Telegram",
-        href: "https://t.me/flip_floppa",
+        href: "https://t.me/dsomni",
       },
       {
         icon: <IconBrandTelegram size={iconSize} />,
         text: "Telegram",
-        href: "https://t.me/Melaveeta",
+        href: "https://t.me/Melaveetha",
       },
     ],
   },

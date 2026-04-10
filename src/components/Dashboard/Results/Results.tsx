@@ -155,6 +155,8 @@ const Results: FC<{
     );
   }, [data, fetchRestResults, displayMode, full]);
 
+  const isTableReady = data && data.results.length > 0 && data.tasks.length > 0;
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.controls}>
@@ -191,44 +193,34 @@ const Results: FC<{
       </div>
 
       <LoadingOverlay visible={loading} />
-      {data && data.results.length > 0 && data.tasks.length > 0 ? (
-        <ResultsTable
-          refetch={refetch}
-          columns={[
-            ...data.tasks.map((task, index) => (
-              <Link
-                key={index}
-                href={`/task/${task.spec}?${type}=${spec}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                }}
-              >
-                {letterFromIndex(index)}
-              </Link>
-            )),
-          ]}
-          fixedRightColumns={[
-            <>{locale.assignment.score}</>,
-            <>{locale.assignment.totalTime}</>,
-            <>{locale.assignment.place}</>,
-          ]}
-          rows={data.results.map((result, index) =>
-            is_team ? (
-              <Link
-                key={index}
-                href={`/team/${result.participant.identifier}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                }}
-              >
-                {result.participant.label}
-              </Link>
-            ) : (
-              <Tip label={result.participant.identifier} key={index}>
+      {!loading ? (
+        isTableReady ? (
+          <ResultsTable
+            refetch={refetch}
+            columns={[
+              ...data.tasks.map((task, index) => (
                 <Link
-                  href={`/profile/${result.participant.identifier}`}
+                  key={index}
+                  href={`/task/${task.spec}?${type}=${spec}`}
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  {letterFromIndex(index)}
+                </Link>
+              )),
+            ]}
+            fixedRightColumns={[
+              <>{locale.assignment.score}</>,
+              <>{locale.assignment.totalTime}</>,
+              <>{locale.assignment.place}</>,
+            ]}
+            rows={data.results.map((result, index) =>
+              is_team ? (
+                <Link
+                  key={index}
+                  href={`/team/${result.participant.identifier}`}
                   style={{
                     textDecoration: "none",
                     color: "inherit",
@@ -236,13 +228,27 @@ const Results: FC<{
                 >
                   {result.participant.label}
                 </Link>
-              </Tip>
-            ),
-          )}
-          data={table_data}
-        />
+              ) : (
+                <Tip label={result.participant.identifier} key={index}>
+                  <Link
+                    href={`/profile/${result.participant.identifier}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
+                    {result.participant.label}
+                  </Link>
+                </Tip>
+              ),
+            )}
+            data={table_data}
+          />
+        ) : (
+          <div className={styles.empty}>{locale.ui.table.emptyMessage}</div>
+        )
       ) : (
-        <div className={styles.empty}>{locale.ui.table.emptyMessage}</div>
+        <></>
       )}
     </div>
   );
