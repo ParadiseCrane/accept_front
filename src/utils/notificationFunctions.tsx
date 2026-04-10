@@ -30,6 +30,8 @@ export const successNotification = (params: any): void => {
     loading: false,
     withCloseButton: true,
     radius,
+    children: undefined,
+    message: undefined,
     ...params,
   });
 };
