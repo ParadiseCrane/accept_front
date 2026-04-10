@@ -128,11 +128,16 @@ const CustomTransferList: FC<Props> = ({
   );
 
   const inputStyles = useMemo(() => {
-    let rootStyles = { root: {} };
+    let rootStyles = { root: {}, body: {} };
     if (height) {
       rootStyles.root = {
         maxHeight: height,
         height,
+      };
+      const bodyHeight = `${Number.parseInt(height.slice(0, -2)) - 30}px`;
+      rootStyles.body = {
+        maxHeight: bodyHeight,
+        height: bodyHeight,
       };
     }
     return rootStyles;
@@ -145,7 +150,7 @@ const CustomTransferList: FC<Props> = ({
       {...props}
     >
       <div
-        style={{ ...inputStyles.root, maxWidth: width, width }}
+        style={{ ...inputStyles.body, maxWidth: width, width }}
         className={classNames ? classNames.wrapper : styles.wrapper}
       >
         <LoadingOverlay visible={!!loading} />
