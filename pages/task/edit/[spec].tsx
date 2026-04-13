@@ -12,6 +12,7 @@ import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form";
 import Title from "@ui/Title/Title";
 import { getCookieValue } from "@utils/cookies";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
@@ -157,8 +158,6 @@ EditTask.getLayout = (page: ReactNode) => {
 
 export default EditTask;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
@@ -168,17 +167,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
-  const response = await fetch(`${API_URL}/api/bundle/task-edit/${spec}`, {
-    method: "GET",
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-
-      "content-type": "application/json",
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: `bundle/task-edit/${query.spec}`,
+    req,
   });
 
   if (response.status === 200) {

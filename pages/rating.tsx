@@ -14,6 +14,7 @@ import Link from "next/link";
 import { ReactElement, useCallback } from "react";
 import { IconCrown, IconTrophy } from "@tabler/icons-react";
 import clsx from "clsx";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 
 const LIMIT = 50;
 interface IndexedRatingInfo extends IRatingInfo {
@@ -102,16 +103,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   ..._
 }) => {
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
-
-  const response = await fetch(`${API_URL}/api/rating/${LIMIT}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-      cookie: req.headers.cookie,
-
-      "content-type": "application/json",
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: `rating/${LIMIT}`,
+    req,
   });
 
   if (response.status === 200) {

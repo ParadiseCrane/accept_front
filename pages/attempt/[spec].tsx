@@ -13,7 +13,7 @@ import { DefaultLayout } from "@layouts/DefaultLayout";
 import styles from "@styles/attempt.module.css";
 import { Tabs } from "@ui/basics";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode, useMemo } from "react";
@@ -91,8 +91,6 @@ Attempt.getLayout = (page: ReactNode) => {
 
 export default Attempt;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
@@ -102,15 +100,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
-
-  const response = await fetch(`${API_URL}/api/attempt/${spec}`, {
-    method: "GET",
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: `attempt/${query.spec}`,
+    req,
   });
 
   if (response.status === 200) {

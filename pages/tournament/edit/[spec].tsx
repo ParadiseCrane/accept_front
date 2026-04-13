@@ -13,6 +13,7 @@ import { UseFormReturnType } from "@mantine/form/lib/types";
 import Title from "@ui/Title/Title";
 import { getCookieValue } from "@utils/cookies";
 import { timezoneDate } from "@utils/datetime";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
@@ -138,18 +139,11 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
-  const response = await fetch(
-    `${API_URL}/api/bundle/tournament-edit/${spec}`,
-    {
-      headers: {
-        cookie: req.headers.cookie,
-        Authorization: `Bearer ${access_token}`,
-      } as { [key: string]: string },
-    },
-  );
+  const response = await fetchWrapperStatic({
+    url: `bundle/tournament-edit/${query.spec}`,
+    req,
+  });
 
   if (response.status === 200) {
     const response_json = await response.json();

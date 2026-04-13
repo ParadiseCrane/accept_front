@@ -4,6 +4,7 @@ import { IFullProfileBundle } from "@custom-types/data/IProfileInfo";
 import { useLocale } from "@hooks/useLocale";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import Title from "@ui/Title/Title";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode } from "react";
@@ -24,15 +25,8 @@ MyProfile.getLayout = (page: ReactNode) => {
 
 export default MyProfile;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const access_token: string = req.cookies["access_token"] || "";
-  const response = await fetch(`${API_URL}/api/bundle/profile`, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
-  });
+  const response = await fetchWrapperStatic({ url: `bundle/profile`, req });
 
   if (response.status === 200) {
     const profileData = await response.json();

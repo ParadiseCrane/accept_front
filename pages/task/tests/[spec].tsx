@@ -19,6 +19,7 @@ import { requestWithError } from "@utils/requestWithError";
 import { GetServerSideProps } from "next";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 function TestsPage(props: { spec: string; has_write_rights: boolean }) {
   const task_spec = props.spec;
   const hasWriteRights = props.has_write_rights;
@@ -127,8 +128,6 @@ TestsPage.getLayout = (page: ReactNode) => {
 
 export default TestsPage;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
@@ -138,19 +137,13 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
+
   const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
+  const response = await fetchWrapperStatic({
+    url: `task/write_tests_rights/${spec}`,
+    req,
+  });
 
-  const response = await fetch(
-    `${API_URL}/api/task/write_tests_rights/${spec}`,
-    {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-
-        cookie: req.headers.cookie,
-      } as { [key: string]: string },
-    },
-  );
   if (response.status === 200) {
     const response_json = await response.json();
 

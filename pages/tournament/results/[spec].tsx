@@ -7,6 +7,7 @@ import { DefaultLayout } from "@layouts/DefaultLayout";
 import styles from "@styles/results.module.css";
 import Title from "@ui/Title/Title";
 import { getCookieValue } from "@utils/cookies";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode } from "react";
@@ -45,7 +46,6 @@ Tournament.getLayout = (page: ReactNode) => {
 };
 
 export default Tournament;
-const API_URL = getApiUrl();
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -56,14 +56,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
-  const spec = query.spec;
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
-  const response = await fetch(`${API_URL}/api/tournament/${spec}`, {
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: `tournament/${query.spec}`,
+    req,
   });
 
   if (response.status === 200) {

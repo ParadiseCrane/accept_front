@@ -13,6 +13,7 @@ import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form/lib/types";
 import Title from "@ui/Title/Title";
 import { getCookieValue } from "@utils/cookies";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
@@ -128,21 +129,15 @@ TournamentAdd.getLayout = (page: ReactNode) => {
 
 export default TournamentAdd;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query: _,
   req,
 }) => {
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
-
-  const response = await fetch(`${API_URL}/api/bundle/tournament-add`, {
-    method: "GET",
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
-    } as { [key: string]: string },
+  const response = await fetchWrapperStatic({
+    url: `bundle/tournament-add`,
+    req,
   });
+
   if (response.status === 200) {
     const response_json = await response.json();
     return {

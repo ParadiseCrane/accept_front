@@ -19,6 +19,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { ReactNode, useMemo, useState } from "react";
 import { IconKey, IconTrash } from "@tabler/icons-react";
+import { fetchWrapperStatic } from "@utils/fetchWrapper";
 
 function TeamProfile(props: { team: ITeam }) {
   const team = props.team;
@@ -129,8 +130,6 @@ TeamProfile.getLayout = (page: ReactNode) => {
 
 export default TeamProfile;
 
-const API_URL = getApiUrl();
-
 export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
@@ -143,17 +142,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-  const access_token = getCookieValue(req.headers.cookie || "", "access_token");
 
-  const response = await fetch(`${API_URL}/api/team/${query.spec}`, {
-    method: "GET",
-    headers: {
-      cookie: req.headers.cookie,
-      Authorization: `Bearer ${access_token}`,
+  const response = await fetchWrapperStatic({ url: `team/${query.spec}`, req });
 
-      "content-type": "application/json",
-    } as { [key: string]: string },
-  });
   if (response.status === 307) {
     let data = await response.json();
     return {
