@@ -277,12 +277,12 @@ export const TipTapEditor = ({
             <UndoButton editor={editor} />
             <RedoButton editor={editor} />
           </RichTextEditor.ControlsGroup>
-          {/* AI-FEATURE FLAG: hide text and image gen for now */}
-          {/* <ToolbarDivider />
+          {/* AI-FEATURE FLAG */}
+          <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
             <StylizeText editor={editor} />
             <GenerateImage editor={editor} />
-          </RichTextEditor.ControlsGroup> */}
+          </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}
       {editor && <BubbleMenuComponent editor={editor} />}

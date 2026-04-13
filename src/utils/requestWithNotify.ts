@@ -1,11 +1,11 @@
-import { callback, setter } from '@custom-types/ui/atomic';
-import { IAvailableLang } from '@custom-types/ui/ILocale';
-import { IResponse, availableMethods, sendRequest } from '@requests/request';
+import { callback, setter } from "@custom-types/ui/atomic";
+import { IAvailableLang } from "@custom-types/ui/ILocale";
+import { IResponse, availableMethods, sendRequest } from "@requests/request";
 import {
   errorNotification,
   newNotification,
   successNotification,
-} from '@utils/notificationFunctions';
+} from "@utils/notificationFunctions";
 
 const defaultAutoClose = 5000;
 
@@ -21,11 +21,11 @@ export const requestWithNotify = <T, V>(
   message: callback<V, string>,
   body?: T extends object ? T : object,
   onSuccess?: setter<V>,
-  params?: any
+  params?: any,
 ): Promise<IResponse<V>> => {
   const id = newNotification({
     title: locale.loading,
-    message: locale.loading + '...',
+    message: locale.loading,
     ...params,
   });
   return sendRequest<T, V>(endpoint, method, body).then((res) => {
