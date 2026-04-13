@@ -6,9 +6,7 @@ import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import styles from "@styles/results.module.css";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode } from "react";
 

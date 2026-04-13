@@ -11,10 +11,8 @@ import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form/lib/types";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
 import { timezoneDate } from "@utils/datetime";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
   newNotification,
@@ -127,8 +125,6 @@ TournamentEdit.getLayout = (page: ReactNode) => {
 };
 
 export default TournamentEdit;
-
-const API_URL = getApiUrl();
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,

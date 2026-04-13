@@ -13,8 +13,6 @@ import { DefaultLayout } from "@layouts/DefaultLayout";
 import { Loader } from "@mantine/core";
 import SingularSticky from "@ui/Sticky/SingularSticky";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
-import { getApiUrl } from "@utils/getServerUrl";
 import { requestWithError } from "@utils/requestWithError";
 import { GetServerSideProps } from "next";
 import { ReactNode, useCallback, useMemo, useState } from "react";

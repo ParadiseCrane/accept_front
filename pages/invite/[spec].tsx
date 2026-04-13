@@ -1,10 +1,7 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
 import { DefaultLayout } from "@layouts/DefaultLayout";
-import { Button } from "@ui/basics";
-import { getCookieValue } from "@utils/cookies";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { ReactNode } from "react";

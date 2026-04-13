@@ -7,8 +7,6 @@ import styles from "@styles/rating.module.css";
 import tableStyles from "@styles/ui/primitiveTable.module.css";
 import PrimitiveTable from "@ui/PrimitiveTable/PrimitiveTable";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
-import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { ReactElement, useCallback } from "react";
@@ -95,8 +93,6 @@ Rating.getLayout = (page: ReactElement) => {
   return <DefaultLayout>{page}</DefaultLayout>;
 };
 export default Rating;
-
-const API_URL = getApiUrl();
 
 export const getServerSideProps: GetServerSideProps = async ({
   res,

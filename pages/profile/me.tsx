@@ -5,7 +5,6 @@ import { useLocale } from "@hooks/useLocale";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode } from "react";
 

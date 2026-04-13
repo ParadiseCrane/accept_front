@@ -14,7 +14,6 @@ import styles from "@styles/attempt.module.css";
 import { Tabs } from "@ui/basics";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import { GetServerSideProps } from "next";
 import { ReactNode, useMemo } from "react";
 

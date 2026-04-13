@@ -12,9 +12,7 @@ import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form/lib/types";
 import Title from "@ui/Title/Title";
-import { getCookieValue } from "@utils/cookies";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import { getApiUrl } from "@utils/getServerUrl";
 import {
   errorNotification,
   newNotification,
