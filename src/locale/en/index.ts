@@ -40,7 +40,7 @@ const en = {
   accept: "Accept",
   apply: "Apply",
   generate: "Generate",
-  loading: "Loading",
+  loading: "Loading...",
   name: "Title",
   save: "Save",
   delete: "Delete",

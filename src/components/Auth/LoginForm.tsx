@@ -88,7 +88,7 @@ const LoginForm: FC<{
       if (form.validate().hasErrors) return;
       const id = newNotification({
         title: locale.notify.auth.signIn.loading,
-        message: locale.loading + "...",
+        message: locale.loading,
       });
       setLoading(true);
       signIn(

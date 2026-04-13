@@ -105,7 +105,7 @@ export const TipTapBubbleMenuProvider = ({
       let value = "";
       const id = newNotification({
         title: locale.tiptap.stylize.inProgress,
-        message: locale.loading + "...",
+        message: locale.loading,
       });
       try {
         const res = await fetch("/api/ai/text_style", {

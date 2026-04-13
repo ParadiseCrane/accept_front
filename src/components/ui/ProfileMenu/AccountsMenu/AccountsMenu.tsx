@@ -43,7 +43,7 @@ const AccountsMenu: FC<{}> = () => {
   const removeSession = useCallback(() => {
     const id = newNotification({
       title: locale.notify.auth.signOut.loading,
-      message: locale.loading + "...",
+      message: locale.loading,
     });
     signOut().then((res) => {
       if (res) {

@@ -40,7 +40,7 @@ const ru = {
   accept: "Accept",
   apply: "Применить",
   generate: "Сгенерировать",
-  loading: "Загрузка",
+  loading: "Загрузка...",
   download: "Скачать",
   name: "Название",
   save: "Сохранить",
