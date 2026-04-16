@@ -120,7 +120,7 @@ const Send: FC<{
           leftSection={
             <SendPlane color={!isValid ? "black" : "var(--primary)"} />
           }
-          data-umami-event={"Отправка задачи"}
+          // data-umami-event={"Отправка задачи"}
         >
           {locale.task.submit}
         </Button>

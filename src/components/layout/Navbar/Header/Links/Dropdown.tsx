@@ -42,7 +42,7 @@ const Dropdown: FC<{
             key={index}
             component={Link}
             href={item.href}
-            data-umami-event={item.eventName}
+            // data-umami-event={item.eventName}
           >
             {item.label}
           </Menu.Item>

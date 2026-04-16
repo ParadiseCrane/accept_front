@@ -41,7 +41,7 @@ export const ProjectCard: FC<{
                 size={ICON_SIZES["md"][width]}
               />
             }
-            data-umami-event={card.eventName}
+            // data-umami-event={card.eventName}
           >
             {locale.projects.view}
           </Button>

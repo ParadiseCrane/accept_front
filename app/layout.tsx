@@ -56,11 +56,11 @@ export default function RootLayout({
     >
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
-        <Script
+        {/* <Script
           defer
           src="https://cloud.umami.is/script.js"
           data-website-id="05d82b05-8d63-46e3-98d4-4366e22b0e65"
-        />
+        /> */}
       </head>
       <body>
         <MantineProvider theme={theme}>

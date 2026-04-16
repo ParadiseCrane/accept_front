@@ -42,7 +42,7 @@ export const HeaderLink: FC<{
           <Link
             href={link.href}
             className={linkStyles.headerLink}
-            data-umami-event={link.eventName}
+            // data-umami-event={link.eventName}
           >
             {link.text(locale)}
           </Link>
