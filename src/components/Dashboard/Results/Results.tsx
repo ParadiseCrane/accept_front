@@ -76,6 +76,7 @@ const Results: FC<{
           textDecoration: "none",
           color: getScoreColor(item.score),
         }}
+        prefetch={false}
       >
         {item.verdict
           ? displayMode == "score"
@@ -206,6 +207,7 @@ const Results: FC<{
                     textDecoration: "none",
                     color: "inherit",
                   }}
+                  prefetch={false}
                 >
                   {letterFromIndex(index)}
                 </Link>

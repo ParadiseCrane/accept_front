@@ -33,6 +33,13 @@ AssignmentDashboardPage.getLayout = (page: ReactNode) => {
 
 export default AssignmentDashboardPage;
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params || !params.spec) {
     return {
@@ -42,12 +49,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: { spec: params.spec },
     revalidate: REVALIDATION_TIME.dashboard.assignment,
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
   };
 };

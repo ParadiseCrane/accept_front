@@ -70,7 +70,11 @@ const refactorUser = (user: IUser): any => ({
     value: user.login,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link className={tableStyles.title} href={`/profile/${user.login}`}>
+        <Link
+          className={tableStyles.title}
+          href={`/profile/${user.login}`}
+          prefetch={false}
+        >
           {user.login}
         </Link>
         {user.groups.length > 0 && (

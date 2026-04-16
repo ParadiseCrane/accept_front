@@ -46,7 +46,11 @@ const refactorAttempt = (
   },
   date: {
     display: (
-      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
+      <Link
+        className={tableStyles.link}
+        href={`/attempt/${attempt.spec}`}
+        prefetch={false}
+      >
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -61,6 +65,7 @@ const refactorAttempt = (
       <Link
         href={`/task/${attempt.task.spec}?${type}=${spec}`}
         className={styles.taskLink}
+        prefetch={false}
       >
         {attempt.task.title}
       </Link>
@@ -70,7 +75,11 @@ const refactorAttempt = (
   author: {
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link className={tableStyles.link} href={`/profile/${attempt.author}`}>
+        <Link
+          className={tableStyles.link}
+          href={`/profile/${attempt.author}`}
+          prefetch={false}
+        >
           {attempt.author}
         </Link>
       </div>

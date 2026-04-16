@@ -123,7 +123,11 @@ const refactorCourse = (course: ICourseListItem): any => ({
     value: course.title,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link className={tableStyles.title} href={`/course/${course.spec}`}>
+        <Link
+          className={tableStyles.title}
+          href={`/course/${course.spec}`}
+          prefetch={false}
+        >
           {course.title}
         </Link>
       </div>

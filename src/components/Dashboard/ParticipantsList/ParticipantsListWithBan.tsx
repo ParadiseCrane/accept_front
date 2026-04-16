@@ -101,7 +101,11 @@ const refactorUser = (
     value: user.login,
     display: (
       <div className={tableStyles.titleWrapperCenter}>
-        <Link href={`/profile/${user.login}`} className={tableStyles.title}>
+        <Link
+          href={`/profile/${user.login}`}
+          className={tableStyles.title}
+          prefetch={false}
+        >
           {user.login}
         </Link>
         {user.groups.length > 0 && (

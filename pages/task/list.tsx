@@ -142,7 +142,11 @@ const refactorTask = (task: ITaskDisplay, locale: ILocale): any => ({
     value: task.title,
     display: (
       <div className={tableStyles.titleWrapper}>
-        <Link className={tableStyles.title} href={`/task/${task.spec}`}>
+        <Link
+          className={tableStyles.title}
+          href={`/task/${task.spec}`}
+          prefetch={false}
+        >
           {task.title}
         </Link>
         {task.tags.length > 0 && (

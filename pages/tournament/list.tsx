@@ -268,6 +268,7 @@ const processData = (
             <Link
               className={tableStyles.title}
               href={`/tournament/${tournament.spec}`}
+              prefetch={false}
             >
               {tournament.title}
             </Link>

@@ -102,6 +102,7 @@ const processData = (data: IAssignmentSchemaListBundle, locale: ILocale) => {
             <Link
               className={tableStyles.title}
               href={`/assignment_schema/${assignment_schema.spec}`}
+              prefetch={false}
             >
               {assignment_schema.title}
             </Link>

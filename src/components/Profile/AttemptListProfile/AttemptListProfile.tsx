@@ -35,7 +35,11 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   date: {
     display: (
-      <Link className={tableStyles.link} href={`/attempt/${attempt.spec}`}>
+      <Link
+        className={tableStyles.link}
+        href={`/attempt/${attempt.spec}`}
+        prefetch={false}
+      >
         {getLocalDate(attempt.date)}
       </Link>
     ),
@@ -47,7 +51,11 @@ const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   },
   task: {
     display: (
-      <Link href={`/task/${attempt.task.spec}`} className={styles.taskLink}>
+      <Link
+        href={`/task/${attempt.task.spec}`}
+        className={styles.taskLink}
+        prefetch={false}
+      >
         {attempt.task.title}
       </Link>
     ),
