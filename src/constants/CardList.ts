@@ -6,20 +6,20 @@ export const cardList: IProjectCard[] = [
     description: (locale) => locale.projects.education.description,
     image: "media/code0.jpg",
     href: "/task/list",
-    eventName: "Переход на страницу списка задач",
+    // eventName: "Переход на страницу списка задач",
   },
   {
     title: (locale) => locale.projects.tournaments.title,
     description: (locale) => locale.projects.tournaments.description,
     image: "media/code2.jpg",
     href: "/tournament/list",
-    eventName: "Переход на страницу списка турниров",
+    // eventName: "Переход на страницу списка турниров",
   },
   {
     title: (locale) => locale.projects.courses.title,
     description: (locale) => locale.projects.courses.description,
     image: "media/code1.jpg",
     href: "/course/list",
-    eventName: "Переход на страницу списка курсов",
+    // eventName: "Переход на страницу списка курсов",
   },
 ];
