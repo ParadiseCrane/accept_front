@@ -36,19 +36,21 @@ const Send: FC<{
   kbdHelperContent,
   buttonDropdownProps,
 }) => {
+  const DEFAULT_LANG_SPEC = "1";
+
   const { locale, lang } = useLocale();
   const analytics = useAnalytics();
 
+  const defaultValue = languages.find(
+    (e) => e.spec.toString() === DEFAULT_LANG_SPEC,
+  )
+    ? DEFAULT_LANG_SPEC
+    : languages[0].spec.toString();
+
   const [language, setLanguage] = useLocalStorage<string>({
     key: "previous_program_lang",
-    defaultValue: "1",
+    defaultValue,
   });
-
-  useEffect(() => {
-    if (!languages.map((item) => item.spec.toString()).includes(language)) {
-      setLanguage(languages[0].spec.toString());
-    }
-  }, [language, languages, setLanguage]);
 
   const [code, setCode] = useState("");
 
