@@ -55,7 +55,6 @@ const SendText: FC<{
       (_: {}) => "",
       body,
       () => {},
-      { autoClose: 5000 },
     );
     analytics?.track("Отправка задачи");
     resetAnswers();

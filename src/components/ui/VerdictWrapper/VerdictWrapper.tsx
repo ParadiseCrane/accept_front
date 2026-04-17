@@ -7,11 +7,12 @@ import { FC, memo, useMemo } from "react";
 import styles from "./verdictWrapper.module.css";
 
 const VerdictWrapper: FC<{
+  type: "task" | "attempt";
   status?: IAttemptStatus;
   verdict?: IVerdict;
   test?: number;
   full?: boolean;
-}> = ({ status, verdict, test, full }) => {
+}> = ({ type, status, verdict, test, full }) => {
   const { locale } = useLocale();
 
   // verdict

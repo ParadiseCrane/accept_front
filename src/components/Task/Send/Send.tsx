@@ -67,7 +67,6 @@ const Send: FC<{
       (_: {}) => "",
       body,
       () => {},
-      { autoClose: 5000 },
     );
     analytics?.track("Отправка задачи");
     setCode("");
