@@ -29,7 +29,7 @@ const VerdictWrapper: FC<{
   const HAS_NO_DATA = !status && !verdict;
 
   const getVerdictColor = () => {
-    if (IS_NOT_TESTED || IS_NOT_FINISHED || HAS_NO_DATA) {
+    if (IS_NOT_FINISHED || HAS_NO_DATA) {
       return "black";
     }
 
@@ -41,7 +41,11 @@ const VerdictWrapper: FC<{
       return "var(--positive)";
     }
 
-    return "var(--negative)";
+    if (!IS_ACCEPTED || IS_NOT_TESTED) {
+      return "var(--negative)";
+    }
+
+    return "black";
   };
 
   const verdictTestString = test === undefined ? "" : ` #${test + 1}`;
