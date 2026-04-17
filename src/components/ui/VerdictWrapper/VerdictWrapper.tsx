@@ -14,73 +14,86 @@ const VerdictWrapper: FC<{
 }> = ({ status, verdict, test, full }) => {
   const { locale } = useLocale();
 
-  const verdictColor = useMemo(
-    () =>
-      !verdict
-        ? "black"
-        : status && status.spec !== 2
-          ? status.spec == 3
-            ? "var(--accent)"
-            : "black"
-          : verdict?.spec == 0
-            ? "var(--positive)"
-            : "var(--negative)",
-    [status, verdict],
-  );
+  // verdict
+  const IS_VERDICT_EMPTY = !verdict;
+  const IS_ACCEPTED = status && verdict && verdict.spec === 0;
+  const IS_NOT_TESTED = status && verdict && verdict.spec === 6;
 
-  const verdictShortText = useMemo(() => verdict?.shortText || "-", [verdict]);
+  // status
+  const IS_PENDING = status && status.spec === 0;
+  const IS_TESTING = status && status.spec === 1;
+  // const IS_FINISHED = status && status.spec === 2;
+  const IS_BANNED = status && status.spec === 3;
+  const IS_NOT_FINISHED = IS_PENDING || IS_TESTING;
 
-  const verdictTestString = useMemo(
-    () => (test !== undefined ? ` #${test + 1}` : ""),
-    [test],
-  );
+  const getVerdictColor = () => {
+    if (IS_NOT_TESTED || IS_NOT_FINISHED) {
+      return "black";
+    }
 
-  const isVerdictEmpty = useMemo(() => !verdict, [verdict]);
+    if (IS_BANNED) {
+      return "var(--accent)";
+    }
+
+    if (IS_ACCEPTED) {
+      return "var(--positive)";
+    }
+
+    return "var(--negative)";
+  };
+
+  const verdictTestString = test === undefined ? "" : ` #${test + 1}`;
+
+  const getTipFullText = () => {
+    if (IS_NOT_TESTED || IS_NOT_FINISHED) {
+      return locale.attempt.statuses[status.spec];
+    }
+
+    return `${verdict?.fullText}${verdictTestString}`;
+  };
+
+  const getTipShortText = () => {
+    if (IS_NOT_TESTED) {
+      return locale.attempt.statuses[status.spec];
+    }
+
+    return `${verdict?.shortText || "-"}${verdictTestString}`;
+  };
 
   return (
     <div
       style={{
-        color: verdictColor,
+        color: getVerdictColor(),
       }}
       className={
         styles.wrapper +
         " " +
-        (isVerdictEmpty || full ? styles.emptyVerdict : "")
+        (IS_VERDICT_EMPTY || full ? styles.emptyVerdict : "")
       }
     >
       {full ? (
         <Tip
           label={
-            <span style={{ color: verdictColor }}>
-              {status && status.spec !== 2
-                ? locale.attempt.statuses[status.spec]
-                : `${verdict?.fullText}${verdictTestString}`}
-            </span>
+            <span style={{ color: getVerdictColor() }}>{getTipFullText()}</span>
           }
           openDelay={200}
           position="bottom"
-          disabled={isVerdictEmpty}
+          disabled={IS_VERDICT_EMPTY}
         >
-          {status && status.spec !== 2
-            ? locale.attempt.statuses[status.spec]
-            : `${verdict?.fullText}${verdictTestString}`}
+          {getTipFullText()}
         </Tip>
       ) : (
         <Tip
           label={
-            <span style={{ color: verdictColor }}>
-              {status && status.spec !== 2
-                ? locale.attempt.statuses[status.spec]
-                : `${verdictShortText}${verdictTestString}`}
+            <span style={{ color: getVerdictColor() }}>
+              {getTipShortText()}
             </span>
           }
           openDelay={200}
           position="bottom"
-          disabled={isVerdictEmpty}
+          disabled={IS_VERDICT_EMPTY}
         >
-          {status && status.spec !== 2
-            ? locale.attempt.statuses[status.spec]
-            : `${verdictShortText}${verdictTestString}`}
+          {getTipShortText()}
         </Tip>
       )}
     </div>
