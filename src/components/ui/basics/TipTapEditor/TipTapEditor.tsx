@@ -281,7 +281,7 @@ export const TipTapEditor = ({
           <ToolbarDivider />
           <RichTextEditor.ControlsGroup className={styles.toolbar_group}>
             <StylizeText editor={editor} />
-            <GenerateImage editor={editor} />
+            {/* <GenerateImage editor={editor} /> */}
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
       )}

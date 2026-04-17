@@ -7,18 +7,17 @@ import { FC, memo, useMemo } from "react";
 import styles from "./verdictWrapper.module.css";
 
 const VerdictWrapper: FC<{
-  type: "task" | "attempt";
   status?: IAttemptStatus;
   verdict?: IVerdict;
   test?: number;
   full?: boolean;
-}> = ({ type, status, verdict, test, full }) => {
+}> = ({ status, verdict, test, full }) => {
   const { locale } = useLocale();
 
   // verdict
   const IS_VERDICT_EMPTY = !verdict;
-  const IS_ACCEPTED = status && verdict && verdict.spec === 0;
-  const IS_NOT_TESTED = status && verdict && verdict.spec === 6;
+  const IS_ACCEPTED = verdict && verdict.spec === 0;
+  const IS_NOT_TESTED = verdict && verdict.spec === 6;
 
   // status
   const IS_PENDING = status && status.spec === 0;
@@ -27,8 +26,10 @@ const VerdictWrapper: FC<{
   const IS_BANNED = status && status.spec === 3;
   const IS_NOT_FINISHED = IS_PENDING || IS_TESTING;
 
+  const HAS_NO_DATA = !status && !verdict;
+
   const getVerdictColor = () => {
-    if (IS_NOT_TESTED || IS_NOT_FINISHED) {
+    if (IS_NOT_TESTED || IS_NOT_FINISHED || HAS_NO_DATA) {
       return "black";
     }
 
@@ -46,7 +47,7 @@ const VerdictWrapper: FC<{
   const verdictTestString = test === undefined ? "" : ` #${test + 1}`;
 
   const getTipFullText = () => {
-    if (IS_NOT_TESTED || IS_NOT_FINISHED) {
+    if (status && (IS_NOT_TESTED || IS_NOT_FINISHED)) {
       return locale.attempt.statuses[status.spec];
     }
 
@@ -54,7 +55,7 @@ const VerdictWrapper: FC<{
   };
 
   const getTipShortText = () => {
-    if (IS_NOT_TESTED) {
+    if (status && (IS_NOT_TESTED || IS_NOT_FINISHED)) {
       return locale.attempt.statuses[status.spec];
     }
 
