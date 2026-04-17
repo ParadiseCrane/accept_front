@@ -9,6 +9,7 @@ import { FC, memo, useCallback } from "react";
 import { IconSend as SendPlane } from "@tabler/icons-react";
 
 import styles from "./sendText.module.css";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 const SendText: FC<{
   spec: string;
@@ -16,6 +17,7 @@ const SendText: FC<{
   setActiveTab: setter<string | undefined>;
 }> = ({ spec, testsNumber, setActiveTab }) => {
   const { locale, lang } = useLocale();
+  const analytics = useAnalytics();
 
   const form = useForm({
     initialValues: {
@@ -55,6 +57,7 @@ const SendText: FC<{
       () => {},
       { autoClose: 5000 },
     );
+    analytics?.track("Отправка задачи");
     resetAnswers();
     setActiveTab("results");
   }, [
@@ -64,6 +67,7 @@ const SendText: FC<{
     lang,
     resetAnswers,
     setActiveTab,
+    analytics,
   ]);
 
   return (
@@ -87,7 +91,6 @@ const SendText: FC<{
           leftSection={
             <SendPlane color={!form.isValid() ? "black" : "var(--primary)"} />
           }
-          // data-umami-event={"Отправка задачи"}
         >
           {locale.task.submit}
         </Button>

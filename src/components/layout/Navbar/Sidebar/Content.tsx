@@ -3,9 +3,12 @@ import { useLocale } from "@hooks/useLocale";
 import styles from "./Content.module.css";
 import { links } from "@constants/MainHeaderLinks";
 import { NavLink } from "@mantine/core";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 export const Content = () => {
   const { locale } = useLocale();
+  const analytics = useAnalytics();
+
   return (
     <>
       {links.map((e, idx1) => (
@@ -22,7 +25,7 @@ export const Content = () => {
                 href={e.href}
                 label={e.text(locale)}
                 classNames={{ label: styles.title }}
-                // data-umami-event={e.eventName}
+                onClick={() => analytics?.track(e.eventName)}
               />
             ))}
         </NavLink>

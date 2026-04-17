@@ -9,12 +9,14 @@ import Link from "next/link";
 import { FC } from "react";
 
 import Dropdown from "./Dropdown";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 export const HeaderLink: FC<{
   link: IHeaderLink;
   additionalClass?: string;
 }> = ({ link, additionalClass }) => {
   const { locale } = useLocale();
+  const analytics = useAnalytics();
 
   const { accessLevel } = useUser();
   return (
@@ -42,7 +44,7 @@ export const HeaderLink: FC<{
           <Link
             href={link.href}
             className={linkStyles.headerLink}
-            // data-umami-event={link.eventName}
+            onClick={() => analytics?.track(link.eventName)}
           >
             {link.text(locale)}
           </Link>

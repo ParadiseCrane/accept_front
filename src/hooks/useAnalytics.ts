@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface UmamiInstance {
-  track: (name: string, data?: object) => void;
+  track: (name?: string, data?: object) => void;
 }
 
 export const useAnalytics = (): undefined | UmamiInstance => {

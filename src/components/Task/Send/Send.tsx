@@ -21,6 +21,7 @@ import {
 import { IconSend as SendPlane } from "@tabler/icons-react";
 
 import styles from "./send.module.css";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 const Send: FC<{
   spec: string;
@@ -36,6 +37,7 @@ const Send: FC<{
   buttonDropdownProps,
 }) => {
   const { locale, lang } = useLocale();
+  const analytics = useAnalytics();
 
   const [language, setLanguage] = useLocalStorage<string>({
     key: "previous_program_lang",
@@ -67,9 +69,10 @@ const Send: FC<{
       () => {},
       { autoClose: 5000 },
     );
+    analytics?.track("Отправка задачи");
     setCode("");
     setActiveTab("results");
-  }, [language, code, spec, locale, lang, setActiveTab]);
+  }, [language, code, spec, locale, lang, setActiveTab, analytics]);
 
   const onLangSelect = useCallback(
     (value: string | null) => {
@@ -120,7 +123,6 @@ const Send: FC<{
           leftSection={
             <SendPlane color={!isValid ? "black" : "var(--primary)"} />
           }
-          // data-umami-event={"Отправка задачи"}
         >
           {locale.task.submit}
         </Button>

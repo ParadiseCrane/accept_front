@@ -2,6 +2,7 @@
 
 import { IOrganization } from "@custom-types/data/IOrganization";
 import { SelectItem } from "@custom-types/ui/atomic";
+import { useAnalytics } from "@hooks/useAnalytics";
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
@@ -27,6 +28,7 @@ const LoginForm: FC<{
   const [loading, setLoading] = useState(false);
   const [toSignIn, setToSignIn] = useState(false);
   const router = useRouter();
+  const analytics = useAnalytics();
 
   const {
     data: organizations,
@@ -203,7 +205,7 @@ const LoginForm: FC<{
           <Link
             href={`/signup?referrer=${router.query.referrer ?? "/"}`}
             className={styles.footerLink}
-            // data-umami-event={"Переход на страницу регистрации"}
+            onClick={() => analytics?.track("Переход на страницу регистрации")}
           >
             {locale.auth.footer.register}
           </Link>

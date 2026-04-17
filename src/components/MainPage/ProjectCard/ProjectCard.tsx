@@ -8,6 +8,7 @@ import { FC } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 
 import styles from "./projectCard.module.css";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 export const ProjectCard: FC<{
   left: boolean;
@@ -16,6 +17,7 @@ export const ProjectCard: FC<{
   const { locale } = useLocale();
   const position = left ? styles.left : styles.right;
   const { width } = useWidth();
+  const analytics = useAnalytics();
 
   return (
     <div className={`${styles.wrapper} ${position}`}>
@@ -41,7 +43,7 @@ export const ProjectCard: FC<{
                 size={ICON_SIZES["md"][width]}
               />
             }
-            // data-umami-event={card.eventName}
+            onClick={() => analytics?.track(card.eventName)}
           >
             {locale.projects.view}
           </Button>

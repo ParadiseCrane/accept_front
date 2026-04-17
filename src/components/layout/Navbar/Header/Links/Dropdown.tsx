@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FC, ReactNode, memo } from "react";
 
 import styles from "./dropdown.module.css";
+import { useAnalytics } from "@hooks/useAnalytics";
 
 interface Item {
   label: string;
@@ -17,6 +18,8 @@ const Dropdown: FC<{
   transition?: MantineTransition;
   transitionDuration?: number;
 }> = ({ items, children, transition, transitionDuration }) => {
+  const analytics = useAnalytics();
+
   return (
     <Menu
       position="bottom-start"
@@ -42,7 +45,7 @@ const Dropdown: FC<{
             key={index}
             component={Link}
             href={item.href}
-            // data-umami-event={item.eventName}
+            onClick={() => analytics?.track(item.eventName)}
           >
             {item.label}
           </Menu.Item>
