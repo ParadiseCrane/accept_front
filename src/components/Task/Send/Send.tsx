@@ -26,12 +26,14 @@ import { useAnalytics } from "@hooks/useAnalytics";
 const Send: FC<{
   spec: string;
   setActiveTab: setter<string | undefined>;
+  setShouldForceRefetch: (value: boolean) => void;
   languages: ILanguage[];
   kbdHelperContent?: ReactNode;
   buttonDropdownProps?: MyHoverCardDropdownProps;
 }> = ({
   spec,
   setActiveTab,
+  setShouldForceRefetch,
   languages,
   kbdHelperContent,
   buttonDropdownProps,
@@ -68,11 +70,18 @@ const Send: FC<{
       lang,
       (_: {}) => "",
       body,
-      () => {},
+      () => {
+        setActiveTab("results");
+        setShouldForceRefetch(true);
+      },
+      undefined,
+      () => {
+        setActiveTab("results");
+        setShouldForceRefetch(true);
+      },
     );
     analytics?.track("Отправка задачи");
     setCode("");
-    setActiveTab("results");
   }, [language, code, spec, locale, lang, setActiveTab, analytics]);
 
   const onLangSelect = useCallback(

@@ -22,6 +22,7 @@ export const requestWithNotify = <T, V>(
   body?: T extends object ? T : object,
   onSuccess?: setter<V>,
   params?: any,
+  onError?: setter<V>,
 ): Promise<IResponse<V>> => {
   const id = newNotification({
     title: locale.loading,
@@ -49,6 +50,7 @@ export const requestWithNotify = <T, V>(
         autoClose: defaultAutoClose,
         ...params,
       });
+      if (onError) onError(res.response);
     }
     return res;
   });

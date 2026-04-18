@@ -15,7 +15,8 @@ const SendText: FC<{
   spec: string;
   testsNumber: number;
   setActiveTab: setter<string | undefined>;
-}> = ({ spec, testsNumber, setActiveTab }) => {
+  setShouldForceRefetch: (value: boolean) => void;
+}> = ({ spec, testsNumber, setActiveTab, setShouldForceRefetch }) => {
   const { locale, lang } = useLocale();
   const analytics = useAnalytics();
 
@@ -54,11 +55,18 @@ const SendText: FC<{
       lang,
       (_: {}) => "",
       body,
-      () => {},
+      () => {
+        setActiveTab("results");
+        setShouldForceRefetch(true);
+      },
+      undefined,
+      () => {
+        setActiveTab("results");
+        setShouldForceRefetch(true);
+      },
     );
     analytics?.track("Отправка задачи");
     resetAnswers();
-    setActiveTab("results");
   }, [
     form,
     spec,
@@ -67,6 +75,7 @@ const SendText: FC<{
     resetAnswers,
     setActiveTab,
     analytics,
+    setShouldForceRefetch,
   ]);
 
   return (

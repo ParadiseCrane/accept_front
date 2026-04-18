@@ -49,6 +49,8 @@ const AttemptList: FC<{
   defaultRowsOnPage?: number;
   shouldNotRefetch?: boolean;
   attemptQuery?: string;
+  shouldForceRefetch?: boolean;
+  onRefetch?: () => void;
 }> = ({
   url,
   activeTab,
@@ -62,6 +64,8 @@ const AttemptList: FC<{
   empty,
   defaultRowsOnPage,
   shouldNotRefetch,
+  shouldForceRefetch,
+  onRefetch,
 }) => {
   const { locale } = useLocale();
   const { refreshAccess } = useUser();
@@ -137,9 +141,12 @@ const AttemptList: FC<{
   }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
 
   const refetch = useCallback(() => {
-    if (activeTab && !shouldNotRefetch && needRefetch) return fetch_data();
+    if (activeTab && !shouldNotRefetch && needRefetch) {
+      if (onRefetch) onRefetch();
+      return fetch_data();
+    }
     return new Promise<void>(() => {});
-  }, [activeTab, fetch_data, needRefetch, shouldNotRefetch]);
+  }, [activeTab, fetch_data, needRefetch, shouldNotRefetch, onRefetch]);
 
   useEffect(() => {
     fetch_data();
@@ -147,13 +154,15 @@ const AttemptList: FC<{
 
   useEffect(() => {
     if (activeTab && !shouldNotRefetch) {
+      if (shouldForceRefetch) refetch();
+
       const intervalId = setInterval(() => {
         refetch();
       }, ATTEMPTS_LIST_REFETCH_INTERVAL);
 
       return () => clearInterval(intervalId);
     }
-  }, [activeTab, refetch, shouldNotRefetch]);
+  }, [activeTab, refetch, shouldNotRefetch, shouldForceRefetch]);
 
   if (columns.length === 0) return <></>;
 

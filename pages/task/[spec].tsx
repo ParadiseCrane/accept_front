@@ -48,6 +48,7 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
   const [activeModal, setActiveModal] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [openedHint, setOpenedHint] = useState(false);
+  const [shouldForceRefetch, setShouldForceRefetch] = useState<boolean>(false);
   const [tasks, setTasks] = useState<IBarTask[]>([]);
 
   const { locale } = useLocale();
@@ -266,6 +267,7 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
             <SendTab
               spec={task.spec}
               setActiveTab={set}
+              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
               languages={languages}
               kbdHelperContent={
                 <>
@@ -278,11 +280,19 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
               spec={task.spec}
               testsNumber={task.testsNumber}
               setActiveTab={set}
+              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
             />
           ))
         }
         results={(currentTab) =>
-          isUser && <DynamicResults activeTab={currentTab} spec={task.spec} />
+          isUser && (
+            <DynamicResults
+              activeTab={currentTab}
+              spec={task.spec}
+              shouldForceRefetch={shouldForceRefetch}
+              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
+            />
+          )
         }
       />
     </>

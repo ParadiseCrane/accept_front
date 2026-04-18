@@ -81,10 +81,12 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
   },
 ];
 
-const Results: FC<{ spec: string; activeTab: string }> = ({
-  spec,
-  activeTab,
-}) => {
+const Results: FC<{
+  spec: string;
+  activeTab: string;
+  shouldForceRefetch: boolean;
+  setShouldForceRefetch: (value: boolean) => void;
+}> = ({ spec, activeTab, shouldForceRefetch, setShouldForceRefetch }) => {
   const url = useMemo(() => `task/attempts/${spec}`, [spec]);
   return (
     <AttemptList
@@ -102,6 +104,8 @@ const Results: FC<{ spec: string; activeTab: string }> = ({
         even: tableStyles.even,
         odd: tableStyles.odd,
       }}
+      shouldForceRefetch={shouldForceRefetch}
+      onRefetch={() => setShouldForceRefetch(false)}
     />
   );
 };
