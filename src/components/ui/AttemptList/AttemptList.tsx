@@ -6,7 +6,6 @@ import { BaseSearch, UserTaskSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
-import { useRefetch } from "@hooks/useRefetch";
 import { useUser } from "@hooks/useUser";
 import { sendRequest } from "@requests/request";
 import tableStyles from "@styles/ui/customTable.module.css";
