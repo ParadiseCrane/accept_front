@@ -37,6 +37,7 @@ export const sticky = {
   attempt: {
     ban: "Ban the attempt",
     unban: "Unban the attempt",
+    retest: "Retest",
   },
   user: {
     edit: "Edit the user",

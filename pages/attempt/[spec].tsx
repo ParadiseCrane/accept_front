@@ -10,8 +10,11 @@ import { setter } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { DefaultLayout } from "@layouts/DefaultLayout";
+import { sendRequest } from "@requests/request";
 import styles from "@styles/attempt.module.css";
+import { IconRefresh } from "@tabler/icons-react";
 import { Tabs } from "@ui/basics";
+import SingularSticky from "@ui/Sticky/SingularSticky";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import { GetServerSideProps } from "next";
@@ -76,6 +79,16 @@ function Attempt(props: { attempt: IAttempt }) {
           ) : (
             <UnbanModal attempt={attempt} />
           )}
+          <SingularSticky
+            position={{ bottom: 100, right: 20 }}
+            icon={<IconRefresh width={32} height={32} />}
+            color="yellow"
+            onClick={() => {
+              sendRequest(`/attempt-status/${attempt.spec}`, "PUT");
+            }}
+            description={locale.tip.sticky.attempt.retest}
+          />
+          ,
         </>
       )}
 
