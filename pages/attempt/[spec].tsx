@@ -17,6 +17,11 @@ import { Tabs } from "@ui/basics";
 import SingularSticky from "@ui/Sticky/SingularSticky";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
+import {
+  errorNotification,
+  newNotification,
+  successNotification,
+} from "@utils/notificationFunctions";
 import { GetServerSideProps } from "next";
 import { ReactNode, useMemo } from "react";
 
@@ -84,7 +89,28 @@ function Attempt(props: { attempt: IAttempt }) {
             icon={<IconRefresh width={32} height={32} />}
             color="yellow"
             onClick={() => {
-              sendRequest(`/attempt-status/${attempt.spec}`, "PUT");
+              const id = newNotification({
+                title: locale.loading,
+                message: locale.loading + "...",
+              });
+              sendRequest(`/attempt-status/${attempt.spec}`, "PUT").then(
+                (res) => {
+                  console.log(res);
+                  if (res.error)
+                    return errorNotification({
+                      id: id,
+                      // TODO: add locale
+                      title: "Ошибка при перетестировании.",
+                      message: res.detail["ru"],
+                    });
+                  console.log(res);
+                  successNotification({
+                    id: id,
+                    title: "Попытка отправлена на перетестирование.",
+                    message: "Обновите страницу, чтобы увидеть изменения",
+                  });
+                },
+              );
             }}
             description={locale.tip.sticky.attempt.retest}
           />
