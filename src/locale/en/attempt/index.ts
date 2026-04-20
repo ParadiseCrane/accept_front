@@ -69,4 +69,10 @@ export const attempt = {
     notHelpful: "Was not helpful",
     notifyMessage: "Thank you for the feedback!",
   },
+  retest: {
+    loading: "Sending attempt...",
+    message: "Sending for retesting...",
+    success: "Attempt sent for retesting",
+    error: "Error during retesting",
+  },
 };

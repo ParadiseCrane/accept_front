@@ -10,20 +10,15 @@ import { setter } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { DefaultLayout } from "@layouts/DefaultLayout";
-import { sendRequest } from "@requests/request";
 import styles from "@styles/attempt.module.css";
 import { IconRefresh } from "@tabler/icons-react";
 import { Tabs } from "@ui/basics";
 import SingularSticky from "@ui/Sticky/SingularSticky";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
-import {
-  errorNotification,
-  newNotification,
-  successNotification,
-} from "@utils/notificationFunctions";
+import { requestWithNotify } from "@utils/requestWithNotify";
 import { GetServerSideProps } from "next";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 
 function uuidToNumber(uuid: string): number {
   const clean = uuid.replace(/-/g, "");
@@ -35,7 +30,7 @@ function uuidToNumber(uuid: string): number {
 function Attempt(props: { attempt: IAttempt }) {
   const attempt = props.attempt;
 
-  const { locale } = useLocale();
+  const { locale, lang } = useLocale();
 
   const {
     data: canBan,
@@ -73,6 +68,16 @@ function Attempt(props: { attempt: IAttempt }) {
     [attempt, locale],
   );
 
+  const retestAction = useCallback(() => {
+    requestWithNotify(
+      `/attempt-status/${attempt.spec}`,
+      "PUT",
+      locale.attempt.retest,
+      lang,
+      (response: string) => response,
+    );
+  }, [attempt.spec, lang, locale.attempt]);
+
   return (
     <div className={styles.wrapper}>
       <Title title={`${locale.titles.attempt} ${attempt.author.login}`} />
@@ -88,30 +93,7 @@ function Attempt(props: { attempt: IAttempt }) {
             position={{ bottom: 100, right: 20 }}
             icon={<IconRefresh width={32} height={32} />}
             color="yellow"
-            onClick={() => {
-              const id = newNotification({
-                title: locale.loading,
-                message: locale.loading + "...",
-              });
-              sendRequest(`/attempt-status/${attempt.spec}`, "PUT").then(
-                (res) => {
-                  console.log(res);
-                  if (res.error)
-                    return errorNotification({
-                      id: id,
-                      // TODO: add locale
-                      title: "Ошибка при перетестировании.",
-                      message: res.detail["ru"],
-                    });
-                  console.log(res);
-                  successNotification({
-                    id: id,
-                    title: "Попытка отправлена на перетестирование.",
-                    message: "Обновите страницу, чтобы увидеть изменения",
-                  });
-                },
-              );
-            }}
+            onClick={retestAction}
             description={locale.tip.sticky.attempt.retest}
           />
           ,
