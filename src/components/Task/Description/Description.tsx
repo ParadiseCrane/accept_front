@@ -13,6 +13,7 @@ import { IconAlertCircle } from "@tabler/icons-react";
 import styles from "./description.module.css";
 import { IconUsersGroup } from "@tabler/icons-react";
 import { Tip } from "@ui/basics";
+import clsx from "clsx";
 
 const Description: FC<{
   task: ITask;
@@ -66,7 +67,7 @@ const Description: FC<{
         />
       </div>
 
-      {languagesRestrictions && (
+      {/* {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
           <IconAlertCircle color={"var(--negative)"} />
 
@@ -134,7 +135,7 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
-                    style={{ whiteSpace: "pre-line", wordSpacing: "4px" }}
+                    style={{ whiteSpace: "break-spaces" }}
                   >
                     {example.inputData}
                     <CopyButton toCopy={example.inputData} />
@@ -145,7 +146,151 @@ const Description: FC<{
                     wrap="nowrap"
                     justify="space-between"
                     align="flex-start"
-                    style={{ whiteSpace: "pre-line", wordSpacing: "4px" }}
+                    style={{ whiteSpace: "break-spaces" }}
+                  >
+                    {example.outputData}
+                    <CopyButton toCopy={example.outputData} />
+                  </Group>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </div>
+      {task.remark && (
+        <div className={styles.remarkWrapper}>
+          <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
+          <div className={styles.remark}>
+            <TipTapEditor
+              editorMode={false}
+              content={task.remark}
+              onUpdate={() => {}}
+            />
+          </div>
+        </div>
+      )} */}
+      {languagesRestrictions && (
+        <div className={styles.languagesRestrictions}>
+          <IconAlertCircle color={"var(--negative)"} />
+
+          <div className={styles.alert}>
+            {locale.task.description.languagesRestrictions}
+          </div>
+        </div>
+      )}
+      <div className={styles.formatWrapper}>
+        <div className={styles.inputFormat}>
+          <div className={styles.formatLabel}>
+            {locale.task.description.format.input}
+          </div>
+          <div className={styles.inputFormat}>
+            <TipTapEditor
+              editorMode={false}
+              content={task.inputFormat}
+              onUpdate={() => {}}
+            />
+          </div>
+        </div>
+        <div className={styles.outputFormat}>
+          <div className={styles.formatLabel}>
+            {locale.task.description.format.output}
+          </div>
+          <div className={styles.outputFormat}>
+            <TipTapEditor
+              editorMode={false}
+              content={task.outputFormat}
+              onUpdate={() => {}}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={clsx([styles.tablesWrapper, styles.mobile])}>
+        <div className={styles.examplesLabel}>
+          {locale.task.description.examples.title}
+        </div>
+        {task.examples.map((example, index) => (
+          <Table
+            key={index}
+            striped
+            verticalSpacing="md"
+            className={styles.table}
+          >
+            <tbody className={styles.tbody}>
+              <tr>
+                <td>
+                  <div className={styles.exampleHeader}>
+                    <Title order={4}>
+                      {locale.task.description.examples.input}
+                    </Title>
+                    <CopyButton toCopy={example.inputData} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className={styles.exampleData}>{example.inputData}</td>
+              </tr>
+              <tr>
+                <td>
+                  <div className={styles.exampleHeader}>
+                    <Title order={4}>
+                      {locale.task.description.examples.output}
+                    </Title>
+                    <CopyButton toCopy={example.outputData || ""} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td className={styles.exampleData}>{example.outputData}</td>
+              </tr>
+            </tbody>
+          </Table>
+        ))}
+      </div>
+      <div className={clsx([styles.tablesWrapper, styles.desktop])}>
+        <div className={styles.examplesLabel}>
+          {locale.task.description.examples.title}
+        </div>
+        <Table
+          striped
+          withColumnBorders
+          verticalSpacing="md"
+          highlightOnHover
+          className={styles.table}
+        >
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Td>
+                <Title order={4}>
+                  {locale.task.description.examples.input}
+                </Title>
+              </Table.Td>
+              <Table.Td>
+                <Title order={4}>
+                  {locale.task.description.examples.output}
+                </Title>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {task.examples.map((example, index) => (
+              <Table.Tr key={index}>
+                <Table.Td valign="top">
+                  <Group
+                    wrap="nowrap"
+                    justify="space-between"
+                    align="flex-start"
+                    style={{ whiteSpace: "break-spaces" }}
+                  >
+                    {example.inputData}
+                    <CopyButton toCopy={example.inputData} />
+                  </Group>
+                </Table.Td>
+                <Table.Td valign="top">
+                  <Group
+                    wrap="nowrap"
+                    justify="space-between"
+                    align="flex-start"
+                    style={{ whiteSpace: "break-spaces" }}
                   >
                     {example.outputData}
                     <CopyButton toCopy={example.outputData} />

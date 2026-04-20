@@ -13,7 +13,6 @@
 .title {
   display: inline-block;
   font-size: var(--font-size-huge);
-  word-break: break-all;
 }
 
 .complexity {
@@ -79,13 +78,17 @@
 }
 
 .table td {
-  width: 50%;
   font-size: var(--font-size-s) !important;
   padding: var(--spacer-xs) var(--spacer-s) !important;
   overflow-wrap: anywhere;
+
+  *:not(h4) {
+    font-family: "Red Hat Mono", monospace !important;
+  }
 }
 
 .table tr {
+  width: 70%;
   border: 1px solid #dee2e6;
 }
 
@@ -108,6 +111,24 @@
   font-family: "Red Hat Mono", monospace !important;
 }
 
+.mobile {
+  display: block;
+}
+
+.desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile {
+    display: none;
+  }
+
+  .desktop {
+    display: block;
+  }
+}
+
 @media screen and (max-width: 480px) {
   .wrapper {
     padding: var(--spacer-xs) var(--spacer-s);
@@ -128,8 +149,7 @@
     break-inside: avoid;
   }
 
-  /*
   .tbody tr {
     width: 50px;
-  } */
+  }
 }
