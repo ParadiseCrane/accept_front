@@ -53,10 +53,10 @@ const ProfileEditModal: FC<{
       locale.notify.profile.main,
       lang,
       () => "",
-      form.values,
+      { ...form.values, organizations: user.organizations },
       () => location.reload(),
     );
-  }, [locale, lang, form.values]);
+  }, [locale, lang, form.values, user]);
 
   return (
     <SimpleModal opened={opened} close={close} title={locale.profile.editModal}>

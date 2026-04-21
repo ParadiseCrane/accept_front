@@ -28,7 +28,9 @@ export interface IUser {
   shortName: string;
   groups: IGroup[];
   role: Role;
+  organizations?: string[];
 }
+
 export interface IUserContext {
   authorized: boolean;
   user: IUserOrgDisplay | undefined | null;
