@@ -33,11 +33,7 @@ const Lesson: FC<Props> = ({ lesson }) => {
         </Title>
       </div>
       <div className={styles.description}>
-        <TipTapEditor
-          editorMode={false}
-          content={lesson.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={lesson.description} />
       </div>
 
       <div className={styles.tasksWrapper}>

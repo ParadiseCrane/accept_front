@@ -15,11 +15,7 @@ const UnitMain: FC<{
         </Title>
       </Center>
       <Box ml={"xl"} mr={"xl"}>
-        <TipTapEditor
-          editorMode={false}
-          content={unit.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={unit.description} />
       </Box>
     </>
   );

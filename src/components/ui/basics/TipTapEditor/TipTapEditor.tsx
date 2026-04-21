@@ -82,17 +82,13 @@ export const TipTapEditor = ({
   editorMode,
   content,
   minHeight,
-  form,
-  name,
   onUpdate,
   onBlur,
 }: {
   editorMode: boolean;
   content: string;
   minHeight?: string;
-  form?: any;
-  name?: any;
-  onUpdate: (editor: Editor) => void;
+  onUpdate?: (editor: Editor) => void;
   onBlur?: any;
 }) => {
   const { isEditable } = useTipTapBubbleMenu();
@@ -192,7 +188,7 @@ export const TipTapEditor = ({
     content,
     editable: editorMode,
     onUpdate: () => {
-      onUpdate(editor!);
+      if (onUpdate) onUpdate(editor!);
     },
     onCreate: () => {
       editor?.registerPlugin(exitAsideOnEnter);

@@ -98,11 +98,7 @@ const ReadModal: FC<{
         {message && (
           <>
             <div>
-              <TipTapEditor
-                editorMode={false}
-                content={message.message}
-                onUpdate={() => {}}
-              />
+              <TipTapEditor editorMode={false} content={message.message} />
             </div>
           </>
         )}

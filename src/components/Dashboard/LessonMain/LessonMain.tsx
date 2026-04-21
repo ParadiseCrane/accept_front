@@ -91,11 +91,7 @@ const LessonMain: FC<{
         </Tip>
       </Center>
       <Box ml={"xl"} mr={"xl"}>
-        <TipTapEditor
-          editorMode={false}
-          content={lesson.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={lesson.description} />
       </Box>
     </>
   );

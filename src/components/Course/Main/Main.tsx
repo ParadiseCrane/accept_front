@@ -74,7 +74,6 @@ const Main: FC<Props> = ({ units, courseSpec, select, closeNavbar }) => {
               key={entity.spec}
               editorMode={false}
               content={entity.description}
-              onUpdate={() => {}}
             />
             {units.length > 0 && (
               <Contents

@@ -229,11 +229,7 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
           close={() => setOpenedHint(false)}
         >
           <div>
-            <TipTapEditor
-              editorMode={false}
-              content={task.hint.content}
-              onUpdate={() => {}}
-            />
+            <TipTapEditor editorMode={false} content={task.hint.content} />
           </div>
         </SimpleModal>
       )}

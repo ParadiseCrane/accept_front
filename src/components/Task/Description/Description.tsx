@@ -7,13 +7,14 @@ import { sendRequest } from "@requests/request";
 import { TipTapEditor } from "@ui/basics/TipTapEditor/TipTapEditor";
 import CopyButton from "@ui/CopyButton/CopyButton";
 import TagList from "@ui/TagList/TagList";
-import { FC, memo, useEffect } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 import styles from "./description.module.css";
 import { IconUsersGroup } from "@tabler/icons-react";
 import { Tip } from "@ui/basics";
 import clsx from "clsx";
+import { useScrollIntoView } from "@mantine/hooks";
 
 const Description: FC<{
   task: ITask;
@@ -22,6 +23,16 @@ const Description: FC<{
   languagesRestrictions?: boolean;
 }> = ({ task, preview, setShowHint, languagesRestrictions }) => {
   const { locale } = useLocale();
+
+  // to prevent scrolling to the second tiptap editor
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 500,
+    cancelable: true,
+  });
+
+  useEffect(() => {
+    scrollIntoView();
+  }, []);
 
   useEffect(() => {
     if (preview) return;
@@ -38,7 +49,9 @@ const Description: FC<{
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
-        <div className={styles.title}>{task.title}</div>
+        <div className={styles.title} ref={targetRef}>
+          {task.title}
+        </div>
         {task.organization === "public" && (
           <Tip label={locale.task.list.public}>
             <IconUsersGroup style={{ marginRight: "10px" }} />
@@ -60,115 +73,8 @@ const Description: FC<{
         <TagList tags={task.tags} locale={locale} />
       </div>
       <div className={styles.description}>
-        <TipTapEditor
-          editorMode={false}
-          content={task.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={task.description} />
       </div>
-
-      {/* {languagesRestrictions && (
-        <div className={styles.languagesRestrictions}>
-          <IconAlertCircle color={"var(--negative)"} />
-
-          <div className={styles.alert}>
-            {locale.task.description.languagesRestrictions}
-          </div>
-        </div>
-      )}
-      <div className={styles.formatWrapper}>
-        <div className={styles.inputFormat}>
-          <div className={styles.formatLabel}>
-            {locale.task.description.format.input}
-          </div>
-          <div className={styles.inputFormat}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.inputFormat}
-              onUpdate={() => {}}
-            />
-          </div>
-        </div>
-        <div className={styles.outputFormat}>
-          <div className={styles.formatLabel}>
-            {locale.task.description.format.output}
-          </div>
-          <div className={styles.outputFormat}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.outputFormat}
-              onUpdate={() => {}}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={styles.tablesWrapper}>
-        <div className={styles.examplesLabel}>
-          {locale.task.description.examples.title}
-        </div>
-        <Table
-          striped
-          withColumnBorders
-          verticalSpacing="md"
-          highlightOnHover
-          className={styles.table}
-        >
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Td>
-                <Title order={4}>
-                  {locale.task.description.examples.input}
-                </Title>
-              </Table.Td>
-              <Table.Td>
-                <Title order={4}>
-                  {locale.task.description.examples.output}
-                </Title>
-              </Table.Td>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {task.examples.map((example, index) => (
-              <Table.Tr key={index}>
-                <Table.Td valign="top">
-                  <Group
-                    wrap="nowrap"
-                    justify="space-between"
-                    align="flex-start"
-                    style={{ whiteSpace: "break-spaces" }}
-                  >
-                    {example.inputData}
-                    <CopyButton toCopy={example.inputData} />
-                  </Group>
-                </Table.Td>
-                <Table.Td valign="top">
-                  <Group
-                    wrap="nowrap"
-                    justify="space-between"
-                    align="flex-start"
-                    style={{ whiteSpace: "break-spaces" }}
-                  >
-                    {example.outputData}
-                    <CopyButton toCopy={example.outputData} />
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
-      </div>
-      {task.remark && (
-        <div className={styles.remarkWrapper}>
-          <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
-          <div className={styles.remark}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.remark}
-              onUpdate={() => {}}
-            />
-          </div>
-        </div>
-      )} */}
       {languagesRestrictions && (
         <div className={styles.languagesRestrictions}>
           <IconAlertCircle color={"var(--negative)"} />
@@ -184,11 +90,7 @@ const Description: FC<{
             {locale.task.description.format.input}
           </div>
           <div className={styles.inputFormat}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.inputFormat}
-              onUpdate={() => {}}
-            />
+            <TipTapEditor editorMode={false} content={task.inputFormat} />
           </div>
         </div>
         <div className={styles.outputFormat}>
@@ -196,11 +98,7 @@ const Description: FC<{
             {locale.task.description.format.output}
           </div>
           <div className={styles.outputFormat}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.outputFormat}
-              onUpdate={() => {}}
-            />
+            <TipTapEditor editorMode={false} content={task.outputFormat} />
           </div>
         </div>
       </div>
@@ -305,11 +203,7 @@ const Description: FC<{
         <div className={styles.remarkWrapper}>
           <div className={styles.remarkLabel}>{locale.task.form.remark}</div>
           <div className={styles.remark}>
-            <TipTapEditor
-              editorMode={false}
-              content={task.remark}
-              onUpdate={() => {}}
-            />
+            <TipTapEditor editorMode={false} content={task.remark} />
           </div>
         </div>
       )}

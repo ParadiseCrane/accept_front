@@ -25,7 +25,6 @@ const Preview: FC<{ form: any }> = ({ form }) => {
             <TipTapEditor
               editorMode={false}
               content={form.values.hintContent}
-              onUpdate={() => {}}
             />
           </div>
         </SimpleModal>

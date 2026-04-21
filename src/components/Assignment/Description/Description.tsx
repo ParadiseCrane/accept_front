@@ -77,11 +77,7 @@ const Description: FC<{ assignment: IAssignment }> = ({ assignment }) => {
         </div>
       </div>
       <div className={styles.description}>
-        <TipTapEditor
-          editorMode={false}
-          content={assignment.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={assignment.description} />
       </div>
 
       <div className={styles.tasksWrapper}>

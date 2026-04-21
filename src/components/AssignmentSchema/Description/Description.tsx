@@ -57,11 +57,7 @@ const Description: FC<{
         <TagList tags={assignment.tags} locale={locale} />
       </div>
       <div className={styles.description}>
-        <TipTapEditor
-          editorMode={false}
-          content={assignment.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={assignment.description} />
       </div>
       <div
         style={{

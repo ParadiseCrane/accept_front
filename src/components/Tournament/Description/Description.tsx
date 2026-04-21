@@ -99,7 +99,6 @@ const Description: FC<{
                 <TipTapEditor
                   editorMode={false}
                   content={tournament.description}
-                  onUpdate={() => {}}
                 />
               </div>
             }
@@ -126,11 +125,7 @@ const Description: FC<{
         </div>
       </div>
       <div className={styles.description}>
-        <TipTapEditor
-          editorMode={false}
-          content={tournament.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={tournament.description} />
       </div>
 
       {!loading && (

@@ -32,11 +32,7 @@ const CourseMain: FC<{
       </Center>
       <CourseInviteLink courseSpec={course.spec} />
       <Box ml={"xl"} mr={"xl"}>
-        <TipTapEditor
-          editorMode={false}
-          content={course.description}
-          onUpdate={() => {}}
-        />
+        <TipTapEditor editorMode={false} content={course.description} />
       </Box>
     </>
   );
