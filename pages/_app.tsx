@@ -40,6 +40,7 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (router.query.tab) return;
     const handleStart = () => setLoading(true);
     const handleEnd = () => setLoading(false);
     router.events.on("routeChangeStart", handleStart);

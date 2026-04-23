@@ -96,7 +96,6 @@ function Attempt(props: { attempt: IAttempt }) {
             onClick={retestAction}
             description={locale.tip.sticky.attempt.retest}
           />
-          ,
         </>
       )}
 

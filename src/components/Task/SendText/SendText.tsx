@@ -14,7 +14,7 @@ import { useAnalytics } from "@hooks/useAnalytics";
 const SendText: FC<{
   spec: string;
   testsNumber: number;
-  setActiveTab: setter<string | undefined>;
+  setActiveTab: setter<string | null>;
   setShouldForceRefetch: (value: boolean) => void;
 }> = ({ spec, testsNumber, setActiveTab, setShouldForceRefetch }) => {
   const { locale, lang } = useLocale();

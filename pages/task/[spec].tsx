@@ -27,6 +27,9 @@ import { IconEye, IconNotes, IconPencil, IconTrash } from "@tabler/icons-react";
 import { Kbd } from "@mantine/core";
 import { useRequest } from "@hooks/useRequest";
 import SendTab from "@components/Task/Send/Send";
+import { Tabs } from "@ui/basics";
+import { setter } from "@custom-types/ui/atomic";
+import UrlTabsPagesRouter from "@ui/basics/Tabs/UrlTabsPagesRouter";
 
 interface TaskRights {
   has_write_rights: boolean;
@@ -244,52 +247,74 @@ function Task(props: { task: ITask; languages: ILanguage[] }) {
         />
       )}
       {actions.length > 1 && <Sticky actions={actions} />}
-      <TaskLayout
-        key={task.spec}
-        title={`${locale.titles.task.spec} ${task.title}`}
-        description={
-          <Description
-            task={task}
-            setShowHint={setShowHint}
-            languagesRestrictions={
-              task.allowedLanguages.length > 0 ||
-              task.forbiddenLanguages.length > 0
-            }
-          />
-        }
-        send={(set) =>
-          isUser &&
-          (task.taskType.spec == 0 ? (
-            <SendTab
-              spec={task.spec}
-              setActiveTab={set}
-              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
-              languages={languages}
-              kbdHelperContent={
-                <>
-                  <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
-                </>
-              }
-            />
-          ) : (
-            <DynamicSendText
-              spec={task.spec}
-              testsNumber={task.testsNumber}
-              setActiveTab={set}
-              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
-            />
-          ))
-        }
-        results={(currentTab) =>
-          isUser && (
-            <DynamicResults
-              activeTab={currentTab}
-              spec={task.spec}
-              shouldForceRefetch={shouldForceRefetch}
-              setShouldForceRefetch={(value) => setShouldForceRefetch(value)}
-            />
-          )
-        }
+      <UrlTabsPagesRouter
+        pages={[
+          {
+            title: locale.task.description.self,
+            value: "description",
+            page: () => (
+              <Description
+                task={task}
+                setShowHint={setShowHint}
+                languagesRestrictions={
+                  task.allowedLanguages.length > 0 ||
+                  task.forbiddenLanguages.length > 0
+                }
+              />
+            ),
+          },
+          {
+            title: locale.task.send,
+            value: "send",
+            page: (_, setActiveTab) => (
+              <>
+                {isUser &&
+                  (task.taskType.spec == 0 ? (
+                    <SendTab
+                      spec={task.spec}
+                      setActiveTab={setActiveTab}
+                      setShouldForceRefetch={(value) =>
+                        setShouldForceRefetch(value)
+                      }
+                      languages={languages}
+                      kbdHelperContent={
+                        <>
+                          <Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd>
+                        </>
+                      }
+                    />
+                  ) : (
+                    <DynamicSendText
+                      spec={task.spec}
+                      testsNumber={task.testsNumber}
+                      setActiveTab={setActiveTab}
+                      setShouldForceRefetch={(value) =>
+                        setShouldForceRefetch(value)
+                      }
+                    />
+                  ))}
+              </>
+            ),
+          },
+          {
+            title: locale.task.results,
+            value: "results",
+            page: (activeTab) => (
+              <>
+                {isUser && (
+                  <DynamicResults
+                    activeTab={activeTab ?? ""}
+                    spec={task.spec}
+                    shouldForceRefetch={shouldForceRefetch}
+                    setShouldForceRefetch={(value) =>
+                      setShouldForceRefetch(value)
+                    }
+                  />
+                )}
+              </>
+            ),
+          },
+        ]}
       />
     </>
   );

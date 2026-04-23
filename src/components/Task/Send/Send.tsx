@@ -25,7 +25,7 @@ import { useAnalytics } from "@hooks/useAnalytics";
 
 const Send: FC<{
   spec: string;
-  setActiveTab: setter<string | undefined>;
+  setActiveTab: setter<string | null>;
   setShouldForceRefetch: (value: boolean) => void;
   languages: ILanguage[];
   kbdHelperContent?: ReactNode;
