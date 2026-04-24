@@ -1,6 +1,12 @@
 "use client";
 
-import { Node } from "@tiptap/core";
+import {
+  Node,
+  generateHTML,
+  generateJSON,
+  JSONContent,
+  Extensions,
+} from "@tiptap/core";
 import { MathExtension } from "@aarkue/tiptap-math-extension";
 import { useLocale } from "@hooks/useLocale";
 import { Link, RichTextEditor } from "@mantine/tiptap";
@@ -72,11 +78,46 @@ import { StylizeText } from "./Components/StyleText";
 import { ToggleCodeBlock } from "./Components/ToggleCodeBlock";
 import { InsertLatexExpression } from "./Components/InsertLatex";
 import { InsertImageAsFile, InsertImageAsUrl } from "./Components/InsertImage";
-import { GenerateImage } from "./Components/GenerateImage";
 import { BubbleMenuComponent } from "./Components/BubbleMenu";
 import { useTipTapBubbleMenu } from "@hooks/useTipTapBubbleMenu";
 import { useEffect } from "react";
 import { StylizeTextModal } from "./Components/Modals/StylizeTextModal";
+
+const trimContent = (content: string, extensions: Extensions) => {
+  const jsonFromInitialContent = generateJSON(content, extensions);
+  const trimmedJson = trimJson(jsonFromInitialContent);
+  return generateHTML(trimmedJson, extensions);
+};
+
+const trimJson = (json: JSONContent): JSONContent => {
+  if (!json.content) return json;
+
+  const content = [...json.content];
+
+  while (content.length > 0 && isNodeEmpty(content[0])) {
+    content.shift();
+  }
+
+  while (content.length > 0 && isNodeEmpty(content[content.length - 1])) {
+    content.pop();
+  }
+
+  return { ...json, content };
+};
+
+const isNodeEmpty = (node: JSONContent): boolean => {
+  if (node.type !== "paragraph") {
+    return false;
+  }
+
+  if (!node.content || node.content.length === 0) {
+    return true;
+  }
+
+  const text = node.content.map((n: JSONContent) => n.text || "").join("");
+
+  return text.trim().length === 0;
+};
 
 export const TipTapEditor = ({
   editorMode,
@@ -145,46 +186,48 @@ export const TipTapEditor = ({
 
   registerLanguages();
 
+  const extensions = [
+    CalloutExtension,
+    CalloutTitle,
+    MathExtension.configure({ evaluation: false }),
+    ImageResize,
+    Blockquote,
+    Link,
+    Bold,
+    BulletList,
+    Code,
+    CodeBlockLowlight.configure({
+      lowlight: lowlight,
+    }),
+    Color,
+    Document,
+    Dropcursor,
+    FloatingMenu,
+    Heading,
+    Highlight.configure({ multicolor: true }),
+    History,
+    Italic,
+    ListItem,
+    OrderedList,
+    Paragraph,
+    Strike,
+    Subscript,
+    Superscript,
+    Text,
+    TextAlign.configure({ types: ["heading", "paragraph"] }),
+    TextStyle,
+    Underline,
+    HardBreak,
+    Node.create({
+      name: "doc",
+      topNode: true,
+      content: "(block | topLevel)+",
+    }),
+  ];
+
   const editor = useEditor({
     immediatelyRender: false,
-    extensions: [
-      CalloutExtension,
-      CalloutTitle,
-      MathExtension.configure({ evaluation: false }),
-      ImageResize,
-      Blockquote,
-      Link,
-      Bold,
-      BulletList,
-      Code,
-      CodeBlockLowlight.configure({
-        lowlight: lowlight,
-      }),
-      Color,
-      Document,
-      Dropcursor,
-      FloatingMenu,
-      Heading,
-      Highlight.configure({ multicolor: true }),
-      History,
-      Italic,
-      ListItem,
-      OrderedList,
-      Paragraph,
-      Strike,
-      Subscript,
-      Superscript,
-      Text,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TextStyle,
-      Underline,
-      HardBreak,
-      Node.create({
-        name: "doc",
-        topNode: true,
-        content: "(block | topLevel)+",
-      }),
-    ],
+    extensions,
     content,
     editable: editorMode,
     onUpdate: () => {
@@ -204,6 +247,11 @@ export const TipTapEditor = ({
       }),
     );
   }, [isTipTapEditable]);
+
+  useEffect(() => {
+    if (!editorMode)
+      editor?.commands.setContent(trimContent(content, extensions), true);
+  }, [editor]);
 
   const outlineClass = editorMode ? "outline-tiptap" : "";
 

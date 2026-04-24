@@ -46,7 +46,6 @@ const CustomEditor: FC<{
             <TipTapEditor
               editorMode={true}
               content={form.values[name]}
-              form={form}
               onUpdate={(editor: EditorType) => {
                 const data = editor.getHTML();
                 form.setFieldValue(name, data);
