@@ -1,6 +1,6 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
-import { ActionIconGroup, Group } from "@mantine/core";
+import { ActionIconGroup, Group, Pagination } from "@mantine/core";
 import { Icon, Select } from "@ui/basics";
 import { FC, memo, useMemo } from "react";
 import {
@@ -22,7 +22,7 @@ const PageNavigation: FC<{
   handlePageChange: (_: number) => void;
 }> = ({
   onPage,
-  page,
+  page: pageProps,
   perPage,
   defaultOnPage,
   totalLength,
@@ -30,19 +30,34 @@ const PageNavigation: FC<{
   handlePageChange,
 }) => {
   const { locale } = useLocale();
+  const page = pageProps + 1;
+
+  const totalPages = useMemo(
+    () => Math.max(Math.ceil(totalLength / perPage), 1),
+    [totalLength, perPage],
+  );
+
   const lastPage = useMemo(
-    () => Math.ceil(totalLength / (perPage || totalLength || 1)) - 1,
+    () => Math.ceil(totalLength / (perPage || totalLength || 1)),
     [totalLength, perPage],
   );
 
   return (
     <div className={styles.footer}>
       <div className={styles.pagesWrapper}>
-        <div>
+        <div className={styles.total}>
           {locale.ui.table.overall} {totalLength}
         </div>
         {totalLength > 0 && (
           <div className={styles.pageNavigationWrapper}>
+            <Pagination
+              total={perPage === 0 ? 1 : totalPages}
+              value={perPage === 0 ? 1 : page}
+              disabled={perPage === 0}
+              onChange={(page) => {
+                handlePageChange(Math.min(page - 1, lastPage));
+              }}
+            />
             <div className={styles.perPageWrapper}>
               <div className={styles.perPage}>
                 {locale.ui.table.perPage + ":"}{" "}
@@ -64,50 +79,6 @@ const PageNavigation: FC<{
                 onChange={(value) => handlePerPageChange(Number(value))}
               />
             </div>
-            <Group gap="xs">
-              <ActionIconGroup>
-                <Icon
-                  color="gray"
-                  size="xs"
-                  disabled={page == 0}
-                  onClick={() => handlePageChange(0)}
-                >
-                  <IconArrowNarrowLeft />
-                </Icon>
-                <Icon
-                  color="gray"
-                  disabled={page == 0}
-                  size="xs"
-                  onClick={() => handlePageChange(Math.max(page - 1, 0))}
-                >
-                  <IconChevronLeft />
-                </Icon>
-              </ActionIconGroup>
-              <div>
-                {page * perPage + 1} -{" "}
-                {perPage
-                  ? Math.min((page + 1) * perPage, totalLength)
-                  : totalLength}
-              </div>
-              <ActionIconGroup>
-                <Icon
-                  color="gray"
-                  size="xs"
-                  disabled={page == lastPage}
-                  onClick={() => handlePageChange(Math.min(page + 1, lastPage))}
-                >
-                  <IconChevronRight />
-                </Icon>
-                <Icon
-                  color="gray"
-                  size="xs"
-                  disabled={page == lastPage}
-                  onClick={() => handlePageChange(lastPage)}
-                >
-                  <IconArrowNarrowRight />
-                </Icon>
-              </ActionIconGroup>
-            </Group>
           </div>
         )}
       </div>
