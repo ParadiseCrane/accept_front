@@ -19,6 +19,8 @@ import {
   errorNotification,
   newNotification,
 } from "@utils/notificationFunctions";
+import { NotificationPreview } from "@components/Notification/Preview/NotificationPreview";
+import { IListMessage } from "@custom-types/ui/IListMessage";
 
 const CreateNotificationCourse: FC<{
   spec: string;
@@ -141,6 +143,17 @@ const CreateNotificationCourse: FC<{
     fetchGroups();
   }, [fetchGroups]);
 
+  const generatePreviewMessage = (): IListMessage => {
+    return {
+      spec: "",
+      title: form.values.notificationTitle,
+      author: user?.login ?? "",
+      subject: form.values.notificationShortDescription,
+      message: form.values.notificationDescription,
+      date: new Date(Date.now()),
+    };
+  };
+
   if (!users || !groups || loading) {
     return (
       <div style={{ position: "relative", height: "100%" }}>
@@ -225,6 +238,7 @@ const CreateNotificationCourse: FC<{
         >
           {locale.create}
         </Button>
+        <NotificationPreview message={generatePreviewMessage()} />
       </Group>
     </>
   );

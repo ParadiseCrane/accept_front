@@ -9,6 +9,8 @@ import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback } from "react";
 
 import styles from "./createNotification.module.css";
+import { IListMessage } from "@custom-types/ui/IListMessage";
+import { NotificationPreview } from "@components/Notification/Preview/NotificationPreview";
 
 const CreateNotification: FC<{
   spec: string;
@@ -25,36 +27,55 @@ const CreateNotification: FC<{
     },
     validate: {
       notificationTitle: (value) =>
-        value.length == 0 ? locale.notification.form.validate.title : null,
+        value.length < 5 ? locale.notification.form.validate.title : null,
 
-      notificationShortDescription: () => null,
-      notificationDescription: () => null,
+      notificationShortDescription: (value) =>
+        value.length == 0
+          ? locale.notification.form.validate.shortDescription
+          : null,
+      notificationDescription: (value) =>
+        value.length < 20
+          ? locale.notification.form.validate.description
+          : null,
     },
     validateInputOnBlur: true,
   });
 
   const handleSubmit = useCallback(() => {
-    const notification: INewNotification = {
+    if (!form.validate().hasErrors) {
+      const notification: INewNotification = {
+        spec: "",
+        title: form.values.notificationTitle,
+        shortDescription: form.values.notificationShortDescription,
+        description: form.values.notificationDescription,
+        logins: [],
+        groups: [],
+        roles: [],
+        author: user?.login || "",
+        broadcast: false,
+      };
+
+      requestWithNotify<INewNotification, string>(
+        `${type}/add-notification/${spec}`,
+        "POST",
+        locale.notify.notification.create,
+        lang,
+        (_: string) => "",
+        notification,
+      );
+    }
+  }, [type, spec, form.values, user?.login, locale, lang]);
+
+  const generatePreviewMessage = (): IListMessage => {
+    return {
       spec: "",
       title: form.values.notificationTitle,
-      shortDescription: form.values.notificationShortDescription,
-      description: form.values.notificationDescription,
-      logins: [],
-      groups: [],
-      roles: [],
-      author: user?.login || "",
-      broadcast: false,
+      author: user?.login ?? "",
+      subject: form.values.notificationShortDescription,
+      message: form.values.notificationDescription,
+      date: new Date(Date.now()),
     };
-
-    requestWithNotify<INewNotification, string>(
-      `${type}/add-notification/${spec}`,
-      "POST",
-      locale.notify.notification.create,
-      lang,
-      (_: string) => "",
-      notification,
-    );
-  }, [type, spec, form.values, user?.login, locale, lang]);
+  };
 
   return (
     <>
@@ -79,9 +100,11 @@ const CreateNotification: FC<{
               ))}
             </div>
           }
+          required
           {...form.getInputProps("notificationShortDescription")}
         />
         <CustomEditor
+          required
           helperContent={
             <div>
               {locale.helpers.notification.description.map((p, idx) => (
@@ -101,6 +124,7 @@ const CreateNotification: FC<{
         >
           {locale.create}
         </Button>
+        <NotificationPreview message={generatePreviewMessage()} />
       </Group>
     </>
   );

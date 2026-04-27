@@ -17,6 +17,8 @@ import DescriptionInfo from "./DescriptionInfo";
 import GroupsRoles from "./GroupsRoles";
 import MainInfo from "./MainInfo";
 import Users from "./Users";
+import { IListMessage } from "@custom-types/ui/IListMessage";
+import { NotificationPreview } from "../Preview/NotificationPreview";
 
 const stepFields = [
   ["title", "author"],
@@ -103,6 +105,17 @@ const Form: FC<{
     );
   }, [form, locale, lang]);
 
+  const generatePreviewMessage = (): IListMessage => {
+    return {
+      spec: "",
+      title: form.values.title,
+      author: form.values.author,
+      subject: form.values.shortDescription,
+      message: form.values.description,
+      date: new Date(Date.now()),
+    };
+  };
+
   return (
     <>
       <Stepper
@@ -119,6 +132,9 @@ const Form: FC<{
         ]}
         labels={locale.notification.form.steps.labels}
         descriptions={locale.notification.form.steps.descriptions}
+        additionalButton={
+          <NotificationPreview message={generatePreviewMessage()} />
+        }
       />
     </>
   );

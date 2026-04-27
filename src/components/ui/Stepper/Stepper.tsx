@@ -23,6 +23,7 @@ const Stepper: FC<{
   initialStep?: number;
   noDefault?: boolean;
   shrink?: boolean;
+  additionalButton?: ReactNode;
 }> = ({
   form,
   stepFields,
@@ -38,6 +39,7 @@ const Stepper: FC<{
   initialStep,
   noDefault,
   shrink,
+  additionalButton,
 }) => {
   const { locale } = useLocale();
   const LAST_PAGE = pages.length - 1;
@@ -151,6 +153,11 @@ const Stepper: FC<{
         >
           {currentStep === LAST_PAGE ? buttonLabel : locale.form.next}
         </Button>
+        {additionalButton && currentStep === LAST_PAGE ? (
+          additionalButton
+        ) : (
+          <></>
+        )}
       </Center>
     </>
   );

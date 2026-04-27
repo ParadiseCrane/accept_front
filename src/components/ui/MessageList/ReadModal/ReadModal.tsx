@@ -16,7 +16,16 @@ const ReadModal: FC<{
   notLoading?: boolean;
   close: (_: string[]) => void;
   loading: boolean;
-}> = ({ opened, messages, defaultSelected, notLoading, close, loading }) => {
+  previewMode?: boolean;
+}> = ({
+  opened,
+  messages,
+  defaultSelected,
+  notLoading,
+  close,
+  loading,
+  previewMode = false,
+}) => {
   const { locale } = useLocale();
   const [current, setCurrent] = useState(defaultSelected ? defaultSelected : 0);
 
@@ -74,14 +83,22 @@ const ReadModal: FC<{
               <div className={styles.wrapper}>
                 <div className={styles.title}>
                   {message.title}
-                  <span className={styles.paging}>
-                    {current + 1}/{messages.length}
-                  </span>
+                  {previewMode || (
+                    <span className={styles.paging}>
+                      {current + 1}/{messages.length}
+                    </span>
+                  )}
                 </div>
                 <div className={styles.author}>
                   {locale.notification.form.author}: {message.author}
                 </div>
-                <div className={styles.date}>{getLocalDate(message.date)}</div>
+                <div className={styles.date}>
+                  {previewMode
+                    ? new Date(
+                        new Date(message.date).getTime(),
+                      ).toLocaleString()
+                    : getLocalDate(message.date)}
+                </div>
               </div>
             ) : (
               <div className={styles.seeProfileWrapper}>
@@ -92,7 +109,7 @@ const ReadModal: FC<{
             )}
           </>
         }
-        withCloseButton={false}
+        withCloseButton={previewMode}
       >
         <LoadingOverlay visible={!notLoading && loading} />
         {message && (
@@ -102,18 +119,20 @@ const ReadModal: FC<{
             </div>
           </>
         )}
-        <Group align="center" mt="xl" pb="md">
-          {!(current == 0) && (
-            <Button variant="light" onClick={prevOne}>
-              {locale.form.back}
-            </Button>
-          )}
-          {!(current >= messages.length - 1) && (
-            <Button onClick={nextOne} variant="light">
-              {locale.form.next}
-            </Button>
-          )}
-        </Group>
+        {previewMode || (
+          <Group align="center" mt="xl" pb="md">
+            {!(current == 0) && (
+              <Button variant="light" onClick={prevOne}>
+                {locale.form.back}
+              </Button>
+            )}
+            {!(current >= messages.length - 1) && (
+              <Button onClick={nextOne} variant="light">
+                {locale.form.next}
+              </Button>
+            )}
+          </Group>
+        )}
       </Modal>
     </div>
   );
