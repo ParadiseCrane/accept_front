@@ -8,9 +8,11 @@ import { getLocalDate } from "@utils/datetime";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import styles from "./readModal.module.css";
+import { sendRequest } from "@requests/request";
 
 const ReadModal: FC<{
   opened: boolean;
+  onOpen?: () => void;
   messages: IListMessage[];
   defaultSelected?: number;
   notLoading?: boolean;
@@ -18,6 +20,7 @@ const ReadModal: FC<{
   loading: boolean;
   previewMode?: boolean;
 }> = ({
+  onOpen,
   opened,
   messages,
   defaultSelected,
@@ -62,6 +65,14 @@ const ReadModal: FC<{
       return [];
     });
   }, [close]);
+
+  useEffect(() => {
+    if (previewMode && message?.spec) {
+      sendRequest<string[], string>("notification/viewed", "POST", [
+        message.spec,
+      ]);
+    }
+  }, [previewMode, message?.spec]);
 
   return (
     <div>

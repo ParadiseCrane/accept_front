@@ -133,7 +133,10 @@ const Form: FC<{
         labels={locale.notification.form.steps.labels}
         descriptions={locale.notification.form.steps.descriptions}
         additionalButton={
-          <NotificationPreview message={generatePreviewMessage()} />
+          <NotificationPreview
+            disabled={!form.isValid()}
+            message={generatePreviewMessage()}
+          />
         }
       />
     </>

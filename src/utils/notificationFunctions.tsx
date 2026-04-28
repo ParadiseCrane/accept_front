@@ -1,5 +1,9 @@
 import { defaultClassNames } from "@constants/NotificationClassNames";
-import { showNotification, updateNotification } from "@mantine/notifications";
+import {
+  showNotification,
+  updateNotification,
+  hideNotification,
+} from "@mantine/notifications";
 import {
   IconAlertTriangle,
   IconCheck,

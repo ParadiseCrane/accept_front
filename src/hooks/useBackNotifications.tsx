@@ -21,6 +21,8 @@ import { useLocale } from "./useLocale";
 import { useLongPolling } from "./useLongPolling";
 import { useUser } from "./useUser";
 import { LONG_POLLING_REFETCH_INTERVAL } from "@constants/Limits";
+import ReadModal from "@ui/MessageList/ReadModal/ReadModal";
+import { IListMessage } from "@custom-types/ui/IListMessage";
 
 interface INotificationContext {
   unviewed: number;
@@ -66,6 +68,22 @@ export const BackNotificationsProvider: FC<{
                     id,
                     title: notification.title,
                     message: notification.shortDescription,
+                    onClick: (e: any) => {
+                      const isCloseButton = (e.target as HTMLElement).closest(
+                        "button",
+                      );
+                      if (isCloseButton) {
+                        return;
+                      }
+                      setModalMessages([
+                        {
+                          ...notification,
+                          message: notification.description,
+                          subject: notification.shortDescription,
+                        },
+                      ]);
+                      setModalOpened(true);
+                    },
                   });
                 });
               }
@@ -118,8 +136,18 @@ export const BackNotificationsProvider: FC<{
     [unviewed, sendViewed, fetching, fetchNotifications],
   );
 
+  const [modalOpened, setModalOpened] = useState(false);
+  const [modalMessages, setModalMessages] = useState<IListMessage[]>();
+
   return (
     <BackNotificationsContext.Provider value={value}>
+      <ReadModal
+        opened={modalOpened}
+        messages={modalMessages ?? []}
+        close={() => setModalOpened(false)}
+        loading={false}
+        previewMode
+      />
       {children}
     </BackNotificationsContext.Provider>
   );

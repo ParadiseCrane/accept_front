@@ -124,7 +124,10 @@ const CreateNotification: FC<{
         >
           {locale.create}
         </Button>
-        <NotificationPreview message={generatePreviewMessage()} />
+        <NotificationPreview
+          disabled={!form.isValid()}
+          message={generatePreviewMessage()}
+        />
       </Group>
     </>
   );
