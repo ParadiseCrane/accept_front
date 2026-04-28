@@ -14,4 +14,5 @@ export const assignment = {
     actual: "Actual",
     end: "To the end",
   },
+  userBanned: "User is banned",
 };

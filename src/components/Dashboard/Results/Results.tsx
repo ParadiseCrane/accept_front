@@ -7,7 +7,7 @@ import {
 import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import { sendRequest } from "@requests/request";
-import { Tip } from "@ui/basics";
+import { Helper, Tip } from "@ui/basics";
 import ResultsTable, { IData, ILabel } from "@ui/ResultsTable/ResultsTable";
 import { letterFromIndex } from "@utils/letterFromIndex";
 import Link from "next/link";
@@ -15,6 +15,8 @@ import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import styles from "./results.module.css";
 import { LoadingOverlay, SegmentedControl } from "@mantine/core";
+import { IconHelpCircle } from "@tabler/icons-react";
+import clsx from "clsx";
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined
@@ -231,17 +233,28 @@ const Results: FC<{
                   {result.participant.label}
                 </Link>
               ) : (
-                <Tip label={result.participant.identifier} key={index}>
-                  <Link
-                    href={`/profile/${result.participant.identifier}`}
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                    }}
-                  >
-                    {result.participant.label}
-                  </Link>
-                </Tip>
+                <div
+                  className={clsx(
+                    result.participant.banned && styles.profileWrapper,
+                  )}
+                >
+                  <Tip label={result.participant.identifier} key={index}>
+                    <Link
+                      href={`/profile/${result.participant.identifier}`}
+                      style={{
+                        textDecoration: "none",
+                        color: result.participant.banned ? "red" : "inherit",
+                      }}
+                    >
+                      {result.participant.label}
+                    </Link>
+                  </Tip>
+                  {result.participant.banned && (
+                    <Helper
+                      dropdownContent={locale.dashboard.assignment.userBanned}
+                    />
+                  )}
+                </div>
               ),
             )}
             data={table_data}

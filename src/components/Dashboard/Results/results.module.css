@@ -17,3 +17,9 @@
   flex-direction: row;
   gap: var(--spacer-m);
 }
+
+.profileWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}

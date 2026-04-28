@@ -1,5 +1,5 @@
-import { IVerdict } from './atomic';
-import { ITaskBaseInfo } from './ITask';
+import { IVerdict } from "./atomic";
+import { ITaskBaseInfo } from "./ITask";
 
 export interface IResultPayload {
   spec: string;
@@ -23,6 +23,7 @@ export interface IResult {
 export interface IParticipantDisplay {
   identifier: string;
   label: string;
+  banned: boolean;
 }
 
 export interface IParticipantResult {
