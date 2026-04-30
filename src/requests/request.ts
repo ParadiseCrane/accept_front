@@ -25,59 +25,97 @@ const processServerError = (e: any) => {
   };
 };
 
+// Хранилище активных промисов для предотвращения дублирования запросов в один момент времени
+const inFlightRequests = new Map<string, Promise<any>>();
+
+/**
+ * Генерирует уникальный ключ для запроса.
+ * Используется для кэширования и дедупликации.
+ */
+const generateRequestKey = (
+  path: string,
+  method: string,
+  body?: any,
+): string => {
+  const bodyString = body ? JSON.stringify(body) : "";
+  return `${method}:${path}:${bodyString}`;
+};
+
 export const sendRequest = <ISend, IReceive>(
   path: string,
-  method: availableMethods,
+  method: availableMethods = "GET",
   body?: ISend extends object ? ISend : object,
-  revalidate?: number, // milliseconds
+  revalidate?: number, // в миллисекундах
 ): Promise<IResponse<IReceive>> => {
+  const key = generateRequestKey(path, method, body);
+
+  // 1. ПРОВЕРКА КЭША (Если данные уже есть в хранилище и не протухли)
   if (revalidate) {
-    const data = CheckStorage(path + JSON.stringify(body));
-    if (data) {
-      return Promise.resolve(data as IResponse<IReceive>);
+    const cachedData = CheckStorage(key);
+    if (cachedData) {
+      return Promise.resolve(cachedData as IResponse<IReceive>);
     }
   }
 
-  let options: any = {
-    credentials: "include",
-    method,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-    },
-  };
-  if (body instanceof FormData) {
-    delete options.headers["Content-Type"]; // Let fetch set correct boundary
-    options.body = body;
-  } else if (body) {
-    options.body = JSON.stringify(body);
+  // 2. ДЕДУПЛИКАЦИЯ (Если такой запрос уже выполняется прямо сейчас)
+  if (inFlightRequests.has(key)) {
+    return inFlightRequests.get(key)!;
   }
 
-  return fetch(withPrefix(path), options)
-    .then((res: any) =>
-      res.status === 200
-        ? res.json().then((res: any) => ({
-            error: false,
-            detail: res?.detail,
-            response: res as IReceive,
-          }))
-        : res.json().then((res: any) => ({
-            error: true,
-            detail: res?.detail,
-            response: {},
-          })),
-    )
-    .then((res) => {
-      revalidate
-        ? SaveInStorage(path + JSON.stringify(body), res, revalidate)
-        : null;
-      return res as unknown as IResponse<IReceive>;
-    })
-    .catch((e) => {
+  // 3. СОЗДАНИЕ НОВОГО ЗАПРОСА
+  const requestPromise = (async (): Promise<IResponse<IReceive>> => {
+    try {
+      let options: RequestInit = {
+        credentials: "include",
+        method,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      };
+
+      if (body instanceof FormData) {
+        // @ts-ignore
+        delete options.headers["Content-Type"];
+        options.body = body;
+      } else if (body) {
+        options.body = JSON.stringify(body);
+      }
+
+      const res = await fetch(withPrefix(path), options);
+      const isOk = res.status === 200;
+
+      // Читаем json один раз
+      const json = await res.json();
+
+      const result: IResponse<IReceive> = {
+        error: !isOk,
+        detail: json?.detail,
+        response: isOk ? (json as IReceive) : ({} as IReceive),
+      };
+
+      // Если запрос успешен и нужен кэш — сохраняем
+      if (!result.error && revalidate) {
+        SaveInStorage(key, result, revalidate);
+      }
+
+      return result;
+    } catch (e) {
+      // Обработка системных ошибок (сеть, CORS и т.д.)
       return {
-        response: {},
+        response: {} as IReceive,
         ...processServerError(e),
       } as IResponse<IReceive>;
-    });
+    } finally {
+      // ОБЯЗАТЕЛЬНО: удаляем промис из активных по завершении (успех или провал)
+      // чтобы последующие вызовы могли инициировать новый запрос
+      inFlightRequests.delete(key);
+    }
+  })();
+
+  // Регистрируем текущий промис в Map
+  inFlightRequests.set(key, requestPromise);
+
+  return requestPromise;
 };
 
 export const isSuccessful = <ISend>(
