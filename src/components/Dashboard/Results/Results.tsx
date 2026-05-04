@@ -56,10 +56,31 @@ const Results: FC<{
   const { data, loading, refetch } = useRequest<
     { toDate?: Date; group_spec?: string },
     IActivityResults
-  >(url, "POST", {
-    toDate: innerToDate,
-    group_spec: groupSpec,
-  });
+  >(
+    url,
+    "POST",
+    {
+      toDate: innerToDate,
+      group_spec: groupSpec,
+    },
+    (data) => ({
+      ...data,
+      results: data.results
+        .map((result) => {
+          if (result.participant.banned) {
+            return {
+              ...result,
+              best: Array(result.best.length).fill(null),
+              score: 0,
+              place: 0,
+              totalTime: 0,
+            };
+          }
+          return result;
+        })
+        .sort((a, b) => +a.participant.banned - +b.participant.banned),
+    }),
+  );
 
   useEffect(() => {
     if (!loading) refetch(true);
