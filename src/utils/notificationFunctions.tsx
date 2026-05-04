@@ -1,9 +1,8 @@
-import { defaultClassNames } from "@constants/NotificationClassNames";
 import {
-  showNotification,
-  updateNotification,
-  hideNotification,
-} from "@mantine/notifications";
+  defaultClassNames,
+  defaultClassNamesInfoNotification,
+} from "@constants/NotificationClassNames";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import {
   IconAlertTriangle,
   IconCheck,
@@ -54,7 +53,9 @@ export const infoNotification = (params: any): void => {
   updateNotification({
     color: "blue",
     icon: <IconInfoCircle width={24} height={24} />,
-    classNames: defaultClassNames,
+    classNames: params.backNotification
+      ? defaultClassNamesInfoNotification
+      : defaultClassNames,
     loading: false,
     withCloseButton: true,
     radius,

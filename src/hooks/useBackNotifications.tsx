@@ -66,6 +66,7 @@ export const BackNotificationsProvider: FC<{
                   const id = newNotification({});
                   infoNotification({
                     id,
+                    backNotification: true,
                     title: notification.title,
                     message: notification.shortDescription,
                     onClick: (e: any) => {

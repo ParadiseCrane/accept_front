@@ -3,7 +3,7 @@
 import { IListMessage } from "@custom-types/ui/IListMessage";
 import { useLocale } from "@hooks/useLocale";
 import { IconEye } from "@tabler/icons-react";
-import { Button, Helper } from "@ui/basics";
+import { Button, Helper, Tip } from "@ui/basics";
 import ReadModal from "@ui/MessageList/ReadModal/ReadModal";
 import { FC, useState } from "react";
 import styles from "./NotificationPreview.module.css";
@@ -28,6 +28,7 @@ export const NotificationPreview: FC<Props> = ({
     const id = newNotification({});
     infoNotification({
       id,
+      backNotification: true,
       title: message.title,
       message: message.subject,
       onClick: (e: any) => {
@@ -43,11 +44,16 @@ export const NotificationPreview: FC<Props> = ({
   return (
     <>
       <div className={styles.wrapper}>
-        <Button onClick={displayNotification} disabled={disabled}>
-          <IconEye size={20} style={{ marginRight: "4px" }} />
-          {locale.notification.form.preview}
-        </Button>
-        <Helper dropdownContent={<>{locale.notification.form.previewHint}</>} />
+        <Tip label={locale.notification.form.previewHint}>
+          <Button
+            onClick={displayNotification}
+            disabled={disabled}
+            variant="outline"
+          >
+            <IconEye size={20} style={{ marginRight: "4px" }} />
+            {locale.notification.form.preview}
+          </Button>
+        </Tip>
       </div>
       <ReadModal
         opened={openedModal}
