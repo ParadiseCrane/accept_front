@@ -280,7 +280,7 @@ function AssignmentList() {
           odd: tableStyles.odd,
         }}
         defaultOnPage={10}
-        onPage={[5, 10]}
+        onPage={[10, 20]}
         total={total}
         empty={<>{locale.ui.table.emptyMessage}</>}
         isEmpty={data?.assignment_schemas.length == 0}

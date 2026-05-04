@@ -193,7 +193,7 @@ const AttemptList: FC<{
               }
         }
         defaultOnPage={defaultOnPage}
-        onPage={[5, defaultOnPage]}
+        onPage={[10, 20]}
       />
     </div>
   );

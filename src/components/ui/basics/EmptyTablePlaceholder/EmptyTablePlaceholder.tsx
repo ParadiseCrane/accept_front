@@ -96,7 +96,7 @@ const EmptyTablePlaceholder: FC<{ component: ReactNode }> = ({ component }) => {
           }}
           noDefault={true}
           defaultOnPage={defaultOnPage}
-          onPage={[5, defaultOnPage]}
+          onPage={[10, 20]}
           total={numOfRows}
           empty={<>{locale.ui.table.emptyMessage}</>}
           isEmpty={false}

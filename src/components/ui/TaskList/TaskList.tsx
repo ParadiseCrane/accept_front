@@ -198,7 +198,7 @@ const TaskList: FC<{
         isEmpty={data?.tasks.length == 0}
         nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
         defaultOnPage={defaultOnPage}
-        onPage={[5, defaultOnPage]}
+        onPage={[10, 20]}
         total={total}
         loading={loading || columns.length === 0}
         setSearchParams={setSearchParams}

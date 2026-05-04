@@ -250,7 +250,7 @@ const CourseList: FC<{
         }}
         noDefault
         defaultOnPage={defaultOnPage}
-        onPage={[5, defaultOnPage]}
+        onPage={[10, 20]}
         total={total}
         empty={<>{locale.ui.table.emptyMessage}</>}
         isEmpty={data?.length == 0}

@@ -453,7 +453,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
             odd: tableStyles.odd,
           }}
           defaultOnPage={10}
-          onPage={[5, 10]}
+          onPage={[10, 20]}
           noDefault
           total={total}
           loading={loading || width === 0}

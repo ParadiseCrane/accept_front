@@ -1,14 +1,8 @@
 "use client";
 import { useLocale } from "@hooks/useLocale";
-import { ActionIconGroup, Group, Pagination } from "@mantine/core";
+import { Pagination } from "@mantine/core";
 import { Icon, Select } from "@ui/basics";
 import { FC, memo, useMemo } from "react";
-import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconChevronLeft,
-  IconChevronRight,
-} from "@tabler/icons-react";
 
 import styles from "./table.module.css";
 
@@ -31,6 +25,7 @@ const PageNavigation: FC<{
 }) => {
   const { locale } = useLocale();
   const page = pageProps + 1;
+  const displayPagination = totalLength > 0 && totalLength > onPage[0];
 
   const totalPages = useMemo(
     () => Math.max(Math.ceil(totalLength / perPage), 1),
@@ -48,7 +43,7 @@ const PageNavigation: FC<{
         <div className={styles.total}>
           {locale.ui.table.overall} {totalLength}
         </div>
-        {totalLength > 0 && (
+        {displayPagination && (
           <div className={styles.pageNavigationWrapper}>
             <Pagination
               total={perPage === 0 ? 1 : totalPages}

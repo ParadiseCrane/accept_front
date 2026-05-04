@@ -151,7 +151,7 @@ const GroupsList: FC<{
         }
         noDefault={noDefault}
         defaultOnPage={defaultOnPage}
-        onPage={[5, defaultOnPage]}
+        onPage={[10, 20]}
         total={total}
         empty={empty || <>{locale.ui.table.emptyMessage}</>}
         isEmpty={data?.length == 0}
