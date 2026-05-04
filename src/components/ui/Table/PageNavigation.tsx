@@ -2,9 +2,10 @@
 import { useLocale } from "@hooks/useLocale";
 import { Pagination } from "@mantine/core";
 import { Icon, Select } from "@ui/basics";
-import { FC, memo, useMemo } from "react";
+import { FC, memo, useMemo, useState } from "react";
 
 import styles from "./table.module.css";
+import { useDebouncedCallback } from "@mantine/hooks";
 
 const PageNavigation: FC<{
   onPage: number[];
@@ -24,8 +25,12 @@ const PageNavigation: FC<{
   handlePageChange,
 }) => {
   const { locale } = useLocale();
-  const page = pageProps + 1;
+  const [currentPage, setCurrentPage] = useState(pageProps + 1);
   const displayPagination = totalLength > 0 && totalLength > onPage[0];
+
+  const debouncedCallback = useDebouncedCallback((page) => {
+    handlePageChange(Math.min(page - 1, lastPage));
+  }, 500);
 
   const totalPages = useMemo(
     () => Math.max(Math.ceil(totalLength / perPage), 1),
@@ -47,10 +52,11 @@ const PageNavigation: FC<{
           <div className={styles.pageNavigationWrapper}>
             <Pagination
               total={perPage === 0 ? 1 : totalPages}
-              value={perPage === 0 ? 1 : page}
+              value={perPage === 0 ? 1 : currentPage}
               disabled={perPage === 0}
               onChange={(page) => {
-                handlePageChange(Math.min(page - 1, lastPage));
+                setCurrentPage(page);
+                debouncedCallback(page);
               }}
             />
             <div className={styles.perPageWrapper}>

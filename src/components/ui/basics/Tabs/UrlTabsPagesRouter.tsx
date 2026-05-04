@@ -31,8 +31,12 @@ const UrlTabsPagesRouter: FC<Props> = ({
       if (searchParams) {
         const tabValue =
           searchParams.get("tab")?.length === 0 ? defaultPage : tab;
+        // const query = { tab: tabValue };
         router.replace(
-          { pathname: `${pathname}`, query: { tab: tabValue } },
+          {
+            pathname: `${pathname}`,
+            query: { ...router.query, tab: tabValue },
+          },
           undefined,
           {
             shallow: true,
@@ -45,7 +49,7 @@ const UrlTabsPagesRouter: FC<Props> = ({
   );
 
   useEffect(() => {
-    if (searchParams && searchParams.size === 0) {
+    if (searchParams && !searchParams.has("tab")) {
       changeParams(defaultPage);
     }
   }, [searchParams]);
