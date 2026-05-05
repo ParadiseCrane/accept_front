@@ -5,8 +5,7 @@ import {
   IResultPayload,
 } from "@custom-types/data/IResults";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
-import { sendRequest } from "@requests/request";
+import { sendRequest, sendTanstackRequest } from "@requests/request";
 import { Helper, Tip } from "@ui/basics";
 import ResultsTable, { IData, ILabel } from "@ui/ResultsTable/ResultsTable";
 import { letterFromIndex } from "@utils/letterFromIndex";
@@ -17,6 +16,7 @@ import styles from "./results.module.css";
 import { LoadingOverlay, SegmentedControl } from "@mantine/core";
 import { IconHelpCircle } from "@tabler/icons-react";
 import clsx from "clsx";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const getScoreColor = (score: number | undefined) => {
   return score === undefined
@@ -53,7 +53,7 @@ const Results: FC<{
     [fetchDate, endDate],
   );
 
-  const { data, loading, refetch } = useRequest<
+  const { data, loading } = useTanstackRequest<
     { toDate?: Date; group_spec?: string },
     IActivityResults
   >(
@@ -80,15 +80,10 @@ const Results: FC<{
         })
         .sort((a, b) => +a.participant.banned - +b.participant.banned),
     }),
+    undefined,
+    undefined,
+    true,
   );
-
-  useEffect(() => {
-    if (!loading) refetch(true);
-  }, [fetchDate]);
-
-  useEffect(() => {
-    if (!loading && groupSpec) refetch(true);
-  }, [groupSpec]);
 
   const resultComponent = useCallback(
     (item: IResult, index: number) => (
@@ -116,7 +111,7 @@ const Results: FC<{
       if (!data || !full) return async () => [] as ILabel[];
       const task = data?.tasks[task_index];
       return async () =>
-        await sendRequest<IResultPayload, IResult[]>(
+        await sendTanstackRequest<IResultPayload, IResult[]>(
           `results/${type}`,
           "POST",
           {
@@ -125,7 +120,7 @@ const Results: FC<{
             task: task.spec,
             toDate: innerToDate,
           },
-          60 * 1000,
+          true,
         ).then((res) => {
           const result = res.error
             ? ([] as ILabel[])
@@ -220,7 +215,7 @@ const Results: FC<{
       {!loading ? (
         isTableReady ? (
           <ResultsTable
-            refetch={refetch}
+            refetch={() => {}}
             columns={[
               ...data.tasks.map((task, index) => (
                 <Link

@@ -24,6 +24,8 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { theme } from "@constants/Theme";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import Head from "next/head";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@requests/request";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -59,32 +61,34 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <MantineProvider theme={theme}>
-        <DatesProvider settings={{ locale: "ru" }}>
-          <WidthProvider>
-            <LocaleProvider>
-              <UserProvider>
-                <TipTapBubbleMenuProvider>
-                  <Notifications
-                    position="bottom-left"
-                    zIndex={9999}
-                    limit={5}
-                    autoClose={40000}
-                  />
-                  <BackNotificationsProvider>
-                    <div
-                      className={`${styles.spinner} ${
-                        loading ? styles.active : ""
-                      }`}
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider theme={theme}>
+          <DatesProvider settings={{ locale: "ru" }}>
+            <WidthProvider>
+              <LocaleProvider>
+                <UserProvider>
+                  <TipTapBubbleMenuProvider>
+                    <Notifications
+                      position="bottom-left"
+                      zIndex={9999}
+                      limit={5}
+                      autoClose={40000}
                     />
-                    {getLayout(<Component {...pageProps} />)}
-                  </BackNotificationsProvider>
-                </TipTapBubbleMenuProvider>
-              </UserProvider>
-            </LocaleProvider>
-          </WidthProvider>
-        </DatesProvider>
-      </MantineProvider>
+                    <BackNotificationsProvider>
+                      <div
+                        className={`${styles.spinner} ${
+                          loading ? styles.active : ""
+                        }`}
+                      />
+                      {getLayout(<Component {...pageProps} />)}
+                    </BackNotificationsProvider>
+                  </TipTapBubbleMenuProvider>
+                </UserProvider>
+              </LocaleProvider>
+            </WidthProvider>
+          </DatesProvider>
+        </MantineProvider>
+      </QueryClientProvider>
     </>
   );
 }
