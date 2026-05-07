@@ -22,6 +22,7 @@ import type { Metadata, Viewport } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import Script from "next/script";
+import QueryProvider from "@providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Accept",
@@ -63,27 +64,29 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>
-          <DatesProvider settings={{ locale: "ru" }}>
-            <WidthProvider>
-              <LocaleProvider>
-                <UserProvider>
-                  <TipTapBubbleMenuProvider>
-                    <Notifications
-                      position="bottom-left"
-                      zIndex={9999}
-                      limit={5}
-                      autoClose={40000}
-                    />
-                    <BackNotificationsProvider>
-                      {children}
-                    </BackNotificationsProvider>
-                  </TipTapBubbleMenuProvider>
-                </UserProvider>
-              </LocaleProvider>
-            </WidthProvider>
-          </DatesProvider>
-        </MantineProvider>
+        <QueryProvider>
+          <MantineProvider theme={theme}>
+            <DatesProvider settings={{ locale: "ru" }}>
+              <WidthProvider>
+                <LocaleProvider>
+                  <UserProvider>
+                    <TipTapBubbleMenuProvider>
+                      <Notifications
+                        position="bottom-left"
+                        zIndex={9999}
+                        limit={5}
+                        autoClose={40000}
+                      />
+                      <BackNotificationsProvider>
+                        {children}
+                      </BackNotificationsProvider>
+                    </TipTapBubbleMenuProvider>
+                  </UserProvider>
+                </LocaleProvider>
+              </WidthProvider>
+            </DatesProvider>
+          </MantineProvider>
+        </QueryProvider>
       </body>
     </html>
   );

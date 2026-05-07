@@ -20,7 +20,15 @@ const ImageSelector: FC<{
   const [presets, setPresets] = useState<IImagePreset[]>([]);
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
   const [images, setImages] = useState<string[]>(emptyImageList);
-  const { data: allPresets } = useRequest("images_preset", "GET", undefined);
+  const { data: allPresets } = useRequest(
+    "images_preset",
+    "GET",
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    1 * 60 * 1000,
+  );
   const { locale } = useLocale();
 
   useEffect(() => {
@@ -40,33 +48,32 @@ const ImageSelector: FC<{
     if (currentPreset) {
       const kind = "course";
       const name = currentPreset?.name;
-      sendRequest<any, any>(`images_preset/${kind}/${name}`, "GET").then(
-        (res) => {
-          const responseImages: string[] = res.response ?? [];
-          let imagesLocal =
-            form.values.image.length > 0
-              ? [
-                  form.values.image,
-                  ...responseImages.filter(
-                    (item) => item !== form.values.image,
-                  ),
-                  ...emptyImageList,
-                ]
-              : [
-                  ...responseImages.filter(
-                    (item) => item !== form.values.image,
-                  ),
-                  ...emptyImageList,
-                ];
-          if (responseImages.length < 3) {
-            imagesLocal = imagesLocal.slice(0, 3);
-          }
-          if (imagesLocal.length > 6) {
-            imagesLocal = imagesLocal.slice(0, 6);
-          }
-          setImages(imagesLocal);
-        },
-      );
+      sendRequest<any, any>(
+        `images_preset/${kind}/${name}`,
+        "GET",
+        undefined,
+        1 * 60 * 1000,
+      ).then((res) => {
+        const responseImages: string[] = res.response ?? [];
+        let imagesLocal =
+          form.values.image.length > 0
+            ? [
+                form.values.image,
+                ...responseImages.filter((item) => item !== form.values.image),
+                ...emptyImageList,
+              ]
+            : [
+                ...responseImages.filter((item) => item !== form.values.image),
+                ...emptyImageList,
+              ];
+        if (responseImages.length < 3) {
+          imagesLocal = imagesLocal.slice(0, 3);
+        }
+        if (imagesLocal.length > 6) {
+          imagesLocal = imagesLocal.slice(0, 6);
+        }
+        setImages(imagesLocal);
+      });
     }
   }, [currentPreset, emptyImageList, form.values.image]);
 

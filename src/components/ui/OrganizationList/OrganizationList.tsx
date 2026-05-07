@@ -67,7 +67,7 @@ const OrganizationList: FC<{
     {},
     IOrganization[],
     IOrganizationList[]
-  >(url, "GET", undefined, processData);
+  >(url, "GET", undefined, processData, undefined, undefined, true);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {

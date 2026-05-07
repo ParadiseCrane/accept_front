@@ -30,11 +30,11 @@ const LoginForm: FC<{
   const router = useRouter();
   const analytics = useAnalytics();
 
-  const {
-    data: organizations,
-    loading: organizations_loading,
-    error,
-  } = useRequest<object, IOrganization[], SelectItem[]>(
+  const { data: organizations, loading: organizations_loading } = useRequest<
+    object,
+    IOrganization[],
+    SelectItem[]
+  >(
     "organization/list",
     "GET",
     undefined,
@@ -46,6 +46,9 @@ const LoginForm: FC<{
             label: organization.name,
           }) as SelectItem,
       ),
+    undefined,
+    undefined,
+    true,
   );
 
   const valid_organizations = useMemo(

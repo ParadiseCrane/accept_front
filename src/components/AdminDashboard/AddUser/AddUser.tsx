@@ -57,7 +57,7 @@ const AddUser: FC<{}> = () => {
       groups: IGroup[];
       roles: IRole[];
     }
-  >("user/addBundle", "GET");
+  >("user/addBundle", "GET", undefined, undefined, undefined, undefined, true);
 
   const groups = useMemo(() => (data ? data.groups : []), [data]);
   const roles = useMemo(() => (data ? data.roles : []), [data]);

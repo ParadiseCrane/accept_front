@@ -31,10 +31,14 @@ const GroupOpenness: FC<{ spec: string }> = ({ spec }) => {
       const groupOpennessListResponse = await sendRequest<{}, IGroupOpenness[]>(
         `course/course_openness_list/${spec}/${searchParams.get("group")}`,
         "GET",
+        undefined,
+        true,
       );
       const courseNavigationTreeResponse = await sendRequest<{}, ICourse>(
         `course/course_navigation_tree/${spec}`,
         "GET",
+        undefined,
+        true,
       );
       if (
         !groupOpennessListResponse.error &&

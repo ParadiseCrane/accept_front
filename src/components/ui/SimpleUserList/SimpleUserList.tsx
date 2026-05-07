@@ -137,7 +137,7 @@ const SimpleUserList: FC<{
 
   useEffect(() => {
     setLoading(true);
-    sendRequest<{}, IUserDisplay[]>(url, "GET", undefined).then((res) => {
+    sendRequest<{}, IUserDisplay[]>(url, "GET", undefined, true).then((res) => {
       const userDisplayList = res.response;
       const userDisplayItemList: IUserDisplayItem[] =
         processData(userDisplayList);

@@ -131,13 +131,20 @@ const TeamList: FC<{ spec: string }> = ({ spec }) => {
 
   const columns = useMemo(() => initialColumns(locale), [locale]);
   const [refetchCounter, setRefetchCounter] = useState(0);
-  const refetchKal = useCallback(() => setRefetchCounter((val) => val + 1), []);
+  const refetchCallback = useCallback(
+    () => setRefetchCounter((val) => val + 1),
+    [],
+  );
 
   const { data, loading, refetch } = useRequest<{}, ITeamDisplayWithBanned[]>(
     `team/list/${spec}`,
     "GET",
     undefined,
-    (data: ITeamDisplayWithBanned[]) => processData(data, spec, refetchKal),
+    (data: ITeamDisplayWithBanned[]) =>
+      processData(data, spec, refetchCallback),
+    undefined,
+    undefined,
+    true,
   );
 
   useEffect(() => {

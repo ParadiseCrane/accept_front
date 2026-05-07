@@ -89,6 +89,7 @@ const RoutesList: FC<{}> = () => {
       "analytics/search",
       "POST",
       searchParams,
+      true,
     ).then((res) => {
       if (!res.error) {
         setData(res.response.documents);

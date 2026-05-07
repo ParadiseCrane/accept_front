@@ -82,6 +82,7 @@ const Results: FC<{
     }),
     undefined,
     undefined,
+    true,
   );
 
   const resultComponent = useCallback(

@@ -24,8 +24,7 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { theme } from "@constants/Theme";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import Head from "next/head";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@requests/request";
+import QueryProvider from "@providers/QueryProvider";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (_: ReactElement) => ReactNode;
@@ -61,7 +60,7 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <QueryClientProvider client={queryClient}>
+      <QueryProvider>
         <MantineProvider theme={theme}>
           <DatesProvider settings={{ locale: "ru" }}>
             <WidthProvider>
@@ -88,7 +87,7 @@ function Accept({ Component, pageProps }: AppPropsWithLayout) {
             </WidthProvider>
           </DatesProvider>
         </MantineProvider>
-      </QueryClientProvider>
+      </QueryProvider>
     </>
   );
 }

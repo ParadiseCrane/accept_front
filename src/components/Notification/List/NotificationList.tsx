@@ -34,7 +34,15 @@ const NotificationList: FC<{}> = (s) => {
     {},
     INotification[],
     void
-  >("notification/list", "GET", undefined, processNotifications);
+  >(
+    "notification/list",
+    "GET",
+    undefined,
+    processNotifications,
+    undefined,
+    undefined,
+    true,
+  );
 
   const handleDelete = useCallback(
     (selected: string[], setSelected: setter<string[]>) => {

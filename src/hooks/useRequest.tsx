@@ -1,10 +1,6 @@
-import { callback, optionalCallback } from '@custom-types/ui/atomic';
-import {
-  IResponse,
-  availableMethods,
-  sendRequest,
-} from '@requests/request';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { callback, optionalCallback } from "@custom-types/ui/atomic";
+import { IResponse, availableMethods, sendRequest } from "@requests/request";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface IRequestData<Answer, ReqAnswer = Answer> {
   data: Answer | undefined;
@@ -21,11 +17,11 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
   processData?: callback<ReqAnswer, Answer>,
   onSuccess?: callback<any>,
   onError?: callback<any>,
-  revalidate?: number
+  revalidate?: number | boolean,
 ): IRequestData<Answer, ReqAnswer> {
   const process = useMemo(
     () => (processData ? processData : (a: any) => a),
-    [processData]
+    [processData],
   );
   const [data, setData] = useState<Answer>();
   const [loading, setLoading] = useState(true);
@@ -36,13 +32,13 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
     (shouldSetLoading?: boolean) => {
       if (shouldSetLoading) setLoading(true);
       setError(false);
-      setDetail('');
+      setDetail("");
 
       return sendRequest<Body, ReqAnswer>(
         url,
-        method || 'GET',
+        method || "GET",
         body,
-        revalidate
+        revalidate,
       ).then((res) => {
         if (!res.error) {
           setData(process(res.response));
@@ -57,7 +53,7 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
         return res;
       });
     },
-    [body, method, onError, onSuccess, process, revalidate, url]
+    [body, method, onError, onSuccess, process, revalidate, url],
   );
 
   useEffect(() => {

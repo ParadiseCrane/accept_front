@@ -21,6 +21,7 @@
       "@constants/*": ["src/constants/*"],
       "@custom-types/*": ["src/types/*"],
       "@requests/*": ["src/requests/*"],
+      "@providers/*": ["src/providers/*"],
       "@utils/*": ["src/utils/*"],
       "@locale/*": ["src/locale/*"],
       "@hooks/*": ["src/hooks/*"],

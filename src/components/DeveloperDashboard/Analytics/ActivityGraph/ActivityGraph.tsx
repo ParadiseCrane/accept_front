@@ -52,6 +52,7 @@ const ActivityGraph: FC<{}> = () => {
       "analytics/activity",
       "POST",
       { to_date: new Date(), from_date: new Date(0) },
+      true,
     ).then((res) => {
       if (!res.error) {
         setData(mapActivityToPlotData(res.response));

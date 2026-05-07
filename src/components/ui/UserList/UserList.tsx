@@ -100,7 +100,7 @@ const UsersList: FC<{
       groups: IGroup[];
       roles: IRole[];
     }
-  >(url, "GET", undefined, processData);
+  >(url, "GET", undefined, processData, undefined, undefined, true);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {
