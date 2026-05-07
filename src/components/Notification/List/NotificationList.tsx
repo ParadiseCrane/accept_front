@@ -4,6 +4,7 @@ import { setter } from "@custom-types/ui/atomic";
 import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
 import { useBackNotifications } from "@hooks/useBackNotifications";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { Badge } from "@mantine/core";
 import MessageList from "@ui/MessageList/MessageList";
 import { requestWithError } from "@utils/requestWithError";
@@ -12,7 +13,6 @@ import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IconMailOpened, IconTrash } from "@tabler/icons-react";
 
 import styles from "./notificationList.module.css";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const NotificationList: FC<{}> = (s) => {
   const { locale, lang } = useLocale();
@@ -30,7 +30,7 @@ const NotificationList: FC<{}> = (s) => {
     [setNotifications],
   );
 
-  const { refetch: refetchNotifications, loading } = useTanstackRequest<
+  const { refetch: refetchNotifications, loading } = useRequest<
     {},
     INotification[],
     void

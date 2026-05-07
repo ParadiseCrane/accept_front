@@ -7,6 +7,7 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { MultiSelect } from "@ui/basics";
 import Table from "@ui/Table/Table";
@@ -25,7 +26,6 @@ import {
   useState,
 } from "react";
 import styles from "./userList.module.css";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 interface Item<T = any> {
   value: T;
@@ -92,7 +92,7 @@ const UsersList: FC<{
     [refactorUser],
   );
 
-  const { data, loading } = useTanstackRequest<
+  const { data, loading } = useRequest<
     {},
     IParticipantListBundle,
     {

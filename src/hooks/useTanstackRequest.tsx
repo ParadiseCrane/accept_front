@@ -14,18 +14,8 @@ interface IRequestData<Answer, ReqAnswer = Answer> {
   refetch: optionalCallback<boolean, Promise<IResponse<ReqAnswer>>>;
 }
 
-const REVALIDATE_DEFAULT_VALUE = 10 * 1000;
+const REVALIDATE_DEFAULT_VALUE = 1 * 60 * 1000;
 
-/**
- * Аналог useRequest хука с кэшированием от Tanstack.
- * @param url
- * @param method
- * @param body - optional
- * @param processData - optional
- * @param onSuccess - optional
- * @param onError - optional
- * @param revalidate - optional, time in milliseconds defaults to 10 seconds
- */
 export function useTanstackRequest<Body, ReqAnswer, Answer = ReqAnswer>(
   url: string,
   method?: availableMethods,

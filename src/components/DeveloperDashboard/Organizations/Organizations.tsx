@@ -1,14 +1,27 @@
 "use client";
 import DeleteModal from "@components/Organization/DeleteModal/DeleteModal";
+import { ExecutorBundle, IExecutor } from "@custom-types/data/IExecutor";
+import { IGroupDisplay } from "@custom-types/data/IGroup";
 import { IOrganization } from "@custom-types/data/IOrganization";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
+import { useForm } from "@mantine/form";
 import tableStyles from "@styles/ui/customTable.module.css";
-import { Icon } from "@ui/basics";
+import modalStyles from "@styles/ui/modal.module.css";
+import { Button, Icon, Select, TextArea, TextInput, Tip } from "@ui/basics";
 import OrganizationList from "@ui/OrganizationList/OrganizationList";
+import SimpleButtonGroup from "@ui/SimpleButtonGroup/SimpleButtonGroup";
+import SimpleModal from "@ui/SimpleModal/SimpleModal";
 import SingularSticky from "@ui/Sticky/SingularSticky";
-import { FC, memo } from "react";
+import { isJSON } from "@utils/isJSON";
+import {
+  errorNotification,
+  newNotification,
+} from "@utils/notificationFunctions";
+import { requestWithError } from "@utils/requestWithError";
+import { FC, memo, useCallback, useState } from "react";
 import { IconCheck, IconPencil, IconPlus, IconX } from "@tabler/icons-react";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [

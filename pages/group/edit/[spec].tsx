@@ -3,7 +3,7 @@ import Form from "@components/Group/Form/Form";
 import { IGroup } from "@custom-types/data/IGroup";
 import { IUserDisplay } from "@custom-types/data/IUser";
 import { useLocale } from "@hooks/useLocale";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
+import { useRequest } from "@hooks/useRequest";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form";
 import Title from "@ui/Title/Title";
@@ -17,14 +17,14 @@ import { GetServerSideProps } from "next";
 import { ReactNode, useCallback, useMemo } from "react";
 
 function EditGroup(props: { group: IGroup; members: string[] }) {
-  const { data: users } = useTanstackRequest<{}, IUserDisplay[]>(
+  const { data: users } = useRequest<{}, IUserDisplay[]>(
     "user/list-display",
     "GET",
     undefined,
     undefined,
     undefined,
     undefined,
-    20 * 1000,
+    20000,
   );
 
   const group = props.group;

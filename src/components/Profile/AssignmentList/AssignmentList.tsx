@@ -9,6 +9,7 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { useUser } from "@hooks/useUser";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { MultiSelect } from "@ui/basics";
@@ -19,6 +20,7 @@ import { colorGenerator } from "@utils/consistentColorGenerator";
 import { customTableSort } from "@utils/customTableSort";
 import { getLocalDate } from "@utils/datetime";
 import { hasSubarray } from "@utils/hasSubarray";
+import { mapAssignmentStatus } from "@utils/mapStatus";
 import Fuse from "fuse.js";
 import Link from "next/link";
 import {
@@ -40,7 +42,6 @@ import {
 
 import styles from "./assignmentList.module.css";
 import { useViewportSize } from "@mantine/hooks";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 interface Item {
   value: any;
@@ -362,7 +363,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
     [groups],
   );
 
-  const { data, loading } = useTanstackRequest<
+  const { data, loading } = useRequest<
     {},
     IAssignmentListBundle,
     {

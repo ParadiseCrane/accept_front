@@ -165,7 +165,7 @@ const ChangeGrades: FC<{}> = () => {
         errorNotification({
           id,
           title: `${locale.student.add.error} (${wrong_grades.length})`,
-          autoClose: 20 * 1000,
+          autoClose: 20000,
         });
         return;
       }
@@ -210,7 +210,7 @@ const ChangeGrades: FC<{}> = () => {
       warningNotification({
         id,
         title: `${locale.grade.change.warning} (${wrong_grades.length})`,
-        autoClose: 20 * 1000,
+        autoClose: 20000,
       });
       return;
     }

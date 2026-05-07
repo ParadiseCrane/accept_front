@@ -22,7 +22,6 @@ import type { Metadata, Viewport } from "next";
 import { Exo_2, Red_Hat_Mono } from "next/font/google";
 import { TipTapBubbleMenuProvider } from "@hooks/useTipTapBubbleMenu";
 import Script from "next/script";
-import QueryProvider from "@requests/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Accept",
@@ -76,11 +75,9 @@ export default function RootLayout({
                       limit={5}
                       autoClose={40000}
                     />
-                    <QueryProvider>
-                      <BackNotificationsProvider>
-                        {children}
-                      </BackNotificationsProvider>
-                    </QueryProvider>
+                    <BackNotificationsProvider>
+                      {children}
+                    </BackNotificationsProvider>
                   </TipTapBubbleMenuProvider>
                 </UserProvider>
               </LocaleProvider>
