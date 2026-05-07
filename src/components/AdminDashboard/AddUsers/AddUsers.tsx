@@ -208,7 +208,7 @@ const AddUsers: FC<{}> = () => {
         errorNotification({
           id,
           title: `${locale.student.add.error} (${wrong_students.length})`,
-          autoClose: 20000,
+          autoClose: 20 * 1000,
         });
         return;
       }
@@ -269,7 +269,7 @@ const AddUsers: FC<{}> = () => {
               Math.min((idx + 1) * ERRORS_AT_ONCE, errors.length),
             )
             .join(", ")}`,
-          autoClose: 20000,
+          autoClose: 20 * 1000,
         });
       }
       return;
@@ -279,7 +279,7 @@ const AddUsers: FC<{}> = () => {
       warningNotification({
         id,
         title: `${locale.student.add.warning} (${wrong_students.length})`,
-        autoClose: 20000,
+        autoClose: 20 * 1000,
       });
       return;
     }

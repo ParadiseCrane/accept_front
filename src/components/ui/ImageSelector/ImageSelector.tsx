@@ -1,7 +1,6 @@
 "use client";
 import { ICourseAddEdit } from "@custom-types/data/ICourse";
 import { IImagePreset } from "@custom-types/data/IImagePreset";
-import { useRequest } from "@hooks/useRequest";
 import { Box, SimpleGrid } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import PresetSingleSelect from "@ui/selectors/PresetSingleSelect/PresetSingleSelect";
@@ -9,6 +8,7 @@ import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ImageComponent } from "./ImageComponent/ImageComponent";
 import { sendRequest } from "@requests/request";
 import { useLocale } from "@hooks/useLocale";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const ImageSelector: FC<{
   form: UseFormReturnType<
@@ -20,7 +20,15 @@ const ImageSelector: FC<{
   const [presets, setPresets] = useState<IImagePreset[]>([]);
   const [currentPreset, setCurrentPreset] = useState<IImagePreset | null>(null);
   const [images, setImages] = useState<string[]>(emptyImageList);
-  const { data: allPresets } = useRequest("images_preset", "GET", undefined);
+  const { data: allPresets } = useTanstackRequest(
+    "images_preset",
+    "GET",
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    1 * 60 * 1000,
+  );
   const { locale } = useLocale();
 
   useEffect(() => {

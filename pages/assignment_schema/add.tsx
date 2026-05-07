@@ -5,6 +5,7 @@ import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form";
+import { clearRequestCache } from "@requests/request";
 import Title from "@ui/Title/Title";
 import {
   errorNotification,
@@ -50,6 +51,7 @@ function AddAssignmentSchema() {
         lang,
         (response: string) => response,
         body,
+        () => clearRequestCache("assignment_schema/list", "GET"),
       );
     },
     [user, locale, lang],

@@ -4,7 +4,7 @@ import { IOrganization } from "@custom-types/data/IOrganization";
 import { SelectItem } from "@custom-types/ui/atomic";
 import { useAnalytics } from "@hooks/useAnalytics";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 import { useForm } from "@mantine/form";
 import styles from "@styles/auth/login.module.css";
 import { Button, PasswordInput, Select, TextInput, Tip } from "@ui/basics";
@@ -34,7 +34,7 @@ const LoginForm: FC<{
     data: organizations,
     loading: organizations_loading,
     error,
-  } = useRequest<object, IOrganization[], SelectItem[]>(
+  } = useTanstackRequest<object, IOrganization[], SelectItem[]>(
     "organization/list",
     "GET",
     undefined,

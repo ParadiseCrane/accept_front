@@ -4,7 +4,7 @@ import { IGroup } from "@custom-types/data/IGroup";
 import { IUserDisplay } from "@custom-types/data/IUser";
 import { callback } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form";
 import Title from "@ui/Title/Title";
@@ -69,14 +69,14 @@ function AddGroup() {
 const FormWithUsers: FC<{ handleSubmit: callback<UseFormReturnType<any>> }> = ({
   handleSubmit,
 }) => {
-  const { data: users } = useRequest<{}, IUserDisplay[]>(
+  const { data: users } = useTanstackRequest<{}, IUserDisplay[]>(
     "user/list-display",
     "GET",
     undefined,
     undefined,
     undefined,
     undefined,
-    20000,
+    20 * 1000,
   );
   const { locale } = useLocale();
 

@@ -7,7 +7,7 @@ import {
 import { IUserDisplay } from "@custom-types/data/IUser";
 import { Item } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form/lib/types";
@@ -25,14 +25,14 @@ function TournamentAdd(props: ITournamentAddBundle) {
   const { locale, lang } = useLocale();
   const { user } = useUser();
 
-  const { data: users } = useRequest<{}, IUserDisplay[]>(
+  const { data: users } = useTanstackRequest<{}, IUserDisplay[]>(
     "user/list-display",
     "GET",
     undefined,
     undefined,
     undefined,
     undefined,
-    20000,
+    20 * 1000,
   );
 
   const initialValues = useMemo(

@@ -3,7 +3,6 @@ import Form from "@components/Group/Form/Form";
 import { IGroup } from "@custom-types/data/IGroup";
 import { IUserDisplay } from "@custom-types/data/IUser";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 import { UseFormReturnType } from "@mantine/form";
 import {
   errorNotification,
@@ -13,6 +12,7 @@ import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback, useMemo } from "react";
 
 import styles from "./addGrade.module.css";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const initialValues = {
   spec: "",
@@ -24,7 +24,10 @@ const initialValues = {
 const AddGrade: FC<{}> = () => {
   const { locale, lang } = useLocale();
 
-  const { data } = useRequest<{}, IUserDisplay[]>("user/list-display", "GET");
+  const { data } = useTanstackRequest<{}, IUserDisplay[]>(
+    "user/list-display",
+    "GET",
+  );
   const users = useMemo(() => (data && data.length > 0 ? data : []), [data]);
 
   const handleSubmit = useCallback(

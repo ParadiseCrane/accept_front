@@ -6,7 +6,6 @@ import { setter } from "@custom-types/ui/atomic";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 // import styles from './teamList.module.css'
 import tableStyles from "@styles/ui/customTable.module.css";
 import { Tip } from "@ui/basics";
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import BanButton from "./BanButton/BanButton";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -131,13 +131,16 @@ const TeamList: FC<{ spec: string }> = ({ spec }) => {
 
   const columns = useMemo(() => initialColumns(locale), [locale]);
   const [refetchCounter, setRefetchCounter] = useState(0);
-  const refetchKal = useCallback(() => setRefetchCounter((val) => val + 1), []);
+  const refetchCallback = useCallback(
+    () => setRefetchCounter((val) => val + 1),
+    [],
+  );
 
-  const { data, loading, refetch } = useRequest<{}, ITeamDisplayWithBanned[]>(
-    `team/list/${spec}`,
-    "GET",
-    undefined,
-    (data: ITeamDisplayWithBanned[]) => processData(data, spec, refetchKal),
+  const { data, loading, refetch } = useTanstackRequest<
+    {},
+    ITeamDisplayWithBanned[]
+  >(`team/list/${spec}`, "GET", undefined, (data: ITeamDisplayWithBanned[]) =>
+    processData(data, spec, refetchCallback),
   );
 
   useEffect(() => {

@@ -7,7 +7,6 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { MultiSelect } from "@ui/basics";
 import Table from "@ui/Table/Table";
@@ -24,6 +23,7 @@ import {
 } from "react";
 import styles from "./taskList.module.css";
 import clsx from "clsx";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 interface Item {
   value: any;
@@ -84,7 +84,7 @@ const TaskList: FC<{
     [refactorTask],
   );
 
-  const { data, loading } = useRequest<
+  const { data, loading } = useTanstackRequest<
     {},
     ITaskListBundle,
     { tasks: ITaskDisplayList[]; tags: ITag[] }
