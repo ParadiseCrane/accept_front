@@ -6,3 +6,4 @@ export const HORIZONTAL_TESTS_DRAG_LIMIT = 8;
 export const IMAGE_CACHE_MAX_AGE = 14400; // 4 hours
 export const ATTEMPTS_LIST_REFETCH_INTERVAL = 5000; // 5 seconds
 export const LONG_POLLING_REFETCH_INTERVAL = 15; // 15 seconds
+export const DEFAULT_REQUEST_CACHE_TIME = 1000 * 30; // 30 seconds

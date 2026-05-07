@@ -7,7 +7,6 @@ import { ITournament } from "@custom-types/data/ITournament";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
 import { useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 import { useUser } from "@hooks/useUser";
 import { useWidth } from "@hooks/useWidth";
 import { Indicator } from "@ui/basics";
@@ -37,6 +36,8 @@ import Results from "./Results/Results";
 import Settings from "./Settings/Settings";
 import TaskList from "./TaskList/TaskList";
 import TeamList from "./TeamList/TeamList";
+import { useRequest } from "@hooks/useRequest";
+import { DEFAULT_REQUEST_CACHE_TIME } from "@constants/Limits";
 
 const TournamentDashboard: FC<{
   spec: string;
@@ -45,9 +46,14 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data } = useTanstackRequest<undefined, ITournament>(
+  const { data } = useRequest<undefined, ITournament>(
     `tournament/${spec}`,
     "GET",
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    DEFAULT_REQUEST_CACHE_TIME,
   );
 
   // AI-FEATURE FLAG
