@@ -121,7 +121,7 @@ export const clearRequestCache = (
   method?: availableMethods,
   body?: any,
 ) => {
-  queryClient.invalidateQueries({ queryKey: [method, path, body] });
+  return queryClient.invalidateQueries({ queryKey: [method, path, body] });
 };
 
 export const isSuccessful = <ISend>(
