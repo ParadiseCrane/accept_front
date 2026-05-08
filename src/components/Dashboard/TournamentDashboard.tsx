@@ -7,9 +7,10 @@ import { ITournament } from "@custom-types/data/ITournament";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
 import { useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
+import { useRequest } from "@hooks/useRequest";
 import { useUser } from "@hooks/useUser";
 import { useWidth } from "@hooks/useWidth";
+import { useInterval } from "@mantine/hooks";
 import { Indicator } from "@ui/basics";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
@@ -45,7 +46,7 @@ const TournamentDashboard: FC<{
 
   const [tournament, setTournament] = useState<ITournament>();
 
-  const { data } = useTanstackRequest<undefined, ITournament>(
+  const { data, refetch } = useRequest<undefined, ITournament>(
     `tournament/${spec}`,
     "GET",
   );
@@ -55,6 +56,13 @@ const TournamentDashboard: FC<{
   //   `tournament/attempts/ai/count/${spec}`,
   //   "GET",
   // );
+
+  const refetchTournament = useInterval(() => refetch(false), 60 * 1000);
+
+  useEffect(() => {
+    refetchTournament.start();
+    return refetchTournament.stop;
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (data) setTournament(data);
@@ -79,7 +87,7 @@ const TournamentDashboard: FC<{
               froze: tournament.frozeResults,
               status: tournament.status.spec as 0 | 1 | 2,
             }}
-            refetch={() => {}}
+            refetch={() => refetch(false)}
           />
         ),
         icon: <IconVocabulary color="var(--secondary)" />,
@@ -230,7 +238,7 @@ const TournamentDashboard: FC<{
     }
 
     return links;
-  }, [tournament, hasNewMessages, locale, spec]);
+  }, [tournament, hasNewMessages, locale, refetch, spec]);
 
   const [activeModal, setActiveModal] = useState(false);
 
