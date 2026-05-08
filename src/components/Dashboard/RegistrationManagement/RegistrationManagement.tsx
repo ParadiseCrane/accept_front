@@ -14,15 +14,7 @@ const RegistrationManagement: FC<{
   const { data, refetch, loading } = useRequest<
     {},
     { users: IUserDisplay[]; participants: string[] }
-  >(
-    `tournament/registration-management/${spec}`,
-    "GET",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
-  );
+  >(`tournament/registration-management/${spec}`, "GET");
 
   const users = useMemo(() => (data ? [...(data?.users || [])] : []), [data]);
   const participants = useMemo(

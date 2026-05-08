@@ -30,7 +30,7 @@ const DeleteModal: FC<{
       (_: any) => "",
       body,
       () => setToList(true),
-      { autoClose: 8 * 1000 },
+      { autoClose: 8000 },
     );
   }, [assignment.spec, locale, lang]);
 

@@ -37,8 +37,6 @@ export const AddModeratorModal = ({
     const allUsersForGroupResponse = await sendRequest<{}, IUserDisplay[]>(
       "user/list-display",
       "GET",
-      undefined,
-      true,
     );
     if (!allUsersForGroupResponse.error) {
       setAllUsers(

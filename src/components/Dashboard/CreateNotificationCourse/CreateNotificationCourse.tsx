@@ -108,8 +108,6 @@ const CreateNotificationCourse: FC<{
       const response = await sendRequest<{}, IUserDisplay[]>(
         `course/participant/${spec}/${searchParams.get("group")}`,
         "GET",
-        undefined,
-        true,
       );
       if (!response.error) {
         setUsers(response.response);
@@ -127,7 +125,6 @@ const CreateNotificationCourse: FC<{
       `course/groups/${spec}`,
       "GET",
       undefined,
-      true,
     );
     if (!response.error) {
       setGroups(response.response);

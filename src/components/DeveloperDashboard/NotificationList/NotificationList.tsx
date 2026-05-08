@@ -36,9 +36,6 @@ const NotificationList: FC<{}> = () => {
     "GET",
     undefined,
     processNotifications,
-    undefined,
-    undefined,
-    true,
   );
 
   const handleSearch = useCallback(

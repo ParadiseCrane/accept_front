@@ -371,15 +371,7 @@ const AssignmentList: FC<{ url?: string }> = ({ url = "assignment/my" }) => {
       tags: ITag[];
       groups: IGroup[];
     }
-  >(
-    url,
-    "GET",
-    undefined,
-    (data) => processData(data, locale),
-    undefined,
-    undefined,
-    true,
-  );
+  >(url, "GET", undefined, (data) => processData(data, locale));
 
   const applyFilters = useCallback(
     (data: IAssignmentDisplayList[]) => {

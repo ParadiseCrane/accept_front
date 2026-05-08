@@ -25,8 +25,6 @@ const Groups: FC<{
     const response = await sendRequest<{}, IGroupInvite[]>(
       `invite/${course_spec}/all`,
       "GET",
-      undefined,
-      true,
     );
     if (!response.error) {
       setGroups(response.response);

@@ -27,11 +27,6 @@ const Executor: FC<{}> = () => {
   const { data, loading } = useRequest<{}, ExecutorBundle>(
     "bundle/executor",
     "GET",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
   );
 
   const form = useForm({

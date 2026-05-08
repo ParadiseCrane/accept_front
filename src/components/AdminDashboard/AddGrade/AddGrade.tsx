@@ -24,15 +24,7 @@ const initialValues = {
 const AddGrade: FC<{}> = () => {
   const { locale, lang } = useLocale();
 
-  const { data } = useRequest<{}, IUserDisplay[]>(
-    "user/list-display",
-    "GET",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
-  );
+  const { data } = useRequest<{}, IUserDisplay[]>("user/list-display", "GET");
   const users = useMemo(() => (data && data.length > 0 ? data : []), [data]);
 
   const handleSubmit = useCallback(

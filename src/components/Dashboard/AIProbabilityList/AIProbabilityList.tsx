@@ -178,20 +178,12 @@ const AIProbabilityList: FC<{
     `${type}/bundle/tasks-users/${spec}`,
     "GET",
     undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
   );
 
   const { data: userData } = useRequest<{}, IParticipantListBundle>(
     `${type}/bundle-participants/${spec}`,
     "GET",
     undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
   );
 
   const iconProps = {

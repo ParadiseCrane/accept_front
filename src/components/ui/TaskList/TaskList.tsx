@@ -88,7 +88,7 @@ const TaskList: FC<{
     {},
     ITaskListBundle,
     { tasks: ITaskDisplayList[]; tags: ITag[] }
-  >(url, "GET", undefined, processData, undefined, undefined, true);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {

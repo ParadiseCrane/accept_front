@@ -109,21 +109,6 @@ const performNetworkRequest = async <ISend, IReceive>(
   }
 };
 
-/**
- * Функция для ручной очистки кэша TanStack Query по определенному ключу.
- * Может быть полезна после успешного POST/PUT/DELETE, чтобы гарантировать свежесть данных при следующем GET.
- * @param path
- * @param method - optional, если не указан, очистит все запросы с данным path независимо от метода
- * @param body - optional, для более точечной очистки, если указано, удалит только запросы с совпадающим body
- */
-export const clearRequestCache = (
-  path: string,
-  method?: availableMethods,
-  body?: any,
-) => {
-  return queryClient.invalidateQueries({ queryKey: [method, path, body] });
-};
-
 export const isSuccessful = <ISend>(
   path: string,
   method: availableMethods,
@@ -144,6 +129,29 @@ export const isSuccessful = <ISend>(
         : res.json().then((res) => ({ error: true, detail: res.detail })),
     )
     .catch(processServerError);
+};
+
+const CheckStorage = <IReceive>(key: string): IReceive | undefined => {
+  const valueString = window.localStorage.getItem(key);
+  if (!valueString) {
+    return undefined;
+  }
+  const value = JSON.parse(valueString);
+  if (value.valid < Date.now()) {
+    window.localStorage.removeItem(key);
+    return undefined;
+  }
+
+  return value.data;
+};
+
+const SaveInStorage = (
+  key: string,
+  data: object | undefined,
+  revalidate: number,
+) => {
+  const save_data = { data, valid: Date.now() + revalidate };
+  window.localStorage.setItem(key, JSON.stringify(save_data));
 };
 
 export const queryClient = new QueryClient({

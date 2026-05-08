@@ -197,6 +197,7 @@ const AddUsers: FC<{}> = () => {
         );
       }
     }
+    // Promise.all(responses).then((responses) => {
     let wrong_students: IStudentAddResponse[] = [];
 
     await sendRequest<{}, IStudentAddResponse[]>(
@@ -207,7 +208,7 @@ const AddUsers: FC<{}> = () => {
         errorNotification({
           id,
           title: `${locale.student.add.error} (${wrong_students.length})`,
-          autoClose: 20 * 1000,
+          autoClose: 20000,
         });
         return;
       }
@@ -252,7 +253,7 @@ const AddUsers: FC<{}> = () => {
       errorNotification({
         id,
         title: `${locale.student.add.error}`,
-        autoClose: 10 * 1000,
+        autoClose: 10000,
       });
       for (let idx = 0; idx < errors.length / ERRORS_AT_ONCE; idx++) {
         const id = newNotification({
@@ -268,7 +269,7 @@ const AddUsers: FC<{}> = () => {
               Math.min((idx + 1) * ERRORS_AT_ONCE, errors.length),
             )
             .join(", ")}`,
-          autoClose: 20 * 1000,
+          autoClose: 20000,
         });
       }
       return;
@@ -278,15 +279,16 @@ const AddUsers: FC<{}> = () => {
       warningNotification({
         id,
         title: `${locale.student.add.warning} (${wrong_students.length})`,
-        autoClose: 20 * 1000,
+        autoClose: 20000,
       });
       return;
     }
     successNotification({
       id,
       title: locale.student.add.success,
-      autoClose: 30 * 1000,
+      autoClose: 30000,
     });
+    // });
   }, [locale, users, sendUsers, lang]);
 
   return (

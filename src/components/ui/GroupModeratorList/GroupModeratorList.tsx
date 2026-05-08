@@ -81,7 +81,6 @@ const GroupModeratorList: FC<{
       url,
       "GET",
       undefined,
-      5 * 1000,
     );
     if (!response.error) {
       const pairList = response.response;

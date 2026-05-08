@@ -76,7 +76,7 @@ const GroupsList: FC<{
     {},
     IGroupDisplay[],
     IGroupDisplayList[]
-  >(url, "GET", undefined, processData, undefined, undefined, true);
+  >(url, "GET", undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
     pager: {

@@ -17,15 +17,7 @@ const CrateNotification: FC<{}> = () => {
       groups: IGroup[];
       roles: IRole[];
     }
-  >(
-    "notification/addBundle",
-    "GET",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
-  );
+  >("notification/addBundle", "GET");
 
   const users = useMemo(() => (data ? data.users : []), [data]);
   const groups = useMemo(() => (data ? data.groups : []), [data]);

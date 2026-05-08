@@ -30,9 +30,6 @@ const FeedbackList: FC<{}> = () => {
     "GET",
     undefined,
     processFeedbackMessages,
-    undefined,
-    undefined,
-    true,
   );
 
   const handleDelete = useCallback(

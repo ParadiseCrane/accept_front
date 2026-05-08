@@ -124,15 +124,7 @@ const AttemptListProfile: FC<{}> = () => {
     [locale, width],
   );
 
-  const { data } = useRequest<{}, ITaskBaseInfo[]>(
-    `task/my`,
-    "GET",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    true,
-  );
+  const { data } = useRequest<{}, ITaskBaseInfo[]>(`task/my`, "GET");
 
   return (
     <div>

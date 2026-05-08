@@ -22,6 +22,7 @@ import styles from "./attemptsList.module.css";
 import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useRequest } from "@hooks/useRequest";
+import { DEFAULT_REQUEST_CACHE_TIME } from "@constants/Limits";
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -174,7 +175,7 @@ const AttemptList: FC<{
     undefined,
     undefined,
     undefined,
-    true,
+    DEFAULT_REQUEST_CACHE_TIME,
   );
 
   const { data: userData } = useRequest<{}, IParticipantListBundle>(
@@ -184,7 +185,7 @@ const AttemptList: FC<{
     undefined,
     undefined,
     undefined,
-    true,
+    DEFAULT_REQUEST_CACHE_TIME,
   );
 
   const iconProps = {

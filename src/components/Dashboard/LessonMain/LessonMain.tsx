@@ -46,8 +46,6 @@ const LessonMain: FC<{
       const groupOpennessListResponse = await sendRequest<{}, IGroupOpenness[]>(
         `course/course_openness_list/${lesson.spec}/${params.get("group")}`,
         "GET",
-        undefined,
-        true,
       );
       if (!groupOpennessListResponse.error) {
         const foundGroup = groupOpennessListResponse.response.find(

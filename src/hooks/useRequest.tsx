@@ -17,7 +17,7 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
   processData?: callback<ReqAnswer, Answer>,
   onSuccess?: callback<any>,
   onError?: callback<any>,
-  revalidate?: number | boolean,
+  revalidate?: number,
 ): IRequestData<Answer, ReqAnswer> {
   const process = useMemo(
     () => (processData ? processData : (a: any) => a),
