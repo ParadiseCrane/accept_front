@@ -1,4 +1,3 @@
-import { DEFAULT_REQUEST_CACHE_TIME } from "@constants/Limits";
 import { QueryClient } from "@tanstack/react-query";
 export const withPrefix = (path: string) => `/api/${path}`;
 
@@ -27,20 +26,112 @@ const processServerError = (e: any) => {
   };
 };
 
+// Хранилище активных промисов для предотвращения дублирования запросов в один момент времени
+const inFlightRequests = new Map<string, Promise<any>>();
+
 /**
- * Единый метод для всех запросов в приложении.
- * Инкапсулирует логику сетевых вызовов и кэширования через TanStack Query.
+ * Генерирует уникальный ключ для запроса.
+ * Используется для кэширования и дедупликации.
  */
-export const sendRequest = async <ISend, IReceive>(
+const generateRequestKey = (
+  path: string,
+  method: string,
+  body?: any,
+): string => {
+  const bodyString = body ? JSON.stringify(body) : "";
+  return `${method}:${path}:${bodyString}`;
+};
+
+export const sendRequest = <ISend, IReceive>(
+  path: string,
+  method: availableMethods = "GET",
+  body?: ISend extends object ? ISend : object,
+  revalidate?: number, // в миллисекундах
+): Promise<IResponse<IReceive>> => {
+  const key = generateRequestKey(path, method, body);
+
+  // 1. ПРОВЕРКА КЭША (Если данные уже есть в хранилище и не протухли)
+  if (revalidate) {
+    const cachedData = CheckStorage(key);
+    if (cachedData) {
+      return Promise.resolve(cachedData as IResponse<IReceive>);
+    }
+  }
+
+  // 2. ДЕДУПЛИКАЦИЯ (Если такой запрос уже выполняется прямо сейчас)
+  if (inFlightRequests.has(key)) {
+    return inFlightRequests.get(key)!;
+  }
+
+  // 3. СОЗДАНИЕ НОВОГО ЗАПРОСА
+  const requestPromise = (async (): Promise<IResponse<IReceive>> => {
+    try {
+      let options: RequestInit = {
+        credentials: "include",
+        method,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      };
+
+      if (body instanceof FormData) {
+        // @ts-ignore
+        delete options.headers["Content-Type"];
+        options.body = body;
+      } else if (body) {
+        options.body = JSON.stringify(body);
+      }
+
+      const res = await fetch(withPrefix(path), options);
+      const isOk = res.status === 200;
+
+      // Читаем json один раз
+      const json = await res.json();
+
+      const result: IResponse<IReceive> = {
+        error: !isOk,
+        detail: json?.detail,
+        response: isOk ? (json as IReceive) : ({} as IReceive),
+      };
+
+      // Если запрос успешен и нужен кэш — сохраняем
+      if (!result.error && revalidate) {
+        SaveInStorage(key, result, revalidate);
+      }
+
+      return result;
+    } catch (e) {
+      // Обработка системных ошибок (сеть, CORS и т.д.)
+      return {
+        response: {} as IReceive,
+        ...processServerError(e),
+      } as IResponse<IReceive>;
+    } finally {
+      // ОБЯЗАТЕЛЬНО: удаляем промис из активных по завершении (успех или провал)
+      // чтобы последующие вызовы могли инициировать новый запрос
+      inFlightRequests.delete(key);
+    }
+  })();
+
+  // Регистрируем текущий промис в Map
+  inFlightRequests.set(key, requestPromise);
+
+  return requestPromise;
+};
+
+export const sendTanstackRequest = async <ISend, IReceive>(
   path: string,
   method: availableMethods = "GET",
   body?: ISend extends object ? ISend : object,
   revalidate?: number | boolean,
 ): Promise<IResponse<IReceive>> => {
-  // 1. Вычисляем интервал валидности (staleTime)
+  const REVALIDATE_DEFAULT_VALUE = 1 * 60 * 1000;
+  // Ключ для TanStack
+  const key = [method, path, body];
+
   const revalidateInterval: number | undefined = (() => {
     if (typeof revalidate === "boolean") {
-      return revalidate ? DEFAULT_REQUEST_CACHE_TIME : undefined;
+      if (revalidate) return REVALIDATE_DEFAULT_VALUE;
     }
     if (typeof revalidate === "number") {
       return revalidate;
@@ -48,27 +139,26 @@ export const sendRequest = async <ISend, IReceive>(
     return undefined;
   })();
 
-  // 2. Логика кэширования:
-  // Кэшируем GET по умолчанию, либо любой метод (в т.ч. POST-фильтрацию), если передан revalidate.
-  const isCacheable = method === "GET" || revalidateInterval !== undefined;
+  // ЛОГИКА ОПРЕДЕЛЕНИЯ: НУЖЕН ЛИ КЭШ
+  // Кэшируем если это GET ИЛИ если явно передан revalidate
+  const isCacheable = method === "GET" || revalidateInterval;
 
   if (isCacheable) {
-    // TanStack fetchQuery берет на себя:
-    // - Проверку своего кэша в памяти (staleTime)
-    // - Дедупликацию (если два вызова произошли одновременно, будет один сетевой запрос)
     return queryClient.fetchQuery({
-      queryKey: [method, path, body],
+      queryKey: key,
       queryFn: () => performNetworkRequest<ISend, IReceive>(path, method, body),
       staleTime: revalidateInterval || 0,
     });
   }
 
-  // 3. Прямой вызов для действий (POST/PUT/DELETE без кэширования)
+  // Если это действие (POST/PUT/DELETE без revalidate),
+  // просто выполняем запрос без участия TanStack Query
   return performNetworkRequest<ISend, IReceive>(path, method, body);
 };
 
 /**
- * Низкоуровневая функция выполнения сетевого запроса.
+ * Чистая функция для выполнения сетевого запроса без участия кэширования.
+ * Используется как внутри TanStack Query, так и для прямых запросов (действий).
  */
 const performNetworkRequest = async <ISend, IReceive>(
   path: string,
@@ -77,14 +167,17 @@ const performNetworkRequest = async <ISend, IReceive>(
 ): Promise<IResponse<IReceive>> => {
   try {
     let options: RequestInit = {
-      credentials: "include",
+      credentials: "include", // Важно для твоих сессий/кук
       method,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
     };
 
+    // Обработка FormData (для загрузки файлов) или обычного JSON
     if (body instanceof FormData) {
+      // Браузер сам выставит правильный Boundary для FormData,
+      // поэтому удаляем заголовок Content-Type
       // @ts-ignore
       delete options.headers["Content-Type"];
       options.body = body;
@@ -92,16 +185,21 @@ const performNetworkRequest = async <ISend, IReceive>(
       options.body = JSON.stringify(body);
     }
 
+    // withPrefix — твоя функция добавления базового URL (api.example.com/...)
     const res = await fetch(withPrefix(path), options);
+
+    // Пытаемся распарсить JSON. Если бэкенд возвращает пустой ответ на DELETE или 204,
+    // стоит добавить проверку на пустой body, но обычно у тебя идет JSON.
     const json = await res.json();
     const isOk = res.status === 200;
 
     return {
       error: !isOk,
-      detail: json?.detail,
+      detail: json?.detail, // Предполагаем, что бэкенд отдает описание ошибки здесь
       response: isOk ? (json as IReceive) : ({} as IReceive),
     };
   } catch (e) {
+    // processServerError — твоя функция обработки исключений (сеть, CORS, таймаут)
     return {
       response: {} as IReceive,
       ...processServerError(e),

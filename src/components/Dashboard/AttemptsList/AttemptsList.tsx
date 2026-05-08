@@ -21,8 +21,7 @@ import { FC, memo, useCallback, useState } from "react";
 import styles from "./attemptsList.module.css";
 import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import { useRequest } from "@hooks/useRequest";
-import { DEFAULT_REQUEST_CACHE_TIME } from "@constants/Limits";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -168,24 +167,16 @@ const AttemptList: FC<{
     [type, spec],
   );
 
-  const { data } = useRequest<{}, ITasksUsersBundle>(
+  const { data } = useTanstackRequest<{}, ITasksUsersBundle>(
     `${type}/bundle/tasks-users/${spec}`,
     "GET",
     undefined,
-    undefined,
-    undefined,
-    undefined,
-    DEFAULT_REQUEST_CACHE_TIME,
   );
 
-  const { data: userData } = useRequest<{}, IParticipantListBundle>(
+  const { data: userData } = useTanstackRequest<{}, IParticipantListBundle>(
     `${type}/bundle-participants/${spec}`,
     "GET",
     undefined,
-    undefined,
-    undefined,
-    undefined,
-    DEFAULT_REQUEST_CACHE_TIME,
   );
 
   const iconProps = {
