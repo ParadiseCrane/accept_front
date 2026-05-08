@@ -7,7 +7,7 @@ import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
-import { clearRequestCache, sendRequest } from "@requests/request";
+import { sendRequest } from "@requests/request";
 import tableStyles from "@styles/ui/customTable.module.css";
 import Table from "@ui/Table/Table";
 import {
@@ -124,17 +124,12 @@ const AttemptList: FC<{
     [locale.notify.errors.unauthorized, refreshAccess],
   );
   const fetch_data = useCallback(() => {
-    return sendRequest<UserTaskSearch, PagerResponse>(
-      url,
-      "POST",
-      {
-        ...searchParams,
-        toDate,
-        users: userSearch,
-        tasks: taskSearch,
-      },
-      true,
-    )
+    return sendRequest<UserTaskSearch, PagerResponse>(url, "POST", {
+      ...searchParams,
+      toDate,
+      users: userSearch,
+      tasks: taskSearch,
+    })
       .then((res) => {
         if (!res.error) {
           setTableData(processData(res.response));
@@ -144,10 +139,9 @@ const AttemptList: FC<{
       .catch(onError);
   }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
 
-  const refetch = useCallback(async () => {
+  const refetch = useCallback(() => {
     if (activeTab && !shouldNotRefetch && needRefetch) {
       if (onRefetch) onRefetch();
-      await clearRequestCache(url);
       return fetch_data();
     }
     return new Promise<void>(() => {});
