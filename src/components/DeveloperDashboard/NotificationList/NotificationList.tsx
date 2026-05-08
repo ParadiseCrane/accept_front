@@ -3,7 +3,6 @@ import { INotificationWithRefs } from "@custom-types/data/notification";
 import { setter } from "@custom-types/ui/atomic";
 import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 import { Badge } from "@mantine/core";
 import { TextInput } from "@ui/basics";
 import MessageList from "@ui/MessageList/MessageList";
@@ -14,6 +13,7 @@ import { IconPencil, IconSearch, IconTrash } from "@tabler/icons-react";
 
 import EditModal from "./EditModal/EditModal";
 import styles from "./notificationList.module.css";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const NotificationList: FC<{}> = () => {
   const { locale, lang } = useLocale();
@@ -31,12 +31,10 @@ const NotificationList: FC<{}> = () => {
     [],
   );
 
-  const { data, loading, refetch } = useRequest<{}, INotificationWithRefs[]>(
-    "notification/dev/all",
-    "GET",
-    undefined,
-    processNotifications,
-  );
+  const { data, loading, refetch } = useTanstackRequest<
+    {},
+    INotificationWithRefs[]
+  >("notification/dev/all", "GET", undefined, processNotifications);
 
   const handleSearch = useCallback(
     async (value: string) => {

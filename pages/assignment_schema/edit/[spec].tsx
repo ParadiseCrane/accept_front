@@ -6,6 +6,7 @@ import { Item } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { UseFormReturnType } from "@mantine/form";
+import { clearRequestCache } from "@requests/request";
 import Title from "@ui/Title/Title";
 import { fetchWrapperStatic } from "@utils/fetchWrapper";
 import {
@@ -62,6 +63,7 @@ function EditAssignmentSchema({
         lang,
         (response: IAssignmentSchema) => response.spec,
         body,
+        () => clearRequestCache("assignment_schema"),
       );
     },
     [locale, lang],

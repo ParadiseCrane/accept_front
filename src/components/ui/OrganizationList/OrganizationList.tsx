@@ -9,7 +9,7 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import Table from "@ui/Table/Table";
 import { customTableSort } from "@utils/customTableSort";
@@ -63,7 +63,7 @@ const OrganizationList: FC<{
     [refactorOrganization],
   );
 
-  const { data, loading } = useRequest<
+  const { data, loading } = useTanstackRequest<
     {},
     IOrganization[],
     IOrganizationList[]

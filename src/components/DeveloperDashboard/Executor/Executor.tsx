@@ -1,7 +1,6 @@
 "use client";
 import { ExecutorBundle, IExecutor } from "@custom-types/data/IExecutor";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
 import modalStyles from "@styles/ui/modal.module.css";
 import { Button, Select, TextArea, TextInput } from "@ui/basics";
@@ -17,6 +16,7 @@ import { FC, memo, useCallback, useState } from "react";
 
 import styles from "./executor.module.css";
 import { LoadingOverlay } from "@mantine/core";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const Executor: FC<{}> = () => {
   const [response, setResponse] = useState("");
@@ -24,7 +24,7 @@ const Executor: FC<{}> = () => {
 
   const { locale, lang } = useLocale();
 
-  const { data, loading } = useRequest<{}, ExecutorBundle>(
+  const { data, loading } = useTanstackRequest<{}, ExecutorBundle>(
     "bundle/executor",
     "GET",
   );

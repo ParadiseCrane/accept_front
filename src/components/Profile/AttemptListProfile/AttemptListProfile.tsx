@@ -4,7 +4,6 @@ import { ITaskBaseInfo } from "@custom-types/data/ITask";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
-import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import AttemptList from "@ui/AttemptList/AttemptList";
 import { TaskSelect } from "@ui/selectors";
@@ -16,6 +15,7 @@ import { FC, memo, useMemo, useState } from "react";
 import styles from "./attemptListProfile.module.css";
 import { useViewportSize } from "@mantine/hooks";
 import clsx from "clsx";
+import { useTanstackRequest } from "@hooks/useTanstackRequest";
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
   result: {
@@ -124,7 +124,7 @@ const AttemptListProfile: FC<{}> = () => {
     [locale, width],
   );
 
-  const { data } = useRequest<{}, ITaskBaseInfo[]>(`task/my`, "GET");
+  const { data } = useTanstackRequest<{}, ITaskBaseInfo[]>(`task/my`, "GET");
 
   return (
     <div>
