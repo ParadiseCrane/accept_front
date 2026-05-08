@@ -119,9 +119,6 @@ export const sendRequest = <ISend, IReceive>(
   return requestPromise;
 };
 
-/**
- * sendRequest analog with caching by Tanstack.
- */
 export const sendTanstackRequest = async <ISend, IReceive>(
   path: string,
   method: availableMethods = "GET",
@@ -210,21 +207,6 @@ const performNetworkRequest = async <ISend, IReceive>(
   }
 };
 
-/**
- * Функция для ручной очистки кэша TanStack Query по определенному ключу.
- * Может быть полезна после успешного POST/PUT/DELETE, чтобы гарантировать свежесть данных при следующем GET.
- * @param path
- * @param method - optional, если не указан, очистит все запросы с данным path независимо от метода
- * @param body - optional, для более точечной очистки, если указано, удалит только запросы с совпадающим body
- */
-export const clearRequestCache = (
-  path: string,
-  method?: availableMethods,
-  body?: any,
-) => {
-  queryClient.invalidateQueries({ queryKey: [method, path, body] });
-};
-
 export const isSuccessful = <ISend>(
   path: string,
   method: availableMethods,
@@ -273,8 +255,8 @@ const SaveInStorage = (
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 20,
-      gcTime: 1000 * 40,
+      staleTime: 1000 * 60 * 1,
+      gcTime: 1000 * 60 * 2,
       refetchOnWindowFocus: false,
       retry: 1,
     },

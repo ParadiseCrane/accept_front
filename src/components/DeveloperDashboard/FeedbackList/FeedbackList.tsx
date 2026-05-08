@@ -3,6 +3,7 @@ import { IFeedbackMessage } from "@custom-types/data/IFeedbackMessage";
 import { setter } from "@custom-types/ui/atomic";
 import { IListAction, IListMessage } from "@custom-types/ui/IListMessage";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { Badge } from "@mantine/core";
 import MessageList from "@ui/MessageList/MessageList";
 import { requestWithError } from "@utils/requestWithError";
@@ -11,7 +12,6 @@ import { FC, memo, useCallback, useMemo } from "react";
 import { IconMailOpened, IconTrash } from "@tabler/icons-react";
 
 import styles from "./feedbackList.module.css";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const FeedbackList: FC<{}> = () => {
   const { locale, lang } = useLocale();
@@ -25,7 +25,7 @@ const FeedbackList: FC<{}> = () => {
     [],
   );
 
-  const { data, loading, refetch } = useTanstackRequest<{}, IFeedbackMessage[]>(
+  const { data, loading, refetch } = useRequest<{}, IFeedbackMessage[]>(
     "feedback",
     "GET",
     undefined,

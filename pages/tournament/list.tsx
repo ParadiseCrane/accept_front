@@ -8,6 +8,7 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { useUser } from "@hooks/useUser";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import tableStyles from "@styles/ui/customTable.module.css";
@@ -19,6 +20,7 @@ import Title from "@ui/Title/Title";
 import { customTableSort } from "@utils/customTableSort";
 import { getLocalDate } from "@utils/datetime";
 import { hasSubarray } from "@utils/hasSubarray";
+import { mapTournamentStatus } from "@utils/mapStatus";
 import Fuse from "fuse.js";
 import Link from "next/link";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
@@ -30,7 +32,6 @@ import {
 } from "@tabler/icons-react";
 import { useViewportSize } from "@mantine/hooks";
 import clsx from "clsx";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 interface Item {
   value: any;
@@ -330,7 +331,7 @@ function TournamentList() {
     [tags],
   );
 
-  const { data, loading } = useTanstackRequest<
+  const { data, loading } = useRequest<
     {},
     ITournamentListBundle,
     {

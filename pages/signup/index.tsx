@@ -3,6 +3,7 @@ import { IOrganization } from "@custom-types/data/IOrganization";
 import { IRegUser } from "@custom-types/data/IUser";
 import { SelectItem } from "@custom-types/ui/atomic";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { LoginLayout } from "@layouts/LoginLayout";
 import { rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -24,7 +25,6 @@ import {
   IconShieldLock,
 } from "@tabler/icons-react";
 import { useAnalytics } from "@hooks/useAnalytics";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const stepFields = [
   ["login"],
@@ -41,7 +41,7 @@ function SignUp() {
     data: organizations,
     loading: organizations_loading,
     error,
-  } = useTanstackRequest<object, IOrganization[], SelectItem[]>(
+  } = useRequest<object, IOrganization[], SelectItem[]>(
     "organization/registration",
     "GET",
     undefined,

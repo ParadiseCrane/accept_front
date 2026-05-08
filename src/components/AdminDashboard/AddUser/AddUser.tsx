@@ -2,6 +2,7 @@
 import { IRole } from "@custom-types/data/atomic";
 import { IGroup } from "@custom-types/data/IGroup";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { useForm } from "@mantine/form";
 import { Button, TextInput } from "@ui/basics";
 import { GroupSelector, SingleRoleSelector } from "@ui/selectors";
@@ -9,7 +10,6 @@ import { requestWithNotify } from "@utils/requestWithNotify";
 import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import styles from "./addUser.module.css";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 const AddUser: FC<{}> = () => {
   const form = useForm({
@@ -51,7 +51,7 @@ const AddUser: FC<{}> = () => {
   });
   const { locale, lang } = useLocale();
 
-  const { data, loading } = useTanstackRequest<
+  const { data, loading } = useRequest<
     {},
     {
       groups: IGroup[];

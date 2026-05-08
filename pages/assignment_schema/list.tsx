@@ -8,6 +8,7 @@ import { BaseSearch } from "@custom-types/data/request";
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { MultiSelect, Tip } from "@ui/basics";
@@ -21,7 +22,6 @@ import Link from "next/link";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
 import clsx from "clsx";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 interface Item {
   value: any;
@@ -187,7 +187,7 @@ function AssignmentList() {
     [tags],
   );
 
-  const { data, loading } = useTanstackRequest<
+  const { data, loading } = useRequest<
     {},
     IAssignmentSchemaListBundle,
     {

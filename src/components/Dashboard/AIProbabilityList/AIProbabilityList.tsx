@@ -10,6 +10,7 @@ import {
 import { ILocale } from "@custom-types/ui/ILocale";
 import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
+import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { default as AIProbabilityListUI } from "@ui/AIProbabilityList/AIProbabilityList";
 import { TaskSelect, UserSelect } from "@ui/selectors";
@@ -21,7 +22,6 @@ import { FC, memo, useCallback, useState } from "react";
 import styles from "./aiProbabilityList.module.css";
 import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import { useTanstackRequest } from "@hooks/useTanstackRequest";
 
 export type TogglerValue = "date" | "ai_generated";
 
@@ -174,13 +174,13 @@ const AIProbabilityList: FC<{
     [type, spec, aiPercentage],
   );
 
-  const { data } = useTanstackRequest<{}, ITasksUsersBundle>(
+  const { data } = useRequest<{}, ITasksUsersBundle>(
     `${type}/bundle/tasks-users/${spec}`,
     "GET",
     undefined,
   );
 
-  const { data: userData } = useTanstackRequest<{}, IParticipantListBundle>(
+  const { data: userData } = useRequest<{}, IParticipantListBundle>(
     `${type}/bundle-participants/${spec}`,
     "GET",
     undefined,
