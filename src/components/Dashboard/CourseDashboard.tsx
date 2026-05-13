@@ -33,6 +33,7 @@ import { tooltipOpenDelay } from "@constants/Duration";
 import styles from "./dashboard.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
 
 const CourseDashboard: FC<{
   course: ICourse;
@@ -47,7 +48,7 @@ const CourseDashboard: FC<{
 
   const [activeModal, setActiveModal] = useState(false);
 
-  const links = useMemo(() => {
+  const links = useMemo((): IMenuLink[] => {
     const base = [
       {
         icon: <IconArticle color="var(--secondary)" />,

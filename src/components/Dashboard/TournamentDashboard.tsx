@@ -71,7 +71,7 @@ const TournamentDashboard: FC<{
 
   const { hasNewMessages } = useChatHosts();
 
-  const links = useMemo(() => {
+  const links = useMemo((): IMenuLink[] => {
     const isTeam = tournament?.maxTeamSize !== 1;
 
     const base = [

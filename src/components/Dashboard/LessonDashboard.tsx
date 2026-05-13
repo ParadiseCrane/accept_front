@@ -26,6 +26,7 @@ import { useCourse } from "@hooks/useCourse";
 import { useRouter, useSearchParams } from "next/navigation";
 import Results from "./Results/Results";
 import { LoadingOverlay } from "@mantine/core";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
 
 const LessonDashboard: FC<{
   lesson: ILesson;
@@ -39,7 +40,7 @@ const LessonDashboard: FC<{
   const groupSpec = searchParams?.get("group") ?? undefined;
   const endDatePlaceholder = useMemo(() => new Date(2099, 1, 1), []);
 
-  const links = useMemo(() => {
+  const links = useMemo((): IMenuLink[] => {
     if (!course) return [];
 
     const base = [

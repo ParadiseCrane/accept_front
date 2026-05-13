@@ -69,7 +69,7 @@ const AssignmentDashboard: FC<{
   }, [data]);
 
   const links = useMemo(
-    () => [
+    (): IMenuLink[] => [
       {
         section: "assignment",
         title: locale.dashboard.assignment.mainInfo,

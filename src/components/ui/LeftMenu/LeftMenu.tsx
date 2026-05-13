@@ -2,7 +2,7 @@
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
 import { Box, NavLink, Tabs } from "@mantine/core";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FC, ReactNode, memo, useCallback } from "react";
+import { FC, ReactNode, memo, useCallback, useEffect } from "react";
 import styles from "./leftMenu.module.css";
 
 interface ILeftMenuProps {
@@ -16,28 +16,59 @@ const LeftMenu: FC<ILeftMenuProps> = ({ links, topContent, children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentSection = searchParams?.get("section") || links[0]?.section;
+  const currentSection = searchParams?.get("section");
 
-  const changeParams = useCallback(
-    (section: string) => {
+  const updateUrl = useCallback(
+    (section: string, mode: "push" | "replace" = "replace") => {
       const params = new URLSearchParams(searchParams?.toString() || "");
+
+      if (params.get("section") === section) return;
+
       params.set("section", section);
-      router.replace(`${pathname}?${params.toString()}`);
+      const url = `${pathname}?${params.toString()}`;
+
+      if (mode === "push") {
+        router.push(url, { scroll: false });
+      } else {
+        router.replace(url, { scroll: false });
+      }
     },
     [pathname, router, searchParams],
   );
+
+  useEffect(() => {
+    if (!links || links.length === 0) return;
+
+    if (!currentSection) {
+      updateUrl(links[0].section, "replace");
+      return;
+    }
+
+    const isValid = links.some((link) => link.section === currentSection);
+
+    if (!isValid) {
+      updateUrl(links[0].section, "replace");
+    }
+  }, [links.length, currentSection, updateUrl]);
+
+  const activeValue = currentSection || links[0]?.section;
 
   return (
     <>
       <div className={styles.tabletWrapper}>
         <Tabs
-          value={currentSection}
-          onChange={(value) => value && changeParams(value)}
+          value={activeValue}
+          onChange={(value) => value && updateUrl(value, "push")}
         >
           <Tabs.List grow justify="center">
             {links.map((e) => (
               <Tabs.Tab value={e.section ?? ""} key={e.section}>
-                <NavLink label={e.title} leftSection={e.icon} component="div" />
+                <NavLink
+                  label={e.title}
+                  leftSection={e.icon}
+                  component="div"
+                  p={0} // Убираем падинги, так как NavLink внутри Tab
+                />
               </Tabs.Tab>
             ))}
           </Tabs.List>
@@ -52,8 +83,8 @@ const LeftMenu: FC<ILeftMenuProps> = ({ links, topContent, children }) => {
             {links.map((element) => (
               <NavLink
                 key={element.section}
-                active={element.section === currentSection}
-                onClick={() => changeParams(element.section!)}
+                active={element.section === activeValue}
+                onClick={() => updateUrl(element.section!, "push")}
                 label={element.title}
                 leftSection={element.icon}
               />

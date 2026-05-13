@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import UnitMain from "./UnitMain/UnitMain";
 import GroupOpenness from "./GroupOpenness/GroupOpenness";
 import Moderators from "./Moderators/Moderators";
+import { IMenuLink } from "@custom-types/ui/IMenuLink";
 
 const UnitDashboard: FC<{
   unit: IUnit;
@@ -36,7 +37,7 @@ const UnitDashboard: FC<{
   const { locale } = useLocale();
   // const { hasNewMessages } = useChatHosts();
 
-  const links = useMemo(() => {
+  const links = useMemo((): IMenuLink[] => {
     const base = [
       {
         icon: <IconArticle color="var(--secondary)" />,
