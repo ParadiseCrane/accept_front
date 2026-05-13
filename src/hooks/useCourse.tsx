@@ -25,7 +25,7 @@ interface CourseInfo {
   isModerator: boolean;
   isAuthor: boolean;
   item: string | null;
-  groups: IGroupBaseInfo[];
+  groups: IGroupBaseInfo[] | undefined;
 }
 
 const CourseContext = createContext<CourseInfo>({
@@ -62,7 +62,7 @@ export function CourseProvider({
   const [isModerator, setIsModerator] = useState(
     initialData?.has_moderate_rights || false,
   );
-  const [groups, setGroups] = useState<IGroupBaseInfo[]>([]);
+  const [groups, setGroups] = useState<IGroupBaseInfo[] | undefined>(undefined);
   const searchParams = useSearchParams();
 
   const fetchData = useCallback(async () => {
@@ -102,12 +102,13 @@ export function CourseProvider({
       );
       if (!res.error) setGroups(res.response);
     } catch (err) {
+      setGroups([]);
       setError(err instanceof Error ? err.message : "Unknown error");
     }
   }, [spec]);
 
   const onGroupDelete = useCallback((spec: string) => {
-    setGroups((prev) => prev.filter((e) => e.spec !== spec));
+    setGroups((prev) => prev?.filter((e) => e.spec !== spec));
   }, []);
 
   useEffect(() => {
