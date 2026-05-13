@@ -1,25 +1,19 @@
 "use client";
+
 import NotificationList from "@components/Notification/List/NotificationList";
 import AssignmentList from "@components/Profile/AssignmentList/AssignmentList";
 import AttemptListProfile from "@components/Profile/AttemptListProfile/AttemptListProfile";
 import CreateNotification from "@components/Profile/CreateNotification/CreateNotification";
 import ProfileInfo from "@components/Profile/ProfileInfo/ProfileInfo";
 import Settings from "@components/Profile/Settings/Settings";
-import {
-  IAttemptInfo,
-  IFullProfileBundle,
-  IRatingInfo,
-  ITaskInfo,
-} from "@custom-types/data/IProfileInfo";
-import { IUser } from "@custom-types/data/IUser";
-import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { IFullProfileBundle } from "@custom-types/data/IProfileInfo";
 import { useBackNotifications } from "@hooks/useBackNotifications";
 import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
 import { Indicator, UserAvatar } from "@ui/basics";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
-import { useRouter } from "next/router";
-import { FC, memo, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FC, memo, useMemo } from "react";
 import {
   IconAlignRight,
   IconBellPlus,
@@ -31,119 +25,6 @@ import {
 
 import styles from "./profile.module.css";
 
-const getLinks = ({
-  user,
-  attempt_info,
-  task_info,
-  rating_info,
-  isTeacher,
-  locale,
-  unviewed,
-}: {
-  user: IUser;
-  attempt_info: IAttemptInfo;
-  task_info: ITaskInfo;
-  rating_info: IRatingInfo | undefined;
-  isTeacher: boolean;
-  locale: any;
-  unviewed: number;
-}) => {
-  const links: IMenuLink[] = isTeacher
-    ? [
-        {
-          page: (
-            <ProfileInfo
-              user={user}
-              attempt_info={attempt_info}
-              task_info={task_info}
-              rating_info={rating_info}
-            />
-          ),
-          icon: <IconRobot color="var(--secondary)" />,
-          title: locale.profile.profile,
-          section: "profile",
-        },
-        {
-          page: <NotificationList />,
-          icon: (
-            <Indicator disabled={unviewed <= 0} size={8}>
-              <IconBellRinging color="var(--secondary)" />
-            </Indicator>
-          ),
-          title: locale.profile.notification,
-          section: "notifications",
-        },
-        {
-          page: <AssignmentList />,
-          icon: <IconChalkboard color="var(--secondary)" />,
-          title: locale.profile.assignments,
-          section: "assignments",
-        },
-        {
-          page: <AttemptListProfile />,
-          icon: <IconAlignRight color="var(--secondary)" />,
-          title: locale.profile.attempts,
-          section: "attempts",
-        },
-        {
-          page: <CreateNotification />,
-          icon: <IconBellPlus color="var(--secondary)" />,
-          title: locale.profile.createNotification,
-          section: "create_notification",
-        },
-        {
-          page: <Settings user={user} />,
-          icon: <SettingsIcon color="var(--secondary)" />,
-          title: locale.profile.settings,
-          section: "settings",
-        },
-      ]
-    : [
-        {
-          page: (
-            <ProfileInfo
-              user={user}
-              attempt_info={attempt_info}
-              task_info={task_info}
-              rating_info={rating_info}
-            />
-          ),
-          icon: <IconRobot color="var(--secondary)" />,
-          title: locale.profile.profile,
-          section: "profile",
-        },
-        {
-          page: <NotificationList />,
-          icon: (
-            <Indicator disabled={unviewed <= 0} size={8}>
-              <IconBellRinging color="var(--secondary)" />
-            </Indicator>
-          ),
-          title: locale.profile.notification,
-          section: "notifications",
-        },
-        {
-          page: <AssignmentList />,
-          icon: <IconChalkboard color="var(--secondary)" />,
-          title: locale.profile.assignments,
-          section: "assignments",
-        },
-        {
-          page: <AttemptListProfile />,
-          icon: <IconAlignRight color="var(--secondary)" />,
-          title: locale.profile.attempts,
-          section: "attempts",
-        },
-        {
-          page: <Settings user={user} />,
-          icon: <SettingsIcon color="var(--secondary)" />,
-          title: locale.profile.settings,
-          section: "settings",
-        },
-      ];
-  return links;
-};
-
 const Profile: FC<IFullProfileBundle> = ({
   user,
   attempt_info,
@@ -151,20 +32,82 @@ const Profile: FC<IFullProfileBundle> = ({
   rating_info,
 }) => {
   const { unviewed } = useBackNotifications();
-
   const { locale } = useLocale();
-
   const { isTeacher } = useUser();
+  const searchParams = useSearchParams();
 
-  const links = getLinks({
-    attempt_info: attempt_info,
-    isTeacher: isTeacher,
-    locale: locale,
-    rating_info: rating_info,
-    task_info: task_info,
-    unviewed: unviewed,
-    user: user,
-  });
+  const links = useMemo(() => {
+    const base = [
+      {
+        icon: <IconRobot color="var(--secondary)" />,
+        title: locale.profile.profile,
+        section: "profile",
+      },
+      {
+        icon: (
+          <Indicator disabled={unviewed <= 0} size={8}>
+            <IconBellRinging color="var(--secondary)" />
+          </Indicator>
+        ),
+        title: locale.profile.notification,
+        section: "notifications",
+      },
+      {
+        icon: <IconChalkboard color="var(--secondary)" />,
+        title: locale.profile.assignments,
+        section: "assignments",
+      },
+      {
+        icon: <IconAlignRight color="var(--secondary)" />,
+        title: locale.profile.attempts,
+        section: "attempts",
+      },
+    ];
+
+    if (isTeacher) {
+      base.push({
+        icon: <IconBellPlus color="var(--secondary)" />,
+        title: locale.profile.createNotification,
+        section: "create_notification",
+      });
+    }
+
+    base.push({
+      icon: <SettingsIcon color="var(--secondary)" />,
+      title: locale.profile.settings,
+      section: "settings",
+    });
+
+    return base;
+  }, [locale, unviewed, isTeacher]);
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    switch (currentSection) {
+      case "profile":
+        return (
+          <ProfileInfo
+            user={user}
+            attempt_info={attempt_info}
+            task_info={task_info}
+            rating_info={rating_info}
+          />
+        );
+      case "notifications":
+        return <NotificationList />;
+      case "assignments":
+        return <AssignmentList />;
+      case "attempts":
+        return <AttemptListProfile />;
+      case "create_notification":
+        return isTeacher ? <CreateNotification /> : null;
+      case "settings":
+        return <Settings user={user} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <LeftMenu
@@ -178,7 +121,9 @@ const Profile: FC<IFullProfileBundle> = ({
           </div>
         </div>
       }
-    />
+    >
+      {renderActivePage()}
+    </LeftMenu>
   );
 };
 

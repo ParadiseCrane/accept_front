@@ -1,11 +1,10 @@
 "use client";
-import { IMenuLink } from "@custom-types/ui/IMenuLink";
+
 import { useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
-import { useUser } from "@hooks/useUser";
 import { Indicator, Tip } from "@ui/basics";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
-import { FC, memo, useEffect, useMemo } from "react";
+import { FC, memo, useMemo } from "react";
 import { IconMessages, IconTable, IconUsers } from "@tabler/icons-react";
 import {
   IconArticle,
@@ -26,6 +25,7 @@ import Moderators from "./Moderators/Moderators";
 import { useCourse } from "@hooks/useCourse";
 import { useRouter, useSearchParams } from "next/navigation";
 import Results from "./Results/Results";
+import { LoadingOverlay } from "@mantine/core";
 
 const LessonDashboard: FC<{
   lesson: ILesson;
@@ -34,22 +34,21 @@ const LessonDashboard: FC<{
   const { course, isAuthor } = useCourse();
   const router = useRouter();
   const searchParams = useSearchParams();
+  // const { hasNewMessages } = useChatHosts();
+
   const groupSpec = searchParams?.get("group") ?? undefined;
   const endDatePlaceholder = useMemo(() => new Date(2099, 1, 1), []);
 
-  const { hasNewMessages } = useChatHosts();
-
-  const links: IMenuLink[] = useMemo(() => {
+  const links = useMemo(() => {
     if (!course) return [];
-    let links: IMenuLink[] = [
+
+    const base = [
       {
-        page: <LessonMain lessonProps={lesson} />,
         icon: <IconArticle color="var(--secondary)" />,
         title: locale.dashboard.course.main,
         section: "main",
       },
       {
-        page: <CourseChatPage spec={lesson.spec} entity="lesson" />,
         icon: (
           <Indicator
             disabled
@@ -68,7 +67,51 @@ const LessonDashboard: FC<{
         section: "chat",
       },
       {
-        page: (
+        icon: <IconTable color="var(--secondary)" />,
+        title: locale.dashboard.course.results,
+        section: "results",
+      },
+      {
+        icon: <IconUserCog color="var(--secondary)" />,
+        title: locale.dashboard.course.moderators,
+        section: "moderators",
+      },
+      {
+        icon: <IconUsers color="var(--secondary)" />,
+        title: locale.dashboard.course.groupParticipants,
+        section: "participants",
+      },
+      {
+        icon: <IconBellPlus color="var(--secondary)" />,
+        title: locale.dashboard.course.createNotification,
+        section: "create_notification",
+      },
+    ];
+
+    if (isAuthor) {
+      base.splice(3, 0, {
+        icon: <IconList color="var(--secondary)" />,
+        title: locale.dashboard.course.allParticipants,
+        section: "all_participants",
+      });
+    }
+
+    return base;
+  }, [locale, course, isAuthor]);
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    if (!course)
+      return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
+
+    switch (currentSection) {
+      case "main":
+        return <LessonMain lessonProps={lesson} />;
+      case "chat":
+        return <CourseChatPage spec={lesson.spec} entity="lesson" />;
+      case "results":
+        return (
           <Results
             spec={lesson.spec}
             isFinished={false}
@@ -78,52 +121,29 @@ const LessonDashboard: FC<{
             is_team={false}
             groupSpec={groupSpec}
           />
-        ),
-        icon: <IconTable color="var(--secondary)" />,
-        title: locale.dashboard.course.results,
-        section: "results",
-      },
-      {
-        page: (
+        );
+      case "moderators":
+        return (
           <Moderators type={"course"} spec={course.spec} isAuthor={isAuthor} />
-        ),
-        icon: <IconUserCog color="var(--secondary)" />,
-        title: locale.dashboard.course.moderators,
-        section: "moderators",
-      },
-      {
-        page: <CourseParticipants type={"course"} spec={course.spec} />,
-        icon: <IconUsers color="var(--secondary)" />,
-        title: locale.dashboard.course.groupParticipants,
-        section: "participants",
-      },
-      {
-        page: <CreateNotificationCourse spec={course.spec} type="course" />,
-        icon: <IconBellPlus color="var(--secondary)" />,
-        title: locale.dashboard.course.createNotification,
-        section: "create_notification",
-      },
-    ];
-
-    if (isAuthor) {
-      links.splice(3, 0, {
-        page: (
+        );
+      case "participants":
+        return <CourseParticipants type={"course"} spec={course.spec} />;
+      case "all_participants":
+        return (
           <CourseParticipants
             type={"course"}
             spec={course.spec}
             allParticipants
           />
-        ),
-        icon: <IconList color="var(--secondary)" />,
-        title: locale.dashboard.course.allParticipants,
-        section: "all_participants",
-      });
+        );
+      case "create_notification":
+        return <CreateNotificationCourse spec={course.spec} type="course" />;
+      default:
+        return <LessonMain lessonProps={lesson} />;
     }
+  };
 
-    return links;
-  }, [lesson, locale, hasNewMessages, course, isAuthor, groupSpec]);
-
-  if (!course) return null;
+  if (!course) return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
 
   return (
     <LeftMenu
@@ -142,7 +162,9 @@ const LessonDashboard: FC<{
           <div className={styles.title}>{locale.course.backToCourseButton}</div>
         </Tip>
       }
-    />
+    >
+      {renderActivePage()}
+    </LeftMenu>
   );
 };
 

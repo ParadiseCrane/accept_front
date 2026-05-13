@@ -1,15 +1,15 @@
 "use client";
 
 import DeleteModal from "@components/Course/DeleteModal/DeleteModal";
-import { IMenuLink } from "@custom-types/ui/IMenuLink";
 import { useChatHosts } from "@hooks/useChatHosts";
 import { useLocale } from "@hooks/useLocale";
 import { useUser } from "@hooks/useUser";
 import { Indicator, Tip } from "@ui/basics";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
 import { FC, memo, useMemo, useState } from "react";
-import { IconMessages, IconUsers } from "@tabler/icons-react";
 import {
+  IconMessages,
+  IconUsers,
   IconUsersGroup,
   IconUserCog,
   IconArticle,
@@ -31,7 +31,7 @@ import CourseChatPage from "./CourseChatPage/CourseChatPage";
 import GroupOpenness from "./GroupOpenness/GroupOpenness";
 import { tooltipOpenDelay } from "@constants/Duration";
 import styles from "./dashboard.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
 
 const CourseDashboard: FC<{
@@ -40,29 +40,25 @@ const CourseDashboard: FC<{
   isAuthor: boolean;
 }> = ({ course, courseSpec, isAuthor }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { locale } = useLocale();
+  const { isTeacher } = useUser();
+  const { hasNewMessages } = useChatHosts();
 
   const [activeModal, setActiveModal] = useState(false);
 
-  const { isTeacher } = useUser();
-
-  const { hasNewMessages } = useChatHosts();
-
-  const links: IMenuLink[] = useMemo(() => {
-    let links: IMenuLink[] = [];
-    links = [
+  const links = useMemo(() => {
+    const base = [
       {
-        page: <CourseMain course={course} />,
         icon: <IconArticle color="var(--secondary)" />,
         title: locale.dashboard.course.main,
         section: "main",
       },
       {
-        page: <CourseChatPage spec={course.spec} />,
         icon: (
           <Indicator
             size={20}
-            disabled={false}
+            disabled={!hasNewMessages}
             offset={0}
             zIndex={100}
             processing
@@ -76,27 +72,21 @@ const CourseDashboard: FC<{
         section: "chat",
       },
       {
-        page: (
-          <Moderators type={"course"} spec={course.spec} isAuthor={isAuthor} />
-        ),
         icon: <IconUserCog color="var(--secondary)" />,
         title: locale.dashboard.course.moderators,
         section: "moderators",
       },
       {
-        page: <CourseParticipants type={"course"} spec={course.spec} />,
         icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.course.groupParticipants,
         section: "participants",
       },
       {
-        page: <CreateNotificationCourse spec={course.spec} type="course" />,
         icon: <IconBellPlus color="var(--secondary)" />,
         title: locale.dashboard.course.createNotification,
         section: "create_notification",
       },
       {
-        page: <GroupOpenness spec={course.spec} />,
         icon: <IconLockCog color="var(--secondary)" />,
         title: locale.dashboard.course.courseAccess,
         section: "access",
@@ -104,53 +94,70 @@ const CourseDashboard: FC<{
     ];
 
     if (isAuthor) {
-      links = [
-        ...links,
-        {
-          page: <Groups course_spec={course.spec} />,
-          icon: <IconUsersGroup color="var(--secondary)" />,
-          title: locale.dashboard.course.groups,
-          section: "groups",
-        },
-      ];
-      links.splice(3, 0, {
-        page: (
-          <CourseParticipants
-            type={"course"}
-            spec={course.spec}
-            allParticipants
-          />
-        ),
+      base.splice(3, 0, {
         icon: <IconList color="var(--secondary)" />,
         title: locale.dashboard.course.allParticipants,
         section: "all_participants",
       });
+      base.push({
+        icon: <IconUsersGroup color="var(--secondary)" />,
+        title: locale.dashboard.course.groups,
+        section: "groups",
+      });
     }
 
-    return links;
-  }, [hasNewMessages, locale, course, isAuthor]);
+    return base;
+  }, [hasNewMessages, locale, isAuthor]);
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    switch (currentSection) {
+      case "main":
+        return <CourseMain course={course} />;
+      case "chat":
+        return <CourseChatPage spec={course.spec} />;
+      case "moderators":
+        return (
+          <Moderators type="course" spec={course.spec} isAuthor={isAuthor} />
+        );
+      case "participants":
+        return <CourseParticipants type="course" spec={course.spec} />;
+      case "all_participants":
+        return (
+          <CourseParticipants
+            type="course"
+            spec={course.spec}
+            allParticipants
+          />
+        );
+      case "create_notification":
+        return <CreateNotificationCourse spec={course.spec} type="course" />;
+      case "access":
+        return <GroupOpenness spec={course.spec} />;
+      case "groups":
+        return <Groups course_spec={course.spec} />;
+      default:
+        return <CourseMain course={course} />;
+    }
+  };
 
   const actions: IStickyAction[] = useMemo(() => {
-    const innerActions: IStickyAction[] = [];
-
-    if (isAuthor) {
-      innerActions.push(
-        {
-          color: "green",
-          href: `/course/${courseSpec}/edit/${courseSpec}`,
-          icon: <IconPencil height={20} width={20} />,
-          description: locale.tip.sticky.course.edit("course"),
-        },
-        {
-          color: "red",
-          onClick: () => setActiveModal(true),
-          icon: <IconTrash height={20} width={20} />,
-          description: locale.tip.sticky.course.delete,
-        },
-      );
-    }
-
-    return innerActions;
+    if (!isAuthor) return [];
+    return [
+      {
+        color: "green",
+        href: `/course/${courseSpec}/edit/${courseSpec}`,
+        icon: <IconPencil height={20} width={20} />,
+        description: locale.tip.sticky.course.edit("course"),
+      },
+      {
+        color: "red",
+        onClick: () => setActiveModal(true),
+        icon: <IconTrash height={20} width={20} />,
+        description: locale.tip.sticky.course.delete,
+      },
+    ];
   }, [isAuthor, locale, courseSpec]);
 
   return (
@@ -179,7 +186,9 @@ const CourseDashboard: FC<{
             </div>
           </Tip>
         }
-      />
+      >
+        {renderActivePage()}
+      </LeftMenu>
     </>
   );
 };

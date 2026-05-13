@@ -1,10 +1,10 @@
 "use client";
-import { IMenuLink } from "@custom-types/ui/IMenuLink";
+
 import { useLocale } from "@hooks/useLocale";
 import LeftMenu from "@ui/LeftMenu/LeftMenu";
 import { FC, memo, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import {
-  IconAtom,
   IconBellRinging,
   IconDeviceAnalytics,
   IconListDetails,
@@ -21,51 +21,44 @@ import Executor from "./Executor/Executor";
 import FeedbackList from "./FeedbackList/FeedbackList";
 import NotificationList from "./NotificationList/NotificationList";
 import Organizations from "./Organizations/Organizations";
-// import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = () => {
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
 
-  const links: IMenuLink[] = useMemo(
+  const links = useMemo(
     () => [
       {
-        page: <FeedbackList />,
         icon: <IconUserExclamation color="var(--secondary)" />,
         title: locale.dashboard.developer.feedbackList,
         section: "feedback",
       },
       {
-        page: <CurrentAttempts />,
         icon: <IconTestPipe color="var(--secondary)" />,
         title: locale.dashboard.developer.currentAttempts.title,
         section: "current_attempts",
       },
       {
-        page: <AllAttempts />,
         icon: <IconTestPipe2 color="var(--secondary)" />,
         title: locale.dashboard.developer.allAttempts,
         section: "all_attempts",
       },
       {
-        page: <NotificationList />,
         icon: <IconBellRinging color="var(--secondary)" />,
         title: locale.dashboard.developer.notificationList,
         section: "notifications",
       },
       {
-        page: <Organizations />,
         icon: <IconListDetails color="var(--secondary)" />,
         title: locale.dashboard.developer.organizationList,
         section: "organizations",
       },
       {
-        page: <Executor />,
         icon: <IconTerminal color="var(--secondary)" />,
         title: locale.dashboard.developer.executor,
         section: "executor",
       },
       {
-        page: <Analytics />,
         icon: <IconDeviceAnalytics color="var(--secondary)" />,
         title: locale.dashboard.developer.analytics.title,
         section: "analytics",
@@ -73,11 +66,31 @@ const DeveloperDashboard: FC<{}> = () => {
     ],
     [locale],
   );
-  return (
-    <>
-      <LeftMenu links={links} />
-    </>
-  );
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    switch (currentSection) {
+      case "feedback":
+        return <FeedbackList />;
+      case "current_attempts":
+        return <CurrentAttempts />;
+      case "all_attempts":
+        return <AllAttempts />;
+      case "notifications":
+        return <NotificationList />;
+      case "organizations":
+        return <Organizations />;
+      case "executor":
+        return <Executor />;
+      case "analytics":
+        return <Analytics />;
+      default:
+        return <FeedbackList />;
+    }
+  };
+
+  return <LeftMenu links={links}>{renderActivePage()}</LeftMenu>;
 };
 
 export default memo(DeveloperDashboard);

@@ -38,11 +38,14 @@ import TaskList from "./TaskList/TaskList";
 import TeamList from "./TeamList/TeamList";
 import { useRequest } from "@hooks/useRequest";
 import { DEFAULT_REQUEST_CACHE_TIME } from "@constants/Limits";
+import { useSearchParams } from "next/navigation";
+import { LoadingOverlay } from "@mantine/core";
 
 const TournamentDashboard: FC<{
   spec: string;
 }> = ({ spec }) => {
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
 
   const [tournament, setTournament] = useState<ITournament>();
 
@@ -68,89 +71,41 @@ const TournamentDashboard: FC<{
 
   const { hasNewMessages } = useChatHosts();
 
-  const links: IMenuLink[] = useMemo(() => {
-    let links = [
+  const links = useMemo(() => {
+    const isTeam = tournament?.maxTeamSize !== 1;
+
+    const base = [
       {
-        page: tournament && (
-          <TimeInfo
-            type={"tournament"}
-            entity={{
-              title: tournament.title,
-              spec: tournament.spec,
-              creator: tournament.author,
-            }}
-            timeInfo={{
-              start: tournament.start,
-              end: tournament.end,
-              froze: tournament.frozeResults,
-              status: tournament.status.spec as 0 | 1 | 2,
-            }}
-            refetch={() => {}}
-          />
-        ),
-        icon: <IconVocabulary color="var(--secondary)" />,
-        title: locale.dashboard.tournament.mainInfo,
         section: "tournament",
+        title: locale.dashboard.tournament.mainInfo,
+        icon: <IconVocabulary color="var(--secondary)" />,
       },
       {
-        page: <ChatPage spec={spec} entity="tournament" />,
+        section: "chat",
+        title: locale.dashboard.tournament.chat,
         icon: (
           <Indicator
             disabled={!hasNewMessages}
-            size={20}
-            inline
-            offset={0}
-            zIndex={100}
             processing
             color="var(--accent)"
-            label={"New"}
+            label="New"
           >
             <IconMessages color="var(--secondary)" />
           </Indicator>
         ),
-        title: locale.dashboard.tournament.chat,
-        section: "chat",
       },
       {
-        page: tournament && (
-          <Results
-            spec={spec}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-            type={"tournament"}
-            full
-            is_team={tournament.maxTeamSize != 1}
-          />
-        ),
-        icon: <IconTable color="var(--secondary)" />,
-        title: locale.dashboard.tournament.results,
         section: "results",
+        title: locale.dashboard.tournament.results,
+        icon: <IconTable color="var(--secondary)" />,
       },
       {
-        page: tournament && (
-          <AttemptsList
-            key={"all"}
-            type={"tournament"}
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-          />
-        ),
-        icon: <IconAlignRight color="var(--secondary)" />,
-        title: locale.dashboard.tournament.attempts,
         section: "attempts",
+        title: locale.dashboard.tournament.attempts,
+        icon: <IconAlignRight color="var(--secondary)" />,
       },
       // AI-FEATURE FLAG
       // {
-      //   page: tournament && (
-      //     <AIProbabilityList
-      //       key={"all"}
-      //       type={"tournament"}
-      //       spec={tournament.spec}
-      //       shouldNotRefetch={tournament.status.spec != 1}
-      //     />
-      //   ),
       //   icon: (
       //     <Indicator
       //       size={"lg"}
@@ -166,77 +121,139 @@ const TournamentDashboard: FC<{
       //   section: "ai_probability",
       // },
       {
-        page: (
-          <ParticipantsListWithBan
-            type={"tournament"}
-            team={tournament?.maxTeamSize != 1}
-            spec={spec}
-          />
-        ),
-        icon: <IconUsers color="var(--secondary)" />,
-        title: locale.dashboard.tournament.participants,
         section: "participants",
+        title: locale.dashboard.tournament.participants,
+        icon: <IconUsers color="var(--secondary)" />,
       },
       {
-        page: <TaskList type={"tournament"} spec={spec} />,
-        icon: <IconPuzzle color="var(--secondary)" />,
-        title: locale.dashboard.tournament.tasks,
         section: "tasks",
+        title: locale.dashboard.tournament.tasks,
+        icon: <IconPuzzle color="var(--secondary)" />,
       },
       {
-        page: (
-          <RegistrationManagement
-            spec={spec}
-            maxTeamSize={tournament?.maxTeamSize || 1}
-          />
-        ),
-        icon: <IconAddressBook color="var(--secondary)" />,
-        title: locale.dashboard.tournament.registrationManagement,
         section: "registration",
+        title: locale.dashboard.tournament.registrationManagement,
+        icon: <IconAddressBook color="var(--secondary)" />,
       },
       {
-        page: tournament && (
-          <CreateNotification spec={tournament.spec} type="tournament" />
-        ),
-        icon: <IconBellPlus color="var(--secondary)" />,
-        title: locale.dashboard.tournament.createNotification,
         section: "create_notification",
+        title: locale.dashboard.tournament.createNotification,
+        icon: <IconBellPlus color="var(--secondary)" />,
       },
       {
-        page: tournament && (
-          <AttemptsList
-            key={"banned"}
-            type={"tournament"}
-            banned
-            spec={tournament.spec}
-            shouldNotRefetch={tournament.status.spec != 1}
-            isFinished={tournament.status.spec == 2}
-            endDate={tournament.end}
-          />
-        ),
-        icon: <IconBan color="var(--secondary)" />,
-        title: locale.dashboard.tournament.bannedAttempts,
         section: "banned_attempts",
+        title: locale.dashboard.tournament.bannedAttempts,
+        icon: <IconBan color="var(--secondary)" />,
       },
       {
-        page: tournament && <Settings tournament={tournament} />,
-        icon: <SettingsIcon color="var(--secondary)" />,
-        title: locale.dashboard.tournament.settings.self,
         section: "settings",
+        title: locale.dashboard.tournament.settings.self,
+        icon: <SettingsIcon color="var(--secondary)" />,
       },
     ];
 
-    if (tournament?.maxTeamSize != 1) {
-      links.splice(4, 0, {
-        page: <TeamList spec={spec} />,
-        icon: <IconUsers color="var(--secondary)" />,
-        title: locale.dashboard.tournament.teams,
+    if (isTeam) {
+      base.splice(4, 0, {
         section: "teams",
+        title: locale.dashboard.tournament.teams,
+        icon: <IconUsers color="var(--secondary)" />,
       });
     }
 
-    return links;
-  }, [tournament, hasNewMessages, locale, spec]);
+    return base;
+  }, [tournament?.maxTeamSize, hasNewMessages, locale]);
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    switch (currentSection) {
+      case "chat":
+        return <ChatPage spec={spec} entity="tournament" />;
+      case "tasks":
+        return <TaskList type="tournament" spec={spec} />;
+      case "teams":
+        return <TeamList spec={spec} />;
+    }
+
+    if (!tournament)
+      return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
+
+    const isTeam = tournament.maxTeamSize !== 1;
+
+    switch (currentSection) {
+      case "tournament":
+        return (
+          <TimeInfo
+            type="tournament"
+            entity={{
+              title: tournament.title,
+              spec: tournament.spec,
+              creator: tournament.author,
+            }}
+            timeInfo={{
+              start: tournament.start,
+              end: tournament.end,
+              froze: tournament.frozeResults,
+              status: tournament.status.spec as 0 | 1 | 2,
+            }}
+            refetch={() => {}}
+          />
+        );
+      case "results":
+        return (
+          <Results
+            spec={spec}
+            isFinished={tournament.status.spec === 2}
+            endDate={tournament.end}
+            type="tournament"
+            full
+            is_team={isTeam}
+          />
+        );
+      case "attempts":
+        return (
+          <AttemptsList
+            type="tournament"
+            spec={tournament.spec}
+            shouldNotRefetch={tournament.status.spec !== 1}
+            isFinished={tournament.status.spec === 2}
+            endDate={tournament.end}
+          />
+        );
+      case "participants":
+        return (
+          <ParticipantsListWithBan
+            type="tournament"
+            team={isTeam}
+            spec={spec}
+          />
+        );
+      case "registration":
+        return (
+          <RegistrationManagement
+            spec={spec}
+            maxTeamSize={tournament.maxTeamSize}
+          />
+        );
+      case "create_notification":
+        return <CreateNotification spec={tournament.spec} type="tournament" />;
+      case "banned_attempts":
+        return (
+          <AttemptsList
+            type="tournament"
+            banned
+            spec={tournament.spec}
+            shouldNotRefetch={tournament.status.spec !== 1}
+            isFinished={tournament.status.spec === 2}
+            endDate={tournament.end}
+          />
+        );
+      case "settings":
+        return <Settings tournament={tournament} />;
+      default:
+        return null;
+    }
+  };
 
   const [activeModal, setActiveModal] = useState(false);
 
@@ -282,7 +299,7 @@ const TournamentDashboard: FC<{
           <Sticky actions={actions} />
         </>
       )}
-      <LeftMenu links={links} />
+      <LeftMenu links={links}>{renderActivePage()}</LeftMenu>
     </>
   );
 };

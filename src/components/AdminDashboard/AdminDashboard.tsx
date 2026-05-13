@@ -17,44 +17,41 @@ import AddGrades from "./AddGrades/AddGrades";
 import AddUser from "./AddUser/AddUser";
 import AddUsers from "./AddUsers/AddUsers";
 import ChangeGrades from "./ChangeGrades/ChangeGrades";
+import { useSearchParams } from "next/navigation";
 
 const AdminDashboard: FC<{}> = () => {
   const { locale } = useLocale();
 
+  const searchParams = useSearchParams();
+
   const links: IMenuLink[] = useMemo(
-    () => [
+    (): IMenuLink[] => [
       {
-        page: <AssignmentList url="assignment/list" />,
         icon: <IconChalkboard color="var(--secondary)" />,
         title: locale.dashboard.admin.assignmentList,
         section: "assignments",
       },
       {
-        page: <AddUsers />,
         icon: <IconUsers color="var(--secondary)" />,
         title: locale.dashboard.admin.addUsers,
         section: "add_users",
       },
       {
-        page: <AddUser />,
         icon: <IconUserPlus color="var(--secondary)" />,
         title: locale.dashboard.admin.addUser,
         section: "add_user",
       },
       {
-        page: <AddGrade />,
         icon: <IconAlphabetCyrillic color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrade,
         section: "add_grade",
       },
       {
-        page: <AddGrades />,
         icon: <IconPlaylistAdd color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrades,
         section: "add_grades",
       },
       {
-        page: <ChangeGrades />,
         icon: <IconAB2 color="var(--secondary)" />,
         title: locale.dashboard.admin.changeGrades,
         section: "change_grades",
@@ -62,7 +59,29 @@ const AdminDashboard: FC<{}> = () => {
     ],
     [locale],
   );
-  return <LeftMenu links={links} />;
+
+  const currentSection = searchParams?.get("section") || links[0].section;
+
+  const renderActivePage = () => {
+    switch (currentSection) {
+      case "assignments":
+        return <AssignmentList url="assignment/list" />;
+      case "add_users":
+        return <AddUsers />;
+      case "add_user":
+        return <AddUser />;
+      case "add_grade":
+        return <AddGrade />;
+      case "add_grades":
+        return <AddGrades />;
+      case "change_grades":
+        return <ChangeGrades />;
+      default:
+        return <AssignmentList url="assignment/list" />;
+    }
+  };
+
+  return <LeftMenu links={links}>{renderActivePage()}</LeftMenu>;
 };
 
 export default memo(AdminDashboard);
