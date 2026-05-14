@@ -1,74 +1,67 @@
-.affix {
-  display: none;
+.affixRoot {
+  bottom: 50px !important;
+  left: 0 !important;
+  right: auto !important;
 }
 
-.affixMobile {
-  display: block;
-}
-
-.chatWrapper,
-.chatWrapperMobile {
+.chatWrapper {
   position: absolute;
   z-index: 100;
-  bottom: 0;
-  right: 100px;
-  height: 60vh;
-  width: 25vw;
-  min-width: 300px;
-  min-height: 200px;
   display: flex;
   flex-direction: column;
   background-color: #ffffffdd;
   outline: 2px var(--dark4) solid;
-  border-bottom: 0;
-  border-radius: 10px 10px 0 0;
   font-size: var(--font-size-s);
   padding-top: var(--spacer-xxs);
-}
 
-.chatWrapperMobile {
   left: 5px;
   bottom: 70px;
   border-radius: 10px;
   overflow: hidden;
   width: calc(100vw - 20px);
+  height: 60vh;
 }
 
 .iconWrapper {
-  width: 4rem;
-  height: 2.5rem;
-}
-
-.iconWrapperMobile {
   height: 4rem;
   width: 2.5rem;
 }
 
-.iconRoot:hover,
-.iconRootMobile:hover {
+.iconRoot {
   background-color: var(--secondary);
-}
-
-.iconRoot,
-.iconRootMobile {
-  background-color: var(--secondary);
-  border-radius: 10px 10px 0 0;
+  border-radius: 0 10px 10px 0;
   border-bottom: 0;
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
-.iconRootMobile {
-  border-radius: 0 10px 10px 0;
+.iconRoot:hover {
+  background-color: var(--secondary);
 }
 
 @media (min-width: 768px) {
-  .affixMobile {
-    display: none;
+  .affixRoot {
+    bottom: 0 !important;
+    right: 200px !important;
+    left: auto !important;
   }
 
-  .affix {
-    display: block;
+  .chatWrapper {
+    right: 100px;
+    left: auto;
+    bottom: 0;
+    width: 25vw;
+    min-width: 300px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .iconWrapper {
+    width: 4rem;
+    height: 2.5rem;
+  }
+
+  .iconRoot {
+    border-radius: 10px 10px 0 0;
   }
 }

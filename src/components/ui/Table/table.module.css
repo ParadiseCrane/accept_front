@@ -78,6 +78,11 @@
       flex-direction: column;
     }
   }
+
+  .searchWrapper {
+    flex-direction: column;
+    padding: 0 10px;
+  }
 }
 
 @media (min-width: 600px) {
@@ -96,26 +101,17 @@
   .pagesWrapper {
     flex-direction: row;
     gap: 10px;
-  }
 
-  & .total {
-    order: 0;
-    margin-right: auto;
+    & .total {
+      order: 0;
+      margin-right: auto;
+    }
   }
 
   .pageNavigationWrapper {
     margin-right: auto;
   }
-}
 
-@media (min-width: 320px) {
-  .searchWrapper {
-    flex-direction: column;
-    padding: 0 10px;
-  }
-}
-
-@media (min-width: 800px) {
   .searchWrapper {
     flex-direction: row;
     padding: 0 24px;

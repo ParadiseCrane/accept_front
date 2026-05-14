@@ -21,17 +21,8 @@ const ChatSticky: FC<{
   const [hasNew, setHasNew] = useState(false);
   const { user } = useUser();
 
-  const refMobile = useClickOutside(() => {
-    const { height } = refMobile.current.getBoundingClientRect();
-    if (height) {
-      setShowChat(false);
-    }
-  });
   const ref = useClickOutside(() => {
-    const { height } = ref.current.getBoundingClientRect();
-    if (height) {
-      setShowChat(false);
-    }
+    if (showChat) setShowChat(false);
   });
 
   const indicateNew = useCallback(() => {
@@ -39,97 +30,49 @@ const ChatSticky: FC<{
   }, [showChat]);
 
   return (
-    <>
-      <Affix
-        ref={refMobile}
-        position={{ bottom: 50, left: 0 }}
-        zIndex={200}
-        className={styles.affixMobile}
+    <Affix ref={ref} zIndex={200} className={styles.affixRoot}>
+      <div
+        className={styles.chatContainer}
+        style={{ visibility: showChat ? "visible" : "hidden" }}
       >
-        <div style={{ visibility: showChat ? "visible" : "hidden" }}>
-          {window && (
-            <Chat
-              entity={entity}
-              spec={spec}
-              host={host}
-              indicateNew={indicateNew}
-              opened={showChat}
-              isMessageMine={(message: IChatMessage) =>
-                !!user && message.author == user?.login
-              }
-              wrapperStyles={styles.chatWrapperMobile}
-              group_spec={group_spec}
-            />
-          )}
-        </div>
-        <Icon
-          onClick={() => {
-            setShowChat((value) => !value);
-            setHasNew(false);
-          }}
-          size={"xs"}
-          className={styles.iconRootMobile}
-          wrapperClassName={styles.iconWrapperMobile}
-        >
-          <Indicator
-            inline
-            disabled={!hasNew}
-            size={10}
-            offset={0}
-            zIndex={100}
-            processing
-            color="var(--accent)"
-          >
-            <IconMessageCircle2 color="white" />
-          </Indicator>
-        </Icon>
-      </Affix>
-      <Affix
-        ref={ref}
-        position={{ bottom: 0, right: "200px" }}
-        zIndex={100}
-        className={styles.affix}
+        {typeof window !== "undefined" && (
+          <Chat
+            entity={entity}
+            spec={spec}
+            host={host}
+            indicateNew={indicateNew}
+            opened={showChat}
+            isMessageMine={(message: IChatMessage) =>
+              !!user && message.author == user?.login
+            }
+            wrapperStyles={styles.chatWrapper}
+            group_spec={group_spec}
+          />
+        )}
+      </div>
+
+      <Icon
+        onClick={() => {
+          setShowChat((value) => !value);
+          setHasNew(false);
+        }}
+        size={"xs"}
+        className={styles.iconRoot}
+        wrapperClassName={styles.iconWrapper}
       >
-        <div style={{ visibility: showChat ? "visible" : "hidden" }}>
-          {window && (
-            <Chat
-              entity={entity}
-              spec={spec}
-              host={host}
-              indicateNew={indicateNew}
-              opened={showChat}
-              isMessageMine={(message: IChatMessage) =>
-                !!user && message.author == user?.login
-              }
-              wrapperStyles={styles.chatWrapper}
-              group_spec={group_spec}
-            />
-          )}
-        </div>
-        <Icon
-          onClick={() => {
-            setShowChat((value) => !value);
-            setHasNew(false);
-          }}
-          size={"xs"}
-          className={styles.iconRoot}
-          wrapperClassName={styles.iconWrapper}
+        <Indicator
+          inline
+          disabled={!hasNew}
+          size={10}
+          offset={0}
+          zIndex={100}
+          processing
+          color="var(--accent)"
         >
-          <Indicator
-            size={20}
-            inline
-            disabled={!hasNew}
-            offset={0}
-            zIndex={100}
-            processing
-            color="var(--accent)"
-            label={"New"}
-          >
-            <IconMessageCircle2 color="white" />
-          </Indicator>
-        </Icon>
-      </Affix>
-    </>
+          <IconMessageCircle2 color="white" />
+        </Indicator>
+      </Icon>
+    </Affix>
   );
 };
 
