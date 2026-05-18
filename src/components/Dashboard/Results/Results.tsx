@@ -47,6 +47,8 @@ const Results: FC<{
 
   const [displayMode, setDisplayMode] = useState<"verdict" | "score">("score");
 
+  const [userDataMode, setUserDataMode] = useState<"login" | "name">("name");
+
   const url = useMemo(() => `${type}/results/${spec}`, [spec, type]);
   const innerToDate = useMemo(
     () => (fetchDate == "end" ? endDate : undefined),
@@ -209,6 +211,20 @@ const Results: FC<{
           value={displayMode}
           onChange={(value) => setDisplayMode(value as "verdict" | "score")}
         />
+        <SegmentedControl
+          data={[
+            {
+              label: locale.assignment.name,
+              value: "name",
+            },
+            {
+              label: locale.assignment.login,
+              value: "login",
+            },
+          ]}
+          value={userDataMode}
+          onChange={(value) => setUserDataMode(value as "name" | "login")}
+        />
       </div>
 
       <LoadingOverlay visible={loading} />
@@ -254,7 +270,14 @@ const Results: FC<{
                     result.participant.banned && styles.profileWrapper,
                   )}
                 >
-                  <Tip label={result.participant.identifier} key={index}>
+                  <Tip
+                    label={
+                      userDataMode === "login"
+                        ? result.participant.label
+                        : result.participant.identifier
+                    }
+                    key={index}
+                  >
                     <Link
                       href={`/profile/${result.participant.identifier}`}
                       style={{
@@ -262,7 +285,9 @@ const Results: FC<{
                         color: result.participant.banned ? "red" : "inherit",
                       }}
                     >
-                      {result.participant.label}
+                      {userDataMode === "login"
+                        ? result.participant.identifier
+                        : result.participant.label}
                     </Link>
                   </Tip>
                   {result.participant.banned && (
