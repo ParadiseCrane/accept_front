@@ -4,8 +4,13 @@ import { Select } from "@ui/basics";
 import { FC, memo, useCallback, useMemo } from "react";
 
 import { VerdictItemProps, VerdictSelectProps } from "./VerdictSelect";
+import { IVerdict } from "@custom-types/data/atomic";
 
-const VerdictSingleSelect: FC<VerdictSelectProps> = ({
+interface Props extends VerdictSelectProps {
+  verdicts: IVerdict[];
+}
+
+const VerdictSingleSelect: FC<Props> = ({
   label,
   placeholder,
   verdicts,

@@ -23,7 +23,6 @@ import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useRequest } from "@hooks/useRequest";
 import { IVerdict } from "@custom-types/data/atomic";
-import { VerdictValues } from "@constants/Verdicts";
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -279,7 +278,6 @@ const AttemptList: FC<{
           label={locale.dashboard.attemptsList.verdict.label}
           placeholder={locale.dashboard.attemptsList.verdict.placeholder}
           nothingFound={locale.dashboard.attemptsList.verdict.nothingFound}
-          verdicts={VerdictValues}
           select={(verdicts: IVerdict[] | undefined) => {
             if (verdicts)
               setVerdictSearch(verdicts.map((verdict) => verdict.spec));
