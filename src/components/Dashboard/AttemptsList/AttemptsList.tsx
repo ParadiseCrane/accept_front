@@ -12,7 +12,7 @@ import { ITableColumn } from "@custom-types/ui/ITable";
 import { useLocale } from "@hooks/useLocale";
 import tableStyles from "@styles/ui/customTable.module.css";
 import { default as AttemptListUI } from "@ui/AttemptList/AttemptList";
-import { TaskSelect, UserSelect } from "@ui/selectors";
+import { TaskSelect, UserSelect, VerdictSelect } from "@ui/selectors";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
 import Link from "next/link";
@@ -22,6 +22,8 @@ import styles from "./attemptsList.module.css";
 import { Group, SegmentedControl, SelectProps } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useRequest } from "@hooks/useRequest";
+import { IVerdict } from "@custom-types/data/atomic";
+import { VerdictValues } from "@constants/Verdicts";
 
 const refactorAttempt = (
   attempt: IAttemptDisplay,
@@ -158,6 +160,7 @@ const AttemptList: FC<{
   const { locale } = useLocale();
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
+  const [verdictSearch, setVerdictSearch] = useState<number[]>([]);
 
   const [fetchDate, setFetchDate] = useState<"actual" | "end">(
     isFinished ? "end" : "actual",
@@ -269,6 +272,18 @@ const AttemptList: FC<{
           select={(tasks: ITaskBaseInfo[] | undefined) => {
             if (tasks) setTaskSearch(tasks.map((task) => task.spec));
             else setTaskSearch([]);
+          }}
+          multiple
+        />
+        <VerdictSelect
+          label={locale.dashboard.attemptsList.verdict.label}
+          placeholder={locale.dashboard.attemptsList.verdict.placeholder}
+          nothingFound={locale.dashboard.attemptsList.verdict.nothingFound}
+          verdicts={VerdictValues}
+          select={(verdicts: IVerdict[] | undefined) => {
+            if (verdicts)
+              setVerdictSearch(verdicts.map((verdict) => verdict.spec));
+            else setVerdictSearch([]);
           }}
           multiple
         />

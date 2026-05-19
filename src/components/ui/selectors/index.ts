@@ -1,12 +1,13 @@
-import AssignmentSchemaSelector from './AssignmentSchemaSelector/AssignmentSchemaSelector';
-import GroupSelector from './GroupSelector/GroupSelector';
-import RoleSelector from './RoleSelector/RoleSelector';
-import SingleRoleSelector from './SingleRoleSelector/SingleRoleSelector';
-import TagSelector from './TagSelector/TagSelector';
-import TaskSelect from './TaskSelect/TaskSelect';
-import TaskSelector from './TaskSelector/TaskSelector';
-import UserSelect from './UserSelect/UserSelect';
-import UserSelector from './UserSelector/UserSelector';
+import AssignmentSchemaSelector from "./AssignmentSchemaSelector/AssignmentSchemaSelector";
+import GroupSelector from "./GroupSelector/GroupSelector";
+import RoleSelector from "./RoleSelector/RoleSelector";
+import SingleRoleSelector from "./SingleRoleSelector/SingleRoleSelector";
+import TagSelector from "./TagSelector/TagSelector";
+import TaskSelect from "./TaskSelect/TaskSelect";
+import TaskSelector from "./TaskSelector/TaskSelector";
+import UserSelect from "./UserSelect/UserSelect";
+import UserSelector from "./UserSelector/UserSelector";
+import VerdictSelect from "./VerdictSelect/VerdictSelect";
 
 export {
   AssignmentSchemaSelector,
@@ -18,4 +19,5 @@ export {
   TaskSelector,
   UserSelect,
   UserSelector,
+  VerdictSelect,
 };
