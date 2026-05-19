@@ -42,6 +42,8 @@ const AttemptList: FC<{
   refactorAttempt: (_: IAttemptDisplay) => any;
   userSearch?: string[];
   taskSearch?: string[];
+  statusSearch?: number[];
+  verdictSearch?: number[];
   toDate?: Date;
   noDefault?: boolean;
   empty?: ReactNode;
@@ -58,6 +60,8 @@ const AttemptList: FC<{
   refactorAttempt,
   userSearch,
   taskSearch,
+  statusSearch,
+  verdictSearch,
   toDate,
   noDefault,
   empty,
@@ -132,6 +136,8 @@ const AttemptList: FC<{
         toDate,
         users: userSearch,
         tasks: taskSearch,
+        verdicts: verdictSearch,
+        statuses: statusSearch,
       },
       true,
     )
@@ -142,7 +148,17 @@ const AttemptList: FC<{
         setLoading(false);
       })
       .catch(onError);
-  }, [onError, processData, searchParams, taskSearch, toDate, url, userSearch]);
+  }, [
+    onError,
+    processData,
+    searchParams,
+    taskSearch,
+    toDate,
+    url,
+    userSearch,
+    statusSearch,
+    verdictSearch,
+  ]);
 
   const refetch = useCallback(async () => {
     if (activeTab && !shouldNotRefetch && needRefetch) {

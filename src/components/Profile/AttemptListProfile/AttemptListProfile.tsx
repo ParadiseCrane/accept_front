@@ -7,7 +7,7 @@ import { useLocale } from "@hooks/useLocale";
 import { useRequest } from "@hooks/useRequest";
 import tableStyles from "@styles/ui/customTable.module.css";
 import AttemptList from "@ui/AttemptList/AttemptList";
-import { TaskSelect } from "@ui/selectors";
+import { TaskSelect, VerdictSelect } from "@ui/selectors";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
 import Link from "next/link";
@@ -119,6 +119,8 @@ const AttemptListProfile: FC<{}> = () => {
   const { locale } = useLocale();
   const { width } = useViewportSize();
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
+  const [verdictSearch, setVerdictSearch] = useState<number[]>([]);
+  const [statusSearch, setStatusSearch] = useState<number[]>([]);
   const columns: ITableColumn[] = useMemo(
     () => initialColumns(locale, width),
     [locale, width],
@@ -149,6 +151,20 @@ const AttemptListProfile: FC<{}> = () => {
           additionalProps={{}}
           multiple
         ></TaskSelect>
+        <VerdictSelect
+          label={locale.dashboard.attemptsList.result.label}
+          placeholder={locale.dashboard.attemptsList.result.placeholder}
+          nothingFound={locale.dashboard.attemptsList.result.nothingFound}
+          verdictSelect={(verdicts: number[] | undefined) => {
+            if (verdicts) setVerdictSearch(verdicts);
+            else setVerdictSearch([]);
+          }}
+          statusSelect={(statuses: number[] | undefined) => {
+            if (statuses) setStatusSearch(statuses);
+            else setStatusSearch([]);
+          }}
+          multiple
+        />
       </div>
       <AttemptList
         key={taskSearch.toString()}
@@ -169,6 +185,8 @@ const AttemptListProfile: FC<{}> = () => {
           odd: tableStyles.odd,
         }}
         taskSearch={taskSearch}
+        verdictSearch={verdictSearch}
+        statusSearch={statusSearch}
       />
     </div>
   );

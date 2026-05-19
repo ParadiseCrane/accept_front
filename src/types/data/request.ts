@@ -30,6 +30,8 @@ export interface AIGenSearch extends BaseSearch {
 export interface UserTaskSearch extends DateSearch {
   users?: string[];
   tasks?: string[];
+  verdicts?: number[];
+  statuses?: number[];
 }
 
 export interface AIGenUserTaskSearch extends AIGenSearch {

@@ -9,10 +9,10 @@ export const attemptsList = {
     placeholder: "Select users",
     nothingFound: "User list is empty",
   },
-  verdict: {
-    label: "Verdicts",
-    placeholder: "Select verdicts",
-    nothingFound: "Verdict list is empty",
+  result: {
+    label: "Results",
+    placeholder: "Select results",
+    nothingFound: "Result list is empty",
   },
   empty: "Attempts were not found",
 };

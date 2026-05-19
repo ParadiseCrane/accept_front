@@ -3,11 +3,16 @@ import { ComboboxItem } from "@mantine/core";
 import { MultiSelect } from "@ui/basics";
 import { FC, memo, useCallback, useMemo } from "react";
 
-import { VerdictItemProps, VerdictSelectProps } from "./VerdictSelect";
+import {
+  ISelectorItem,
+  VerdictItemProps,
+  VerdictSelectProps,
+} from "./VerdictSelect";
 import { IVerdict } from "@custom-types/data/atomic";
 
 interface Props extends VerdictSelectProps {
-  verdicts: IVerdict[];
+  verdicts: ISelectorItem[];
+  select: (_: ISelectorItem[] | undefined) => void;
 }
 
 const VerdictMultiSelect: FC<Props> = ({
@@ -24,7 +29,7 @@ const VerdictMultiSelect: FC<Props> = ({
       verdicts.map(
         (item) =>
           ({
-            label: item.fullText,
+            label: item.label,
             value: item.spec.toString(),
           }) as VerdictItemProps,
       ),

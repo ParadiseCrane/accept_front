@@ -160,6 +160,7 @@ const AttemptList: FC<{
   const [userSearch, setUserSearch] = useState<string[]>([]);
   const [taskSearch, setTaskSearch] = useState<string[]>([]);
   const [verdictSearch, setVerdictSearch] = useState<number[]>([]);
+  const [statusSearch, setStatusSearch] = useState<number[]>([]);
 
   const [fetchDate, setFetchDate] = useState<"actual" | "end">(
     isFinished ? "end" : "actual",
@@ -275,13 +276,16 @@ const AttemptList: FC<{
           multiple
         />
         <VerdictSelect
-          label={locale.dashboard.attemptsList.verdict.label}
-          placeholder={locale.dashboard.attemptsList.verdict.placeholder}
-          nothingFound={locale.dashboard.attemptsList.verdict.nothingFound}
-          select={(verdicts: IVerdict[] | undefined) => {
-            if (verdicts)
-              setVerdictSearch(verdicts.map((verdict) => verdict.spec));
+          label={locale.dashboard.attemptsList.result.label}
+          placeholder={locale.dashboard.attemptsList.result.placeholder}
+          nothingFound={locale.dashboard.attemptsList.result.nothingFound}
+          verdictSelect={(verdicts: number[] | undefined) => {
+            if (verdicts) setVerdictSearch(verdicts);
             else setVerdictSearch([]);
+          }}
+          statusSelect={(statuses: number[] | undefined) => {
+            if (statuses) setStatusSearch(statuses);
+            else setStatusSearch([]);
           }}
           multiple
         />
@@ -312,6 +316,8 @@ const AttemptList: FC<{
         }}
         userSearch={userSearch}
         taskSearch={taskSearch}
+        statusSearch={statusSearch}
+        verdictSearch={verdictSearch}
       />
     </div>
   );

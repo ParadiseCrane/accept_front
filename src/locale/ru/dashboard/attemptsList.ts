@@ -9,10 +9,10 @@ export const attemptsList = {
     placeholder: "Выберите участников",
     nothingFound: "Список участников пуст",
   },
-  verdict: {
-    label: "Вердикты",
-    placeholder: "Выберите вердикты",
-    nothingFound: "Список вердиктов пуст",
+  result: {
+    label: "Результаты",
+    placeholder: "Выберите результаты",
+    nothingFound: "Список результатов пуст",
   },
   empty: "Ни одной попытки не найдено",
 };

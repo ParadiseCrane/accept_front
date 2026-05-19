@@ -8,8 +8,10 @@ import AttemptList from "@ui/AttemptList/AttemptList";
 import VerdictWrapper from "@ui/VerdictWrapper/VerdictWrapper";
 import { getLocalDate } from "@utils/datetime";
 import Link from "next/link";
-import { FC, memo, useMemo } from "react";
+import { FC, memo, useMemo, useState } from "react";
 import clsx from "clsx";
+import { VerdictSelect } from "@ui/selectors";
+import { useLocale } from "@hooks/useLocale";
 
 const refactorAttempt = (attempt: IAttemptDisplay): any => ({
   ...attempt,
@@ -88,25 +90,46 @@ const Results: FC<{
   setShouldForceRefetch: (value: boolean) => void;
 }> = ({ spec, activeTab, shouldForceRefetch, setShouldForceRefetch }) => {
   const url = useMemo(() => `task/attempts/${spec}`, [spec]);
+  const { locale } = useLocale();
+  const [verdictSearch, setVerdictSearch] = useState<number[]>([]);
+  const [statusSearch, setStatusSearch] = useState<number[]>([]);
   return (
-    <AttemptList
-      noDefault
-      key={url}
-      url={url}
-      initialColumns={initialColumns}
-      refactorAttempt={refactorAttempt}
-      activeTab={activeTab === "results"}
-      classNames={{
-        wrapper: clsx(tableStyles.wrapper, styles.wrapper),
-        table: tableStyles.table,
-        headerCell: styles.headerCell,
-        cell: styles.cell,
-        even: tableStyles.even,
-        odd: tableStyles.odd,
-      }}
-      shouldForceRefetch={shouldForceRefetch}
-      onRefetch={() => setShouldForceRefetch(false)}
-    />
+    <div className={styles.wrapper}>
+      <VerdictSelect
+        label={locale.dashboard.attemptsList.result.label}
+        placeholder={locale.dashboard.attemptsList.result.placeholder}
+        nothingFound={locale.dashboard.attemptsList.result.nothingFound}
+        verdictSelect={(verdicts: number[] | undefined) => {
+          if (verdicts) setVerdictSearch(verdicts);
+          else setVerdictSearch([]);
+        }}
+        statusSelect={(statuses: number[] | undefined) => {
+          if (statuses) setStatusSearch(statuses);
+          else setStatusSearch([]);
+        }}
+        multiple
+      />
+      <AttemptList
+        noDefault
+        key={url}
+        url={url}
+        initialColumns={initialColumns}
+        refactorAttempt={refactorAttempt}
+        activeTab={activeTab === "results"}
+        classNames={{
+          wrapper: tableStyles.wrapper,
+          table: tableStyles.table,
+          headerCell: styles.headerCell,
+          cell: styles.cell,
+          even: tableStyles.even,
+          odd: tableStyles.odd,
+        }}
+        shouldForceRefetch={shouldForceRefetch}
+        onRefetch={() => setShouldForceRefetch(false)}
+        verdictSearch={verdictSearch}
+        statusSearch={statusSearch}
+      />
+    </div>
   );
 };
 
