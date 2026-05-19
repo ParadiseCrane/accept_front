@@ -18,6 +18,7 @@ import AddUser from "./AddUser/AddUser";
 import AddUsers from "./AddUsers/AddUsers";
 import ChangeGrades from "./ChangeGrades/ChangeGrades";
 import { useSearchParams } from "next/navigation";
+import { LoadingOverlay } from "@mantine/core";
 
 const AdminDashboard: FC<{}> = () => {
   const { locale } = useLocale();
@@ -60,7 +61,7 @@ const AdminDashboard: FC<{}> = () => {
     [locale],
   );
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     switch (currentSection) {
@@ -77,7 +78,7 @@ const AdminDashboard: FC<{}> = () => {
       case "change_grades":
         return <ChangeGrades />;
       default:
-        return <AssignmentList url="assignment/list" />;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

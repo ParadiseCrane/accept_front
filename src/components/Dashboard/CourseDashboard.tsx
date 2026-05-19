@@ -34,6 +34,7 @@ import styles from "./dashboard.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import Sticky, { IStickyAction } from "@ui/Sticky/Sticky";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { LoadingOverlay } from "@mantine/core";
 
 const CourseDashboard: FC<{
   course: ICourse;
@@ -110,7 +111,7 @@ const CourseDashboard: FC<{
     return base;
   }, [hasNewMessages, locale, isAuthor]);
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     switch (currentSection) {
@@ -139,7 +140,7 @@ const CourseDashboard: FC<{
       case "groups":
         return <Groups course_spec={course.spec} />;
       default:
-        return <CourseMain course={course} />;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

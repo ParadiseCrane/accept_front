@@ -100,7 +100,7 @@ const LessonDashboard: FC<{
     return base;
   }, [locale, course, isAuthor]);
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     if (!course)
@@ -140,7 +140,7 @@ const LessonDashboard: FC<{
       case "create_notification":
         return <CreateNotificationCourse spec={course.spec} type="course" />;
       default:
-        return <LessonMain lessonProps={lesson} />;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

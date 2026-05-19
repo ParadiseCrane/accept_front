@@ -21,6 +21,7 @@ import Executor from "./Executor/Executor";
 import FeedbackList from "./FeedbackList/FeedbackList";
 import NotificationList from "./NotificationList/NotificationList";
 import Organizations from "./Organizations/Organizations";
+import { LoadingOverlay } from "@mantine/core";
 
 const DeveloperDashboard: FC<{}> = () => {
   const { locale } = useLocale();
@@ -67,7 +68,7 @@ const DeveloperDashboard: FC<{}> = () => {
     [locale],
   );
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     switch (currentSection) {
@@ -86,7 +87,7 @@ const DeveloperDashboard: FC<{}> = () => {
       case "analytics":
         return <Analytics />;
       default:
-        return <FeedbackList />;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

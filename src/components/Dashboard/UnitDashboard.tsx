@@ -26,6 +26,7 @@ import UnitMain from "./UnitMain/UnitMain";
 import GroupOpenness from "./GroupOpenness/GroupOpenness";
 import Moderators from "./Moderators/Moderators";
 import { IMenuLink } from "@custom-types/ui/IMenuLink";
+import { LoadingOverlay } from "@mantine/core";
 
 const UnitDashboard: FC<{
   unit: IUnit;
@@ -95,7 +96,7 @@ const UnitDashboard: FC<{
     return base;
   }, [locale, isAuthor]);
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     switch (currentSection) {
@@ -118,7 +119,7 @@ const UnitDashboard: FC<{
       case "access":
         return <GroupOpenness spec={unit.spec} />;
       default:
-        return <UnitMain unitProps={unit} />;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

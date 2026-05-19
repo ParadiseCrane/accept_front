@@ -10,7 +10,7 @@ function AdminDashboardPage() {
   return (
     <>
       <Title title={locale.titles.dashboard.admin} />
-      <AdminDashboard />;
+      <AdminDashboard />
     </>
   );
 }

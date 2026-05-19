@@ -134,7 +134,7 @@ const AssignmentDashboard: FC<{
     [locale, hasNewMessages],
   );
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderContent = () => {
     if (currentSection === "chat")

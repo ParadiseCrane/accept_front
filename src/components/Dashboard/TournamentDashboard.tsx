@@ -163,7 +163,7 @@ const TournamentDashboard: FC<{
     return base;
   }, [tournament?.maxTeamSize, hasNewMessages, locale]);
 
-  const currentSection = searchParams?.get("section") || links[0].section;
+  const currentSection = searchParams?.get("section");
 
   const renderActivePage = () => {
     switch (currentSection) {
@@ -251,7 +251,7 @@ const TournamentDashboard: FC<{
       case "settings":
         return <Settings tournament={tournament} />;
       default:
-        return null;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 

@@ -24,6 +24,7 @@ import {
 } from "@tabler/icons-react";
 
 import styles from "./profile.module.css";
+import { LoadingOverlay } from "@mantine/core";
 
 const Profile: FC<IFullProfileBundle> = ({
   user,
@@ -105,7 +106,7 @@ const Profile: FC<IFullProfileBundle> = ({
       case "settings":
         return <Settings user={user} />;
       default:
-        return null;
+        return <LoadingOverlay visible loaderProps={{ radius: "lg" }} />;
     }
   };
 
