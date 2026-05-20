@@ -62,7 +62,6 @@ const LeftMenu: FC<ILeftMenuProps> = ({ links, topContent, children }) => {
         <Tabs
           value={activeValue}
           onChange={(value) => {
-            console.log("update url call №3");
             value && updateUrl(value, "push");
           }}
         >
@@ -91,7 +90,6 @@ const LeftMenu: FC<ILeftMenuProps> = ({ links, topContent, children }) => {
                 key={element.section}
                 active={element.section === activeValue}
                 onClick={() => {
-                  console.log("update url call №4");
                   updateUrl(element.section!, "push");
                 }}
                 label={element.title}

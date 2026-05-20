@@ -62,13 +62,13 @@ export const AddModeratorModal = ({
   useEffect(() => {
     if (showModal) {
       setGroupsWithoutModerator(
-        groups.map<ComboboxItem>((group) => {
+        (groups ?? []).map<ComboboxItem>((group) => {
           return { label: group.name, value: group.spec };
         }),
       );
       fetchUsersForGroup();
     }
-  }, [showModal, , fetchUsersForGroup]);
+  }, [showModal, groups, fetchUsersForGroup]);
 
   return (
     <>
