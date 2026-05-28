@@ -11,8 +11,7 @@ import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
 import { IconSend } from "@tabler/icons-react";
 
 import styles from "./chat.module.css";
-import { useLongPolling } from "@hooks/useLongPolling";
-import { LONG_POLLING_REFETCH_INTERVAL } from "@constants/Limits";
+import { useWebSocketChat } from "@hooks/useWebSocketChat";
 
 const Chat: FC<{
   indicateNew?: () => void;
@@ -63,22 +62,12 @@ const Chat: FC<{
       }, 100);
   }, []);
 
-  const fetchMessages = useCallback(
-    (skip: boolean) => {
-      return sendRequest<{}, IChatMessage[]>(`chat/new/${skip}`, "POST", {
-        entity,
-        spec,
-        host,
-        moderator: !!moderator,
-        additional_info: group_spec ? { group_spec: group_spec } : null,
-      }).then((res) => {
-        if (!res.error) {
-          appendMessages(res.response);
-          if (indicateNew && res.response.length > 0) indicateNew();
-        }
-      });
+  const handleWebSocketMessage = useCallback(
+    (message: IChatMessage) => {
+      appendMessages([message]);
+      if (indicateNew) indicateNew();
     },
-    [entity, spec, host, moderator, appendMessages, indicateNew, group_spec],
+    [appendMessages, indicateNew],
   );
 
   const handleSend = useCallback(() => {
@@ -92,12 +81,8 @@ const Chat: FC<{
       moderator: !!moderator,
       content: localMessage,
       additional_info: group_spec ? { group_spec: group_spec } : null,
-    }).then((res) => {
-      if (!res.error) {
-        appendMessages([res.response]);
-      }
     });
-  }, [entity, spec, host, moderator, message, appendMessages, group_spec]);
+  }, [entity, spec, host, moderator, message, group_spec]);
 
   useEffect(() => {
     if (opened && newMessages.length > 0)
@@ -133,7 +118,13 @@ const Chat: FC<{
     });
   }, [entity, host, moderator, opened, firstFetchDone, spec, group_spec]);
 
-  useLongPolling(fetchMessages, LONG_POLLING_REFETCH_INTERVAL);
+  useWebSocketChat({
+    entity,
+    spec,
+    host,
+    moderator: !!moderator,
+    onMessage: handleWebSocketMessage,
+  });
 
   return (
     <div className={wrapperStyles}>
