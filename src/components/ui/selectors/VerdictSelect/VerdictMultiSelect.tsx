@@ -4,15 +4,15 @@ import { MultiSelect } from "@ui/basics";
 import { FC, memo, useCallback, useMemo } from "react";
 
 import {
-  ISelectorItem,
+  IItemWithGroup,
   VerdictItemProps,
   VerdictSelectProps,
 } from "./VerdictSelect";
 import { IVerdict } from "@custom-types/data/atomic";
 
 interface Props extends VerdictSelectProps {
-  verdicts: ISelectorItem[];
-  select: (_: ISelectorItem[] | undefined) => void;
+  verdicts: IItemWithGroup[];
+  select: (_: string[] | undefined) => void;
 }
 
 const VerdictMultiSelect: FC<Props> = ({
@@ -21,28 +21,29 @@ const VerdictMultiSelect: FC<Props> = ({
   verdicts,
   nothingFound,
   select,
-  multiple,
   additionalProps,
 }) => {
   const data = useMemo(
     () =>
-      verdicts.map(
-        (item) =>
-          ({
-            label: item.label,
-            value: item.spec.toString(),
-          }) as VerdictItemProps,
-      ),
+      verdicts.map((item) => ({
+        group: item.group,
+        items: item.items.map((item) => item.label),
+      })),
     [verdicts],
   );
 
   const onSelect = useCallback(
-    (specs: string[]) => {
-      if (specs.length == 0) {
+    (labels: string[]) => {
+      if (labels.length == 0) {
         select([]);
         return;
       }
-      select(verdicts.filter((item) => specs.includes(item.spec.toString())));
+      const allItems = verdicts.flatMap((item) => item.items);
+      select(
+        allItems
+          .filter((item) => labels.includes(item.label.toString()))
+          .map((item) => item.spec.toString()),
+      );
     },
     [select, verdicts],
   );
@@ -57,13 +58,13 @@ const VerdictMultiSelect: FC<Props> = ({
         clearable
         maxDropdownHeight={400}
         nothingFoundMessage={nothingFound}
-        filter={({ options, search }) =>
-          (options as ComboboxItem[]).filter(
-            (item) =>
-              item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
-              item.value.toLowerCase().includes(search.toLowerCase().trim()),
-          )
-        }
+        // filter={({ options, search }) =>
+        //   (options as ComboboxItem[]).filter(
+        //     (item) =>
+        //       item.label?.toLowerCase().includes(search.toLowerCase().trim()) ||
+        //       item.value.toLowerCase().includes(search.toLowerCase().trim()),
+        //   )
+        // }
         {...additionalProps}
         onChange={(specs) => {
           onSelect(specs);

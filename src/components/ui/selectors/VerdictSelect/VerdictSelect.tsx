@@ -10,6 +10,11 @@ export interface ISelectorItem {
   label: string;
 }
 
+export interface IItemWithGroup {
+  group: string;
+  items: ISelectorItem[];
+}
+
 export interface VerdictItemProps extends ComponentPropsWithoutRef<"div"> {
   image: string;
   label: string;
@@ -49,7 +54,6 @@ const VerdictSelect: FC<VerdictSelectProps> = ({ multiple, ...props }) => {
     },
     {
       spec: "v4",
-
       label: "Runtime Error",
     },
     {
@@ -75,19 +79,22 @@ const VerdictSelect: FC<VerdictSelectProps> = ({ multiple, ...props }) => {
     label: locale.attempt.statuses[item],
   }));
 
-  const allItems = [...statuses, ...verdicts];
+  const allItems: IItemWithGroup[] = [
+    { group: locale.attempt.status, items: statuses },
+    { group: locale.attempt.verdict, items: verdicts },
+  ];
 
   const select = useCallback(
-    (values: ISelectorItem[] | undefined) => {
+    (values: string[] | undefined) => {
       props.statusSelect(
         values
-          ?.filter((item) => item.spec.startsWith("s"))
-          .map((item) => parseInt(item.spec.slice(1))),
+          ?.filter((item) => item.startsWith("s"))
+          .map((item) => parseInt(item.slice(1))),
       );
       props.verdictSelect(
         values
-          ?.filter((item) => item.spec.startsWith("v"))
-          .map((item) => parseInt(item.spec.slice(1))),
+          ?.filter((item) => item.startsWith("v"))
+          .map((item) => parseInt(item.slice(1))),
       );
     },
     [props.statusSelect, props.verdictSelect],

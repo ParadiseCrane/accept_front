@@ -70,6 +70,7 @@ const eslintConfig = [
       "@typescript-eslint/no-empty-object-type": "warn",
       "@typescript-eslint/ban-ts-comment": "warn",
       "@typescript-eslint/no-unused-expressions": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
 
       // General
       "no-unused-vars": "off",

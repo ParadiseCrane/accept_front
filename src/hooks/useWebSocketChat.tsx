@@ -26,13 +26,11 @@ export function useWebSocketChat({
     let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const connect = () => {
-      const token = getCookie("access_token");
-      if (!token || !active) return;
+      if (!active) return;
 
-      const baseUrl =
-        process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? "ws://localhost:8000";
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const baseUrl = `${protocol}//${window.location.host}`;
       const params = new URLSearchParams({
-        token,
         entity,
         spec,
         host,
@@ -40,6 +38,11 @@ export function useWebSocketChat({
       });
 
       ws = new WebSocket(`${baseUrl}/api/ws/chat?${params}`);
+
+      ws.onopen = () => {
+        const token = getCookie("access_token") ?? "";
+        ws?.send(token);
+      };
 
       ws.onmessage = (event) => {
         try {
@@ -52,8 +55,9 @@ export function useWebSocketChat({
 
       ws.onclose = (event) => {
         if (!active) return;
-        // 4001 = auth rejected (bad/expired token) — wait for HTTP to refresh cookie
-        const delay = event.code === 4001 ? 30_000 : 3_000;
+        // 4001 = bad/expired token; 4003 = auth timeout — wait for cookie refresh
+        const delay =
+          event.code === 4001 || event.code === 4003 ? 30_000 : 3_000;
         reconnectTimeout = setTimeout(connect, delay);
       };
 
